@@ -8,7 +8,7 @@ from .analysis import (
     pairwise_functional_distances,
     score_distance_matrix,
 )
-from .backends import to_skfda_grid
+from .backends import to_skfda_basis, to_skfda_grid
 from .compositional import (
     alr_transform,
     fit_compositional_fpca,
@@ -27,6 +27,14 @@ from .fpca import (
     transform_fpca,
 )
 from .io import from_irregular_long_dataframe, from_long_dataframe
+from .irregular import (
+    common_overlap_interval,
+    from_irregular_long_dataframe_native,
+    irregular_sampling_summary,
+    make_common_grid,
+    resample_irregular_to_common_grid,
+    resample_irregular_to_grid,
+)
 from .kinematics import (
     acceleration_magnitude_function,
     cumulative_path_length,
@@ -35,10 +43,19 @@ from .kinematics import (
     speed_function,
 )
 from .multilevel import fit_multilevel_fpca
+from .phase import (
+    compare_registered_unregistered_fpca,
+    fit_phase_fpca,
+    phase_landmark_frame,
+    phase_trajectory_set,
+    registration_sensitivity_frame,
+)
 from .plotting import (
     plot_fpca_component,
+    plot_fpca_stability,
     plot_fpca_variance,
     plot_planar_trajectories,
+    plot_reconstruction_curve,
     plot_registration,
     plot_trajectory_overlay,
     plot_warping_functions,
@@ -54,19 +71,33 @@ from .preprocessing import (
 from .registration import phase_summary, register_to_landmarks, warping_displacement
 from .reporting import (
     fpca_reporting_text,
+    fpca_stability_reporting_text,
     multilevel_fpca_reporting_text,
+    registration_sensitivity_reporting_text,
     summarise_fpca,
     summarise_trajectory_set,
 )
 from .simulate import simulate_aoi_probability_trajectories, simulate_planar_trajectories
+from .stability import (
+    bootstrap_fpca_stability,
+    component_similarity_matrix,
+    fpca_reconstruction_curve,
+    match_fpca_components,
+    reconstruction_error_by_curve,
+    summarise_fpca_stability,
+)
 from .types import (
+    BasisProjectionResult,
     ClusterResult,
     CompositionalFPCAResult,
     ElasticFPCAResult,
     FPCAResult,
+    FPCAStabilityResult,
     FunctionalRegressionResult,
+    IrregularTrajectorySet,
     MultilevelFPCAResult,
     RegistrationResult,
+    RegistrationSensitivityResult,
     TrajectorySet,
 )
 from .validation import (
@@ -80,15 +111,25 @@ __version__ = "0.1.0.dev0"
 
 __all__ = [
     "TrajectorySet",
+    "IrregularTrajectorySet",
     "FPCAResult",
+    "FPCAStabilityResult",
     "RegistrationResult",
+    "RegistrationSensitivityResult",
     "CompositionalFPCAResult",
     "MultilevelFPCAResult",
     "ElasticFPCAResult",
     "FunctionalRegressionResult",
     "ClusterResult",
+    "BasisProjectionResult",
     "from_long_dataframe",
     "from_irregular_long_dataframe",
+    "from_irregular_long_dataframe_native",
+    "irregular_sampling_summary",
+    "common_overlap_interval",
+    "make_common_grid",
+    "resample_irregular_to_grid",
+    "resample_irregular_to_common_grid",
     "validate_trajectory_set",
     "validate_common_grid",
     "validate_simplex",
@@ -115,6 +156,11 @@ __all__ = [
     "fit_compositional_fpca",
     "reconstruct_compositional_fpca",
     "fit_multilevel_fpca",
+    "phase_trajectory_set",
+    "fit_phase_fpca",
+    "phase_landmark_frame",
+    "compare_registered_unregistered_fpca",
+    "registration_sensitivity_frame",
     "fit_elastic_fpca",
     "differentiate_trajectories",
     "speed_function",
@@ -127,17 +173,28 @@ __all__ = [
     "score_distance_matrix",
     "cluster_fpca_scores",
     "fit_scalar_on_function_regression",
+    "component_similarity_matrix",
+    "match_fpca_components",
+    "bootstrap_fpca_stability",
+    "summarise_fpca_stability",
+    "reconstruction_error_by_curve",
+    "fpca_reconstruction_curve",
     "simulate_planar_trajectories",
     "simulate_aoi_probability_trajectories",
     "summarise_trajectory_set",
     "summarise_fpca",
     "fpca_reporting_text",
+    "fpca_stability_reporting_text",
+    "registration_sensitivity_reporting_text",
     "multilevel_fpca_reporting_text",
     "plot_trajectory_overlay",
     "plot_planar_trajectories",
     "plot_fpca_variance",
+    "plot_fpca_stability",
+    "plot_reconstruction_curve",
     "plot_fpca_component",
     "plot_registration",
     "plot_warping_functions",
     "to_skfda_grid",
+    "to_skfda_basis",
 ]
