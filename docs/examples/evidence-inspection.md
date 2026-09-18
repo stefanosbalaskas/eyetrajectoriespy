@@ -2,6 +2,10 @@
 
 This example treats the whole x/y gaze path as the functional observation.
 
+![Synthetic continuous 2-D gaze trajectories](../assets/trajectory-field.svg)
+
+*Illustrative synthetic trajectories generated from the package's evidence-inspection simulator. The figure is explanatory, not empirical data.*
+
 ```python
 from eyetrajectoriespy import (
     fit_mfpca,
