@@ -74,6 +74,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.3.0.dev0**.
-
-The 0.2 snapshot remains separately frozen for certification because GitHub-hosted Actions minutes are currently exhausted. New development is therefore kept on a stacked branch rather than rewriting the pending certification snapshot.
+The current development line is **0.3.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
