@@ -15,8 +15,6 @@ Second development tranche.
 - tutorial gallery, pre-registration checklist, and expanded methods/site navigation;
 - optional FDA interoperability CI.
 
-# Changelog
-
 ## 0.1.0.dev0 — 2026-09-18
 
 Initial development release.
