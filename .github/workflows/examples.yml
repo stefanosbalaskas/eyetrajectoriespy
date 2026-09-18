@@ -26,3 +26,6 @@ jobs:
           python examples/functional_regression.py
           python examples/irregular_sampling.py
           python examples/derived_functions.py
+          python examples/native_irregular.py
+          python examples/fpca_stability.py
+          python examples/phase_fpca.py
