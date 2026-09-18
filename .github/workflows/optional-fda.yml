@@ -24,6 +24,8 @@ jobs:
           python -m pip install -U pip
           python -m pip install -e ".[dev,fda]"
       - name: Run optional backend tests
-        run: python -m pytest tests/test_basis_projection.py tests/test_backends_optional.py -q
+        run: python -m pytest tests/test_basis_projection.py tests/test_backends_optional.py tests/test_skfda_outliers.py -q
       - name: Run basis example
         run: python examples/basis_projection.py
+      - name: Run scikit-fda outlier example
+        run: python examples/skfda_outliers.py
