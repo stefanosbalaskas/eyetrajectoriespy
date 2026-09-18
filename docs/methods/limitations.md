@@ -27,3 +27,20 @@ FPCs are empirical modes of variation. Replication or stability analysis may be 
 ## Current multilevel implementation
 
 The first release uses a two-level decomposition followed by separate FPCAs, not a full Bayesian or likelihood-based functional mixed model.
+
+
+## Bootstrap stability is not inferential certainty
+
+A high matched-component similarity shows that a component shape is reproducible under the chosen resampling scheme. It does not establish construct validity, causality, or generalization to another task/stimulus population.
+
+## Irregular projection can change the estimand
+
+Restricting to the common overlap shortens the time window. Using the union preserves the wider window but creates edge missingness. Neither choice is neutral.
+
+## Phase decomposition depends on registration
+
+Phase FPCA describes the estimated warping functions from a specific registration procedure. Different landmarks or elastic penalties can produce different phase representations.
+
+## Basis interoperability is optional
+
+The package preserves provenance around basis projection but delegates the basis mathematics to scikit-fda. Backend-version differences should be recorded in reproducible analyses.
