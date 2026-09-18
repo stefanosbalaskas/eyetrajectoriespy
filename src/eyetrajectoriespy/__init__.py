@@ -53,6 +53,8 @@ from .phase import (
 )
 from .plotting import (
     plot_fpca_component,
+    plot_fpca_influence,
+    plot_fpca_outlier_diagnostics,
     plot_fpca_stability,
     plot_fpca_variance,
     plot_planar_trajectories,
@@ -72,6 +74,8 @@ from .preprocessing import (
 from .registration import phase_summary, register_to_landmarks, warping_displacement
 from .reporting import (
     fpca_reporting_text,
+    fpca_influence_reporting_text,
+    fpca_outlier_reporting_text,
     fpca_stability_reporting_text,
     multilevel_fpca_reporting_text,
     registration_sensitivity_reporting_text,
@@ -191,6 +195,8 @@ __all__ = [
     "summarise_trajectory_set",
     "summarise_fpca",
     "fpca_reporting_text",
+    "fpca_influence_reporting_text",
+    "fpca_outlier_reporting_text",
     "fpca_stability_reporting_text",
     "registration_sensitivity_reporting_text",
     "multilevel_fpca_reporting_text",
@@ -200,6 +206,8 @@ __all__ = [
     "plot_fpca_stability",
     "plot_reconstruction_curve",
     "plot_fpca_component",
+    "plot_fpca_influence",
+    "plot_fpca_outlier_diagnostics",
     "plot_registration",
     "plot_warping_functions",
     "to_skfda_grid",
