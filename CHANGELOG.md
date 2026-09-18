@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.2.0.dev0 — 2026-09-18
+
+Second development tranche.
+
+- native `IrregularTrajectorySet` objects preserve curve-specific sampling without forced interpolation;
+- explicit overlap/union common-grid construction and gap-protected irregular-to-grid projection;
+- bootstrap FPCA component stability with curve- or participant-level resampling and deterministic seeds;
+- matched functional-component similarity and reconstruction diagnostics;
+- phase functions and phase FPCA from registration warpings;
+- registered-versus-unregistered FPCA sensitivity diagnostics;
+- provenance-preserving optional B-spline/Fourier projection through scikit-fda;
+- expanded examples for irregular data, stability, phase analysis, and basis interoperability;
+- tutorial gallery, pre-registration checklist, and expanded methods/site navigation;
+- optional FDA interoperability CI.
+
+# Changelog
+
 ## 0.1.0.dev0 — 2026-09-18
 
 Initial development release.
