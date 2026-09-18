@@ -9,6 +9,8 @@ def test_version_and_public_symbols():
         "IrregularTrajectorySet","from_irregular_long_dataframe_native","bootstrap_fpca_stability",
         "fit_phase_fpca","compare_registered_unregistered_fpca","to_skfda_basis",
         "diagnose_fpca_outliers","leave_one_group_out_fpca_influence",
+        "FunctionalOutlierResult","FPCAInfluenceResult","detect_functional_outliers_skfda",
+        "plot_fpca_outlier_diagnostics","plot_fpca_influence",
     }
     assert required <= set(et.__all__)
     for name in required:
