@@ -6,6 +6,9 @@
 ::: eyetrajectoriespy.RegistrationResult
 ::: eyetrajectoriespy.CompositionalFPCAResult
 ::: eyetrajectoriespy.MultilevelFPCAResult
+::: eyetrajectoriespy.FPCAStabilityResult
+::: eyetrajectoriespy.FPCAInfluenceResult
+::: eyetrajectoriespy.FunctionalOutlierResult
 
 ## Native and common-grid import
 ::: eyetrajectoriespy.from_irregular_long_dataframe_native

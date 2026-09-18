@@ -52,9 +52,6 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [Basis representations](../guides/basis-representations.md)
 
-</div>
-
-
 -   **Is one participant driving the FPCA?**
 
     Combine reconstruction/score-space review diagnostics with participant-level omission sensitivity.
@@ -66,3 +63,5 @@ Choose a tutorial by the scientific problem rather than by the function name.
     Distinguish dense irregular projection from sparse functional estimation before creating a common grid.
 
     [Sparse irregular FPCA](../guides/sparse-irregular-fpca.md)
+
+</div>

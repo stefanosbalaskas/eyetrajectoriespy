@@ -1,5 +1,10 @@
 # Functional outliers and FPCA influence
 
+![Illustrative FPCA review diagnostic scatter](../assets/outlier-influence.svg)
+
+*Illustrative synthetic diagnostic geometry. A review flag identifies a trajectory to inspect; it is not an exclusion command.*
+
+
 Functional trajectories can be unusual for several different reasons:
 
 - a genuine but rare viewing strategy;
