@@ -41,3 +41,55 @@ Report enough information to reconstruct the functional estimand.
 - log-ratio reference dimension;
 - zero replacement epsilon;
 - inverse-transform interpretation.
+
+
+## Irregular sampling
+
+When native irregular trajectories were present, additionally report:
+
+- whether native grids were retained before analysis;
+- overlap, union, or custom common time domain;
+- target grid size/frequency;
+- interpolation method;
+- maximum bridged gap;
+- residual missingness after projection.
+
+## Component stability
+
+If bootstrap stability was evaluated, report:
+
+- bootstrap resampling unit;
+- number of replicates;
+- random seed;
+- participant column for clustered resampling;
+- component matching criterion;
+- similarity threshold if a descriptive threshold was used;
+- median and interval of matched component similarity.
+
+Do not describe the fraction of bootstrap replicates above a threshold as a probability that a component is true.
+
+## Reconstruction diagnostics
+
+Report the component count used for reconstruction and a trajectory-scale error measure when reconstruction adequacy is part of component-retention justification.
+
+## Phase and registration sensitivity
+
+When registration was used, report:
+
+- phase representation;
+- phase FPCA retention rule, if used;
+- raw/observed landmark timing summaries;
+- matched component similarity before versus after registration;
+- score correlations before versus after registration.
+
+## Basis representation
+
+When a finite basis was used, report:
+
+- backend;
+- basis family;
+- basis count;
+- spline order where relevant;
+- functional dimension projected;
+- time domain;
+- any sensitivity analysis across basis sizes.

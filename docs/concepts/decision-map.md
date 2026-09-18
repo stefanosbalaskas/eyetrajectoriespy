@@ -1,28 +1,48 @@
 # Analysis decision map
 
-**Where does gaze move over trial time?**  
-Use joint 2-D MFPCA on x/y trajectories.
+Use the **research question and data structure** to choose the representation.
 
-**How does distance from a target evolve?**  
-Create a landmark-distance function and use univariate FPCA or another functional model.
+| Question | Representation / method | Key safeguard |
+|---|---|---|
+| Where does gaze move over trial time? | joint 2-D MFPCA | harmonize stimulus geometry first |
+| Are curves sampled at different times? | native irregular trajectories | do not force a grid during import |
+| How does distance from a target evolve? | derived univariate function + FPCA | landmark definition must be meaningful |
+| Are stable participant strategies different from trial fluctuations? | multilevel FPCA | preserve participant → trial nesting |
+| How does allocation among AOIs evolve? | compositional FPCA | probabilities must remain on the simplex |
+| Do people traverse similar paths at different times? | registration + phase FPCA | do not erase meaningful latency |
+| Is component interpretation stable? | bootstrap FPC matching | resample the correct unit |
+| Does a finite basis help? | B-spline/Fourier projection | basis family and size constrain shape |
+| Does a trajectory predict a scalar response? | score-based functional regression | refit FPCA inside training folds for prediction |
 
-**Are stable participant strategies different from trial-to-trial fluctuations?**  
-Use multilevel FPCA.
+## If the sample times are irregular
 
-**How does allocation among several AOIs evolve?**  
-Use compositional AOI probability functions. Do not run independent PCA on probabilities that must sum to one.
+Start with <code>from_irregular_long_dataframe_native()</code>. Audit the native sampling, then decide whether the common domain should be the overlap or union of observed time support.
 
-**Do people use a similar spatial route but at different speeds/times?**  
-Compare unregistered and registered/elastic analyses. Preserve the warping functions as phase outcomes.
+Do not let file import silently decide the analysis grid.
 
-**Does a trajectory predict a scalar response?**  
-Use retained FPCA scores as a transparent low-dimensional approximation, or a specialist functional regression estimator when required.
+## If timing is part of the theory
+
+Fit the unregistered representation first. Registration can then be used as a sensitivity/phase decomposition, not as an automatic cleaning operation.
+
+## If the FPCs will receive substantive labels
+
+Add both:
+
+1. reconstruction diagnostics; and
+2. bootstrap component stability.
+
+A visually appealing FPC is not automatically a reproducible viewing strategy.
 
 ## Before fitting anything
 
 1. Verify coordinate geometry is comparable.
 2. Decide whether absolute latency is part of the construct.
-3. Resolve missingness explicitly.
-4. Decide whether smoothing is defensible.
-5. Decide whether channels retain native scales or are equalized.
-6. Pre-specify component retention and interpretation.
+3. Preserve irregular sampling until the common-grid rule is explicit.
+4. Resolve missingness and maximum interpolation gap.
+5. Decide whether smoothing or basis projection is defensible.
+6. Decide whether channels retain native scales or are equalized.
+7. Pre-specify component retention and interpretation.
+8. Pre-specify the bootstrap resampling unit if stability will be assessed.
+9. If registration is used, pre-specify how phase information will be retained.
+
+Use the [pre-registration checklist](../methods/preregistration.md) for a manuscript-ready version.

@@ -44,10 +44,10 @@ def from_long_dataframe(
         Curve-constant columns to preserve. If a requested metadata column
         varies within a curve, an error is raised.
     require_common_grid:
-        If ``True``, all trajectories must contain the same time grid. If
-        ``False``, use :func:`eyetrajectoriespy.resample_to_grid` after
-        constructing curve-specific data with another adapter; the canonical
-        :class:`TrajectorySet` itself always uses a common grid.
+        Retained for backward compatibility. A :class:`TrajectorySet` always
+        requires a common grid. For native curve-specific sampling use
+        :func:`eyetrajectoriespy.from_irregular_long_dataframe_native` and
+        project to a common grid explicitly later.
     """
 
     if not isinstance(data, pd.DataFrame):
@@ -106,7 +106,8 @@ def from_long_dataframe(
                 "Trajectories do not share a common time grid. Resample explicitly before creating a TrajectorySet."
             )
         raise ValueError(
-            "TrajectorySet requires a common grid; use from_irregular_long_dataframe() to resample explicitly."
+            "TrajectorySet requires a common grid; use from_irregular_long_dataframe_native() "
+            "to preserve curve-specific sampling before explicit projection."
         )
 
     return TrajectorySet(

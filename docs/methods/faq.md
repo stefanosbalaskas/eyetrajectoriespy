@@ -1,0 +1,57 @@
+# Research FAQ and decision clinic
+
+## Do I need to smooth raw gaze before FPCA?
+
+No automatic smoothing is recommended. Abrupt gaze changes can be genuine. Smooth only when the scientific representation requires it, report the method, and compare against an unsmoothed analysis when shape or timing could change.
+
+## Should I interpolate every blink or tracker-loss interval?
+
+No. Use an explicit maximum gap. Long unobserved intervals should remain missing unless the study has a defensible reason to reconstruct them.
+
+## My trials have different sample times. Should I immediately resample them?
+
+Not anymore. Preserve them first with <code>IrregularTrajectorySet</code>, inspect sampling support, then choose an overlap, union, or custom common grid.
+
+## Should I normalize every trial to 0–1 time?
+
+Only if the estimand is **trial progress** rather than elapsed time. Normalization removes absolute-duration information.
+
+## Should I register curves before FPCA?
+
+Only when phase variability is a nuisance for the scientific question. If verification latency, hesitation, or inspection timing matters, analyze the unregistered trajectories and preserve the warping/phase functions.
+
+## How many FPCs should I retain?
+
+Use a pre-specified rule and inspect more than variance explained. Reconstruction error and component stability can show whether the chosen low-dimensional representation is adequate and reproducible.
+
+## Why did an FPC change sign?
+
+FPC sign is arbitrary. A component and its negative describe the same eigendirection. Interpret the contrast between the two ends of the component, not the sign label itself.
+
+## Why do FPC1 and FPC2 swap in bootstrap samples?
+
+When eigenvalues are close, component order can change and the corresponding eigenspace can rotate. The package therefore matches bootstrap components by absolute functional similarity instead of assuming labels remain fixed.
+
+## Should I bootstrap trials or participants?
+
+If multiple trials belong to the same participant and the goal is population-level component stability, participant-level resampling is usually the defensible default. Trial-level resampling treats repeated trials as independent units.
+
+## Can I pool different stimulus layouts?
+
+Only after a scientifically defensible spatial harmonization. Normalizing screen pixels to 0–1 does not make semantically different layouts equivalent.
+
+## Do functional trajectories replace AOI or fixation analysis?
+
+No. FDA preserves whole-trajectory variation. AOI, fixation, latency, and sequence models answer different questions and can be complementary.
+
+## When should I use a B-spline or Fourier basis?
+
+Use basis projection when a lower-dimensional smooth representation is scientifically useful. B-splines are flexible for non-periodic trajectories. Fourier bases are most natural for periodic structure. Basis family and size should not be selected only because the resulting curve looks smoother.
+
+## Can I use FPC scores in prediction?
+
+Yes, but the entire preprocessing and FPCA estimation should be fit inside the training fold. Estimating FPCs on the full dataset before cross-validation leaks information into the test data.
+
+## Is a stable FPC automatically psychologically meaningful?
+
+No. Bootstrap stability supports reproducibility of the functional shape under the chosen resampling scheme. Construct interpretation still requires the experimental design and preferably external behavioral evidence.
