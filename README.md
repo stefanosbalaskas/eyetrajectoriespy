@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^	op,
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.1.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.2.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -29,14 +29,16 @@ Registration is especially explicit because latency can itself be psychologicall
 ## Main capabilities
 
 - typed `TrajectorySet` objects with metadata, units, coordinate semantics, and provenance;
-- common-grid and irregular-grid import with maximum-gap protection;
+- common-grid import plus first-class native irregular trajectories with explicit overlap/union projection;
 - opt-in short-gap interpolation and smoothing;
 - FPCA and joint multivariate FPCA for `[x(t), y(t)]`;
-- component scores, reconstruction, variance summaries, and component trajectories;
+- component scores, reconstruction, variance summaries, component trajectories, and reconstruction-error diagnostics;
+- bootstrap FPC stability with curve- or participant-level resampling and matched component functions;
 - participant → trial → time multilevel FPCA;
 - compositional FPCA for AOI probability functions with simplex-preserving reconstruction;
-- landmark registration with retained warping functions;
+- landmark registration with retained warping functions, phase FPCA, and registered-versus-unregistered sensitivity analysis;
 - optional elastic SRVF curve analysis through `fdasrsf`;
+- optional B-spline/Fourier basis projection through `scikit-fda` with retained provenance;
 - continuous speed, acceleration, landmark-distance, and path-length functions;
 - integrated functional L2 distances;
 - deterministic FPCA-score clustering;
@@ -87,10 +89,12 @@ print(summarise_fpca(fit))
 | Scientific object | Representation | Entry point |
 |---|---|---|
 | Continuous gaze location | `[x(t), y(t)]` | `fit_mfpca()` |
+| Native irregular gaze | curve-specific time grids | `from_irregular_long_dataframe_native()` |
 | One derived continuous outcome | `X(t)` | `fit_fpca()` |
 | Repeated participant trials | `G_ij(t)` | `fit_multilevel_fpca()` |
 | AOI probabilities | simplex-valued `P(t)` | `fit_compositional_fpca()` |
-| Similar path, different traversal timing | amplitude + phase | `register_to_landmarks()` / `fit_elastic_fpca()` |
+| Similar path, different traversal timing | amplitude + phase | `register_to_landmarks()` / `fit_phase_fpca()` / `fit_elastic_fpca()` |
+| Component robustness | bootstrap-matched eigenfunctions | `bootstrap_fpca_stability()` |
 | Scalar outcome predicted by gaze | FPCA-score approximation | `fit_scalar_on_function_regression()` |
 
 ## Documentation
@@ -99,7 +103,7 @@ The methods site is configured for GitHub Pages:
 
 **https://stefanosbalaskas.github.io/eyetrajectoriespy/**
 
-It includes representation selection, preprocessing boundaries, FPCA/MFPCA interpretation, registration cautions, multilevel and compositional workflows, elastic analysis, failure cases, reporting guidance, limitations, worked examples, and API documentation.
+It includes a tutorial gallery, representation selection, native irregular workflows, FPCA/MFPCA interpretation, bootstrap stability, phase analysis, registration cautions, multilevel and compositional workflows, basis/elastic interoperability, failure cases, pre-registration/reporting guidance, limitations, worked examples, and API documentation.
 
 ## Scope boundary
 
