@@ -49,6 +49,10 @@ def to_skfda_basis(
         raise ValueError("n_basis must be at least 2")
     if order < 1:
         raise ValueError("order must be positive")
+    if basis not in {"bspline", "fourier"}:
+        raise ValueError("basis must be 'bspline' or 'fourier'")
+    if basis == "bspline" and n_basis < order:
+        raise ValueError("For B-splines, n_basis must be at least order")
     try:
         from skfda import FDataGrid
         from skfda.representation.basis import BSplineBasis, FourierBasis
@@ -67,8 +71,6 @@ def to_skfda_basis(
     )
     domain = (float(trajectories.time[0]), float(trajectories.time[-1]))
     if basis == "bspline":
-        if n_basis < order:
-            raise ValueError("For B-splines, n_basis must be at least order")
         basis_object = BSplineBasis(
             domain_range=domain,
             n_basis=n_basis,
@@ -79,8 +81,8 @@ def to_skfda_basis(
             domain_range=domain,
             n_basis=n_basis,
         )
-    else:
-        raise ValueError("basis must be 'bspline' or 'fourier'")
+    else:  # validated before optional backend import
+        raise AssertionError("unreachable basis family")
 
     projected = grid.to_basis(basis_object)
     return BasisProjectionResult(
