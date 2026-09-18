@@ -16,8 +16,10 @@ nav:
   - Guides:
       - Preparing trajectories: guides/preprocessing.md
       - Native irregular trajectories: guides/irregular-trajectories.md
+      - Sparse irregular FPCA: guides/sparse-irregular-fpca.md
       - FPCA & MFPCA: guides/fpca.md
       - FPCA stability & validation: guides/stability-validation.md
+      - Outliers & influence: guides/outliers-influence.md
       - Registration & phase: guides/registration.md
       - Phase FPCA & registration sensitivity: guides/phase-fpca.md
       - Basis representations: guides/basis-representations.md
@@ -31,6 +33,7 @@ nav:
       - 2-D evidence inspection: examples/evidence-inspection.md
       - Native irregular sampling: examples/native-irregular.md
       - FPCA stability: examples/fpca-stability.md
+      - Outlier & influence diagnostics: examples/outlier-influence.md
       - Phase FPCA: examples/phase-fpca.md
       - Repeated-trial multilevel FPCA: examples/multilevel.md
       - Compositional AOI trajectories: examples/compositional.md

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.3.0.dev0 — 2026-09-18
+
+Third development tranche.
+
+- FPCA anomaly screening combining integrated reconstruction error and FPC score-space Mahalanobis distance;
+- robust Minimum Covariance Determinant or explicit empirical score covariance;
+- participant-/group-aware leave-one-group-out FPCA influence analysis;
+- matched component-shape and explained-variance sensitivity summaries;
+- functional review flags that never trigger automatic exclusion;
+- optional scikit-fda functional boxplot and magnitude-shape outlier screening;
+- plotting and manuscript-reporting helpers for outlier/influence diagnostics;
+- synthetic truth example with an injected atypical trajectory;
+- sparse-irregular FPCA decision guidance and expanded pre-registration/reporting safeguards.
+
 ## 0.2.0.dev0 — 2026-09-18
 
 Second development tranche.

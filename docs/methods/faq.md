@@ -55,3 +55,20 @@ Yes, but the entire preprocessing and FPCA estimation should be fit inside the t
 ## Is a stable FPC automatically psychologically meaningful?
 
 No. Bootstrap stability supports reproducibility of the functional shape under the chosen resampling scheme. Construct interpretation still requires the experimental design and preferably external behavioral evidence.
+
+
+## Should I delete every trajectory flagged as a functional outlier?
+
+No. A functional outlier can be a genuine rare strategy, a stimulus-layout mismatch, a preprocessing artifact, or a quality failure. The diagnostic tells you what to inspect; the exclusion decision requires an independent, documented rule.
+
+## Why combine reconstruction error and score-space distance?
+
+An atypical trajectory can be represented poorly by the retained basis, giving high reconstruction error. But the opposite can also happen: a strong atypical trajectory can influence the FPCA basis and therefore reconstruct well while occupying an extreme location in FPC score space. The two diagnostics are complementary.
+
+## Should influence be calculated per trial or participant?
+
+For repeated trials, participant-level omission is generally the scientifically meaningful sensitivity unit because trials from one participant are dependent. Curve-level omission remains available for designs where curves truly are the independent units.
+
+## Is a Mahalanobis cutoff a hypothesis test?
+
+No. In this package it is a review threshold used for functional diagnostics. It should not be reported as a confirmatory p-value or used as an automatic deletion rule.

@@ -63,3 +63,18 @@ Functional analysis contains enough researcher degrees of freedom that the main 
 - whether FPCA is re-fit inside training folds for predictive analyses.
 
 The goal is not to force one workflow. It is to make the chosen workflow auditable.
+
+
+## Functional anomaly / influence review
+
+If functional diagnostics will be used, specify before condition-effect inspection:
+
+- which diagnostic family is planned;
+- FPC count used for reconstruction/score-space screening;
+- robust or empirical covariance;
+- review thresholds;
+- independent criteria that could justify exclusion;
+- omission unit for influence analysis;
+- whether sensitivity refits after justified exclusions will be reported.
+
+Pre-registering a **review rule** is different from pre-registering an **exclusion rule**.
