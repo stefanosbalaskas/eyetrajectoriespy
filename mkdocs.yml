@@ -46,6 +46,7 @@ nav:
       - Assumptions & diagnostics: methods/assumptions.md
       - Limitations & failure modes: methods/limitations.md
       - Method comparison: methods/method-comparison.md
+      - Capability status & roadmap: methods/status-roadmap.md
       - Research FAQ: methods/faq.md
       - References: methods/references.md
   - API:
