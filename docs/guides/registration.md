@@ -24,3 +24,12 @@ registered = register_to_landmarks(
 
 !!! danger
     Registered curves do not preserve latency. They intentionally alter timing to align selected features.
+
+
+## Analyze phase after registration
+
+The estimated warping functions can be converted into a functional phase object with <code>phase_trajectory_set()</code> and summarized using <code>fit_phase_fpca()</code>.
+
+Use <code>compare_registered_unregistered_fpca()</code> when you need to document whether registration materially changed the dominant spatial covariance structure.
+
+See [Phase FPCA and registration sensitivity](phase-fpca.md).
