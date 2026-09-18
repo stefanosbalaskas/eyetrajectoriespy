@@ -1,0 +1,111 @@
+site_name: eyetrajectoriespy
+site_description: Functional and continuous trajectory analysis for eye-tracking data in Python
+site_url: https://stefanosbalaskas.github.io/eyetrajectoriespy/
+repo_url: https://github.com/stefanosbalaskas/eyetrajectoriespy
+repo_name: stefanosbalaskas/eyetrajectoriespy
+edit_uri: edit/main/docs/
+
+nav:
+  - Home: index.md
+  - Start here:
+      - Quick start: quickstart.md
+      - Choose a representation: concepts/representations.md
+      - Scientific contracts: concepts/contracts.md
+      - Analysis decision map: concepts/decision-map.md
+  - Guides:
+      - Preparing trajectories: guides/preprocessing.md
+      - FPCA & MFPCA: guides/fpca.md
+      - Registration & phase: guides/registration.md
+      - Multilevel FPCA: guides/multilevel.md
+      - AOI probability functions: guides/compositional.md
+      - Elastic trajectory analysis: guides/elastic.md
+      - Functional regression & clustering: guides/downstream.md
+      - Derived continuous functions: guides/derived-functions.md
+      - Interpretation: guides/interpretation.md
+  - Worked examples:
+      - 2-D evidence inspection: examples/evidence-inspection.md
+      - Repeated-trial multilevel FPCA: examples/multilevel.md
+      - Compositional AOI trajectories: examples/compositional.md
+      - Functional regression: examples/regression.md
+      - Irregular sampling & gaps: examples/irregular-data.md
+      - Failure cases: examples/failure-cases.md
+  - Methods:
+      - Reporting checklist: methods/reporting.md
+      - Assumptions & diagnostics: methods/assumptions.md
+      - Limitations & failure modes: methods/limitations.md
+      - Method comparison: methods/method-comparison.md
+      - References: methods/references.md
+  - API:
+      - Public API: reference/api.md
+      - Object contracts: reference/objects.md
+  - Contributing: contributing.md
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            show_source: true
+            members_order: source
+            docstring_style: numpy
+            show_root_heading: true
+            show_signature_annotations: true
+            separate_signature: true
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.path
+    - navigation.tracking
+    - navigation.top
+    - content.code.copy
+    - content.action.edit
+    - search.suggest
+    - search.highlight
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: teal
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: teal
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+extra_css:
+  - assets/extra.css
+
+copyright: "MIT © 2026 Stefanos Balaskas"

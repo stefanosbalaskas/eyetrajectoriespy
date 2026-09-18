@@ -1,0 +1,22 @@
+:root {
+  --et-hero-a: #111827;
+  --et-hero-b: #312e81;
+  --et-accent: #14b8a6;
+}
+.md-grid { max-width: 1500px; }
+.et-hero {
+  border-radius: 1.1rem;
+  padding: 2.2rem 2.4rem;
+  margin: .5rem 0 1.7rem;
+  background: linear-gradient(135deg, var(--et-hero-a), var(--et-hero-b));
+  color: #fff;
+  box-shadow: 0 16px 42px rgba(15, 23, 42, .18);
+}
+.et-hero h1 { color: #fff; margin-bottom: .35rem; font-weight: 750; }
+.et-hero p { max-width: 820px; font-size: 1.05rem; opacity: .93; }
+.et-pill {
+  display: inline-block; margin: .25rem .35rem .15rem 0; padding: .28rem .65rem;
+  border: 1px solid rgba(255,255,255,.3); border-radius: 999px; font-size: .78rem;
+}
+.et-kicker { text-transform: uppercase; letter-spacing: .08em; font-size: .72rem; opacity: .75; }
+.md-typeset .grid.cards > ul > li, .md-typeset .grid.cards > ol > li { border-radius: .85rem; }
