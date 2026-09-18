@@ -254,3 +254,135 @@ class ClusterResult:
     method: str
     model: Any | None
     provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class IrregularTrajectorySet:
+    """Collection of trajectories sampled on curve-specific time grids.
+
+    Unlike :class:\`TrajectorySet\`, each curve retains its own sampling times.
+    No interpolation or common-grid projection is implied by this object.
+    """
+
+    time: tuple[np.ndarray, ...]
+    values: tuple[np.ndarray, ...]
+    curve_ids: tuple[str, ...]
+    dimension_names: tuple[str, ...]
+    metadata: pd.DataFrame = field(default_factory=pd.DataFrame)
+    coordinate_system: str = "unknown"
+    time_unit: str = "unknown"
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        times = tuple(np.asarray(t, dtype=float) for t in self.time)
+        values = tuple(np.asarray(v, dtype=float) for v in self.values)
+        if not times:
+            raise ValueError("At least one irregular trajectory is required")
+        if len(times) != len(values) or len(times) != len(self.curve_ids):
+            raise ValueError("time, values, and curve_ids must have the same length")
+        if len(set(self.curve_ids)) != len(self.curve_ids):
+            raise ValueError("curve_ids must be unique")
+        if not self.dimension_names or len(set(self.dimension_names)) != len(self.dimension_names):
+            raise ValueError("dimension_names must be non-empty and unique")
+        n_dim = len(self.dimension_names)
+        for i, (time, value) in enumerate(zip(times, values, strict=True)):
+            if time.ndim != 1 or time.size < 2:
+                raise ValueError(f"time[{i}] must be one-dimensional with at least two samples")
+            if not np.all(np.isfinite(time)) or not np.all(np.diff(time) > 0):
+                raise ValueError(f"time[{i}] must be finite and strictly increasing")
+            if value.ndim != 2 or value.shape != (time.size, n_dim):
+                raise ValueError(
+                    f"values[{i}] must have shape ({time.size}, {n_dim}); got {value.shape}"
+                )
+
+        md = self.metadata.copy()
+        if md.empty:
+            md = pd.DataFrame(index=pd.Index(self.curve_ids, name="curve_id"))
+        elif len(md) != len(times):
+            raise ValueError("metadata must have exactly one row per curve")
+        else:
+            md = md.reset_index(drop=True)
+            md.index = pd.Index(self.curve_ids, name="curve_id")
+
+        object.__setattr__(self, "time", times)
+        object.__setattr__(self, "values", values)
+        object.__setattr__(self, "curve_ids", tuple(map(str, self.curve_ids)))
+        object.__setattr__(self, "dimension_names", tuple(map(str, self.dimension_names)))
+        object.__setattr__(self, "metadata", md)
+        object.__setattr__(self, "provenance", dict(self.provenance))
+
+    @property
+    def n_curves(self) -> int:
+        return len(self.time)
+
+    @property
+    def n_dimensions(self) -> int:
+        return len(self.dimension_names)
+
+    @property
+    def sample_counts(self) -> np.ndarray:
+        """Number of observed samples for each curve."""
+        return np.asarray([len(t) for t in self.time], dtype=int)
+
+    def dimension(self, name: str) -> tuple[np.ndarray, ...]:
+        """Return one named functional dimension without resampling."""
+        try:
+            index = self.dimension_names.index(name)
+        except ValueError as exc:
+            raise KeyError(f"Unknown dimension {name!r}") from exc
+        return tuple(value[:, index] for value in self.values)
+
+    def subset(self, indices: Sequence[int]) -> "IrregularTrajectorySet":
+        """Return a curve subset while preserving native grids and provenance."""
+        idx = np.asarray(indices, dtype=int)
+        ids = tuple(self.curve_ids[i] for i in idx)
+        return replace(
+            self,
+            time=tuple(self.time[i] for i in idx),
+            values=tuple(self.values[i] for i in idx),
+            curve_ids=ids,
+            metadata=self.metadata.iloc[idx].reset_index(drop=True),
+        )
+
+
+@dataclass(frozen=True)
+class FPCAStabilityResult:
+    """Bootstrap stability diagnostics for matched functional principal components."""
+
+    reference: FPCAResult
+    similarities: np.ndarray
+    signed_similarities: np.ndarray
+    assignments: np.ndarray
+    explained_variance_ratio: np.ndarray
+    bootstrap_curve_counts: np.ndarray
+    resampling_unit: str
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.similarities.shape[0]
+
+
+@dataclass(frozen=True)
+class RegistrationSensitivityResult:
+    """Comparison of FPCA before and after an explicit registration step."""
+
+    unregistered_fpca: FPCAResult
+    registered_fpca: FPCAResult
+    component_assignments: np.ndarray
+    signed_component_similarity: np.ndarray
+    score_correlations: np.ndarray
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class BasisProjectionResult:
+    """Provenance-preserving wrapper around an optional functional basis object."""
+
+    backend_object: Any
+    dimension: str
+    basis_type: str
+    n_basis: int
+    time_domain: tuple[float, float]
+    provenance: Mapping[str, Any] = field(default_factory=dict)
