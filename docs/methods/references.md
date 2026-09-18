@@ -24,3 +24,12 @@ scikit-fda documentation: grid and basis representations, B-spline/Fourier bases
 FDApy documentation: dense, irregular, basis, and multivariate functional data representations, including sparse/irregular FPCA examples.
 
 fdasrsf documentation: SRVF-based registration, multivariate curve alignment, Karcher means, warping functions, and shape PCA.
+
+
+## Functional outlier diagnostics
+
+Sun Y, Genton MG. Functional Boxplots. Journal of Computational and Graphical Statistics. 2011;20(2):316–334.
+
+Dai W, Genton MG. Multivariate Functional Data Visualization and Outlier Detection. Journal of Computational and Graphical Statistics. 2018;27(4):923–934.
+
+scikit-fda documentation includes functional boxplot, magnitude-shape, depth/outlyingness, and FPCA reconstruction-error outlier examples.

@@ -11,6 +11,7 @@ Use the **research question and data structure** to choose the representation.
 | How does allocation among AOIs evolve? | compositional FPCA | probabilities must remain on the simplex |
 | Do people traverse similar paths at different times? | registration + phase FPCA | do not erase meaningful latency |
 | Is component interpretation stable? | bootstrap FPC matching | resample the correct unit |
+| Is one curve/participant unusually influential? | FPCA review + leave-one-group-out influence | flag for review, never auto-exclude |
 | Does a finite basis help? | B-spline/Fourier projection | basis family and size constrain shape |
 | Does a trajectory predict a scalar response? | score-based functional regression | refit FPCA inside training folds for prediction |
 
@@ -43,6 +44,7 @@ A visually appealing FPC is not automatically a reproducible viewing strategy.
 6. Decide whether channels retain native scales or are equalized.
 7. Pre-specify component retention and interpretation.
 8. Pre-specify the bootstrap resampling unit if stability will be assessed.
-9. If registration is used, pre-specify how phase information will be retained.
+9. If functional anomaly/influence review is planned, pre-specify review thresholds and the independent rule that could justify exclusion.
+10. If registration is used, pre-specify how phase information will be retained.
 
 Use the [pre-registration checklist](../methods/preregistration.md) for a manuscript-ready version.

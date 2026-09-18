@@ -6,6 +6,9 @@
 ::: eyetrajectoriespy.RegistrationResult
 ::: eyetrajectoriespy.CompositionalFPCAResult
 ::: eyetrajectoriespy.MultilevelFPCAResult
+::: eyetrajectoriespy.FPCAStabilityResult
+::: eyetrajectoriespy.FPCAInfluenceResult
+::: eyetrajectoriespy.FunctionalOutlierResult
 
 ## Native and common-grid import
 ::: eyetrajectoriespy.from_irregular_long_dataframe_native
@@ -36,6 +39,15 @@
 ::: eyetrajectoriespy.reconstruct_fpca
 ::: eyetrajectoriespy.component_trajectories
 ::: eyetrajectoriespy.fpca_score_frame
+
+## Functional outliers and influence
+::: eyetrajectoriespy.diagnose_fpca_outliers
+::: eyetrajectoriespy.leave_one_group_out_fpca_influence
+::: eyetrajectoriespy.detect_functional_outliers_skfda
+::: eyetrajectoriespy.plot_fpca_outlier_diagnostics
+::: eyetrajectoriespy.plot_fpca_influence
+::: eyetrajectoriespy.fpca_outlier_reporting_text
+::: eyetrajectoriespy.fpca_influence_reporting_text
 
 ## FPCA stability and reconstruction
 ::: eyetrajectoriespy.component_similarity_matrix

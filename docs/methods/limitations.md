@@ -44,3 +44,16 @@ Phase FPCA describes the estimated warping functions from a specific registratio
 ## Basis interoperability is optional
 
 The package preserves provenance around basis projection but delegates the basis mathematics to scikit-fda. Backend-version differences should be recorded in reproducible analyses.
+
+
+## Functional outlier methods do not diagnose cause
+
+A flagged curve is unusual under a specified functional representation. The method does not determine whether the cause is tracker error, preprocessing failure, rare but valid behavior, stimulus heterogeneity, or another source.
+
+## In-sample reconstruction can hide influential curves
+
+An atypical curve can shape the FPCA basis and therefore reconstruct surprisingly well. This is why reconstruction error should not be the only review diagnostic.
+
+## Influence is sample-size dependent
+
+Leave-one-participant-out changes can be large in small samples even when every participant is valid. Influence quantifies dependence of the fitted basis on the observed sample; it is not evidence of invalid data.

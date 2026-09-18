@@ -93,3 +93,26 @@ When a finite basis was used, report:
 - functional dimension projected;
 - time domain;
 - any sensitivity analysis across basis sizes.
+
+
+## Functional anomaly and influence diagnostics
+
+If trajectory review diagnostics were used, report:
+
+- whether reconstruction error, score-space distance, functional depth, or another method was used;
+- number of retained FPCs entering the diagnostic;
+- robust versus empirical score covariance;
+- review thresholds and whether they were pre-specified;
+- number of trajectories flagged for review;
+- whether any flagged trajectory was actually excluded, and the independent reason for that exclusion.
+
+For leave-one-group-out influence, additionally report:
+
+- omission unit (participant, trial, stimulus, or other group);
+- group column;
+- number of refits;
+- matched-component similarity measure;
+- explained-variance changes;
+- whether conclusions changed in sensitivity refits.
+
+Do not write that an algorithm "removed outliers" unless exclusion was a separate, documented decision.

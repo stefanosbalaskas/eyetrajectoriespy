@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^	op,
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.2.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.3.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -34,11 +34,12 @@ Registration is especially explicit because latency can itself be psychologicall
 - FPCA and joint multivariate FPCA for `[x(t), y(t)]`;
 - component scores, reconstruction, variance summaries, component trajectories, and reconstruction-error diagnostics;
 - bootstrap FPC stability with curve- or participant-level resampling and matched component functions;
+- FPCA reconstruction/robust score-space review diagnostics and leave-one-group-out influence analysis;
 - participant → trial → time multilevel FPCA;
 - compositional FPCA for AOI probability functions with simplex-preserving reconstruction;
 - landmark registration with retained warping functions, phase FPCA, and registered-versus-unregistered sensitivity analysis;
 - optional elastic SRVF curve analysis through `fdasrsf`;
-- optional B-spline/Fourier basis projection through `scikit-fda` with retained provenance;
+- optional B-spline/Fourier basis projection and functional outlier screening through `scikit-fda` with retained provenance;
 - continuous speed, acceleration, landmark-distance, and path-length functions;
 - integrated functional L2 distances;
 - deterministic FPCA-score clustering;
@@ -95,6 +96,8 @@ print(summarise_fpca(fit))
 | AOI probabilities | simplex-valued `P(t)` | `fit_compositional_fpca()` |
 | Similar path, different traversal timing | amplitude + phase | `register_to_landmarks()` / `fit_phase_fpca()` / `fit_elastic_fpca()` |
 | Component robustness | bootstrap-matched eigenfunctions | `bootstrap_fpca_stability()` |
+| Functional anomaly review | reconstruction + score-space diagnostics | `diagnose_fpca_outliers()` |
+| Group influence | leave-one-group-out matched FPCs | `leave_one_group_out_fpca_influence()` |
 | Scalar outcome predicted by gaze | FPCA-score approximation | `fit_scalar_on_function_regression()` |
 
 ## Documentation
@@ -110,6 +113,8 @@ It includes a tutorial gallery, representation selection, native irregular workf
 `eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages.
 
 ## Validation
+
+Current local/CI qualification status and the exact pending re-check list are maintained in [VALIDATION.md](VALIDATION.md).
 
 ```bash
 python -m pytest --cov=eyetrajectoriespy
