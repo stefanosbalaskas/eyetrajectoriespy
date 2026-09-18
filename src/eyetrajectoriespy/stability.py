@@ -287,6 +287,8 @@ def reconstruction_error_by_curve(
         raise ValueError("Trajectory grid must match the fitted FPCA grid")
     if trajectories.dimension_names != result.dimension_names:
         raise ValueError("Functional dimensions must match the fitted FPCA model")
+    if trajectories.curve_ids != result.curve_ids:
+        raise ValueError("Trajectory IDs/order must match the fitted FPCA result")
     reconstructed = reconstruct_fpca(result, scores=None, n_components=n_components)
     if reconstructed.shape[0] != trajectories.n_curves:
         raise ValueError(
