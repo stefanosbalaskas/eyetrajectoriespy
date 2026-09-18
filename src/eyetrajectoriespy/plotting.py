@@ -7,7 +7,7 @@ import numpy as np
 
 from .fpca import component_trajectories
 from .registration import warping_displacement
-from .types import FPCAResult, FPCAStabilityResult, RegistrationResult, TrajectorySet
+from .types import FPCAInfluenceResult, FPCAResult, FPCAStabilityResult, FunctionalOutlierResult, RegistrationResult, TrajectorySet
 
 
 def plot_trajectory_overlay(
@@ -185,4 +185,60 @@ def plot_reconstruction_curve(
     ax.set_xlabel("Retained functional principal components")
     ax.set_ylabel("Mean integrated RMSE")
     ax.set_title("FPCA reconstruction curve")
+    return ax
+
+
+
+def plot_fpca_outlier_diagnostics(
+    result: FunctionalOutlierResult,
+    *,
+    ax=None,
+):
+    """Plot reconstruction robust-z against score-space Mahalanobis distance."""
+
+    required = {
+        "reconstruction_robust_z",
+        "score_mahalanobis_sq",
+        "score_cutoff",
+        "review_flag",
+    }
+    if not required <= set(result.diagnostics.columns):
+        raise ValueError("result does not contain FPCA reconstruction/score diagnostics")
+    if ax is None:
+        _, ax = plt.subplots()
+    frame = result.diagnostics
+    ax.scatter(
+        frame["reconstruction_robust_z"],
+        frame["score_mahalanobis_sq"],
+        marker="o",
+    )
+    threshold = result.provenance.get("reconstruction_z_threshold")
+    if threshold is not None:
+        ax.axvline(float(threshold), linestyle="--")
+    ax.axhline(float(frame["score_cutoff"].iloc[0]), linestyle="--")
+    ax.set_xlabel("Reconstruction robust z")
+    ax.set_ylabel("Squared Mahalanobis distance in FPC score space")
+    ax.set_title("FPCA trajectory review diagnostics")
+    return ax
+
+
+def plot_fpca_influence(
+    result: FPCAInfluenceResult,
+    *,
+    metric: str = "min_abs_component_similarity",
+    ax=None,
+):
+    """Plot leave-one-group-out FPCA influence summaries."""
+
+    if metric not in result.summary.columns:
+        raise KeyError(f"Unknown influence metric {metric!r}")
+    if ax is None:
+        _, ax = plt.subplots()
+    x = np.arange(len(result.summary))
+    ax.plot(x, result.summary[metric].to_numpy(dtype=float), marker="o")
+    ax.set_xticks(x)
+    ax.set_xticklabels(result.summary["group"].astype(str), rotation=90)
+    ax.set_ylabel(metric.replace("_", " "))
+    ax.set_xlabel("Omitted group")
+    ax.set_title("Leave-one-group-out FPCA influence")
     return ax
