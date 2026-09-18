@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use eyetrajectoriespy in research, please cite the software and the methodological sources relevant to the analysis you used."
+title: "eyetrajectoriespy: Functional and Continuous Trajectory Analysis for Eye-Tracking Data in Python"
+type: software
+authors:
+  - family-names: Balaskas
+    given-names: Stefanos
+version: 0.1.0.dev0
+date-released: 2026-09-18
+repository-code: "https://github.com/stefanosbalaskas/eyetrajectoriespy"
+url: "https://stefanosbalaskas.github.io/eyetrajectoriespy/"
+license: MIT
