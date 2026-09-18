@@ -4,6 +4,8 @@
 |---|---|---|
 | Preserve unequal sample times before analysis | native irregular trajectory representation | automatic resampling during import |
 | Assess whether FPC shape is reproducible | bootstrap component matching | a significance test |
+| Flag trajectories for functional review | reconstruction + robust score-space diagnostics | an automatic exclusion rule |
+| Assess whether one participant/group drives the basis | leave-one-group-out FPCA influence | proof that the group is invalid |
 | Quantify what registration changes | pre/post registration FPC matching | proof that registration is beneficial |
 | Model timing deformation itself | phase FPCA on warpings | ordinary spatial FPCA |
 | Dominant whole-curve variation | FPCA/MFPCA | time-point significance testing |
