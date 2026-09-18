@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from .types import FPCAResult, MultilevelFPCAResult, TrajectorySet
+from .types import FPCAResult, FPCAStabilityResult, MultilevelFPCAResult, RegistrationSensitivityResult, TrajectorySet
 
 
 def summarise_trajectory_set(trajectories: TrajectorySet) -> pd.DataFrame:
@@ -55,4 +55,55 @@ def multilevel_fpca_reporting_text(result: MultilevelFPCAResult, *, digits: int 
         "Two-level functional decomposition separated participant-level from within-participant trial variation. "
         f"The retained participant components explained {p:.{digits}f}% of fitted participant-level variance; "
         f"the retained trial components explained {t:.{digits}f}% of fitted trial-level variance."
+    )
+
+
+
+def fpca_stability_reporting_text(
+    result: FPCAStabilityResult,
+    *,
+    similarity_threshold: float = 0.80,
+    digits: int = 2,
+) -> str:
+    """Generate compact descriptive text for bootstrap FPC stability."""
+
+    if not 0 <= similarity_threshold <= 1:
+        raise ValueError("similarity_threshold must be in [0, 1]")
+    medians = np.median(result.similarities, axis=0)
+    fractions = np.mean(result.similarities >= similarity_threshold, axis=0)
+    pieces = [
+        (
+            f"FPC{k + 1}: median |similarity|={medians[k]:.{digits}f}, "
+            f"fraction >= {similarity_threshold:.{digits}f}={fractions[k]:.{digits}f}"
+        )
+        for k in range(result.reference.n_components)
+    ]
+    return (
+        f"Bootstrap FPCA stability used {result.n_bootstrap} {result.resampling_unit}-level "
+        f"replicates with component matching by absolute functional similarity. "
+        + "; ".join(pieces)
+        + ". Stability fractions are descriptive robustness summaries, not inferential probabilities."
+    )
+
+
+def registration_sensitivity_reporting_text(
+    result: RegistrationSensitivityResult,
+    *,
+    digits: int = 2,
+) -> str:
+    """Generate descriptive text comparing FPC structure before/after registration."""
+
+    similarity = np.abs(result.signed_component_similarity)
+    score = result.score_correlations
+    parts = []
+    for k in range(len(similarity)):
+        parts.append(
+            f"FPC{k + 1}: matched shape similarity={similarity[k]:.{digits}f}, "
+            f"score correlation={score[k]:.{digits}f}"
+        )
+    return (
+        "Registration sensitivity compared matched functional principal components before "
+        "and after the explicit registration step. "
+        + "; ".join(parts)
+        + "."
     )
