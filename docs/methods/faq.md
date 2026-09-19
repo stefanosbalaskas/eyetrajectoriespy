@@ -24,6 +24,14 @@ Only when phase variability is a nuisance for the scientific question. If verifi
 
 Use a pre-specified rule and inspect more than variance explained. Reconstruction error and component stability can show whether the chosen low-dimensional representation is adequate and reproducible.
 
+## Minimum RMSE or one-standard-error rule?
+
+Use the rule that matches a pre-specified goal. The minimum-RMSE rule chooses the candidate with the lowest average held-out reconstruction error. The one-standard-error rule deliberately favors a smaller representation when its error is within one estimated standard error of the minimum. The latter is a parsimony heuristic, not a statistical significance test.
+
+## Are the bootstrap FPC envelopes confidence bands?
+
+No. `bootstrap_fpca_component_envelopes()` returns matched, sign-aligned pointwise descriptive envelopes. It exposes where estimated component shapes vary under the chosen resampling scheme but does not assert calibrated pointwise or simultaneous coverage.
+
 ## Why did an FPC change sign?
 
 FPC sign is arbitrary. A component and its negative describe the same eigendirection. Interpret the contrast between the two ends of the component, not the sign label itself.
