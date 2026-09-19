@@ -7,7 +7,7 @@ import pandas as pd
 from scipy.optimize import linear_sum_assignment
 
 from .fpca import fit_fpca, fit_mfpca, reconstruct_fpca
-from .types import FPCAResult, FPCAStabilityResult, TrajectorySet
+from .types import FPCAComponentEnvelopeResult, FPCAResult, FPCAStabilityResult, TrajectorySet
 from .validation import validate_trajectory_set
 
 
@@ -121,6 +121,8 @@ def _bootstrap_participants(
 ) -> TrajectorySet:
     if participant_column not in trajectories.metadata.columns:
         raise ValueError(f"metadata does not contain participant column {participant_column!r}")
+    if trajectories.metadata[participant_column].isna().any():
+        raise ValueError("participant_column contains missing values")
     participant = trajectories.metadata[participant_column].astype(str).to_numpy()
     unique = pd.unique(participant)
     if len(unique) < 2:
@@ -332,3 +334,102 @@ def fpca_reconstruction_curve(
             }
         )
     return pd.DataFrame(rows)
+
+
+
+def bootstrap_fpca_component_envelopes(
+    trajectories: TrajectorySet,
+    *,
+    n_bootstrap: int = 200,
+    n_components: int = 3,
+    scaling: str = "none",
+    resample_unit: str = "curve",
+    participant_column: str | None = None,
+    level: float = 0.95,
+    random_state: int | None = 0,
+) -> FPCAComponentEnvelopeResult:
+    """Create pointwise descriptive envelopes from matched bootstrap FPCs.
+
+    Every bootstrap fit is matched to the full-sample reference components by
+    maximum absolute functional similarity and sign-aligned before pointwise
+    quantiles are calculated.
+
+    The returned envelopes summarize resampling variation. They are not
+    simultaneous confidence bands and do not provide calibrated coverage
+    guarantees.
+    """
+
+    validate_trajectory_set(trajectories, require_complete=True)
+    if n_bootstrap < 2:
+        raise ValueError("n_bootstrap must be at least 2")
+    if n_components < 1 or n_components > trajectories.n_curves:
+        raise ValueError("n_components must be between 1 and number of trajectories")
+    if resample_unit not in {"curve", "participant"}:
+        raise ValueError("resample_unit must be 'curve' or 'participant'")
+    if resample_unit == "participant" and not participant_column:
+        raise ValueError("participant_column is required for participant bootstrap")
+    if not 0 < level < 1:
+        raise ValueError("level must lie in (0, 1)")
+
+    reference = _fit_for_trajectories(
+        trajectories,
+        n_components=n_components,
+        scaling=scaling,
+    )
+    rng = np.random.default_rng(random_state)
+    samples = np.empty(
+        (
+            n_bootstrap,
+            n_components,
+            trajectories.n_time,
+            trajectories.n_dimensions,
+        ),
+        dtype=float,
+    )
+    similarities = np.empty((n_bootstrap, n_components), dtype=float)
+
+    for bootstrap_index in range(n_bootstrap):
+        if resample_unit == "curve":
+            sample = _bootstrap_curves(trajectories, rng)
+        else:
+            sample = _bootstrap_participants(
+                trajectories,
+                rng,
+                participant_column=str(participant_column),
+            )
+
+        candidate = _fit_for_trajectories(
+            sample,
+            n_components=n_components,
+            scaling=scaling,
+        )
+        assignments, signed_similarity = match_fpca_components(
+            reference,
+            candidate,
+            n_components=n_components,
+        )
+        similarities[bootstrap_index] = np.abs(signed_similarity)
+
+        for component, matched in enumerate(assignments):
+            sign = 1.0 if signed_similarity[component] >= 0 else -1.0
+            samples[bootstrap_index, component] = sign * candidate.components[matched]
+
+    alpha = (1.0 - level) / 2.0
+    return FPCAComponentEnvelopeResult(
+        reference=reference,
+        lower=np.quantile(samples, alpha, axis=0),
+        median=np.median(samples, axis=0),
+        upper=np.quantile(samples, 1.0 - alpha, axis=0),
+        similarities=similarities,
+        level=level,
+        resampling_unit=resample_unit,
+        random_state=random_state,
+        provenance={
+            "method": "matched_sign_aligned_bootstrap_pointwise_envelope",
+            "n_bootstrap": n_bootstrap,
+            "n_components": n_components,
+            "scaling": scaling,
+            "participant_column": participant_column,
+            "coverage_claim": "descriptive_pointwise_only",
+        },
+    )

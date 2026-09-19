@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.3.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, irregular trajectories, stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.4.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, irregular trajectories, stability, leakage-aware component selection, descriptive FPC-shape uncertainty, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -24,6 +24,34 @@ Environment: Linux, Python 3.13.5.
 - API documentation source check: all **74/74** documented public symbols resolve in the package.
 - A locally discovered basis-validation ordering defect was repaired: invalid basis specifications are now rejected before optional-backend import.
 
+## 0.4 delta validation — 2026-09-19
+
+Environment: Linux, Python 3.13.5.
+
+Because the local runner cannot clone GitHub or install missing dependencies from the network, the 0.4 changes were qualified in a reconstructed affected-source worktree against the previously qualified 0.3 contracts.
+
+- New 0.4 + directly affected FPCA/stability/type regression tests: **27 passed, 0 failed**.
+- Coverage on the reconstructed affected source surface: **95.74%**, above the unchanged configured **90%** gate.
+- Existing FPCA transform/reconstruction, component matching, curve/participant bootstrap stability, and type/validation regression contracts passed unchanged.
+- Participant-grouped reconstruction CV audit confirmed that every participant is assigned to exactly one held-out fold.
+- Missing participant IDs are rejected before participant-level bootstrap resampling.
+- `python -m compileall -q src tests examples`: passed on the reconstructed affected-source worktree.
+- New executable example `examples/fpca_selection_uncertainty.py`: passed.
+- 0.4 wheel build with `pip wheel . --no-deps --no-build-isolation`: passed in the reconstructed worktree.
+- Built wheel: `eyetrajectoriespy-0.4.0.dev0-py3-none-any.whl`.
+- Installed-wheel smoke: version, grouped reconstruction CV, explicit selection, and matched-bootstrap envelopes passed.
+- Methodological source checks completed for FPCA eigenfunction uncertainty and component-number selection; the public API deliberately describes bootstrap envelopes as descriptive rather than calibrated confidence bands.
+
+The full 0.3 repository baseline remains separately established above at **75 passed, 4 optional-backend skips, 92.88% coverage**. The exact integrated 0.4 branch still requires hosted/full-repository requalification when Actions or a full clone becomes available.
+
+## Repository source integrity — 2026-09-19
+
+These are static branch checks, not hosted CI certification.
+
+- MkDocs navigation targets: **45/45** configured Markdown pages exist.
+- API documentation declarations: **84/84** documented public symbols are present in the package export surface.
+- The core examples workflow includes the new `fpca_selection_uncertainty.py` executable example.
+
 ## Locally unavailable checks
 
 These are **pending**, not passed:
@@ -38,7 +66,7 @@ These are **pending**, not passed:
 
 The 0.1 merged release tranche was previously GitHub CI-certified.
 
-The current 0.2/0.3 development tranches are **not fully GitHub CI-certified**. Hosted Actions are currently unavailable because the monthly Actions allowance is exhausted; queued workflows therefore do not constitute pass/fail evidence.
+The merged 0.2/0.3 tranches and the current 0.4 development tranche are **not fully GitHub CI-certified**. Hosted Actions are currently unavailable because the monthly Actions allowance is exhausted; queued workflows therefore do not constitute pass/fail evidence.
 
 ## Re-check when GitHub Actions becomes available
 
@@ -55,4 +83,4 @@ Run and require success for:
 9. Strict MkDocs build.
 10. GitHub Pages deployment from the exact merged `main` SHA.
 
-Do not describe the 0.2/0.3 line as fully CI-certified until these workflows actually execute successfully.
+Do not describe the 0.2/0.3/0.4 line as fully CI-certified until these workflows actually execute successfully.

@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^	op,
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.3.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.4.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -33,7 +33,10 @@ Registration is especially explicit because latency can itself be psychologicall
 - opt-in short-gap interpolation and smoothing;
 - FPCA and joint multivariate FPCA for `[x(t), y(t)]`;
 - component scores, reconstruction, variance summaries, component trajectories, and reconstruction-error diagnostics;
+- leakage-aware held-out reconstruction CV with curve- or participant/group-level folds;
+- explicit minimum-RMSE and one-standard-error component-count selection;
 - bootstrap FPC stability with curve- or participant-level resampling and matched component functions;
+- matched, sign-aligned pointwise descriptive envelopes for FPC shape uncertainty;
 - FPCA reconstruction/robust score-space review diagnostics and leave-one-group-out influence analysis;
 - participant → trial → time multilevel FPCA;
 - compositional FPCA for AOI probability functions with simplex-preserving reconstruction;
@@ -95,7 +98,9 @@ print(summarise_fpca(fit))
 | Repeated participant trials | `G_ij(t)` | `fit_multilevel_fpca()` |
 | AOI probabilities | simplex-valued `P(t)` | `fit_compositional_fpca()` |
 | Similar path, different traversal timing | amplitude + phase | `register_to_landmarks()` / `fit_phase_fpca()` / `fit_elastic_fpca()` |
+| Component-count selection | held-out reconstruction CV | `cross_validate_fpca_reconstruction()` |
 | Component robustness | bootstrap-matched eigenfunctions | `bootstrap_fpca_stability()` |
+| Component shape uncertainty | matched bootstrap envelopes | `bootstrap_fpca_component_envelopes()` |
 | Functional anomaly review | reconstruction + score-space diagnostics | `diagnose_fpca_outliers()` |
 | Group influence | leave-one-group-out matched FPCs | `leave_one_group_out_fpca_influence()` |
 | Scalar outcome predicted by gaze | FPCA-score approximation | `fit_scalar_on_function_regression()` |
@@ -106,7 +111,7 @@ The methods site is configured for GitHub Pages:
 
 **https://stefanosbalaskas.github.io/eyetrajectoriespy/**
 
-It includes a tutorial gallery, representation selection, native irregular workflows, FPCA/MFPCA interpretation, bootstrap stability, phase analysis, registration cautions, multilevel and compositional workflows, basis/elastic interoperability, failure cases, pre-registration/reporting guidance, limitations, worked examples, and API documentation.
+It includes a tutorial gallery, representation selection, native irregular workflows, FPCA/MFPCA interpretation, leakage-aware component selection, matched-bootstrap FPC uncertainty, bootstrap stability, phase analysis, registration cautions, multilevel and compositional workflows, basis/elastic interoperability, failure cases, pre-registration/reporting guidance, limitations, worked examples, and API documentation.
 
 ## Scope boundary
 

@@ -10,7 +10,8 @@ Use the **research question and data structure** to choose the representation.
 | Are stable participant strategies different from trial fluctuations? | multilevel FPCA | preserve participant → trial nesting |
 | How does allocation among AOIs evolve? | compositional FPCA | probabilities must remain on the simplex |
 | Do people traverse similar paths at different times? | registration + phase FPCA | do not erase meaningful latency |
-| Is component interpretation stable? | bootstrap FPC matching | resample the correct unit |
+| How many FPCs should be retained? | held-out reconstruction CV | refit FPCA inside folds; group repeated participants |
+| Is component interpretation stable? | bootstrap FPC matching + pointwise envelopes | resample the correct unit; match and sign-align components |
 | Is one curve/participant unusually influential? | FPCA review + leave-one-group-out influence | flag for review, never auto-exclude |
 | Does a finite basis help? | B-spline/Fourier projection | basis family and size constrain shape |
 | Does a trajectory predict a scalar response? | score-based functional regression | refit FPCA inside training folds for prediction |

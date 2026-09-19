@@ -18,7 +18,11 @@ The core estimator uses trapezoidal quadrature weights so unequal common-grid sp
 
 ## Component retention
 
-An integer retains a fixed count. A float in `(0,1)` retains enough components to reach the requested variance fraction.
+An integer retains a fixed count. A float in `(0,1)` retains enough components to reach the requested in-sample variance fraction.
+
+When the retained dimension itself is under study, use [held-out reconstruction cross-validation](component-selection.md). For repeated trials, group folds by participant so trials from one participant cannot appear in both training and test data.
+
+Variance thresholds and held-out reconstruction answer different questions and can be reported side by side.
 
 ## Interpretation
 

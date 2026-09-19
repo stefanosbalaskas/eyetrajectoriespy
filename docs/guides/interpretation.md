@@ -8,6 +8,12 @@ An eigenfunction can be multiplied by `-1` with its scores multiplied by `-1` wi
 
 High variance explained does not make a component causal, theoretically important, or predictive.
 
+## Component shapes are estimated
+
+A smooth-looking FPC is not fixed truth. Inspect matched bootstrap stability and, when shape interpretation matters, [descriptive component envelopes](component-uncertainty.md).
+
+When eigenvalues are close, component labels can swap across resamples. Matching similarity should be interpreted before pointwise envelope width.
+
 ## Scores inherit preprocessing
 
 A score derived after normalization, registration, smoothing, or coordinate centering represents that transformed process.

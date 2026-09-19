@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.0.dev0 — 2026-09-19
+
+Fourth development tranche.
+
+- leakage-aware held-out reconstruction cross-validation for FPCA/MFPCA component counts;
+- grouped cross-validation that keeps repeated participant/group trials out of both train and test simultaneously;
+- explicit minimum-RMSE and one-standard-error component-selection rules;
+- fold assignment and reconstruction-error diagnostics with retained provenance;
+- matched, sign-aligned bootstrap pointwise envelopes for functional principal-component shapes;
+- participant- or curve-level bootstrap resampling with deterministic seeds;
+- explicit descriptive-only envelope semantics; no simultaneous confidence-band claim;
+- plotting and manuscript-reporting helpers for component selection and component-shape uncertainty;
+- worked grouped-CV/bootstrap example, methodological guidance, interpretation, limitations, preregistration, and API documentation.
+
+
 ## 0.3.0.dev0 — 2026-09-18
 
 Third development tranche.

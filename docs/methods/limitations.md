@@ -46,6 +46,22 @@ Phase FPCA describes the estimated warping functions from a specific registratio
 The package preserves provenance around basis projection but delegates the basis mathematics to scikit-fda. Backend-version differences should be recorded in reproducible analyses.
 
 
+## Reconstruction CV optimizes reconstruction, not scientific truth
+
+Held-out trajectory reconstruction asks how well a training-fold FPCA basis reconstructs unseen curves. A component count that minimizes reconstruction error is not automatically the best dimension for an external prediction task, causal estimand, or substantive interpretation.
+
+For repeated trials, curve-level cross-validation can leak participant-specific structure across train and test folds. Use grouped folds when the scientific sampling unit is the participant or another cluster.
+
+## One-standard-error selection is a heuristic
+
+The one-standard-error rule favors a smaller model within one estimated standard error of the minimum-RMSE candidate. It is a practical parsimony rule, not a hypothesis test or proof that the smaller functional dimension is correct.
+
+## Bootstrap component envelopes are descriptive
+
+Matched, sign-aligned bootstrap envelopes summarize pointwise variability of estimated FPC shapes under a chosen resampling scheme. They do not have simultaneous confidence-band coverage by construction.
+
+When eigenvalues are close, component identity can become unstable even after matching. In that setting, matched similarity and subspace-level sensitivity may be more informative than narrow pointwise interpretation.
+
 ## Functional outlier methods do not diagnose cause
 
 A flagged curve is unusual under a specified functional representation. The method does not determine whether the cause is tracker error, preprocessing failure, rare but valid behavior, stimulus heterogeneity, or another source.

@@ -3,13 +3,13 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.3 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.4 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
 eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze paths, multivariate FPCA, native irregular trajectories, repeated-trial functional decomposition, phase analysis, compositional AOI trajectories, and explicit validation of component stability.
 
-<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">native irregular grids</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">bootstrap stability</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
+<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">native irregular grids</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
 </div>
 
 <div class="grid cards" markdown>
@@ -31,6 +31,18 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
     Bootstrap curves or participants, match component functions, inspect reconstruction error, and check whether one participant dominates the basis.
 
     [:octicons-arrow-right-24: Stability & influence](guides/stability-validation.md)
+
+-   **Select dimension without leaking held-out trajectories**
+
+    Refit FPCA inside each fold, keep repeated participant trials together, and make the minimum-RMSE or one-SE rule explicit.
+
+    [:octicons-arrow-right-24: Component selection](guides/component-selection.md)
+
+-   **Inspect uncertainty in FPC shape**
+
+    Match and sign-align bootstrap components before interpreting pointwise variation in an estimated eigenfunction.
+
+    [:octicons-arrow-right-24: FPC shape uncertainty](guides/component-uncertainty.md)
 
 -   **Flag unusual trajectories without auto-deleting them**
 
@@ -70,8 +82,11 @@ The package is designed around the principle that **the path to an FPC score is 
 - **Do viewers follow similar spatial routes at different times?**  
   Compare unregistered, registered, and phase representations.
 
+- **How many components should I retain?**  
+  Use leakage-safe reconstruction CV with the correct fold unit and an explicit selection rule.
+
 - **Are my components stable enough to interpret?**  
-  Use participant-aware bootstrap matching plus reconstruction diagnostics.
+  Use participant-aware bootstrap matching, reconstruction diagnostics, and descriptive component-shape envelopes.
 
 - **Is one participant or curve driving the basis?**  
   Use functional review diagnostics plus leave-one-group-out FPCA influence.
@@ -119,7 +134,15 @@ The package is designed around the principle that **the path to an FPC score is 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
 
-## New in 0.3 development
+## New in 0.4 development
+
+- leakage-aware held-out FPCA reconstruction cross-validation;
+- participant/group folds for repeated-trial designs;
+- explicit minimum-RMSE and one-standard-error component-selection rules;
+- matched, sign-aligned pointwise bootstrap FPC envelopes;
+- dedicated reporting, interpretation, limitations, and worked-example guidance.
+
+## Added in 0.3 development
 
 - FPCA reconstruction + robust score-space anomaly screening;
 - participant-aware leave-one-group-out FPC influence;

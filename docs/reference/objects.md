@@ -61,3 +61,22 @@ Contains a diagnostic table, method identifier, optional FPCA reference, backend
 ## FPCAInfluenceResult
 
 Stores the full-sample reference FPCA, group-level influence summary, component-level matched similarities/variance changes, the grouping variable, component count, and provenance.
+
+
+## FPCACrossValidationResult
+
+Stores fold-level held-out reconstruction error, curve-to-fold assignments,
+candidate component counts, cross-validation unit, grouping variable, scaling,
+random seed where applicable, and provenance.
+
+The object records diagnostics only. Component selection remains an explicit
+separate operation.
+
+## FPCAComponentEnvelopeResult
+
+Stores the full-sample reference FPCA, pointwise lower/median/upper matched
+bootstrap component functions, matched component similarities, envelope level,
+resampling unit, random seed, and provenance.
+
+The envelope is explicitly descriptive; the object does not assert pointwise or
+simultaneous confidence coverage.

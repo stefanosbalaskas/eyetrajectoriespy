@@ -56,3 +56,25 @@ The reconstruction curve shows how integrated trajectory error changes as compon
 4. Run participant-aware bootstrap stability when the design is repeated measures.
 5. Label components only after their geometric interpretation and stability are understood.
 6. Report unstable modes as unstable rather than silently dropping or renaming them.
+
+
+## Select dimension with held-out reconstruction
+
+In-sample reconstruction always benefits from additional fitted directions. When
+component retention itself is under study, use
+`cross_validate_fpca_reconstruction()` so the basis is estimated only from each
+training fold.
+
+For repeated trials, use grouped folds at the participant level.
+
+See [Selecting the number of FPCs](component-selection.md).
+
+## Inspect FPC shape uncertainty
+
+Matched bootstrap similarity answers whether a component direction recurs.
+`bootstrap_fpca_component_envelopes()` adds a complementary pointwise view of
+where the matched, sign-aligned FPC shape varies across resamples.
+
+These are descriptive envelopes rather than confidence bands.
+
+See [FPC shape uncertainty](component-uncertainty.md).
