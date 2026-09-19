@@ -109,7 +109,7 @@ result = fit_sparse_fpca_fdapy(
     score_smoothing="LP",
     tol=1e-4,
     normalize=False,
-    evaluation_grid=np.linspace(0.0, 1.0, 101),
+    evaluation_grid=np.unique(np.concatenate(gaze.time)),
 )
 ```
 
@@ -119,7 +119,7 @@ The function:
 2. converts each curve-specific grid directly to FDApy `IrregularFunctionalData`;
 3. fits covariance-operator `UFPCA`;
 4. obtains scores with `method="PACE"`;
-5. evaluates the fitted functional structure on the explicitly supplied 101-point grid;
+5. evaluates the fitted functional structure on the explicit FDApy-compatible pooled observed grid;
 6. preserves estimator settings and sample counts in provenance;
 7. stores the FDApy model, sparse backend data, and reconstructed backend object.
 
@@ -164,7 +164,7 @@ At minimum, consider whether conclusions change under plausible alternatives for
 - mean/covariance smoothing;
 - score smoothing;
 - PACE tolerance;
-- evaluation-grid resolution/domain;
+- whether the FDApy-compatible pooled evaluation grid was supplied explicitly;
 - mean/covariance smoothing keyword parameters;
 - inclusion criteria for extremely sparse curves.
 
@@ -186,7 +186,7 @@ bad_values[0][2, 0] = np.nan
 
 The sparse adapter rejects this representation.
 
-The adapter also rejects an evaluation grid outside the pooled observed support and rejects component counts above the centered sample rank `n_curves - 1`.
+The adapter also rejects an evaluation grid outside the pooled observed support **or different from the sorted pooled observed sample-time grid**, and rejects component counts above the centered sample rank `n_curves - 1`.
 
 The intended fix is not automatic interpolation. Resolve whether that row is an absent observation, invalid tracker sample, or another missing-data mechanism before fitting.
 
