@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.5.0.dev0 — 2026-09-19
+
+Fifth development tranche.
+
+- adjacent retained-eigenvalue gap diagnostics with no default near-tie threshold;
+- optional explicit relative-gap review flags when a study-specific threshold is supplied;
+- principal-angle comparison of corresponding FPCA eigenspaces;
+- normalized projection-operator distance for rotation-invariant subspace comparison;
+- curve- or participant-level bootstrap eigenspace stability;
+- subspace diagnostics that remain stable under sign changes, swaps, and rotations within a selected component block;
+- plotting and manuscript-reporting helpers for eigengap and subspace diagnostics;
+- synthetic rotation truth tests demonstrating unstable individual labels with an unchanged two-dimensional subspace;
+- methodological guidance for near-tied eigenvalues, interpretation, limitations, preregistration, and reporting.
+
+
 ## 0.4.0.dev0 — 2026-09-19
 
 Fourth development tranche.
