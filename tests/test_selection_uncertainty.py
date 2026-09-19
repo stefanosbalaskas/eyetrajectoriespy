@@ -229,6 +229,27 @@ def test_participant_bootstrap_envelope_and_contracts():
     with pytest.raises(ValueError):
         bootstrap_fpca_component_envelopes(gaze, level=1.0)
 
+    metadata = gaze.metadata.reset_index(drop=True).copy()
+    metadata.loc[0, "participant_id"] = np.nan
+    bad = TrajectorySet(
+        gaze.time,
+        gaze.values,
+        gaze.curve_ids,
+        gaze.dimension_names,
+        metadata,
+        gaze.coordinate_system,
+        gaze.time_unit,
+        gaze.provenance,
+    )
+    with pytest.raises(ValueError, match="missing"):
+        bootstrap_fpca_component_envelopes(
+            bad,
+            n_bootstrap=3,
+            n_components=2,
+            resample_unit="participant",
+            participant_column="participant_id",
+        )
+
 
 def test_selection_uncertainty_reporting_and_plotting():
     gaze = sample()
