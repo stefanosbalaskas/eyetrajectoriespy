@@ -1,0 +1,36 @@
+name: optional-sparse-fda
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fdapy-sparse:
+    name: FDApy sparse / Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install sparse FDA interoperability
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev,sparse]"
+      - name: Run backend-independent sparse contracts
+        run: python -m pytest tests/test_sparse_pace_contracts.py -q
+      - name: Run real FDApy sparse integration
+        run: python -m pytest tests/test_fdapy_sparse_optional.py -q
+      - name: Run sparse PACE example
+        run: python examples/sparse_pace_fpca.py

@@ -17,6 +17,7 @@ from .types import (
     FunctionalOutlierResult,
     MultilevelFPCAResult,
     RegistrationSensitivityResult,
+    SparseFPCAResult,
     TrajectorySet,
 )
 
@@ -258,4 +259,39 @@ def fpca_subspace_stability_reporting_text(
         f"{row['median_normalized_projector_distance']:.{digits}f}. These are "
         "descriptive eigenspace-stability summaries; they do not establish "
         "identifiability of individual FPC labels within the selected block."
+    )
+
+
+
+def sparse_fpca_reporting_text(
+    result: SparseFPCAResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate manuscript-oriented wording for sparse PACE FPCA."""
+
+    sample_counts = result.provenance.get("sparse_fpca", {}).get("sample_counts", [])
+    if sample_counts:
+        sample_range = f"{min(sample_counts)}–{max(sample_counts)}"
+    else:
+        sample_range = "not recorded"
+    eigen = ", ".join(f"{value:.{digits}f}" for value in result.eigenvalues)
+    sparse = result.provenance.get("sparse_fpca", {})
+    grid = sparse.get("evaluation_grid")
+    if grid:
+        grid_text = f"{len(grid)} points over [{grid[0]:g}, {grid[-1]:g}]"
+    else:
+        grid_text = "backend-default evaluation points"
+    custom = bool(sparse.get("kwargs_mean") or sparse.get("kwargs_covariance"))
+    custom_text = " Custom mean/covariance smoothing parameters were supplied." if custom else ""
+    return (
+        f"Sparse univariate FPCA was fitted to the {result.dimension!r} trajectory "
+        f"dimension using FDApy's covariance-operator estimator, with "
+        f"{result.fit_smoothing!r} fitting smoothness and PACE "
+        f"conditional-expectation scores ({result.n_components} components; "
+        f"per-curve sample-count range={sample_range}; retained eigenvalues={eigen}). "
+        "No common-grid interpolation was performed before sparse FPCA. "
+        f"Eigenfunctions/covariance were evaluated on {grid_text}. "
+        f"PACE tolerance was {result.tolerance:g} and score smoothing was "
+        f"{result.score_smoothing!r}.{custom_text}"
     )

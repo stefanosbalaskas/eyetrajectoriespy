@@ -1,7 +1,7 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.5.0.dev0"
+    assert et.__version__=="0.6.0.dev0"
     required={
         "TrajectorySet","fit_fpca","fit_mfpca","fit_multilevel_fpca","fit_compositional_fpca",
         "register_to_landmarks","fit_elastic_fpca","simulate_planar_trajectories",
@@ -21,6 +21,9 @@ def test_version_and_public_symbols():
         "bootstrap_fpca_subspace_stability","summarise_fpca_subspace_stability",
         "plot_fpca_subspace_stability","fpca_eigengap_reporting_text",
         "fpca_subspace_stability_reporting_text",
+        "SparseFPCAResult","sparse_dimension_summary","to_fdapy_irregular",
+        "fit_sparse_fpca_fdapy","sparse_fpca_score_frame",
+        "sparse_fpca_reporting_text","plot_sparse_irregular_dimension",
     }
     assert required <= set(et.__all__)
     for name in required:

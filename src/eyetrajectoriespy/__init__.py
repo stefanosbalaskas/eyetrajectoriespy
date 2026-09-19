@@ -59,6 +59,7 @@ from .plotting import (
     plot_fpca_outlier_diagnostics,
     plot_fpca_stability,
     plot_fpca_subspace_stability,
+    plot_sparse_irregular_dimension,
     plot_fpca_variance,
     plot_planar_trajectories,
     plot_reconstruction_curve,
@@ -85,6 +86,7 @@ from .reporting import (
     fpca_stability_reporting_text,
     fpca_subspace_stability_reporting_text,
     multilevel_fpca_reporting_text,
+    sparse_fpca_reporting_text,
     registration_sensitivity_reporting_text,
     summarise_fpca,
     summarise_trajectory_set,
@@ -95,6 +97,12 @@ from .selection import (
     summarise_fpca_cross_validation,
 )
 from .simulate import simulate_aoi_probability_trajectories, simulate_planar_trajectories
+from .sparse import (
+    fit_sparse_fpca_fdapy,
+    sparse_dimension_summary,
+    sparse_fpca_score_frame,
+    to_fdapy_irregular,
+)
 from .subspace import (
     bootstrap_fpca_subspace_stability,
     compare_fpca_subspaces,
@@ -128,6 +136,7 @@ from .types import (
     MultilevelFPCAResult,
     RegistrationResult,
     RegistrationSensitivityResult,
+    SparseFPCAResult,
     TrajectorySet,
 )
 from .validation import (
@@ -137,7 +146,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.5.0.dev0"
+__version__ = "0.6.0.dev0"
 
 __all__ = [
     "TrajectorySet",
@@ -254,5 +263,12 @@ __all__ = [
     "compare_fpca_subspaces",
     "bootstrap_fpca_subspace_stability",
     "summarise_fpca_subspace_stability",
+    "SparseFPCAResult",
+    "sparse_dimension_summary",
+    "to_fdapy_irregular",
+    "fit_sparse_fpca_fdapy",
+    "sparse_fpca_score_frame",
+    "sparse_fpca_reporting_text",
+    "plot_sparse_irregular_dimension",
     "to_skfda_basis",
 ]

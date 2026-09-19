@@ -54,6 +54,28 @@ When native irregular trajectories were present, additionally report:
 - maximum bridged gap;
 - residual missingness after projection.
 
+## Sparse irregular / PACE FPCA
+
+If sparse FPCA was used, report:
+
+- selected functional dimension;
+- per-curve observation-count distribution or range;
+- native observation-time support;
+- whether non-finite tracker samples were removed before constructing the sparse object;
+- sparse backend and version;
+- covariance-operator versus other fitting method;
+- mean/covariance smoothing configuration and any backend keyword parameters;
+- evaluation grid used for estimated mean/covariance/eigenfunctions, or that backend defaults were retained; if explicit, confirm it remained within pooled observed support;
+- PACE score-recovery method and tolerance;
+- score-smoothing configuration;
+- normalization setting;
+- retained component count and eigenvalues;
+- sensitivity to smoothing and component-count choices.
+
+State explicitly that no common-grid interpolation preceded the sparse PACE analysis.
+
+Do not describe separate x(t) and y(t) UFPCA fits as joint multivariate FPCA.
+
 ## Component stability
 
 If bootstrap stability was evaluated, report:

@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.6.0.dev0 — 2026-09-19
+
+Sixth development tranche.
+
+- optional FDApy interoperability for genuinely sparse irregular univariate functional trajectories;
+- direct conversion from `IrregularTrajectorySet` to FDApy `IrregularFunctionalData` without common-grid interpolation;
+- covariance-operator UFPCA with PACE conditional-expectation score recovery;
+- explicit fit/score smoothing settings, PACE tolerance, normalization flag, evaluation grid, mean/covariance smoothing kwargs, and backend-version provenance;
+- selected-dimension sparse sampling diagnostics and metadata-preserving sparse-FPC score frames;
+- non-finite sparse observations rejected rather than silently dropped or interpolated;
+- backend-independent fake-FDApy contract tests plus a dedicated real-FDApy integration workflow for Python 3.11–3.12; core eyetrajectoriespy support remains Python 3.11–3.13;
+- native sparse-observation plotting and manuscript-reporting helpers;
+- revised sparse-irregular decision guidance, worked PACE example, interpretation, assumptions, limitations, preregistration, reporting, references, and API documentation.
+
+
 ## 0.5.0.dev0 — 2026-09-19
 
 Fifth development tranche.

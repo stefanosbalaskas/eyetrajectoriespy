@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.5.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, irregular trajectories, stability, leakage-aware component selection, descriptive FPC-shape uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.6.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, stability, leakage-aware component selection, descriptive FPC-shape uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -77,6 +77,65 @@ These are static branch checks, not hosted CI certification.
 - The examples workflow includes `examples/fpca_subspace_stability.py`.
 - Public API regression test includes the new subspace result objects and functions.
 
+## 0.6 delta validation — 2026-09-19
+
+Environment: Linux, Python 3.13.5.
+
+The local runner cannot clone GitHub directly and does not have FDApy installed. The exact sparse/PACE affected source and tests were therefore reconstructed from the development branch and executed locally with a faithful fake FDApy API. This validates the adapter contract without claiming real-backend numerical certification.
+
+- Backend-independent sparse/PACE contract suite: **7 passed, 0 failed**.
+- Coverage on the reconstructed changed surface: **96%**, above the repository's unchanged **90%** threshold.
+- `python -m compileall -q src tests`: passed for the reconstructed affected surface.
+- Native curve-specific times were preserved during FDApy conversion; no common-grid interpolation was introduced.
+- Explicit FDApy fitting contract passed: covariance UFPCA, PACE score recovery, fitting smoothing, score smoothing, tolerance, normalization, evaluation grid, mean-smoothing kwargs, and covariance kwargs were forwarded as specified.
+- Explicit evaluation grids were represented as FDApy `DenseArgvals`; decreasing/non-finite/undersized grids were rejected before backend fitting.
+- Original curve IDs, metadata, coordinate/time semantics, sample counts, smoothing settings, and interpolation status were preserved in the sparse result/provenance contract.
+- Metadata-preserving `SFPC*` score-frame construction, sparse sampling summary, native sparse plotting, and manuscript reporting helper passed.
+- Invalid component counts, tolerance, normalization type, smoothing settings, and non-mapping smoothing kwargs were rejected before optional backend estimation.
+- Non-finite selected-dimension observations were rejected as representation errors rather than silently dropped or interpolated.
+- Unexpected backend score shapes and non-finite eigenvalues triggered explicit runtime failures.
+- Missing FDApy raised the documented optional-`sparse` installation message.
+- FDApy is **not installed locally**; real FDApy numerical fitting and the executable sparse example therefore remain pending.
+
+Methodological/backend verification against FDApy 1.0.3 documentation confirmed:
+- `UFPCA.fit(data, points, method_smoothing, kwargs_mean, kwargs_covariance)` for covariance-operator estimation;
+- `UFPCA.transform(..., method="PACE", method_smoothing=..., tol=...)` for sparse conditional-expectation scores;
+- FDApy's sparse UFPCA example explicitly uses covariance UFPCA followed by PACE scores;
+- FDApy sparse MFPCA documentation uses numerical-integration/inner-product scores rather than a documented multivariate PACE score transform, so eyetrajectoriespy intentionally exposes only **univariate sparse PACE** at present.
+
+### Optional-backend compatibility boundary
+
+The eyetrajectoriespy core remains Python **3.11–3.13**. FDApy 1.0.3 depends on NumPy **<2.0**, while NumPy 1.26.x supports Python only through **3.12**. Therefore the packaged FDApy `sparse` extra and dedicated hosted sparse workflow currently target Python **3.11–3.12**. This restriction applies only to optional FDApy interoperability.
+
+## 0.6 repository source integrity — 2026-09-19
+
+These are static branch checks, not hosted CI certification.
+
+- Public API documentation declarations: **100/100** documented symbols are present in the package export surface.
+- MkDocs navigation targets: **48/48** configured Markdown pages exist on the branch, including the sparse PACE guide and worked example.
+- Package `__version__`, `pyproject.toml`, and `CITATION.cff` all report **0.6.0.dev0**.
+- `pyproject.toml` exposes an optional FDApy sparse extra constrained to Python <3.13; the `all` extra carries the same compatibility marker.
+- Dedicated `optional-sparse-fda` workflow targets Ubuntu with Python **3.11 and 3.12**.
+- Dependency-marker evaluation was checked locally: the FDApy extra marker evaluates **true on Python 3.12** and **false on Python 3.13**, matching the documented backend boundary.
+- That workflow runs backend-independent sparse contracts, the real FDApy integration smoke, and `examples/sparse_pace_fpca.py`.
+- The standard public-API regression test includes the sparse result object and public functions.
+
+### 0.6 finalization re-check — 2026-09-19
+
+Additional local/static checks after the sparse-contract hardening:
+
+- Exact current `src/eyetrajectoriespy/sparse.py` was reconstructed locally and compiled successfully.
+- Focused current-source sparse harness: **passed** for covariance UFPCA/PACE argument forwarding, score/provenance construction, and metadata-preserving score frames.
+- Centered-rank guard: **passed**; with three curves, requesting three or more components is rejected because non-zero empirical rank is at most `n_curves - 1 = 2`.
+- Evaluation-domain guard: **passed**; explicit FDApy evaluation grids extending below/above pooled observed support are rejected before backend fitting.
+- Non-finite selected-dimension observations remain representation errors rather than implicit deletion/interpolation.
+- FDApy optional dependency is bounded to the validated `>=1.0.3,<1.1` API family and remains gated to Python <3.13.
+- Dependency marker evaluation locally: Python 3.11 = enabled, Python 3.12 = enabled, Python 3.13 = disabled.
+- MkDocs navigation source audit: **48/48** configured Markdown targets exist.
+- API source audit: **100/100** documented public symbols are exported.
+- Package `__version__`, `pyproject.toml`, and `CITATION.cff` all report **0.6.0.dev0**.
+- Sparse-reference formatting/backend summary re-checked after documentation cleanup.
+
 ## Locally unavailable checks
 
 These are **pending**, not passed:
@@ -85,13 +144,14 @@ These are **pending**, not passed:
 - Strict MkDocs build: `mkdocs`/Material/mkdocstrings are not installed locally and cannot be installed without network access.
 - Twine validation: `twine` is not installed locally.
 - Optional `scikit-fda` runtime tests and examples: dependency is not installed locally.
+- Real FDApy sparse/PACE integration tests and sparse example: FDApy is not installed locally; these require Python 3.11 or 3.12 under the current backend dependency line.
 - Python 3.11 and 3.12 local tests: only Python 3.13.5 is available in the runner.
 
 ## GitHub CI certification
 
 The 0.1 merged release tranche was previously GitHub CI-certified.
 
-The merged 0.2/0.3/0.4 tranches and the current 0.5 development tranche are **not fully GitHub CI-certified**. Hosted Actions are currently unavailable because the monthly Actions allowance is exhausted; queued workflows therefore do not constitute pass/fail evidence.
+The merged 0.2/0.3/0.4/0.5 tranches and the current 0.6 development tranche are **not fully GitHub CI-certified**. Hosted Actions are currently unavailable because the monthly Actions allowance is exhausted; queued workflows therefore do not constitute pass/fail evidence.
 
 ## Re-check when GitHub Actions becomes available
 
@@ -105,7 +165,8 @@ Run and require success for:
 6. Package sdist/wheel build and Twine validation.
 7. All core examples.
 8. Optional `scikit-fda` tests and basis/outlier examples.
-9. Strict MkDocs build.
-10. GitHub Pages deployment from the exact merged `main` SHA.
+9. Optional FDApy sparse/PACE tests and example on Python 3.11 and 3.12. Reassess Python 3.13 only when the FDApy/NumPy dependency line supports it.
+10. Strict MkDocs build.
+11. GitHub Pages deployment from the exact merged `main` SHA.
 
-Do not describe the 0.2/0.3/0.4/0.5 line as fully CI-certified until these workflows actually execute successfully.
+Do not describe the 0.2/0.3/0.4/0.5/0.6 line as fully CI-certified until these workflows actually execute successfully.

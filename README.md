@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.5.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.6.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -30,6 +30,7 @@ Registration is especially explicit because latency can itself be psychologicall
 
 - typed `TrajectorySet` objects with metadata, units, coordinate semantics, and provenance;
 - common-grid import plus first-class native irregular trajectories with explicit overlap/union projection;
+- optional FDApy covariance UFPCA with PACE conditional-expectation scores for genuinely sparse univariate trajectories;
 - opt-in short-gap interpolation and smoothing;
 - FPCA and joint multivariate FPCA for `[x(t), y(t)]`;
 - component scores, reconstruction, variance summaries, component trajectories, and reconstruction-error diagnostics;
@@ -66,8 +67,11 @@ Optional interoperability:
 
 ```bash
 pip install -e ".[fda]"       # scikit-fda
+pip install -e ".[sparse]"    # FDApy sparse/PACE FPCA; Python 3.11–3.12
 pip install -e ".[elastic]"   # fdasrsf
 ```
+
+The core package remains Python 3.11–3.13. The current FDApy 1.0.3 sparse backend is qualified separately on Python 3.11–3.12 because FDApy pins NumPy <2.0, while NumPy 1.26.x does not support Python 3.13.
 
 ## Quick start
 
@@ -95,6 +99,7 @@ print(summarise_fpca(fit))
 |---|---|---|
 | Continuous gaze location | `[x(t), y(t)]` | `fit_mfpca()` |
 | Native irregular gaze | curve-specific time grids | `from_irregular_long_dataframe_native()` |
+| Genuinely sparse univariate gaze | native irregular grid + PACE scores | `fit_sparse_fpca_fdapy()` |
 | One derived continuous outcome | `X(t)` | `fit_fpca()` |
 | Repeated participant trials | `G_ij(t)` | `fit_multilevel_fpca()` |
 | AOI probabilities | simplex-valued `P(t)` | `fit_compositional_fpca()` |
@@ -113,7 +118,7 @@ The methods site is configured for GitHub Pages:
 
 **https://stefanosbalaskas.github.io/eyetrajectoriespy/**
 
-It includes a tutorial gallery, representation selection, native irregular workflows, FPCA/MFPCA interpretation, leakage-aware component selection, matched-bootstrap FPC uncertainty, eigengap/subspace stability, bootstrap stability, phase analysis, registration cautions, multilevel and compositional workflows, basis/elastic interoperability, failure cases, pre-registration/reporting guidance, limitations, worked examples, and API documentation.
+It includes a tutorial gallery, representation selection, native irregular and sparse PACE workflows, FPCA/MFPCA interpretation, leakage-aware component selection, matched-bootstrap FPC uncertainty, eigengap/subspace stability, bootstrap stability, phase analysis, registration cautions, multilevel and compositional workflows, basis/elastic interoperability, failure cases, pre-registration/reporting guidance, limitations, worked examples, and API documentation.
 
 ## Scope boundary
 
