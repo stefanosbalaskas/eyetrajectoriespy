@@ -65,7 +65,7 @@ If sparse FPCA was used, report:
 - sparse backend and version;
 - covariance-operator versus other fitting method;
 - mean/covariance smoothing configuration and any backend keyword parameters;
-- evaluation grid used for estimated mean/covariance/eigenfunctions, or that backend defaults were retained;
+- evaluation grid used for estimated mean/covariance/eigenfunctions, or that backend defaults were retained; if explicit, confirm it remained within pooled observed support;
 - PACE score-recovery method and tolerance;
 - score-smoothing configuration;
 - normalization setting;
