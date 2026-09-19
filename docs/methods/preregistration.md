@@ -42,7 +42,8 @@ If trajectories may be too sparse for defensible common-grid interpolation, pre-
 - how missing tracker rows become absent observations;
 - minimum observation count or coverage requirements;
 - sparse-FPCA backend;
-- smoothing configuration;
+- smoothing configuration and any backend tuning parameters;
+- evaluation-grid rule/domain/resolution;
 - PACE tolerance;
 - component-count strategy;
 - planned sensitivity analyses.
