@@ -120,6 +120,22 @@ These are static branch checks, not hosted CI certification.
 - That workflow runs backend-independent sparse contracts, the real FDApy integration smoke, and `examples/sparse_pace_fpca.py`.
 - The standard public-API regression test includes the sparse result object and public functions.
 
+### 0.6 finalization re-check — 2026-09-19
+
+Additional local/static checks after the sparse-contract hardening:
+
+- Exact current `src/eyetrajectoriespy/sparse.py` was reconstructed locally and compiled successfully.
+- Focused current-source sparse harness: **passed** for covariance UFPCA/PACE argument forwarding, score/provenance construction, and metadata-preserving score frames.
+- Centered-rank guard: **passed**; with three curves, requesting three or more components is rejected because non-zero empirical rank is at most `n_curves - 1 = 2`.
+- Evaluation-domain guard: **passed**; explicit FDApy evaluation grids extending below/above pooled observed support are rejected before backend fitting.
+- Non-finite selected-dimension observations remain representation errors rather than implicit deletion/interpolation.
+- FDApy optional dependency is bounded to the validated `>=1.0.3,<1.1` API family and remains gated to Python <3.13.
+- Dependency marker evaluation locally: Python 3.11 = enabled, Python 3.12 = enabled, Python 3.13 = disabled.
+- MkDocs navigation source audit: **48/48** configured Markdown targets exist.
+- API source audit: **100/100** documented public symbols are exported.
+- Package `__version__`, `pyproject.toml`, and `CITATION.cff` all report **0.6.0.dev0**.
+- Sparse-reference formatting/backend summary re-checked after documentation cleanup.
+
 ## Locally unavailable checks
 
 These are **pending**, not passed:
