@@ -16,6 +16,7 @@ _ALLOWED_COORDINATE_SYSTEMS = {
     "landmark_relative",
     "probability_simplex",
     "simplex_logratio",
+    "phase_time",
     "unknown",
 }
 

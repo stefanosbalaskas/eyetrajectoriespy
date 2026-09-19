@@ -15,3 +15,12 @@ Wang J-L, Chiou J-M, Müller H-G. Functional Data Analysis. *Annual Review of St
 ## Software backends
 
 `scikit-fda` provides general Python functional-data representations and estimators. `fdasrsf` provides elastic registration and SRVF curve statistics. `eyetrajectoriespy` adds eye-tracking-specific contracts, representations, safeguards, and workflows.
+
+
+## Additional functional-data software
+
+scikit-fda documentation: grid and basis representations, B-spline/Fourier bases, and FPCA.
+
+FDApy documentation: dense, irregular, basis, and multivariate functional data representations, including sparse/irregular FPCA examples.
+
+fdasrsf documentation: SRVF-based registration, multivariate curve alignment, Karcher means, warping functions, and shape PCA.

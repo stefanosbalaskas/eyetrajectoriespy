@@ -20,3 +20,34 @@
 }
 .et-kicker { text-transform: uppercase; letter-spacing: .08em; font-size: .72rem; opacity: .75; }
 .md-typeset .grid.cards > ul > li, .md-typeset .grid.cards > ol > li { border-radius: .85rem; }
+
+.et-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .6rem;
+  margin: 1.2rem 0 1.8rem;
+}
+.et-flow span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.2rem;
+  padding: .45rem .75rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: .7rem;
+  background: var(--md-default-bg-color);
+  box-shadow: 0 5px 18px rgba(15, 23, 42, .05);
+  font-size: .84rem;
+  font-weight: 600;
+}
+.et-flow b {
+  color: var(--et-accent);
+  font-size: 1.15rem;
+}
+.md-typeset .md-button {
+  border-radius: .65rem;
+}
+.md-typeset table:not([class]) {
+  border-radius: .65rem;
+  overflow: hidden;
+}

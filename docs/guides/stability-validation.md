@@ -1,0 +1,58 @@
+# FPCA stability and validation
+
+FPCA always returns components. That does **not** mean every component is stable enough to receive a substantive label.
+
+## Why component stability matters
+
+Functional principal components are sample-dependent eigenfunctions. A component that changes shape markedly under reasonable resampling may be a fragile description of this sample rather than a reproducible viewing mode.
+
+## Bootstrap matched components
+
+    stability = bootstrap_fpca_stability(
+        gaze,
+        n_bootstrap=200,
+        n_components=3,
+        scaling="dimension_sd",
+        resample_unit="participant",
+        participant_column="participant_id",
+        random_state=2026,
+    )
+
+Each bootstrap fit is matched back to the full-sample FPCs by maximum **absolute functional similarity**. Sign is retained separately because FPC orientation is arbitrary.
+
+## Resample the correct unit
+
+For independent curves, curve-level bootstrap may be appropriate.
+
+For repeated trials nested within people, prefer participant-level bootstrap when the target is the stability of population-level viewing modes. It resamples participants as clusters rather than pretending trials are independent.
+
+## Read the stability summary
+
+    summarise_fpca_stability(stability)
+
+Useful descriptors include:
+
+- median absolute matched similarity;
+- an empirical interval of bootstrap similarities;
+- the fraction of replicates exceeding a pre-specified similarity threshold;
+- matched explained-variance distributions.
+
+!!! important
+    The fraction of bootstrap replicates above a threshold is a **descriptive robustness measure**, not a posterior probability and not a p-value.
+
+## Reconstruction diagnostics
+
+Variance explained is not the only way to assess dimensional adequacy.
+
+    curve = fpca_reconstruction_curve(fit, gaze)
+
+The reconstruction curve shows how integrated trajectory error changes as components are added. This helps identify situations where a high variance threshold still leaves scientifically important path details poorly reconstructed.
+
+## Recommended workflow
+
+1. Fit the pre-specified FPCA.
+2. Inspect component trajectories.
+3. Inspect reconstruction error.
+4. Run participant-aware bootstrap stability when the design is repeated measures.
+5. Label components only after their geometric interpretation and stability are understood.
+6. Report unstable modes as unstable rather than silently dropping or renaming them.

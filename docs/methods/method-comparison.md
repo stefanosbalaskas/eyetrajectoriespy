@@ -2,6 +2,10 @@
 
 | Question | Functional trajectory method | What it is not |
 |---|---|---|
+| Preserve unequal sample times before analysis | native irregular trajectory representation | automatic resampling during import |
+| Assess whether FPC shape is reproducible | bootstrap component matching | a significance test |
+| Quantify what registration changes | pre/post registration FPC matching | proof that registration is beneficial |
+| Model timing deformation itself | phase FPCA on warpings | ordinary spatial FPCA |
 | Dominant whole-curve variation | FPCA/MFPCA | time-point significance testing |
 | Participant vs trial variation | multilevel FPCA | ordinary PCA treating trials as independent |
 | Same shape, different timing | registration / elastic FDA | automatically “better preprocessing” |

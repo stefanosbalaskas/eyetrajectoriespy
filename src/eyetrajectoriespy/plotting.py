@@ -7,7 +7,7 @@ import numpy as np
 
 from .fpca import component_trajectories
 from .registration import warping_displacement
-from .types import FPCAResult, RegistrationResult, TrajectorySet
+from .types import FPCAResult, FPCAStabilityResult, RegistrationResult, TrajectorySet
 
 
 def plot_trajectory_overlay(
@@ -142,4 +142,47 @@ def plot_warping_functions(result: RegistrationResult, *, displacement: bool = F
         ax.axhline(0, linestyle="--")
         ax.set_ylabel("h(t) - t")
     ax.set_xlabel(f"Reference time ({result.original.time_unit})")
+    return ax
+
+
+
+def plot_fpca_stability(
+    result: FPCAStabilityResult,
+    *,
+    ax=None,
+):
+    """Plot bootstrap absolute component similarities by reference FPC."""
+
+    if ax is None:
+        _, ax = plt.subplots()
+    data = [result.similarities[:, k] for k in range(result.reference.n_components)]
+    ax.boxplot(data, tick_labels=[f"FPC{k + 1}" for k in range(result.reference.n_components)])
+    ax.set_ylim(0, 1.02)
+    ax.set_ylabel("Absolute matched functional similarity")
+    ax.set_title(f"FPCA bootstrap stability ({result.n_bootstrap} replicates)")
+    return ax
+
+
+def plot_reconstruction_curve(
+    reconstruction_summary,
+    *,
+    ax=None,
+):
+    """Plot integrated reconstruction error against retained FPC count."""
+
+    required = {"n_components", "mean_integrated_rmse"}
+    if not required <= set(reconstruction_summary.columns):
+        raise ValueError(
+            "reconstruction_summary must contain n_components and mean_integrated_rmse"
+        )
+    if ax is None:
+        _, ax = plt.subplots()
+    ax.plot(
+        reconstruction_summary["n_components"],
+        reconstruction_summary["mean_integrated_rmse"],
+        marker="o",
+    )
+    ax.set_xlabel("Retained functional principal components")
+    ax.set_ylabel("Mean integrated RMSE")
+    ax.set_title("FPCA reconstruction curve")
     return ax

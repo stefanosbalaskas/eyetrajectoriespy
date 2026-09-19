@@ -9,13 +9,18 @@ nav:
   - Home: index.md
   - Start here:
       - Quick start: quickstart.md
+      - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md
       - Scientific contracts: concepts/contracts.md
       - Analysis decision map: concepts/decision-map.md
   - Guides:
       - Preparing trajectories: guides/preprocessing.md
+      - Native irregular trajectories: guides/irregular-trajectories.md
       - FPCA & MFPCA: guides/fpca.md
+      - FPCA stability & validation: guides/stability-validation.md
       - Registration & phase: guides/registration.md
+      - Phase FPCA & registration sensitivity: guides/phase-fpca.md
+      - Basis representations: guides/basis-representations.md
       - Multilevel FPCA: guides/multilevel.md
       - AOI probability functions: guides/compositional.md
       - Elastic trajectory analysis: guides/elastic.md
@@ -24,6 +29,9 @@ nav:
       - Interpretation: guides/interpretation.md
   - Worked examples:
       - 2-D evidence inspection: examples/evidence-inspection.md
+      - Native irregular sampling: examples/native-irregular.md
+      - FPCA stability: examples/fpca-stability.md
+      - Phase FPCA: examples/phase-fpca.md
       - Repeated-trial multilevel FPCA: examples/multilevel.md
       - Compositional AOI trajectories: examples/compositional.md
       - Functional regression: examples/regression.md
@@ -31,9 +39,11 @@ nav:
       - Failure cases: examples/failure-cases.md
   - Methods:
       - Reporting checklist: methods/reporting.md
+      - Pre-registration checklist: methods/preregistration.md
       - Assumptions & diagnostics: methods/assumptions.md
       - Limitations & failure modes: methods/limitations.md
       - Method comparison: methods/method-comparison.md
+      - Research FAQ: methods/faq.md
       - References: methods/references.md
   - API:
       - Public API: reference/api.md

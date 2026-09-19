@@ -7,6 +7,14 @@
 ::: eyetrajectoriespy.CompositionalFPCAResult
 ::: eyetrajectoriespy.MultilevelFPCAResult
 
+## Native and common-grid import
+::: eyetrajectoriespy.from_irregular_long_dataframe_native
+::: eyetrajectoriespy.irregular_sampling_summary
+::: eyetrajectoriespy.common_overlap_interval
+::: eyetrajectoriespy.make_common_grid
+::: eyetrajectoriespy.resample_irregular_to_grid
+::: eyetrajectoriespy.resample_irregular_to_common_grid
+
 ## Import and validation
 ::: eyetrajectoriespy.from_long_dataframe
 ::: eyetrajectoriespy.from_irregular_long_dataframe
@@ -29,10 +37,23 @@
 ::: eyetrajectoriespy.component_trajectories
 ::: eyetrajectoriespy.fpca_score_frame
 
+## FPCA stability and reconstruction
+::: eyetrajectoriespy.component_similarity_matrix
+::: eyetrajectoriespy.match_fpca_components
+::: eyetrajectoriespy.bootstrap_fpca_stability
+::: eyetrajectoriespy.summarise_fpca_stability
+::: eyetrajectoriespy.reconstruction_error_by_curve
+::: eyetrajectoriespy.fpca_reconstruction_curve
+
 ## Registration and phase
 ::: eyetrajectoriespy.register_to_landmarks
 ::: eyetrajectoriespy.warping_displacement
 ::: eyetrajectoriespy.phase_summary
+::: eyetrajectoriespy.phase_trajectory_set
+::: eyetrajectoriespy.fit_phase_fpca
+::: eyetrajectoriespy.phase_landmark_frame
+::: eyetrajectoriespy.compare_registered_unregistered_fpca
+::: eyetrajectoriespy.registration_sensitivity_frame
 
 ## Multilevel and compositional
 ::: eyetrajectoriespy.fit_multilevel_fpca
@@ -55,9 +76,14 @@
 ::: eyetrajectoriespy.plot_planar_trajectories
 ::: eyetrajectoriespy.plot_fpca_component
 ::: eyetrajectoriespy.plot_warping_functions
+::: eyetrajectoriespy.plot_fpca_stability
+::: eyetrajectoriespy.plot_reconstruction_curve
+::: eyetrajectoriespy.fpca_stability_reporting_text
+::: eyetrajectoriespy.registration_sensitivity_reporting_text
 ::: eyetrajectoriespy.summarise_fpca
 ::: eyetrajectoriespy.fpca_reporting_text
 
 ## Optional interoperability
 ::: eyetrajectoriespy.to_skfda_grid
+::: eyetrajectoriespy.to_skfda_basis
 ::: eyetrajectoriespy.fit_elastic_fpca
