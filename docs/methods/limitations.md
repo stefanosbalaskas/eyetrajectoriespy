@@ -58,6 +58,10 @@ PACE scores are conditional estimates based on the fitted mean/covariance model.
 
 A sparse estimator addresses irregular and limited observations; it does not automatically solve informative missingness. If gaze is absent because of blinks, track loss, off-screen viewing, or condition-dependent behavior, the observation mechanism may carry scientific information or bias.
 
+## Sparse evaluation grids do not authorize extrapolation
+
+An explicit FDApy evaluation grid controls where smooth mean/covariance/eigenfunction estimates are represented. eyetrajectoriespy restricts that grid to the pooled observed time support; it does not interpret smoothing outside the observed domain as measured gaze.
+
 ## Backend uncertainty is not fully propagated downstream
 
 `SparseFPCAResult` preserves scores, eigenvalues, settings, and backend objects, but downstream score regressions do not automatically propagate uncertainty from sparse mean/covariance estimation and conditional score recovery.
