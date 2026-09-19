@@ -67,9 +67,11 @@ Optional interoperability:
 
 ```bash
 pip install -e ".[fda]"       # scikit-fda
-pip install -e ".[sparse]"    # FDApy sparse/PACE FPCA
+pip install -e ".[sparse]"    # FDApy sparse/PACE FPCA; Python 3.11–3.12
 pip install -e ".[elastic]"   # fdasrsf
 ```
+
+The core package remains Python 3.11–3.13. The current FDApy 1.0.3 sparse backend is qualified separately on Python 3.11–3.12 because FDApy pins NumPy <2.0, while NumPy 1.26.x does not support Python 3.13.
 
 ## Quick start
 
