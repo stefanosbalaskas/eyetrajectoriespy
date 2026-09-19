@@ -72,8 +72,8 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
 -   **Are my irregular curves too sparse to interpolate?**
 
-    Distinguish dense irregular projection from sparse functional estimation before creating a common grid.
+    Keep curve-specific grids and use optional FDApy covariance UFPCA with PACE conditional-expectation scores.
 
-    [Sparse irregular FPCA](../guides/sparse-irregular-fpca.md)
+    [Sparse PACE FPCA](../examples/sparse-pace-fpca.md)
 
 </div>

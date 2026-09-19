@@ -58,3 +58,12 @@ Keep the irregular object when you still need to:
 - preserve original time support for reproducibility.
 
 Current general FDA ecosystems support irregular functional representations directly, which is one reason this package now preserves the native representation before any grid conversion.
+
+
+## When the data are genuinely sparse
+
+A native irregular object does not force you to create a common grid.
+
+If observation counts are low enough that interpolation would construct much of the analyzed curve, move to the [sparse PACE FPCA workflow](sparse-irregular-fpca.md) instead of increasing grid density.
+
+The sparse route keeps each curve's observed times, analyzes one named functional dimension, and delegates covariance UFPCA plus conditional-expectation scores to FDApy.

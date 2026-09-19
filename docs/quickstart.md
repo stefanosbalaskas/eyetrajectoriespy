@@ -25,6 +25,34 @@ from eyetrajectoriespy import summarise_trajectory_set
 print(summarise_trajectory_set(gaze))
 ```
 
+## Sparse irregular data: do not manufacture a dense curve
+
+If interpolation would create much of the analyzed trajectory, keep the native
+`IrregularTrajectorySet` and use the optional sparse backend:
+
+```python
+summary = sparse_dimension_summary(
+    irregular,
+    dimension="x",
+)
+
+sparse_fit = fit_sparse_fpca_fdapy(
+    irregular,
+    dimension="x",
+    n_components=3,
+    fit_smoothing="PS",
+    score_smoothing="LP",
+    tol=1e-4,
+)
+```
+
+Install FDApy interoperability with `pip install -e ".[sparse]"`. Under the
+currently validated FDApy/NumPy dependency line this optional extra is enabled
+for Python 3.11–3.12, while the eyetrajectoriespy core remains Python 3.11–3.13.
+
+This is **univariate sparse PACE** for the selected dimension. Separate x(t)
+and y(t) fits are not joint planar MFPCA.
+
 ## 3. Fit joint x/y MFPCA
 
 ```python

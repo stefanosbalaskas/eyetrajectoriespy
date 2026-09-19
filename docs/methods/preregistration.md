@@ -33,6 +33,23 @@ Functional analysis contains enough researcher degrees of freedom that the main 
 - basis family and basis count if using basis representation;
 - sensitivity analysis for smoothing/basis choices when substantively important.
 
+## Sparse functional estimation
+
+If trajectories may be too sparse for defensible common-grid interpolation, pre-specify:
+
+- the rule distinguishing dense-irregular from sparse analysis;
+- selected functional dimension(s);
+- how missing tracker rows become absent observations;
+- minimum observation count or coverage requirements;
+- sparse-FPCA backend;
+- smoothing configuration and any backend tuning parameters;
+- evaluation-grid rule/domain/resolution;
+- PACE tolerance;
+- component-count strategy;
+- planned sensitivity analyses.
+
+If x(t) and y(t) are analyzed separately, pre-register them as separate univariate sparse analyses rather than a joint 2-D MFPCA.
+
 ## FPCA
 
 - univariate or multivariate;

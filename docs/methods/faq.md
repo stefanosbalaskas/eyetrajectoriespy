@@ -90,3 +90,20 @@ For repeated trials, participant-level omission is generally the scientifically 
 ## Is a Mahalanobis cutoff a hypothesis test?
 
 No. In this package it is a review threshold used for functional diagnostics. It should not be reported as a confirmatory p-value or used as an automatic deletion rule.
+
+
+## When should I use sparse PACE instead of interpolation?
+
+Use sparse FDA when the observed points are too few or too irregular for interpolation to be a minor representation step. If common-grid interpolation would create much of the analyzed trajectory, the sparse model is usually the more honest representation.
+
+## Does PACE fill in my missing gaze samples?
+
+Not in the sense of silently replacing missing tracker rows. The sparse estimator models a latent smooth process from observed irregular points and obtains conditional FPC scores. eyetrajectoriespy requires the selected sparse dimension to contain finite observed values; absent measurements should be absent from the native curve-specific grid.
+
+## Can I run PACE on x(t) and y(t) separately and call it MFPCA?
+
+No. Two univariate sparse analyses do not estimate the joint covariance of the planar gaze process. The current public FDApy adapter is intentionally univariate.
+
+## Why expose both fit smoothing and score smoothing?
+
+FDApy distinguishes smoothing used while fitting sparse functional structure from smoothing used during score transformation. eyetrajectoriespy makes both settings explicit so backend defaults do not become hidden analytical decisions.

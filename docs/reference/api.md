@@ -11,6 +11,7 @@
 ::: eyetrajectoriespy.FPCAComponentEnvelopeResult
 ::: eyetrajectoriespy.FPCASubspaceComparisonResult
 ::: eyetrajectoriespy.FPCASubspaceStabilityResult
+::: eyetrajectoriespy.SparseFPCAResult
 ::: eyetrajectoriespy.FPCAInfluenceResult
 ::: eyetrajectoriespy.FunctionalOutlierResult
 
@@ -35,6 +36,14 @@
 ::: eyetrajectoriespy.normalize_time
 ::: eyetrajectoriespy.normalize_coordinates
 ::: eyetrajectoriespy.center_on_landmark
+
+## Sparse irregular PACE FPCA
+::: eyetrajectoriespy.sparse_dimension_summary
+::: eyetrajectoriespy.to_fdapy_irregular
+::: eyetrajectoriespy.fit_sparse_fpca_fdapy
+::: eyetrajectoriespy.sparse_fpca_score_frame
+::: eyetrajectoriespy.plot_sparse_irregular_dimension
+::: eyetrajectoriespy.sparse_fpca_reporting_text
 
 ## FPCA / MFPCA
 ::: eyetrajectoriespy.fit_fpca

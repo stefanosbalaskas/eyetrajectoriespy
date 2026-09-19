@@ -10,6 +10,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 |---|---|---|
 | Common-grid functional gaze objects | implemented | `TrajectorySet` |
 | Native curve-specific time grids | implemented | `IrregularTrajectorySet` |
+| Sparse univariate covariance FPCA + PACE scores | implemented (optional FDApy backend) | `fit_sparse_fpca_fdapy()` |
 | Explicit irregular → common-grid projection | implemented | `resample_irregular_to_grid()` |
 | Univariate FPCA | implemented | `fit_fpca()` |
 | Joint multivariate FPCA | implemented | `fit_mfpca()` |
@@ -41,6 +42,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | B-spline/Fourier basis representation | scikit-fda | preserve eye-tracking provenance while delegating basis mathematics |
 | Functional boxplot screening | scikit-fda | optional sensitivity/review diagnostic |
 | Magnitude-shape outlier screening | scikit-fda | optional sensitivity/review diagnostic |
+| Sparse covariance UFPCA + PACE scores | FDApy | preserve native irregular grids while delegating sparse estimation |
 | Elastic SRVF trajectory alignment | fdasrsf | specialist phase/amplitude backend |
 
 Optional backends are never imported until the corresponding feature is requested.
@@ -48,10 +50,6 @@ Optional backends are never imported until the corresponding feature is requeste
 ## Not silently approximated
 
 The following are **not** replaced with convenient but scientifically weaker substitutes:
-
-### Sparse PACE-style FPCA
-
-Sparse irregular curves are preserved natively, but the package does not pretend that heavy interpolation is equivalent to a sparse covariance estimator.
 
 ### Full functional mixed models
 
@@ -69,7 +67,6 @@ Downstream score models do not currently propagate full uncertainty from estimat
 
 Future tranches may evaluate:
 
-- validated sparse/PACE backend interoperability;
 - conformal functional anomaly detection;
 - calibrated simultaneous confidence bands for functional modes;
 - supervised component selection optimized for external prediction;
@@ -79,4 +76,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.5.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.6.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
