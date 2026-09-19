@@ -99,7 +99,7 @@ def to_fdapy_irregular(
         )
     except ImportError as exc:
         raise ImportError(
-            "FDApy is optional. Install eyetrajectoriespy with the 'sparse' extra."
+            "FDApy is optional. Install eyetrajectoriespy with the 'sparse' extra in a Python 3.11 or 3.12 environment."
         ) from exc
 
     argvals = IrregularArgvals(
@@ -175,7 +175,7 @@ def fit_sparse_fpca_fdapy(
         from FDApy.representation import DenseArgvals
     except ImportError as exc:
         raise ImportError(
-            "FDApy is optional. Install eyetrajectoriespy with the 'sparse' extra."
+            "FDApy is optional. Install eyetrajectoriespy with the 'sparse' extra in a Python 3.11 or 3.12 environment."
         ) from exc
 
     model = UFPCA(
