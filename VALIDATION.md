@@ -116,6 +116,7 @@ These are static branch checks, not hosted CI certification.
 - Package `__version__`, `pyproject.toml`, and `CITATION.cff` all report **0.6.0.dev0**.
 - `pyproject.toml` exposes an optional FDApy sparse extra constrained to Python <3.13; the `all` extra carries the same compatibility marker.
 - Dedicated `optional-sparse-fda` workflow targets Ubuntu with Python **3.11 and 3.12**.
+- Dependency-marker evaluation was checked locally: the FDApy extra marker evaluates **true on Python 3.12** and **false on Python 3.13**, matching the documented backend boundary.
 - That workflow runs backend-independent sparse contracts, the real FDApy integration smoke, and `examples/sparse_pace_fpca.py`.
 - The standard public-API regression test includes the sparse result object and public functions.
 
