@@ -44,6 +44,14 @@ Because the local runner cannot clone GitHub or install missing dependencies fro
 
 The full 0.3 repository baseline remains separately established above at **75 passed, 4 optional-backend skips, 92.88% coverage**. The exact integrated 0.4 branch still requires hosted/full-repository requalification when Actions or a full clone becomes available.
 
+## Repository source integrity — 2026-09-19
+
+These are static branch checks, not hosted CI certification.
+
+- MkDocs navigation targets: **45/45** configured Markdown pages exist.
+- API documentation declarations: **84/84** documented public symbols are present in the package export surface.
+- The core examples workflow includes the new `fpca_selection_uncertainty.py` executable example.
+
 ## Locally unavailable checks
 
 These are **pending**, not passed:
