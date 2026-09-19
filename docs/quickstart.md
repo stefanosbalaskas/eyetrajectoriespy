@@ -86,7 +86,7 @@ Use the stability result to qualify component interpretation rather than to crea
 Do not force them through <code>from_long_dataframe()</code>. Start with <code>from_irregular_long_dataframe_native()</code>, inspect the native sampling, and only then choose the common-grid projection.
 
 
-## 6. Review functional anomalies and influence without deleting data
+## 7. Review functional anomalies and influence without deleting data
 
     review = diagnose_fpca_outliers(
         fit,
