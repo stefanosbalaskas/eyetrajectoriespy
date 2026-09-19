@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from .types import FPCAResult, FPCAStabilityResult, MultilevelFPCAResult, RegistrationSensitivityResult, TrajectorySet
+from .types import FPCAInfluenceResult, FPCAResult, FPCAStabilityResult, FunctionalOutlierResult, MultilevelFPCAResult, RegistrationSensitivityResult, TrajectorySet
 
 
 def summarise_trajectory_set(trajectories: TrajectorySet) -> pd.DataFrame:
@@ -106,4 +106,39 @@ def registration_sensitivity_reporting_text(
         "and after the explicit registration step. "
         + "; ".join(parts)
         + "."
+    )
+
+
+
+def fpca_outlier_reporting_text(result: FunctionalOutlierResult) -> str:
+    """Generate descriptive text for functional review diagnostics."""
+
+    frame = result.diagnostics
+    if "review_flag" not in frame.columns:
+        raise ValueError("result diagnostics do not contain review_flag")
+    n_review = int(frame["review_flag"].sum())
+    return (
+        f"Functional anomaly screening ({result.method}) flagged {n_review} of "
+        f"{len(frame)} trajectories for review. Flags were treated as diagnostic "
+        "signals only and were not used as automatic exclusion criteria."
+    )
+
+
+def fpca_influence_reporting_text(
+    result: FPCAInfluenceResult,
+    *,
+    digits: int = 2,
+) -> str:
+    """Generate descriptive text for leave-one-group-out FPCA influence."""
+
+    if result.summary.empty:
+        raise ValueError("influence summary is empty")
+    row = result.summary.loc[result.summary["influence_score"].idxmax()]
+    unit = result.group_column or "curve_id"
+    return (
+        f"Leave-one-{unit}-out FPCA influence analysis evaluated "
+        f"{len(result.summary)} omission fits. The largest observed influence "
+        f"was for {row['group']!r}, with minimum matched component similarity "
+        f"{row['min_abs_component_similarity']:.{digits}f}. Influence diagnostics "
+        "were used for sensitivity assessment rather than automatic exclusion."
     )

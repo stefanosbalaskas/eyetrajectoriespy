@@ -8,7 +8,7 @@ from .analysis import (
     pairwise_functional_distances,
     score_distance_matrix,
 )
-from .backends import to_skfda_basis, to_skfda_grid
+from .backends import detect_functional_outliers_skfda, to_skfda_basis, to_skfda_grid
 from .compositional import (
     alr_transform,
     fit_compositional_fpca,
@@ -43,6 +43,7 @@ from .kinematics import (
     speed_function,
 )
 from .multilevel import fit_multilevel_fpca
+from .outliers import diagnose_fpca_outliers, leave_one_group_out_fpca_influence
 from .phase import (
     compare_registered_unregistered_fpca,
     fit_phase_fpca,
@@ -52,6 +53,8 @@ from .phase import (
 )
 from .plotting import (
     plot_fpca_component,
+    plot_fpca_influence,
+    plot_fpca_outlier_diagnostics,
     plot_fpca_stability,
     plot_fpca_variance,
     plot_planar_trajectories,
@@ -71,6 +74,8 @@ from .preprocessing import (
 from .registration import phase_summary, register_to_landmarks, warping_displacement
 from .reporting import (
     fpca_reporting_text,
+    fpca_influence_reporting_text,
+    fpca_outlier_reporting_text,
     fpca_stability_reporting_text,
     multilevel_fpca_reporting_text,
     registration_sensitivity_reporting_text,
@@ -92,7 +97,9 @@ from .types import (
     CompositionalFPCAResult,
     ElasticFPCAResult,
     FPCAResult,
+    FPCAInfluenceResult,
     FPCAStabilityResult,
+    FunctionalOutlierResult,
     FunctionalRegressionResult,
     IrregularTrajectorySet,
     MultilevelFPCAResult,
@@ -107,19 +114,21 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.2.0.dev0"
+__version__ = "0.3.0.dev0"
 
 __all__ = [
     "TrajectorySet",
     "IrregularTrajectorySet",
     "FPCAResult",
     "FPCAStabilityResult",
+    "FPCAInfluenceResult",
     "RegistrationResult",
     "RegistrationSensitivityResult",
     "CompositionalFPCAResult",
     "MultilevelFPCAResult",
     "ElasticFPCAResult",
     "FunctionalRegressionResult",
+    "FunctionalOutlierResult",
     "ClusterResult",
     "BasisProjectionResult",
     "from_long_dataframe",
@@ -173,6 +182,8 @@ __all__ = [
     "score_distance_matrix",
     "cluster_fpca_scores",
     "fit_scalar_on_function_regression",
+    "diagnose_fpca_outliers",
+    "leave_one_group_out_fpca_influence",
     "component_similarity_matrix",
     "match_fpca_components",
     "bootstrap_fpca_stability",
@@ -184,6 +195,8 @@ __all__ = [
     "summarise_trajectory_set",
     "summarise_fpca",
     "fpca_reporting_text",
+    "fpca_influence_reporting_text",
+    "fpca_outlier_reporting_text",
     "fpca_stability_reporting_text",
     "registration_sensitivity_reporting_text",
     "multilevel_fpca_reporting_text",
@@ -193,8 +206,11 @@ __all__ = [
     "plot_fpca_stability",
     "plot_reconstruction_curve",
     "plot_fpca_component",
+    "plot_fpca_influence",
+    "plot_fpca_outlier_diagnostics",
     "plot_registration",
     "plot_warping_functions",
     "to_skfda_grid",
+    "detect_functional_outliers_skfda",
     "to_skfda_basis",
 ]

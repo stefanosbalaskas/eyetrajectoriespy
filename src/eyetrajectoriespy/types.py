@@ -386,3 +386,26 @@ class BasisProjectionResult:
     n_basis: int
     time_domain: tuple[float, float]
     provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class FunctionalOutlierResult:
+    """Functional outlier/review diagnostics without automatic exclusion."""
+
+    diagnostics: pd.DataFrame
+    method: str
+    reference: FPCAResult | None = None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+    backend_object: Any | None = None
+
+
+@dataclass(frozen=True)
+class FPCAInfluenceResult:
+    """Leave-one-group-out sensitivity of functional principal components."""
+
+    reference: FPCAResult
+    summary: pd.DataFrame
+    components: pd.DataFrame
+    group_column: str | None
+    n_components: int
+    provenance: Mapping[str, Any] = field(default_factory=dict)

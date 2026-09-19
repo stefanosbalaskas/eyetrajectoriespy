@@ -33,3 +33,4 @@ jobs:
           python examples/native_irregular.py
           python examples/fpca_stability.py
           python examples/phase_fpca.py
+          python examples/outlier_influence.py

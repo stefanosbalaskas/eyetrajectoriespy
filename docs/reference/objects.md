@@ -52,3 +52,12 @@ Stores paired unregistered/registered FPCA fits, component matching, signed shap
 ## BasisProjectionResult
 
 Wraps an optional backend basis object together with the selected functional dimension, basis family, number of basis functions, time domain, and analysis provenance.
+
+
+## FunctionalOutlierResult
+
+Contains a diagnostic table, method identifier, optional FPCA reference, backend object where relevant, and provenance. Review flags are never interpreted as exclusions by the object.
+
+## FPCAInfluenceResult
+
+Stores the full-sample reference FPCA, group-level influence summary, component-level matched similarities/variance changes, the grouping variable, component count, and provenance.

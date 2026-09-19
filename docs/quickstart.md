@@ -67,3 +67,22 @@ Use the stability result to qualify component interpretation rather than to crea
 ## If your trials are irregularly sampled
 
 Do not force them through <code>from_long_dataframe()</code>. Start with <code>from_irregular_long_dataframe_native()</code>, inspect the native sampling, and only then choose the common-grid projection.
+
+
+## 6. Review functional anomalies and influence without deleting data
+
+    review = diagnose_fpca_outliers(
+        fit,
+        gaze,
+        n_components=3,
+        random_state=2026,
+    )
+
+    influence = leave_one_group_out_fpca_influence(
+        gaze,
+        group_column="participant_id",
+        n_components=3,
+        scaling="dimension_sd",
+    )
+
+A review flag or influential participant is a prompt to inspect the functional data and metadata. It is not an exclusion command.
