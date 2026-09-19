@@ -128,6 +128,12 @@ The backend source confirms that FDApy 1.0.x irregular PACE calls `data.smooth(m
 
 This is a backend-compatibility guard rather than silent interpolation. The original sparse observations remain on their native grids.
 
+### scikit-fda compatibility repair — 2026-09-20
+
+A hosted optional-scikit-fda run failed before eyetrajectoriespy backend logic executed. The environment resolved scikit-fda 0.10.1 together with multimethod 2.1; imports then failed inside scikit-fda with a Python 3.12 metaclass conflict.
+
+scikit-fda 0.10.1 declares multimethod >=1.5 while excluding 1.11/1.11.1 but does not cap the major version. The eyetrajectoriespy optional `fda` extra is therefore constrained to the compatible scikit-fda 0.10.x line plus `multimethod>=1.12,<2`. This preserves the interoperability tests rather than skipping them and does not alter core package dependencies.
+
 ### 0.6 finalization re-check — 2026-09-20
 
 Additional local/static checks after the sparse-contract hardening:
