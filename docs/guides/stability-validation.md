@@ -78,3 +78,10 @@ where the matched, sign-aligned FPC shape varies across resamples.
 These are descriptive envelopes rather than confidence bands.
 
 See [FPC shape uncertainty](component-uncertainty.md).
+
+
+## When eigenvalues are close
+
+Individual component matching is not the whole story when adjacent eigenvalues are nearly tied. FPC labels may swap or rotate while the joint eigenspace remains stable.
+
+Inspect [near-tied FPC subspace stability](subspace-stability.md) with adjacent eigengaps and principal angles before assigning rigid labels to individual axes.
