@@ -409,3 +409,37 @@ class FPCAInfluenceResult:
     group_column: str | None
     n_components: int
     provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class FPCACrossValidationResult:
+    """Held-out reconstruction diagnostics across candidate FPC counts."""
+
+    fold_errors: pd.DataFrame
+    assignments: pd.DataFrame
+    component_counts: tuple[int, ...]
+    cv_unit: str
+    n_splits: int
+    group_column: str | None
+    scaling: str
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class FPCAComponentEnvelopeResult:
+    """Pointwise descriptive bootstrap envelopes for matched FPC functions."""
+
+    reference: FPCAResult
+    lower: np.ndarray
+    median: np.ndarray
+    upper: np.ndarray
+    similarities: np.ndarray
+    level: float
+    resampling_unit: str
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.similarities.shape[0]
