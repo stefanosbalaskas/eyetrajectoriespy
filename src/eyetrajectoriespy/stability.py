@@ -121,6 +121,8 @@ def _bootstrap_participants(
 ) -> TrajectorySet:
     if participant_column not in trajectories.metadata.columns:
         raise ValueError(f"metadata does not contain participant column {participant_column!r}")
+    if trajectories.metadata[participant_column].isna().any():
+        raise ValueError("participant_column contains missing values")
     participant = trajectories.metadata[participant_column].astype(str).to_numpy()
     unique = pd.unique(participant)
     if len(unique) < 2:
