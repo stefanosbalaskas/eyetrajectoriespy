@@ -95,6 +95,36 @@ When a finite basis was used, report:
 - any sensitivity analysis across basis sizes.
 
 
+## Component selection
+
+If held-out reconstruction CV was used to choose the retained dimension, report:
+
+- candidate component counts;
+- number of folds;
+- curve-level versus grouped CV;
+- grouping column for repeated measures;
+- whether FPCA, centering, and scaling were re-estimated inside each training fold;
+- reconstruction error definition;
+- minimum-RMSE versus one-standard-error rule;
+- selected count and nearby-CV sensitivity.
+
+The one-standard-error rule should be described as a parsimony heuristic, not an inferential test.
+
+## FPC shape uncertainty
+
+If matched-bootstrap component envelopes were inspected, report:
+
+- curve- or participant-level resampling;
+- participant/group column where relevant;
+- number of bootstrap replicates;
+- random seed;
+- component matching criterion;
+- sign-alignment rule;
+- pointwise envelope level;
+- matched component similarities.
+
+Describe these outputs as descriptive pointwise bootstrap envelopes unless a separate procedure with demonstrated confidence-band coverage was used.
+
 ## Functional anomaly and influence diagnostics
 
 If trajectory review diagnostics were used, report:
