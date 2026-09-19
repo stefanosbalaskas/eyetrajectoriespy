@@ -20,6 +20,14 @@ Li Y, Wang N, Carroll RJ. *Selecting the Number of Principal Components in Funct
 
 Goldsmith J, Greven S, Crainiceanu C. *Corrected Confidence Bands for Functional Data Using Principal Components*. Biometrics. 2013;69(1):41–51. doi:10.1111/j.1541-0420.2012.01808.x.
 
+## Eigenspace stability and principal angles
+
+Björck Å, Golub GH. *Numerical Methods for Computing Angles Between Linear Subspaces*. Mathematics of Computation. 1973;27(123):579–594. doi:10.1090/S0025-5718-1973-0348991-3.
+
+Hall P, Hosseini-Nasab M. *On Properties of Functional Principal Components Analysis*. Journal of the Royal Statistical Society: Series B. 2006;68(1):109–126. doi:10.1111/j.1467-9868.2005.00535.x.
+
+Stewart GW, Sun J-G. *Matrix Perturbation Theory*. Academic Press; 1990.
+
 ## Software backends
 
 `scikit-fda` provides general Python functional-data representations and estimators. `fdasrsf` provides elastic registration and SRVF curve statistics. `eyetrajectoriespy` adds eye-tracking-specific contracts, representations, safeguards, and workflows.

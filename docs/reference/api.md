@@ -9,6 +9,8 @@
 ::: eyetrajectoriespy.FPCAStabilityResult
 ::: eyetrajectoriespy.FPCACrossValidationResult
 ::: eyetrajectoriespy.FPCAComponentEnvelopeResult
+::: eyetrajectoriespy.FPCASubspaceComparisonResult
+::: eyetrajectoriespy.FPCASubspaceStabilityResult
 ::: eyetrajectoriespy.FPCAInfluenceResult
 ::: eyetrajectoriespy.FunctionalOutlierResult
 
@@ -53,6 +55,15 @@
 ::: eyetrajectoriespy.bootstrap_fpca_component_envelopes
 ::: eyetrajectoriespy.plot_fpca_component_envelope
 ::: eyetrajectoriespy.fpca_component_envelope_reporting_text
+
+## Near-tied eigenvalues and eigenspaces
+::: eyetrajectoriespy.fpca_eigenvalue_gap_table
+::: eyetrajectoriespy.compare_fpca_subspaces
+::: eyetrajectoriespy.bootstrap_fpca_subspace_stability
+::: eyetrajectoriespy.summarise_fpca_subspace_stability
+::: eyetrajectoriespy.plot_fpca_subspace_stability
+::: eyetrajectoriespy.fpca_eigengap_reporting_text
+::: eyetrajectoriespy.fpca_subspace_stability_reporting_text
 
 ## Functional outliers and influence
 ::: eyetrajectoriespy.diagnose_fpca_outliers

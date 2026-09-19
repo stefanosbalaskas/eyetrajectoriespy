@@ -21,6 +21,7 @@ nav:
       - FPCA stability & validation: guides/stability-validation.md
       - Selecting FPC count: guides/component-selection.md
       - FPC shape uncertainty: guides/component-uncertainty.md
+      - Near-tied FPC subspaces: guides/subspace-stability.md
       - Outliers & influence: guides/outliers-influence.md
       - Registration & phase: guides/registration.md
       - Phase FPCA & registration sensitivity: guides/phase-fpca.md
@@ -36,6 +37,7 @@ nav:
       - Native irregular sampling: examples/native-irregular.md
       - FPCA stability: examples/fpca-stability.md
       - Selection & FPC uncertainty: examples/fpca-selection-uncertainty.md
+      - Near-tied FPC subspaces: examples/near-tied-subspace.md
       - Outlier & influence diagnostics: examples/outlier-influence.md
       - Phase FPCA: examples/phase-fpca.md
       - Repeated-trial multilevel FPCA: examples/multilevel.md

@@ -125,6 +125,21 @@ If matched-bootstrap component envelopes were inspected, report:
 
 Describe these outputs as descriptive pointwise bootstrap envelopes unless a separate procedure with demonstrated confidence-band coverage was used.
 
+## Near-tied eigenvalues and eigenspace stability
+
+When adjacent retained eigenvalues are close or individual FPC labels rotate across resamples, report:
+
+- the adjacent eigenvalues and relative eigengap definition;
+- any descriptive near-tie threshold, including that it was pre-specified;
+- the component block assessed as a subspace;
+- curve- versus participant-level resampling;
+- number of bootstrap replicates and random seed;
+- minimum principal cosine and/or maximum principal angle;
+- normalized projector-distance summary;
+- whether individual-component stability was lower than block-level subspace stability.
+
+Do not use subspace stability to claim that individual FPC axes inside the block are uniquely identifiable.
+
 ## Functional anomaly and influence diagnostics
 
 If trajectory review diagnostics were used, report:

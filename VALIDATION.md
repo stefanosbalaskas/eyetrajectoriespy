@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.4.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, irregular trajectories, stability, leakage-aware component selection, descriptive FPC-shape uncertainty, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.5.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, irregular trajectories, stability, leakage-aware component selection, descriptive FPC-shape uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -52,6 +52,31 @@ These are static branch checks, not hosted CI certification.
 - API documentation declarations: **84/84** documented public symbols are present in the package export surface.
 - The core examples workflow includes the new `fpca_selection_uncertainty.py` executable example.
 
+## 0.5 delta validation — 2026-09-19
+
+Environment: Linux, Python 3.13.5.
+
+The local runner still cannot resolve GitHub directly, so a full branch clone is unavailable. The 0.5 scientific algorithms were therefore qualified with a standalone numerical truth/contract harness using the same weighted-FPCA geometry as the package, while repository integration was checked against the authoritative GitHub branch.
+
+- Exact 45-degree FPC1/FPC2 rotation truth: **passed**. Individual FPC1 principal cosine was approximately 0.707 while the two-dimensional subspace principal cosines were approximately 1 and normalized projector distance was approximately 0.
+- Explicit eigengap-threshold semantics: **passed**. No near-tie classification is produced without a supplied threshold; a supplied 0.05 threshold correctly flags a synthetic relative gap of 0.025.
+- Participant-level bootstrap reproducibility: **passed** with deterministic random seed; normalized projector distances remained within [0, 1].
+- Failure-contract checks: **passed** for invalid thresholds, invalid component blocks, boolean component arguments, and non-zero-rank boundary protection.
+- Mathematical implementation check confirmed that the normalized projector distance is rotation invariant within the selected subspace.
+- Methodological source verification completed for eigenvalue-spacing sensitivity and principal-angle subspace comparison.
+
+This is **delta algorithmic validation**, not a replacement for the full repository test suite or cross-platform qualification.
+
+## 0.5 repository source integrity — 2026-09-19
+
+These are static branch checks, not hosted CI certification.
+
+- Existing 0.4 MkDocs navigation baseline: **45/45** pages previously verified; the two newly configured 0.5 pages were created on the branch, giving **47 configured pages with no intentional removals**.
+- API documentation declarations: **93/93** documented public symbols are present in the package export surface.
+- Version metadata: package `__version__` and `pyproject.toml` both report **0.5.0.dev0**; `CITATION.cff` software version is **0.5.0.dev0** with release date 2026-09-19.
+- The examples workflow includes `examples/fpca_subspace_stability.py`.
+- Public API regression test includes the new subspace result objects and functions.
+
 ## Locally unavailable checks
 
 These are **pending**, not passed:
@@ -66,7 +91,7 @@ These are **pending**, not passed:
 
 The 0.1 merged release tranche was previously GitHub CI-certified.
 
-The merged 0.2/0.3 tranches and the current 0.4 development tranche are **not fully GitHub CI-certified**. Hosted Actions are currently unavailable because the monthly Actions allowance is exhausted; queued workflows therefore do not constitute pass/fail evidence.
+The merged 0.2/0.3/0.4 tranches and the current 0.5 development tranche are **not fully GitHub CI-certified**. Hosted Actions are currently unavailable because the monthly Actions allowance is exhausted; queued workflows therefore do not constitute pass/fail evidence.
 
 ## Re-check when GitHub Actions becomes available
 
@@ -83,4 +108,4 @@ Run and require success for:
 9. Strict MkDocs build.
 10. GitHub Pages deployment from the exact merged `main` SHA.
 
-Do not describe the 0.2/0.3/0.4 line as fully CI-certified until these workflows actually execute successfully.
+Do not describe the 0.2/0.3/0.4/0.5 line as fully CI-certified until these workflows actually execute successfully.

@@ -14,6 +14,7 @@ from .types import (
     FPCAInfluenceResult,
     FPCAResult,
     FPCAStabilityResult,
+    FPCASubspaceStabilityResult,
     FunctionalOutlierResult,
     RegistrationResult,
     TrajectorySet,
@@ -320,4 +321,46 @@ def plot_fpca_component_envelope(
     ax.set_ylabel(f"FPC loading: {dimension}")
     ax.set_title(f"FPC{component + 1} matched-bootstrap envelope")
     ax.legend()
+    return ax
+
+
+
+def plot_fpca_subspace_stability(
+    result: FPCASubspaceStabilityResult,
+    *,
+    metric: str = "normalized_projector_distance",
+    ax=None,
+):
+    """Plot bootstrap eigenspace stability across resamples."""
+
+    allowed = {
+        "normalized_projector_distance",
+        "max_principal_angle_degrees",
+        "min_principal_cosine",
+    }
+    if metric not in allowed:
+        raise ValueError(
+            "metric must be 'normalized_projector_distance', "
+            "'max_principal_angle_degrees', or 'min_principal_cosine'"
+        )
+    if ax is None:
+        _, ax = plt.subplots()
+
+    if metric == "normalized_projector_distance":
+        values = result.normalized_projector_distance
+        ylabel = "Normalized projector distance"
+    elif metric == "max_principal_angle_degrees":
+        values = np.max(result.principal_angles_degrees, axis=1)
+        ylabel = "Maximum principal angle (degrees)"
+    else:
+        values = np.min(result.principal_cosines, axis=1)
+        ylabel = "Minimum principal cosine"
+
+    x = np.arange(1, result.n_bootstrap + 1)
+    ax.plot(x, values, marker="o", linestyle="none")
+    ax.set_xlabel("Bootstrap replicate")
+    ax.set_ylabel(ylabel)
+    start = result.component_indices[0] + 1
+    end = result.component_indices[-1] + 1
+    ax.set_title(f"FPCA subspace stability: FPC{start}–FPC{end}")
     return ax

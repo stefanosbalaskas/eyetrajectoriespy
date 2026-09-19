@@ -34,6 +34,12 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [Selection & FPC uncertainty](../examples/fpca-selection-uncertainty.md)
 
+-   **Do my FPC labels rotate inside a stable subspace?**
+
+    Inspect adjacent eigengaps, principal angles, and bootstrap projector distance for a component block.
+
+    [Near-tied FPC subspaces](../examples/near-tied-subspace.md)
+
 -   **What did registration remove?**
 
     Analyze warping functions as phase outcomes and compare spatial FPCs before and after alignment.

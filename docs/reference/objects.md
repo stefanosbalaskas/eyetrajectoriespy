@@ -80,3 +80,22 @@ resampling unit, random seed, and provenance.
 
 The envelope is explicitly descriptive; the object does not assert pointwise or
 simultaneous confidence coverage.
+
+
+## FPCASubspaceComparisonResult
+
+Stores a reference and candidate FPCA, the selected contiguous component
+indices, principal cosines, principal angles, Frobenius projector distance,
+normalized projector distance, and provenance.
+
+The comparison is invariant to sign changes, permutations, and rotations within
+the selected subspace.
+
+## FPCASubspaceStabilityResult
+
+Stores the full-sample reference FPCA and bootstrap distributions of principal
+cosines, principal angles, Frobenius projector distances, and normalized
+projector distances for a selected contiguous FPC block.
+
+The object summarizes descriptive eigenspace stability. It does not assert
+identifiability of individual FPC axes or equality of population eigenspaces.

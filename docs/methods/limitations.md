@@ -62,6 +62,18 @@ Matched, sign-aligned bootstrap envelopes summarize pointwise variability of est
 
 When eigenvalues are close, component identity can become unstable even after matching. In that setting, matched similarity and subspace-level sensitivity may be more informative than narrow pointwise interpretation.
 
+## Stable eigenspace does not imply identifiable FPC labels
+
+A low projector distance for an FPC block means the selected functional span is stable under the stated comparison. It does not mean that each axis inside that span has a unique interpretation when eigenvalues are close.
+
+## Eigengap thresholds are descriptive choices
+
+The package does not provide a universal near-tie cutoff. A relative-gap threshold supplied by the analyst is a transparent review rule, not an inferential test or a guarantee that two population eigenvalues are equal.
+
+## Subspace stability depends on the chosen block
+
+A two-component span can be stable even when the boundary between FPC2 and FPC3 is unstable. Inspect eigengaps around the block boundary and fit enough components to evaluate that boundary.
+
 ## Functional outlier methods do not diagnose cause
 
 A flagged curve is unusual under a specified functional representation. The method does not determine whether the cause is tracker error, preprocessing failure, rare but valid behavior, stimulus heterogeneity, or another source.
