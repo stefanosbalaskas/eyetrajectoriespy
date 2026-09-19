@@ -120,6 +120,14 @@ These are static branch checks, not hosted CI certification.
 - That workflow runs backend-independent sparse contracts, the real FDApy integration smoke, and `examples/sparse_pace_fpca.py`.
 - The standard public-API regression test includes the sparse result object and public functions.
 
+### Real FDApy CI defect and repair — 2026-09-20
+
+The first real FDApy 1.0.3 integration run executed on both Python 3.11 and 3.12. Backend-independent sparse contracts passed on both versions, but the real PACE smoke failed because an arbitrary 61-point `evaluation_grid` produced eigenfunctions/covariance on 61 points while FDApy's irregular PACE transform internally interpolated observations to the pooled 31-point observed grid.
+
+The backend source confirms that FDApy 1.0.x irregular PACE calls `data.smooth(method="interpolation")` and then uses the fitted covariance/eigenfunctions directly. The adapter was therefore hardened to reject arbitrary PACE evaluation grids. An explicit grid must now equal `np.unique(np.concatenate(trajectories.time))`, or users should leave `evaluation_grid=None`.
+
+This is a backend-compatibility guard rather than silent interpolation. The original sparse observations remain on their native grids.
+
 ### 0.6 finalization re-check — 2026-09-20
 
 Additional local/static checks after the sparse-contract hardening:
