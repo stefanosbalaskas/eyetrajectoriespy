@@ -28,6 +28,12 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [FPCA stability](../examples/fpca-stability.md)
 
+-   **How many FPCs should I retain?**
+
+    Use leakage-safe held-out reconstruction CV, then inspect matched-bootstrap FPC shape uncertainty.
+
+    [Selection & FPC uncertainty](../examples/fpca-selection-uncertainty.md)
+
 -   **What did registration remove?**
 
     Analyze warping functions as phase outcomes and compare spatial FPCs before and after alignment.
