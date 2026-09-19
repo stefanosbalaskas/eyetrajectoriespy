@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.6.0.dev0 — 2026-09-19
+## 0.6.0.dev0 — 2026-09-20
 
 Sixth development tranche.
 
