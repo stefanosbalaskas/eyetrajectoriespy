@@ -63,6 +63,7 @@ def main() -> None:
         score_smoothing="LP",
         tol=1e-4,
         normalize=False,
+        evaluation_grid=np.linspace(0.0, 1.0, 101),
     )
 
     print()
