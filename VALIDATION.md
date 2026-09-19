@@ -133,6 +133,7 @@ Additional local/static checks after the sparse-contract hardening:
 - Non-finite selected-dimension observations remain representation errors rather than implicit deletion/interpolation.
 - FDApy optional dependency is bounded to the validated `>=1.0.3,<1.1` API family and remains gated to Python <3.13.
 - Dependency marker evaluation locally: Python 3.11 = enabled, Python 3.12 = enabled, Python 3.13 = disabled.
+- Dedicated `optional-sparse-fda` workflow YAML parsed successfully locally; its matrix is Python 3.11/3.12 and preserves the normal test/installation path rather than bypassing any gate.
 - MkDocs navigation source audit: **48/48** configured Markdown targets exist.
 - API source audit: **100/100** documented public symbols are exported.
 - Package `__version__`, `pyproject.toml`, and `CITATION.cff` all report **0.6.0.dev0**.
