@@ -46,7 +46,24 @@ plot_fpca_component(fit, component=0, dimension="y")
     Do not call an FPC “attention,” “verification,” or another psychological construct solely because its geometry looks plausible. Interpret against the experimental design and, when possible, validate against external behavior.
 
 
-## 5. Validate before labeling components
+## 5. Select dimension without leakage
+
+For repeated trials, keep each participant in one held-out fold:
+
+    cv = cross_validate_fpca_reconstruction(
+        gaze,
+        candidate_components=(1, 2, 3, 4, 5),
+        n_splits=5,
+        scaling="dimension_sd",
+        cv_unit="group",
+        group_column="participant_id",
+    )
+
+    selected = select_fpca_components_cv(cv, rule="one_se")
+
+The FPCA basis is re-estimated inside each training fold. The one-SE rule is a parsimony heuristic rather than a significance test.
+
+## 6. Validate before labeling components
 
 For repeated trials, use participant-level bootstrap:
 
