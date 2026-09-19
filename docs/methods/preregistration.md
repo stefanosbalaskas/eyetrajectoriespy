@@ -42,6 +42,32 @@ Functional analysis contains enough researcher degrees of freedom that the main 
 - whether bootstrap stability will be assessed;
 - resampling unit for stability.
 
+## Component-count selection
+
+If component count will be selected by reconstruction CV, specify:
+
+- candidate component counts;
+- number of folds;
+- curve versus participant/group fold unit;
+- grouping column;
+- scaling choice;
+- minimum-RMSE versus one-standard-error rule.
+
+FPCA must be re-estimated inside each training fold. Do not pre-fit the basis on the full dataset and then call the resulting error cross-validated.
+
+## FPC uncertainty
+
+If component-shape resampling will be used, specify:
+
+- curve versus participant bootstrap;
+- number of replicates;
+- random seed;
+- number of components to align;
+- pointwise envelope level;
+- how low matched similarity will be interpreted.
+
+Pre-register descriptive bootstrap envelopes separately from any formal confidence-band procedure.
+
 ## Registration
 
 - whether registration is planned;
