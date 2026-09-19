@@ -99,3 +99,15 @@ projector distances for a selected contiguous FPC block.
 
 The object summarizes descriptive eigenspace stability. It does not assert
 identifiability of individual FPC axes or equality of population eigenspaces.
+
+
+## SparseFPCAResult
+
+Stores PACE score estimates, retained sparse-FPCA eigenvalues, selected
+functional dimension, original curve IDs and metadata, coordinate/time
+semantics, smoothing settings, PACE tolerance, normalization choice, backend
+objects, and provenance.
+
+The result records `fit_method="covariance"` and `score_method="PACE"`.
+It does not imply that the original sparse observations were interpolated to a
+common grid, and it does not represent joint multivariate x/y PACE.
