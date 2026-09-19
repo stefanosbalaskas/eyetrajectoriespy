@@ -83,9 +83,19 @@ def install_fake_fdapy(monkeypatch, *, score_shape=None, bad_eigenvalues=False):
             self.transform_call = None
             UFPCA.last_instance = self
 
-        def fit(self, data, method_smoothing=None):
+        def fit(
+            self,
+            data,
+            points=None,
+            method_smoothing=None,
+            kwargs_mean=None,
+            kwargs_covariance=None,
+        ):
             self.fit_data = data
             self.fit_smoothing = method_smoothing
+            self.fit_points = points
+            self.fit_kwargs_mean = kwargs_mean
+            self.fit_kwargs_covariance = kwargs_covariance
 
         def transform(self, data, method="PACE", method_smoothing="LP", tol=1e-4):
             self.transform_call = {
@@ -137,6 +147,7 @@ def test_fdapy_conversion_uses_curve_specific_grids(monkeypatch):
 def test_sparse_pace_fit_contract_and_provenance(monkeypatch):
     gaze = sparse_sample()
     UFPCA = install_fake_fdapy(monkeypatch)
+    grid = np.linspace(0.0, 1.0, 51)
     result = fit_sparse_fpca_fdapy(
         gaze,
         dimension="x",
@@ -145,10 +156,16 @@ def test_sparse_pace_fit_contract_and_provenance(monkeypatch):
         score_smoothing="LP",
         tol=1e-5,
         normalize=False,
+        evaluation_grid=grid,
+        kwargs_mean={"bandwidth": 0.1},
+        kwargs_covariance={"bandwidth": 0.2},
     )
     model = UFPCA.last_instance
     assert model.method == "covariance"
     assert model.fit_smoothing == "PS"
+    assert np.array_equal(model.fit_points["input_dim_0"], grid)
+    assert model.fit_kwargs_mean == {"bandwidth": 0.1}
+    assert model.fit_kwargs_covariance == {"bandwidth": 0.2}
     assert model.transform_call == {
         "method": "PACE",
         "method_smoothing": "LP",
@@ -160,6 +177,9 @@ def test_sparse_pace_fit_contract_and_provenance(monkeypatch):
     assert list(result.metadata["condition"]) == ["A", "B", "A"]
     assert result.provenance["sparse_fpca"]["interpolation_performed"] is False
     assert result.provenance["sparse_fpca"]["sample_counts"] == [3, 4, 4]
+    assert result.provenance["sparse_fpca"]["evaluation_grid"] == grid.tolist()
+    assert result.provenance["sparse_fpca"]["kwargs_mean"] == {"bandwidth": 0.1}
+    assert result.provenance["sparse_fpca"]["kwargs_covariance"] == {"bandwidth": 0.2}
 
     frame = sparse_fpca_score_frame(result)
     assert list(frame.columns) == [
@@ -190,6 +210,18 @@ def test_sparse_contract_errors_precede_backend_import():
         fit_sparse_fpca_fdapy(gaze, dimension="x", fit_smoothing="bad")
     with pytest.raises(ValueError):
         fit_sparse_fpca_fdapy(gaze, dimension="x", score_smoothing="bad")
+    with pytest.raises(ValueError):
+        fit_sparse_fpca_fdapy(gaze, dimension="x", score_smoothing=None)
+    with pytest.raises(TypeError):
+        fit_sparse_fpca_fdapy(gaze, dimension="x", kwargs_mean=[])
+    with pytest.raises(TypeError):
+        fit_sparse_fpca_fdapy(gaze, dimension="x", kwargs_covariance=[])
+    with pytest.raises(ValueError):
+        fit_sparse_fpca_fdapy(
+            gaze,
+            dimension="x",
+            evaluation_grid=np.array([0.0, 0.5, 0.4]),
+        )
 
 
 def test_nonfinite_selected_values_are_not_silently_dropped():
