@@ -91,6 +91,7 @@ result = fit_sparse_fpca_fdapy(
     score_smoothing="LP",
     tol=1e-4,
     normalize=False,
+    evaluation_grid=np.linspace(0.0, 1.0, 101),
 )
 ```
 
@@ -101,6 +102,31 @@ transform(..., method="PACE")
 ```
 
 FDApy documents PACE score estimation for sparse UFPCA and exposes the tolerance used when inverting the conditional score system.
+
+### Evaluation grid
+
+The sparse observations remain on their native grids, but the estimated mean, covariance, and eigenfunctions are represented on evaluation points.
+
+Use `evaluation_grid=` when you want that grid to be explicit and reproducible. It must be finite, one-dimensional, and strictly increasing.
+
+Leaving it as `None` delegates the evaluation-point choice to FDApy and records that choice as a backend default.
+
+### Advanced smoothing parameters
+
+FDApy exposes separate keyword dictionaries for sparse mean and covariance smoothing. eyetrajectoriespy passes them explicitly:
+
+```python
+result = fit_sparse_fpca_fdapy(
+    irregular,
+    dimension="x",
+    n_components=3,
+    evaluation_grid=np.linspace(0.0, 1.0, 101),
+    kwargs_mean={"bandwidth": 0.08},
+    kwargs_covariance={"bandwidth": 0.10},
+)
+```
+
+These dictionaries are retained in provenance. Use only parameters supported by the installed FDApy version and report them.
 
 ## Preserve metadata with scores
 
