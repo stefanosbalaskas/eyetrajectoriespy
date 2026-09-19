@@ -179,6 +179,13 @@ def fit_sparse_fpca_fdapy(
                 "evaluation_grid must remain within the pooled observed time support "
                 f"[{pooled_start}, {pooled_end}]"
             )
+        pooled_grid = np.unique(np.concatenate(trajectories.time))
+        if not np.array_equal(grid, pooled_grid):
+            raise ValueError(
+                "FDApy 1.0.x irregular PACE scoring operates on the sorted pooled "
+                "observed sample-time grid. evaluation_grid must therefore equal "
+                "np.unique(np.concatenate(trajectories.time)) or be None."
+            )
 
     data = to_fdapy_irregular(trajectories, dimension=dimension)
     try:
