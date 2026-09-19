@@ -140,8 +140,12 @@ def fit_sparse_fpca_fdapy(
         raise TypeError("n_components must be an integer")
     if n_components < 1:
         raise ValueError("n_components must be positive")
-    if n_components > trajectories.n_curves:
-        raise ValueError("n_components cannot exceed number of curves")
+    max_rank = trajectories.n_curves - 1
+    if n_components > max_rank:
+        raise ValueError(
+            "n_components cannot exceed the non-zero centered sample rank "
+            f"(n_curves - 1 = {max_rank})"
+        )
     if tol <= 0 or not np.isfinite(tol):
         raise ValueError("tol must be finite and positive")
     if not isinstance(normalize, bool):
@@ -167,6 +171,13 @@ def fit_sparse_fpca_fdapy(
         ):
             raise ValueError(
                 "evaluation_grid must be a finite, strictly increasing one-dimensional array"
+            )
+        pooled_start = min(float(time[0]) for time in trajectories.time)
+        pooled_end = max(float(time[-1]) for time in trajectories.time)
+        if grid[0] < pooled_start or grid[-1] > pooled_end:
+            raise ValueError(
+                "evaluation_grid must remain within the pooled observed time support "
+                f"[{pooled_start}, {pooled_end}]"
             )
 
     data = to_fdapy_irregular(trajectories, dimension=dimension)
