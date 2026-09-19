@@ -99,7 +99,7 @@ result = fit_sparse_fpca_fdapy(
     score_smoothing="LP",
     tol=1e-4,
     normalize=False,
-    evaluation_grid=np.linspace(0.0, 1.0, 101),
+    evaluation_grid=np.unique(np.concatenate(irregular.time)),
 )
 ```
 
@@ -170,7 +170,7 @@ The defaults are explicit:
 
 These are not universally optimal values. Treat them as model settings and conduct sensitivity analysis when conclusions depend on them.
 
-If an explicit `evaluation_grid` is supplied for FDApy mean/covariance/eigenfunction estimation, it must remain inside the pooled observed time support. The adapter rejects grids that would request extrapolation beyond all observed data.
+If an explicit `evaluation_grid` is supplied, it must be finite, strictly increasing, remain inside the pooled support, **and equal the sorted unique pooled observed sample times** under the validated FDApy 1.0.x PACE path.
 
 ## Component count
 
