@@ -6,6 +6,14 @@ Dong M, Telesca D, Sugar C, et al. *A Functional Model for Studying Common Trend
 
 Kwan B, Sugar CA, Qian Q, et al. *Constrained Multivariate Functional Principal Components Analysis for Novel Outcomes in Eye-Tracking Experiments*. Statistics in Biosciences. 2024;16:578–603. doi:10.1007/s12561-023-09399-1.
 
+## Sparse functional data / PACE
+
+Yao F, Müller H-G, Wang J-L. *Functional Data Analysis for Sparse Longitudinal Data*. Journal of the American Statistical Association. 2005;100(470):577–590. doi:10.1198/016214504000001745.
+
+FDApy 1.0.3 documentation: irregular functional-data representation, sparse UFPCA, covariance-operator estimation, and PACE score transformation.
+
+Golovkine S. *FDApy: A Python Package to Analyze Functional Data*. Software repository/Zenodo release, 2024.
+
 ## General FDA
 
 Ramsay JO, Silverman BW. *Functional Data Analysis*. 2nd ed. Springer; 2005.
