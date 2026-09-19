@@ -5,7 +5,18 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from .types import FPCAInfluenceResult, FPCAResult, FPCAStabilityResult, FunctionalOutlierResult, MultilevelFPCAResult, RegistrationSensitivityResult, TrajectorySet
+from .selection import select_fpca_components_cv, summarise_fpca_cross_validation
+from .types import (
+    FPCAComponentEnvelopeResult,
+    FPCACrossValidationResult,
+    FPCAInfluenceResult,
+    FPCAResult,
+    FPCAStabilityResult,
+    FunctionalOutlierResult,
+    MultilevelFPCAResult,
+    RegistrationSensitivityResult,
+    TrajectorySet,
+)
 
 
 def summarise_trajectory_set(trajectories: TrajectorySet) -> pd.DataFrame:
@@ -141,4 +152,54 @@ def fpca_influence_reporting_text(
         f"was for {row['group']!r}, with minimum matched component similarity "
         f"{row['min_abs_component_similarity']:.{digits}f}. Influence diagnostics "
         "were used for sensitivity assessment rather than automatic exclusion."
+    )
+
+
+
+def fpca_cross_validation_reporting_text(
+    result: FPCACrossValidationResult,
+    *,
+    rule: str = "minimum",
+    digits: int = 3,
+) -> str:
+    """Generate manuscript-oriented text for held-out component selection."""
+
+    summary = summarise_fpca_cross_validation(result)
+    selected = select_fpca_components_cv(result, rule=rule)
+    row = summary.loc[summary["n_components"] == selected].iloc[0]
+    unit = "grouped" if result.cv_unit == "group" else "curve-level"
+    heuristic = (
+        " The one-standard-error rule was used as a parsimony heuristic."
+        if rule == "one_se"
+        else ""
+    )
+    return (
+        f"FPCA component selection used {result.n_splits}-fold {unit} held-out "
+        "reconstruction cross-validation, with FPCA refitted inside every "
+        f"training fold. The explicit '{rule}' rule selected {selected} "
+        f"component(s) (mean integrated RMSE={row['mean_rmse']:.{digits}f}, "
+        f"SE={row['se_rmse']:.{digits}f}).{heuristic}"
+    )
+
+
+def fpca_component_envelope_reporting_text(
+    result: FPCAComponentEnvelopeResult,
+    *,
+    digits: int = 2,
+) -> str:
+    """Describe matched-bootstrap FPC envelopes without confidence-band claims."""
+
+    median_similarity = np.median(result.similarities, axis=0)
+    similarity_text = ", ".join(
+        f"FPC{k + 1}={value:.{digits}f}"
+        for k, value in enumerate(median_similarity)
+    )
+    return (
+        "Functional principal-component shape uncertainty was summarized with "
+        f"{result.n_bootstrap} {result.resampling_unit}-level bootstrap "
+        "replicates. Replicate components were matched and sign-aligned to the "
+        f"full-sample reference before forming {100 * result.level:.1f}% "
+        "pointwise descriptive envelopes. Median matched absolute similarities "
+        f"were {similarity_text}. These envelopes are descriptive and are not "
+        "simultaneous confidence bands."
     )
