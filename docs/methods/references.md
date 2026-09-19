@@ -30,6 +30,14 @@ Li Y, Wang N, Carroll RJ. *Selecting the Number of Principal Components in Funct
 
 Goldsmith J, Greven S, Crainiceanu C. *Corrected Confidence Bands for Functional Data Using Principal Components*. Biometrics. 2013;69(1):41–51. doi:10.1111/j.1541-0420.2012.01808.x.
 
+## Sparse functional data and PACE
+
+Yao F, Müller H-G, Wang J-L. *Functional Data Analysis for Sparse Longitudinal Data*. Journal of the American Statistical Association. 2005;100(470):577–590. doi:10.1198/016214504000001745.
+
+Zhang X, Wang J-L. *From Sparse to Dense Functional Data and Beyond*. The Annals of Statistics. 2016;44(5):2281–2321. doi:10.1214/16-AOS1446.
+
+FDApy documentation: `IrregularFunctionalData`, `UFPCA(method="covariance")`, and `transform(..., method="PACE")`.
+
 ## Eigenspace stability and principal angles
 
 Björck Å, Golub GH. *Numerical Methods for Computing Angles Between Linear Subspaces*. Mathematics of Computation. 1973;27(123):579–594. doi:10.1090/S0025-5718-1973-0348991-3.
