@@ -25,3 +25,10 @@ Use when the scientific object is location relative to a meaningful stimulus ele
 ## Derived functions
 
 Distance to evidence, speed, or cumulative path length can be useful univariate functions. Derivatives amplify noise; use them only when temporal resolution and preprocessing support the question.
+
+
+### Sparse latent univariate process
+
+Use `IrregularTrajectorySet` plus `fit_sparse_fpca_fdapy()` when one functional dimension is observed only at a small number of curve-specific times and a common-grid interpolation would fabricate a substantial portion of the function.
+
+This representation targets a latent smooth process estimated from pooled sparse observations. It is distinct from a densely observed planar path and from joint x/y MFPCA.
