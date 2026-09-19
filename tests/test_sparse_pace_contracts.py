@@ -201,6 +201,8 @@ def test_sparse_contract_errors_precede_backend_import():
     with pytest.raises(ValueError):
         fit_sparse_fpca_fdapy(gaze, dimension="x", n_components=0)
     with pytest.raises(ValueError):
+        fit_sparse_fpca_fdapy(gaze, dimension="x", n_components=3)
+    with pytest.raises(ValueError):
         fit_sparse_fpca_fdapy(gaze, dimension="x", n_components=4)
     with pytest.raises(ValueError):
         fit_sparse_fpca_fdapy(gaze, dimension="x", tol=0)
@@ -221,6 +223,18 @@ def test_sparse_contract_errors_precede_backend_import():
             gaze,
             dimension="x",
             evaluation_grid=np.array([0.0, 0.5, 0.4]),
+        )
+    with pytest.raises(ValueError, match="pooled observed time support"):
+        fit_sparse_fpca_fdapy(
+            gaze,
+            dimension="x",
+            evaluation_grid=np.array([-0.1, 0.5, 1.0]),
+        )
+    with pytest.raises(ValueError, match="pooled observed time support"):
+        fit_sparse_fpca_fdapy(
+            gaze,
+            dimension="x",
+            evaluation_grid=np.array([0.0, 0.5, 1.1]),
         )
 
 
