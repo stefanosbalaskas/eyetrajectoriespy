@@ -68,6 +68,19 @@ If component-shape resampling will be used, specify:
 
 Pre-register descriptive bootstrap envelopes separately from any formal confidence-band procedure.
 
+## Near-tied eigenvalues and subspace stability
+
+If near-tied components are anticipated, pre-specify:
+
+- whether adjacent eigengaps will be inspected;
+- any relative-gap threshold used only for descriptive review;
+- the contiguous component block to be evaluated as a subspace;
+- curve versus participant bootstrap;
+- bootstrap replicate count and random seed;
+- principal-angle/projector-distance summaries to report.
+
+Do not choose a near-tie threshold after seeing which threshold produces the preferred component interpretation.
+
 ## Registration
 
 - whether registration is planned;
