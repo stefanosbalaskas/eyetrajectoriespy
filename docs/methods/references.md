@@ -12,7 +12,7 @@ Yao F, Müller H-G, Wang J-L. *Functional Data Analysis for Sparse Longitudinal 
 
 FDApy 1.0.3 documentation: irregular functional-data representation, sparse UFPCA, covariance-operator estimation, and PACE score transformation.
 
-Golovkine S. *FDApy: A Python Package to Analyze Functional Data*. Software repository/Zenodo release, 2024.
+Golovkine S. *FDApy: a Python package for functional data*. Version 1.0.3. Zenodo. 2025. doi:10.5281/zenodo.14944699.
 
 ## General FDA
 
