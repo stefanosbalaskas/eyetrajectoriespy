@@ -40,6 +40,16 @@ FPC sign is arbitrary. A component and its negative describe the same eigendirec
 
 When eigenvalues are close, component order can change and the corresponding eigenspace can rotate. The package therefore matches bootstrap components by absolute functional similarity instead of assuming labels remain fixed.
 
+## What if FPC1 and FPC2 keep swapping or rotating?
+
+First inspect their adjacent eigengap. If the eigenvalues are close, the individual axes can be weakly identified even when their joint span is reproducible. Use `compare_fpca_subspaces()` or `bootstrap_fpca_subspace_stability()` to evaluate the block with principal angles instead of forcing one-to-one labels.
+
+A stable two-dimensional eigenspace does not justify assigning fixed psychological meanings to FPC1 and FPC2 separately.
+
+## Is there a universal cutoff for a near-tied eigengap?
+
+No. `fpca_eigenvalue_gap_table()` reports the gap without flagging anything by default. If a study uses a relative-gap review threshold, supply it explicitly, pre-specify it where possible, and report it as a descriptive rule rather than a significance test.
+
 ## Should I bootstrap trials or participants?
 
 If multiple trials belong to the same participant and the goal is population-level component stability, participant-level resampling is usually the defensible default. Trial-level resampling treats repeated trials as independent units.
