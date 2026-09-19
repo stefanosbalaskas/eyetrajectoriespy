@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from importlib.metadata import PackageNotFoundError, version as package_version
+from collections.abc import Mapping
+from typing import Any
 
 import numpy as np
 import pandas as pd
@@ -121,9 +123,12 @@ def fit_sparse_fpca_fdapy(
     dimension: str,
     n_components: int = 3,
     fit_smoothing: str | None = "PS",
-    score_smoothing: str | None = "LP",
+    score_smoothing: str = "LP",
     tol: float = 1e-4,
     normalize: bool = False,
+    evaluation_grid: np.ndarray | None = None,
+    kwargs_mean: Mapping[str, Any] | None = None,
+    kwargs_covariance: Mapping[str, Any] | None = None,
 ) -> SparseFPCAResult:
     """Fit univariate sparse FPCA and recover scores with FDApy PACE.
 
@@ -141,15 +146,33 @@ def fit_sparse_fpca_fdapy(
         raise ValueError("tol must be finite and positive")
     if not isinstance(normalize, bool):
         raise TypeError("normalize must be boolean")
-    allowed_smoothing = {None, "PS", "LP"}
-    if fit_smoothing not in allowed_smoothing:
+    allowed_fit_smoothing = {None, "PS", "LP"}
+    if fit_smoothing not in allowed_fit_smoothing:
         raise ValueError("fit_smoothing must be None, 'PS', or 'LP'")
-    if score_smoothing not in allowed_smoothing:
-        raise ValueError("score_smoothing must be None, 'PS', or 'LP'")
+    if score_smoothing not in {"PS", "LP"}:
+        raise ValueError("score_smoothing must be 'PS' or 'LP'")
+    if kwargs_mean is not None and not isinstance(kwargs_mean, Mapping):
+        raise TypeError("kwargs_mean must be a mapping or None")
+    if kwargs_covariance is not None and not isinstance(kwargs_covariance, Mapping):
+        raise TypeError("kwargs_covariance must be a mapping or None")
+
+    grid = None
+    if evaluation_grid is not None:
+        grid = np.asarray(evaluation_grid, dtype=float)
+        if (
+            grid.ndim != 1
+            or len(grid) < 2
+            or not np.all(np.isfinite(grid))
+            or not np.all(np.diff(grid) > 0)
+        ):
+            raise ValueError(
+                "evaluation_grid must be a finite, strictly increasing one-dimensional array"
+            )
 
     data = to_fdapy_irregular(trajectories, dimension=dimension)
     try:
         from FDApy.preprocessing import UFPCA
+        from FDApy.representation import DenseArgvals
     except ImportError as exc:
         raise ImportError(
             "FDApy is optional. Install eyetrajectoriespy with the 'sparse' extra."
@@ -160,7 +183,20 @@ def fit_sparse_fpca_fdapy(
         method="covariance",
         normalize=normalize,
     )
-    model.fit(data, method_smoothing=fit_smoothing)
+    points = (
+        None
+        if grid is None
+        else DenseArgvals({"input_dim_0": grid.copy()})
+    )
+    mean_kwargs = dict(kwargs_mean or {})
+    covariance_kwargs = dict(kwargs_covariance or {})
+    model.fit(
+        data,
+        points=points,
+        method_smoothing=fit_smoothing,
+        kwargs_mean=mean_kwargs,
+        kwargs_covariance=covariance_kwargs,
+    )
     scores = np.asarray(
         model.transform(
             data,
@@ -211,6 +247,9 @@ def fit_sparse_fpca_fdapy(
                 "score_smoothing": score_smoothing,
                 "tolerance": float(tol),
                 "normalize": normalize,
+                "evaluation_grid": None if grid is None else grid.tolist(),
+                "kwargs_mean": mean_kwargs,
+                "kwargs_covariance": covariance_kwargs,
                 "sample_counts": trajectories.sample_counts.tolist(),
                 "interpolation_performed": False,
             },
