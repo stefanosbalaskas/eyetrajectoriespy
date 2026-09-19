@@ -12,7 +12,8 @@ Sixth development tranche.
 - non-finite sparse observations rejected rather than silently dropped or interpolated;
 - backend-independent fake-FDApy contract tests plus a dedicated real-FDApy integration workflow for Python 3.11–3.12; core eyetrajectoriespy support remains Python 3.11–3.13;
 - native sparse-observation plotting and manuscript-reporting helpers;
-- revised sparse-irregular decision guidance, worked PACE example, interpretation, assumptions, limitations, preregistration, reporting, references, and API documentation.
+- revised sparse-irregular decision guidance, worked PACE example, interpretation, assumptions, limitations, preregistration, reporting, references, and API documentation;
+- scikit-fda 0.10.x interoperability is constrained to multimethod 1.x after hosted CI identified an incompatibility with multimethod 2.1.
 
 
 ## 0.5.0.dev0 — 2026-09-19
