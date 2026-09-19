@@ -86,7 +86,26 @@ Use the stability result to qualify component interpretation rather than to crea
 Do not force them through <code>from_long_dataframe()</code>. Start with <code>from_irregular_long_dataframe_native()</code>, inspect the native sampling, and only then choose the common-grid projection.
 
 
-## 7. Review functional anomalies and influence without deleting data
+## 7. Diagnose near-tied component blocks
+
+If adjacent FPCs swap or rotate across resamples:
+
+    gaps = fpca_eigenvalue_gap_table(fit)
+
+    subspace = bootstrap_fpca_subspace_stability(
+        gaze,
+        start_component=0,
+        n_components=2,
+        n_bootstrap=200,
+        scaling="dimension_sd",
+        resample_unit="participant",
+        participant_column="participant_id",
+        random_state=2026,
+    )
+
+Interpret a stable block as a reproducible functional span, not as proof that the individual axes inside it are uniquely identifiable.
+
+## 8. Review functional anomalies and influence without deleting data
 
     review = diagnose_fpca_outliers(
         fit,
