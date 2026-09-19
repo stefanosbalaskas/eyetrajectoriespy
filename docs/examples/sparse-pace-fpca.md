@@ -107,6 +107,7 @@ result = fit_sparse_fpca_fdapy(
     score_smoothing="LP",
     tol=1e-4,
     normalize=False,
+    evaluation_grid=np.linspace(0.0, 1.0, 101),
 )
 ```
 
@@ -116,8 +117,9 @@ The function:
 2. converts each curve-specific grid directly to FDApy `IrregularFunctionalData`;
 3. fits covariance-operator `UFPCA`;
 4. obtains scores with `method="PACE"`;
-5. preserves estimator settings and sample counts in provenance;
-6. stores the FDApy model, sparse backend data, and reconstructed backend object.
+5. evaluates the fitted functional structure on the explicitly supplied 101-point grid;
+6. preserves estimator settings and sample counts in provenance;
+7. stores the FDApy model, sparse backend data, and reconstructed backend object.
 
 No interpolation-to-common-grid step is inserted.
 
@@ -160,6 +162,8 @@ At minimum, consider whether conclusions change under plausible alternatives for
 - mean/covariance smoothing;
 - score smoothing;
 - PACE tolerance;
+- evaluation-grid resolution/domain;
+- mean/covariance smoothing keyword parameters;
 - inclusion criteria for extremely sparse curves.
 
 Do not tune these settings only after inspecting downstream condition effects.
