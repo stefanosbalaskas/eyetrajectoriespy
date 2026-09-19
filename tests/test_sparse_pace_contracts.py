@@ -147,7 +147,7 @@ def test_fdapy_conversion_uses_curve_specific_grids(monkeypatch):
 def test_sparse_pace_fit_contract_and_provenance(monkeypatch):
     gaze = sparse_sample()
     UFPCA = install_fake_fdapy(monkeypatch)
-    grid = np.linspace(0.0, 1.0, 51)
+    grid = np.unique(np.concatenate(gaze.time))
     result = fit_sparse_fpca_fdapy(
         gaze,
         dimension="x",
@@ -238,6 +238,13 @@ def test_sparse_contract_errors_precede_backend_import():
             dimension="x",
             n_components=2,
             evaluation_grid=np.array([0.0, 0.5, 1.1]),
+        )
+    with pytest.raises(ValueError, match="sorted pooled observed sample-time grid"):
+        fit_sparse_fpca_fdapy(
+            gaze,
+            dimension="x",
+            n_components=2,
+            evaluation_grid=np.array([0.0, 0.5, 1.0]),
         )
 
 
