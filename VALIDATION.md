@@ -94,6 +94,10 @@ The local runner still cannot clone GitHub directly and does not have FDApy inst
 - Missing FDApy raised the documented optional-`sparse` installation message.
 - Native sparse-observation plotting passed locally.
 - The reconstructed sparse module imported/compiled successfully under Python 3.13.5.
+- Post-refinement sparse contract suite: **8/8 pytest tests passed** after exposing `evaluation_grid`, `kwargs_mean`, and `kwargs_covariance`.
+- Explicit evaluation grids were forwarded as FDApy `DenseArgvals`; decreasing, non-finite, or undersized grids were rejected before backend estimation.
+- Mean/covariance smoothing keyword dictionaries were forwarded and retained in provenance; non-mapping inputs were rejected.
+- `score_smoothing=None` is rejected because the documented FDApy PACE transform exposes string-based smoothing choices rather than an explicit null option.
 
 This is **backend-independent contract validation**. It does not substitute for the real FDApy integration test.
 
