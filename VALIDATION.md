@@ -73,18 +73,18 @@ These are static branch checks, not hosted CI certification.
 
 - Existing 0.4 MkDocs navigation baseline: **45/45** pages previously verified; the two newly configured 0.5 pages were created on the branch, giving **47 configured pages with no intentional removals**.
 - API documentation declarations: **93/93** documented public symbols are present in the package export surface.
-- Version metadata: package `__version__` and `pyproject.toml` both report **0.5.0.dev0**; `CITATION.cff` software version is **0.5.0.dev0** with release date 2026-09-19.
+- Version metadata: package `__version__` and `pyproject.toml` both report **0.5.0.dev0**; `CITATION.cff` software version is **0.5.0.dev0** with release date 2026-09-20.
 - The examples workflow includes `examples/fpca_subspace_stability.py`.
 - Public API regression test includes the new subspace result objects and functions.
 
-## 0.6 delta validation — 2026-09-19
+## 0.6 delta validation — 2026-09-20
 
 Environment: Linux, Python 3.13.5.
 
 The local runner cannot clone GitHub directly and does not have FDApy installed. The exact sparse/PACE affected source and tests were therefore reconstructed from the development branch and executed locally with a faithful fake FDApy API. This validates the adapter contract without claiming real-backend numerical certification.
 
 - Backend-independent sparse/PACE contract suite: **7 passed, 0 failed**.
-- Coverage on the reconstructed changed surface: **96%**, above the repository's unchanged **90%** threshold.
+- Coverage on the reconstructed changed surface: **99%**, above the repository's unchanged **90%** threshold.
 - `python -m compileall -q src tests`: passed for the reconstructed affected surface.
 - Native curve-specific times were preserved during FDApy conversion; no common-grid interpolation was introduced.
 - Explicit FDApy fitting contract passed: covariance UFPCA, PACE score recovery, fitting smoothing, score smoothing, tolerance, normalization, evaluation grid, mean-smoothing kwargs, and covariance kwargs were forwarded as specified.
@@ -107,7 +107,7 @@ Methodological/backend verification against FDApy 1.0.3 documentation confirmed:
 
 The eyetrajectoriespy core remains Python **3.11–3.13**. FDApy 1.0.3 depends on NumPy **<2.0**, while NumPy 1.26.x supports Python only through **3.12**. Therefore the packaged FDApy `sparse` extra and dedicated hosted sparse workflow currently target Python **3.11–3.12**. This restriction applies only to optional FDApy interoperability.
 
-## 0.6 repository source integrity — 2026-09-19
+## 0.6 repository source integrity — 2026-09-20
 
 These are static branch checks, not hosted CI certification.
 
@@ -120,13 +120,15 @@ These are static branch checks, not hosted CI certification.
 - That workflow runs backend-independent sparse contracts, the real FDApy integration smoke, and `examples/sparse_pace_fpca.py`.
 - The standard public-API regression test includes the sparse result object and public functions.
 
-### 0.6 finalization re-check — 2026-09-19
+### 0.6 finalization re-check — 2026-09-20
 
 Additional local/static checks after the sparse-contract hardening:
 
-- Exact current `src/eyetrajectoriespy/sparse.py` was reconstructed locally and compiled successfully.
+- Exact current `src/eyetrajectoriespy/sparse.py` and the focused sparse contract suite were reconstructed locally and compiled successfully.
+- Exact current backend-independent sparse contract suite: **7 passed, 0 failed**, with **99%** coverage on the reconstructed changed surface.
 - Focused current-source sparse harness: **passed** for covariance UFPCA/PACE argument forwarding, score/provenance construction, and metadata-preserving score frames.
 - Centered-rank guard: **passed**; with three curves, requesting three or more components is rejected because non-zero empirical rank is at most `n_curves - 1 = 2`.
+- A test-ordering defect was found and corrected: tests targeting normalization/smoothing/kwargs/evaluation-grid validation now explicitly request `n_components=2` so they reach the intended contract rather than stopping at the earlier centered-rank guard.
 - Evaluation-domain guard: **passed**; explicit FDApy evaluation grids extending below/above pooled observed support are rejected before backend fitting.
 - Non-finite selected-dimension observations remain representation errors rather than implicit deletion/interpolation.
 - FDApy optional dependency is bounded to the validated `>=1.0.3,<1.1` API family and remains gated to Python <3.13.
