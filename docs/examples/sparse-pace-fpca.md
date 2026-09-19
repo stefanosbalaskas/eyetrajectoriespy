@@ -94,6 +94,8 @@ Install the optional dependency:
 pip install -e ".[sparse]"
 ```
 
+Use Python 3.11 or 3.12 for this optional backend under the current FDApy/NumPy dependency line. The eyetrajectoriespy core remains available on Python 3.13.
+
 Then fit:
 
 ```python
