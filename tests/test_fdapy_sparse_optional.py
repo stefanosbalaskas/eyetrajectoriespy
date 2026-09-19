@@ -51,7 +51,7 @@ def test_real_fdapy_sparse_pace_smoke():
         score_smoothing="LP",
         tol=1e-4,
         normalize=False,
-        evaluation_grid=np.linspace(0.0, 1.0, 61),
+        evaluation_grid=np.unique(np.concatenate(gaze.time)),
     )
     assert result.scores.shape == (gaze.n_curves, 2)
     assert np.isfinite(result.scores).all()
