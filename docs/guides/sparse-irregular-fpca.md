@@ -55,6 +55,14 @@ Install the optional backend:
 pip install -e ".[sparse]"
 ```
 
+## Backend compatibility
+
+The eyetrajectoriespy core supports Python 3.11–3.13. The current FDApy 1.0.3 optional sparse backend is qualified on Python 3.11–3.12. FDApy 1.0.3 depends on NumPy <2.0, while NumPy 1.26.x supports Python only through 3.12.
+
+Use a Python 3.11 or 3.12 environment for the `sparse` extra until the backend dependency line supports Python 3.13.
+
+This restriction applies only to the optional FDApy interoperability layer; native irregular objects and the rest of eyetrajectoriespy remain available on Python 3.13.
+
 ## Inspect sparse sampling first
 
 ```python
