@@ -7,6 +7,8 @@
 ::: eyetrajectoriespy.CompositionalFPCAResult
 ::: eyetrajectoriespy.MultilevelFPCAResult
 ::: eyetrajectoriespy.FPCAStabilityResult
+::: eyetrajectoriespy.FPCACrossValidationResult
+::: eyetrajectoriespy.FPCAComponentEnvelopeResult
 ::: eyetrajectoriespy.FPCAInfluenceResult
 ::: eyetrajectoriespy.FunctionalOutlierResult
 
@@ -39,6 +41,18 @@
 ::: eyetrajectoriespy.reconstruct_fpca
 ::: eyetrajectoriespy.component_trajectories
 ::: eyetrajectoriespy.fpca_score_frame
+
+## FPCA component selection
+::: eyetrajectoriespy.cross_validate_fpca_reconstruction
+::: eyetrajectoriespy.summarise_fpca_cross_validation
+::: eyetrajectoriespy.select_fpca_components_cv
+::: eyetrajectoriespy.plot_fpca_cross_validation
+::: eyetrajectoriespy.fpca_cross_validation_reporting_text
+
+## FPC shape uncertainty
+::: eyetrajectoriespy.bootstrap_fpca_component_envelopes
+::: eyetrajectoriespy.plot_fpca_component_envelope
+::: eyetrajectoriespy.fpca_component_envelope_reporting_text
 
 ## Functional outliers and influence
 ::: eyetrajectoriespy.diagnose_fpca_outliers
