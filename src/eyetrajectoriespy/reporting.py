@@ -6,12 +6,14 @@ import numpy as np
 import pandas as pd
 
 from .selection import select_fpca_components_cv, summarise_fpca_cross_validation
+from .subspace import fpca_eigenvalue_gap_table, summarise_fpca_subspace_stability
 from .types import (
     FPCAComponentEnvelopeResult,
     FPCACrossValidationResult,
     FPCAInfluenceResult,
     FPCAResult,
     FPCAStabilityResult,
+    FPCASubspaceStabilityResult,
     FunctionalOutlierResult,
     MultilevelFPCAResult,
     RegistrationSensitivityResult,
@@ -202,4 +204,58 @@ def fpca_component_envelope_reporting_text(
         "pointwise descriptive envelopes. Median matched absolute similarities "
         f"were {similarity_text}. These envelopes are descriptive and are not "
         "simultaneous confidence bands."
+    )
+
+
+
+def fpca_eigengap_reporting_text(
+    result: FPCAResult,
+    *,
+    relative_gap_threshold: float | None = None,
+    digits: int = 3,
+) -> str:
+    """Generate descriptive text for adjacent retained FPCA eigengaps."""
+
+    table = fpca_eigenvalue_gap_table(
+        result,
+        relative_gap_threshold=relative_gap_threshold,
+    )
+    row = table.loc[table["relative_gap"].idxmin()]
+    text = (
+        f"The smallest adjacent retained FPCA eigengap was between FPC"
+        f"{int(row['component'])} and FPC{int(row['next_component'])} "
+        f"(relative gap={row['relative_gap']:.{digits}f}; "
+        f"next/current eigenvalue ratio={row['next_to_current_ratio']:.{digits}f})."
+    )
+    if relative_gap_threshold is not None:
+        count = int(table["near_tie_flag"].sum())
+        text += (
+            f" Using the pre-specified relative-gap threshold "
+            f"{relative_gap_threshold:.{digits}f}, {count} adjacent retained "
+            "pair(s) met the descriptive near-tie criterion."
+        )
+    return text
+
+
+def fpca_subspace_stability_reporting_text(
+    result: FPCASubspaceStabilityResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate descriptive text for bootstrap FPCA eigenspace stability."""
+
+    summary = summarise_fpca_subspace_stability(result)
+    row = summary.iloc[0]
+    start = int(row["component_start"])
+    end = int(row["component_end"])
+    return (
+        f"Bootstrap FPCA subspace stability evaluated FPC{start}–FPC{end} using "
+        f"{result.n_bootstrap} {result.resampling_unit}-level resamples. The "
+        f"median minimum principal cosine was "
+        f"{row['median_min_principal_cosine']:.{digits}f}, the median maximum "
+        f"principal angle was {row['median_max_principal_angle_degrees']:.{digits}f} "
+        f"degrees, and the median normalized projector distance was "
+        f"{row['median_normalized_projector_distance']:.{digits}f}. These are "
+        "descriptive eigenspace-stability summaries; they do not establish "
+        "identifiability of individual FPC labels within the selected block."
     )
