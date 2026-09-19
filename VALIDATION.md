@@ -112,7 +112,7 @@ The eyetrajectoriespy core remains Python **3.11–3.13**. FDApy 1.0.3 depends o
 These are static branch checks, not hosted CI certification.
 
 - Public API documentation declarations: **100/100** documented symbols are present in the package export surface.
-- MkDocs navigation contains **48** configured Markdown pages; sparse PACE guide/worked example are configured and source existence is re-checked before merge.
+- MkDocs navigation targets: **48/48** configured Markdown pages exist on the branch, including the sparse PACE guide and worked example.
 - Package `__version__`, `pyproject.toml`, and `CITATION.cff` all report **0.6.0.dev0**.
 - `pyproject.toml` exposes an optional FDApy sparse extra constrained to Python <3.13; the `all` extra carries the same compatibility marker.
 - Dedicated `optional-sparse-fda` workflow targets Ubuntu with Python **3.11 and 3.12**.
