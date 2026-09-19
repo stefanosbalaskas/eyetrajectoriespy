@@ -7,7 +7,17 @@ import numpy as np
 
 from .fpca import component_trajectories
 from .registration import warping_displacement
-from .types import FPCAInfluenceResult, FPCAResult, FPCAStabilityResult, FunctionalOutlierResult, RegistrationResult, TrajectorySet
+from .selection import summarise_fpca_cross_validation
+from .types import (
+    FPCAComponentEnvelopeResult,
+    FPCACrossValidationResult,
+    FPCAInfluenceResult,
+    FPCAResult,
+    FPCAStabilityResult,
+    FunctionalOutlierResult,
+    RegistrationResult,
+    TrajectorySet,
+)
 
 
 def plot_trajectory_overlay(
@@ -241,4 +251,73 @@ def plot_fpca_influence(
     ax.set_ylabel(metric.replace("_", " "))
     ax.set_xlabel("Omitted group")
     ax.set_title("Leave-one-group-out FPCA influence")
+    return ax
+
+
+
+def plot_fpca_cross_validation(
+    result: FPCACrossValidationResult,
+    *,
+    ax=None,
+):
+    """Plot mean held-out reconstruction RMSE with fold-level SE bars."""
+
+    if ax is None:
+        _, ax = plt.subplots()
+    summary = summarise_fpca_cross_validation(result)
+    ax.errorbar(
+        summary["n_components"],
+        summary["mean_rmse"],
+        yerr=summary["se_rmse"],
+        marker="o",
+        capsize=3,
+    )
+    ax.set_xlabel("Retained functional principal components")
+    ax.set_ylabel("Held-out integrated RMSE")
+    ax.set_title("FPCA reconstruction cross-validation")
+    return ax
+
+
+def plot_fpca_component_envelope(
+    result: FPCAComponentEnvelopeResult,
+    *,
+    component: int = 0,
+    dimension: str | None = None,
+    ax=None,
+):
+    """Plot a reference FPC with its descriptive matched-bootstrap envelope."""
+
+    if component < 0 or component >= result.reference.n_components:
+        raise IndexError("component is outside the fitted range")
+    if dimension is None:
+        dimension = result.reference.dimension_names[0]
+    if dimension not in result.reference.dimension_names:
+        raise KeyError(f"Unknown dimension {dimension!r}")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    dim = result.reference.dimension_names.index(dimension)
+    time = result.reference.time
+    ax.fill_between(
+        time,
+        result.lower[component, :, dim],
+        result.upper[component, :, dim],
+        alpha=0.2,
+        label=f"{100 * result.level:.0f}% pointwise envelope",
+    )
+    ax.plot(
+        time,
+        result.median[component, :, dim],
+        linestyle="--",
+        label="bootstrap median",
+    )
+    ax.plot(
+        time,
+        result.reference.components[component, :, dim],
+        label="reference FPC",
+    )
+    ax.set_xlabel(f"Time ({result.reference.time_unit})")
+    ax.set_ylabel(f"FPC loading: {dimension}")
+    ax.set_title(f"FPC{component + 1} matched-bootstrap envelope")
+    ax.legend()
     return ax
