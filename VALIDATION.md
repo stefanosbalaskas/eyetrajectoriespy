@@ -168,22 +168,52 @@ These are **pending**, not passed:
 
 The 0.1 merged release tranche was previously GitHub CI-certified.
 
-The merged 0.2/0.3/0.4/0.5 tranches and the current 0.6 development tranche are **not fully GitHub CI-certified**. Hosted Actions are currently unavailable because the monthly Actions allowance is exhausted; queued workflows therefore do not constitute pass/fail evidence.
+### 0.6 PR-head certification — 2026-09-20
 
-## Re-check when GitHub Actions becomes available
+Exact certified PR head:
 
-Run and require success for:
+`1c7d04bb97afb1c3f6f95d4b62bc1dfd495b69f8`
 
-1. Windows × Python 3.11, 3.12, 3.13.
-2. Ubuntu × Python 3.11, 3.12, 3.13.
-3. macOS × Python 3.11, 3.12, 3.13.
-4. Full pytest coverage gate.
-5. Ruff and compile checks.
-6. Package sdist/wheel build and Twine validation.
-7. All core examples.
-8. Optional `scikit-fda` tests and basis/outlier examples.
-9. Optional FDApy sparse/PACE tests and example on Python 3.11 and 3.12. Reassess Python 3.13 only when the FDApy/NumPy dependency line supports it.
-10. Strict MkDocs build.
-11. GitHub Pages deployment from the exact merged `main` SHA.
+All required pull-request workflows completed successfully on that exact SHA:
 
-Do not describe the 0.2/0.3/0.4/0.5/0.6 line as fully CI-certified until these workflows actually execute successfully.
+- package build / distribution validation: **success**;
+- Windows × Python 3.11, 3.12, 3.13: **3/3 success**;
+- Ubuntu × Python 3.11, 3.12, 3.13: **3/3 success**;
+- macOS × Python 3.11, 3.12, 3.13: **3/3 success**;
+- full pytest/coverage/compile/Ruff gate embedded in the standard workflow: **success**;
+- core executable examples: **success**;
+- strict MkDocs documentation build: **success**;
+- optional scikit-fda basis/outlier interoperability: **success**;
+- optional FDApy sparse/PACE interoperability on Python 3.11 and 3.12, including real-backend smoke and sparse example: **2/2 success**.
+
+Two real CI defects were discovered and repaired before certification:
+
+1. FDApy 1.0.x irregular PACE requires the fitted functional grid to match the sorted pooled observed sample-time grid. Arbitrary evaluation grids are now rejected before fitting.
+2. scikit-fda 0.10.1 resolved to multimethod 2.1, which caused a Python 3.12 metaclass conflict. The optional fda extra is now constrained to scikit-fda 0.10.x with `multimethod>=1.12,<2`. No interoperability tests were skipped.
+
+PR #8 was squash-merged as:
+
+`5807d92eeb9c87ab6926c4081659789131f6b6bd`
+
+The certified PR head and the squash-merged main commit have the **same Git tree object**, so the merged code/content tree is byte-for-byte the CI-certified PR tree. The commit SHA differs because of squash history.
+
+### Exact merged-main SHA and deployment status
+
+No push-triggered Actions runs attached to `5807d92eeb9c87ab6926c4081659789131f6b6bd` through the GitHub-app merge path.
+
+Therefore:
+
+- the **0.6 code/content tree is GitHub CI-certified** via exact PR head `1c7d04b...`;
+- the **exact merged-main commit SHA has not separately rerun the matrix**;
+- GitHub Pages deployment from the merged-main SHA is **pending / not certified**;
+- do not claim successful 0.6 Pages deployment until the main-branch docs workflow actually executes its deploy job successfully.
+
+## Remaining re-checks
+
+The following are still pending:
+
+1. A push/main qualification run attached to the exact merged `main` lineage when GitHub Actions triggers for that SHA or a subsequent status-only commit.
+2. Successful GitHub Pages deployment from `main`.
+3. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this is not part of the current optional-backend support contract.
+
+Cross-platform package behavior, core examples, docs build, scikit-fda interoperability, and FDApy sparse/PACE interoperability are otherwise certified on the identical 0.6 content tree described above.
