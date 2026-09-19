@@ -443,3 +443,36 @@ class FPCAComponentEnvelopeResult:
     @property
     def n_bootstrap(self) -> int:
         return self.similarities.shape[0]
+
+
+@dataclass(frozen=True)
+class FPCASubspaceComparisonResult:
+    """Principal-angle comparison of corresponding FPCA component subspaces."""
+
+    reference: FPCAResult
+    candidate: FPCAResult
+    component_indices: tuple[int, ...]
+    principal_cosines: np.ndarray
+    principal_angles_degrees: np.ndarray
+    projector_distance_frobenius: float
+    normalized_projector_distance: float
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class FPCASubspaceStabilityResult:
+    """Bootstrap stability diagnostics for an FPCA component subspace."""
+
+    reference: FPCAResult
+    component_indices: tuple[int, ...]
+    principal_cosines: np.ndarray
+    principal_angles_degrees: np.ndarray
+    projector_distance_frobenius: np.ndarray
+    normalized_projector_distance: np.ndarray
+    resampling_unit: str
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.principal_cosines.shape[0]
