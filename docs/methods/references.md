@@ -38,7 +38,7 @@ Stewart GW, Sun J-G. *Matrix Perturbation Theory*. Academic Press; 1990.
 
 ## Software backends
 
-`scikit-fda` provides general Python functional-data representations and estimators. `fdasrsf` provides elastic registration and SRVF curve statistics. `eyetrajectoriespy` adds eye-tracking-specific contracts, representations, safeguards, and workflows.
+`scikit-fda` provides general Python functional-data representations and estimators. `FDApy` provides dense/irregular functional representations and the sparse covariance-UFPCA/PACE backend used by the optional sparse workflow. `fdasrsf` provides elastic registration and SRVF curve statistics. `eyetrajectoriespy` adds eye-tracking-specific contracts, representations, safeguards, and workflows.
 
 
 ## Additional functional-data software
