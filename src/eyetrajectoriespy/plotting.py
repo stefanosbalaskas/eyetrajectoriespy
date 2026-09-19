@@ -15,6 +15,7 @@ from .types import (
     FPCAResult,
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
+    IrregularTrajectorySet,
     FunctionalOutlierResult,
     RegistrationResult,
     TrajectorySet,
@@ -363,4 +364,40 @@ def plot_fpca_subspace_stability(
     start = result.component_indices[0] + 1
     end = result.component_indices[-1] + 1
     ax.set_title(f"FPCA subspace stability: FPC{start}–FPC{end}")
+    return ax
+
+
+
+def plot_sparse_irregular_dimension(
+    trajectories: IrregularTrajectorySet,
+    *,
+    dimension: str,
+    ax=None,
+):
+    """Plot native irregular observations for one functional dimension."""
+
+    if dimension not in trajectories.dimension_names:
+        raise KeyError(f"Unknown dimension {dimension!r}")
+    if ax is None:
+        _, ax = plt.subplots()
+    index = trajectories.dimension_names.index(dimension)
+    for curve_id, time, values in zip(
+        trajectories.curve_ids,
+        trajectories.time,
+        trajectories.values,
+        strict=True,
+    ):
+        ax.plot(
+            time,
+            values[:, index],
+            marker="o",
+            linewidth=1,
+            alpha=0.55,
+            label=curve_id,
+        )
+    ax.set_xlabel(f"Time ({trajectories.time_unit})")
+    ax.set_ylabel(dimension)
+    ax.set_title(f"Native irregular observations: {dimension}")
+    if trajectories.n_curves <= 12:
+        ax.legend()
     return ax

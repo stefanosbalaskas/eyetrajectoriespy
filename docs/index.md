@@ -3,13 +3,13 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.5 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.6 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
 eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze paths, multivariate FPCA, native irregular trajectories, repeated-trial functional decomposition, phase analysis, compositional AOI trajectories, and explicit validation of component stability.
 
-<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">native irregular grids</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
+<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
 </div>
 
 <div class="grid cards" markdown>
@@ -25,6 +25,12 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
     Preserve curve-specific sample times, inspect gaps, then make common-grid projection an explicit decision.
 
     [:octicons-arrow-right-24: Native irregular trajectories](guides/irregular-trajectories.md)
+
+-   **Use sparse PACE when interpolation would invent most of the curve**
+
+    Preserve native curve-specific times and delegate univariate sparse covariance estimation plus conditional scores to FDApy.
+
+    [:octicons-arrow-right-24: Sparse PACE FPCA](guides/sparse-irregular-fpca.md)
 
 -   **Ask whether the FPCs are reproducible**
 
@@ -81,6 +87,9 @@ The package is designed around the principle that **the path to an FPC score is 
 
 - **Are sample times irregular across trials?**  
   Preserve them in an <code>IrregularTrajectorySet</code> before choosing a projection.
+
+- **Would interpolation create most of each curve?**  
+  Use univariate sparse covariance UFPCA with PACE conditional-expectation scores rather than manufacturing a dense trajectory.
 
 - **Do stable participant strategies differ from trial fluctuations?**  
   Use multilevel FPCA.
@@ -143,7 +152,15 @@ The package is designed around the principle that **the path to an FPC score is 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
 
-## New in 0.5 development
+## New in 0.6 development
+
+- optional FDApy sparse functional interoperability;
+- direct native-irregular → FDApy conversion without common-grid interpolation;
+- covariance UFPCA with PACE conditional-expectation scores;
+- explicit smoothing, tolerance, normalization, and backend provenance;
+- sparse sampling diagnostics, score tables, plotting, reporting, and worked-example guidance.
+
+## Added in 0.5 development
 
 - adjacent retained-eigenvalue gap diagnostics with no automatic near-tie threshold;
 - principal-angle comparison of FPC eigenspaces;

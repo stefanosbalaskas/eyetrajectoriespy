@@ -16,7 +16,7 @@ nav:
   - Guides:
       - Preparing trajectories: guides/preprocessing.md
       - Native irregular trajectories: guides/irregular-trajectories.md
-      - Sparse irregular FPCA: guides/sparse-irregular-fpca.md
+      - Sparse irregular / PACE FPCA: guides/sparse-irregular-fpca.md
       - FPCA & MFPCA: guides/fpca.md
       - FPCA stability & validation: guides/stability-validation.md
       - Selecting FPC count: guides/component-selection.md
@@ -35,6 +35,7 @@ nav:
   - Worked examples:
       - 2-D evidence inspection: examples/evidence-inspection.md
       - Native irregular sampling: examples/native-irregular.md
+      - Sparse PACE FPCA: examples/sparse-pace-fpca.md
       - FPCA stability: examples/fpca-stability.md
       - Selection & FPC uncertainty: examples/fpca-selection-uncertainty.md
       - Near-tied FPC subspaces: examples/near-tied-subspace.md
