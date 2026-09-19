@@ -3,13 +3,13 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.4 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.5 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
 eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze paths, multivariate FPCA, native irregular trajectories, repeated-trial functional decomposition, phase analysis, compositional AOI trajectories, and explicit validation of component stability.
 
-<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">native irregular grids</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
+<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">native irregular grids</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
 </div>
 
 <div class="grid cards" markdown>
@@ -43,6 +43,12 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
     Match and sign-align bootstrap components before interpreting pointwise variation in an estimated eigenfunction.
 
     [:octicons-arrow-right-24: FPC shape uncertainty](guides/component-uncertainty.md)
+
+-   **Distinguish unstable axes from a stable eigenspace**
+
+    Inspect adjacent eigengaps and principal-angle stability when FPC labels swap or rotate across resamples.
+
+    [:octicons-arrow-right-24: Near-tied FPC subspaces](guides/subspace-stability.md)
 
 -   **Flag unusual trajectories without auto-deleting them**
 
@@ -87,6 +93,9 @@ The package is designed around the principle that **the path to an FPC score is 
 
 - **Are my components stable enough to interpret?**  
   Use participant-aware bootstrap matching, reconstruction diagnostics, and descriptive component-shape envelopes.
+
+- **Do FPC1/FPC2 rotate or swap while their span stays stable?**  
+  Inspect retained eigengaps and bootstrap principal-angle subspace stability.
 
 - **Is one participant or curve driving the basis?**  
   Use functional review diagnostics plus leave-one-group-out FPCA influence.
@@ -134,7 +143,15 @@ The package is designed around the principle that **the path to an FPC score is 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
 
-## New in 0.4 development
+## New in 0.5 development
+
+- adjacent retained-eigenvalue gap diagnostics with no automatic near-tie threshold;
+- principal-angle comparison of FPC eigenspaces;
+- normalized projection-operator distance;
+- participant-aware bootstrap subspace stability;
+- rotation-invariant interpretation guidance for close eigenvalues.
+
+## Added in 0.4 development
 
 - leakage-aware held-out FPCA reconstruction cross-validation;
 - participant/group folds for repeated-trial designs;
