@@ -46,6 +46,22 @@ Phase FPCA describes the estimated warping functions from a specific registratio
 The package preserves provenance around basis projection but delegates the basis mathematics to scikit-fda. Backend-version differences should be recorded in reproducible analyses.
 
 
+## Sparse PACE is currently univariate in eyetrajectoriespy
+
+The FDApy adapter estimates one named functional dimension at a time with covariance UFPCA and PACE score recovery. Separate x(t) and y(t) fits do not preserve joint planar covariance and must not be interpreted as joint 2-D MFPCA.
+
+## Sparse scores depend on population smoothing
+
+PACE scores are conditional estimates based on the fitted mean/covariance model. With very few observations per curve, individual scores can be strongly informed by population structure rather than by a densely observed individual path.
+
+## Sparse observation design can be informative
+
+A sparse estimator addresses irregular and limited observations; it does not automatically solve informative missingness. If gaze is absent because of blinks, track loss, off-screen viewing, or condition-dependent behavior, the observation mechanism may carry scientific information or bias.
+
+## Backend uncertainty is not fully propagated downstream
+
+`SparseFPCAResult` preserves scores, eigenvalues, settings, and backend objects, but downstream score regressions do not automatically propagate uncertainty from sparse mean/covariance estimation and conditional score recovery.
+
 ## Reconstruction CV optimizes reconstruction, not scientific truth
 
 Held-out trajectory reconstruction asks how well a training-fold FPCA basis reconstructs unseen curves. A component count that minimizes reconstruction error is not automatically the best dimension for an external prediction task, causal estimand, or substantive interpretation.
