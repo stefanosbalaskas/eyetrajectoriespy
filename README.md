@@ -4,9 +4,9 @@
 
 `eyetrajectoriespy` treats gaze as a function of trial time rather than immediately reducing it to fixation counts, dwell summaries, or symbolic scanpaths. It supports continuous planar paths
 
-[
-G_i(t) = [x_i(t), y_i(t)]^	op,
-]
+```text
+G_i(t) = [x_i(t), y_i(t)]^T
+```
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
