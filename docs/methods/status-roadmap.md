@@ -10,9 +10,8 @@ This page distinguishes implemented scientific contracts from optional interoper
 |---|---|---|
 | Common-grid functional gaze objects | implemented | `TrajectorySet` |
 | Native curve-specific time grids | implemented | `IrregularTrajectorySet` |
-| Sparse univariate covariance FPCA + PACE scores | optional FDApy interoperability | `fit_sparse_fpca_fdapy()` |
+| Sparse univariate covariance FPCA + PACE scores | implemented (optional FDApy backend) | `fit_sparse_fpca_fdapy()` |
 | Explicit irregular → common-grid projection | implemented | `resample_irregular_to_grid()` |
-| Sparse univariate PACE FPCA interoperability | implemented (optional FDApy backend) | `fit_sparse_fpca_fdapy()` |
 | Univariate FPCA | implemented | `fit_fpca()` |
 | Joint multivariate FPCA | implemented | `fit_mfpca()` |
 | Component reconstruction | implemented | `reconstruct_fpca()` |
