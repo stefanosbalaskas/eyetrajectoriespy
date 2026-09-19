@@ -53,6 +53,8 @@ from .phase import (
 )
 from .plotting import (
     plot_fpca_component,
+    plot_fpca_component_envelope,
+    plot_fpca_cross_validation,
     plot_fpca_influence,
     plot_fpca_outlier_diagnostics,
     plot_fpca_stability,
@@ -74,6 +76,8 @@ from .preprocessing import (
 from .registration import phase_summary, register_to_landmarks, warping_displacement
 from .reporting import (
     fpca_reporting_text,
+    fpca_component_envelope_reporting_text,
+    fpca_cross_validation_reporting_text,
     fpca_influence_reporting_text,
     fpca_outlier_reporting_text,
     fpca_stability_reporting_text,
@@ -82,8 +86,14 @@ from .reporting import (
     summarise_fpca,
     summarise_trajectory_set,
 )
+from .selection import (
+    cross_validate_fpca_reconstruction,
+    select_fpca_components_cv,
+    summarise_fpca_cross_validation,
+)
 from .simulate import simulate_aoi_probability_trajectories, simulate_planar_trajectories
 from .stability import (
+    bootstrap_fpca_component_envelopes,
     bootstrap_fpca_stability,
     component_similarity_matrix,
     fpca_reconstruction_curve,
@@ -93,6 +103,8 @@ from .stability import (
 )
 from .types import (
     BasisProjectionResult,
+    FPCAComponentEnvelopeResult,
+    FPCACrossValidationResult,
     ClusterResult,
     CompositionalFPCAResult,
     ElasticFPCAResult,
@@ -114,7 +126,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.3.0.dev0"
+__version__ = "0.4.0.dev0"
 
 __all__ = [
     "TrajectorySet",
@@ -212,5 +224,15 @@ __all__ = [
     "plot_warping_functions",
     "to_skfda_grid",
     "detect_functional_outliers_skfda",
+    "FPCACrossValidationResult",
+    "FPCAComponentEnvelopeResult",
+    "cross_validate_fpca_reconstruction",
+    "summarise_fpca_cross_validation",
+    "select_fpca_components_cv",
+    "bootstrap_fpca_component_envelopes",
+    "plot_fpca_cross_validation",
+    "plot_fpca_component_envelope",
+    "fpca_cross_validation_reporting_text",
+    "fpca_component_envelope_reporting_text",
     "to_skfda_basis",
 ]
