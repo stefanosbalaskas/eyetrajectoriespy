@@ -170,9 +170,11 @@ The defaults are explicit:
 
 These are not universally optimal values. Treat them as model settings and conduct sensitivity analysis when conclusions depend on them.
 
+If an explicit `evaluation_grid` is supplied for FDApy mean/covariance/eigenfunction estimation, it must remain inside the pooled observed time support. The adapter rejects grids that would request extrapolation beyond all observed data.
+
 ## Component count
 
-`n_components` is explicit and cannot exceed the number of observed curves.
+`n_components` is explicit and cannot exceed the non-zero centered sample rank, `n_curves - 1`.
 
 Do not transfer a component count selected from interpolated dense FPCA automatically to sparse PACE. The estimand and score-recovery mechanism differ.
 
