@@ -116,3 +116,10 @@ Hall and Hosseini-Nasab (2006) show that eigenvalue spacing directly affects eig
 
 - Hall P, Hosseini-Nasab M. *On properties of functional principal components analysis*. Journal of the Royal Statistical Society: Series B. 2006;68(1):109–126. doi:10.1111/j.1467-9868.2005.00535.x.
 - Goldsmith J, Greven S, Crainiceanu C. *Corrected Confidence Bands for Functional Data Using Principal Components*. Biometrics. 2013;69(1):41–51. doi:10.1111/j.1541-0420.2012.01808.x.
+
+
+## Near-tied component blocks
+
+Pointwise component envelopes assume that a bootstrap component can be meaningfully matched to a reference axis. When adjacent eigenvalues are close and axes rotate, inspect the corresponding [FPC subspace](subspace-stability.md) as well.
+
+High subspace stability with low individual matching similarity is evidence to interpret the functional span more confidently than the orientation of each FPC inside it.
