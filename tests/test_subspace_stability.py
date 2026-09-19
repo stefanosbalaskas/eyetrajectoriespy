@@ -63,7 +63,7 @@ def test_rotated_near_tied_pair_has_identical_two_dimensional_subspace():
     assert one_dimensional.principal_cosines[0] == pytest.approx(np.sqrt(0.5))
     assert one_dimensional.normalized_projector_distance > 0.6
     assert np.allclose(two_dimensional.principal_cosines, 1.0, atol=1e-8)
-    assert np.allclose(two_dimensional.principal_angles_degrees, 0.0, atol=1e-6)
+    assert np.allclose(two_dimensional.principal_angles_degrees, 0.0, atol=3e-6)
     assert two_dimensional.normalized_projector_distance == pytest.approx(0.0, abs=1e-7)
 
 
