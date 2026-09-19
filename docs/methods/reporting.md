@@ -64,7 +64,8 @@ If sparse FPCA was used, report:
 - whether non-finite tracker samples were removed before constructing the sparse object;
 - sparse backend and version;
 - covariance-operator versus other fitting method;
-- mean/covariance smoothing configuration;
+- mean/covariance smoothing configuration and any backend keyword parameters;
+- evaluation grid used for estimated mean/covariance/eigenfunctions, or that backend defaults were retained;
 - PACE score-recovery method and tolerance;
 - score-smoothing configuration;
 - normalization setting;
