@@ -9,7 +9,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 
 eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze paths, multivariate FPCA, native irregular trajectories, repeated-trial functional decomposition, phase analysis, compositional AOI trajectories, and explicit validation of component stability.
 
-<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
+<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
 </div>
 
 <div class="grid cards" markdown>
@@ -25,6 +25,12 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
     Preserve curve-specific sample times, inspect gaps, then make common-grid projection an explicit decision.
 
     [:octicons-arrow-right-24: Native irregular trajectories](guides/irregular-trajectories.md)
+
+-   **Use sparse FDA instead of manufacturing dense curves**
+
+    For genuinely sparse trajectories, preserve native observation times and use optional covariance UFPCA with PACE conditional-expectation scores.
+
+    [:octicons-arrow-right-24: Sparse PACE FPCA](guides/sparse-irregular-fpca.md)
 
 -   **Use sparse PACE when interpolation would invent most of the curve**
 
@@ -87,6 +93,9 @@ The package is designed around the principle that **the path to an FPC score is 
 
 - **Are sample times irregular across trials?**  
   Preserve them in an <code>IrregularTrajectorySet</code> before choosing a projection.
+
+- **Would interpolation create much of the analyzed curve?**  
+  Use sparse univariate covariance UFPCA with PACE scores rather than pretending the path was densely observed.
 
 - **Would interpolation create most of each curve?**  
   Use univariate sparse covariance UFPCA with PACE conditional-expectation scores rather than manufacturing a dense trajectory.
