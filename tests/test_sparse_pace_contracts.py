@@ -205,35 +205,38 @@ def test_sparse_contract_errors_precede_backend_import():
     with pytest.raises(ValueError):
         fit_sparse_fpca_fdapy(gaze, dimension="x", n_components=4)
     with pytest.raises(ValueError):
-        fit_sparse_fpca_fdapy(gaze, dimension="x", tol=0)
+        fit_sparse_fpca_fdapy(gaze, dimension="x", n_components=2, tol=0)
     with pytest.raises(TypeError):
-        fit_sparse_fpca_fdapy(gaze, dimension="x", normalize=1)
+        fit_sparse_fpca_fdapy(gaze, dimension="x", n_components=2, normalize=1)
     with pytest.raises(ValueError):
-        fit_sparse_fpca_fdapy(gaze, dimension="x", fit_smoothing="bad")
+        fit_sparse_fpca_fdapy(gaze, dimension="x", n_components=2, fit_smoothing="bad")
     with pytest.raises(ValueError):
-        fit_sparse_fpca_fdapy(gaze, dimension="x", score_smoothing="bad")
+        fit_sparse_fpca_fdapy(gaze, dimension="x", n_components=2, score_smoothing="bad")
     with pytest.raises(ValueError):
-        fit_sparse_fpca_fdapy(gaze, dimension="x", score_smoothing=None)
+        fit_sparse_fpca_fdapy(gaze, dimension="x", n_components=2, score_smoothing=None)
     with pytest.raises(TypeError):
-        fit_sparse_fpca_fdapy(gaze, dimension="x", kwargs_mean=[])
+        fit_sparse_fpca_fdapy(gaze, dimension="x", n_components=2, kwargs_mean=[])
     with pytest.raises(TypeError):
-        fit_sparse_fpca_fdapy(gaze, dimension="x", kwargs_covariance=[])
+        fit_sparse_fpca_fdapy(gaze, dimension="x", n_components=2, kwargs_covariance=[])
     with pytest.raises(ValueError):
         fit_sparse_fpca_fdapy(
             gaze,
             dimension="x",
+            n_components=2,
             evaluation_grid=np.array([0.0, 0.5, 0.4]),
         )
     with pytest.raises(ValueError, match="pooled observed time support"):
         fit_sparse_fpca_fdapy(
             gaze,
             dimension="x",
+            n_components=2,
             evaluation_grid=np.array([-0.1, 0.5, 1.0]),
         )
     with pytest.raises(ValueError, match="pooled observed time support"):
         fit_sparse_fpca_fdapy(
             gaze,
             dimension="x",
+            n_components=2,
             evaluation_grid=np.array([0.0, 0.5, 1.1]),
         )
 
