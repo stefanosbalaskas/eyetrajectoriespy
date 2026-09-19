@@ -136,6 +136,15 @@ Additional local/static checks after the sparse-contract hardening:
 - Package `__version__`, `pyproject.toml`, and `CITATION.cff` all report **0.6.0.dev0**.
 - Sparse-reference formatting/backend summary re-checked after documentation cleanup.
 
+### Hosted compatibility repair discovered during 0.6 qualification — 2026-09-19
+
+The first exact-head hosted qualification surfaced two actionable issues and neither was treated as an infrastructure failure:
+
+- The new centered-rank guard exposed a test-ordering defect in `test_sparse_contract_errors_precede_backend_import`; later validation cases were still using the now-invalid default `n_components=3` for a three-curve fixture. Those calls now use the valid `n_components=2`, so each intended validation contract is reached.
+- The existing scikit-fda 0.10.1 optional lane installed newly released `multimethod 2.1`, which caused import-time metaclass conflicts inside scikit-fda. The `fda` and `all` extras are now bounded to the validated API/dependency line: `scikit-fda>=0.10.1,<0.11` with `multimethod>=1.12,<2`. This keeps the optional interoperability gate active rather than skipping it.
+
+The first package/Twine lane passed before these repairs. The repaired exact head must re-run the complete test, docs, examples, scikit-fda, and FDApy qualification surface before 0.6 can be described as GitHub CI-certified.
+
 ## Locally unavailable checks
 
 These are **pending**, not passed:
