@@ -476,3 +476,27 @@ class FPCASubspaceStabilityResult:
     @property
     def n_bootstrap(self) -> int:
         return self.principal_cosines.shape[0]
+
+
+@dataclass(frozen=True)
+class SparseFPCAResult:
+    """Sparse univariate FPCA fitted to native irregular observations."""
+
+    scores: np.ndarray
+    eigenvalues: np.ndarray
+    dimension: str
+    curve_ids: tuple[str, ...]
+    metadata: pd.DataFrame
+    coordinate_system: str
+    time_unit: str
+    n_components: int
+    fit_method: str
+    fit_smoothing: str | None
+    score_method: str
+    score_smoothing: str | None
+    tolerance: float
+    normalize: bool
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+    backend_object: Any | None = None
+    backend_data: Any | None = None
+    reconstructed_backend: Any | None = None
