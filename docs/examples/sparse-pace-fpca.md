@@ -186,6 +186,8 @@ bad_values[0][2, 0] = np.nan
 
 The sparse adapter rejects this representation.
 
+The adapter also rejects an evaluation grid outside the pooled observed support and rejects component counts above the centered sample rank `n_curves - 1`.
+
 The intended fix is not automatic interpolation. Resolve whether that row is an absent observation, invalid tracker sample, or another missing-data mechanism before fitting.
 
 ## Next steps
