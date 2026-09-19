@@ -260,7 +260,7 @@ class ClusterResult:
 class IrregularTrajectorySet:
     """Collection of trajectories sampled on curve-specific time grids.
 
-    Unlike :class:\`TrajectorySet\`, each curve retains its own sampling times.
+    Unlike :class:`TrajectorySet`, each curve retains its own sampling times.
     No interpolation or common-grid projection is implied by this object.
     """
 
