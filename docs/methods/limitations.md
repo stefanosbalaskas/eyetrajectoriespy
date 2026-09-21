@@ -206,3 +206,28 @@ If a bootstrap FPC has low similarity to the reference component, the associated
 ## Percentile envelopes are descriptive
 
 The lower/upper score summaries are empirical percentile envelopes under the stated basis-resampling design. They are not guaranteed exact finite-sample confidence intervals and are not simultaneous across all targets/components.
+
+
+## Gaussian FPCR bootstrap is not a universal functional-regression inference engine
+
+The 0.12 implementation targets Gaussian scalar-on-function FPCR. It does not provide binomial/logistic functional-regression inference, generalized functional linear-model inference, or function-on-function regression uncertainty.
+
+## Slope envelopes are pointwise
+
+Percentile slope intervals are evaluated independently at observed grid coordinates. They do not provide simultaneous coverage over the full time × dimension domain and should not be used as a global significance band.
+
+## Fixed-target intervals are conditional-mean intervals
+
+Bootstrap target intervals describe uncertainty in the fitted conditional mean response. They do not add residual outcome noise and therefore are not prediction intervals for future observed outcomes.
+
+## Component-selection uncertainty is excluded
+
+The number of retained FPCs is fixed in every bootstrap replicate. If that number was chosen from the same dataset, the reported intervals are conditional on the selected dimension.
+
+## Rank-deficient bootstrap samples stop the procedure
+
+The implementation does not discard, replace, or redraw rank-deficient bootstrap replicates. Such a failure indicates that the requested regression dimension is not supported reliably by the resampling design.
+
+## The operator-scaled 2026 FPCR test is not implemented
+
+Recent theory establishes formal Gaussian/bootstrap approximations for an operator-scaled FPCR statistic. The paired percentile bootstrap in eyetrajectoriespy is a different procedure and must not be described as that operator-scaled test.

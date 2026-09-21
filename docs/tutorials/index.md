@@ -104,3 +104,8 @@ Use [FPCA spectrum uncertainty](../examples/fpca-spectrum-uncertainty.md) when e
 ### FPC score basis-resampling uncertainty
 
 Use [FPC score basis uncertainty](../examples/fpca-score-uncertainty.md) when score coordinates themselves need a stability/uncertainty analysis rather than being treated as fixed after FPCA. The worked example keeps targets fixed, resamples participants to refit the basis, matches/sign-aligns bootstrap components, and distinguishes basis uncertainty from measurement or downstream-model uncertainty.
+
+
+### Gaussian FPCR bootstrap uncertainty
+
+Use [Gaussian FPCR bootstrap uncertainty](../examples/fpcr-bootstrap-inference.md) when a scalar-on-function Gaussian regression result needs uncertainty that propagates re-estimation of the FPCA basis. The worked example uses participant-level paired resampling, reconstructs the slope in original x/y units, and separates conditional-mean intervals from future-outcome prediction intervals.

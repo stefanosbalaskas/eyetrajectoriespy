@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.11.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.12.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -264,6 +264,21 @@ Before publishing the score-uncertainty branch, a standalone weighted-PCA/bootst
 The committed implementation additionally rejects empty target sets, incompatible target time grids, dimension labels/order, coordinate systems, time units, invalid bootstrap/component counts, missing participant-bootstrap identifiers, and non-finite aligned bootstrap scores.
 
 This is local delta algorithmic validation, not a substitute for repository-wide cross-platform qualification. The local environment still cannot provide a fresh GitHub clone, so full pytest/coverage/Ruff/package/docs/optional-backend evidence remains hosted CI evidence only.
+
+## 0.12 pre-commit local algorithm validation — 2026-09-21
+
+Environment: Linux, Python 3.13.5.
+
+Before publishing the Gaussian FPCR bootstrap branch, a standalone weighted-PCA/regression harness matching the intended score geometry, slope back-transformation, paired resampling, and fixed-target prediction logic was executed locally.
+
+- dimension-SD slope back-transformation reproduced the score-regression conditional mean to machine precision (maximum absolute discrepancy approximately 1.4e-15): **passed**;
+- paired curve bootstrap refitted PCA and Gaussian regression in every replicate: **passed**;
+- functional-slope bootstrap tensor shape and fixed-target prediction matrix shape: **passed**;
+- lower ≤ median ≤ upper percentile summaries for slope and mean predictions: **passed**;
+- bootstrap slope and prediction standard deviations were nonnegative: **passed**;
+- full-rank regression-design checks were exercised in the harness: **passed**.
+
+This is local delta algorithmic validation. It does not replace full repository pytest/coverage/Ruff/package/docs/optional-backend qualification, which remains GitHub CI evidence only.
 
 ## Locally unavailable checks
 
