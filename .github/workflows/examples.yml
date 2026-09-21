@@ -37,3 +37,4 @@ jobs:
           python examples/fpca_selection_uncertainty.py
           python examples/fpca_subspace_stability.py
           python examples/functional_mean_bands.py
+          python examples/predictive_fpca_selection.py
