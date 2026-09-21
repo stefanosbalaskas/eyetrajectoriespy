@@ -525,3 +525,42 @@ class FunctionalMeanBandResult:
     @property
     def n_units(self) -> int:
         return len(self.unit_ids)
+
+
+
+@dataclass(frozen=True)
+class FPCARegressionCVResult:
+    """Outcome-tuned FPCA regression cross-validation diagnostics."""
+
+    fold_losses: pd.DataFrame
+    assignments: pd.DataFrame
+    predictions: pd.DataFrame
+    component_counts: tuple[int, ...]
+    family: str
+    loss: str
+    cv_unit: str
+    n_splits: int
+    group_column: str | None
+    scaling: str
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class FPCANestedRegressionCVResult:
+    """Nested CV evaluation of outcome-tuned FPCA regression selection."""
+
+    outer_folds: pd.DataFrame
+    inner_summaries: pd.DataFrame
+    predictions: pd.DataFrame
+    family: str
+    loss: str
+    selection_rule: str
+    component_counts: tuple[int, ...]
+    outer_splits: int
+    inner_splits: int
+    cv_unit: str
+    group_column: str | None
+    scaling: str
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
