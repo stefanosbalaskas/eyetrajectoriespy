@@ -230,3 +230,24 @@ No. Imaizumi and Kato derive a distinct theoretically justified confidence-band 
 ## Is this Yeon's 2026 FPCR test?
 
 No. Yeon's method relies on operator scaling and develops Gaussian/bootstrap approximations for a different formal inferential statistic.
+
+
+## What is the difference between the 0.12 target interval and the 0.14 target interval?
+
+The 0.12 interval concerns uncertainty in the fitted conditional mean response for a fixed target trajectory. The 0.14 interval adds a sampled response residual and therefore targets a future observed scalar outcome.
+
+## Why pass the training outcome again?
+
+The future-outcome layer needs the original scalar outcomes to reconstruct the full-sample residual distribution transparently. The package does not hide or serialize a residual-noise model inside the 0.12 object.
+
+## Is the future-outcome interval heteroscedasticity-robust?
+
+No. It samples from one centered empirical residual pool. Recent 2026 work develops wild-bootstrap methodology for heterogeneous functional-linear errors; that is a different procedure.
+
+## Are multiple target intervals simultaneous?
+
+No. Each target interval is marginal. The API does not claim familywise coverage or a joint prediction region.
+
+## Does the interval include uncertainty in the future gaze trajectory itself?
+
+No. The supplied target functional trajectory is treated as fixed.

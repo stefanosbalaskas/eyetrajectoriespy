@@ -261,3 +261,21 @@ If a simultaneous slope band is confirmatory, pre-specify:
 - how exact zero-variance cells will be reported.
 
 Do not switch from dimension-wise to global scope after inspecting which one changes a substantive conclusion.
+
+
+## Gaussian FPCR future-outcome prediction
+
+Pre-specify:
+
+- the Gaussian FPCR model and retained FPC count;
+- how the FPC count was selected;
+- the paired-bootstrap unit and seed policy used by the underlying 0.12 fit;
+- the fixed target trajectories to be predicted;
+- the future-outcome interval level;
+- centered empirical residual resampling as the response-noise model;
+- the assumption of a common/exchangeable residual distribution;
+- whether residual heterogeneity will be inspected before interpreting prediction intervals;
+- that intervals are marginal per target and not simultaneous/joint;
+- that target-curve uncertainty and component-selection uncertainty are not included.
+
+Do not switch to the future-outcome interval only after noticing that a conditional-mean interval is too narrow for a preferred conclusion.

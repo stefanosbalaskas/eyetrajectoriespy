@@ -252,3 +252,26 @@ The 2026 operator-scaled Gaussian/bootstrap theory addresses a different statist
 ## Zero-variance slope cells are handled structurally
 
 If every bootstrap slope equals the reference at a cell, zero width is retained. If bootstrap SE is effectively zero but the bootstrap distribution is displaced from the reference, calibration fails explicitly instead of adding an epsilon denominator.
+
+
+## Future-outcome FPCR intervals assume pooled residual exchangeability
+
+The 0.14 predictive layer samples from one centered empirical residual pool. If residual spread changes with the fitted mean, functional predictor, condition, participant, or another variable, coverage may be distorted.
+
+The implementation does not claim heteroscedasticity robustness.
+
+## Future-outcome intervals are marginal per target
+
+Supplying several fixed target trajectories does not produce a simultaneous familywise prediction guarantee or a joint multivariate prediction region.
+
+## The target functional trajectory is treated as fixed
+
+Uncertainty in the target gaze curve itself is not simulated. Measurement error, latent-trajectory uncertainty, preprocessing choices, and future-functional-predictor variability remain outside the interval.
+
+## Component-selection uncertainty is inherited as excluded
+
+The prediction layer reuses the 0.12 paired-bootstrap object, whose retained FPC count is fixed. Data-driven component-selection uncertainty is therefore not added automatically.
+
+## Residual resampling is not the 2026 wild bootstrap
+
+Recent functional-linear work develops a wild bootstrap for mean-response inference under heterogeneous errors. The 0.14 future-outcome procedure uses centered empirical residual draws and must not be described as that heteroscedasticity-robust method.

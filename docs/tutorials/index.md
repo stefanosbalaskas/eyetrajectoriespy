@@ -114,3 +114,8 @@ Use [Gaussian FPCR bootstrap uncertainty](../examples/fpcr-bootstrap-inference.m
 ### Gaussian FPCR simultaneous slope bands
 
 Use [Gaussian FPCR simultaneous slope bands](../examples/fpcr-simultaneous-slope-band.md) after a paired-bootstrap Gaussian FPCR fit when one observed-grid band is required for the reconstructed slope. The tutorial compares global and dimension-wise calibration and emphasizes that the result is neither a continuous-domain band nor the operator-scaled FPCR significance test.
+
+
+### Gaussian FPCR future-outcome prediction
+
+Use [Gaussian FPCR future-outcome prediction](../examples/fpcr-future-prediction.md) when the scientific target is a future observed scalar response rather than only its fitted conditional mean. The worked example keeps the underlying paired-bootstrap mean distribution visible and adds response noise through centered empirical residual resampling.
