@@ -475,6 +475,47 @@ class FPCAComponentBandResult:
 
 
 @dataclass(frozen=True)
+class FPCASpectrumUncertaintyResult:
+    """Bootstrap uncertainty for matched FPCA eigenvalues and variance spectra."""
+
+    reference: FPCAResult
+    bootstrap_eigenvalues: np.ndarray
+    bootstrap_explained_variance_ratio: np.ndarray
+    bootstrap_cumulative_variance_ratio: np.ndarray
+    eigenvalue_se: np.ndarray
+    eigenvalue_critical_values: np.ndarray
+    eigenvalue_lower: np.ndarray
+    eigenvalue_upper: np.ndarray
+    eigenvalue_max_statistics: np.ndarray
+    explained_variance_ratio_se: np.ndarray
+    explained_variance_ratio_critical_values: np.ndarray
+    explained_variance_ratio_lower: np.ndarray
+    explained_variance_ratio_upper: np.ndarray
+    explained_variance_ratio_max_statistics: np.ndarray
+    cumulative_variance_ratio_se: np.ndarray
+    cumulative_variance_ratio_critical_values: np.ndarray
+    cumulative_variance_ratio_lower: np.ndarray
+    cumulative_variance_ratio_upper: np.ndarray
+    cumulative_variance_ratio_max_statistics: np.ndarray
+    assignments: np.ndarray
+    similarities: np.ndarray
+    confidence_level: float
+    simultaneous_scope: str
+    resampling_unit: str
+    participant_column: str | None
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.bootstrap_eigenvalues.shape[0]
+
+    @property
+    def n_components(self) -> int:
+        return self.bootstrap_eigenvalues.shape[1]
+
+
+@dataclass(frozen=True)
 class FPCASubspaceComparisonResult:
     """Principal-angle comparison of corresponding FPCA component subspaces."""
 

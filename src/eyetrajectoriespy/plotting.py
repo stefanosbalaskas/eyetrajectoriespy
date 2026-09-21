@@ -17,6 +17,7 @@ from .types import (
     FPCANestedRegressionCVResult,
     FPCARegressionCVResult,
     FPCAResult,
+    FPCASpectrumUncertaintyResult,
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
@@ -85,6 +86,55 @@ def plot_fpca_variance(result: FPCAResult, *, cumulative: bool = True, ax=None):
     ax.set_xlabel("Functional principal component")
     ax.set_ylabel("Cumulative variance explained (%)" if cumulative else "Variance explained (%)")
     ax.set_xticks(x)
+    return ax
+
+
+def plot_fpca_spectrum_uncertainty(
+    result: FPCASpectrumUncertaintyResult,
+    *,
+    metric: str = "explained_variance_ratio",
+    ax=None,
+):
+    """Plot FPCA spectrum estimates with bootstrap-calibrated uncertainty bars."""
+
+    allowed = {
+        "eigenvalue",
+        "explained_variance_ratio",
+        "cumulative_variance_ratio",
+    }
+    if metric not in allowed:
+        raise ValueError(
+            "metric must be 'eigenvalue', 'explained_variance_ratio', "
+            "or 'cumulative_variance_ratio'"
+        )
+    if ax is None:
+        _, ax = plt.subplots()
+
+    n = result.n_components
+    x = np.arange(1, n + 1)
+    if metric == "eigenvalue":
+        estimate = result.reference.explained_variance[:n]
+        lower = result.eigenvalue_lower
+        upper = result.eigenvalue_upper
+        ylabel = "Eigenvalue"
+    elif metric == "explained_variance_ratio":
+        estimate = result.reference.explained_variance_ratio[:n]
+        lower = result.explained_variance_ratio_lower
+        upper = result.explained_variance_ratio_upper
+        ylabel = "Explained variance ratio"
+    else:
+        estimate = np.cumsum(result.reference.explained_variance_ratio[:n])
+        lower = result.cumulative_variance_ratio_lower
+        upper = result.cumulative_variance_ratio_upper
+        ylabel = "Cumulative explained variance ratio"
+
+    yerr = np.vstack((estimate - lower, upper - estimate))
+    ax.errorbar(x, estimate, yerr=yerr, marker="o", capsize=3)
+    ax.set_xticks(x)
+    ax.set_xlabel("Functional principal component")
+    ax.set_ylabel(ylabel)
+    scope = "familywise" if result.simultaneous_scope == "family" else "component-wise"
+    ax.set_title(f"FPCA spectrum uncertainty ({scope})")
     return ax
 
 

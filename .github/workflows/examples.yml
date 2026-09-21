@@ -39,3 +39,4 @@ jobs:
           python examples/functional_mean_bands.py
           python examples/predictive_fpca_selection.py
           python examples/fpc_simultaneous_bands.py
+          python examples/fpca_spectrum_uncertainty.py
