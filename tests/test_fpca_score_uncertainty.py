@@ -143,6 +143,11 @@ def test_incompatible_targets_fail_explicitly():
 
 def test_score_uncertainty_contract_failures_are_explicit():
     gaze = sample()
+    empty_targets = gaze.subset([])
+    with pytest.raises(ValueError, match="at least one trajectory"):
+        bootstrap_fpca_score_uncertainty(
+            gaze, targets=empty_targets, n_bootstrap=20, n_components=2
+        )
     with pytest.raises(ValueError):
         bootstrap_fpca_score_uncertainty(gaze, n_bootstrap=19)
     with pytest.raises(TypeError):
