@@ -16,6 +16,14 @@ def _functional_mean_units(
     participant_column: str | None,
 ) -> tuple[np.ndarray, tuple[str, ...], dict[str, object]]:
     validate_trajectory_set(trajectories, require_complete=True)
+    if not np.all(np.isfinite(trajectories.values)):
+        raise ValueError("Functional mean inference requires finite trajectory values")
+    if trajectories.coordinate_system == "probability_simplex":
+        raise ValueError(
+            "Direct Euclidean simultaneous bands are not supported for "
+            "probability_simplex trajectories; use an explicit compositional/"
+            "log-ratio representation first"
+        )
 
     if unit not in {"curve", "participant"}:
         raise ValueError("unit must be 'curve' or 'participant'")
