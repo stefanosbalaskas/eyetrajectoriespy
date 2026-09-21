@@ -237,12 +237,44 @@ Therefore:
 - GitHub Pages deployment from the merged-main SHA is **pending / not certified**;
 - do not claim successful 0.6 Pages deployment until the main-branch docs workflow actually executes its deploy job successfully.
 
+### 0.7 PR-head certification — 2026-09-21
+
+Exact certified PR head:
+
+`a2f5162cc50a775a71d1a85fb019b38d801e49a0`
+
+All pull-request qualification workflows completed successfully on that exact SHA:
+
+- package build / distribution validation: **success**;
+- Windows × Python 3.11, 3.12, 3.13: **3/3 success**;
+- Ubuntu × Python 3.11, 3.12, 3.13: **3/3 success**;
+- macOS × Python 3.11, 3.12, 3.13: **3/3 success**;
+- full pytest/coverage/compile/Ruff gate embedded in the standard workflow: **success**;
+- core executable examples, including `functional_mean_bands.py`: **success**;
+- strict MkDocs documentation build: **success**;
+- optional scikit-fda interoperability: **success**;
+- optional FDApy sparse/PACE interoperability on Python 3.11 and 3.12: **2/2 success**.
+
+No tests, coverage thresholds, branch protections, or scientific validation checks were weakened or bypassed.
+
+PR #10 was squash-merged as:
+
+`3ec7aa66849fe4f166260af93d3712c277e6d122`
+
+The 0.7 functional-mean inference implementation is therefore **GitHub CI-certified at the exact PR head**. The squash-merged main lineage carries the same reviewed 0.7 changes, while main-branch push/deployment checks are tracked separately below.
+
+### 0.7 merged-main deployment status
+
+The PR docs workflow correctly skipped its deploy job because pull requests are build-only.
+
+Therefore, successful GitHub Pages deployment for the 0.7 main lineage still requires a main-branch docs workflow whose deploy job completes successfully. A status-only validation-ledger commit is being used to create a main-branch workflow generation without modifying scientific code.
+
 ## Remaining re-checks
 
 The following are still pending:
 
-1. A push/main qualification run attached to the exact merged `main` lineage when GitHub Actions triggers for that SHA or a subsequent status-only commit.
-2. Successful GitHub Pages deployment from `main`.
+1. A push/main qualification run attached to the 0.7 merged-main lineage or the subsequent validation-ledger status commit.
+2. Successful GitHub Pages deployment from the 0.7 `main` lineage.
 3. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this is not part of the current optional-backend support contract.
 
-Cross-platform package behavior, core examples, docs build, scikit-fda interoperability, and FDApy sparse/PACE interoperability are otherwise certified on the identical 0.6 content tree described above.
+Cross-platform package behavior, core examples, strict docs build, scikit-fda interoperability, FDApy sparse/PACE interoperability, and the 0.7 functional-mean inference tests are GitHub CI-certified on exact PR head `a2f5162...`.
