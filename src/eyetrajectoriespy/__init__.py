@@ -26,6 +26,7 @@ from .fpca import (
     select_n_components,
     transform_fpca,
 )
+from .inference import functional_mean_band_frame, multiplier_functional_mean_band
 from .io import from_irregular_long_dataframe, from_long_dataframe
 from .irregular import (
     common_overlap_interval,
@@ -57,6 +58,7 @@ from .plotting import (
     plot_fpca_cross_validation,
     plot_fpca_influence,
     plot_fpca_outlier_diagnostics,
+    plot_functional_mean_band,
     plot_fpca_stability,
     plot_fpca_subspace_stability,
     plot_sparse_irregular_dimension,
@@ -85,6 +87,7 @@ from .reporting import (
     fpca_outlier_reporting_text,
     fpca_stability_reporting_text,
     fpca_subspace_stability_reporting_text,
+    functional_mean_band_reporting_text,
     multilevel_fpca_reporting_text,
     sparse_fpca_reporting_text,
     registration_sensitivity_reporting_text,
@@ -130,6 +133,7 @@ from .types import (
     FPCAStabilityResult,
     FPCASubspaceComparisonResult,
     FPCASubspaceStabilityResult,
+    FunctionalMeanBandResult,
     FunctionalOutlierResult,
     FunctionalRegressionResult,
     IrregularTrajectorySet,
@@ -146,7 +150,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.6.0.dev0"
+__version__ = "0.7.0.dev0"
 
 __all__ = [
     "TrajectorySet",
@@ -263,6 +267,11 @@ __all__ = [
     "compare_fpca_subspaces",
     "bootstrap_fpca_subspace_stability",
     "summarise_fpca_subspace_stability",
+    "FunctionalMeanBandResult",
+    "multiplier_functional_mean_band",
+    "functional_mean_band_frame",
+    "plot_functional_mean_band",
+    "functional_mean_band_reporting_text",
     "SparseFPCAResult",
     "sparse_dimension_summary",
     "to_fdapy_irregular",

@@ -14,6 +14,7 @@ from .types import (
     FPCAResult,
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
+    FunctionalMeanBandResult,
     FunctionalOutlierResult,
     MultilevelFPCAResult,
     RegistrationSensitivityResult,
@@ -294,4 +295,27 @@ def sparse_fpca_reporting_text(
         f"Eigenfunctions/covariance were evaluated on {grid_text}. "
         f"PACE tolerance was {result.tolerance:g} and score smoothing was "
         f"{result.score_smoothing!r}.{custom_text}"
+    )
+
+
+
+def functional_mean_band_reporting_text(
+    result: FunctionalMeanBandResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate manuscript-oriented wording for a simultaneous mean band."""
+
+    settings = result.provenance.get("functional_mean_band", {})
+    n_multiplier = settings.get("n_multiplier", "unknown")
+    estimand = settings.get("estimand", "unspecified")
+    return (
+        f"The functional mean was estimated from {result.n_units} {result.unit}-level "
+        f"inference units using estimand={estimand!r}. A "
+        f"{100 * result.confidence_level:.1f}% simultaneous observed-grid band "
+        f"was calibrated with a studentized Gaussian multiplier maximum using "
+        f"{n_multiplier} multiplier replicates "
+        f"(critical value={result.critical_value:.{digits}f}). The band is "
+        "simultaneous across the observed time-by-dimension grid and does not "
+        "claim continuous-domain coverage between sampled grid points."
     )

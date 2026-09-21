@@ -36,3 +36,4 @@ jobs:
           python examples/outlier_influence.py
           python examples/fpca_selection_uncertainty.py
           python examples/fpca_subspace_stability.py
+          python examples/functional_mean_bands.py

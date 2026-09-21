@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.6.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, stability, leakage-aware component selection, descriptive FPC-shape uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.7.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware component selection, descriptive FPC-shape uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -152,6 +152,35 @@ Additional local/static checks after the sparse-contract hardening:
 - API source audit: **100/100** documented public symbols are exported.
 - Package `__version__`, `pyproject.toml`, and `CITATION.cff` all report **0.6.0.dev0**.
 - Sparse-reference formatting/backend summary re-checked after documentation cleanup.
+
+## 0.7 delta validation — 2026-09-21
+
+Environment: Linux, Python 3.13.5.
+
+The local runner still cannot resolve GitHub directly, so a full branch clone is unavailable. The 0.7 statistical core was therefore executed in a reconstructed contract harness matching the committed Gaussian-multiplier algorithm, while repository integration was audited against the authoritative GitHub branch.
+
+- Reconstructed functional mean-band contract harness: **passed**.
+- Deterministic Gaussian multiplier calibration under fixed seed: **passed**.
+- 99% confidence calibration was no narrower than 90% calibration using identical multiplier draws: **passed**.
+- Unequal repeated-trial truth case: participant A with 3 trials and participant B with 1 trial produced the explicit equal-weight participant-average mean, distinct from the curve-weighted grand mean: **passed**.
+- Zero empirical variance at an individual grid coordinate produced exactly zero standard error and zero band width without epsilon perturbation: **passed**.
+- Fully constant functional observations produced critical value 0 and an exact zero-width band: **passed**.
+- Failure contracts passed for invalid confidence levels, multiplier counts, inference units, participant-column misuse, missing participant IDs, non-finite trajectory values, and direct probability-simplex inference.
+- Local syntax compilation of the reconstructed contract harness: **passed**.
+- Methodological verification completed against the simultaneous functional-mean confidence-band literature; the public API deliberately targets the observed time-by-dimension grid and does not claim continuous-domain coverage between sampled points.
+
+This is **delta algorithmic validation**, not a replacement for the full repository test suite or cross-platform qualification.
+
+## 0.7 repository source integrity — 2026-09-21
+
+These are static branch checks, not hosted CI certification.
+
+- Package `__version__`, `pyproject.toml`, and `CITATION.cff` all report **0.7.0.dev0**.
+- Public API documentation declarations: **105/105** documented symbols are present in the package export surface.
+- MkDocs navigation contains **50** configured Markdown pages. The two new 0.7 pages were created on the branch; no documentation page was intentionally removed.
+- The examples workflow includes `examples/functional_mean_bands.py`.
+- The public API regression test includes `FunctionalMeanBandResult` and all new mean-band public functions.
+- The 0.7 site includes a dedicated methodology guide, worked example, reporting/preregistration guidance, assumptions, limitations, FAQ, references, API/object documentation, decision map, quickstart, roadmap, homepage, and README integration.
 
 ## Locally unavailable checks
 

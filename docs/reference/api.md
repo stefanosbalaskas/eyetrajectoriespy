@@ -12,6 +12,7 @@
 ::: eyetrajectoriespy.FPCASubspaceComparisonResult
 ::: eyetrajectoriespy.FPCASubspaceStabilityResult
 ::: eyetrajectoriespy.SparseFPCAResult
+::: eyetrajectoriespy.FunctionalMeanBandResult
 ::: eyetrajectoriespy.FPCAInfluenceResult
 ::: eyetrajectoriespy.FunctionalOutlierResult
 
@@ -44,6 +45,12 @@
 ::: eyetrajectoriespy.sparse_fpca_score_frame
 ::: eyetrajectoriespy.plot_sparse_irregular_dimension
 ::: eyetrajectoriespy.sparse_fpca_reporting_text
+
+## Functional mean inference
+::: eyetrajectoriespy.multiplier_functional_mean_band
+::: eyetrajectoriespy.functional_mean_band_frame
+::: eyetrajectoriespy.plot_functional_mean_band
+::: eyetrajectoriespy.functional_mean_band_reporting_text
 
 ## FPCA / MFPCA
 ::: eyetrajectoriespy.fit_fpca

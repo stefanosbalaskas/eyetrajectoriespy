@@ -134,3 +134,20 @@ If functional diagnostics will be used, specify before condition-effect inspecti
 - whether sensitivity refits after justified exclusions will be reported.
 
 Pre-registering a **review rule** is different from pre-registering an **exclusion rule**.
+
+
+## Functional mean inference
+
+If uncertainty for a mean trajectory will be reported, pre-specify:
+
+- the population estimand;
+- curve versus participant inference unit;
+- participant column for repeated trials;
+- whether within-participant trajectories are averaged before inference;
+- confidence level;
+- multiplier replicate count and random seed;
+- the sampled functional dimensions included in the joint maximum;
+- how incomplete trajectories will be handled before inference;
+- whether the claim is observed-grid simultaneous coverage or a separately justified continuous-domain band.
+
+Do not switch from participant-level to curve-level inference after seeing that trial-level treatment creates narrower bands.

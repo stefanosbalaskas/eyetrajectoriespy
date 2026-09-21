@@ -3,13 +3,13 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.6 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.7 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
 eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze paths, multivariate FPCA, native irregular trajectories, repeated-trial functional decomposition, phase analysis, compositional AOI trajectories, and explicit validation of component stability.
 
-<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
+<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">mean-band inference</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
 </div>
 
 <div class="grid cards" markdown>
@@ -61,6 +61,12 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
     Inspect adjacent eigengaps and principal-angle stability when FPC labels swap or rotate across resamples.
 
     [:octicons-arrow-right-24: Near-tied FPC subspaces](guides/subspace-stability.md)
+
+-   **Infer the mean trajectory with the right sampling unit**
+
+    Calibrate one observed-grid band across time and dimensions, using equal-weight participant means for repeated-trial designs.
+
+    [:octicons-arrow-right-24: Simultaneous mean bands](guides/simultaneous-mean-bands.md)
 
 -   **Flag unusual trajectories without auto-deleting them**
 
@@ -161,7 +167,15 @@ The package is designed around the principle that **the path to an FPC score is 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
 
-## New in 0.6 development
+## New in 0.7 development
+
+- simultaneous studentized Gaussian multiplier bands for common-grid functional means;
+- explicit curve versus equal-weight participant inference units;
+- joint calibration over the observed time × functional-dimension grid;
+- exact zero-variance handling and simplex-geometry guardrails;
+- worked example plus reporting, preregistration, assumptions, limitations, and API guidance.
+
+## Added in 0.6 development
 
 - optional FDApy sparse functional interoperability;
 - direct native-irregular → FDApy conversion without common-grid interpolation;

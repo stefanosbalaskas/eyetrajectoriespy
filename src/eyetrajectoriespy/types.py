@@ -500,3 +500,28 @@ class SparseFPCAResult:
     backend_object: Any | None = None
     backend_data: Any | None = None
     reconstructed_backend: Any | None = None
+
+
+@dataclass(frozen=True)
+class FunctionalMeanBandResult:
+    """Simultaneous multiplier-bootstrap band for a functional mean."""
+
+    mean: np.ndarray
+    lower: np.ndarray
+    upper: np.ndarray
+    pointwise_se: np.ndarray
+    critical_value: float
+    max_statistics: np.ndarray
+    confidence_level: float
+    unit: str
+    unit_ids: tuple[str, ...]
+    participant_column: str | None
+    time: np.ndarray
+    dimension_names: tuple[str, ...]
+    coordinate_system: str
+    time_unit: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_units(self) -> int:
+        return len(self.unit_ids)

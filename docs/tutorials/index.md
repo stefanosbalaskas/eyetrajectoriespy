@@ -40,6 +40,12 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [Near-tied FPC subspaces](../examples/near-tied-subspace.md)
 
+-   **Do I need uncertainty for the mean trajectory?**
+
+    Use a studentized Gaussian multiplier maximum over the full observed time × dimension grid, with participant-level units for repeated trials.
+
+    [Functional mean bands](../examples/functional-mean-bands.md)
+
 -   **What did registration remove?**
 
     Analyze warping functions as phase outcomes and compare spatial FPCs before and after alignment.

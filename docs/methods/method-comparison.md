@@ -4,6 +4,7 @@
 |---|---|---|
 | Preserve unequal sample times before analysis | native irregular trajectory representation | automatic resampling during import |
 | Assess whether FPC shape is reproducible | bootstrap component matching | a significance test |
+| Simultaneous mean uncertainty on a common grid | studentized Gaussian multiplier maximum | independent pointwise intervals treated as a global band |
 | Flag trajectories for functional review | reconstruction + robust score-space diagnostics | an automatic exclusion rule |
 | Assess whether one participant/group drives the basis | leave-one-group-out FPCA influence | proof that the group is invalid |
 | Quantify what registration changes | pre/post registration FPC matching | proof that registration is beneficial |

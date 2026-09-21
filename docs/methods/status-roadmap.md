@@ -11,6 +11,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Common-grid functional gaze objects | implemented | `TrajectorySet` |
 | Native curve-specific time grids | implemented | `IrregularTrajectorySet` |
 | Sparse univariate covariance FPCA + PACE scores | implemented (optional FDApy backend) | `fit_sparse_fpca_fdapy()` |
+| Simultaneous functional mean band | implemented | `multiplier_functional_mean_band()` |
 | Explicit irregular → common-grid projection | implemented | `resample_irregular_to_grid()` |
 | Univariate FPCA | implemented | `fit_fpca()` |
 | Joint multivariate FPCA | implemented | `fit_mfpca()` |
@@ -76,4 +77,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.6.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.7.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
