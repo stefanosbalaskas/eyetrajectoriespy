@@ -67,3 +67,12 @@ Sun Y, Genton MG. Functional Boxplots. Journal of Computational and Graphical St
 Dai W, Genton MG. Multivariate Functional Data Visualization and Outlier Detection. Journal of Computational and Graphical Statistics. 2018;27(4):923–934.
 
 scikit-fda documentation includes functional boxplot, magnitude-shape, depth/outlyingness, and FPCA reconstruction-error outlier examples.
+
+
+## Simultaneous functional mean inference
+
+Degras D. *Simultaneous confidence bands for the mean of functional data*. WIREs Computational Statistics. 2017;9(3):e1397.
+
+Liebl D, Reimherr M. *Fast and fair simultaneous confidence bands for functional parameters*. Journal of the Royal Statistical Society Series B. 2023;85(3):842–868. doi:10.1093/jrsssb/qkad026.
+
+The current eyetrajectoriespy implementation uses a studentized Gaussian multiplier maximum over the observed common grid. It is intentionally narrower in scope than general continuous-domain confidence-band frameworks.
