@@ -58,6 +58,8 @@ from .plotting import (
     plot_fpca_cross_validation,
     plot_fpca_influence,
     plot_fpca_outlier_diagnostics,
+    plot_fpca_regression_cv,
+    plot_nested_fpca_regression_cv,
     plot_functional_mean_band,
     plot_fpca_stability,
     plot_fpca_subspace_stability,
@@ -68,6 +70,12 @@ from .plotting import (
     plot_registration,
     plot_trajectory_overlay,
     plot_warping_functions,
+)
+from .prediction import (
+    cross_validate_fpca_regression,
+    nested_cross_validate_fpca_regression,
+    select_fpca_regression_components,
+    summarise_fpca_regression_cv,
 )
 from .preprocessing import (
     center_on_landmark,
@@ -85,6 +93,8 @@ from .reporting import (
     fpca_eigengap_reporting_text,
     fpca_influence_reporting_text,
     fpca_outlier_reporting_text,
+    fpca_regression_cv_reporting_text,
+    fpca_nested_regression_cv_reporting_text,
     fpca_stability_reporting_text,
     fpca_subspace_stability_reporting_text,
     functional_mean_band_reporting_text,
@@ -130,6 +140,8 @@ from .types import (
     ElasticFPCAResult,
     FPCAResult,
     FPCAInfluenceResult,
+    FPCANestedRegressionCVResult,
+    FPCARegressionCVResult,
     FPCAStabilityResult,
     FPCASubspaceComparisonResult,
     FPCASubspaceStabilityResult,
@@ -150,7 +162,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.7.0.dev0"
+__version__ = "0.8.0.dev0"
 
 __all__ = [
     "TrajectorySet",
@@ -279,5 +291,15 @@ __all__ = [
     "sparse_fpca_score_frame",
     "sparse_fpca_reporting_text",
     "plot_sparse_irregular_dimension",
+    "FPCARegressionCVResult",
+    "FPCANestedRegressionCVResult",
+    "cross_validate_fpca_regression",
+    "summarise_fpca_regression_cv",
+    "select_fpca_regression_components",
+    "nested_cross_validate_fpca_regression",
+    "plot_fpca_regression_cv",
+    "plot_nested_fpca_regression_cv",
+    "fpca_regression_cv_reporting_text",
+    "fpca_nested_regression_cv_reporting_text",
     "to_skfda_basis",
 ]
