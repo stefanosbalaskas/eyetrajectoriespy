@@ -682,3 +682,58 @@ Therefore the 0.12 Gaussian FPCR paired-bootstrap uncertainty tranche is both **
 2. The 0.12 percentile bootstrap is not the operator-scaled FPCR significance test described in 2026 theory. A future tranche may evaluate a dedicated implementation only if its assumptions, scaling, null bootstrap, and reporting contract can be reproduced faithfully.
 
 The 0.12 FPCR uncertainty implementation, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the merged 0.12 scientific tree.
+
+
+### 0.13 PR-head certification — 2026-09-21
+
+Exact certified PR head:
+
+`09cac05cb7b489d28f65dccd42f814fd68e4f4a6`
+
+PR #16, **“Add simultaneous Gaussian FPCR slope bands,”** completed all unchanged pull-request qualification workflows successfully on that exact SHA:
+
+- package build / distribution validation: **success**;
+- Windows × Python 3.11, 3.12, 3.13: **3/3 success**;
+- Ubuntu × Python 3.11, 3.12, 3.13: **3/3 success**;
+- macOS × Python 3.11, 3.12, 3.13: **3/3 success**;
+- full pytest/coverage/compile/Ruff gate embedded in the standard workflow: **success**;
+- executable examples, including `fpcr_slope_simultaneous_band.py`: **success**;
+- strict MkDocs documentation build: **success**;
+- optional scikit-fda interoperability: **success**;
+- optional FDApy sparse/PACE interoperability on Python 3.11 and 3.12: **2/2 success**.
+
+The local calibration harness had exposed a numerical edge case before PR qualification: directly computing standard deviation on repeated identical nonzero slope values could produce floating-point pseudo-variance. The implementation was corrected to compute pointwise SE from bootstrap deviations from the full-sample reference slope, preserving exact zero-variance semantics without weakening the threshold.
+
+No tests, coverage thresholds, workflows, branch protections, or scientific validation checks were weakened, disabled, deleted, or bypassed.
+
+PR #16 was squash-merged as:
+
+`7a6dc22408b72e03bf58ca3f629db86d47d7425a`
+
+The certified PR head and squash-merged main commit both point to Git tree:
+
+`c930c3f9db8bf1cb00be065da44bae3c56c2db1a`
+
+so the merged code, scientific contracts, tests, examples, and documentation are byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.13 exact-main qualification and deployment — 2026-09-21
+
+The exact merged-main commit
+
+`7a6dc22408b72e03bf58ca3f629db86d47d7425a`
+
+completed a fresh push-triggered qualification generation successfully:
+
+- tests workflow #62: **success**, including package construction and all 9 Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #62: **success**;
+- docs workflow #62: **success**, including strict MkDocs build and **successful GitHub Pages deployment**;
+- optional-fda workflow #58: **success**;
+- optional-sparse-fda workflow #46: **success**, including FDApy Python 3.11 and 3.12 lanes.
+
+Therefore the 0.13 simultaneous Gaussian FPCR slope-band tranche is both **PR-head CI-certified** and **exact-main requalified**, and the corresponding methods-site deployment is certified on the merged 0.13 main lineage.
+
+## 0.13 remaining re-checks
+
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this remains outside the current FDApy support contract.
+
+The 0.13 observed-grid simultaneous Gaussian FPCR slope-band implementation, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.13 main lineage.
