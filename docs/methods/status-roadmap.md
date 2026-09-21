@@ -24,6 +24,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Bootstrap FPC stability | implemented | `bootstrap_fpca_stability()` |
 | Matched pointwise FPC envelopes | implemented | `bootstrap_fpca_component_envelopes()` |
 | Bootstrap-calibrated simultaneous FPC-shape bands | implemented | `bootstrap_fpca_component_bands()` |
+| Bootstrap FPCA spectrum uncertainty | implemented | `bootstrap_fpca_spectrum_uncertainty()` |
 | Adjacent retained eigengap diagnostics | implemented | `fpca_eigenvalue_gap_table()` |
 | Principal-angle FPC subspace comparison | implemented | `compare_fpca_subspaces()` |
 | Bootstrap eigenspace stability | implemented | `bootstrap_fpca_subspace_stability()` |
@@ -78,4 +79,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.9.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.10.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

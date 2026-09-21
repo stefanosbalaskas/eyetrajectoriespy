@@ -23,6 +23,7 @@ nav:
       - Predictive FPC selection: guides/predictive-component-selection.md
       - FPC shape uncertainty: guides/component-uncertainty.md
       - Simultaneous FPC bands: guides/simultaneous-fpc-bands.md
+      - FPCA spectrum uncertainty: guides/spectrum-uncertainty.md
       - Simultaneous functional mean bands: guides/simultaneous-mean-bands.md
       - Near-tied FPC subspaces: guides/subspace-stability.md
       - Outliers & influence: guides/outliers-influence.md
@@ -42,6 +43,7 @@ nav:
       - FPCA stability: examples/fpca-stability.md
       - Selection & FPC uncertainty: examples/fpca-selection-uncertainty.md
       - Simultaneous FPC bands: examples/simultaneous-fpc-bands.md
+      - FPCA spectrum uncertainty: examples/fpca-spectrum-uncertainty.md
       - Predictive FPCA regression: examples/predictive-fpca-regression.md
       - Near-tied FPC subspaces: examples/near-tied-subspace.md
       - Functional mean bands: examples/functional-mean-bands.md

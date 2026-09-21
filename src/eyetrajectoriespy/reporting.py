@@ -16,6 +16,7 @@ from .types import (
     FPCANestedRegressionCVResult,
     FPCARegressionCVResult,
     FPCAResult,
+    FPCASpectrumUncertaintyResult,
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
@@ -63,6 +64,41 @@ def fpca_reporting_text(result: FPCAResult, *, digits: int = 1) -> str:
         f"Functional PCA retained {result.n_components} component(s), explaining {pct:.{digits}f}% of the "
         f"weighted functional variance ({head}). The analysis used {result.coordinate_system} coordinates, "
         f"time unit '{result.time_unit}', and channel scaling='{scaling}'."
+    )
+
+
+def fpca_spectrum_uncertainty_reporting_text(
+    result: FPCASpectrumUncertaintyResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate manuscript-oriented wording for FPCA spectrum uncertainty."""
+
+    median_similarity = np.median(result.similarities, axis=0)
+    similarity_text = ", ".join(
+        f"FPC{k + 1}={value:.{digits}f}"
+        for k, value in enumerate(median_similarity)
+    )
+    scope = (
+        "familywise across the requested components within each spectrum metric"
+        if result.simultaneous_scope == "family"
+        else "component-wise within each spectrum metric"
+    )
+    first_ratio = result.reference.explained_variance_ratio[0]
+    return (
+        "FPCA spectrum uncertainty was evaluated with "
+        f"{result.n_bootstrap} {result.resampling_unit}-level bootstrap "
+        "replicates. Bootstrap FPCs were matched to the full-sample reference "
+        "before eigenvalues and variance ratios were attached to component "
+        f"identities. Studentized {100 * result.confidence_level:.1f}% "
+        f"uncertainty intervals were calibrated {scope}. "
+        f"Median matched absolute similarities were {similarity_text}; the "
+        f"reference FPC1 explained-variance ratio was {first_ratio:.{digits}f}. "
+        "Familywise calibration, when requested, applies separately to "
+        "eigenvalues, explained-variance ratios, and cumulative ratios rather "
+        "than jointly across all three metrics. Intervals are not clipped to "
+        "the mathematical support and are bootstrap approximations rather than "
+        "exact finite-sample confidence guarantees."
     )
 
 

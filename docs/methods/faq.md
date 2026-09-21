@@ -150,3 +150,20 @@ Use component-wise calibration when each FPC has its own whole-grid uncertainty 
 ## Can a simultaneous band make a near-tied FPC interpretable?
 
 No. Sign alignment and component matching solve bookkeeping problems, not population identifiability. If eigenvalues are close, inspect eigengaps and subspace stability; the stable scientific object may be the span of several FPCs.
+
+
+## Why are individual eigenvalues matched but cumulative variance rank-ordered?
+
+They answer different questions. An individual eigenvalue may be discussed alongside a particular reference FPC shape, so matching preserves that identity. Cumulative explained variance asks how much variation is captured by the largest one, two, or k components, so descending rank is the correct ordering.
+
+## Can an eigenvalue uncertainty interval tell me whether to retain an FPC?
+
+Not automatically. Spectrum uncertainty quantifies sampling variability in the variance decomposition. Retention requires a separate explicit criterion such as reconstruction CV, predictive CV, a pre-specified variance threshold, or another justified study rule.
+
+## Why can a variance-ratio interval extend outside [0, 1]?
+
+The current implementation uses symmetric studentized bootstrap calibration around the full-sample estimate. Silently clipping the result would alter the interval. The package preserves the estimated interval and documents the support limitation.
+
+## Does familywise spectrum calibration cover all reported metrics jointly?
+
+No. It controls across the requested components separately within eigenvalues, per-component explained-variance ratios, and cumulative ratios. It is not one joint three-metric family.

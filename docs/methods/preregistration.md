@@ -187,3 +187,22 @@ If individual FPC uncertainty is confirmatory, pre-specify:
 - how eigenspace/subspace results will supersede individual-axis interpretation when identification is weak.
 
 Do not select a near-tie threshold after seeing which FPC labels it permits.
+
+
+## FPCA spectrum uncertainty
+
+If eigenvalues or variance decomposition will support confirmatory interpretation, pre-specify:
+
+- the number of spectrum components to report;
+- curve versus participant bootstrap resampling;
+- participant identifier when clustered resampling is used;
+- bootstrap replicate count and random-seed policy;
+- FPCA/MFPCA scaling;
+- confidence level;
+- component-wise versus familywise calibration;
+- that familywise calibration is separate for each spectrum metric;
+- that individual eigenvalues/ratios are shape-matched while cumulative variance remains rank-ordered;
+- whether support-exceeding interval limits will be displayed as estimated rather than clipped;
+- the separate rule, if any, used for choosing the retained FPC count.
+
+Do not convert the uncertainty result into a post hoc retention threshold after seeing the intervals.

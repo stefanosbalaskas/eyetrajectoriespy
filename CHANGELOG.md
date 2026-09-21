@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.10.0.dev0 — 2026-09-21
+
+Tenth development tranche.
+
+- matched nonparametric bootstrap uncertainty for FPCA eigenvalues, explained-variance ratios, and cumulative explained variance;
+- component matching by maximum absolute functional similarity before attaching spectrum estimates to reference FPC identities;
+- explicit curve- or participant-level resampling for repeated-trial designs;
+- studentized component-wise or familywise calibration across requested components within each spectrum metric;
+- familywise semantics explicitly do not claim joint calibration across eigenvalues, per-component ratios, and cumulative ratios simultaneously;
+- no silent clipping of eigenvalue or variance-ratio uncertainty intervals to mathematical support;
+- deterministic seeded behavior, zero-variance/degenerate-bootstrap safeguards, plotting/reporting helpers, tests, worked example, and expanded methodological/site guidance.
+
+
 ## 0.9.0.dev0 — 2026-09-21
 
 Ninth development tranche.

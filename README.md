@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.9.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.10.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -41,6 +41,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - matched, sign-aligned pointwise descriptive envelopes for FPC shape uncertainty;
 - bootstrap-calibrated observed-grid simultaneous FPC-shape bands with component-wise or familywise scope;
 - adjacent eigengap diagnostics and principal-angle FPCA subspace stability for near-tied components;
+- matched-bootstrap uncertainty for eigenvalues, explained-variance ratios, and cumulative explained variance;
 - simultaneous functional-mean bands with curve- or equal-weight participant-level inference;
 - FPCA reconstruction/robust score-space review diagnostics and leave-one-group-out influence analysis;
 - participant → trial → time multilevel FPCA;
@@ -114,6 +115,7 @@ print(summarise_fpca(fit))
 | Component shape uncertainty | matched bootstrap envelopes | `bootstrap_fpca_component_envelopes()` |
 | Simultaneous FPC-shape uncertainty | matched studentized bootstrap maximum | `bootstrap_fpca_component_bands()` |
 | Near-tied component blocks | principal-angle eigenspace stability | `bootstrap_fpca_subspace_stability()` |
+| FPCA spectrum uncertainty | matched studentized bootstrap | `bootstrap_fpca_spectrum_uncertainty()` |
 | Mean trajectory uncertainty | observed-grid Gaussian multiplier band | `multiplier_functional_mean_band()` |
 | Functional anomaly review | reconstruction + score-space diagnostics | `diagnose_fpca_outliers()` |
 | Group influence | leave-one-group-out matched FPCs | `leave_one_group_out_fpca_influence()` |
@@ -125,7 +127,7 @@ The methods site is configured for GitHub Pages:
 
 **https://stefanosbalaskas.github.io/eyetrajectoriespy/**
 
-It includes a tutorial gallery, representation selection, native irregular and sparse PACE workflows, FPCA/MFPCA interpretation, leakage-aware component selection, matched-bootstrap FPC uncertainty, simultaneous FPC-shape bands, eigengap/subspace stability, bootstrap stability, phase analysis, registration cautions, multilevel and compositional workflows, basis/elastic interoperability, failure cases, pre-registration/reporting guidance, limitations, worked examples, and API documentation.
+It includes a tutorial gallery, representation selection, native irregular and sparse PACE workflows, FPCA/MFPCA interpretation, leakage-aware component selection, matched-bootstrap FPC uncertainty, simultaneous FPC-shape bands, spectrum uncertainty, eigengap/subspace stability, bootstrap stability, phase analysis, registration cautions, multilevel and compositional workflows, basis/elastic interoperability, failure cases, pre-registration/reporting guidance, limitations, worked examples, and API documentation.
 
 ## Scope boundary
 
