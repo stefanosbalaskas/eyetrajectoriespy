@@ -577,9 +577,24 @@ The main-branch docs workflow then failed only at GitHub's `actions/upload-pages
 
 This is recorded as a **hosted Pages/artifact-service failure, not a documentation-build or code failure**. The workflow, permissions, branch protections, tests, and documentation strictness were not changed to work around it. The status-ledger commit carrying this record is used as a clean retry of the unchanged main-branch docs/deployment workflow.
 
+### 0.11 status-tip Pages retry and close-out — 2026-09-21
+
+The status-ledger-only main tip
+
+`fadd1865d3ad4755ddff1ae8b6de66f158d67522`
+
+retried the unchanged main workflows after the earlier hosted Pages-artifact 403. The retry completed successfully:
+
+- tests workflow #55: **success**, including package build and all 9 Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #55: **success**;
+- docs workflow #55: **success**, including strict MkDocs build, Pages artifact upload, and **successful GitHub Pages deployment**;
+- optional-fda workflow #51: **success**;
+- optional-sparse-fda workflow #39: **success**, including FDApy Python 3.11 and 3.12 lanes.
+
+The prior Pages 403 is therefore closed as a transient hosted-service failure. No workflow, permission, test, or documentation strictness was changed to obtain the successful retry.
+
 ## 0.11 remaining re-checks
 
-1. Confirm GitHub Pages artifact upload/deployment succeeds on the next unchanged main-line push after the transient 403.
-2. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this remains outside the current FDApy support contract.
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this remains outside the current FDApy support contract.
 
-The 0.11 FPC score basis-resampling implementation itself, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation build, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the merged 0.11 scientific tree.
+The 0.11 FPC score basis-resampling implementation, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the current 0.11 main lineage.
