@@ -525,3 +525,61 @@ The optional-backend compatibility boundary remains unchanged:
 1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13. This is outside the current FDApy support contract.
 
 The 0.10 spectrum implementation, cross-platform package behavior, package construction, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.10 main lineage.
+
+
+### 0.11 PR-head certification — 2026-09-21
+
+Exact certified PR head:
+
+`e5373b41217086705da70c02708b0459fd0f7d48`
+
+PR #14, **“Add FPC score basis-resampling uncertainty,”** completed all unchanged pull-request qualification workflows successfully on that exact SHA:
+
+- package build / distribution validation: **success**;
+- Windows × Python 3.11, 3.12, 3.13: **3/3 success**;
+- Ubuntu × Python 3.11, 3.12, 3.13: **3/3 success**;
+- macOS × Python 3.11, 3.12, 3.13: **3/3 success**;
+- full pytest/coverage/compile/Ruff gate embedded in the standard workflow: **success**;
+- executable examples, including `fpca_score_uncertainty.py`: **success**;
+- strict MkDocs documentation build: **success**;
+- optional scikit-fda interoperability: **success**;
+- optional FDApy sparse/PACE interoperability on Python 3.11 and 3.12: **2/2 success**.
+
+One earlier PR-head generation failed strict docs because the new worked example linked to the nonexistent `guides/stability.md`. The link was corrected to the existing `guides/stability-validation.md`; the exact certified head above then completed strict docs successfully. No documentation warning was suppressed and strict mode was not weakened.
+
+No tests, coverage thresholds, workflows, branch protections, or scientific validation checks were weakened, disabled, deleted, or bypassed.
+
+PR #14 was squash-merged as:
+
+`eca47bffb16d072be4b88a0f17778ed675709340`
+
+The certified PR head and squash-merged main commit both point to Git tree:
+
+`2aa2282153e8e7d988306a23638a1368f295de21`
+
+so the merged code, scientific contracts, tests, examples, and documentation are byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.11 exact-main qualification — 2026-09-21
+
+The exact merged-main commit
+
+`eca47bffb16d072be4b88a0f17778ed675709340`
+
+completed the scientific/package portion of a fresh push-triggered qualification generation successfully:
+
+- tests workflow #54: package construction plus all 9 Windows/Ubuntu/macOS × Python 3.11–3.13 lanes: **success**;
+- examples workflow #54: **success**;
+- optional-fda workflow #50: **success**;
+- optional-sparse-fda workflow #38: **success**, including FDApy Python 3.11 and 3.12 lanes;
+- docs workflow #54 strict MkDocs build: **success**.
+
+The main-branch docs workflow then failed only at GitHub's `actions/upload-pages-artifact` finalization stage. The generated Pages artifact uploaded its bytes, but the hosted service returned HTTP **403 Forbidden** while finalizing the artifact. The deploy job was therefore skipped.
+
+This is recorded as a **hosted Pages/artifact-service failure, not a documentation-build or code failure**. The workflow, permissions, branch protections, tests, and documentation strictness were not changed to work around it. The status-ledger commit carrying this record is used as a clean retry of the unchanged main-branch docs/deployment workflow.
+
+## 0.11 remaining re-checks
+
+1. Confirm GitHub Pages artifact upload/deployment succeeds on the next unchanged main-line push after the transient 403.
+2. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this remains outside the current FDApy support contract.
+
+The 0.11 FPC score basis-resampling implementation itself, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation build, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the merged 0.11 scientific tree.
