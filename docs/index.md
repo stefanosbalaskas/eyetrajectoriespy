@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.7 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.8 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
@@ -49,6 +49,12 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
     Refit FPCA inside each fold, keep repeated participant trials together, and make the minimum-RMSE or one-SE rule explicit.
 
     [:octicons-arrow-right-24: Component selection](guides/component-selection.md)
+
+-   **Tune FPC count for an external outcome without leakage**
+
+    Fit FPCA and scalar regression inside every training fold; use nested grouped CV when predictive performance is a scientific result.
+
+    [:octicons-arrow-right-24: Predictive FPCA selection](guides/predictive-component-selection.md)
 
 -   **Inspect uncertainty in FPC shape**
 
@@ -112,8 +118,11 @@ The package is designed around the principle that **the path to an FPC score is 
 - **Do viewers follow similar spatial routes at different times?**  
   Compare unregistered, registered, and phase representations.
 
-- **How many components should I retain?**  
+- **How many components should I retain for reconstruction?**  
   Use leakage-safe reconstruction CV with the correct fold unit and an explicit selection rule.
+
+- **How many FPC scores should predict an external outcome?**  
+  Use outcome-tuned FPCA regression CV; use nested CV to estimate performance after selection.
 
 - **Are my components stable enough to interpret?**  
   Use participant-aware bootstrap matching, reconstruction diagnostics, and descriptive component-shape envelopes.
@@ -167,7 +176,16 @@ The package is designed around the principle that **the path to an FPC score is 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
 
-## New in 0.7 development
+## New in 0.8 development
+
+- leakage-safe outcome-tuned FPCA regression component selection;
+- Gaussian RMSE/MAE and binomial log-loss/Brier scoring;
+- participant/group-aware predictive folds;
+- explicit minimum-loss and one-standard-error selection;
+- nested CV for performance after component-count tuning;
+- convergence, separation, probability, covariate, and rank safeguards.
+
+## Added in 0.7 development
 
 - simultaneous studentized Gaussian multiplier bands for common-grid functional means;
 - explicit curve versus equal-weight participant inference units;
