@@ -613,3 +613,57 @@ The prior Pages 403 is therefore closed as a transient hosted-service failure. N
 1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this remains outside the current FDApy support contract.
 
 The 0.11 FPC score basis-resampling implementation, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the current 0.11 main lineage.
+
+
+### 0.12 PR-head certification — 2026-09-21
+
+Exact certified PR head:
+
+`b9b36ff3dcf65c9de0b54fe7f9937099d0b8011d`
+
+PR #15, **“Add Gaussian FPCR paired-bootstrap uncertainty,”** completed all unchanged pull-request qualification workflows successfully on that exact SHA:
+
+- package build / distribution validation: **success**;
+- Windows × Python 3.11, 3.12, 3.13: **3/3 success**;
+- Ubuntu × Python 3.11, 3.12, 3.13: **3/3 success**;
+- macOS × Python 3.11, 3.12, 3.13: **3/3 success**;
+- full pytest/coverage/compile/Ruff gate embedded in the standard workflow: **success**;
+- executable examples, including `fpcr_regression_uncertainty.py`: **success**;
+- strict MkDocs documentation build: **success**;
+- optional scikit-fda interoperability: **success**;
+- optional FDApy sparse/PACE interoperability on Python 3.11 and 3.12: **2/2 success**.
+
+No tests, coverage thresholds, workflows, branch protections, or scientific validation checks were weakened, disabled, deleted, or bypassed.
+
+PR #15 was squash-merged as:
+
+`1116793866e903e04ef65ec1bb26536865da7a74`
+
+The certified PR head and squash-merged main commit both point to Git tree:
+
+`c9b085b2d8f431cd441b96561022c4f7e0066b97`
+
+so the merged code, scientific contracts, tests, examples, and documentation are byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.12 exact-main qualification and deployment — 2026-09-21
+
+The exact merged-main commit
+
+`1116793866e903e04ef65ec1bb26536865da7a74`
+
+completed a fresh push-triggered qualification generation successfully:
+
+- tests workflow #58: **success**, including package construction and all 9 Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #58: **success**;
+- docs workflow #58: **success**, including strict MkDocs build and **successful GitHub Pages deployment**;
+- optional-fda workflow #54: **success**;
+- optional-sparse-fda workflow #42: **success**, including FDApy Python 3.11 and 3.12 lanes.
+
+Therefore the 0.12 Gaussian FPCR paired-bootstrap uncertainty tranche is both **PR-head CI-certified** and **exact-main requalified**, and the corresponding methods-site deployment is certified on the merged 0.12 main lineage.
+
+## 0.12 remaining re-checks
+
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this remains outside the current FDApy support contract.
+2. The 0.12 percentile bootstrap is not the operator-scaled FPCR significance test described in 2026 theory. A future tranche may evaluate a dedicated implementation only if its assumptions, scaling, null bootstrap, and reporting contract can be reproduced faithfully.
+
+The 0.12 FPCR uncertainty implementation, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the merged 0.12 scientific tree.
