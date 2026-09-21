@@ -98,7 +98,7 @@ The full-sample reference scores then equal the ordinary fitted training scores.
 ## Next steps
 
 - [FPC score basis uncertainty](../guides/score-uncertainty.md)
-- [FPC stability](../guides/stability.md)
+- [FPC stability](../guides/stability-validation.md)
 - [Near-tied FPC subspaces](../guides/subspace-stability.md)
 - [FPCA spectrum uncertainty](../guides/spectrum-uncertainty.md)
 - [Reporting checklist](../methods/reporting.md)
