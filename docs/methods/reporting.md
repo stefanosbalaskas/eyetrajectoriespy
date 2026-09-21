@@ -203,3 +203,22 @@ If a simultaneous mean band was used, report:
 - that the current implementation targets the observed time-by-dimension grid rather than continuous-domain coverage between grid points.
 
 Do not report the participant-level band as if it were based on the raw number of trials. The effective inferential sample size is the number of participant-average functions.
+
+
+## Predictive FPCA regression selection
+
+Report:
+
+- outcome and family;
+- held-out loss;
+- candidate FPC counts;
+- FPCA scaling;
+- fold count and curve/group unit;
+- grouping variable for repeated measures;
+- covariates;
+- confirmation that FPCA and regression were refitted inside every training fold;
+- minimum-loss or one-standard-error selection rule;
+- selected FPC count;
+- whether predictive performance was estimated with an outer nested-CV loop.
+
+For nested CV, report outer and inner fold counts, distribution of selected FPC counts across outer folds, and mean/SD of outer held-out loss. Do not present the inner minimum selection loss as untouched predictive performance.
