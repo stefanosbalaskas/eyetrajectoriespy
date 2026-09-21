@@ -106,6 +106,7 @@ from .preprocessing import (
 )
 from .registration import phase_summary, register_to_landmarks, warping_displacement
 from .reporting import (
+    conformal_fpca_anomaly_reporting_text,
     fpca_reporting_text,
     fpca_score_uncertainty_reporting_text,
     fpca_spectrum_uncertainty_reporting_text,
