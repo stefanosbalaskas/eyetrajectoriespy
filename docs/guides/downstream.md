@@ -65,3 +65,23 @@ Global scope uses one maximum over the complete sampled time-by-dimension slope 
 The resulting band is a studentized bootstrap approximation over the **observed grid**. It does not establish continuous-domain coverage between samples and does not implement the operator-scaled FPCR significance test from recent asymptotic theory.
 
 See [Gaussian FPCR simultaneous slope bands](fpcr-simultaneous-slope-band.md).
+
+
+## Future observed outcomes versus conditional means
+
+The 0.12 paired bootstrap estimates uncertainty in the fitted conditional mean response for a fixed target trajectory.
+
+A future observed scalar outcome additionally contains response noise.
+
+Use <code>fpca_regression_future_prediction_interval()</code> to combine:
+
+1. the existing paired-bootstrap conditional-mean prediction for each fixed target;
+2. an independent draw from the centered empirical residual distribution of the full-sample Gaussian FPCR fit.
+
+The residual pool and the sampled residual used in every bootstrap/target draw are retained in the result object.
+
+This is a residual-resampling predictive approximation. It assumes one exchangeable/common residual distribution across targets and therefore is not heteroscedasticity-robust.
+
+The resulting intervals are marginal per target. They do not claim simultaneous coverage across several target trajectories and do not define a joint multivariate future-outcome distribution.
+
+See [Gaussian FPCR future-outcome prediction](fpcr-future-prediction.md).

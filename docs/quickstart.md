@@ -292,3 +292,25 @@ With <code>simultaneous_scope="dimension"</code>, each functional dimension gets
 The band is simultaneous only over the observed grid represented by the fit. It does not claim coverage between grid points and it is not the operator-scaled FPCR significance test from recent 2026 theory.
 
 See [Gaussian FPCR simultaneous slope bands](guides/fpcr-simultaneous-slope-band.md).
+
+
+## Predict a future observed scalar outcome
+
+The 0.12 paired FPCR bootstrap returns uncertainty in the fitted conditional mean response. A future observed outcome also contains response noise.
+
+Use the 0.14 predictive layer when that distinction is scientifically relevant:
+
+    from eyetrajectoriespy import fpca_regression_future_prediction_interval
+
+    future = fpca_regression_future_prediction_interval(
+        inference,
+        outcome,
+        confidence_level=0.95,
+        random_state=2026,
+    )
+
+The function reuses the exact paired-bootstrap conditional-mean predictions in <code>inference</code> and independently samples centered residuals from the full-sample Gaussian FPCR fit.
+
+This assumes an exchangeable/common residual distribution. It is not heteroscedasticity-robust, and intervals are marginal per target rather than simultaneous or joint across several targets.
+
+See [Gaussian FPCR future-outcome prediction](guides/fpcr-future-prediction.md).
