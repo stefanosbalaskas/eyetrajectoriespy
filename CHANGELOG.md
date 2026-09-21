@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.8.0.dev0 — 2026-09-21
+
+Eighth development tranche.
+
+- outcome-tuned FPC-count selection for scalar-on-function regression;
+- FPCA mean/scaling/eigenfunctions and scalar regression refitted inside every training fold;
+- curve- or participant/group-level folds for repeated-trial prediction;
+- Gaussian RMSE/MAE and binary log-loss/Brier objectives;
+- explicit minimum-loss and one-standard-error component-selection rules;
+- nested CV that separates inner FPC-count selection from outer predictive-performance evaluation;
+- explicit failures for one-class binomial training folds, perfect separation, non-convergence, invalid probabilities, non-numeric/non-finite covariates, and rank-deficient designs;
+- retained fold assignments, candidate predictions, inner summaries, and provenance;
+- plots, reporting helpers, worked repeated-trial example, methodological guide, assumptions, limitations, preregistration, reporting, FAQ, references, and API documentation.
+
+
 ## 0.7.0.dev0 — 2026-09-21
 
 Seventh development tranche.
