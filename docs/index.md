@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.8 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.9 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
@@ -55,6 +55,12 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
     Fit FPCA and scalar regression inside every training fold; use nested grouped CV when predictive performance is a scientific result.
 
     [:octicons-arrow-right-24: Predictive FPCA selection](guides/predictive-component-selection.md)
+
+-   **Calibrate simultaneous uncertainty for FPC shape**
+
+    Match/sign-align bootstrap FPCs and calibrate studentized maximum deviations over the observed grid, with explicit component-wise or familywise scope.
+
+    [:octicons-arrow-right-24: Simultaneous FPC bands](guides/simultaneous-fpc-bands.md)
 
 -   **Inspect uncertainty in FPC shape**
 
@@ -176,7 +182,16 @@ The package is designed around the principle that **the path to an FPC score is 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
 
-## New in 0.8 development
+## New in 0.9 development
+
+- matched/sign-aligned bootstrap simultaneous FPC-shape uncertainty bands;
+- observed-grid studentized maximum calibration;
+- component-wise or familywise simultaneous scope;
+- participant-aware resampling for repeated trials;
+- optional analyst-supplied eigengap screen with explicit error/warn/ignore behavior;
+- no default near-tie threshold and no continuous-domain coverage claim.
+
+## Added in 0.8 development
 
 - leakage-safe outcome-tuned FPCA regression component selection;
 - Gaussian RMSE/MAE and binomial log-loss/Brier scoring;
