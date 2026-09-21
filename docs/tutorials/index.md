@@ -34,6 +34,12 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [Selection & FPC uncertainty](../examples/fpca-selection-uncertainty.md)
 
+-   **Which FPC count predicts an external outcome?**
+
+    Tune ordinary FPC regression inside folds and use nested participant-grouped CV when predictive performance is itself a result.
+
+    [Predictive FPCA regression](../examples/predictive-fpca-regression.md)
+
 -   **Do my FPC labels rotate inside a stable subspace?**
 
     Inspect adjacent eigengaps, principal angles, and bootstrap projector distance for a component block.
