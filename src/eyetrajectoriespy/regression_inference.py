@@ -490,7 +490,8 @@ def fpca_regression_future_prediction_interval(
     if not np.all(np.isfinite(centered_residuals)):
         raise RuntimeError("centered FPCR residuals contain non-finite values")
 
-    rng = np.random.default_rng(random_state)
+    residual_seed = np.random.SeedSequence(random_state).spawn(1)[0]
+    rng = np.random.default_rng(residual_seed)
     residual_indices = rng.integers(
         0,
         centered_residuals.size,
@@ -526,6 +527,7 @@ def fpca_regression_future_prediction_interval(
                 "residual_method": residual_method,
                 "residual_source": "full_sample_reference_fpcr_fit",
                 "residuals_centered": True,
+                "residual_rng_stream": "spawned_domain_separated_stream",
                 "residual_exchangeability_assumed": True,
                 "heteroscedasticity_robust": False,
                 "future_outcome_prediction_interval": True,
