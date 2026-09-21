@@ -10,6 +10,7 @@ Use the **research question and data structure** to choose the representation.
 | Are stable participant strategies different from trial fluctuations? | multilevel FPCA | preserve participant → trial nesting |
 | How does allocation among AOIs evolve? | compositional FPCA | probabilities must remain on the simplex |
 | Do people traverse similar paths at different times? | registration + phase FPCA | do not erase meaningful latency |
+| Do I need uncertainty for the mean trajectory? | simultaneous multiplier mean band | choose the independent inference unit before calibration |
 | How many FPCs should be retained? | held-out reconstruction CV | refit FPCA inside folds; group repeated participants |
 | Is component interpretation stable? | bootstrap FPC matching + pointwise envelopes | resample the correct unit; match and sign-align components |
 | Do adjacent FPCs rotate or swap? | eigengap + principal-angle subspace stability | interpret the span when axes are weakly identified |
