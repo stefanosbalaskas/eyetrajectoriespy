@@ -11,7 +11,8 @@ Use the **research question and data structure** to choose the representation.
 | How does allocation among AOIs evolve? | compositional FPCA | probabilities must remain on the simplex |
 | Do people traverse similar paths at different times? | registration + phase FPCA | do not erase meaningful latency |
 | Do I need uncertainty for the mean trajectory? | simultaneous multiplier mean band | choose the independent inference unit before calibration |
-| How many FPCs should be retained? | held-out reconstruction CV | refit FPCA inside folds; group repeated participants |
+| How many FPCs should be retained for reconstruction? | held-out reconstruction CV | refit FPCA inside folds; group repeated participants |
+| How many FPCs should predict an external scalar outcome? | predictive FPCA regression CV / nested CV | fit FPCA and regression inside folds; keep outer test data out of selection |
 | Is component interpretation stable? | bootstrap FPC matching + pointwise envelopes | resample the correct unit; match and sign-align components |
 | Do adjacent FPCs rotate or swap? | eigengap + principal-angle subspace stability | interpret the span when axes are weakly identified |
 | Is one curve/participant unusually influential? | FPCA review + leave-one-group-out influence | flag for review, never auto-exclude |

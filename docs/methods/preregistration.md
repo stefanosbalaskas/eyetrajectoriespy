@@ -151,3 +151,21 @@ If uncertainty for a mean trajectory will be reported, pre-specify:
 - whether the claim is observed-grid simultaneous coverage or a separately justified continuous-domain band.
 
 Do not switch from participant-level to curve-level inference after seeing that trial-level treatment creates narrower bands.
+
+
+## Predictive FPC-count selection
+
+If FPC count will be tuned for a scalar outcome, pre-specify:
+
+- Gaussian versus binomial family;
+- predictive loss (RMSE/MAE or log-loss/Brier);
+- candidate FPC counts;
+- scaling choice;
+- curve versus participant/group fold unit;
+- grouping column;
+- minimum-loss versus one-standard-error rule;
+- covariates and their encoding;
+- whether nested outer CV will estimate predictive performance;
+- outer/inner fold counts and random seed where applicable.
+
+State that FPCA and regression will be refitted inside training folds. If participant-level outcomes are duplicated over trials, pre-specify aggregation or a grouped-model alternative rather than treating grouped CV as a dependence model.

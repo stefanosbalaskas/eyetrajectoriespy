@@ -18,6 +18,8 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Component reconstruction | implemented | `reconstruct_fpca()` |
 | Reconstruction diagnostics | implemented | `fpca_reconstruction_curve()` |
 | Held-out reconstruction component selection | implemented | `cross_validate_fpca_reconstruction()` |
+| Outcome-tuned FPCA regression selection | implemented | `cross_validate_fpca_regression()` |
+| Nested predictive FPCA selection evaluation | implemented | `nested_cross_validate_fpca_regression()` |
 | Explicit minimum / one-SE selection rules | implemented | `select_fpca_components_cv()` |
 | Bootstrap FPC stability | implemented | `bootstrap_fpca_stability()` |
 | Matched pointwise FPC envelopes | implemented | `bootstrap_fpca_component_envelopes()` |
@@ -70,11 +72,10 @@ Future tranches may evaluate:
 
 - conformal functional anomaly detection;
 - calibrated simultaneous confidence bands for functional modes;
-- supervised component selection optimized for external prediction;
 - richer multilevel functional mixed-effects backends.
 
 A candidate enters the public API only when it can preserve the package rules: explicit estimand, deterministic behavior or seed, provenance, failure diagnostics, synthetic truth tests, documentation, and runnable examples.
 
 ## Development status
 
-The current development line is **0.7.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.8.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

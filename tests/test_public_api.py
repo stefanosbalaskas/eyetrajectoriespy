@@ -1,7 +1,7 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.7.0.dev0"
+    assert et.__version__=="0.8.0.dev0"
     required={
         "TrajectorySet","fit_fpca","fit_mfpca","fit_multilevel_fpca","fit_compositional_fpca",
         "register_to_landmarks","fit_elastic_fpca","simulate_planar_trajectories",
@@ -27,6 +27,11 @@ def test_version_and_public_symbols():
         "FunctionalMeanBandResult","multiplier_functional_mean_band",
         "functional_mean_band_frame","plot_functional_mean_band",
         "functional_mean_band_reporting_text",
+        "FPCARegressionCVResult","FPCANestedRegressionCVResult",
+        "cross_validate_fpca_regression","summarise_fpca_regression_cv",
+        "select_fpca_regression_components","nested_cross_validate_fpca_regression",
+        "plot_fpca_regression_cv","plot_nested_fpca_regression_cv",
+        "fpca_regression_cv_reporting_text","fpca_nested_regression_cv_reporting_text",
     }
     assert required <= set(et.__all__)
     for name in required:

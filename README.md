@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.7.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.8.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -35,7 +35,8 @@ Registration is especially explicit because latency can itself be psychologicall
 - FPCA and joint multivariate FPCA for `[x(t), y(t)]`;
 - component scores, reconstruction, variance summaries, component trajectories, and reconstruction-error diagnostics;
 - leakage-aware held-out reconstruction CV with curve- or participant/group-level folds;
-- explicit minimum-RMSE and one-standard-error component-count selection;
+- explicit minimum-RMSE and one-standard-error reconstruction component-count selection;
+- outcome-tuned FPCA regression selection with Gaussian or binomial held-out losses and nested/grouped CV;
 - bootstrap FPC stability with curve- or participant-level resampling and matched component functions;
 - matched, sign-aligned pointwise descriptive envelopes for FPC shape uncertainty;
 - adjacent eigengap diagnostics and principal-angle FPCA subspace stability for near-tied components;
@@ -106,7 +107,8 @@ print(summarise_fpca(fit))
 | Repeated participant trials | `G_ij(t)` | `fit_multilevel_fpca()` |
 | AOI probabilities | simplex-valued `P(t)` | `fit_compositional_fpca()` |
 | Similar path, different traversal timing | amplitude + phase | `register_to_landmarks()` / `fit_phase_fpca()` / `fit_elastic_fpca()` |
-| Component-count selection | held-out reconstruction CV | `cross_validate_fpca_reconstruction()` |
+| Reconstruction component-count selection | held-out trajectory reconstruction | `cross_validate_fpca_reconstruction()` |
+| Predictive component-count selection | held-out scalar outcome loss / nested CV | `cross_validate_fpca_regression()` |
 | Component robustness | bootstrap-matched eigenfunctions | `bootstrap_fpca_stability()` |
 | Component shape uncertainty | matched bootstrap envelopes | `bootstrap_fpca_component_envelopes()` |
 | Near-tied component blocks | principal-angle eigenspace stability | `bootstrap_fpca_subspace_stability()` |

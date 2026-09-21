@@ -4,7 +4,7 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.7.0.dev0`
+- Package line: `0.8.0.dev0`
 - Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware component selection, descriptive FPC-shape uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
@@ -181,6 +181,25 @@ These are static branch checks, not hosted CI certification.
 - The examples workflow includes `examples/functional_mean_bands.py`.
 - The public API regression test includes `FunctionalMeanBandResult` and all new mean-band public functions.
 - The 0.7 site includes a dedicated methodology guide, worked example, reporting/preregistration guidance, assumptions, limitations, FAQ, references, API/object documentation, decision map, quickstart, roadmap, homepage, and README integration.
+
+## 0.8 pre-commit local algorithm validation — 2026-09-21
+
+Environment: Linux, Python 3.13.5.
+
+Before the predictive implementation was committed to GitHub, a standalone contract harness matching the intended fold-local weighted-FPCA/regression algorithm was executed locally.
+
+- Predictive FPCA regression harness: **6 passed, 0 failed**.
+- Affected-code coverage: **99%**.
+- `python -m compileall` on the harness and tests: **passed**.
+- Gaussian RMSE and MAE selection paths: **passed**.
+- Binomial log-loss and Brier probability-scoring paths: **passed** with a non-separable Bernoulli truth fixture.
+- Participant-grouped fold audit: each participant appeared in exactly one test fold: **passed**.
+- Nested grouped CV determinism under fixed seed: **passed**.
+- Numeric covariate path and rank-deficient-design rejection: **passed**.
+- One-class binomial training-fold rejection: **passed**.
+- A deliberately perfectly separable preliminary binomial fixture triggered the intended explicit separation failure; the ordinary binomial truth test was then changed to a probabilistic non-separable fixture rather than weakening the separation guard.
+
+This is pre-commit delta algorithmic evidence. Exact integrated package/cross-platform certification is provided by the PR-head workflows when they run successfully.
 
 ## Locally unavailable checks
 

@@ -126,3 +126,20 @@ The API rejects direct bands for `probability_simplex` trajectories because unco
 ## Multiplier bands remain asymptotic approximations
 
 Finite-sample coverage can depend on the number of independent units, the covariance structure, dimensionality of the grid, and multiplier calibration. Report the design and avoid treating nominal coverage as an exact finite-sample guarantee.
+
+
+## Predictive component selection is target-specific
+
+The FPC count minimizing scalar-outcome loss need not minimize trajectory reconstruction error or maximize interpretability. It is conditional on the outcome, family, loss, candidate set, covariates, scaling, and fold design.
+
+## Grouped CV is not a mixed-effects model
+
+Keeping repeated participant trials in one fold prevents leakage, but the fitted scalar regression still operates on the supplied curve rows. It does not automatically model within-participant residual correlation or equalize participant weights.
+
+## Binomial folds can fail legitimately
+
+A training fold with only one class, perfect separation, or non-convergence is not silently accepted. Such failures can indicate an unsuitable fold design, insufficient sample size, or an unstable predictive model.
+
+## Inner-CV loss is not unbiased final performance
+
+After tuning FPC count, use an outer held-out loop when predictive performance is reported as a substantive result. The inner minimum loss is selection evidence rather than an untouched performance estimate.

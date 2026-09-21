@@ -76,3 +76,12 @@ Degras D. *Simultaneous confidence bands for the mean of functional data*. WIREs
 Liebl D, Reimherr M. *Fast and fair simultaneous confidence bands for functional parameters*. Journal of the Royal Statistical Society Series B. 2023;85(3):842–868. doi:10.1093/jrsssb/qkad026.
 
 The current eyetrajectoriespy implementation uses a studentized Gaussian multiplier maximum over the observed common grid. It is intentionally narrower in scope than general continuous-domain confidence-band frameworks.
+
+
+## Predictive functional principal-component regression
+
+Hall P, Yang Y-J. *Ordering and Selecting Components in Multivariate or Functional Data Linear Prediction*. Journal of the Royal Statistical Society: Series B. 2010;72(1):93–110. doi:10.1111/j.1467-9868.2009.00727.x.
+
+The fda.usc package documents cross-validation of the number of FPC predictors for scalar functional regression through `fregre.pc.cv`.
+
+For binary probability prediction, log loss and Brier loss are proper scoring rules; eyetrajectoriespy therefore does not use thresholded accuracy as its FPC-count selection objective.
