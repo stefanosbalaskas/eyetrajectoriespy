@@ -105,3 +105,24 @@ An atypical curve can shape the FPCA basis and therefore reconstruct surprisingl
 ## Influence is sample-size dependent
 
 Leave-one-participant-out changes can be large in small samples even when every participant is valid. Influence quantifies dependence of the fitted basis on the observed sample; it is not evidence of invalid data.
+
+
+## Functional mean bands are observed-grid simultaneous bands
+
+The multiplier critical value controls the maximum statistic over the sampled time-by-dimension grid used by the analysis. The implementation does not claim simultaneous coverage at unsampled times between grid points.
+
+## Curve-level inference can be anti-conservative for repeated trials
+
+If several trajectories come from the same participant, treating each curve as an independent inference unit can overstate the effective sample size. Participant-level aggregation changes the estimand and must be chosen explicitly.
+
+## Participant-level aggregation targets participant-average trajectories
+
+When participants contribute different numbers of usable trials, `unit="participant"` gives each participant equal weight after within-participant averaging. This is not the same estimand as a curve-weighted grand mean.
+
+## Euclidean bands are not compositional bands
+
+The API rejects direct bands for `probability_simplex` trajectories because unconstrained lower/upper curves can violate the simplex. An explicitly chosen log-ratio/compositional inferential framework is required instead.
+
+## Multiplier bands remain asymptotic approximations
+
+Finite-sample coverage can depend on the number of independent units, the covariance structure, dimensionality of the grid, and multiplier calibration. Report the design and avoid treating nominal coverage as an exact finite-sample guarantee.
