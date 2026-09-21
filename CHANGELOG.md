@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.9.0.dev0 — 2026-09-21
+
+Ninth development tranche.
+
+- matched, sign-aligned nonparametric bootstrap uncertainty for individual FPC shapes;
+- studentized maximum-deviation calibration over the observed time-by-dimension grid;
+- explicit component-wise or familywise simultaneous calibration across requested FPCs;
+- curve- or participant-level resampling for independent-unit control in repeated-trial studies;
+- optional analyst-supplied relative eigengap screen with explicit error/warn/ignore behavior and no package-imposed near-tie threshold;
+- zero-variance/degenerate-bootstrap guardrails and deterministic seeded behavior;
+- long-form band tables, visualization, manuscript-reporting helpers, tests, worked example, and expanded methodological/site guidance;
+- explicit limitation that observed-grid bootstrap calibration does not establish continuous-domain coverage or unique interpretation of near-tied FPC axes.
+
+
 ## 0.8.0.dev0 — 2026-09-21
 
 Eighth development tranche.

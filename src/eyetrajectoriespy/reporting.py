@@ -9,6 +9,7 @@ from .prediction import select_fpca_regression_components, summarise_fpca_regres
 from .selection import select_fpca_components_cv, summarise_fpca_cross_validation
 from .subspace import fpca_eigenvalue_gap_table, summarise_fpca_subspace_stability
 from .types import (
+    FPCAComponentBandResult,
     FPCAComponentEnvelopeResult,
     FPCACrossValidationResult,
     FPCAInfluenceResult,
@@ -211,6 +212,55 @@ def fpca_component_envelope_reporting_text(
         "simultaneous confidence bands."
     )
 
+
+
+def fpca_component_band_reporting_text(
+    result: FPCAComponentBandResult,
+    *,
+    digits: int = 2,
+) -> str:
+    """Generate manuscript-oriented wording for simultaneous FPC uncertainty bands."""
+
+    median_similarity = np.median(result.similarities, axis=0)
+    similarity_text = ", ".join(
+        f"FPC{k + 1}={value:.{digits}f}"
+        for k, value in enumerate(median_similarity)
+    )
+    scope = (
+        "familywise across the requested FPCs and observed time-by-dimension grid"
+        if result.simultaneous_scope == "family"
+        else "component-wise across each FPC's observed time-by-dimension grid"
+    )
+    text = (
+        "Functional principal-component shape uncertainty was evaluated with "
+        f"{result.n_bootstrap} {result.resampling_unit}-level bootstrap "
+        "replicates. Replicate FPCs were matched and sign-aligned to the "
+        "full-sample reference, then studentized maximum absolute deviations "
+        f"were calibrated at {100 * result.confidence_level:.1f}% {scope}. "
+        f"Median matched absolute similarities were {similarity_text}. "
+    )
+    if result.relative_gap_threshold is None:
+        text += (
+            "No numerical near-tie threshold was imposed; component "
+            "identifiability should therefore be assessed separately with "
+            "eigengap and subspace diagnostics. "
+        )
+    else:
+        minimum = ", ".join(
+            f"FPC{k + 1}={gap:.{digits + 1}f}"
+            for k, gap in enumerate(result.minimum_relative_gaps)
+        )
+        text += (
+            f"The pre-specified relative-gap screen used threshold "
+            f"{result.relative_gap_threshold:.{digits + 1}f} "
+            f"(minimum adjacent gaps: {minimum}). "
+        )
+    return (
+        text
+        + "The band is calibrated over the observed grid and does not establish "
+        "continuous-domain coverage between sampled times or substantive "
+        "identifiability of a near-tied individual FPC axis."
+    )
 
 
 def fpca_eigengap_reporting_text(

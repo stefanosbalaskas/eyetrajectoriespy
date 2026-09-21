@@ -446,6 +446,35 @@ class FPCAComponentEnvelopeResult:
 
 
 @dataclass(frozen=True)
+class FPCAComponentBandResult:
+    """Bootstrap-calibrated simultaneous uncertainty bands for FPC functions."""
+
+    reference: FPCAResult
+    lower: np.ndarray
+    upper: np.ndarray
+    pointwise_se: np.ndarray
+    critical_values: np.ndarray
+    max_statistics: np.ndarray
+    similarities: np.ndarray
+    confidence_level: float
+    simultaneous_scope: str
+    resampling_unit: str
+    participant_column: str | None
+    relative_gap_threshold: float | None
+    minimum_relative_gaps: np.ndarray
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.similarities.shape[0]
+
+    @property
+    def n_components(self) -> int:
+        return self.lower.shape[0]
+
+
+@dataclass(frozen=True)
 class FPCASubspaceComparisonResult:
     """Principal-angle comparison of corresponding FPCA component subspaces."""
 

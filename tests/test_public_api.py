@@ -1,7 +1,7 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.8.0.dev0"
+    assert et.__version__=="0.9.0.dev0"
     required={
         "TrajectorySet","fit_fpca","fit_mfpca","fit_multilevel_fpca","fit_compositional_fpca",
         "register_to_landmarks","fit_elastic_fpca","simulate_planar_trajectories",
@@ -11,11 +11,11 @@ def test_version_and_public_symbols():
         "diagnose_fpca_outliers","leave_one_group_out_fpca_influence",
         "FunctionalOutlierResult","FPCAInfluenceResult","detect_functional_outliers_skfda",
         "plot_fpca_outlier_diagnostics","plot_fpca_influence",
-        "FPCACrossValidationResult","FPCAComponentEnvelopeResult",
+        "FPCACrossValidationResult","FPCAComponentBandResult","FPCAComponentEnvelopeResult",
         "cross_validate_fpca_reconstruction","summarise_fpca_cross_validation",
-        "select_fpca_components_cv","bootstrap_fpca_component_envelopes",
-        "plot_fpca_cross_validation","plot_fpca_component_envelope",
-        "fpca_cross_validation_reporting_text","fpca_component_envelope_reporting_text",
+        "select_fpca_components_cv","bootstrap_fpca_component_bands","fpca_component_band_frame","bootstrap_fpca_component_envelopes",
+        "plot_fpca_cross_validation","plot_fpca_component_band","plot_fpca_component_envelope",
+        "fpca_cross_validation_reporting_text","fpca_component_band_reporting_text","fpca_component_envelope_reporting_text",
         "FPCASubspaceComparisonResult","FPCASubspaceStabilityResult",
         "fpca_eigenvalue_gap_table","compare_fpca_subspaces",
         "bootstrap_fpca_subspace_stability","summarise_fpca_subspace_stability",

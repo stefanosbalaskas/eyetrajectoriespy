@@ -10,6 +10,7 @@ from .registration import warping_displacement
 from .prediction import summarise_fpca_regression_cv
 from .selection import summarise_fpca_cross_validation
 from .types import (
+    FPCAComponentBandResult,
     FPCAComponentEnvelopeResult,
     FPCACrossValidationResult,
     FPCAInfluenceResult,
@@ -328,6 +329,46 @@ def plot_fpca_component_envelope(
     ax.legend()
     return ax
 
+
+
+def plot_fpca_component_band(
+    result: FPCAComponentBandResult,
+    *,
+    component: int = 0,
+    dimension: str | None = None,
+    ax=None,
+):
+    """Plot an FPC with its bootstrap-calibrated simultaneous uncertainty band."""
+
+    if component < 0 or component >= result.n_components:
+        raise IndexError("component is outside the banded range")
+    if dimension is None:
+        dimension = result.reference.dimension_names[0]
+    if dimension not in result.reference.dimension_names:
+        raise KeyError(f"Unknown dimension {dimension!r}")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    dim = result.reference.dimension_names.index(dimension)
+    time = result.reference.time
+    scope = "familywise" if result.simultaneous_scope == "family" else "component-wise"
+    ax.fill_between(
+        time,
+        result.lower[component, :, dim],
+        result.upper[component, :, dim],
+        alpha=0.2,
+        label=f"{100 * result.confidence_level:.1f}% simultaneous band",
+    )
+    ax.plot(
+        time,
+        result.reference.components[component, :, dim],
+        label="reference FPC",
+    )
+    ax.set_xlabel(f"Time ({result.reference.time_unit})")
+    ax.set_ylabel(f"FPC loading: {dimension}")
+    ax.set_title(f"FPC{component + 1} simultaneous band ({scope})")
+    ax.legend()
+    return ax
 
 
 def plot_fpca_subspace_stability(
