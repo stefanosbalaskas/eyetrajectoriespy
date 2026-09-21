@@ -135,6 +135,13 @@
 ::: eyetrajectoriespy.fpca_eigengap_reporting_text
 ::: eyetrajectoriespy.fpca_subspace_stability_reporting_text
 
+## Split-conformal FPCA anomaly review
+::: eyetrajectoriespy.ConformalFunctionalAnomalyResult
+::: eyetrajectoriespy.split_conformal_fpca_anomaly
+::: eyetrajectoriespy.conformal_fpca_anomaly_frame
+::: eyetrajectoriespy.plot_conformal_fpca_anomaly
+::: eyetrajectoriespy.conformal_fpca_anomaly_reporting_text
+
 ## Functional outliers and influence
 ::: eyetrajectoriespy.diagnose_fpca_outliers
 ::: eyetrajectoriespy.leave_one_group_out_fpca_influence

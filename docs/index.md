@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.14 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.15 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
@@ -82,9 +82,15 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
 
 -   **Flag unusual trajectories without auto-deleting them**
 
-    Combine reconstruction, robust score-space distance, and participant-aware omission diagnostics. Review flags never become exclusions automatically.
+    Combine reconstruction, robust score-space distance, participant-aware omission diagnostics, and split-conformal p-values for genuinely new curves. Review flags never become exclusions automatically.
 
     [:octicons-arrow-right-24: Outliers & influence](guides/outliers-influence.md)
+
+-   **Calibrate anomaly evidence for new trajectories**
+
+    Fit the FPCA reference on a proper-training set, reserve a disjoint calibration set, and convert reconstruction or score-space nonconformity into marginal conformal p-values.
+
+    [:octicons-arrow-right-24: Conformal FPCA anomaly review](guides/conformal-fpca-anomaly.md)
 
 -   **Treat timing deformation as data**
 
@@ -182,7 +188,18 @@ The package is designed around the principle that **the path to an FPC score is 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
 
-## New in 0.14 development
+## New in 0.15 development
+
+- marginal split-conformal anomaly p-values for new common-grid functional trajectories;
+- explicit proper-training, calibration, and target partitions;
+- proper-training-only FPCA/MFPCA reference fitting;
+- reconstruction-RMSE or explicitly configured score-space Mahalanobis nonconformity;
+- conservative tie handling and visible minimum attainable p-value;
+- review flags that never become automatic exclusions;
+- curve-level exchangeability and clean-reference assumptions recorded in provenance;
+- no calibration-conditional adjustment, multiple-testing correction, or FDR claim in this first conformal tranche.
+
+## Added in 0.14 development
 
 - future observed scalar-outcome prediction intervals for fixed Gaussian FPCR target trajectories;
 - exact reuse of the paired-bootstrap conditional-mean predictions from the 0.12 FPCR uncertainty object;

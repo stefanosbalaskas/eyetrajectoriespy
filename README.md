@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.14.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.15.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -48,6 +48,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - marginal future-outcome prediction intervals for Gaussian FPCR fixed targets under centered empirical residual resampling;
 - simultaneous functional-mean bands with curve- or equal-weight participant-level inference;
 - FPCA reconstruction/robust score-space review diagnostics and leave-one-group-out influence analysis;
+- split-conformal marginal anomaly p-values for new common-grid trajectories using explicit proper-training and calibration partitions;
 - participant → trial → time multilevel FPCA;
 - compositional FPCA for AOI probability functions with simplex-preserving reconstruction;
 - landmark registration with retained warping functions, phase FPCA, and registered-versus-unregistered sensitivity analysis;
@@ -126,6 +127,7 @@ print(summarise_fpca(fit))
 | Gaussian FPCR future-outcome prediction | paired-bootstrap means + independent centered residual draws | `fpca_regression_future_prediction_interval()` |
 | Mean trajectory uncertainty | observed-grid Gaussian multiplier band | `multiplier_functional_mean_band()` |
 | Functional anomaly review | reconstruction + score-space diagnostics | `diagnose_fpca_outliers()` |
+| New-trajectory conformal anomaly review | split-conformal FPCA nonconformity | `split_conformal_fpca_anomaly()` |
 | Group influence | leave-one-group-out matched FPCs | `leave_one_group_out_fpca_influence()` |
 | Scalar outcome predicted by gaze | FPCA-score approximation | `fit_scalar_on_function_regression()` |
 

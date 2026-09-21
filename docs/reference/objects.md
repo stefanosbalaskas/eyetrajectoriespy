@@ -54,6 +54,16 @@ Stores paired unregistered/registered FPCA fits, component matching, signed shap
 Wraps an optional backend basis object together with the selected functional dimension, basis family, number of basis functions, time domain, and analysis provenance.
 
 
+## ConformalFunctionalAnomalyResult
+
+Stores the proper-training FPCA/MFPCA reference, calibration and target IDs, calibration and target nonconformity scores, marginal split-conformal p-values, review flags, alpha, nonconformity definition, optional score-covariance choice, component count, scaling, and provenance.
+
+The object makes the finite calibration resolution explicit through <code>minimum_attainable_p = 1 / (n_calibration + 1)</code>.
+
+Review flags are never automatic exclusions.
+
+The result records that this tranche provides **marginal curve-level conformal p-values only**. It does not claim calibration-conditional validity, multiple-testing correction, FDR control, or participant-clustered validity.
+
 ## FunctionalOutlierResult
 
 Contains a diagnostic table, method identifier, optional FPCA reference, backend object where relevant, and provenance. Review flags are never interpreted as exclusions by the object.
