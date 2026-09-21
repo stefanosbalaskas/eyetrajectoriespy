@@ -241,3 +241,24 @@ Report:
 Example:
 
 > FPC-shape uncertainty was evaluated with 1,000 participant-level bootstrap resamples. Bootstrap components were matched and sign-aligned to the full-sample FPCA, and 95% studentized maximum-deviation bands were calibrated separately for each FPC over the observed time × x/y grid. The pre-specified relative-eigengap review threshold was 0.05; components meeting that threshold were not interpreted individually and were instead evaluated at the eigenspace level.
+
+
+## FPCA spectrum uncertainty
+
+Report:
+
+- the number of FPCs whose spectrum was evaluated;
+- scaling used by FPCA/MFPCA;
+- bootstrap resampling unit and participant column when applicable;
+- bootstrap replicate count and random-seed policy;
+- confidence level;
+- component-wise versus familywise calibration;
+- that bootstrap FPCs were shape-matched before assigning individual eigenvalues/ratios;
+- that cumulative explained variance remained descending-rank ordered;
+- that familywise calibration applied separately within each metric;
+- that intervals were not silently clipped to parameter support;
+- the distinct procedure used to select component count, if component selection was performed.
+
+Example:
+
+> Uncertainty in the FPCA variance decomposition was quantified with 1,000 participant-level bootstrap refits under dimension-SD scaling. Bootstrap FPCs were matched to the full-sample reference before individual eigenvalues and explained-variance ratios were assigned, while cumulative variance retained descending eigenvalue-rank order. Ninety-five-percent familywise studentized intervals were calibrated across the three reported components separately for each spectrum metric. Bounds were reported without support clipping. Component retention was determined independently using grouped held-out reconstruction CV.

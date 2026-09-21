@@ -94,3 +94,13 @@ For binary probability prediction, log loss and Brier loss are proper scoring ru
 - Liebl, D., & Reimherr, M. (2023). Fast and fair simultaneous confidence bands for functional parameters. *Journal of the Royal Statistical Society: Series B*, 85(3), 842–868. https://doi.org/10.1093/jrsssb/qkad026
 
 The eyetrajectoriespy FPC-band implementation is a matched/sign-aligned nonparametric bootstrap with studentized maximum calibration on the observed grid. It is not an implementation of the B-spline oracle eigensystem estimator of Cai and Hu, nor of the non-resampling fast-and-fair construction of Liebl and Reimherr.
+
+
+## FPCA spectrum inference
+
+- Hall, P., & Hosseini-Nasab, M. (2006). On properties of functional principal components analysis. *Journal of the Royal Statistical Society: Series B*, 68(1), 109–126. https://doi.org/10.1111/j.1467-9868.2005.00535.x
+- Cai, L., & Hu, Q. (2024). Simultaneous inference and uniform test for eigensystems of functional data. *Computational Statistics & Data Analysis*, 192, 107900. https://doi.org/10.1016/j.csda.2023.107900
+
+Hall and Hosseini-Nasab provide the theoretical motivation for bootstrap inference on FPCA eigenvalues/eigenfunctions and show that eigengap effects differ between eigenvalue and eigenfunction estimation. Cai and Hu construct asymptotically correct eigenvalue intervals and simultaneous eigensystem inference for dense B-spline-smoothed functional data.
+
+The eyetrajectoriespy spectrum routine is a matched nonparametric studentized bootstrap around the package's grid-based FPCA/MFPCA estimator, not an implementation of Cai and Hu's spline oracle estimator.

@@ -29,3 +29,14 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 | whole-grid uncertainty statement for one FPC | component-wise simultaneous FPC band | observed grid only; individual axis must be identifiable |
 | joint whole-grid statement across several FPCs | familywise simultaneous FPC band | more conservative; near-tied axes still require subspace interpretation |
 | robust interpretation under near-tied eigenvalues | principal-angle subspace analysis | answers an eigenspace question, not individual-axis uncertainty |
+
+
+## FPCA variance decomposition: estimate versus uncertainty
+
+| Question | Tool | Interpretation boundary |
+|---|---|---|
+| how much sample variance does each FPC explain? | fitted FPCA spectrum | descriptive sample estimate |
+| how variable are individual eigenvalues/ratios? | component-wise spectrum bootstrap | matched reference-FPC identity |
+| how variable is the reported spectrum jointly across components? | familywise spectrum bootstrap | separate calibration within each metric |
+| how much do the top k components explain? | cumulative spectrum bootstrap | descending eigenvalue rank, not shape matching |
+| how many components should I retain? | explicit selection procedure | not answered automatically by spectrum intervals |

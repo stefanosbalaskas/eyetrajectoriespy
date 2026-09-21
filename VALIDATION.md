@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.9.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.10.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -219,6 +219,34 @@ The execution environment could not resolve github.com, so a fresh full-reposito
 - syntax compilation of the intended new package module, focused tests, and executable example: **passed**.
 
 This is local delta algorithmic validation, not a substitute for the repository-wide cross-platform test/coverage/docs/optional-backend workflows. Those remain GitHub CI evidence only after they actually complete.
+
+## 0.10 pre-commit local algorithm validation — 2026-09-21
+
+Environment: Linux, Python 3.13.5.
+
+Before publishing the 0.10 branch, a standalone numerical harness matching the intended PCA/bootstrap/matching/studentized-calibration logic was executed locally.
+
+- fixed-seed bootstrap determinism: **passed**;
+- reference estimates fell inside symmetric calibrated intervals: **passed**;
+- 99% intervals were no narrower than 90% intervals under identical bootstrap draws: **passed**;
+- familywise critical values were no smaller than component-wise critical values for eigenvalues, explained-variance ratios, and cumulative variance: **passed**;
+- matched absolute component similarities remained in [0, 1]: **passed**;
+- cumulative explained variance retained monotone descending-rank semantics even when matched individual FPC order differed: **passed**;
+- intended new spectrum module syntax compilation: **passed**.
+
+This is local delta algorithmic validation. The environment still cannot provide a fresh full-repository clone, so cross-platform package/test/docs/optional-backend certification remains GitHub CI evidence only.
+
+### 0.9 tip-of-main close-out — 2026-09-21
+
+The status-ledger-only main tip `105ca4bea224319e6fc63286d1be7e8e47663d74` completed its final redundant push generation successfully after the 0.9 merge:
+
+- tests workflow #45: **success**, including package build and all 9 Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #45: **success**;
+- docs workflow #45: **success**, including successful GitHub Pages deployment;
+- optional-fda workflow #41: **success**;
+- optional-sparse-fda workflow #29: **success**.
+
+Thus the repository entered the 0.10 branch from a fully green current main tip.
 
 ## Locally unavailable checks
 

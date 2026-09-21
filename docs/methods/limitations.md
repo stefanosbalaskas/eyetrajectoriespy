@@ -160,3 +160,24 @@ Component-wise calibration controls the maximum over one FPC grid at a time. Fam
 ## Bootstrap unit changes the uncertainty target
 
 Curve resampling treats trajectories as exchangeable independent units. Participant resampling keeps repeated trials clustered within resampled participants. Choosing the wrong unit can produce misleading uncertainty even if the numerical bands look stable.
+
+
+## Spectrum uncertainty is not dimension selection
+
+Intervals for eigenvalues or variance-explained ratios do not automatically determine how many FPCs should be retained. Reconstruction CV, predictive CV, variance thresholds, and substantive interpretation answer different questions.
+
+## Spectrum intervals are not support-clipped
+
+Symmetric studentized intervals may extend below zero for eigenvalues or outside [0, 1] for variance ratios. eyetrajectoriespy does not silently truncate them because clipping changes the inferential object without a derived calibration.
+
+## Familywise spectrum calibration is metric-specific
+
+With <code>simultaneous_scope="family"</code>, the maximum is taken across requested components separately for eigenvalues, explained-variance ratios, and cumulative ratios. The result is not one simultaneous guarantee across all three metric families together.
+
+## Cumulative variance is rank-based, not shape-matched
+
+Individual eigenvalues can be associated with matched reference FPC shapes. Cumulative explained variance instead follows descending eigenvalue rank. This distinction is deliberate and prevents near-tied component swaps from changing the meaning of “top k components.”
+
+## Near-tied axes can remain hard to interpret
+
+Eigenvalue inference can remain useful when eigengaps are small, but a near-tied individual eigenfunction direction may still be weakly identified. Spectrum uncertainty should be paired with subspace diagnostics when component shapes are interpreted.
