@@ -23,6 +23,8 @@ def _validate_score_targets(
     """Require targets to share the fitted functional representation exactly."""
 
     validate_trajectory_set(targets, require_complete=True)
+    if not np.all(np.isfinite(targets.values)):
+        raise ValueError("targets must contain only finite values")
     if targets.n_curves < 1:
         raise ValueError("targets must contain at least one trajectory")
     if not np.array_equal(training.time, targets.time):
@@ -66,6 +68,8 @@ def bootstrap_fpca_score_uncertainty(
     """
 
     validate_trajectory_set(trajectories, require_complete=True)
+    if not np.all(np.isfinite(trajectories.values)):
+        raise ValueError("training trajectories must contain only finite values")
     if targets is None:
         target_set = trajectories
         target_source = "training"
