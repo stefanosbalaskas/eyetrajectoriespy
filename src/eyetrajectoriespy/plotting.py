@@ -17,6 +17,7 @@ from .types import (
     FPCANestedRegressionCVResult,
     FPCARegressionCVResult,
     FPCAResult,
+    FPCAScoreUncertaintyResult,
     FPCASpectrumUncertaintyResult,
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
@@ -86,6 +87,55 @@ def plot_fpca_variance(result: FPCAResult, *, cumulative: bool = True, ax=None):
     ax.set_xlabel("Functional principal component")
     ax.set_ylabel("Cumulative variance explained (%)" if cumulative else "Variance explained (%)")
     ax.set_xticks(x)
+    return ax
+
+
+def plot_fpca_score_uncertainty(
+    result: FPCAScoreUncertaintyResult,
+    *,
+    component: int = 0,
+    max_targets: int = 30,
+    ax=None,
+):
+    """Plot fixed-target score uncertainty from bootstrap basis re-estimation."""
+
+    if component < 0 or component >= result.n_components:
+        raise IndexError("component is outside the score-uncertainty range")
+    if isinstance(max_targets, bool) or not isinstance(max_targets, (int, np.integer)):
+        raise TypeError("max_targets must be an integer")
+    if max_targets < 1:
+        raise ValueError("max_targets must be positive")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    n = min(max_targets, result.n_targets)
+    x = np.arange(n)
+    median = result.median[:n, component]
+    lower = result.lower[:n, component]
+    upper = result.upper[:n, component]
+    yerr = np.vstack((median - lower, upper - median))
+    ax.errorbar(
+        x,
+        median,
+        yerr=yerr,
+        marker="o",
+        linestyle="none",
+        capsize=3,
+        label="bootstrap median + percentile envelope",
+    )
+    ax.scatter(
+        x,
+        result.reference_scores[:n, component],
+        marker="x",
+        label="full-sample reference score",
+    )
+    ax.axhline(0.0, linestyle="--")
+    ax.set_xticks(x)
+    ax.set_xticklabels(result.target_curve_ids[:n], rotation=90)
+    ax.set_xlabel("Target trajectory")
+    ax.set_ylabel(f"FPC{component + 1} score")
+    ax.set_title("Basis-resampling FPC score uncertainty")
+    ax.legend()
     return ax
 
 

@@ -16,6 +16,7 @@ from .types import (
     FPCANestedRegressionCVResult,
     FPCARegressionCVResult,
     FPCAResult,
+    FPCAScoreUncertaintyResult,
     FPCASpectrumUncertaintyResult,
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
@@ -64,6 +65,35 @@ def fpca_reporting_text(result: FPCAResult, *, digits: int = 1) -> str:
         f"Functional PCA retained {result.n_components} component(s), explaining {pct:.{digits}f}% of the "
         f"weighted functional variance ({head}). The analysis used {result.coordinate_system} coordinates, "
         f"time unit '{result.time_unit}', and channel scaling='{scaling}'."
+    )
+
+
+def fpca_score_uncertainty_reporting_text(
+    result: FPCAScoreUncertaintyResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate manuscript-oriented wording for basis-resampled FPC scores."""
+
+    median_similarity = np.median(result.similarities, axis=0)
+    similarity_text = ", ".join(
+        f"FPC{k + 1}={value:.{digits}f}"
+        for k, value in enumerate(median_similarity)
+    )
+    settings = result.provenance.get("fpca_score_uncertainty", {})
+    scaling = settings.get("scaling", "unknown")
+    return (
+        f"FPC score sensitivity to basis estimation was evaluated with "
+        f"{result.n_bootstrap} {result.resampling_unit}-level bootstrap "
+        f"refits (scaling={scaling!r}) for {result.n_targets} fixed "
+        f"{result.target_source} target trajectory/trajectories. Bootstrap "
+        "components were matched and sign-aligned to the full-sample reference "
+        f"(median absolute similarities: {similarity_text}). Pointwise "
+        f"{100 * result.level:.1f}% percentile envelopes summarize variation "
+        "in target scores induced by re-estimation of the FPCA basis. These "
+        "envelopes do not include target measurement error, uncertainty in a "
+        "latent target curve, future-curve sampling variability, preprocessing "
+        "uncertainty, or full downstream-model uncertainty propagation."
     )
 
 

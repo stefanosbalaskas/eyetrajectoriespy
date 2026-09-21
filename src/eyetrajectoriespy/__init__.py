@@ -67,6 +67,7 @@ from .plotting import (
     plot_fpca_subspace_stability,
     plot_sparse_irregular_dimension,
     plot_fpca_variance,
+    plot_fpca_score_uncertainty,
     plot_fpca_spectrum_uncertainty,
     plot_planar_trajectories,
     plot_reconstruction_curve,
@@ -91,6 +92,7 @@ from .preprocessing import (
 from .registration import phase_summary, register_to_landmarks, warping_displacement
 from .reporting import (
     fpca_reporting_text,
+    fpca_score_uncertainty_reporting_text,
     fpca_spectrum_uncertainty_reporting_text,
     fpca_component_band_reporting_text,
     fpca_component_envelope_reporting_text,
@@ -109,6 +111,7 @@ from .reporting import (
     summarise_fpca,
     summarise_trajectory_set,
 )
+from .score_uncertainty import bootstrap_fpca_score_uncertainty, fpca_score_uncertainty_frame
 from .spectrum_inference import bootstrap_fpca_spectrum_uncertainty, fpca_spectrum_uncertainty_frame
 from .selection import (
     cross_validate_fpca_reconstruction,
@@ -146,6 +149,7 @@ from .types import (
     CompositionalFPCAResult,
     ElasticFPCAResult,
     FPCAResult,
+    FPCAScoreUncertaintyResult,
     FPCASpectrumUncertaintyResult,
     FPCAInfluenceResult,
     FPCANestedRegressionCVResult,
@@ -170,12 +174,13 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.10.0.dev0"
+__version__ = "0.11.0.dev0"
 
 __all__ = [
     "TrajectorySet",
     "IrregularTrajectorySet",
     "FPCAResult",
+    "FPCAScoreUncertaintyResult",
     "FPCASpectrumUncertaintyResult",
     "FPCAStabilityResult",
     "FPCAInfluenceResult",
@@ -252,6 +257,9 @@ __all__ = [
     "summarise_trajectory_set",
     "summarise_fpca",
     "fpca_reporting_text",
+    "bootstrap_fpca_score_uncertainty",
+    "fpca_score_uncertainty_frame",
+    "fpca_score_uncertainty_reporting_text",
     "bootstrap_fpca_spectrum_uncertainty",
     "fpca_spectrum_uncertainty_frame",
     "fpca_spectrum_uncertainty_reporting_text",
@@ -263,6 +271,7 @@ __all__ = [
     "plot_trajectory_overlay",
     "plot_planar_trajectories",
     "plot_fpca_variance",
+    "plot_fpca_score_uncertainty",
     "plot_fpca_spectrum_uncertainty",
     "plot_fpca_stability",
     "plot_reconstruction_curve",

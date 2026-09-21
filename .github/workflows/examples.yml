@@ -40,3 +40,4 @@ jobs:
           python examples/predictive_fpca_selection.py
           python examples/fpc_simultaneous_bands.py
           python examples/fpca_spectrum_uncertainty.py
+          python examples/fpca_score_uncertainty.py
