@@ -9,6 +9,8 @@
 ::: eyetrajectoriespy.FPCAStabilityResult
 ::: eyetrajectoriespy.FPCACrossValidationResult
 ::: eyetrajectoriespy.FPCAComponentEnvelopeResult
+::: eyetrajectoriespy.FPCARegressionCVResult
+::: eyetrajectoriespy.FPCANestedRegressionCVResult
 ::: eyetrajectoriespy.FPCASubspaceComparisonResult
 ::: eyetrajectoriespy.FPCASubspaceStabilityResult
 ::: eyetrajectoriespy.SparseFPCAResult
@@ -66,6 +68,16 @@
 ::: eyetrajectoriespy.select_fpca_components_cv
 ::: eyetrajectoriespy.plot_fpca_cross_validation
 ::: eyetrajectoriespy.fpca_cross_validation_reporting_text
+
+## Predictive FPCA regression selection
+::: eyetrajectoriespy.cross_validate_fpca_regression
+::: eyetrajectoriespy.summarise_fpca_regression_cv
+::: eyetrajectoriespy.select_fpca_regression_components
+::: eyetrajectoriespy.nested_cross_validate_fpca_regression
+::: eyetrajectoriespy.plot_fpca_regression_cv
+::: eyetrajectoriespy.plot_nested_fpca_regression_cv
+::: eyetrajectoriespy.fpca_regression_cv_reporting_text
+::: eyetrajectoriespy.fpca_nested_regression_cv_reporting_text
 
 ## FPC shape uncertainty
 ::: eyetrajectoriespy.bootstrap_fpca_component_envelopes
