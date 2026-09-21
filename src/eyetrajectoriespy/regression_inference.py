@@ -469,10 +469,10 @@ def fpca_regression_slope_simultaneous_band(
     if not np.all(np.isfinite(reference)) or not np.all(np.isfinite(bootstrap)):
         raise ValueError("reference and bootstrap slopes must be finite")
 
-    pointwise_se = np.std(bootstrap, axis=0, ddof=1)
+    deviations = bootstrap - reference[None, :, :]
+    pointwise_se = np.std(deviations, axis=0, ddof=1)
     scale = max(1.0, float(np.max(np.abs(reference))))
     positive_variance = pointwise_se > np.finfo(float).eps * scale
-    deviations = bootstrap - reference[None, :, :]
     tolerance = 100.0 * np.finfo(float).eps * scale
 
     degenerate = (~positive_variance) & (
