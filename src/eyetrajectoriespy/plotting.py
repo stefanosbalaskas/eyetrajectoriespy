@@ -7,11 +7,14 @@ import numpy as np
 
 from .fpca import component_trajectories
 from .registration import warping_displacement
+from .prediction import summarise_fpca_regression_cv
 from .selection import summarise_fpca_cross_validation
 from .types import (
     FPCAComponentEnvelopeResult,
     FPCACrossValidationResult,
     FPCAInfluenceResult,
+    FPCANestedRegressionCVResult,
+    FPCARegressionCVResult,
     FPCAResult,
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
@@ -438,4 +441,49 @@ def plot_functional_mean_band(
     ax.set_ylabel(dimension)
     ax.set_title(f"Functional mean band: {dimension}(t)")
     ax.legend()
+    return ax
+
+
+
+def plot_fpca_regression_cv(
+    result: FPCARegressionCVResult,
+    *,
+    ax=None,
+):
+    """Plot mean held-out predictive loss against retained FPC count."""
+
+    if ax is None:
+        _, ax = plt.subplots()
+    summary = summarise_fpca_regression_cv(result)
+    ax.errorbar(
+        summary["n_components"],
+        summary["mean_loss"],
+        yerr=summary["se_loss"],
+        marker="o",
+        capsize=3,
+    )
+    ax.set_xlabel("Retained functional principal components")
+    ax.set_ylabel(f"Held-out {result.loss}")
+    ax.set_title(f"Predictive FPCA regression CV ({result.family})")
+    return ax
+
+
+def plot_nested_fpca_regression_cv(
+    result: FPCANestedRegressionCVResult,
+    *,
+    ax=None,
+):
+    """Plot outer-fold predictive loss from nested FPCA regression CV."""
+
+    if ax is None:
+        _, ax = plt.subplots()
+    frame = result.outer_folds
+    ax.plot(
+        frame["outer_fold"] + 1,
+        frame["loss"],
+        marker="o",
+    )
+    ax.set_xlabel("Outer fold")
+    ax.set_ylabel(f"Outer held-out {result.loss}")
+    ax.set_title("Nested predictive FPCA regression")
     return ax
