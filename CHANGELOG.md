@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.14.0.dev0 — 2026-09-21
+
+Fourteenth development tranche.
+
+- marginal future-outcome prediction intervals for fixed Gaussian FPCR target trajectories;
+- prediction reuses the exact paired-bootstrap conditional-mean distribution from bootstrap_fpca_regression_uncertainty();
+- an independent centered empirical residual draw is added to each bootstrap mean prediction to represent future response noise;
+- the centered residual pool and every sampled residual are retained for auditability;
+- the method is explicitly restricted to an exchangeable/common residual distribution and does not claim heteroscedasticity robustness;
+- prediction intervals are marginal per target and do not claim simultaneous or joint coverage across multiple target trajectories;
+- conditional-mean uncertainty remains separately available from the underlying 0.12 result;
+- deterministic seeded residual resampling, table/plot/reporting helpers, tests, executable example, and expanded methodological/site guidance.
+
+
 ## 0.13.0.dev0 — 2026-09-21
 
 Thirteenth development tranche.

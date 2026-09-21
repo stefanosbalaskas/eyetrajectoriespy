@@ -9,6 +9,7 @@ from .analysis import fit_scalar_on_function_regression
 from .fpca import transform_fpca
 from .stability import _fit_for_trajectories
 from .types import (
+    FPCARegressionPredictionIntervalResult,
     FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
     FPCAResult,
@@ -427,6 +428,139 @@ def bootstrap_fpca_regression_uncertainty(
                 "random_state": random_state,
             },
         },
+    )
+
+
+def fpca_regression_future_prediction_interval(
+    result: FPCARegressionUncertaintyResult,
+    outcome: np.ndarray | pd.Series,
+    *,
+    confidence_level: float = 0.95,
+    residual_method: str = "empirical_centered",
+    random_state: int | None = 0,
+) -> FPCARegressionPredictionIntervalResult:
+    """Construct marginal future-outcome prediction intervals for fixed targets.
+
+    The function reuses paired-bootstrap conditional-mean predictions stored in
+    the result and adds an independent draw from the centered empirical residual
+    distribution of the full-sample Gaussian FPCR fit.
+
+    This is a residual-resampling predictive approximation. It assumes the
+    response residual distribution is exchangeable across target curves and is
+    therefore not heteroscedasticity-robust. Intervals are marginal per target,
+    not simultaneous or joint across multiple targets.
+    """
+
+    if not isinstance(result, FPCARegressionUncertaintyResult):
+        raise TypeError(
+            "result must be an FPCARegressionUncertaintyResult from "
+            "bootstrap_fpca_regression_uncertainty()"
+        )
+    if result.reference_regression.family != "gaussian":
+        raise ValueError("future prediction intervals require a Gaussian FPCR fit")
+    if not 0 < confidence_level < 1:
+        raise ValueError("confidence_level must lie in (0, 1)")
+    if residual_method != "empirical_centered":
+        raise ValueError("residual_method must be 'empirical_centered'")
+
+    y = np.asarray(outcome, dtype=float)
+    fitted = np.asarray(result.reference_regression.predictions, dtype=float)
+    if y.shape != fitted.shape:
+        raise ValueError(
+            "outcome must contain exactly one value per trajectory in the "
+            "reference FPCR training fit"
+        )
+    if y.ndim != 1 or y.size < 2:
+        raise ValueError("at least two training outcomes are required")
+    if not np.all(np.isfinite(y)) or not np.all(np.isfinite(fitted)):
+        raise ValueError("outcome and reference fitted values must be finite")
+
+    bootstrap_mean = np.asarray(result.bootstrap_mean_predictions, dtype=float)
+    if bootstrap_mean.ndim != 2:
+        raise ValueError("bootstrap mean predictions must be a two-dimensional array")
+    if bootstrap_mean.shape[0] != result.n_bootstrap:
+        raise ValueError("bootstrap mean prediction count is inconsistent")
+    if bootstrap_mean.shape[1] != len(result.target_curve_ids):
+        raise ValueError("bootstrap target prediction count is inconsistent")
+    if not np.all(np.isfinite(bootstrap_mean)):
+        raise ValueError("bootstrap mean predictions must be finite")
+
+    residuals = y - fitted
+    centered_residuals = residuals - float(np.mean(residuals))
+    if not np.all(np.isfinite(centered_residuals)):
+        raise RuntimeError("centered FPCR residuals contain non-finite values")
+
+    residual_seed = np.random.SeedSequence(random_state).spawn(1)[0]
+    rng = np.random.default_rng(residual_seed)
+    residual_indices = rng.integers(
+        0,
+        centered_residuals.size,
+        size=bootstrap_mean.shape,
+    )
+    sampled_residuals = centered_residuals[residual_indices]
+    predictive_draws = bootstrap_mean + sampled_residuals
+
+    alpha = (1.0 - float(confidence_level)) / 2.0
+    lower = np.quantile(predictive_draws, alpha, axis=0)
+    median = np.quantile(predictive_draws, 0.5, axis=0)
+    upper = np.quantile(predictive_draws, 1.0 - alpha, axis=0)
+    predictive_se = np.std(predictive_draws, axis=0, ddof=1)
+
+    return FPCARegressionPredictionIntervalResult(
+        regression_uncertainty=result,
+        centered_residuals=np.asarray(centered_residuals, dtype=float),
+        sampled_residuals=np.asarray(sampled_residuals, dtype=float),
+        predictive_draws=np.asarray(predictive_draws, dtype=float),
+        lower=np.asarray(lower, dtype=float),
+        median=np.asarray(median, dtype=float),
+        upper=np.asarray(upper, dtype=float),
+        predictive_se=np.asarray(predictive_se, dtype=float),
+        confidence_level=float(confidence_level),
+        residual_method=residual_method,
+        random_state=random_state,
+        provenance={
+            **dict(result.provenance),
+            "fpca_regression_future_prediction_interval": {
+                "method": "paired_bootstrap_mean_plus_independent_centered_empirical_residual",
+                "family": "gaussian",
+                "confidence_level": float(confidence_level),
+                "residual_method": residual_method,
+                "residual_source": "full_sample_reference_fpcr_fit",
+                "residuals_centered": True,
+                "residual_rng_stream": "spawned_domain_separated_stream",
+                "residual_exchangeability_assumed": True,
+                "heteroscedasticity_robust": False,
+                "future_outcome_prediction_interval": True,
+                "marginal_per_target": True,
+                "simultaneous_across_targets": False,
+                "joint_target_distribution_claimed": False,
+                "bootstrap_mean_predictions_reused": True,
+                "n_bootstrap": result.n_bootstrap,
+                "n_training_residuals": int(centered_residuals.size),
+                "target_source": result.target_source,
+                "random_state": random_state,
+            },
+        },
+    )
+
+
+def fpca_regression_future_prediction_frame(
+    result: FPCARegressionPredictionIntervalResult,
+) -> pd.DataFrame:
+    """Return fixed-target future-outcome prediction interval summaries."""
+
+    base = result.regression_uncertainty
+    return pd.DataFrame(
+        {
+            "curve_id": base.target_curve_ids,
+            "reference_mean_prediction": base.reference_mean_predictions,
+            "mean_response_lower": base.prediction_lower,
+            "mean_response_upper": base.prediction_upper,
+            "future_prediction_median": result.median,
+            "future_prediction_se": result.predictive_se,
+            "future_prediction_lower": result.lower,
+            "future_prediction_upper": result.upper,
+        }
     )
 
 

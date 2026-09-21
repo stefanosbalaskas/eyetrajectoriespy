@@ -129,3 +129,16 @@ Studentization uses the bootstrap standard deviation of slope **deviations from 
 Global scope treats all observed time × dimension cells as one simultaneous family. Dimension scope treats observed time within each functional dimension as a separate family.
 
 The coverage claim is restricted to the observed grid represented by the FPCR fit.
+
+
+## Gaussian FPCR future-outcome prediction intervals
+
+The future-outcome layer assumes the underlying object comes from the Gaussian paired-bootstrap FPCR pipeline.
+
+The scalar training outcomes supplied to the predictive function must correspond exactly to the training observations used by the reference FPCR fit.
+
+Centered empirical residual resampling assumes one exchangeable/common response-error distribution is appropriate for the future target response.
+
+The target functional trajectory is held fixed. Target measurement error, future predictor uncertainty, latent-curve uncertainty, and preprocessing uncertainty are not included.
+
+Intervals are marginal per target. No joint residual dependence across multiple target outcomes is modeled.

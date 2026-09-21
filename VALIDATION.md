@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.13.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.14.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -294,6 +294,21 @@ A standalone calibration harness matching the 0.13 studentized maximum-deviation
 - the initial direct-standard-deviation formulation exposed numerical pseudo-variance for repeated identical nonzero slopes; the implementation was corrected to estimate SE from bootstrap deviations from the reference rather than loosening the zero-variance threshold.
 
 This is local delta algorithmic validation. Full repository pytest/coverage/Ruff/package/docs/optional-backend qualification remains GitHub CI evidence.
+
+## 0.14 pre-commit local algorithm validation — 2026-09-21
+
+Environment: Linux, Python 3.13.
+
+A standalone predictive-resampling harness matching the 0.14 centered empirical residual construction was executed locally.
+
+- centered residual pool had numerical mean zero: **passed**;
+- identical residual seed reproduced identical predictive draws: **passed**;
+- every predictive draw equaled the stored bootstrap conditional mean plus its sampled residual: **passed**;
+- lower ≤ median ≤ upper predictive quantiles: **passed**;
+- 99% intervals were no narrower than 80% intervals under identical predictive draws: **passed**;
+- residual variation was retained when the synthetic response contained non-zero noise: **passed**.
+
+This is local delta algorithmic validation only. Full repository pytest/coverage/Ruff/package/docs/optional-backend qualification remains GitHub CI evidence.
 
 ## Locally unavailable checks
 

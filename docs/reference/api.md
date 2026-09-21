@@ -69,6 +69,13 @@
 ::: eyetrajectoriespy.plot_fpca_cross_validation
 ::: eyetrajectoriespy.fpca_cross_validation_reporting_text
 
+## Gaussian FPCR future-outcome prediction
+::: eyetrajectoriespy.FPCARegressionPredictionIntervalResult
+::: eyetrajectoriespy.fpca_regression_future_prediction_interval
+::: eyetrajectoriespy.fpca_regression_future_prediction_frame
+::: eyetrajectoriespy.plot_fpca_regression_future_prediction_interval
+::: eyetrajectoriespy.fpca_regression_future_prediction_reporting_text
+
 ## Gaussian FPCR simultaneous slope band
 ::: eyetrajectoriespy.FPCARegressionSlopeBandResult
 ::: eyetrajectoriespy.fpca_regression_slope_simultaneous_band

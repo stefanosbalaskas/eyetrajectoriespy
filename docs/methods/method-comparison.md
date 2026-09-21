@@ -71,3 +71,12 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 | what band covers sampled time within each dimension? | fpca_regression_slope_simultaneous_band(..., simultaneous_scope="dimension") | one maximum over time per dimension | not joint across dimensions |
 | what band covers the full sampled multivariate slope grid? | fpca_regression_slope_simultaneous_band(..., simultaneous_scope="global") | one maximum over time × dimensions | observed-grid only |
 | what formal operator-scaled FPCR test should be used? | specialist recent method | operator-scaled statistic | not implemented by the 0.13 grid band |
+
+
+## Gaussian FPCR target uncertainty: mean response versus future outcome
+
+| Question | Tool | Randomness represented | Boundary |
+|---|---|---|---|
+| what is uncertainty in the fitted conditional mean for a fixed target? | bootstrap_fpca_regression_uncertainty() | paired resampling of predictor/outcome and full FPCR refit | no future response noise |
+| what is uncertainty for a future observed scalar response at that fixed target? | fpca_regression_future_prediction_interval() | paired-bootstrap mean distribution + independent centered empirical residual draw | common/exchangeable residual distribution assumed |
+| what if response variance is heterogeneous? | specialist wild/bootstrap method | model-specific heteroscedastic error mechanism | not implemented by 0.14 |

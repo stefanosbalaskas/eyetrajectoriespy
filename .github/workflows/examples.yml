@@ -43,3 +43,4 @@ jobs:
           python examples/fpca_score_uncertainty.py
           python examples/fpcr_regression_uncertainty.py
           python examples/fpcr_slope_simultaneous_band.py
+          python examples/fpcr_future_prediction_intervals.py

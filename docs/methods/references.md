@@ -135,3 +135,13 @@ The first two references motivate bootstrap inference and prediction in scalar-o
 - González-Manteiga, W., & Martínez-Calvo, A. (2011). Bootstrap in functional linear regression. *Journal of Statistical Planning and Inference*, 141(1), 453–461. https://doi.org/10.1016/j.jspi.2010.06.027
 
 Imaizumi and Kato provide a theoretically justified PCA-based confidence-band construction for scalar-response functional linear regression. Yeon develops a distinct operator-scaled FPCR Gaussian/bootstrap theory and significance test. The eyetrajectoriespy 0.13 routine should be described more narrowly as a finite observed-grid studentized maximum calibration of its retained paired-bootstrap FPCR slope distribution.
+
+
+## Functional-linear prediction intervals
+
+- Cai, T. T., & Hall, P. (2006). Prediction in functional linear regression. *The Annals of Statistics*, 34(5), 2159–2179. https://doi.org/10.1214/009053606000000830
+- González-Manteiga, W., & Martínez-Calvo, A. (2011). Bootstrap in functional linear regression. *Journal of Statistical Planning and Inference*, 141(1), 453–461. https://doi.org/10.1016/j.jspi.2010.06.027
+- Khademnoe, O., & Hosseini-Nasab, S. M. E. (2016). On properties of percentile bootstrap confidence intervals for prediction in functional linear regression. *Journal of Statistical Planning and Inference*, 170, 129–143. https://doi.org/10.1016/j.jspi.2015.10.001
+- Yeon, H., Dai, X., & Nordman, D. (2026). Wild bootstrap for mean response inference in functional linear regression models. arXiv:2606.16089.
+
+The 0.14 implementation follows the conceptual separation between model-estimation uncertainty and response-noise uncertainty in bootstrap prediction. It does not implement the 2026 wild bootstrap and does not claim heteroscedasticity robustness.

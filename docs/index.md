@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.13 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.14 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
@@ -182,7 +182,17 @@ The package is designed around the principle that **the path to an FPC score is 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
 
-## New in 0.13 development
+## New in 0.14 development
+
+- future observed scalar-outcome prediction intervals for fixed Gaussian FPCR target trajectories;
+- exact reuse of the paired-bootstrap conditional-mean predictions from the 0.12 FPCR uncertainty object;
+- independent centered empirical residual draws added to each bootstrap mean prediction;
+- retained residual pool and sampled residuals for auditability;
+- deterministic seeded residual resampling;
+- explicit exchangeable/common residual-distribution assumption;
+- no heteroscedasticity-robust, simultaneous-target, or joint-target coverage claim.
+
+## Added in 0.13 development
 
 - studentized maximum-deviation bands for reconstructed Gaussian FPCR slopes;
 - exact reuse of the paired-bootstrap slope replicates from the 0.12 regression-inference object;

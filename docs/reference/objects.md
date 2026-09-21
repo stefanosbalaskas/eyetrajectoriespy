@@ -146,6 +146,18 @@ over the observed time-by-dimension grid and does not assert continuous-domain
 coverage between sampled points.
 
 
+## FPCARegressionPredictionIntervalResult
+
+Stores an existing paired-bootstrap Gaussian FPCR uncertainty object together with the centered full-sample residual pool, independently sampled residual draws, future-outcome predictive draws, marginal percentile limits, predictive standard deviations, confidence level, seed, and provenance.
+
+Every predictive draw is exactly:
+
+    paired-bootstrap conditional mean + independently sampled centered residual
+
+The object therefore keeps estimation uncertainty and future response noise visible as separate ingredients.
+
+The predictive intervals are marginal per fixed target trajectory. They assume a common/exchangeable response-error distribution and do not claim heteroscedasticity robustness, simultaneous target coverage, or a joint multivariate prediction region.
+
 ## FPCARegressionSlopeBandResult
 
 Stores an existing paired-bootstrap Gaussian FPCR uncertainty object together with studentized simultaneous slope-band limits, pointwise bootstrap SEs, dimension-level critical values, bootstrap maximum statistics, calibration confidence level, scope, and provenance.

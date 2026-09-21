@@ -324,3 +324,25 @@ Report:
 Example:
 
 > A 95% studentized simultaneous Gaussian FPCR slope band was calibrated from the 1,000 participant-level paired-bootstrap slope refits. One maximum was taken over the full observed time-by-dimension slope grid. Cellwise standard errors were estimated from bootstrap deviations from the full-sample slope. The resulting band is simultaneous over the sampled grid only and does not imply continuous-domain coverage between time samples. This finite-grid calibration is distinct from the confidence-band method of Imaizumi and Kato (2019) and the operator-scaled FPCR significance test of Yeon (2026).
+
+
+## Gaussian FPCR future-outcome prediction intervals
+
+Report:
+
+- the underlying Gaussian paired-bootstrap FPCR specification;
+- retained FPC count and its selection procedure;
+- paired resampling unit and bootstrap count;
+- target-source semantics;
+- prediction confidence level;
+- centered empirical residual resampling;
+- residual sample size and residual standard deviation;
+- that residual draws were independent of the stored paired-bootstrap conditional-mean draws;
+- that the residual distribution was assumed common/exchangeable across targets;
+- that the method is not heteroscedasticity-robust;
+- that intervals are marginal per target and not simultaneous or joint;
+- that target functional-predictor uncertainty is not included.
+
+Example:
+
+> Future scalar outcomes for six fixed target gaze trajectories were summarized with 95% marginal Gaussian FPCR prediction intervals. The predictive distribution reused 1,000 participant-level paired-bootstrap conditional-mean predictions and added independent draws from the centered empirical residual distribution of the full-sample FPCR fit. The residual-resampling step assumes a common exchangeable response-error distribution. Intervals were not interpreted as heteroscedasticity-robust, simultaneous across targets, or a joint prediction region.
