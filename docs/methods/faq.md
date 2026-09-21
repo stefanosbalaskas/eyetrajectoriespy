@@ -251,3 +251,32 @@ No. Each target interval is marginal. The API does not claim familywise coverage
 ## Does the interval include uncertainty in the future gaze trajectory itself?
 
 No. The supplied target functional trajectory is treated as fixed.
+
+
+## How is conformal anomaly review different from diagnose_fpca_outliers()?
+
+<code>diagnose_fpca_outliers()</code> reviews curves that helped fit the FPCA model. The 0.15 conformal workflow reserves proper-training and calibration data and evaluates genuinely held-out target curves against that fixed reference.
+
+## Why must proper training and calibration be separate?
+
+Split conformal validity uses calibration scores that were not used to fit the scoring rule. Letting calibration curves influence the FPCA basis would change the inferential construction.
+
+## Why can the smallest p-value be surprisingly large?
+
+With (n) calibration observations, the marginal split-conformal p-value lies on the grid (1/(n+1), 2/(n+1), dots, 1). Small calibration samples therefore limit attainable significance.
+
+## Does p ≤ .05 mean I should delete the trajectory?
+
+No. It means the trajectory is unusually nonconforming relative to the declared reference/calibration population under the selected score. Cause must be investigated separately.
+
+## Does 0.15 control FDR when I test many new curves?
+
+No. It returns marginal p-values. Kim and Park (2026) discuss BH and calibration-conditional adjustments for an FDR-controlled procedure; those broader steps are not implemented in this tranche.
+
+## Can I use repeated participant trials as calibration curves?
+
+Only with great caution. The current guarantee is curve-level exchangeability. Multiple trials from one participant are generally dependent, and the 0.15 API does not supply cluster-conformal validity.
+
+## Which nonconformity score should I use?
+
+Use reconstruction RMSE when deviation from the retained functional span is the target. Use score-space Mahalanobis when unusually extreme retained FPC coordinates are scientifically meaningful. Do not choose after seeing which score flags more desired cases.

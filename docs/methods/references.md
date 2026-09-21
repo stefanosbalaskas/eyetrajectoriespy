@@ -145,3 +145,14 @@ Imaizumi and Kato provide a theoretically justified PCA-based confidence-band co
 - Yeon, H., Dai, X., & Nordman, D. (2026). Wild bootstrap for mean response inference in functional linear regression models. arXiv:2606.16089.
 
 The 0.14 implementation follows the conceptual separation between model-estimation uncertainty and response-noise uncertainty in bootstrap prediction. It does not implement the 2026 wild bootstrap and does not claim heteroscedasticity robustness.
+
+
+## Conformal anomaly detection for functional data
+
+- Kim, H., & Park, J. (2026). Conformal outlier detection for multivariate functional data. *Computational Statistics*, 41, Article 88. https://doi.org/10.1007/s00180-026-01763-1
+- Adams, J., Berman, B., Michalenko, J., & Tucker, J. D. (2025). Conformal Anomaly Detection for Functional Data with Elastic Distance Metrics. *Proceedings of the Fourteenth Symposium on Conformal and Probabilistic Prediction with Applications*, PMLR 266, 666–686.
+- Bates, S., Candès, E., Lei, L., Romano, Y., & Sesia, M. (2023). Testing for outliers with conformal p-values. *The Annals of Statistics*, 51(1), 149–178.
+
+Kim and Park extend conformal outlier detection to multivariate functional data using functional-depth nonconformity and discuss marginal versus calibration-conditional p-values and FDR control. Adams et al. demonstrate inductive conformal anomaly detection using elastic functional distances, particularly for shape outliers.
+
+eyetrajectoriespy 0.15 uses the standard marginal split-conformal p-value construction with package-native FPCA reconstruction or score-space Mahalanobis nonconformity. It does not claim to reproduce either paper's nonconformity score or the broader calibration-conditional/FDR procedures.

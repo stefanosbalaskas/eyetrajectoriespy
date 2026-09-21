@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.14.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.15.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, split-conformal FPCA anomaly review, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -307,6 +307,21 @@ A standalone predictive-resampling harness matching the 0.14 centered empirical 
 - lower ≤ median ≤ upper predictive quantiles: **passed**;
 - 99% intervals were no narrower than 80% intervals under identical predictive draws: **passed**;
 - residual variation was retained when the synthetic response contained non-zero noise: **passed**.
+
+This is local delta algorithmic validation only. Full repository pytest/coverage/Ruff/package/docs/optional-backend qualification remains GitHub CI evidence.
+
+## 0.15 pre-commit local algorithm validation — 2026-09-21
+
+Environment: Linux, Python 3.13.
+
+A standalone synthetic harness matching the 0.15 FPCA split-conformal contracts was executed locally.
+
+- exact marginal p-value formula `(1 + # calibration >= target)/(n_calibration + 1)`: **passed**;
+- p-values lay exactly on the finite calibration grid: **passed**;
+- an injected high-frequency shape anomaly received the minimum attainable reconstruction-based p-value: **passed**;
+- an extreme target generated inside the retained FPC span received the minimum attainable empirical-Mahalanobis p-value: **passed**;
+- conservative greater-than-or-equal tie handling was verified exactly: **passed**;
+- p-values remained within `[1/(n_calibration+1), 1]`: **passed**.
 
 This is local delta algorithmic validation only. Full repository pytest/coverage/Ruff/package/docs/optional-backend qualification remains GitHub CI evidence.
 

@@ -142,3 +142,18 @@ Centered empirical residual resampling assumes one exchangeable/common response-
 The target functional trajectory is held fixed. Target measurement error, future predictor uncertainty, latent-curve uncertainty, and preprocessing uncertainty are not included.
 
 Intervals are marginal per target. No joint residual dependence across multiple target outcomes is modeled.
+
+
+## Split-conformal FPCA anomaly review
+
+The 0.15 conformal routine assumes the proper-training reference, calibration inliers, and inlier targets are exchangeable at the **curve level** relative to the scientific population being monitored.
+
+The FPCA/MFPCA basis and optional score-space covariance are fitted only on proper training. Calibration and target curves must not influence those fitted objects.
+
+Proper-training, calibration, and target trajectories must share the exact time grid, functional dimension names/order, coordinate system, and time unit.
+
+The proper-training and calibration samples are assumed to represent the intended inlier reference population. Contamination can distort both the fitted FPCA basis and the calibration distribution.
+
+The marginal p-value contract uses conservative greater-than-or-equal handling of ties.
+
+Repeated trials from the same participant are not exchangeable independent curves merely because they occupy separate rows. The current API does not provide cluster-conformal validity.

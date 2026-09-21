@@ -275,3 +275,50 @@ The prediction layer reuses the 0.12 paired-bootstrap object, whose retained FPC
 ## Residual resampling is not the 2026 wild bootstrap
 
 Recent functional-linear work develops a wild bootstrap for mean-response inference under heterogeneous errors. The 0.14 future-outcome procedure uses centered empirical residual draws and must not be described as that heteroscedasticity-robust method.
+
+
+## Split-conformal anomaly p-values have finite calibration resolution
+
+With (n_{calib}) calibration trajectories, the smallest attainable marginal p-value is (1/(n_{calib}+1)).
+
+If this exceeds the chosen alpha threshold, no target can be flagged regardless of how extreme its score is.
+
+The package reports this resolution rather than interpolating smaller p-values.
+
+## Split randomness is not removed by the 0.15 API
+
+Marginal split-conformal p-values can depend on how observations are assigned to proper training versus calibration.
+
+The 0.15 implementation requires the analyst to provide the split explicitly and does not average over multiple random partitions.
+
+## Calibration-conditional validity is not implemented
+
+Kim and Park (2026), following Bates et al. (2023), discuss calibration-conditional p-value adjustments that reduce split sensitivity.
+
+The 0.15 API returns ordinary marginal split-conformal p-values and does not claim calibration-conditional validity.
+
+## No multiple-testing or FDR guarantee is applied
+
+Supplying many target curves yields many marginal p-values.
+
+The package does not automatically apply Benjamini-Hochberg or another multiplicity procedure in this tranche and does not claim FDR control.
+
+## FPCA nonconformity is not functional depth
+
+Kim and Park (2026) use multivariate functional depth-based nonconformity.
+
+eyetrajectoriespy 0.15 instead uses reconstruction RMSE or score-space Mahalanobis distance around a proper-training FPCA/MFPCA reference.
+
+The inferential wrapper is split conformal, but the nonconformity score is package-specific.
+
+## Reconstruction and score-space anomalies are different
+
+A target can be extreme in retained FPC scores while reconstructing well, or reconstruct poorly while having moderate retained scores.
+
+Version 0.15 does not silently combine the two scores into one statistic.
+
+## Repeated participant trials can invalidate curve-level exchangeability
+
+The current conformal p-values are calibrated at the curve level.
+
+Within-participant dependence is not corrected by participant metadata, and no participant-clustered conformal guarantee is provided.

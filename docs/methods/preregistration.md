@@ -279,3 +279,23 @@ Pre-specify:
 - that target-curve uncertainty and component-selection uncertainty are not included.
 
 Do not switch to the future-outcome interval only after noticing that a conditional-mean interval is too narrow for a preferred conclusion.
+
+
+## Split-conformal FPCA anomaly review
+
+If new-trajectory anomaly review is confirmatory, pre-specify:
+
+- the proper-training, calibration, and target partition rule;
+- the scientific inlier reference population;
+- retained FPC count and channel scaling;
+- reconstruction-RMSE versus score-space Mahalanobis nonconformity;
+- empirical versus robust score covariance when Mahalanobis nonconformity is used;
+- the review alpha level;
+- how calibration size constrains the minimum attainable p-value;
+- the curve-level exchangeability assumption;
+- how repeated participant trials will be handled before conformal analysis;
+- whether more than one nonconformity score will be examined;
+- that review flags will not automatically trigger data exclusion;
+- that the 0.15 method does not implement calibration-conditional adjustment or FDR control.
+
+Do not choose the proper/calibration split, FPC count, nonconformity score, covariance estimator, or alpha after inspecting which configuration flags the preferred curves.
