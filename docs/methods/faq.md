@@ -107,3 +107,20 @@ No. Two univariate sparse analyses do not estimate the joint covariance of the p
 ## Why expose both fit smoothing and score smoothing?
 
 FDApy distinguishes smoothing used while fitting sparse functional structure from smoothing used during score transformation. eyetrajectoriespy makes both settings explicit so backend defaults do not become hidden analytical decisions.
+
+
+## Why not just plot pointwise 95% intervals?
+
+Pointwise intervals target each time/dimension location separately. If many locations are inspected together, they do not provide a single simultaneous statement for the whole displayed trajectory. The multiplier band calibrates a maximum statistic over the complete observed grid.
+
+## Should repeated trials count as separate units in a mean band?
+
+Only if curves themselves are genuinely independent sampling units for the population claim. When multiple trials come from the same participant, use `unit="participant"` to average trials within participant and infer on participant-average functions.
+
+## Is the 95% band simultaneous over continuous time?
+
+Not with the current API. It is simultaneous over the observed sampled grid across all included dimensions. Continuous-domain confidence bands require additional theory and assumptions.
+
+## Why reject AOI probability-simplex trajectories?
+
+Ordinary Euclidean lower/upper bands can leave the simplex. The package therefore requires an explicit compositional/log-ratio representation rather than silently applying inappropriate geometry.
