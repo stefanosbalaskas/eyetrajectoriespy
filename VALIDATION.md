@@ -370,3 +370,58 @@ The current optional-backend boundary remains:
 1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13. This is not part of the current FDApy support contract.
 
 Cross-platform package behavior, package construction, coverage/compile/Ruff gates, core examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, FDApy sparse/PACE interoperability on Python 3.11–3.12, and the 0.8 predictive FPCA regression-selection implementation are now GitHub CI-certified on the exact merged 0.8 main lineage.
+
+
+### 0.9 PR-head certification — 2026-09-21
+
+Exact certified PR head:
+
+`c5b9893ae19d69de0268f7f8b6c3e853c29e1390`
+
+PR #12, **“Add simultaneous FPC-shape uncertainty bands,”** completed all unchanged pull-request qualification workflows successfully on that exact SHA:
+
+- package build / distribution validation: **success**;
+- Windows × Python 3.11, 3.12, 3.13: **3/3 success**;
+- Ubuntu × Python 3.11, 3.12, 3.13: **3/3 success**;
+- macOS × Python 3.11, 3.12, 3.13: **3/3 success**;
+- full pytest/coverage/compile/Ruff gate embedded in the standard workflow: **success**;
+- executable examples, including `fpc_simultaneous_bands.py`: **success**;
+- strict MkDocs documentation build: **success**;
+- optional scikit-fda interoperability: **success**;
+- optional FDApy sparse/PACE interoperability on Python 3.11 and 3.12: **2/2 success**.
+
+No tests, coverage thresholds, workflows, branch protections, or scientific validation checks were weakened, disabled, deleted, or bypassed.
+
+PR #12 was squash-merged as:
+
+`b9b743bbbb62f691850833f274610950cd101701`
+
+The certified PR head and squash-merged main commit both point to Git tree:
+
+`75857628188e02cffa3d2681c5e463fca6b35001`
+
+so the merged code, scientific contracts, tests, examples, and documentation are byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.9 exact-main qualification and deployment — 2026-09-21
+
+The exact merged-main commit
+
+`b9b743bbbb62f691850833f274610950cd101701`
+
+completed a fresh push-triggered qualification generation successfully:
+
+- tests workflow #44: **success**, including package construction and all 9 Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #44: **success**;
+- docs workflow #44: **success**, including strict documentation build and **successful GitHub Pages deployment**;
+- optional-fda workflow #40: **success**;
+- optional-sparse-fda workflow #28: **success**, including FDApy Python 3.11 and 3.12 lanes.
+
+Therefore the 0.9 simultaneous FPC-shape uncertainty tranche is both **PR-head CI-certified** and **exact-main requalified**, and the corresponding methods-site deployment is certified on the merged 0.9 main lineage.
+
+## 0.9 remaining re-checks
+
+The current optional-backend boundary remains unchanged:
+
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13. This is not part of the current FDApy support contract.
+
+The 0.9 FPC-band implementation, cross-platform package behavior, package construction, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.9 main lineage.
