@@ -16,6 +16,7 @@ from .types import (
     FPCAInfluenceResult,
     FPCANestedRegressionCVResult,
     FPCARegressionCVResult,
+    FPCARegressionUncertaintyResult,
     FPCAResult,
     FPCAScoreUncertaintyResult,
     FPCASpectrumUncertaintyResult,
@@ -87,6 +88,88 @@ def plot_fpca_variance(result: FPCAResult, *, cumulative: bool = True, ax=None):
     ax.set_xlabel("Functional principal component")
     ax.set_ylabel("Cumulative variance explained (%)" if cumulative else "Variance explained (%)")
     ax.set_xticks(x)
+    return ax
+
+
+def plot_fpca_regression_slope_uncertainty(
+    result: FPCARegressionUncertaintyResult,
+    *,
+    dimension: str | None = None,
+    ax=None,
+):
+    """Plot the Gaussian FPCR slope with pointwise bootstrap uncertainty."""
+
+    if dimension is None:
+        dimension = result.reference_fpca.dimension_names[0]
+    if dimension not in result.reference_fpca.dimension_names:
+        raise KeyError(f"Unknown dimension {dimension!r}")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    dim = result.reference_fpca.dimension_names.index(dimension)
+    time = result.reference_fpca.time
+    ax.fill_between(
+        time,
+        result.slope_lower[:, dim],
+        result.slope_upper[:, dim],
+        alpha=0.2,
+        label=f"{100 * result.level:.1f}% pointwise percentile envelope",
+    )
+    ax.plot(
+        time,
+        result.reference_slope[:, dim],
+        label="full-sample FPCR slope",
+    )
+    ax.axhline(0.0, linestyle="--")
+    ax.set_xlabel(f"Time ({result.reference_fpca.time_unit})")
+    ax.set_ylabel(f"Slope for {dimension}")
+    ax.set_title("Gaussian FPCR slope uncertainty")
+    ax.legend()
+    return ax
+
+
+def plot_fpca_regression_mean_prediction_uncertainty(
+    result: FPCARegressionUncertaintyResult,
+    *,
+    max_targets: int = 30,
+    ax=None,
+):
+    """Plot fixed-target conditional-mean uncertainty from paired FPCR bootstrap."""
+
+    if isinstance(max_targets, bool) or not isinstance(max_targets, (int, np.integer)):
+        raise TypeError("max_targets must be an integer")
+    if max_targets < 1:
+        raise ValueError("max_targets must be positive")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    n = min(max_targets, result.n_targets)
+    x = np.arange(n)
+    median = result.prediction_median[:n]
+    lower = result.prediction_lower[:n]
+    upper = result.prediction_upper[:n]
+    yerr = np.vstack((median - lower, upper - median))
+    ax.errorbar(
+        x,
+        median,
+        yerr=yerr,
+        marker="o",
+        linestyle="none",
+        capsize=3,
+        label="bootstrap median + conditional-mean envelope",
+    )
+    ax.scatter(
+        x,
+        result.reference_mean_predictions[:n],
+        marker="x",
+        label="full-sample conditional mean",
+    )
+    ax.set_xticks(x)
+    ax.set_xticklabels(result.target_curve_ids[:n], rotation=90)
+    ax.set_xlabel("Fixed target trajectory")
+    ax.set_ylabel("Conditional mean response")
+    ax.set_title("FPCR conditional-mean uncertainty")
+    ax.legend()
     return ax
 
 

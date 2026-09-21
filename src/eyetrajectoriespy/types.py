@@ -633,6 +633,45 @@ class FunctionalMeanBandResult:
 
 
 @dataclass(frozen=True)
+class FPCARegressionUncertaintyResult:
+    """Paired-bootstrap uncertainty for Gaussian FPCA scalar regression."""
+
+    reference_fpca: FPCAResult
+    reference_regression: FunctionalRegressionResult
+    reference_slope: np.ndarray
+    bootstrap_slopes: np.ndarray
+    slope_lower: np.ndarray
+    slope_median: np.ndarray
+    slope_upper: np.ndarray
+    slope_se: np.ndarray
+    reference_intercept: float
+    bootstrap_intercepts: np.ndarray
+    target_curve_ids: tuple[str, ...]
+    reference_mean_predictions: np.ndarray
+    bootstrap_mean_predictions: np.ndarray
+    prediction_lower: np.ndarray
+    prediction_median: np.ndarray
+    prediction_upper: np.ndarray
+    prediction_se: np.ndarray
+    level: float
+    n_components: int
+    scaling: str
+    resampling_unit: str
+    participant_column: str | None
+    target_source: str
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.bootstrap_slopes.shape[0]
+
+    @property
+    def n_targets(self) -> int:
+        return self.bootstrap_mean_predictions.shape[1]
+
+
+@dataclass(frozen=True)
 class FPCARegressionCVResult:
     """Outcome-tuned FPCA regression cross-validation diagnostics."""
 

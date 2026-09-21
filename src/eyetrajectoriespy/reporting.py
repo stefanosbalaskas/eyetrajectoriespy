@@ -15,6 +15,7 @@ from .types import (
     FPCAInfluenceResult,
     FPCANestedRegressionCVResult,
     FPCARegressionCVResult,
+    FPCARegressionUncertaintyResult,
     FPCAResult,
     FPCAScoreUncertaintyResult,
     FPCASpectrumUncertaintyResult,
@@ -439,6 +440,38 @@ def functional_mean_band_reporting_text(
         "claim continuous-domain coverage between sampled grid points."
     )
 
+
+
+def fpca_regression_uncertainty_reporting_text(
+    result: FPCARegressionUncertaintyResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate manuscript-oriented wording for Gaussian FPCR bootstrap uncertainty."""
+
+    slope_width = float(np.median(result.slope_upper - result.slope_lower))
+    prediction_width = float(
+        np.median(result.prediction_upper - result.prediction_lower)
+    )
+    unit = (
+        "participant"
+        if result.resampling_unit == "participant"
+        else "curve"
+    )
+    return (
+        "Gaussian scalar-on-function FPCR uncertainty was evaluated with "
+        f"{result.n_bootstrap} paired {unit}-level bootstrap refits. FPCA/MFPCA "
+        f"and the score regression were refitted in every replicate using "
+        f"{result.n_components} fixed component(s) and scaling={result.scaling!r}. "
+        f"Pointwise {100 * result.level:.1f}% percentile envelopes were formed "
+        "for the reconstructed functional slope in the original trajectory "
+        f"units (median grid-point width={slope_width:.{digits}f}). Fixed-target "
+        "response intervals summarize uncertainty in the fitted conditional "
+        f"mean (median width={prediction_width:.{digits}f}); they are not "
+        "prediction intervals for future noisy outcomes. Component count was "
+        "not reselected inside bootstrap replicates, and this routine does not "
+        "implement the operator-scaled FPCR hypothesis test from recent theory."
+    )
 
 
 def fpca_regression_cv_reporting_text(
