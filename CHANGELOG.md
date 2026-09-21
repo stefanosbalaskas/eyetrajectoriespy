@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.7.0.dev0 — 2026-09-21
+
+Seventh development tranche.
+
+- studentized Gaussian multiplier simultaneous bands for common-grid functional means;
+- simultaneous calibration across the observed time-by-dimension grid using the maximum absolute standardized mean process;
+- explicit curve-level versus equal-weight participant-level inference units;
+- repeated-trial participant aggregation that prevents participants with more trials from receiving greater inferential weight;
+- exact handling of zero-variance grid points without division artifacts;
+- explicit rejection of direct Euclidean bands for probability-simplex trajectories;
+- long-form band tables, visualization, and manuscript-reporting helpers;
+- methodological guidance distinguishing observed-grid simultaneous bands from continuous-domain confidence claims;
+- worked repeated-trial example, assumptions, limitations, preregistration, reporting, FAQ, and API documentation.
+
+
 ## 0.6.0.dev0 — 2026-09-20
 
 Sixth development tranche.
