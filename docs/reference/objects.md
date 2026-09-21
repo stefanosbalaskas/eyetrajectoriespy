@@ -124,3 +124,12 @@ For `unit="participant"`, the result targets the equal-weight mean of
 participant-average trajectories. The object records that coverage is calibrated
 over the observed time-by-dimension grid and does not assert continuous-domain
 coverage between sampled points.
+
+
+## FPCARegressionCVResult
+
+Stores fold-level predictive losses, test-fold assignments, held-out predictions for every candidate FPC count, family/loss settings, grouping semantics, scaling, random-state information, and provenance. The object records selection evidence only; it does not silently choose a component count.
+
+## FPCANestedRegressionCVResult
+
+Stores outer-fold predictive losses, every inner candidate-loss summary, outer held-out predictions, selected component count for each outer fit, fold design, family/loss, and provenance. Outer test outcomes are not used during inner FPC-count selection.
