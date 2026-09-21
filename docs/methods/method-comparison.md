@@ -16,5 +16,6 @@
 | Condition-specific smooth mean | often GAMM | FPCA by itself |
 | Exact onset of divergence | specialized onset methods | FPCA loading inspection |
 | Predict scalar outcome | functional regression / score regression | causal mediation by default |
+| Predict an external scalar outcome while tuning retained FPC count | fold-local FPCA regression CV / nested CV | variance-explained or reconstruction selection |
 
 FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; GAMMs model conditional mean structure over time.
