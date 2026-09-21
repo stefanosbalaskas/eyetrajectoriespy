@@ -181,3 +181,28 @@ Individual eigenvalues can be associated with matched reference FPC shapes. Cumu
 ## Near-tied axes can remain hard to interpret
 
 Eigenvalue inference can remain useful when eigengaps are small, but a near-tied individual eigenfunction direction may still be weakly identified. Spectrum uncertainty should be paired with subspace diagnostics when component shapes are interpreted.
+
+
+## FPC score uncertainty is basis-resampling uncertainty only
+
+The 0.11 score routine holds target trajectories fixed and resamples the training basis. Its percentile envelopes quantify sensitivity to basis estimation. They do not represent full latent-score confidence intervals.
+
+## Target measurement error is not included
+
+The target curve is not perturbed and no measurement-error model is fitted. Tracker noise, gaze-location error, pupil noise, and other measurement uncertainty are outside this score envelope unless they have already changed the supplied trajectory itself.
+
+## Sparse PACE score uncertainty is different
+
+Conditional-expectation scores for sparse irregular trajectories depend on the estimated mean/covariance model and the subject's sparse measurements. The common-grid basis-resampling routine must not be interpreted as PACE conditional-score uncertainty.
+
+## Downstream regression uncertainty is not propagated
+
+A downstream scalar regression, clustering model, or classifier fitted to one score matrix has additional coefficient/model uncertainty. The package does not currently integrate the full bootstrap score distribution through those models as one inferential procedure.
+
+## Matching quality matters for component-specific scores
+
+If a bootstrap FPC has low similarity to the reference component, the associated matched score coordinate may be unstable even after sign alignment. Near-tied components should be checked with eigengap and subspace diagnostics before component-specific score interpretation.
+
+## Percentile envelopes are descriptive
+
+The lower/upper score summaries are empirical percentile envelopes under the stated basis-resampling design. They are not guaranteed exact finite-sample confidence intervals and are not simultaneous across all targets/components.

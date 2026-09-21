@@ -104,3 +104,15 @@ The eyetrajectoriespy FPC-band implementation is a matched/sign-aligned nonparam
 Hall and Hosseini-Nasab provide the theoretical motivation for bootstrap inference on FPCA eigenvalues/eigenfunctions and show that eigengap effects differ between eigenvalue and eigenfunction estimation. Cai and Hu construct asymptotically correct eigenvalue intervals and simultaneous eigensystem inference for dense B-spline-smoothed functional data.
 
 The eyetrajectoriespy spectrum routine is a matched nonparametric studentized bootstrap around the package's grid-based FPCA/MFPCA estimator, not an implementation of Cai and Hu's spline oracle estimator.
+
+
+## FPC score and decomposition uncertainty
+
+- Yao, F., Müller, H.-G., Clifford, A. J., Dueker, S. R., Follett, J., Lin, Y., Buchholz, B. A., & Vogel, J. S. (2003). Shrinkage estimation for functional principal component scores with application to the population kinetics of plasma folate. *Biometrics*, 59(3), 676–685.
+- Yao, F., Müller, H.-G., & Wang, J.-L. (2005). Functional data analysis for sparse longitudinal data. *Journal of the American Statistical Association*, 100(470), 577–590.
+- Goldsmith, J., Greven, S., & Crainiceanu, C. (2013). Corrected confidence bands for functional data using principal components. *Biometrics*, 69(1), 41–51. https://doi.org/10.1111/j.1541-0420.2012.01808.x
+- Fast Bayesian Functional Principal Components Analysis (2025). *Journal of Computational and Graphical Statistics*. https://doi.org/10.1080/10618600.2025.2592768
+
+PACE/conditional-expectation methods explicitly treat subject-specific scores as estimated latent quantities for sparse data. Goldsmith et al. show that conditioning on an estimated FPC decomposition can understate uncertainty and use bootstrap decompositions in an iterated expectation/variance construction. Recent Bayesian FPCA work similarly emphasizes uncertainty in FPC estimates and downstream score use.
+
+The eyetrajectoriespy 0.11 routine has a narrower purpose: fixed-target score sensitivity to re-estimation of the common-grid FPCA basis. It is not a PACE uncertainty estimator, the Goldsmith mixed-model correction, or a fully Bayesian FPCA.

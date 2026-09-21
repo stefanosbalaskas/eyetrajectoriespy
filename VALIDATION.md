@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.10.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.11.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -247,6 +247,23 @@ The status-ledger-only main tip `105ca4bea224319e6fc63286d1be7e8e47663d74` compl
 - optional-sparse-fda workflow #29: **success**.
 
 Thus the repository entered the 0.10 branch from a fully green current main tip.
+
+## 0.11 pre-commit local algorithm validation — 2026-09-21
+
+Environment: Linux, Python 3.13.5.
+
+Before publishing the score-uncertainty branch, a standalone weighted-PCA/bootstrap harness matching the intended projection, component-matching, and sign-alignment logic was executed locally.
+
+- fixed-seed bootstrap target projections: **deterministic**;
+- lower ≤ median ≤ upper percentile envelopes: **passed**;
+- bootstrap score standard deviations nonnegative: **passed**;
+- component-matching similarities stayed in [0, 1]: **passed**;
+- expected bootstrap tensor shape for external fixed targets: **passed**;
+- sign-aligned bootstrap target scores retained positive median correlation with the full-sample reference coordinates: **passed**.
+
+The committed implementation additionally rejects empty target sets, incompatible target time grids, dimension labels/order, coordinate systems, time units, invalid bootstrap/component counts, missing participant-bootstrap identifiers, and non-finite aligned bootstrap scores.
+
+This is local delta algorithmic validation, not a substitute for repository-wide cross-platform qualification. The local environment still cannot provide a fresh GitHub clone, so full pytest/coverage/Ruff/package/docs/optional-backend evidence remains hosted CI evidence only.
 
 ## Locally unavailable checks
 

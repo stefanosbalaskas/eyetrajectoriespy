@@ -167,3 +167,24 @@ The current implementation uses symmetric studentized bootstrap calibration arou
 ## Does familywise spectrum calibration cover all reported metrics jointly?
 
 No. It controls across the requested components separately within eigenvalues, per-component explained-variance ratios, and cumulative ratios. It is not one joint three-metric family.
+
+
+## Is the FPC score envelope a confidence interval for the true latent score?
+
+No. It holds the supplied target trajectory fixed and varies the estimated FPCA basis. It therefore measures one decomposition-related source of uncertainty rather than all uncertainty in a latent subject-specific score.
+
+## Why project the same target into every bootstrap basis?
+
+That isolates basis-estimation sensitivity. If the target itself were also resampled or perturbed, basis uncertainty and target/measurement variability would be mixed together and the estimand would change.
+
+## Why are bootstrap components sign-aligned before scores are compared?
+
+FPC sign is arbitrary. Without sign alignment, two identical axes pointing in opposite algebraic directions would produce scores with opposite signs and falsely appear highly uncertain.
+
+## What should I do when component-matching similarity is low?
+
+Treat the named score coordinate cautiously. Inspect eigengaps and principal-angle subspace stability. When eigenvalues are near tied, the stable object may be a multidimensional score subspace rather than FPC1 or FPC2 individually.
+
+## Does this propagate score uncertainty through regression?
+
+No. It exposes the bootstrap score distribution so sensitivity can be inspected, but the current regression APIs do not jointly integrate that distribution with regression coefficient/model uncertainty.

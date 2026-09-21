@@ -96,3 +96,14 @@ Eigenvalues and explained-variance ratios depend on the covariance geometry used
 Individual bootstrap eigenvalues/ratios are attached to matched reference-FPC identities. Cumulative explained variance is intentionally different: it remains ordered by descending bootstrap eigenvalue rank because “top k components” is a rank-based estimand.
 
 Studentized calibration is an approximation. The package does not assume that finite-sample bootstrap coverage is exact.
+
+
+## FPC score basis-resampling uncertainty
+
+The target trajectory is treated as fixed while the FPCA training sample is resampled. The resulting score distribution therefore targets uncertainty induced by re-estimating the functional mean, scaling, and eigenbasis under the selected bootstrap unit.
+
+Curve-level basis resampling assumes curves are independent sampling units. Participant-level resampling should be used when repeated trials are clustered within participants and participants are the independent sampling units.
+
+External targets must already use the same time grid, functional dimensions, coordinate system, and time unit as the training data. The routine does not perform hidden interpolation, coordinate transformation, unit conversion, or feature reordering.
+
+Component matching and sign alignment make score coordinates comparable across ordinary bootstrap perturbations. They do not make a near-tied individual FPC axis population-identifiable.
