@@ -14,6 +14,7 @@ Use the **research question and data structure** to choose the representation.
 | How many FPCs should be retained for reconstruction? | held-out reconstruction CV | refit FPCA inside folds; group repeated participants |
 | How many FPCs should predict an external scalar outcome? | predictive FPCA regression CV / nested CV | fit FPCA and regression inside folds; keep outer test data out of selection |
 | Is component interpretation stable? | bootstrap FPC matching + pointwise envelopes | resample the correct unit; match and sign-align components |
+| How uncertain are the eigenvalues/variance-explained summaries? | matched bootstrap spectrum uncertainty | report scaling, bootstrap unit, calibration scope, and cumulative-rank semantics |
 | Do I need a whole-curve uncertainty statement for an individual FPC? | matched bootstrap simultaneous FPC band | choose component-wise vs familywise scope; inspect eigengaps/subspaces |
 | Do adjacent FPCs rotate or swap? | eigengap + principal-angle subspace stability | interpret the span when axes are weakly identified |
 | Is one curve/participant unusually influential? | FPCA review + leave-one-group-out influence | flag for review, never auto-exclude |

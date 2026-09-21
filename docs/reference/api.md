@@ -89,6 +89,13 @@
 ::: eyetrajectoriespy.plot_fpca_component_envelope
 ::: eyetrajectoriespy.fpca_component_envelope_reporting_text
 
+## FPCA spectrum uncertainty
+::: eyetrajectoriespy.FPCASpectrumUncertaintyResult
+::: eyetrajectoriespy.bootstrap_fpca_spectrum_uncertainty
+::: eyetrajectoriespy.fpca_spectrum_uncertainty_frame
+::: eyetrajectoriespy.plot_fpca_spectrum_uncertainty
+::: eyetrajectoriespy.fpca_spectrum_uncertainty_reporting_text
+
 ## Near-tied eigenvalues and eigenspaces
 ::: eyetrajectoriespy.fpca_eigenvalue_gap_table
 ::: eyetrajectoriespy.compare_fpca_subspaces

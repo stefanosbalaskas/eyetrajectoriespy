@@ -193,3 +193,28 @@ Use simultaneous FPC bands when the scientific statement concerns the whole obse
 For a joint familywise statement across all requested FPCs, set <code>simultaneous_scope="family"</code>. If the study pre-specifies a descriptive near-tie threshold, pass it through <code>relative_gap_threshold</code>; the default action is to stop rather than silently interpret a weakly identified individual axis.
 
 See [Simultaneous FPC-shape bands](guides/simultaneous-fpc-bands.md).
+
+
+## Quantify uncertainty in the FPCA spectrum
+
+Use spectrum uncertainty when eigenvalues or variance-explained summaries are being interpreted rather than treated as fixed sample quantities.
+
+    from eyetrajectoriespy import bootstrap_fpca_spectrum_uncertainty
+
+    spectrum = bootstrap_fpca_spectrum_uncertainty(
+        gaze,
+        n_bootstrap=1000,
+        n_components=3,
+        scaling="dimension_sd",
+        resample_unit="participant",
+        participant_column="participant_id",
+        confidence_level=0.95,
+        simultaneous_scope="family",
+        random_state=2026,
+    )
+
+Individual eigenvalues and per-component explained-variance ratios are attached to matched reference-FPC identities. Cumulative explained variance deliberately stays in descending eigenvalue rank so that “top k components explain …” keeps its conventional meaning.
+
+Familywise calibration is across the requested components separately within each spectrum metric; it is not one joint guarantee spanning eigenvalues, explained-variance ratios, and cumulative ratios.
+
+See [FPCA spectrum uncertainty](guides/spectrum-uncertainty.md).

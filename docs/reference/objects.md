@@ -88,6 +88,14 @@ The envelope is explicitly descriptive; the object does not assert pointwise or
 simultaneous confidence coverage.
 
 
+## FPCASpectrumUncertaintyResult
+
+Stores the full-sample FPCA, matched bootstrap eigenvalues and per-component explained-variance ratios, rank-ordered bootstrap cumulative variance, bootstrap standard errors, studentized critical values/intervals, component assignments and similarities, calibration scope, resampling semantics, random seed, and provenance.
+
+Individual eigenvalues and explained-variance ratios are attached to matched reference FPC identities. Cumulative explained variance instead preserves descending eigenvalue-rank order so the conventional “top k components” interpretation is not changed by bootstrap component swaps.
+
+Familywise calibration applies across requested components separately for each spectrum metric and is not a joint guarantee across all three metrics. Intervals are not clipped to nonnegative or [0, 1] support.
+
 ## FPCASubspaceComparisonResult
 
 Stores a reference and candidate FPCA, the selected contiguous component
