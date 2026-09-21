@@ -183,3 +183,23 @@ For leave-one-group-out influence, additionally report:
 - whether conclusions changed in sensitivity refits.
 
 Do not write that an algorithm "removed outliers" unless exclusion was a separate, documented decision.
+
+
+## Simultaneous functional mean bands
+
+If a simultaneous mean band was used, report:
+
+- confidence level;
+- Gaussian multiplier replicate count;
+- random seed;
+- inference unit (curve or participant);
+- participant/grouping column for repeated measures;
+- effective number of independent units;
+- whether participants were first averaged across repeated trajectories;
+- the resulting estimand;
+- coordinate system and sampled time grid;
+- whether all functional dimensions were calibrated jointly;
+- number of zero-variance grid points, if any;
+- that the current implementation targets the observed time-by-dimension grid rather than continuous-domain coverage between grid points.
+
+Do not report the participant-level band as if it were based on the raw number of trials. The effective inferential sample size is the number of participant-average functions.
