@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.6.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.7.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -39,6 +39,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - bootstrap FPC stability with curve- or participant-level resampling and matched component functions;
 - matched, sign-aligned pointwise descriptive envelopes for FPC shape uncertainty;
 - adjacent eigengap diagnostics and principal-angle FPCA subspace stability for near-tied components;
+- simultaneous functional-mean bands with curve- or equal-weight participant-level inference;
 - FPCA reconstruction/robust score-space review diagnostics and leave-one-group-out influence analysis;
 - participant → trial → time multilevel FPCA;
 - compositional FPCA for AOI probability functions with simplex-preserving reconstruction;
@@ -109,6 +110,7 @@ print(summarise_fpca(fit))
 | Component robustness | bootstrap-matched eigenfunctions | `bootstrap_fpca_stability()` |
 | Component shape uncertainty | matched bootstrap envelopes | `bootstrap_fpca_component_envelopes()` |
 | Near-tied component blocks | principal-angle eigenspace stability | `bootstrap_fpca_subspace_stability()` |
+| Mean trajectory uncertainty | observed-grid Gaussian multiplier band | `multiplier_functional_mean_band()` |
 | Functional anomaly review | reconstruction + score-space diagnostics | `diagnose_fpca_outliers()` |
 | Group influence | leave-one-group-out matched FPCs | `leave_one_group_out_fpca_influence()` |
 | Scalar outcome predicted by gaze | FPCA-score approximation | `fit_scalar_on_function_regression()` |
