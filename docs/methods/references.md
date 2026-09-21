@@ -85,3 +85,12 @@ Hall P, Yang Y-J. *Ordering and Selecting Components in Multivariate or Function
 The fda.usc package documents cross-validation of the number of FPC predictors for scalar functional regression through `fregre.pc.cv`.
 
 For binary probability prediction, log loss and Brier loss are proper scoring rules; eyetrajectoriespy therefore does not use thresholded accuracy as its FPC-count selection objective.
+
+
+## Simultaneous FPC/eigensystem inference
+
+- Hall, P., & Hosseini-Nasab, M. (2006). On properties of functional principal components analysis. *Journal of the Royal Statistical Society: Series B*, 68(1), 109–126. https://doi.org/10.1111/j.1467-9868.2005.00535.x
+- Cai, L., & Hu, Q. (2024). Simultaneous inference and uniform test for eigensystems of functional data. *Computational Statistics & Data Analysis*, 192, 107900. https://doi.org/10.1016/j.csda.2023.107900
+- Liebl, D., & Reimherr, M. (2023). Fast and fair simultaneous confidence bands for functional parameters. *Journal of the Royal Statistical Society: Series B*, 85(3), 842–868. https://doi.org/10.1093/jrsssb/qkad026
+
+The eyetrajectoriespy FPC-band implementation is a matched/sign-aligned nonparametric bootstrap with studentized maximum calibration on the observed grid. It is not an implementation of the B-spline oracle eigensystem estimator of Cai and Hu, nor of the non-resampling fast-and-fair construction of Liebl and Reimherr.

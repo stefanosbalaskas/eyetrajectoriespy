@@ -89,3 +89,8 @@ Choose a tutorial by the scientific problem rather than by the function name.
     [Sparse PACE FPCA](../examples/sparse-pace-fpca.md)
 
 </div>
+
+
+### Simultaneous FPC-shape uncertainty
+
+Use [Simultaneous FPC bands](../examples/simultaneous-fpc-bands.md) when the scientific claim concerns an entire estimated eigenfunction rather than pointwise descriptive variation. The example uses participant-level resampling, compares component-wise and familywise calibration, and shows the near-tie identifiability screen.
