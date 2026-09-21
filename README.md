@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.12.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.13.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -44,6 +44,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - matched-bootstrap uncertainty for eigenvalues, explained-variance ratios, and cumulative explained variance;
 - basis-resampling uncertainty for FPC scores of fixed training or compatible external target trajectories;
 - paired-bootstrap uncertainty for Gaussian scalar-on-function FPCR slopes and fixed-target conditional means;
+- observed-grid studentized simultaneous bands for reconstructed Gaussian FPCR slopes;
 - simultaneous functional-mean bands with curve- or equal-weight participant-level inference;
 - FPCA reconstruction/robust score-space review diagnostics and leave-one-group-out influence analysis;
 - participant → trial → time multilevel FPCA;
@@ -120,6 +121,7 @@ print(summarise_fpca(fit))
 | FPCA spectrum uncertainty | matched studentized bootstrap | `bootstrap_fpca_spectrum_uncertainty()` |
 | FPC score basis uncertainty | matched/sign-aligned basis bootstrap | `bootstrap_fpca_score_uncertainty()` |
 | Gaussian FPCR regression uncertainty | paired full-pipeline bootstrap | `bootstrap_fpca_regression_uncertainty()` |
+| Gaussian FPCR simultaneous slope band | studentized maximum over paired-bootstrap slopes | `fpca_regression_slope_simultaneous_band()` |
 | Mean trajectory uncertainty | observed-grid Gaussian multiplier band | `multiplier_functional_mean_band()` |
 | Functional anomaly review | reconstruction + score-space diagnostics | `diagnose_fpca_outliers()` |
 | Group influence | leave-one-group-out matched FPCs | `leave_one_group_out_fpca_influence()` |
@@ -131,7 +133,7 @@ The methods site is configured for GitHub Pages:
 
 **https://stefanosbalaskas.github.io/eyetrajectoriespy/**
 
-It includes a tutorial gallery, representation selection, native irregular and sparse PACE workflows, FPCA/MFPCA interpretation, leakage-aware component selection, matched-bootstrap FPC uncertainty, simultaneous FPC-shape bands, spectrum uncertainty, score basis-resampling uncertainty, Gaussian FPCR bootstrap uncertainty, eigengap/subspace stability, bootstrap stability, phase analysis, registration cautions, multilevel and compositional workflows, basis/elastic interoperability, failure cases, pre-registration/reporting guidance, limitations, worked examples, and API documentation.
+It includes a tutorial gallery, representation selection, native irregular and sparse PACE workflows, FPCA/MFPCA interpretation, leakage-aware component selection, matched-bootstrap FPC uncertainty, simultaneous FPC-shape bands, spectrum uncertainty, score basis-resampling uncertainty, Gaussian FPCR bootstrap uncertainty and simultaneous slope bands, eigengap/subspace stability, bootstrap stability, phase analysis, registration cautions, multilevel and compositional workflows, basis/elastic interoperability, failure cases, pre-registration/reporting guidance, limitations, worked examples, and API documentation.
 
 ## Scope boundary
 

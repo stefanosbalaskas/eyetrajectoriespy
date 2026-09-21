@@ -36,6 +36,7 @@ nav:
       - Elastic trajectory analysis: guides/elastic.md
       - Functional regression & clustering: guides/downstream.md
       - Gaussian FPCR bootstrap uncertainty: guides/fpcr-bootstrap-inference.md
+      - Gaussian FPCR simultaneous slope bands: guides/fpcr-simultaneous-slope-band.md
       - Derived continuous functions: guides/derived-functions.md
       - Interpretation: guides/interpretation.md
   - Worked examples:
@@ -56,6 +57,7 @@ nav:
       - Compositional AOI trajectories: examples/compositional.md
       - Functional regression: examples/regression.md
       - Gaussian FPCR bootstrap uncertainty: examples/fpcr-bootstrap-inference.md
+      - Gaussian FPCR simultaneous slope bands: examples/fpcr-simultaneous-slope-band.md
       - Irregular sampling & gaps: examples/irregular-data.md
       - Failure cases: examples/failure-cases.md
   - Methods:

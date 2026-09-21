@@ -146,6 +146,16 @@ over the observed time-by-dimension grid and does not assert continuous-domain
 coverage between sampled points.
 
 
+## FPCARegressionSlopeBandResult
+
+Stores an existing paired-bootstrap Gaussian FPCR uncertainty object together with studentized simultaneous slope-band limits, pointwise bootstrap SEs, dimension-level critical values, bootstrap maximum statistics, calibration confidence level, scope, and provenance.
+
+With global scope one maximum is taken over all observed time × dimension slope cells. With dimension scope one maximum is taken over time separately for each functional dimension.
+
+The band reuses the exact slope bootstrap replicates already stored in the regression-uncertainty object; it does not initiate a new resampling scheme.
+
+Coverage language is restricted to the observed grid. The object does not claim coverage between sampled time points and is not the operator-scaled FPCR significance procedure from recent theory.
+
 ## FPCARegressionUncertaintyResult
 
 Stores the full-sample FPCA and Gaussian score-regression fits, the reconstructed functional slope in original trajectory units, bootstrap slope replicates and pointwise percentile summaries, reference/bootstrapped intercepts, fixed-target conditional-mean predictions and percentile summaries, resampling semantics, component count, scaling, seed, and provenance.

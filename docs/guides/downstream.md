@@ -46,3 +46,22 @@ The implementation is intentionally Gaussian-only. The existing point-estimation
 The component count is fixed inside the bootstrap. Use reconstruction CV or predictive nested CV to choose the dimension separately, and report that selection step.
 
 See [Gaussian FPCR bootstrap uncertainty](fpcr-bootstrap-inference.md).
+
+
+## Simultaneous observed-grid FPCR slope bands
+
+The 0.12 paired bootstrap stores every reconstructed slope replicate. The 0.13 calibration layer reuses those exact replicates:
+
+    band = fpca_regression_slope_simultaneous_band(
+        inference,
+        confidence_level=0.95,
+        simultaneous_scope="global",
+    )
+
+No second bootstrap is run.
+
+Global scope uses one maximum over the complete sampled time-by-dimension slope grid. Dimension scope calibrates one maximum over time separately within each functional dimension.
+
+The resulting band is a studentized bootstrap approximation over the **observed grid**. It does not establish continuous-domain coverage between samples and does not implement the operator-scaled FPCR significance test from recent asymptotic theory.
+
+See [Gaussian FPCR simultaneous slope bands](fpcr-simultaneous-slope-band.md).
