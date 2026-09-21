@@ -80,6 +80,11 @@
 ::: eyetrajectoriespy.fpca_nested_regression_cv_reporting_text
 
 ## FPC shape uncertainty
+::: eyetrajectoriespy.FPCAComponentBandResult
+::: eyetrajectoriespy.bootstrap_fpca_component_bands
+::: eyetrajectoriespy.fpca_component_band_frame
+::: eyetrajectoriespy.plot_fpca_component_band
+::: eyetrajectoriespy.fpca_component_band_reporting_text
 ::: eyetrajectoriespy.bootstrap_fpca_component_envelopes
 ::: eyetrajectoriespy.plot_fpca_component_envelope
 ::: eyetrajectoriespy.fpca_component_envelope_reporting_text

@@ -222,3 +222,22 @@ Report:
 - whether predictive performance was estimated with an outer nested-CV loop.
 
 For nested CV, report outer and inner fold counts, distribution of selected FPC counts across outer folds, and mean/SD of outer held-out loss. Do not present the inner minimum selection loss as untouched predictive performance.
+
+
+## Simultaneous FPC-shape bands
+
+Report:
+
+- the FPCs receiving bands and the fitted scaling;
+- the bootstrap resampling unit and participant column when applicable;
+- the number of bootstrap replicates and confidence level;
+- whether calibration was component-wise or familywise;
+- that bootstrap FPCs were matched and sign-aligned to the reference;
+- the median matched similarities;
+- any pre-specified relative-eigengap threshold and its action;
+- whether near-tied components were identified;
+- that the band is simultaneous over the observed time-by-dimension grid, not the continuous domain between sampled points.
+
+Example:
+
+> FPC-shape uncertainty was evaluated with 1,000 participant-level bootstrap resamples. Bootstrap components were matched and sign-aligned to the full-sample FPCA, and 95% studentized maximum-deviation bands were calibrated separately for each FPC over the observed time × x/y grid. The pre-specified relative-eigengap review threshold was 0.05; components meeting that threshold were not interpreted individually and were instead evaluated at the eigenspace level.

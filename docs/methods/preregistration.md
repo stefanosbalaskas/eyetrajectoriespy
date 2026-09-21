@@ -169,3 +169,21 @@ If FPC count will be tuned for a scalar outcome, pre-specify:
 - outer/inner fold counts and random seed where applicable.
 
 State that FPCA and regression will be refitted inside training folds. If participant-level outcomes are duplicated over trials, pre-specify aggregation or a grouped-model alternative rather than treating grouped CV as a dependence model.
+
+
+## Simultaneous FPC-shape uncertainty
+
+If individual FPC uncertainty is confirmatory, pre-specify:
+
+- the number of FPCs for which bands will be constructed;
+- curve versus participant bootstrap resampling;
+- bootstrap replicate count and random-seed policy;
+- confidence level;
+- component-wise versus familywise simultaneous scope;
+- scaling used by FPCA;
+- whether a relative-eigengap screening threshold will be used;
+- the action for a screened near tie (error, warning, or descriptive record);
+- that calibration is over the observed time-by-dimension grid;
+- how eigenspace/subspace results will supersede individual-axis interpretation when identification is weak.
+
+Do not select a near-tie threshold after seeing which FPC labels it permits.

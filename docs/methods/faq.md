@@ -137,3 +137,16 @@ If the same cross-validation losses are used both to choose the component count 
 ## Does participant-grouped CV solve repeated-measures dependence?
 
 It solves train/test leakage by keeping a participant on one side of each split. It does not by itself turn a curve-level regression into a mixed model or guarantee equal participant weighting. If a participant-level outcome is duplicated across trials, aggregate appropriately or use a specialist grouped model.
+
+
+## What is the difference between the pointwise FPC envelope and the simultaneous FPC band?
+
+The pointwise envelope summarizes bootstrap quantiles independently at each grid location and is explicitly descriptive. The simultaneous band calibrates the maximum standardized bootstrap deviation over the whole observed grid, so the inferential target is a whole-curve event rather than a collection of isolated pointwise intervals.
+
+## Should I use component-wise or familywise FPC bands?
+
+Use component-wise calibration when each FPC has its own whole-grid uncertainty statement. Use familywise calibration when the statement jointly concerns the entire requested set of FPCs. Familywise calibration is at least as conservative under identical bootstrap draws.
+
+## Can a simultaneous band make a near-tied FPC interpretable?
+
+No. Sign alignment and component matching solve bookkeeping problems, not population identifiability. If eigenvalues are close, inspect eigengaps and subspace stability; the stable scientific object may be the span of several FPCs.

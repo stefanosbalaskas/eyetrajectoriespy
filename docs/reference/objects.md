@@ -72,6 +72,12 @@ random seed where applicable, and provenance.
 The object records diagnostics only. Component selection remains an explicit
 separate operation.
 
+## FPCAComponentBandResult
+
+Stores the full-sample reference FPCA, simultaneous lower/upper FPC functions, pointwise bootstrap standard errors, component or familywise critical values, bootstrap maximum statistics, matched similarities, confidence level, resampling semantics, optional eigengap-screen information, random seed, and provenance.
+
+The object records that calibration applies to the observed time-by-dimension grid. It does not assert exact finite-sample coverage, continuous-domain coverage between sampled points, or individual-axis identifiability under near-tied eigenvalues.
+
 ## FPCAComponentEnvelopeResult
 
 Stores the full-sample reference FPCA, pointwise lower/median/upper matched

@@ -23,6 +23,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Explicit minimum / one-SE selection rules | implemented | `select_fpca_components_cv()` |
 | Bootstrap FPC stability | implemented | `bootstrap_fpca_stability()` |
 | Matched pointwise FPC envelopes | implemented | `bootstrap_fpca_component_envelopes()` |
+| Bootstrap-calibrated simultaneous FPC-shape bands | implemented | `bootstrap_fpca_component_bands()` |
 | Adjacent retained eigengap diagnostics | implemented | `fpca_eigenvalue_gap_table()` |
 | Principal-angle FPC subspace comparison | implemented | `compare_fpca_subspaces()` |
 | Bootstrap eigenspace stability | implemented | `bootstrap_fpca_subspace_stability()` |
@@ -71,11 +72,10 @@ Downstream score models do not currently propagate full uncertainty from estimat
 Future tranches may evaluate:
 
 - conformal functional anomaly detection;
-- calibrated simultaneous confidence bands for functional modes;
 - richer multilevel functional mixed-effects backends.
 
 A candidate enters the public API only when it can preserve the package rules: explicit estimand, deterministic behavior or seed, provenance, failure diagnostics, synthetic truth tests, documentation, and runnable examples.
 
 ## Development status
 
-The current development line is **0.8.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.9.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

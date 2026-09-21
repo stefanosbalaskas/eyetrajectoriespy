@@ -170,3 +170,26 @@ Interpret a stable block as a reproducible functional span, not as proof that th
     )
 
 A review flag or influential participant is a prompt to inspect the functional data and metadata. It is not an exclusion command.
+
+
+## Simultaneous uncertainty for an FPC shape
+
+Use simultaneous FPC bands when the scientific statement concerns the whole observed FPC curve rather than isolated time points.
+
+    from eyetrajectoriespy import bootstrap_fpca_component_bands
+
+    bands = bootstrap_fpca_component_bands(
+        gaze,
+        n_bootstrap=500,
+        n_components=2,
+        scaling="dimension_sd",
+        resample_unit="participant",
+        participant_column="participant_id",
+        confidence_level=0.95,
+        simultaneous_scope="component",
+        random_state=2026,
+    )
+
+For a joint familywise statement across all requested FPCs, set <code>simultaneous_scope="family"</code>. If the study pre-specifies a descriptive near-tie threshold, pass it through <code>relative_gap_threshold</code>; the default action is to stop rather than silently interpret a weakly identified individual axis.
+
+See [Simultaneous FPC-shape bands](guides/simultaneous-fpc-bands.md).

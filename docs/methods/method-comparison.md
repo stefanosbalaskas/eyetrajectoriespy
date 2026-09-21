@@ -19,3 +19,13 @@
 | Predict an external scalar outcome while tuning retained FPC count | fold-local FPCA regression CV / nested CV | variance-explained or reconstruction selection |
 
 FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; GAMMs model conditional mean structure over time.
+
+
+## Pointwise versus simultaneous FPC uncertainty
+
+| Goal | Preferred tool | Important boundary |
+|---|---|---|
+| visualize local bootstrap variability of an FPC | matched pointwise envelope | descriptive only; no whole-curve coverage claim |
+| whole-grid uncertainty statement for one FPC | component-wise simultaneous FPC band | observed grid only; individual axis must be identifiable |
+| joint whole-grid statement across several FPCs | familywise simultaneous FPC band | more conservative; near-tied axes still require subspace interpretation |
+| robust interpretation under near-tied eigenvalues | principal-angle subspace analysis | answers an eigenspace question, not individual-axis uncertainty |

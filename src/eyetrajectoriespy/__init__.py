@@ -26,6 +26,7 @@ from .fpca import (
     select_n_components,
     transform_fpca,
 )
+from .component_inference import bootstrap_fpca_component_bands, fpca_component_band_frame
 from .inference import functional_mean_band_frame, multiplier_functional_mean_band
 from .io import from_irregular_long_dataframe, from_long_dataframe
 from .irregular import (
@@ -54,6 +55,7 @@ from .phase import (
 )
 from .plotting import (
     plot_fpca_component,
+    plot_fpca_component_band,
     plot_fpca_component_envelope,
     plot_fpca_cross_validation,
     plot_fpca_influence,
@@ -88,6 +90,7 @@ from .preprocessing import (
 from .registration import phase_summary, register_to_landmarks, warping_displacement
 from .reporting import (
     fpca_reporting_text,
+    fpca_component_band_reporting_text,
     fpca_component_envelope_reporting_text,
     fpca_cross_validation_reporting_text,
     fpca_eigengap_reporting_text,
@@ -133,6 +136,7 @@ from .stability import (
 )
 from .types import (
     BasisProjectionResult,
+    FPCAComponentBandResult,
     FPCAComponentEnvelopeResult,
     FPCACrossValidationResult,
     ClusterResult,
@@ -162,7 +166,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.8.0.dev0"
+__version__ = "0.9.0.dev0"
 
 __all__ = [
     "TrajectorySet",
@@ -261,14 +265,19 @@ __all__ = [
     "to_skfda_grid",
     "detect_functional_outliers_skfda",
     "FPCACrossValidationResult",
+    "FPCAComponentBandResult",
     "FPCAComponentEnvelopeResult",
     "cross_validate_fpca_reconstruction",
     "summarise_fpca_cross_validation",
     "select_fpca_components_cv",
+    "bootstrap_fpca_component_bands",
+    "fpca_component_band_frame",
     "bootstrap_fpca_component_envelopes",
     "plot_fpca_cross_validation",
+    "plot_fpca_component_band",
     "plot_fpca_component_envelope",
     "fpca_cross_validation_reporting_text",
+    "fpca_component_band_reporting_text",
     "fpca_component_envelope_reporting_text",
     "plot_fpca_subspace_stability",
     "fpca_eigengap_reporting_text",

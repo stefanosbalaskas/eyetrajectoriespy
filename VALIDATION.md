@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.8.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive FPC-shape uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.9.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -200,6 +200,25 @@ Before the predictive implementation was committed to GitHub, a standalone contr
 - A deliberately perfectly separable preliminary binomial fixture triggered the intended explicit separation failure; the ordinary binomial truth test was then changed to a probabilistic non-separable fixture rather than weakening the separation guard.
 
 This is pre-commit delta algorithmic evidence. Exact integrated package/cross-platform certification is provided by the PR-head workflows when they run successfully.
+
+## 0.9 pre-commit local algorithm validation — 2026-09-21
+
+Environment: Linux, Python 3.13.5.
+
+The execution environment could not resolve github.com, so a fresh full-repository clone was unavailable. Before the branch commit, the new simultaneous-FPC algorithm was exercised in a standalone numerical contract harness matching the committed weighted-FPCA, component-matching, sign-alignment, eigengap-screening, and studentized-maximum logic.
+
+- deterministic repeated runs under a fixed seed: **passed**;
+- lower/reference/upper ordering: **passed**;
+- 99% bands no narrower than 90% bands under identical bootstrap draws: **passed**;
+- familywise critical value at least as conservative as component-wise critical values: **passed**;
+- matched absolute similarities remained within [0, 1]: **passed**;
+- exact synthetic near-tie fixture triggered the explicit error contract: **passed**;
+- near-tie warning path: **passed**;
+- invalid bootstrap count, simultaneous scope, confidence level, relative-gap threshold, and near-tie action: **passed**;
+- total standalone truth/contract checks: **10 passed**;
+- syntax compilation of the intended new package module, focused tests, and executable example: **passed**.
+
+This is local delta algorithmic validation, not a substitute for the repository-wide cross-platform test/coverage/docs/optional-backend workflows. Those remain GitHub CI evidence only after they actually complete.
 
 ## Locally unavailable checks
 

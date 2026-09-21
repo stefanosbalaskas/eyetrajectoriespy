@@ -123,3 +123,12 @@ Hall and Hosseini-Nasab (2006) show that eigenvalue spacing directly affects eig
 Pointwise component envelopes assume that a bootstrap component can be meaningfully matched to a reference axis. When adjacent eigenvalues are close and axes rotate, inspect the corresponding [FPC subspace](subspace-stability.md) as well.
 
 High subspace stability with low individual matching similarity is evidence to interpret the functional span more confidently than the orientation of each FPC inside it.
+
+
+## When a simultaneous statement is required
+
+The descriptive pointwise envelope on this page is useful for visualizing where matched bootstrap FPC estimates vary. It does not calibrate a whole-curve error event.
+
+When the scientific statement concerns the entire observed FPC function, use [Simultaneous FPC-shape bands](simultaneous-fpc-bands.md). That workflow uses the same matching and sign-alignment logic but calibrates maximum studentized bootstrap deviations over the observed time-by-dimension grid.
+
+Do not substitute a simultaneous band for eigenspace diagnostics when adjacent eigenvalues are nearly tied. A narrow band around an arbitrarily rotated axis is not evidence that the individual FPC label is uniquely meaningful.
