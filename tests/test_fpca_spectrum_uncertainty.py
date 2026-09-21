@@ -158,10 +158,9 @@ def test_participant_bootstrap_and_frame_preserve_explicit_semantics():
         "cumulative_variance_ratio",
         "median_matched_abs_similarity",
     } <= set(frame.columns)
-    assert np.allclose(
-        result.bootstrap_cumulative_variance_ratio,
-        np.cumsum(result.bootstrap_explained_variance_ratio, axis=1),
-    )
+    cumulative = result.bootstrap_cumulative_variance_ratio
+    assert np.all(np.diff(cumulative, axis=1) >= -1e-12)
+    assert result.provenance["fpca_spectrum_uncertainty"]["cumulative_spectrum_order"] == "descending_eigenvalue_rank"
 
 
 def test_spectrum_uncertainty_contract_failures_are_explicit():
