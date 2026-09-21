@@ -124,3 +124,16 @@ Not with the current API. It is simultaneous over the observed sampled grid acro
 ## Why reject AOI probability-simplex trajectories?
 
 Ordinary Euclidean lower/upper bands can leave the simplex. The package therefore requires an explicit compositional/log-ratio representation rather than silently applying inappropriate geometry.
+
+
+## Should I select FPC count by variance, reconstruction, or outcome prediction?
+
+Match the criterion to the question. Variance retention summarizes the predictor, reconstruction CV evaluates unseen functional curves, and predictive FPCA regression CV evaluates an external scalar outcome. They can select different component counts without contradiction.
+
+## Why do I need nested CV after predictive component selection?
+
+If the same cross-validation losses are used both to choose the component count and to report performance, the reported minimum participated in selection. Nested CV repeats component selection inside each outer training set and evaluates the complete procedure on untouched outer test data.
+
+## Does participant-grouped CV solve repeated-measures dependence?
+
+It solves train/test leakage by keeping a participant on one side of each split. It does not by itself turn a curve-level regression into a mixed model or guarantee equal participant weighting. If a participant-level outcome is duplicated across trials, aggregate appropriately or use a specialist grouped model.
