@@ -15,6 +15,7 @@ from .types import (
     FPCAInfluenceResult,
     FPCANestedRegressionCVResult,
     FPCARegressionCVResult,
+    FPCARegressionPredictionIntervalResult,
     FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
     FPCAResult,
@@ -441,6 +442,29 @@ def functional_mean_band_reporting_text(
         "claim continuous-domain coverage between sampled grid points."
     )
 
+
+
+def fpca_regression_future_prediction_reporting_text(
+    result: FPCARegressionPredictionIntervalResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate reporting text for Gaussian FPCR future-outcome intervals."""
+
+    median_width = float(np.median(result.upper - result.lower))
+    residual_sd = float(np.std(result.centered_residuals, ddof=1))
+    return (
+        f"Future scalar outcomes for {result.n_targets} fixed target trajectory(ies) "
+        f"were summarized with {100 * result.confidence_level:.1f}% marginal "
+        "Gaussian FPCR prediction intervals. The predictive distribution reused "
+        f"{result.n_bootstrap} paired-bootstrap conditional-mean predictions and "
+        "added independent draws from the centered empirical residual distribution "
+        f"of the full-sample FPCR fit (residual SD={residual_sd:.{digits}f}; "
+        f"median predictive width={median_width:.{digits}f}). Residual exchangeability "
+        "and a common response-error distribution across targets are assumed. The "
+        "intervals are not heteroscedasticity-robust and are not simultaneous or "
+        "joint across multiple target trajectories."
+    )
 
 
 def fpca_regression_slope_band_reporting_text(

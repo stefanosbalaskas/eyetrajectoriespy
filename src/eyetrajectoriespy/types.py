@@ -699,6 +699,32 @@ class FPCARegressionSlopeBandResult:
 
 
 @dataclass(frozen=True)
+class FPCARegressionPredictionIntervalResult:
+    """Future-outcome predictive distribution for Gaussian FPCR fixed targets."""
+
+    regression_uncertainty: FPCARegressionUncertaintyResult
+    centered_residuals: np.ndarray
+    sampled_residuals: np.ndarray
+    predictive_draws: np.ndarray
+    lower: np.ndarray
+    median: np.ndarray
+    upper: np.ndarray
+    predictive_se: np.ndarray
+    confidence_level: float
+    residual_method: str
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.predictive_draws.shape[0]
+
+    @property
+    def n_targets(self) -> int:
+        return self.predictive_draws.shape[1]
+
+
+@dataclass(frozen=True)
 class FPCARegressionCVResult:
     """Outcome-tuned FPCA regression cross-validation diagnostics."""
 
