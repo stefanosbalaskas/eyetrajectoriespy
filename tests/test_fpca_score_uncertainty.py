@@ -148,6 +148,20 @@ def test_score_uncertainty_contract_failures_are_explicit():
         bootstrap_fpca_score_uncertainty(
             gaze, targets=empty_targets, n_bootstrap=20, n_components=2
         )
+    infinite_training_values = gaze.values.copy()
+    infinite_training_values[0, 0, 0] = np.inf
+    infinite_training = replace(gaze, values=infinite_training_values)
+    with pytest.raises(ValueError, match="training trajectories must contain only finite"):
+        bootstrap_fpca_score_uncertainty(
+            infinite_training, n_bootstrap=20, n_components=2
+        )
+    infinite_target_values = gaze.subset([0, 1]).values.copy()
+    infinite_target_values[0, 0, 0] = np.inf
+    infinite_targets = replace(gaze.subset([0, 1]), values=infinite_target_values)
+    with pytest.raises(ValueError, match="targets must contain only finite"):
+        bootstrap_fpca_score_uncertainty(
+            gaze, targets=infinite_targets, n_bootstrap=20, n_components=2
+        )
     with pytest.raises(ValueError):
         bootstrap_fpca_score_uncertainty(gaze, n_bootstrap=19)
     with pytest.raises(TypeError):
