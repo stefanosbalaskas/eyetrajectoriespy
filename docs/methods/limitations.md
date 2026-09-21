@@ -143,3 +143,20 @@ A training fold with only one class, perfect separation, or non-convergence is n
 ## Inner-CV loss is not unbiased final performance
 
 After tuning FPC count, use an outer held-out loop when predictive performance is reported as a substantive result. The inner minimum loss is selection evidence rather than an untouched performance estimate.
+
+
+## Simultaneous FPC bands do not solve eigenfunction identifiability
+
+Matched/sign-aligned bootstrap bands quantify resampling variability around a selected individual FPC axis. When adjacent eigenvalues are close, the scientifically stable object may be the eigenspace rather than either axis. Use eigengap and principal-angle subspace diagnostics before giving a near-tied FPC an individual substantive label.
+
+## FPC bands are observed-grid bootstrap approximations
+
+The studentized maximum is calibrated over the sampled time-by-dimension grid. The implementation does not claim exact finite-sample coverage, nor does it claim coverage between observed time points.
+
+## Component-wise and familywise scope answer different questions
+
+Component-wise calibration controls the maximum over one FPC grid at a time. Familywise calibration takes the maximum over all requested FPCs as well as the grid and is therefore more conservative. The scope must be reported.
+
+## Bootstrap unit changes the uncertainty target
+
+Curve resampling treats trajectories as exchangeable independent units. Participant resampling keeps repeated trials clustered within resampled participants. Choosing the wrong unit can produce misleading uncertainty even if the numerical bands look stable.
