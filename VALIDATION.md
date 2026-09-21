@@ -752,3 +752,61 @@ Therefore the 0.13 simultaneous Gaussian FPCR slope-band tranche is both **PR-he
 1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this remains outside the current FDApy support contract.
 
 The 0.13 observed-grid simultaneous Gaussian FPCR slope-band implementation, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.13 main lineage.
+
+
+### 0.14 PR-head certification — 2026-09-21
+
+Exact certified PR head:
+
+`0df6a805dbfce9eb9f619501ade4eea7e916df8e`
+
+PR #17, **“Add Gaussian FPCR future-outcome prediction intervals,”** completed all unchanged pull-request qualification workflows successfully on that exact SHA:
+
+- package build / distribution validation: **success**;
+- Windows × Python 3.11, 3.12, 3.13: **3/3 success**;
+- Ubuntu × Python 3.11, 3.12, 3.13: **3/3 success**;
+- macOS × Python 3.11, 3.12, 3.13: **3/3 success**;
+- full pytest/coverage/compile/Ruff gate embedded in the standard workflow: **success**;
+- executable examples, including `fpcr_future_prediction_intervals.py`: **success**;
+- strict MkDocs documentation build: **success**;
+- optional scikit-fda interoperability: **success**;
+- optional FDApy sparse/PACE interoperability on Python 3.11 and 3.12: **2/2 success**.
+
+Local delta validation before PR publication confirmed centered empirical residuals, deterministic predictive draws, exact decomposition of each predictive draw into a stored paired-bootstrap conditional mean plus its sampled residual, ordered predictive quantiles, and non-decreasing interval width as confidence increased.
+
+The residual-resampling RNG was separated into a spawned deterministic stream so an analyst may use the same numeric seed for the paired FPCR bootstrap and future-response layer without reusing the same initial pseudo-random sequence.
+
+No tests, coverage thresholds, workflows, branch protections, or scientific validation checks were weakened, disabled, deleted, or bypassed.
+
+PR #17 was squash-merged as:
+
+`977eebd954e2efc1fcc98e3d54968023a42635ff`
+
+The certified PR head and squash-merged main commit both point to Git tree:
+
+`f3a5057084a39d581bcedaa75e48f6e38ae24af8`
+
+so the merged code, scientific contracts, tests, examples, and documentation are byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.14 exact-main qualification and deployment — 2026-09-21
+
+The exact merged-main commit
+
+`977eebd954e2efc1fcc98e3d54968023a42635ff`
+
+completed a fresh push-triggered qualification generation successfully:
+
+- tests workflow #65: **success**, including package construction and all 9 Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #65: **success**;
+- docs workflow #65: **success**, including strict MkDocs build and **successful GitHub Pages deployment**;
+- optional-fda workflow #61: **success**;
+- optional-sparse-fda workflow #49: **success**, including FDApy Python 3.11 and 3.12 lanes.
+
+Therefore the 0.14 Gaussian FPCR future-outcome prediction tranche is both **PR-head CI-certified** and **exact-main requalified**, and the corresponding methods-site deployment is certified on the merged 0.14 main lineage.
+
+## 0.14 remaining re-checks
+
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this remains outside the current FDApy support contract.
+2. Future-outcome prediction currently assumes a pooled exchangeable/common residual distribution. A heteroscedastic/wild-bootstrap extension should be considered only as a separate method with its own assumptions, theory, tests, and reporting contract.
+
+The 0.14 future-outcome prediction implementation, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.14 main lineage.
