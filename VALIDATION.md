@@ -453,3 +453,58 @@ The current optional-backend boundary remains unchanged:
 1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13. This is not part of the current FDApy support contract.
 
 The 0.9 FPC-band implementation, cross-platform package behavior, package construction, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.9 main lineage.
+
+
+### 0.10 PR-head certification — 2026-09-21
+
+Exact certified PR head:
+
+`8d136999292ad08762f33f48ccbf3df43c4e60ac`
+
+PR #13, **“Add FPCA spectrum uncertainty,”** completed all unchanged pull-request qualification workflows successfully on that exact SHA:
+
+- package build / distribution validation: **success**;
+- Windows × Python 3.11, 3.12, 3.13: **3/3 success**;
+- Ubuntu × Python 3.11, 3.12, 3.13: **3/3 success**;
+- macOS × Python 3.11, 3.12, 3.13: **3/3 success**;
+- full pytest/coverage/compile/Ruff gate embedded in the standard workflow: **success**;
+- executable examples, including `fpca_spectrum_uncertainty.py`: **success**;
+- strict MkDocs documentation build: **success**;
+- optional scikit-fda interoperability: **success**;
+- optional FDApy sparse/PACE interoperability on Python 3.11 and 3.12: **2/2 success**.
+
+No tests, coverage thresholds, workflows, branch protections, or scientific validation checks were weakened, disabled, deleted, or bypassed.
+
+PR #13 was squash-merged as:
+
+`f68631ab255472d2787802394b7db61bc4206fb3`
+
+The certified PR head and squash-merged main commit both point to Git tree:
+
+`1e82c78386ada969a7335c771cb27e87ac67e50a`
+
+so the merged code, scientific contracts, tests, examples, and documentation are byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.10 exact-main qualification and deployment — 2026-09-21
+
+The exact merged-main commit
+
+`f68631ab255472d2787802394b7db61bc4206fb3`
+
+completed a fresh push-triggered qualification generation successfully:
+
+- tests workflow #47: **success**, including package construction and all 9 Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #47: **success**;
+- docs workflow #47: **success**, including strict documentation build and **successful GitHub Pages deployment**;
+- optional-fda workflow #43: **success**;
+- optional-sparse-fda workflow #31: **success**, including FDApy Python 3.11 and 3.12 lanes.
+
+Therefore the 0.10 FPCA-spectrum-uncertainty tranche is both **PR-head CI-certified** and **exact-main requalified**, and the updated methods site is deployed from the merged 0.10 main lineage.
+
+## 0.10 remaining re-checks
+
+The optional-backend compatibility boundary remains unchanged:
+
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13. This is outside the current FDApy support contract.
+
+The 0.10 spectrum implementation, cross-platform package behavior, package construction, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.10 main lineage.
