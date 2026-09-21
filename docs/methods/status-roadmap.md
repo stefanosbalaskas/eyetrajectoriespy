@@ -25,6 +25,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Matched pointwise FPC envelopes | implemented | `bootstrap_fpca_component_envelopes()` |
 | Bootstrap-calibrated simultaneous FPC-shape bands | implemented | `bootstrap_fpca_component_bands()` |
 | Bootstrap FPCA spectrum uncertainty | implemented | `bootstrap_fpca_spectrum_uncertainty()` |
+| FPC score basis-resampling uncertainty | implemented | `bootstrap_fpca_score_uncertainty()` |
 | Adjacent retained eigengap diagnostics | implemented | `fpca_eigenvalue_gap_table()` |
 | Principal-angle FPC subspace comparison | implemented | `compare_fpca_subspaces()` |
 | Bootstrap eigenspace stability | implemented | `bootstrap_fpca_subspace_stability()` |
@@ -64,9 +65,9 @@ The multilevel implementation currently provides a transparent participant/trial
 
 Review flags are descriptive diagnostics. The package does not turn them into automatic inferential exclusions.
 
-### Exact uncertainty propagation for estimated FPC scores
+### Full downstream uncertainty propagation for estimated FPC scores
 
-Downstream score models do not currently propagate full uncertainty from estimation of the functional basis.
+`bootstrap_fpca_score_uncertainty()` quantifies basis-resampling variability for fixed target-curve scores, but downstream score models do not yet propagate that distribution jointly with regression/model uncertainty, target measurement error, latent-curve uncertainty, or preprocessing uncertainty.
 
 ## Research/development candidates
 
@@ -79,4 +80,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.10.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.11.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

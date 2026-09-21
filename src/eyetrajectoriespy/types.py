@@ -516,6 +516,40 @@ class FPCASpectrumUncertaintyResult:
 
 
 @dataclass(frozen=True)
+class FPCAScoreUncertaintyResult:
+    """Basis-resampling uncertainty for FPCA scores of fixed target curves."""
+
+    reference: FPCAResult
+    target_curve_ids: tuple[str, ...]
+    reference_scores: np.ndarray
+    bootstrap_scores: np.ndarray
+    lower: np.ndarray
+    median: np.ndarray
+    upper: np.ndarray
+    score_se: np.ndarray
+    assignments: np.ndarray
+    similarities: np.ndarray
+    level: float
+    resampling_unit: str
+    participant_column: str | None
+    target_source: str
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.bootstrap_scores.shape[0]
+
+    @property
+    def n_targets(self) -> int:
+        return self.bootstrap_scores.shape[1]
+
+    @property
+    def n_components(self) -> int:
+        return self.bootstrap_scores.shape[2]
+
+
+@dataclass(frozen=True)
 class FPCASubspaceComparisonResult:
     """Principal-angle comparison of corresponding FPCA component subspaces."""
 

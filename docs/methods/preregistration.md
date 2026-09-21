@@ -206,3 +206,22 @@ If eigenvalues or variance decomposition will support confirmatory interpretatio
 - the separate rule, if any, used for choosing the retained FPC count.
 
 Do not convert the uncertainty result into a post hoc retention threshold after seeing the intervals.
+
+
+## FPC score basis uncertainty
+
+If score uncertainty will support confirmatory interpretation, pre-specify:
+
+- the FPCA training sample;
+- which target trajectories will be projected;
+- whether targets are training curves or an external compatible set;
+- retained FPC count and scaling;
+- curve versus participant basis resampling;
+- participant identifier when clustered resampling is used;
+- bootstrap replicate count and seed policy;
+- percentile level;
+- how low component-matching similarity will be handled or reported;
+- that targets remain fixed during the bootstrap;
+- that the result excludes target measurement error, latent-curve uncertainty, preprocessing uncertainty, future-curve variability, and full downstream-model uncertainty.
+
+Do not relabel a basis-resampling envelope as a complete score confidence interval after seeing its width.

@@ -99,3 +99,8 @@ Use [Simultaneous FPC bands](../examples/simultaneous-fpc-bands.md) when the sci
 ### FPCA spectrum uncertainty
 
 Use [FPCA spectrum uncertainty](../examples/fpca-spectrum-uncertainty.md) when eigenvalues or explained-variance summaries need uncertainty rather than point estimates alone. The worked example distinguishes matched individual spectrum quantities from rank-ordered cumulative variance and compares component-wise with familywise calibration.
+
+
+### FPC score basis-resampling uncertainty
+
+Use [FPC score basis uncertainty](../examples/fpca-score-uncertainty.md) when score coordinates themselves need a stability/uncertainty analysis rather than being treated as fixed after FPCA. The worked example keeps targets fixed, resamples participants to refit the basis, matches/sign-aligns bootstrap components, and distinguishes basis uncertainty from measurement or downstream-model uncertainty.

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.11.0.dev0 — 2026-09-21
+
+Eleventh development tranche.
+
+- basis-resampling uncertainty summaries for FPC scores of fixed target trajectories;
+- training-curve or compatible external-target projections through bootstrap-refitted FPCA/MFPCA bases;
+- maximum-absolute-similarity component matching and explicit sign alignment before comparing target scores;
+- curve- or participant-level basis resampling for repeated-trial designs;
+- percentile score envelopes and bootstrap standard deviations retained as descriptive decomposition-uncertainty summaries;
+- explicit rejection of incompatible target grids, dimensions, coordinate systems, and time units rather than silent coercion;
+- provenance states that the result does not include target measurement error, latent-curve uncertainty, future-curve variability, preprocessing uncertainty, or full downstream uncertainty propagation;
+- plotting/reporting helpers, tests, executable example, and expanded methodological/site guidance.
+
+
 ## 0.10.0.dev0 — 2026-09-21
 
 Tenth development tranche.

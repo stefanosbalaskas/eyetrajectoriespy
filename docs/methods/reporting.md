@@ -262,3 +262,23 @@ Report:
 Example:
 
 > Uncertainty in the FPCA variance decomposition was quantified with 1,000 participant-level bootstrap refits under dimension-SD scaling. Bootstrap FPCs were matched to the full-sample reference before individual eigenvalues and explained-variance ratios were assigned, while cumulative variance retained descending eigenvalue-rank order. Ninety-five-percent familywise studentized intervals were calibrated across the three reported components separately for each spectrum metric. Bounds were reported without support clipping. Component retention was determined independently using grouped held-out reconstruction CV.
+
+
+## FPC score basis-resampling uncertainty
+
+Report:
+
+- the training sample used to estimate the FPCA basis;
+- whether targets were training curves or an external compatible set;
+- number of fixed target trajectories;
+- retained FPC count and scaling;
+- curve versus participant bootstrap unit and participant column;
+- bootstrap replicate count, seed policy, and percentile level;
+- that bootstrap FPCs were matched and sign-aligned before target projection;
+- component-matching similarity summaries;
+- that targets were fixed rather than resampled/perturbed;
+- the excluded uncertainty sources.
+
+Example:
+
+> Sensitivity of individual FPC scores to estimation of the functional basis was assessed with 1,000 participant-level bootstrap refits. Six target trajectories were held fixed while participants were resampled to re-estimate a two-component, dimension-SD-scaled MFPCA basis. Bootstrap FPCs were matched and sign-aligned to the full-sample reference before each target was re-projected. Ninety-five-percent percentile envelopes summarize basis-resampling variability only and do not include target measurement error, latent-curve uncertainty, preprocessing uncertainty, future-curve variability, or downstream regression uncertainty.

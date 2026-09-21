@@ -40,3 +40,13 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 | how variable is the reported spectrum jointly across components? | familywise spectrum bootstrap | separate calibration within each metric |
 | how much do the top k components explain? | cumulative spectrum bootstrap | descending eigenvalue rank, not shape matching |
 | how many components should I retain? | explicit selection procedure | not answered automatically by spectrum intervals |
+
+
+## FPC score uncertainty targets
+
+| Question | Tool | What varies? | Important boundary |
+|---|---|---|---|
+| what are the fitted training scores? | fpca_score_frame() | nothing after fit | point estimates conditional on fitted basis |
+| how do fixed-target scores move when the basis changes? | bootstrap_fpca_score_uncertainty() | FPCA training basis | basis-resampling uncertainty only |
+| what is the sparse conditional score? | FDApy/PACE interoperability | latent score estimated from sparse observations | different estimator and uncertainty target |
+| how uncertain is a downstream regression coefficient? | specialist/full uncertainty procedure | scores + regression/model | not provided by 0.11 score envelopes |

@@ -88,6 +88,12 @@ The envelope is explicitly descriptive; the object does not assert pointwise or
 simultaneous confidence coverage.
 
 
+## FPCAScoreUncertaintyResult
+
+Stores the full-sample reference FPCA, fixed target curve IDs and reference scores, matched/sign-aligned bootstrap target scores, percentile lower/median/upper summaries, bootstrap score standard deviations, component assignments and similarities, resampling semantics, target source, random seed, and provenance.
+
+The uncertainty target is deliberately narrow: the target curves are fixed while the training sample used to estimate the FPCA basis is resampled. The result quantifies basis-estimation sensitivity only. It is not a complete latent-score confidence interval and does not include target measurement error, future-curve variability, preprocessing uncertainty, or full downstream-model propagation.
+
 ## FPCASpectrumUncertaintyResult
 
 Stores the full-sample FPCA, matched bootstrap eigenvalues and per-component explained-variance ratios, rank-ordered bootstrap cumulative variance, bootstrap standard errors, studentized critical values/intervals, component assignments and similarities, calibration scope, resampling semantics, random seed, and provenance.

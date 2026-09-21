@@ -89,6 +89,13 @@
 ::: eyetrajectoriespy.plot_fpca_component_envelope
 ::: eyetrajectoriespy.fpca_component_envelope_reporting_text
 
+## FPC score basis uncertainty
+::: eyetrajectoriespy.FPCAScoreUncertaintyResult
+::: eyetrajectoriespy.bootstrap_fpca_score_uncertainty
+::: eyetrajectoriespy.fpca_score_uncertainty_frame
+::: eyetrajectoriespy.plot_fpca_score_uncertainty
+::: eyetrajectoriespy.fpca_score_uncertainty_reporting_text
+
 ## FPCA spectrum uncertainty
 ::: eyetrajectoriespy.FPCASpectrumUncertaintyResult
 ::: eyetrajectoriespy.bootstrap_fpca_spectrum_uncertainty
