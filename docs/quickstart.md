@@ -243,3 +243,31 @@ The target curves stay fixed. Only the training sample used to estimate the FPCA
 The returned percentile envelopes therefore describe **basis-resampling uncertainty**, not full uncertainty in a latent score. They do not include measurement error, future-curve variability, preprocessing uncertainty, or full propagation through a downstream regression.
 
 See [FPC score basis uncertainty](guides/score-uncertainty.md).
+
+
+## Propagate FPCA estimation through Gaussian scalar regression
+
+Use the paired FPCR bootstrap when a scalar outcome is modeled from continuous gaze and the functional slope or fitted mean response needs uncertainty that reflects re-estimation of the FPCA basis.
+
+    from eyetrajectoriespy import bootstrap_fpca_regression_uncertainty
+
+    inference = bootstrap_fpca_regression_uncertainty(
+        gaze,
+        outcome,
+        targets=gaze.subset([0, 1, 2, 3]),
+        n_bootstrap=1000,
+        n_components=2,
+        scaling="dimension_sd",
+        resample_unit="participant",
+        participant_column="participant_id",
+        level=0.95,
+        random_state=2026,
+    )
+
+Each bootstrap replicate resamples the independent unit together with its scalar outcome, refits FPCA/MFPCA, refits the Gaussian score regression, reconstructs the slope, and predicts the same fixed targets.
+
+The slope envelope is pointwise. Target intervals describe uncertainty in the fitted **conditional mean response** and are not prediction intervals for a future noisy outcome.
+
+The component count is kept fixed across bootstrap replicates. If the number of components was selected from data, report that selection procedure separately.
+
+See [Gaussian FPCR bootstrap uncertainty](guides/fpcr-bootstrap-inference.md).

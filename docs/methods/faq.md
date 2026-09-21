@@ -188,3 +188,24 @@ Treat the named score coordinate cautiously. Inspect eigengaps and principal-ang
 ## Does this propagate score uncertainty through regression?
 
 No. It exposes the bootstrap score distribution so sensitivity can be inspected, but the current regression APIs do not jointly integrate that distribution with regression coefficient/model uncertainty.
+
+
+## Why does FPCR regression uncertainty not match FPC labels across bootstrap samples?
+
+The inferential target is the reconstructed full slope or fitted conditional mean, not an individual intermediate FPC coefficient. A sign flip in an FPC is accompanied by a sign flip in its regression coefficient, leaving the reconstructed contribution unchanged. Matching would add an unnecessary axis-specific convention.
+
+## Are the target intervals prediction intervals?
+
+No. They summarize uncertainty in the estimated conditional mean response for fixed target curves. A future-outcome prediction interval would additionally require the response-noise distribution.
+
+## Does the bootstrap include uncertainty in how many components were selected?
+
+No. The retained component count is fixed. Selection by reconstruction CV or predictive CV must be reported separately.
+
+## Why fail instead of redrawing a rank-deficient bootstrap replicate?
+
+Redrawing conditions the bootstrap distribution on successful samples and silently changes the procedure. A rank-deficient replicate is evidence that the chosen regression dimension is unstable under the declared resampling design.
+
+## Is this the new operator-scaled FPCR bootstrap test?
+
+No. The 0.12 routine is a paired full-pipeline nonparametric bootstrap with percentile summaries. It does not implement the operator-scaled statistic or significance test developed in recent 2026 FPCR theory.

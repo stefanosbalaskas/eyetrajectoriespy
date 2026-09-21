@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.12.0.dev0 — 2026-09-21
+
+Twelfth development tranche.
+
+- paired nonparametric bootstrap uncertainty for Gaussian scalar-on-function functional principal-component regression;
+- FPCA/MFPCA and the score regression are refitted together in every bootstrap replicate;
+- curve- or participant-level paired resampling keeps the functional predictor and scalar outcome coupled;
+- reconstructed functional slopes are returned in original trajectory coordinate units with explicit correction for MFPCA dimension scaling;
+- fixed-target bootstrap intervals target the fitted conditional mean response and are explicitly not future-outcome prediction intervals;
+- component count remains fixed across bootstrap replicates; component-selection uncertainty is not silently mixed into the inferential target;
+- full-rank regression designs are required for the reference and every bootstrap replicate; invalid replicates fail explicitly rather than being discarded;
+- FPC label matching is intentionally unnecessary for slope/mean-response targets because each complete FPCR refit is reconstructed in its own internally consistent basis;
+- Gaussian-only scope is explicit; binomial inference is not generalized without dedicated methodology;
+- plotting/reporting helpers, tests, executable example, and expanded methodological/site guidance.
+
+
 ## 0.11.0.dev0 — 2026-09-21
 
 Eleventh development tranche.

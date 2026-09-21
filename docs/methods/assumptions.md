@@ -107,3 +107,14 @@ Curve-level basis resampling assumes curves are independent sampling units. Part
 External targets must already use the same time grid, functional dimensions, coordinate system, and time unit as the training data. The routine does not perform hidden interpolation, coordinate transformation, unit conversion, or feature reordering.
 
 Component matching and sign alignment make score coordinates comparable across ordinary bootstrap perturbations. They do not make a near-tied individual FPC axis population-identifiable.
+
+
+## Gaussian FPCR paired-bootstrap uncertainty
+
+The resampling unit must match the independent sampling unit. Curve-level resampling assumes independent trajectories. Participant-level resampling preserves repeated trials by resampling whole participant trial bundles together with their scalar outcomes.
+
+The retained component count is treated as fixed during bootstrap inference. Any data-driven component-selection procedure is a separate stage and its uncertainty is not incorporated automatically.
+
+The Gaussian score-regression design must remain full rank in the reference fit and in every bootstrap replicate. Invalid replicates are not silently discarded or redrawn.
+
+For MFPCA with dimension scaling, the functional slope is mapped back to original trajectory units using the same scale parameters estimated inside each replicate.

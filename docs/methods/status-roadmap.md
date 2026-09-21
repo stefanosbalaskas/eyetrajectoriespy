@@ -39,6 +39,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Functional distances | implemented | `functional_l2_distance()` |
 | FPCA-score clustering | implemented | `cluster_fpca_scores()` |
 | Score-based scalar-on-function regression | implemented | `fit_scalar_on_function_regression()` |
+| Paired-bootstrap Gaussian FPCR uncertainty | implemented | `bootstrap_fpca_regression_uncertainty()` |
 | Derived speed/acceleration/distance/path functions | implemented | kinematic helpers |
 
 ## Optional specialist interoperability
@@ -65,9 +66,11 @@ The multilevel implementation currently provides a transparent participant/trial
 
 Review flags are descriptive diagnostics. The package does not turn them into automatic inferential exclusions.
 
-### Full downstream uncertainty propagation for estimated FPC scores
+### Full downstream uncertainty propagation beyond Gaussian FPCR
 
-`bootstrap_fpca_score_uncertainty()` quantifies basis-resampling variability for fixed target-curve scores, but downstream score models do not yet propagate that distribution jointly with regression/model uncertainty, target measurement error, latent-curve uncertainty, or preprocessing uncertainty.
+`bootstrap_fpca_regression_uncertainty()` now refits the common-grid Gaussian FPCR pipeline under paired resampling and propagates basis/regression sampling variability into the reconstructed slope and fitted conditional means.
+
+Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, or non-Gaussian/binomial functional-regression inference.
 
 ## Research/development candidates
 
@@ -80,4 +83,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.11.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.12.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

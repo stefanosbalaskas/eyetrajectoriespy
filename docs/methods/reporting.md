@@ -282,3 +282,25 @@ Report:
 Example:
 
 > Sensitivity of individual FPC scores to estimation of the functional basis was assessed with 1,000 participant-level bootstrap refits. Six target trajectories were held fixed while participants were resampled to re-estimate a two-component, dimension-SD-scaled MFPCA basis. Bootstrap FPCs were matched and sign-aligned to the full-sample reference before each target was re-projected. Ninety-five-percent percentile envelopes summarize basis-resampling variability only and do not include target measurement error, latent-curve uncertainty, preprocessing uncertainty, future-curve variability, or downstream regression uncertainty.
+
+
+## Gaussian FPCR paired-bootstrap uncertainty
+
+Report:
+
+- Gaussian scalar-on-function FPCR as the model family;
+- retained FPC count and the separate procedure used to choose it;
+- scaling used by FPCA/MFPCA;
+- paired bootstrap unit and participant column when applicable;
+- bootstrap replicate count, seed policy, and percentile level;
+- that FPCA/MFPCA and regression were refitted together in every replicate;
+- that the functional slope was reconstructed in original trajectory units;
+- that slope intervals are pointwise;
+- whether target trajectories were training or external fixed curves;
+- that target intervals are for the fitted conditional mean response, not future noisy outcomes;
+- that component count was fixed during bootstrap inference;
+- that rank-deficient replicates were not discarded/redrawn.
+
+Example:
+
+> Gaussian scalar-on-function FPCR uncertainty was quantified with 1,000 participant-level paired bootstrap refits. MFPCA and the Gaussian score regression were refitted jointly in every replicate using two prespecified components and dimension-SD scaling. The slope was back-transformed to the original x/y coordinate units and summarized with 95% pointwise percentile intervals. For six fixed target trajectories, bootstrap intervals describe uncertainty in the fitted conditional mean response rather than future-outcome prediction intervals. The component count was held fixed across bootstrap replicates.

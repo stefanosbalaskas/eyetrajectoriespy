@@ -225,3 +225,23 @@ If score uncertainty will support confirmatory interpretation, pre-specify:
 - that the result excludes target measurement error, latent-curve uncertainty, preprocessing uncertainty, future-curve variability, and full downstream-model uncertainty.
 
 Do not relabel a basis-resampling envelope as a complete score confidence interval after seeing its width.
+
+
+## Gaussian FPCR bootstrap uncertainty
+
+Pre-specify:
+
+- Gaussian scalar-on-function regression as the inferential family;
+- the retained FPC count and how it was selected;
+- MFPCA scaling;
+- curve versus participant paired resampling;
+- participant identifier for repeated-trial designs;
+- bootstrap replicate count and random-seed policy;
+- percentile level;
+- whether fixed target trajectories will be evaluated;
+- that target intervals refer to the conditional mean rather than future observed outcomes;
+- that slope intervals are pointwise rather than simultaneous;
+- that rank-deficient bootstrap replicates will terminate the procedure rather than be silently replaced;
+- that the component count will remain fixed across bootstrap replicates.
+
+Do not reinterpret the resulting percentile slope envelope as the operator-scaled FPCR significance test from recent theory.

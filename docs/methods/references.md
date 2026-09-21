@@ -116,3 +116,13 @@ The eyetrajectoriespy spectrum routine is a matched nonparametric studentized bo
 PACE/conditional-expectation methods explicitly treat subject-specific scores as estimated latent quantities for sparse data. Goldsmith et al. show that conditioning on an estimated FPC decomposition can understate uncertainty and use bootstrap decompositions in an iterated expectation/variance construction. Recent Bayesian FPCA work similarly emphasizes uncertainty in FPC estimates and downstream score use.
 
 The eyetrajectoriespy 0.11 routine has a narrower purpose: fixed-target score sensitivity to re-estimation of the common-grid FPCA basis. It is not a PACE uncertainty estimator, the Goldsmith mixed-model correction, or a fully Bayesian FPCA.
+
+
+## Functional principal-component regression inference
+
+- González-Manteiga, W., & Martínez-Calvo, A. (2011). Bootstrap in functional linear regression. *Journal of Statistical Planning and Inference*, 141(1), 453–461. https://doi.org/10.1016/j.jspi.2010.06.027
+- Khademnoe, O., & Hosseini-Nasab, S. M. E. (2016). On properties of percentile bootstrap confidence intervals for prediction in functional linear regression. *Journal of Statistical Planning and Inference*, 170, 129–143. https://doi.org/10.1016/j.jspi.2015.10.001
+- Yeon, H. (2026). Gaussian and bootstrap approximations for functional principal component regression. arXiv:2603.12518. https://arxiv.org/abs/2603.12518
+- Goldsmith, J., Greven, S., & Crainiceanu, C. (2013). Corrected confidence bands for functional data using principal components. *Biometrics*, 69(1), 41–51. https://doi.org/10.1111/j.1541-0420.2012.01808.x
+
+The first two references motivate bootstrap inference and prediction in scalar-on-function functional linear regression. Yeon (2026) develops a distinct operator-scaled FPCR theory for Gaussian/bootstrap approximation and slope-significance testing. The eyetrajectoriespy 0.12 API is a paired full-pipeline percentile bootstrap and does not claim to reproduce that operator-scaled test.

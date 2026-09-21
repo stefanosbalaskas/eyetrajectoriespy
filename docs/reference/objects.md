@@ -146,6 +146,16 @@ over the observed time-by-dimension grid and does not assert continuous-domain
 coverage between sampled points.
 
 
+## FPCARegressionUncertaintyResult
+
+Stores the full-sample FPCA and Gaussian score-regression fits, the reconstructed functional slope in original trajectory units, bootstrap slope replicates and pointwise percentile summaries, reference/bootstrapped intercepts, fixed-target conditional-mean predictions and percentile summaries, resampling semantics, component count, scaling, seed, and provenance.
+
+The functional slope is reconstructed from each complete FPCR refit, including the inverse-square channel-scale adjustment needed to map the score-regression coefficients back to the original functional predictor units.
+
+Target intervals are confidence-style bootstrap summaries for the fitted conditional mean response of fixed target curves. They are not prediction intervals for future observed outcomes.
+
+The component count is held fixed across bootstrap replicates. The object does not include model-selection uncertainty.
+
 ## FPCARegressionCVResult
 
 Stores fold-level predictive losses, test-fold assignments, held-out predictions for every candidate FPC count, family/loss settings, grouping semantics, scaling, random-state information, and provenance. The object records selection evidence only; it does not silently choose a component count.

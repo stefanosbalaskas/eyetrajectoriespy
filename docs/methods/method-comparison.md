@@ -50,3 +50,14 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 | how do fixed-target scores move when the basis changes? | bootstrap_fpca_score_uncertainty() | FPCA training basis | basis-resampling uncertainty only |
 | what is the sparse conditional score? | FDApy/PACE interoperability | latent score estimated from sparse observations | different estimator and uncertainty target |
 | how uncertain is a downstream regression coefficient? | specialist/full uncertainty procedure | scores + regression/model | not provided by 0.11 score envelopes |
+
+
+## Gaussian scalar-on-function regression uncertainty
+
+| Question | Tool | What is refit? | Inferential boundary |
+|---|---|---|---|
+| fit a scalar outcome from FPC scores | fit_scalar_on_function_regression() | one FPCA-conditioned regression | point estimate conditional on fitted basis |
+| choose FPC count for prediction | cross_validate_fpca_regression() / nested_cross_validate_fpca_regression() | FPCA + regression inside folds | predictive selection/performance, not coefficient inference |
+| inspect basis-only score variability | bootstrap_fpca_score_uncertainty() | FPCA basis | fixed-target score sensitivity only |
+| quantify Gaussian FPCR slope/mean uncertainty | bootstrap_fpca_regression_uncertainty() | paired sample + FPCA + Gaussian regression | fixed component count; pointwise slope and conditional-mean intervals |
+| test the full slope with operator-scaled asymptotics | specialist recent FPCR method | operator-scaled statistic | not implemented in eyetrajectoriespy 0.12 |
