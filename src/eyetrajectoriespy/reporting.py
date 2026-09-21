@@ -5,12 +5,15 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from .prediction import select_fpca_regression_components, summarise_fpca_regression_cv
 from .selection import select_fpca_components_cv, summarise_fpca_cross_validation
 from .subspace import fpca_eigenvalue_gap_table, summarise_fpca_subspace_stability
 from .types import (
     FPCAComponentEnvelopeResult,
     FPCACrossValidationResult,
     FPCAInfluenceResult,
+    FPCANestedRegressionCVResult,
+    FPCARegressionCVResult,
     FPCAResult,
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
@@ -318,4 +321,59 @@ def functional_mean_band_reporting_text(
         f"(critical value={result.critical_value:.{digits}f}). The band is "
         "simultaneous across the observed time-by-dimension grid and does not "
         "claim continuous-domain coverage between sampled grid points."
+    )
+
+
+
+def fpca_regression_cv_reporting_text(
+    result: FPCARegressionCVResult,
+    *,
+    rule: str = "minimum",
+    digits: int = 3,
+) -> str:
+    """Generate manuscript-oriented text for outcome-tuned FPC selection."""
+
+    summary = summarise_fpca_regression_cv(result)
+    selected = select_fpca_regression_components(result, rule=rule)
+    row = summary.loc[summary["n_components"] == selected].iloc[0]
+    unit = "grouped" if result.cv_unit == "group" else "curve-level"
+    heuristic = (
+        " The one-standard-error rule was used as a parsimony heuristic."
+        if rule == "one_se"
+        else ""
+    )
+    return (
+        f"Outcome-tuned FPCA regression used {result.n_splits}-fold {unit} "
+        f"cross-validation with family={result.family!r} and held-out "
+        f"{result.loss}. FPCA and the scalar regression were refitted inside "
+        f"every training fold. The explicit {rule!r} rule selected {selected} "
+        f"component(s) (mean held-out loss={row['mean_loss']:.{digits}f}, "
+        f"SE={row['se_loss']:.{digits}f}).{heuristic}"
+    )
+
+
+def fpca_nested_regression_cv_reporting_text(
+    result: FPCANestedRegressionCVResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Describe nested predictive performance after inner FPC-count selection."""
+
+    mean_loss = float(result.outer_folds["loss"].mean())
+    sd_loss = float(result.outer_folds["loss"].std(ddof=1))
+    counts = result.outer_folds["selected_n_components"].astype(int)
+    selected_text = ", ".join(
+        f"{int(component)}×{int((counts == component).sum())}"
+        for component in sorted(counts.unique())
+    )
+    unit = "grouped" if result.cv_unit == "group" else "curve-level"
+    return (
+        f"Nested FPCA regression used {result.outer_splits} outer and "
+        f"{result.inner_splits} inner {unit} folds. Inner folds selected the "
+        f"retained FPC count using the {result.selection_rule!r} rule; outer "
+        f"folds were untouched by selection. Mean outer held-out {result.loss} "
+        f"was {mean_loss:.{digits}f} (SD={sd_loss:.{digits}f}). Selected "
+        f"component counts across outer fits were {selected_text}. This outer "
+        "loss estimates the complete selection-and-fit pipeline rather than "
+        "reusing the inner selection loss as performance evidence."
     )
