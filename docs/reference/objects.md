@@ -111,3 +111,16 @@ objects, and provenance.
 The result records `fit_method="covariance"` and `score_method="PACE"`.
 It does not imply that the original sparse observations were interpolated to a
 common grid, and it does not represent joint multivariate x/y PACE.
+
+
+## FunctionalMeanBandResult
+
+Stores the estimated functional mean, simultaneous lower/upper observed-grid
+band, pointwise standard errors, multiplier critical value and maximum
+statistics, confidence level, inference-unit definition, effective unit IDs,
+time/dimension semantics, and provenance.
+
+For `unit="participant"`, the result targets the equal-weight mean of
+participant-average trajectories. The object records that coverage is calibrated
+over the observed time-by-dimension grid and does not assert continuous-domain
+coverage between sampled points.
