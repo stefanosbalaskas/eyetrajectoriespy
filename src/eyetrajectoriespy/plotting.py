@@ -15,6 +15,7 @@ from .types import (
     FPCAResult,
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
+    FunctionalMeanBandResult,
     IrregularTrajectorySet,
     FunctionalOutlierResult,
     RegistrationResult,
@@ -400,4 +401,41 @@ def plot_sparse_irregular_dimension(
     ax.set_title(f"Native irregular observations: {dimension}")
     if trajectories.n_curves <= 12:
         ax.legend()
+    return ax
+
+
+
+def plot_functional_mean_band(
+    result: FunctionalMeanBandResult,
+    *,
+    dimension: str | None = None,
+    ax=None,
+):
+    """Plot a functional mean with its simultaneous observed-grid band."""
+
+    if dimension is None:
+        dimension = result.dimension_names[0]
+    if dimension not in result.dimension_names:
+        raise KeyError(f"Unknown dimension {dimension!r}")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    dim = result.dimension_names.index(dimension)
+    level = 100 * result.confidence_level
+    ax.fill_between(
+        result.time,
+        result.lower[:, dim],
+        result.upper[:, dim],
+        alpha=0.2,
+        label=f"{level:.1f}% simultaneous band",
+    )
+    ax.plot(
+        result.time,
+        result.mean[:, dim],
+        label="functional mean",
+    )
+    ax.set_xlabel(f"Time ({result.time_unit})")
+    ax.set_ylabel(dimension)
+    ax.set_title(f"Functional mean band: {dimension}(t)")
+    ax.legend()
     return ax
