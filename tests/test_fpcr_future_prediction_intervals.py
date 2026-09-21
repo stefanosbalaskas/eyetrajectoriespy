@@ -76,12 +76,9 @@ def test_prediction_interval_reproducible_and_auditable():
     assert np.all(first.median <= first.upper)
     assert np.all(first.predictive_se >= 0)
     assert np.allclose(first.predictive_draws, second.predictive_draws)
-    assert (
-        first.provenance["fpca_regression_future_prediction_interval"][
-            "heteroscedasticity_robust"
-        ]
-        is False
-    )
+    settings = first.provenance["fpca_regression_future_prediction_interval"]
+    assert settings["residual_rng_stream"] == "spawned_domain_separated_stream"
+    assert settings["heteroscedasticity_robust"] is False
 
 
 def test_higher_confidence_is_no_narrower_under_same_draws():
