@@ -389,6 +389,37 @@ class BasisProjectionResult:
 
 
 @dataclass(frozen=True)
+class ConformalFunctionalAnomalyResult:
+    """Split-conformal anomaly p-values for new functional trajectories."""
+
+    reference: FPCAResult
+    calibration_curve_ids: tuple[str, ...]
+    target_curve_ids: tuple[str, ...]
+    calibration_scores: np.ndarray
+    target_scores: np.ndarray
+    p_values: np.ndarray
+    review_flags: np.ndarray
+    alpha: float
+    nonconformity: str
+    mahalanobis_covariance: str | None
+    n_components: int
+    scaling: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_calibration(self) -> int:
+        return self.calibration_scores.shape[0]
+
+    @property
+    def n_targets(self) -> int:
+        return self.target_scores.shape[0]
+
+    @property
+    def minimum_attainable_p(self) -> float:
+        return 1.0 / (self.n_calibration + 1.0)
+
+
+@dataclass(frozen=True)
 class FunctionalOutlierResult:
     """Functional outlier/review diagnostics without automatic exclusion."""
 

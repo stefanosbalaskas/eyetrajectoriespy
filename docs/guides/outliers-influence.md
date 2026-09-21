@@ -141,3 +141,78 @@ Report the actual component count, covariance estimator, review thresholds, numb
 - [Worked anomaly/influence example](../examples/outlier-influence.md)
 - [Reporting checklist](../methods/reporting.md)
 - [Pre-registration checklist](../methods/preregistration.md)
+
+
+## Split-conformal anomaly review for genuinely new curves
+
+The original FPCA outlier diagnostics answer an **in-sample review** question: which curves in the fitted sample look unusual?
+
+Split conformal inference answers a different question: is a **new target curve** unusual relative to a reference population?
+
+Use three disjoint objects:
+
+    result = split_conformal_fpca_anomaly(
+        proper_training,
+        calibration,
+        targets,
+        n_components=3,
+        scaling="dimension_sd",
+        nonconformity="reconstruction_rmse",
+        alpha=0.05,
+    )
+
+The reference FPCA is estimated only from <code>proper_training</code>.
+
+Calibration and target curves are scored through that fixed reference.
+
+### Reconstruction nonconformity
+
+<code>nonconformity="reconstruction_rmse"</code> uses integrated reconstruction RMSE under the retained FPC span.
+
+It is useful for shape or structure that the proper-training basis represents poorly.
+
+### Score-space Mahalanobis nonconformity
+
+For a curve that lies inside the retained FPC span but has an unusually extreme score combination, use:
+
+    result = split_conformal_fpca_anomaly(
+        proper_training,
+        calibration,
+        targets,
+        n_components=3,
+        nonconformity="score_mahalanobis",
+        mahalanobis_covariance="robust",
+        random_state=2026,
+    )
+
+The covariance estimator must be chosen explicitly as <code>"empirical"</code> or <code>"robust"</code>. The package does not choose one silently.
+
+### Marginal conformal p-values
+
+For each target score (s(X^*)),
+
+[
+hat p(X^*) =
+rac{1 + |{i in I_{calib}: s(X_i) ge s(X^*)}|}
+{n_{calib}+1}.
+]
+
+The minimum attainable p-value is therefore (1/(n_{calib}+1)).
+
+Small calibration sets can make conventional alpha levels unattainable.
+
+### Review, never automatic deletion
+
+<code>review_flag=True</code> means only that the marginal conformal p-value is at or below the requested alpha threshold.
+
+It does not authorize removal from a scientific dataset.
+
+### Exchangeability boundary
+
+The marginal conformal guarantee assumes exchangeable inlier curves relative to the calibration population.
+
+Repeated trials from the same participant are not made independent by calling this function.
+
+For participant-clustered designs, do not claim curve-level conformal validity without a defensible independent-unit construction.
+
+See [Conformal FPCA anomaly review](conformal-fpca-anomaly.md).

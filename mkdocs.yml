@@ -28,6 +28,7 @@ nav:
       - Simultaneous functional mean bands: guides/simultaneous-mean-bands.md
       - Near-tied FPC subspaces: guides/subspace-stability.md
       - Outliers & influence: guides/outliers-influence.md
+      - Conformal FPCA anomaly review: guides/conformal-fpca-anomaly.md
       - Registration & phase: guides/registration.md
       - Phase FPCA & registration sensitivity: guides/phase-fpca.md
       - Basis representations: guides/basis-representations.md
@@ -53,6 +54,7 @@ nav:
       - Near-tied FPC subspaces: examples/near-tied-subspace.md
       - Functional mean bands: examples/functional-mean-bands.md
       - Outlier & influence diagnostics: examples/outlier-influence.md
+      - Conformal FPCA anomaly review: examples/conformal-fpca-anomaly.md
       - Phase FPCA: examples/phase-fpca.md
       - Repeated-trial multilevel FPCA: examples/multilevel.md
       - Compositional AOI trajectories: examples/compositional.md

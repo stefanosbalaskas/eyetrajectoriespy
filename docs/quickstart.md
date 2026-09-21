@@ -314,3 +314,34 @@ The function reuses the exact paired-bootstrap conditional-mean predictions in <
 This assumes an exchangeable/common residual distribution. It is not heteroscedasticity-robust, and intervals are marginal per target rather than simultaneous or joint across several targets.
 
 See [Gaussian FPCR future-outcome prediction](guides/fpcr-future-prediction.md).
+
+
+## Review a genuinely new trajectory with split conformal inference
+
+When the question is whether a **new** functional trajectory is unusual relative to a reference population, keep proper training and calibration separate:
+
+    from eyetrajectoriespy import split_conformal_fpca_anomaly
+
+    result = split_conformal_fpca_anomaly(
+        proper_training,
+        calibration,
+        targets,
+        n_components=3,
+        scaling="dimension_sd",
+        nonconformity="reconstruction_rmse",
+        alpha=0.05,
+    )
+
+The FPCA/MFPCA basis is fitted only on <code>proper_training</code>. Calibration and target curves are scored without refitting that basis.
+
+For a target score (s^*), the marginal conformal p-value is
+
+[
+hat p = rac{1 + #{s_i^{calib} ge s^*}}{n_{calib}+1}.
+]
+
+The greater-than-or-equal rule is intentionally conservative under ties.
+
+A review flag is not an exclusion decision. This first conformal API does not apply calibration-conditional adjustment, BH/FDR correction, or repeated-participant clustering.
+
+See [Conformal FPCA anomaly review](guides/conformal-fpca-anomaly.md).

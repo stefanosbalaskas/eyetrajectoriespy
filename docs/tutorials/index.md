@@ -119,3 +119,8 @@ Use [Gaussian FPCR simultaneous slope bands](../examples/fpcr-simultaneous-slope
 ### Gaussian FPCR future-outcome prediction
 
 Use [Gaussian FPCR future-outcome prediction](../examples/fpcr-future-prediction.md) when the scientific target is a future observed scalar response rather than only its fitted conditional mean. The worked example keeps the underlying paired-bootstrap mean distribution visible and adds response noise through centered empirical residual resampling.
+
+
+### Conformal FPCA anomaly review
+
+Use [Conformal FPCA anomaly review](../examples/conformal-fpca-anomaly.md) when genuinely new common-grid trajectories must be assessed relative to a reference population. The example keeps proper training, calibration, and targets disjoint; demonstrates exact finite p-value resolution; and contrasts reconstruction versus score-space nonconformity.

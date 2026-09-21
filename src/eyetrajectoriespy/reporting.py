@@ -24,6 +24,7 @@ from .types import (
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
+    ConformalFunctionalAnomalyResult,
     FunctionalOutlierResult,
     MultilevelFPCAResult,
     RegistrationSensitivityResult,
@@ -582,4 +583,32 @@ def fpca_nested_regression_cv_reporting_text(
         f"component counts across outer fits were {selected_text}. This outer "
         "loss estimates the complete selection-and-fit pipeline rather than "
         "reusing the inner selection loss as performance evidence."
+    )
+
+
+def conformal_fpca_anomaly_reporting_text(
+    result: ConformalFunctionalAnomalyResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate reporting text for split-conformal FPCA anomaly review."""
+
+    flagged = int(np.count_nonzero(result.review_flags))
+    covariance = (
+        ""
+        if result.mahalanobis_covariance is None
+        else f" using {result.mahalanobis_covariance} score covariance"
+    )
+    return (
+        f"Split-conformal functional anomaly review fitted an FPCA reference with "
+        f"{result.n_components} component(s) on the proper-training set and used "
+        f"{result.n_calibration} calibration trajectory(ies). Nonconformity was "
+        f"{result.nonconformity}{covariance}. Marginal conformal p-values used the "
+        "conservative greater-than-or-equal tie rule; the minimum attainable "
+        f"p-value was {result.minimum_attainable_p:.{digits}f}. At alpha="
+        f"{result.alpha:.{digits}f}, {flagged} of {result.n_targets} target "
+        "trajectory(ies) were flagged for review. Flags are not automatic "
+        "exclusions. The marginal conformal interpretation requires curve-level "
+        "exchangeability of inlier trajectories. No calibration-conditional "
+        "adjustment, multiple-testing correction, or FDR guarantee was applied."
     )

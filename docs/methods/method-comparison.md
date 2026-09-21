@@ -80,3 +80,13 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 | what is uncertainty in the fitted conditional mean for a fixed target? | bootstrap_fpca_regression_uncertainty() | paired resampling of predictor/outcome and full FPCR refit | no future response noise |
 | what is uncertainty for a future observed scalar response at that fixed target? | fpca_regression_future_prediction_interval() | paired-bootstrap mean distribution + independent centered empirical residual draw | common/exchangeable residual distribution assumed |
 | what if response variance is heterogeneous? | specialist wild/bootstrap method | model-specific heteroscedastic error mechanism | not implemented by 0.14 |
+
+
+## Functional anomaly review: fitted-sample diagnostics versus conformal targets
+
+| Question | Tool | Reference construction | Inferential boundary |
+|---|---|---|---|
+| which curves in my fitted sample deserve review? | diagnose_fpca_outliers() | same fitted sample | descriptive review diagnostics |
+| is a new curve unusually poorly reconstructed? | split_conformal_fpca_anomaly(..., nonconformity="reconstruction_rmse") | proper-training FPCA + disjoint calibration | marginal curve-level conformal p-value |
+| is a new curve extreme within the retained score span? | split_conformal_fpca_anomaly(..., nonconformity="score_mahalanobis") | proper-training FPCA/covariance + disjoint calibration | marginal curve-level conformal p-value |
+| do I need functional-depth FDR control with CCV adjustments? | specialist Kim–Park/Bates procedure | depth-based conformal framework | not implemented by 0.15 |

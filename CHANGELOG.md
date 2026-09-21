@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.15.0.dev0 — 2026-09-21
+
+Fifteenth development tranche.
+
+- split-conformal marginal anomaly p-values for new common-grid functional trajectories;
+- explicit proper-training, calibration, and target partitions with disjoint curve-ID checks;
+- FPCA/MFPCA reference fitting occurs on the proper-training set only;
+- reconstruction-RMSE nonconformity for deviations poorly represented by the proper-training FPC span;
+- optional score-space Mahalanobis nonconformity with an explicitly selected empirical or robust covariance estimator;
+- conservative greater-than-or-equal tie handling and exact finite calibration-grid p-value resolution;
+- review flags at an explicit alpha level never trigger automatic exclusions;
+- provenance explicitly limits validity claims to exchangeable curve-level inliers and records that calibration-conditional adjustment, multiple-testing correction, and FDR control are not implemented in this tranche;
+- table, plotting, reporting helpers, synthetic truth tests, executable example, and expanded methodological/site guidance.
+
+
 ## 0.14.0.dev0 — 2026-09-21
 
 Fourteenth development tranche.

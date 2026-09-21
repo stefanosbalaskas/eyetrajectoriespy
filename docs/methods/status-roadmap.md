@@ -30,6 +30,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Principal-angle FPC subspace comparison | implemented | `compare_fpca_subspaces()` |
 | Bootstrap eigenspace stability | implemented | `bootstrap_fpca_subspace_stability()` |
 | FPCA anomaly review | implemented | `diagnose_fpca_outliers()` |
+| Split-conformal new-trajectory anomaly review | implemented | `split_conformal_fpca_anomaly()` |
 | Participant/group influence | implemented | `leave_one_group_out_fpca_influence()` |
 | Landmark registration | implemented | `register_to_landmarks()` |
 | Phase-function FPCA | implemented | `fit_phase_fpca()` |
@@ -78,11 +79,10 @@ Still not provided are full uncertainty procedures that jointly include target m
 
 Future tranches may evaluate:
 
-- conformal functional anomaly detection;
 - richer multilevel functional mixed-effects backends.
 
 A candidate enters the public API only when it can preserve the package rules: explicit estimand, deterministic behavior or seed, provenance, failure diagnostics, synthetic truth tests, documentation, and runnable examples.
 
 ## Development status
 
-The current development line is **0.14.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.15.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

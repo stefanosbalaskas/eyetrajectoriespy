@@ -346,3 +346,27 @@ Report:
 Example:
 
 > Future scalar outcomes for six fixed target gaze trajectories were summarized with 95% marginal Gaussian FPCR prediction intervals. The predictive distribution reused 1,000 participant-level paired-bootstrap conditional-mean predictions and added independent draws from the centered empirical residual distribution of the full-sample FPCR fit. The residual-resampling step assumes a common exchangeable response-error distribution. Intervals were not interpreted as heteroscedasticity-robust, simultaneous across targets, or a joint prediction region.
+
+
+## Split-conformal FPCA anomaly review
+
+Report:
+
+- the sizes and construction of proper-training, calibration, and target sets;
+- confirmation that the partitions were disjoint;
+- FPCA/MFPCA component count and scaling;
+- nonconformity definition;
+- score-covariance estimator and random seed when relevant;
+- the exact marginal conformal p-value formula;
+- conservative tie handling;
+- calibration size and minimum attainable p-value;
+- review alpha;
+- number of targets flagged for review;
+- curve-level exchangeability assumptions;
+- any repeated-trial dependence;
+- that flags were not automatic exclusions;
+- that no calibration-conditional or multiple-testing/FDR adjustment was applied unless a separately justified procedure was actually used.
+
+Example:
+
+> A three-component MFPCA reference was estimated from 40 proper-training gaze trajectories. Twenty disjoint calibration curves defined reconstruction-RMSE nonconformity. For each of six new target curves, the marginal split-conformal p-value was calculated as ((1+#{s_i^{calib}ge s^*})/(20+1)) with conservative greater-than-or-equal tie handling, giving a minimum attainable p-value of .0476. Curves with p ≤ .05 were flagged for review only. No calibration-conditional adjustment, multiplicity correction, or FDR guarantee was applied.
