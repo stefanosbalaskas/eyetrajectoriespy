@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.10 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.11 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
@@ -182,7 +182,16 @@ The package is designed around the principle that **the path to an FPC score is 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
 
-## New in 0.10 development
+## New in 0.11 development
+
+- bootstrap basis-resampling uncertainty for FPC scores of fixed target trajectories;
+- training-curve or compatible external-target score projections;
+- component matching and sign alignment before score comparison;
+- participant-aware basis resampling for repeated trials;
+- explicit compatibility checks for target grid, dimensions, coordinate system, and time unit;
+- explicit exclusion of measurement-error, latent-curve, future-curve, preprocessing, and full downstream-model uncertainty claims.
+
+## Added in 0.10 development
 
 - matched-bootstrap uncertainty for FPCA eigenvalues and variance decomposition;
 - component-wise or familywise studentized calibration within each spectrum metric;

@@ -218,3 +218,28 @@ Individual eigenvalues and per-component explained-variance ratios are attached 
 Familywise calibration is across the requested components separately within each spectrum metric; it is not one joint guarantee spanning eigenvalues, explained-variance ratios, and cumulative ratios.
 
 See [FPCA spectrum uncertainty](guides/spectrum-uncertainty.md).
+
+
+## Quantify sensitivity of FPC scores to basis estimation
+
+Use score uncertainty when individual FPC scores are scientifically interpreted or passed to a downstream analysis and you need to know how much they move when the FPCA basis is re-estimated.
+
+    from eyetrajectoriespy import bootstrap_fpca_score_uncertainty
+
+    score_uncertainty = bootstrap_fpca_score_uncertainty(
+        gaze,
+        targets=gaze.subset([0, 1, 2, 3]),
+        n_bootstrap=1000,
+        n_components=2,
+        scaling="dimension_sd",
+        resample_unit="participant",
+        participant_column="participant_id",
+        level=0.95,
+        random_state=2026,
+    )
+
+The target curves stay fixed. Only the training sample used to estimate the FPCA basis is resampled. Bootstrap components are matched and sign-aligned before the same targets are projected into each basis.
+
+The returned percentile envelopes therefore describe **basis-resampling uncertainty**, not full uncertainty in a latent score. They do not include measurement error, future-curve variability, preprocessing uncertainty, or full propagation through a downstream regression.
+
+See [FPC score basis uncertainty](guides/score-uncertainty.md).
