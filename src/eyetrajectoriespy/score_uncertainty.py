@@ -23,6 +23,8 @@ def _validate_score_targets(
     """Require targets to share the fitted functional representation exactly."""
 
     validate_trajectory_set(targets, require_complete=True)
+    if targets.n_curves < 1:
+        raise ValueError("targets must contain at least one trajectory")
     if not np.array_equal(training.time, targets.time):
         raise ValueError("targets must use the exact training time grid")
     if training.dimension_names != targets.dimension_names:
@@ -153,9 +155,12 @@ def bootstrap_fpca_score_uncertainty(
 
         candidate_scores = transform_fpca(candidate, target_set)
         orientation = np.where(signed_similarity >= 0.0, 1.0, -1.0)
-        bootstrap_scores[bootstrap_index] = (
-            candidate_scores[:, matched] * orientation[None, :]
-        )
+        aligned_scores = candidate_scores[:, matched] * orientation[None, :]
+        if not np.all(np.isfinite(aligned_scores)):
+            raise RuntimeError(
+                f"bootstrap replicate {bootstrap_index} produced non-finite target scores"
+            )
+        bootstrap_scores[bootstrap_index] = aligned_scores
 
     alpha = (1.0 - float(level)) / 2.0
     lower = np.quantile(bootstrap_scores, alpha, axis=0)
