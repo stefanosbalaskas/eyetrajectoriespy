@@ -672,6 +672,33 @@ class FPCARegressionUncertaintyResult:
 
 
 @dataclass(frozen=True)
+class FPCARegressionSlopeBandResult:
+    """Observed-grid simultaneous bootstrap band for a Gaussian FPCR slope."""
+
+    regression_uncertainty: FPCARegressionUncertaintyResult
+    lower: np.ndarray
+    upper: np.ndarray
+    pointwise_se: np.ndarray
+    critical_values: np.ndarray
+    max_statistics: np.ndarray
+    confidence_level: float
+    simultaneous_scope: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.regression_uncertainty.n_bootstrap
+
+    @property
+    def n_time(self) -> int:
+        return self.lower.shape[0]
+
+    @property
+    def n_dimensions(self) -> int:
+        return self.lower.shape[1]
+
+
+@dataclass(frozen=True)
 class FPCARegressionCVResult:
     """Outcome-tuned FPCA regression cross-validation diagnostics."""
 

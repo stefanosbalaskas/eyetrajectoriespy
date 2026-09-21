@@ -109,3 +109,8 @@ Use [FPC score basis uncertainty](../examples/fpca-score-uncertainty.md) when sc
 ### Gaussian FPCR bootstrap uncertainty
 
 Use [Gaussian FPCR bootstrap uncertainty](../examples/fpcr-bootstrap-inference.md) when a scalar-on-function Gaussian regression result needs uncertainty that propagates re-estimation of the FPCA basis. The worked example uses participant-level paired resampling, reconstructs the slope in original x/y units, and separates conditional-mean intervals from future-outcome prediction intervals.
+
+
+### Gaussian FPCR simultaneous slope bands
+
+Use [Gaussian FPCR simultaneous slope bands](../examples/fpcr-simultaneous-slope-band.md) after a paired-bootstrap Gaussian FPCR fit when one observed-grid band is required for the reconstructed slope. The tutorial compares global and dimension-wise calibration and emphasizes that the result is neither a continuous-domain band nor the operator-scaled FPCR significance test.

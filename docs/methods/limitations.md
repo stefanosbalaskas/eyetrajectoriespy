@@ -231,3 +231,24 @@ The implementation does not discard, replace, or redraw rank-deficient bootstrap
 ## The operator-scaled 2026 FPCR test is not implemented
 
 Recent theory establishes formal Gaussian/bootstrap approximations for an operator-scaled FPCR statistic. The paired percentile bootstrap in eyetrajectoriespy is a different procedure and must not be described as that operator-scaled test.
+
+
+## Simultaneous FPCR slope bands are observed-grid approximations
+
+The 0.13 maximum is evaluated only at the sampled time × dimension slope coordinates. The band does not establish simultaneous coverage between sampled times or over an abstract continuous domain.
+
+## Dimension scope is not global scope
+
+With <code>simultaneous_scope="dimension"</code>, x(t) and y(t) are calibrated separately. Statements simultaneous across both dimensions require <code>simultaneous_scope="global"</code>.
+
+## The band is not the Imaizumi-Kato confidence-band construction
+
+Imaizumi and Kato (2019) develop a theoretically justified PCA-based confidence-band procedure aimed at covering most of the slope function under their assumptions. The eyetrajectoriespy 0.13 method instead calibrates a finite observed-grid maximum from paired-bootstrap FPCR slope refits.
+
+## The band is not the Yeon operator-scaled FPCR test
+
+The 2026 operator-scaled Gaussian/bootstrap theory addresses a different statistic and inferential construction. eyetrajectoriespy does not equate its studentized grid maximum with that formal operator-scaled significance test.
+
+## Zero-variance slope cells are handled structurally
+
+If every bootstrap slope equals the reference at a cell, zero width is retained. If bootstrap SE is effectively zero but the bootstrap distribution is displaced from the reference, calibration fails explicitly instead of adding an epsilon denominator.

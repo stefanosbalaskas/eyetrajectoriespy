@@ -245,3 +245,19 @@ Pre-specify:
 - that the component count will remain fixed across bootstrap replicates.
 
 Do not reinterpret the resulting percentile slope envelope as the operator-scaled FPCR significance test from recent theory.
+
+
+## Simultaneous Gaussian FPCR slope bands
+
+If a simultaneous slope band is confirmatory, pre-specify:
+
+- that the paired Gaussian FPCR bootstrap will be fitted first;
+- the bootstrap unit, FPC count, scaling, replicate count, and seed policy inherited from that analysis;
+- the simultaneous confidence level;
+- global versus dimension-wise calibration scope;
+- that the family is defined over observed slope grid coordinates only;
+- that no continuous-domain coverage claim will be made;
+- that the band is not the Imaizumi-Kato confidence-band procedure or the Yeon operator-scaled significance test;
+- how exact zero-variance cells will be reported.
+
+Do not switch from dimension-wise to global scope after inspecting which one changes a substantive conclusion.

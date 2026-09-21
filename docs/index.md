@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.12 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.13 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
@@ -182,7 +182,17 @@ The package is designed around the principle that **the path to an FPC score is 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
 
-## New in 0.12 development
+## New in 0.13 development
+
+- studentized maximum-deviation bands for reconstructed Gaussian FPCR slopes;
+- exact reuse of the paired-bootstrap slope replicates from the 0.12 regression-inference object;
+- global scope across the full observed time × functional-dimension grid;
+- dimension scope across observed time separately within each functional dimension;
+- exact zero-variance handling without artificial epsilon inflation;
+- explicit observed-grid-only coverage semantics;
+- explicit distinction from the operator-scaled FPCR significance test in recent theory.
+
+## Added in 0.12 development
 
 - paired curve- or participant-level bootstrap for Gaussian scalar-on-function FPCR;
 - FPCA/MFPCA and the scalar regression refitted together in every bootstrap replicate;

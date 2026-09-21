@@ -40,6 +40,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | FPCA-score clustering | implemented | `cluster_fpca_scores()` |
 | Score-based scalar-on-function regression | implemented | `fit_scalar_on_function_regression()` |
 | Paired-bootstrap Gaussian FPCR uncertainty | implemented | `bootstrap_fpca_regression_uncertainty()` |
+| Observed-grid simultaneous Gaussian FPCR slope bands | implemented | `fpca_regression_slope_simultaneous_band()` |
 | Derived speed/acceleration/distance/path functions | implemented | kinematic helpers |
 
 ## Optional specialist interoperability
@@ -83,4 +84,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.12.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.13.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

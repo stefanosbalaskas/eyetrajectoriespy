@@ -304,3 +304,23 @@ Report:
 Example:
 
 > Gaussian scalar-on-function FPCR uncertainty was quantified with 1,000 participant-level paired bootstrap refits. MFPCA and the Gaussian score regression were refitted jointly in every replicate using two prespecified components and dimension-SD scaling. The slope was back-transformed to the original x/y coordinate units and summarized with 95% pointwise percentile intervals. For six fixed target trajectories, bootstrap intervals describe uncertainty in the fitted conditional mean response rather than future-outcome prediction intervals. The component count was held fixed across bootstrap replicates.
+
+
+## Simultaneous Gaussian FPCR slope bands
+
+Report:
+
+- the underlying paired-bootstrap FPCR specification;
+- bootstrap replicate count and resampling unit;
+- simultaneous confidence level;
+- global versus dimension scope;
+- the observed-grid family used in the maximum;
+- dimension-specific critical values;
+- that pointwise SEs were estimated from bootstrap deviations from the reference slope;
+- that the band was derived from the existing paired-bootstrap slopes rather than a second bootstrap;
+- that coverage is claimed only over the sampled grid;
+- that the procedure is distinct from the Imaizumi-Kato functional-linear confidence-band construction and Yeon's operator-scaled FPCR test.
+
+Example:
+
+> A 95% studentized simultaneous Gaussian FPCR slope band was calibrated from the 1,000 participant-level paired-bootstrap slope refits. One maximum was taken over the full observed time-by-dimension slope grid. Cellwise standard errors were estimated from bootstrap deviations from the full-sample slope. The resulting band is simultaneous over the sampled grid only and does not imply continuous-domain coverage between time samples. This finite-grid calibration is distinct from the confidence-band method of Imaizumi and Kato (2019) and the operator-scaled FPCR significance test of Yeon (2026).

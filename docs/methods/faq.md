@@ -209,3 +209,24 @@ Redrawing conditions the bootstrap distribution on successful samples and silent
 ## Is this the new operator-scaled FPCR bootstrap test?
 
 No. The 0.12 routine is a paired full-pipeline nonparametric bootstrap with percentile summaries. It does not implement the operator-scaled statistic or significance test developed in recent 2026 FPCR theory.
+
+
+## Does the 0.13 FPCR band cover the continuous slope function everywhere?
+
+No. Its maximum is evaluated on the observed grid used by the fitted trajectories. The package intentionally says “observed-grid simultaneous band.”
+
+## Should I use global or dimension-wise slope calibration?
+
+Use global scope when the inferential family includes all sampled functional dimensions together. Use dimension scope when each dimension is a separately declared family. The choice should be made from the scientific question rather than whichever band is narrower.
+
+## Why does the simultaneous-band function reuse the old bootstrap object?
+
+Reusing the retained 0.12 slope replicates guarantees that pointwise and simultaneous summaries refer to exactly the same paired resamples and FPCR refits. A second bootstrap would add Monte Carlo differences unrelated to the change in calibration target.
+
+## Is this the Imaizumi-Kato PCA confidence band?
+
+No. Imaizumi and Kato derive a distinct theoretically justified confidence-band method for scalar-response functional linear regression. The 0.13 eyetrajectoriespy procedure is a studentized maximum over a finite observed grid from paired-bootstrap reconstructed slopes.
+
+## Is this Yeon's 2026 FPCR test?
+
+No. Yeon's method relies on operator scaling and develops Gaussian/bootstrap approximations for a different formal inferential statistic.

@@ -62,6 +62,7 @@ from .plotting import (
     plot_fpca_outlier_diagnostics,
     plot_fpca_regression_cv,
     plot_fpca_regression_mean_prediction_uncertainty,
+    plot_fpca_regression_slope_band,
     plot_fpca_regression_slope_uncertainty,
     plot_nested_fpca_regression_cv,
     plot_functional_mean_band,
@@ -79,6 +80,8 @@ from .plotting import (
 )
 from .regression_inference import (
     bootstrap_fpca_regression_uncertainty,
+    fpca_regression_slope_band_frame,
+    fpca_regression_slope_simultaneous_band,
     fpca_regression_prediction_uncertainty_frame,
     fpca_regression_slope_uncertainty_frame,
 )
@@ -108,6 +111,7 @@ from .reporting import (
     fpca_influence_reporting_text,
     fpca_outlier_reporting_text,
     fpca_regression_cv_reporting_text,
+    fpca_regression_slope_band_reporting_text,
     fpca_regression_uncertainty_reporting_text,
     fpca_nested_regression_cv_reporting_text,
     fpca_stability_reporting_text,
@@ -162,6 +166,7 @@ from .types import (
     FPCAInfluenceResult,
     FPCANestedRegressionCVResult,
     FPCARegressionCVResult,
+    FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
     FPCAStabilityResult,
     FPCASubspaceComparisonResult,
@@ -183,7 +188,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.12.0.dev0"
+__version__ = "0.13.0.dev0"
 
 __all__ = [
     "TrajectorySet",
@@ -328,9 +333,14 @@ __all__ = [
     "sparse_fpca_reporting_text",
     "plot_sparse_irregular_dimension",
     "FPCARegressionCVResult",
+    "FPCARegressionSlopeBandResult",
     "FPCARegressionUncertaintyResult",
     "FPCANestedRegressionCVResult",
     "bootstrap_fpca_regression_uncertainty",
+    "fpca_regression_slope_simultaneous_band",
+    "fpca_regression_slope_band_frame",
+    "plot_fpca_regression_slope_band",
+    "fpca_regression_slope_band_reporting_text",
     "fpca_regression_slope_uncertainty_frame",
     "fpca_regression_prediction_uncertainty_frame",
     "plot_fpca_regression_slope_uncertainty",

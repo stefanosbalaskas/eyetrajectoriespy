@@ -126,3 +126,12 @@ The eyetrajectoriespy 0.11 routine has a narrower purpose: fixed-target score se
 - Goldsmith, J., Greven, S., & Crainiceanu, C. (2013). Corrected confidence bands for functional data using principal components. *Biometrics*, 69(1), 41–51. https://doi.org/10.1111/j.1541-0420.2012.01808.x
 
 The first two references motivate bootstrap inference and prediction in scalar-on-function functional linear regression. Yeon (2026) develops a distinct operator-scaled FPCR theory for Gaussian/bootstrap approximation and slope-significance testing. The eyetrajectoriespy 0.12 API is a paired full-pipeline percentile bootstrap and does not claim to reproduce that operator-scaled test.
+
+
+## Gaussian FPCR slope bands and simultaneous inference
+
+- Imaizumi, M., & Kato, K. (2019). A simple method to construct confidence bands in functional linear regression. *Statistica Sinica*, 29(4), 2055–2081. https://doi.org/10.5705/ss.202017.0208
+- Yeon, H. (2026). Gaussian and bootstrap approximations for functional principal component regression. arXiv:2603.12518. https://arxiv.org/abs/2603.12518
+- González-Manteiga, W., & Martínez-Calvo, A. (2011). Bootstrap in functional linear regression. *Journal of Statistical Planning and Inference*, 141(1), 453–461. https://doi.org/10.1016/j.jspi.2010.06.027
+
+Imaizumi and Kato provide a theoretically justified PCA-based confidence-band construction for scalar-response functional linear regression. Yeon develops a distinct operator-scaled FPCR Gaussian/bootstrap theory and significance test. The eyetrajectoriespy 0.13 routine should be described more narrowly as a finite observed-grid studentized maximum calibration of its retained paired-bootstrap FPCR slope distribution.

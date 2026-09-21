@@ -16,6 +16,7 @@ from .types import (
     FPCAInfluenceResult,
     FPCANestedRegressionCVResult,
     FPCARegressionCVResult,
+    FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
     FPCAResult,
     FPCAScoreUncertaintyResult,
@@ -88,6 +89,44 @@ def plot_fpca_variance(result: FPCAResult, *, cumulative: bool = True, ax=None):
     ax.set_xlabel("Functional principal component")
     ax.set_ylabel("Cumulative variance explained (%)" if cumulative else "Variance explained (%)")
     ax.set_xticks(x)
+    return ax
+
+
+def plot_fpca_regression_slope_band(
+    result: FPCARegressionSlopeBandResult,
+    *,
+    dimension: str | None = None,
+    ax=None,
+):
+    """Plot an observed-grid simultaneous Gaussian FPCR slope band."""
+
+    fpca = result.regression_uncertainty.reference_fpca
+    if dimension is None:
+        dimension = fpca.dimension_names[0]
+    if dimension not in fpca.dimension_names:
+        raise KeyError(f"Unknown dimension {dimension!r}")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    dim = fpca.dimension_names.index(dimension)
+    time = fpca.time
+    reference = result.regression_uncertainty.reference_slope[:, dim]
+    ax.fill_between(
+        time,
+        result.lower[:, dim],
+        result.upper[:, dim],
+        alpha=0.2,
+        label=(
+            f"{100 * result.confidence_level:.1f}% observed-grid "
+            f"{result.simultaneous_scope} band"
+        ),
+    )
+    ax.plot(time, reference, label="full-sample FPCR slope")
+    ax.axhline(0.0, linestyle="--")
+    ax.set_xlabel(f"Time ({fpca.time_unit})")
+    ax.set_ylabel(f"Slope for {dimension}")
+    ax.set_title("Gaussian FPCR simultaneous slope band")
+    ax.legend()
     return ax
 
 

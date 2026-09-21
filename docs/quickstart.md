@@ -271,3 +271,24 @@ The slope envelope is pointwise. Target intervals describe uncertainty in the fi
 The component count is kept fixed across bootstrap replicates. If the number of components was selected from data, report that selection procedure separately.
 
 See [Gaussian FPCR bootstrap uncertainty](guides/fpcr-bootstrap-inference.md).
+
+
+## Calibrate simultaneous uncertainty for the Gaussian FPCR slope
+
+After fitting the paired-bootstrap FPCR uncertainty object, reuse its exact slope replicates to obtain a simultaneous band over the sampled slope grid.
+
+    from eyetrajectoriespy import fpca_regression_slope_simultaneous_band
+
+    band = fpca_regression_slope_simultaneous_band(
+        inference,
+        confidence_level=0.95,
+        simultaneous_scope="global",
+    )
+
+With <code>simultaneous_scope="global"</code>, one studentized maximum is taken over all sampled time points and functional dimensions.
+
+With <code>simultaneous_scope="dimension"</code>, each functional dimension gets its own maximum over sampled time.
+
+The band is simultaneous only over the observed grid represented by the fit. It does not claim coverage between grid points and it is not the operator-scaled FPCR significance test from recent 2026 theory.
+
+See [Gaussian FPCR simultaneous slope bands](guides/fpcr-simultaneous-slope-band.md).

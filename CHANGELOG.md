@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.13.0.dev0 — 2026-09-21
+
+Thirteenth development tranche.
+
+- studentized maximum-deviation simultaneous bands for reconstructed Gaussian FPCR slopes;
+- post-calibration reuses the exact paired-bootstrap slope replicates from bootstrap_fpca_regression_uncertainty() rather than running a second resampling scheme;
+- global calibration uses one maximum across the full observed time-by-dimension slope grid;
+- dimension calibration uses a separate maximum over observed time within each functional predictor dimension;
+- exact zero-variance handling: zero-width cells are allowed only when bootstrap discrepancy is also negligible, while contradictory zero-SE/non-zero-deviation cells fail explicitly;
+- simultaneous coverage claims are restricted to the observed grid and do not extend between sampled time points;
+- the band is explicitly distinct from the operator-scaled FPCR significance test in recent 2026 theory;
+- long-form band tables, plotting/reporting helpers, tests, executable example, and expanded methodological/site guidance.
+
+
 ## 0.12.0.dev0 — 2026-09-21
 
 Twelfth development tranche.

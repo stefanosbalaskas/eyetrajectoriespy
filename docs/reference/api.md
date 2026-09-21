@@ -69,6 +69,13 @@
 ::: eyetrajectoriespy.plot_fpca_cross_validation
 ::: eyetrajectoriespy.fpca_cross_validation_reporting_text
 
+## Gaussian FPCR simultaneous slope band
+::: eyetrajectoriespy.FPCARegressionSlopeBandResult
+::: eyetrajectoriespy.fpca_regression_slope_simultaneous_band
+::: eyetrajectoriespy.fpca_regression_slope_band_frame
+::: eyetrajectoriespy.plot_fpca_regression_slope_band
+::: eyetrajectoriespy.fpca_regression_slope_band_reporting_text
+
 ## Gaussian FPCR bootstrap uncertainty
 ::: eyetrajectoriespy.FPCARegressionUncertaintyResult
 ::: eyetrajectoriespy.bootstrap_fpca_regression_uncertainty
