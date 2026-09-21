@@ -26,6 +26,7 @@ from .types import (
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
     IrregularTrajectorySet,
+    ConformalFunctionalAnomalyResult,
     FunctionalOutlierResult,
     RegistrationResult,
     TrajectorySet,
@@ -473,6 +474,35 @@ def plot_reconstruction_curve(
     ax.set_title("FPCA reconstruction curve")
     return ax
 
+
+
+def plot_conformal_fpca_anomaly(
+    result: ConformalFunctionalAnomalyResult,
+    *,
+    max_targets: int = 50,
+    ax=None,
+):
+    """Plot marginal split-conformal anomaly p-values for target trajectories."""
+
+    if isinstance(max_targets, bool) or not isinstance(max_targets, (int, np.integer)):
+        raise TypeError("max_targets must be an integer")
+    if max_targets < 1:
+        raise ValueError("max_targets must be positive")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    n = min(max_targets, result.n_targets)
+    x = np.arange(n)
+    ax.scatter(x, result.p_values[:n])
+    ax.axhline(result.alpha, linestyle="--", label=f"alpha={result.alpha:g}")
+    ax.set_xticks(x)
+    ax.set_xticklabels(result.target_curve_ids[:n], rotation=90)
+    ax.set_xlabel("Target trajectory")
+    ax.set_ylabel("Marginal conformal p-value")
+    ax.set_ylim(0.0, 1.0)
+    ax.set_title("Split-conformal FPCA anomaly review")
+    ax.legend()
+    return ax
 
 
 def plot_fpca_outlier_diagnostics(

@@ -1,5 +1,6 @@
 """eyetrajectoriespy: functional and continuous eye-tracking trajectory analysis."""
 
+from .conformal import conformal_fpca_anomaly_frame, split_conformal_fpca_anomaly
 from .analysis import (
     cluster_fpca_scores,
     fit_scalar_on_function_regression,
@@ -59,6 +60,7 @@ from .plotting import (
     plot_fpca_component_envelope,
     plot_fpca_cross_validation,
     plot_fpca_influence,
+    plot_conformal_fpca_anomaly,
     plot_fpca_outlier_diagnostics,
     plot_fpca_regression_cv,
     plot_fpca_regression_mean_prediction_uncertainty,
@@ -177,6 +179,7 @@ from .types import (
     FPCASubspaceComparisonResult,
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
+    ConformalFunctionalAnomalyResult,
     FunctionalOutlierResult,
     FunctionalRegressionResult,
     IrregularTrajectorySet,
@@ -193,7 +196,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.14.0.dev0"
+__version__ = "0.15.0.dev0"
 
 __all__ = [
     "TrajectorySet",
@@ -209,6 +212,7 @@ __all__ = [
     "MultilevelFPCAResult",
     "ElasticFPCAResult",
     "FunctionalRegressionResult",
+    "ConformalFunctionalAnomalyResult",
     "FunctionalOutlierResult",
     "ClusterResult",
     "BasisProjectionResult",
@@ -263,6 +267,10 @@ __all__ = [
     "score_distance_matrix",
     "cluster_fpca_scores",
     "fit_scalar_on_function_regression",
+    "split_conformal_fpca_anomaly",
+    "conformal_fpca_anomaly_frame",
+    "plot_conformal_fpca_anomaly",
+    "conformal_fpca_anomaly_reporting_text",
     "diagnose_fpca_outliers",
     "leave_one_group_out_fpca_influence",
     "component_similarity_matrix",

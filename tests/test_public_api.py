@@ -1,15 +1,15 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.14.0.dev0"
+    assert et.__version__=="0.15.0.dev0"
     required={
         "TrajectorySet","fit_fpca","fit_mfpca","fit_multilevel_fpca","fit_compositional_fpca","FPCAScoreUncertaintyResult","FPCASpectrumUncertaintyResult",
         "register_to_landmarks","fit_elastic_fpca","simulate_planar_trajectories",
         "fit_scalar_on_function_regression","plot_fpca_component",
         "IrregularTrajectorySet","from_irregular_long_dataframe_native","bootstrap_fpca_stability",
         "fit_phase_fpca","compare_registered_unregistered_fpca","to_skfda_basis",
-        "diagnose_fpca_outliers","leave_one_group_out_fpca_influence",
-        "FunctionalOutlierResult","FPCAInfluenceResult","detect_functional_outliers_skfda",
+        "split_conformal_fpca_anomaly","conformal_fpca_anomaly_frame","plot_conformal_fpca_anomaly","conformal_fpca_anomaly_reporting_text","diagnose_fpca_outliers","leave_one_group_out_fpca_influence",
+        "ConformalFunctionalAnomalyResult","FunctionalOutlierResult","FPCAInfluenceResult","detect_functional_outliers_skfda",
         "plot_fpca_outlier_diagnostics","plot_fpca_influence",
         "FPCACrossValidationResult","FPCAComponentBandResult","FPCAComponentEnvelopeResult",
         "cross_validate_fpca_reconstruction","summarise_fpca_cross_validation",
