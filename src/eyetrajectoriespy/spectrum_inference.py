@@ -197,7 +197,15 @@ def bootstrap_fpca_spectrum_uncertainty(
         eigenvalues[bootstrap_index] = candidate.explained_variance[matched]
         ratios[bootstrap_index] = candidate.explained_variance_ratio[matched]
 
-    cumulative = np.cumsum(ratios, axis=1)
+        # Cumulative explained variance retains its conventional descending-rank
+        # meaning. It is intentionally not reordered by component-shape matching.
+        # This keeps "top k components explain ..." invariant to within-block
+        # swaps of near-tied eigenfunctions.
+        if bootstrap_index == 0:
+            cumulative = np.empty((n_bootstrap, n_components), dtype=float)
+        cumulative[bootstrap_index] = np.cumsum(
+            candidate.explained_variance_ratio[:n_components]
+        )
 
     eig_se, eig_crit, eig_lower, eig_upper, eig_stats = _calibrate_spectrum_metric(
         eigenvalues,
@@ -273,6 +281,8 @@ def bootstrap_fpca_spectrum_uncertainty(
                 ),
                 "random_state": random_state,
                 "component_matching": "maximum_absolute_functional_similarity",
+                "individual_spectrum_order": "matched_reference_component_identity",
+                "cumulative_spectrum_order": "descending_eigenvalue_rank",
                 "support_clipping": False,
                 "coverage_claim": "bootstrap_studentized_approximation",
             },
