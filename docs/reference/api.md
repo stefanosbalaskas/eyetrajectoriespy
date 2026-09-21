@@ -69,6 +69,15 @@
 ::: eyetrajectoriespy.plot_fpca_cross_validation
 ::: eyetrajectoriespy.fpca_cross_validation_reporting_text
 
+## Gaussian FPCR bootstrap uncertainty
+::: eyetrajectoriespy.FPCARegressionUncertaintyResult
+::: eyetrajectoriespy.bootstrap_fpca_regression_uncertainty
+::: eyetrajectoriespy.fpca_regression_slope_uncertainty_frame
+::: eyetrajectoriespy.fpca_regression_prediction_uncertainty_frame
+::: eyetrajectoriespy.plot_fpca_regression_slope_uncertainty
+::: eyetrajectoriespy.plot_fpca_regression_mean_prediction_uncertainty
+::: eyetrajectoriespy.fpca_regression_uncertainty_reporting_text
+
 ## Predictive FPCA regression selection
 ::: eyetrajectoriespy.cross_validate_fpca_regression
 ::: eyetrajectoriespy.summarise_fpca_regression_cv
