@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.12.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.13.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -279,6 +279,21 @@ Before publishing the Gaussian FPCR bootstrap branch, a standalone weighted-PCA/
 - full-rank regression-design checks were exercised in the harness: **passed**.
 
 This is local delta algorithmic validation. It does not replace full repository pytest/coverage/Ruff/package/docs/optional-backend qualification, which remains GitHub CI evidence only.
+
+## 0.13 pre-commit local algorithm validation — 2026-09-21
+
+Environment: Linux, Python 3.13.
+
+A standalone calibration harness matching the 0.13 studentized maximum-deviation logic was executed locally using synthetic paired-bootstrap slope arrays.
+
+- global critical values were no smaller than corresponding dimension-wise critical values under identical bootstrap slopes: **passed**;
+- global bands were no narrower than dimension-wise bands: **passed**;
+- 99% global bands were no narrower than 80% global bands under identical bootstrap slopes: **passed**;
+- exact identical bootstrap slopes yielded exact zero deviation SE after reference-centering: **passed**;
+- a zero-SE but non-zero-discrepancy cell triggered the intended degenerate condition: **passed**;
+- the initial direct-standard-deviation formulation exposed numerical pseudo-variance for repeated identical nonzero slopes; the implementation was corrected to estimate SE from bootstrap deviations from the reference rather than loosening the zero-variance threshold.
+
+This is local delta algorithmic validation. Full repository pytest/coverage/Ruff/package/docs/optional-backend qualification remains GitHub CI evidence.
 
 ## Locally unavailable checks
 

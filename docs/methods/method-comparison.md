@@ -61,3 +61,13 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 | inspect basis-only score variability | bootstrap_fpca_score_uncertainty() | FPCA basis | fixed-target score sensitivity only |
 | quantify Gaussian FPCR slope/mean uncertainty | bootstrap_fpca_regression_uncertainty() | paired sample + FPCA + Gaussian regression | fixed component count; pointwise slope and conditional-mean intervals |
 | test the full slope with operator-scaled asymptotics | specialist recent FPCR method | operator-scaled statistic | not implemented in eyetrajectoriespy 0.12 |
+
+
+## Gaussian FPCR slope uncertainty: pointwise versus simultaneous
+
+| Question | Tool | Calibration family | Boundary |
+|---|---|---|---|
+| what is uncertainty at each slope grid cell? | bootstrap_fpca_regression_uncertainty() | each cell separately | pointwise percentile intervals |
+| what band covers sampled time within each dimension? | fpca_regression_slope_simultaneous_band(..., simultaneous_scope="dimension") | one maximum over time per dimension | not joint across dimensions |
+| what band covers the full sampled multivariate slope grid? | fpca_regression_slope_simultaneous_band(..., simultaneous_scope="global") | one maximum over time × dimensions | observed-grid only |
+| what formal operator-scaled FPCR test should be used? | specialist recent method | operator-scaled statistic | not implemented by the 0.13 grid band |

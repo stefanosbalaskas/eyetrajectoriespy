@@ -118,3 +118,14 @@ The retained component count is treated as fixed during bootstrap inference. Any
 The Gaussian score-regression design must remain full rank in the reference fit and in every bootstrap replicate. Invalid replicates are not silently discarded or redrawn.
 
 For MFPCA with dimension scaling, the functional slope is mapped back to original trajectory units using the same scale parameters estimated inside each replicate.
+
+
+## Simultaneous Gaussian FPCR slope bands
+
+The 0.13 band assumes that the paired-bootstrap slope distribution from the 0.12 Gaussian FPCR analysis is the resampling distribution to be calibrated. No new independent-unit resampling is introduced at the band stage.
+
+Studentization uses the bootstrap standard deviation of slope **deviations from the full-sample reference slope** at each observed grid cell. This formulation avoids numerical pseudo-variance when a nonzero slope value is exactly invariant across bootstrap refits.
+
+Global scope treats all observed time × dimension cells as one simultaneous family. Dimension scope treats observed time within each functional dimension as a separate family.
+
+The coverage claim is restricted to the observed grid represented by the FPCR fit.
