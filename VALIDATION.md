@@ -5,7 +5,7 @@ This file records qualification evidence separately from implementation status. 
 ## Current development target
 
 - Package line: `0.8.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware component selection, descriptive FPC-shape uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive FPC-shape uncertainty, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -282,18 +282,72 @@ PR #10 was squash-merged as:
 
 The 0.7 functional-mean inference implementation is therefore **GitHub CI-certified at the exact PR head**. The squash-merged main lineage carries the same reviewed 0.7 changes, while main-branch push/deployment checks are tracked separately below.
 
-### 0.7 merged-main deployment status
+### 0.7 merged-main deployment status — completed
 
-The PR docs workflow correctly skipped its deploy job because pull requests are build-only.
+The subsequent status-only main commit
 
-Therefore, successful GitHub Pages deployment for the 0.7 main lineage still requires a main-branch docs workflow whose deploy job completes successfully. A status-only validation-ledger commit is being used to create a main-branch workflow generation without modifying scientific code.
+`ad8f11e1851a0b5f75a1fe0c13f66471b7d452d9`
+
+triggered a complete push-generation on the 0.7 main lineage. All five workflows completed successfully:
+
+- tests: **success**;
+- examples: **success**;
+- strict docs build: **success**;
+- optional scikit-fda interoperability: **success**;
+- optional FDApy sparse/PACE interoperability: **success**.
+
+The docs workflow also completed its **GitHub Pages deploy job successfully**. Therefore the former 0.7 main/deployment re-check is closed.
+
+### 0.8 PR-head certification — 2026-09-21
+
+Exact certified PR head:
+
+`095917823eb8c4a52ecdb0d98610dacb741c94f8`
+
+PR #11, **“Add outcome-tuned predictive FPCA component selection,”** completed all unchanged qualification workflows successfully on that exact SHA:
+
+- package build / distribution validation: **success**;
+- Windows × Python 3.11, 3.12, 3.13: **3/3 success**;
+- Ubuntu × Python 3.11, 3.12, 3.13: **3/3 success**;
+- macOS × Python 3.11, 3.12, 3.13: **3/3 success**;
+- full pytest/coverage/compile/Ruff gate embedded in the standard workflow: **success**;
+- core executable examples, including `predictive_fpca_selection.py`: **success**;
+- strict MkDocs documentation build: **success**;
+- optional scikit-fda interoperability: **success**;
+- optional FDApy sparse/PACE interoperability on Python 3.11 and 3.12: **2/2 success**.
+
+No tests, coverage thresholds, workflows, branch protections, or scientific validation checks were weakened, deleted, disabled, or bypassed.
+
+PR #11 was squash-merged as:
+
+`c997c4c9e72eb1390056ff79f36fd0d8b2103b2f`
+
+The certified PR head and squash-merged main commit both point to Git tree:
+
+`b5c22b251c6f198d0cb3d29f468a166e1a8cfaae`
+
+so the merged scientific/code/documentation tree is byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.8 exact-main qualification and deployment — 2026-09-21
+
+The exact merged-main commit
+
+`c997c4c9e72eb1390056ff79f36fd0d8b2103b2f`
+
+also completed a fresh push-triggered qualification generation successfully:
+
+- tests workflow #41: **success**, including package build and all 9 Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #41: **success**;
+- docs workflow #41: **success**, including strict build and **successful GitHub Pages deployment**;
+- optional-fda workflow #37: **success**;
+- optional-sparse-fda workflow #25: **success**, including FDApy Python 3.11 and 3.12 lanes.
+
+Therefore the 0.8 predictive FPCA selection tranche is both **PR-head CI-certified** and **exact-main requalified**, and the corresponding documentation site deployment is certified on the merged 0.8 main lineage.
 
 ## Remaining re-checks
 
-The following are still pending:
+The current optional-backend boundary remains:
 
-1. A push/main qualification run attached to the 0.7 merged-main lineage or the subsequent validation-ledger status commit.
-2. Successful GitHub Pages deployment from the 0.7 `main` lineage.
-3. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this is not part of the current optional-backend support contract.
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13. This is not part of the current FDApy support contract.
 
-Cross-platform package behavior, core examples, strict docs build, scikit-fda interoperability, FDApy sparse/PACE interoperability, and the 0.7 functional-mean inference tests are GitHub CI-certified on exact PR head `a2f5162...`.
+Cross-platform package behavior, package construction, coverage/compile/Ruff gates, core examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, FDApy sparse/PACE interoperability on Python 3.11–3.12, and the 0.8 predictive FPCA regression-selection implementation are now GitHub CI-certified on the exact merged 0.8 main lineage.
