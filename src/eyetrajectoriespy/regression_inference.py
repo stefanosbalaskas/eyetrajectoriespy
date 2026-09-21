@@ -9,6 +9,7 @@ from .analysis import fit_scalar_on_function_regression
 from .fpca import transform_fpca
 from .stability import _fit_for_trajectories
 from .types import (
+    FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
     FPCAResult,
     FunctionalRegressionResult,
@@ -427,6 +428,157 @@ def bootstrap_fpca_regression_uncertainty(
             },
         },
     )
+
+
+def fpca_regression_slope_simultaneous_band(
+    result: FPCARegressionUncertaintyResult,
+    *,
+    confidence_level: float = 0.95,
+    simultaneous_scope: str = "global",
+) -> FPCARegressionSlopeBandResult:
+    """Calibrate an observed-grid simultaneous band from paired FPCR bootstraps.
+
+    Global scope uses one maximum over the full observed time-by-dimension
+    slope grid. Dimension scope calibrates one maximum over time separately
+    within each functional dimension.
+
+    The procedure is a studentized maximum-deviation bootstrap approximation
+    derived from already-computed paired-bootstrap slope replicates. It is not
+    a continuous-domain confidence band and is not the operator-scaled FPCR
+    significance test from recent asymptotic theory.
+    """
+
+    if not isinstance(result, FPCARegressionUncertaintyResult):
+        raise TypeError(
+            "result must be an FPCARegressionUncertaintyResult from "
+            "bootstrap_fpca_regression_uncertainty()"
+        )
+    if not 0 < confidence_level < 1:
+        raise ValueError("confidence_level must lie in (0, 1)")
+    if simultaneous_scope not in {"global", "dimension"}:
+        raise ValueError(
+            "simultaneous_scope must be 'global' or 'dimension'"
+        )
+
+    reference = np.asarray(result.reference_slope, dtype=float)
+    bootstrap = np.asarray(result.bootstrap_slopes, dtype=float)
+    if bootstrap.ndim != 3 or bootstrap.shape[1:] != reference.shape:
+        raise ValueError("bootstrap slope array is incompatible with reference slope")
+    if bootstrap.shape[0] < 2:
+        raise ValueError("at least two bootstrap slope replicates are required")
+    if not np.all(np.isfinite(reference)) or not np.all(np.isfinite(bootstrap)):
+        raise ValueError("reference and bootstrap slopes must be finite")
+
+    pointwise_se = np.std(bootstrap, axis=0, ddof=1)
+    scale = max(1.0, float(np.max(np.abs(reference))))
+    positive_variance = pointwise_se > np.finfo(float).eps * scale
+    deviations = bootstrap - reference[None, :, :]
+    tolerance = 100.0 * np.finfo(float).eps * scale
+
+    degenerate = (~positive_variance) & (
+        np.max(np.abs(deviations), axis=0) > tolerance
+    )
+    if np.any(degenerate):
+        positions = np.argwhere(degenerate)
+        preview = [
+            {
+                "time_index": int(time_index),
+                "dimension": result.reference_fpca.dimension_names[int(dimension_index)],
+            }
+            for time_index, dimension_index in positions[:8]
+        ]
+        raise RuntimeError(
+            "FPCR slope-band calibration is degenerate: zero bootstrap SE with "
+            f"non-zero reference discrepancy at {len(positions)} grid cell(s); "
+            f"first cells={preview}"
+        )
+
+    standardized = np.zeros_like(deviations)
+    np.divide(
+        deviations,
+        pointwise_se[None, :, :],
+        out=standardized,
+        where=positive_variance[None, :, :],
+    )
+    absolute_statistics = np.abs(standardized)
+
+    if simultaneous_scope == "global":
+        max_statistics = np.max(absolute_statistics, axis=(1, 2))
+        critical = float(
+            np.quantile(
+                max_statistics,
+                confidence_level,
+                method="higher",
+            )
+        )
+        critical_values = np.full(reference.shape[1], critical, dtype=float)
+    else:
+        max_statistics = np.max(absolute_statistics, axis=1)
+        critical_values = np.quantile(
+            max_statistics,
+            confidence_level,
+            axis=0,
+            method="higher",
+        ).astype(float)
+
+    half_width = pointwise_se * critical_values[None, :]
+    lower = reference - half_width
+    upper = reference + half_width
+
+    return FPCARegressionSlopeBandResult(
+        regression_uncertainty=result,
+        lower=lower,
+        upper=upper,
+        pointwise_se=pointwise_se,
+        critical_values=np.asarray(critical_values, dtype=float),
+        max_statistics=np.asarray(max_statistics, dtype=float),
+        confidence_level=float(confidence_level),
+        simultaneous_scope=simultaneous_scope,
+        provenance={
+            **dict(result.provenance),
+            "fpca_regression_slope_band": {
+                "method": "studentized_bootstrap_maximum_observed_grid",
+                "confidence_level": float(confidence_level),
+                "simultaneous_scope": simultaneous_scope,
+                "domain": "observed_time_by_dimension_grid",
+                "continuous_between_grid_points": False,
+                "operator_scaled_fpcr_test": False,
+                "bootstrap_reused_from_regression_uncertainty": True,
+                "n_bootstrap": result.n_bootstrap,
+                "zero_variance_cells": int((~positive_variance).sum()),
+            },
+        },
+    )
+
+
+def fpca_regression_slope_band_frame(
+    result: FPCARegressionSlopeBandResult,
+) -> pd.DataFrame:
+    """Return long-form observed-grid simultaneous slope-band summaries."""
+
+    rows: list[dict[str, float | str]] = []
+    reference = result.regression_uncertainty.reference_slope
+    fpca = result.regression_uncertainty.reference_fpca
+    for time_index, time in enumerate(fpca.time):
+        for dimension_index, dimension in enumerate(fpca.dimension_names):
+            rows.append(
+                {
+                    "time": float(time),
+                    "dimension": dimension,
+                    "reference_slope": float(
+                        reference[time_index, dimension_index]
+                    ),
+                    "pointwise_se": float(
+                        result.pointwise_se[time_index, dimension_index]
+                    ),
+                    "critical_value": float(
+                        result.critical_values[dimension_index]
+                    ),
+                    "lower": float(result.lower[time_index, dimension_index]),
+                    "upper": float(result.upper[time_index, dimension_index]),
+                }
+            )
+    return pd.DataFrame(rows)
 
 
 def fpca_regression_slope_uncertainty_frame(

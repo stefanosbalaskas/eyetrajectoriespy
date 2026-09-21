@@ -15,6 +15,7 @@ from .types import (
     FPCAInfluenceResult,
     FPCANestedRegressionCVResult,
     FPCARegressionCVResult,
+    FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
     FPCAResult,
     FPCAScoreUncertaintyResult,
@@ -440,6 +441,38 @@ def functional_mean_band_reporting_text(
         "claim continuous-domain coverage between sampled grid points."
     )
 
+
+
+def fpca_regression_slope_band_reporting_text(
+    result: FPCARegressionSlopeBandResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate reporting text for observed-grid simultaneous FPCR slope bands."""
+
+    critical = ", ".join(
+        f"{dimension}={value:.{digits}f}"
+        for dimension, value in zip(
+            result.regression_uncertainty.reference_fpca.dimension_names,
+            result.critical_values,
+            strict=True,
+        )
+    )
+    scope = (
+        "one maximum over the full observed time-by-dimension grid"
+        if result.simultaneous_scope == "global"
+        else "a separate maximum over observed time within each functional dimension"
+    )
+    return (
+        f"A {100 * result.confidence_level:.1f}% observed-grid simultaneous "
+        "Gaussian FPCR slope band was calibrated from the retained paired "
+        f"bootstrap slope refits using {scope}. Studentized maximum-deviation "
+        f"critical value(s) were {critical}. The band is simultaneous only over "
+        "the sampled grid represented in the fit and does not claim coverage "
+        "between grid points. This calibration reuses the 0.12 paired-bootstrap "
+        "FPCR distribution and is not the operator-scaled FPCR significance "
+        "test developed in recent asymptotic theory."
+    )
 
 
 def fpca_regression_uncertainty_reporting_text(
