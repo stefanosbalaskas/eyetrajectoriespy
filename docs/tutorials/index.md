@@ -28,6 +28,19 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [Workflow atlas](../methods/workflow-atlas.md)
 
+
+-   **Analyze recurrence and nonlinear state-space dynamics**
+
+    Reconstruct state space explicitly, quantify recurrent structure, inspect time-varying RQA, estimate local divergence, and compare with IAAFT surrogates.
+
+    [Nonlinear trajectory dynamics](../examples/nonlinear-dynamics.md)
+
+-   **Study repeated-cycle return stability**
+
+    Define an explicit Poincare section and fit an experimental local return map without calling the result classical Floquet stability.
+
+    [Empirical return-map stability](../examples/return-map-stability.md)
+
 </div>
 
 <div class="grid cards" markdown>
