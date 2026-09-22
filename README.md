@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.16.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.17.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -47,6 +47,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - observed-grid studentized simultaneous bands for reconstructed Gaussian FPCR slopes;
 - marginal future-outcome prediction intervals for Gaussian FPCR fixed targets under centered empirical residual resampling;
 - fixed-regressor studentized wild-bootstrap intervals for centered Gaussian FPCR target projections under heteroscedastic response errors;
+- stabilized-volatility scans and target-specific selection of the wild-bootstrap inference truncation `h` with shared multipliers and analyst-declared stability thresholds;
 - simultaneous functional-mean bands with curve- or equal-weight participant-level inference;
 - FPCA reconstruction/robust score-space review diagnostics and leave-one-group-out influence analysis;
 - split-conformal marginal anomaly p-values for new common-grid trajectories using explicit proper-training and calibration partitions;
@@ -127,6 +128,7 @@ print(summarise_fpca(fit))
 | Gaussian FPCR simultaneous slope band | studentized maximum over paired-bootstrap slopes | `fpca_regression_slope_simultaneous_band()` |
 | Gaussian FPCR future-outcome prediction | paired-bootstrap means + independent centered residual draws | `fpca_regression_future_prediction_interval()` |
 | Heteroscedastic Gaussian FPCR projection inference | fixed-regressor studentized wild bootstrap | `wild_bootstrap_fpca_projection()` |
+| Wild-bootstrap inference truncation selection | stabilized interval center/width across consecutive `h` values | `scan_wild_bootstrap_fpca_truncations()` / `select_fpca_wild_bootstrap_truncation()` |
 | Mean trajectory uncertainty | observed-grid Gaussian multiplier band | `multiplier_functional_mean_band()` |
 | Functional anomaly review | reconstruction + score-space diagnostics | `diagnose_fpca_outliers()` |
 | New-trajectory conformal anomaly review | split-conformal FPCA nonconformity | `split_conformal_fpca_anomaly()` |

@@ -376,3 +376,44 @@ This API currently requires independent curve rows. If the declared independent-
 The interval targets the centered functional projection relative to the training functional mean. It is not a future-outcome prediction interval and is not simultaneous across targets.
 
 See [Heteroscedastic FPCR wild bootstrap](guides/fpcr-wild-bootstrap.md).
+
+
+## Select the wild-bootstrap inference truncation by stabilized volatility
+
+When k has been fixed, for example from a prediction-oriented FPCR cross-validation analysis, scan a consecutive set of candidate h values using the same wild multiplier draws:
+
+    from eyetrajectoriespy import (
+        scan_wild_bootstrap_fpca_truncations,
+        select_fpca_wild_bootstrap_truncation,
+    )
+
+    scan = scan_wild_bootstrap_fpca_truncations(
+        gaze,
+        outcome,
+        targets=gaze.subset([0, 1, 2, 3]),
+        candidate_components=(2, 3, 4, 5, 6),
+        n_bootstrap=1000,
+        residual_components=2,
+        scaling="dimension_sd",
+        multiplier="normal",
+        confidence_level=0.95,
+        independent_unit_column="participant_id",
+        random_state=2027,
+    )
+
+    selected = select_fpca_wild_bootstrap_truncation(
+        scan,
+        width_threshold=0.15,
+        center_threshold=0.10,
+        stability_run=1,
+    )
+
+The selector compares the absolute change in interval width and center between adjacent h values. Both changes must remain below the declared thresholds.
+
+The argument <code>stability_run</code> is the paper's r. Thus r=1 requires two consecutive stable transitions.
+
+Thresholds are absolute and inherit the scalar outcome's units. eyetrajectoriespy therefore does not silently use the paper's simulation setting of 0.01.
+
+If no qualifying run exists, selection fails by default rather than choosing the largest h.
+
+See [Stabilized-volatility FPCR truncation selection](guides/fpcr-wild-bootstrap-selection.md).

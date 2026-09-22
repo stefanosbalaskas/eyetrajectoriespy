@@ -40,6 +40,7 @@ nav:
       - Gaussian FPCR simultaneous slope bands: guides/fpcr-simultaneous-slope-band.md
       - Gaussian FPCR future-outcome prediction: guides/fpcr-future-prediction.md
       - Heteroscedastic FPCR wild bootstrap: guides/fpcr-wild-bootstrap.md
+      - Stabilized-volatility FPCR selection: guides/fpcr-wild-bootstrap-selection.md
       - Derived continuous functions: guides/derived-functions.md
       - Interpretation: guides/interpretation.md
   - Worked examples:
@@ -64,6 +65,7 @@ nav:
       - Gaussian FPCR simultaneous slope bands: examples/fpcr-simultaneous-slope-band.md
       - Gaussian FPCR future-outcome prediction: examples/fpcr-future-prediction.md
       - Heteroscedastic FPCR wild bootstrap: examples/fpcr-wild-bootstrap.md
+      - Stabilized-volatility FPCR selection: examples/fpcr-wild-bootstrap-selection.md
       - Irregular sampling & gaps: examples/irregular-data.md
       - Failure cases: examples/failure-cases.md
   - Methods:
