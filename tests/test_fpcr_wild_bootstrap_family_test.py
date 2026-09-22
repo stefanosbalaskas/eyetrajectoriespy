@@ -8,15 +8,22 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
-from eyetrajectoriespy.types import FPCAWildBootstrapFamilyTestResult
+from eyetrajectoriespy.types import (
+    FPCAWildBootstrapFamilyTestResult,
+    FPCAWildBootstrapMonteCarloDiagnosticResult,
+)
 from eyetrajectoriespy.wild_testing import (
     fpca_wild_bootstrap_family_test_frame,
+    fpca_wild_bootstrap_family_test_monte_carlo_diagnostics,
+    fpca_wild_bootstrap_monte_carlo_diagnostic_frame,
     fpca_wild_bootstrap_projection_family_test,
 )
 from eyetrajectoriespy import (
     fit_mfpca,
     fpca_wild_bootstrap_family_test_reporting_text,
+    fpca_wild_bootstrap_monte_carlo_reporting_text,
     plot_fpca_wild_bootstrap_family_test,
+    plot_fpca_wild_bootstrap_monte_carlo_diagnostics,
     simulate_planar_trajectories,
     wild_bootstrap_fpca_projection,
 )
@@ -133,4 +140,139 @@ def test_frame_and_empirical_option():
         plot_fpca_wild_bootstrap_family_test(result, max_targets=True)
     with pytest.raises(TypeError):
         plot_fpca_wild_bootstrap_family_test(result, show_targetwise=1)
+    plt.close("all")
+
+
+def test_monte_carlo_diagnostics_recover_hand_counts_and_exact_intervals():
+    base = sample_result(n_targets=2)
+    roots = np.array(
+        [[0.5, 0.2], [1.0, 1.5], [2.0, 0.5], [0.1, 2.5]],
+        dtype=float,
+    )
+    manual = replace(
+        base,
+        studentized_roots=roots,
+        reference_projection=np.array([1.0, 2.0]),
+        reference_se=np.array([1.0, 1.0]),
+        bootstrap_projections=np.zeros((4, 2)),
+        bootstrap_se=np.ones((4, 2)),
+    )
+    family = fpca_wild_bootstrap_projection_family_test(manual)
+    diagnostics = fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(family)
+
+    assert isinstance(diagnostics, FPCAWildBootstrapMonteCarloDiagnosticResult)
+    assert np.array_equal(diagnostics.targetwise_exceedances, [2, 1])
+    assert np.array_equal(diagnostics.adjusted_exceedances, [3, 2])
+    assert diagnostics.global_exceedances == 2
+    assert np.allclose(diagnostics.targetwise_tail_probabilities, [0.5, 0.25])
+    assert np.allclose(diagnostics.adjusted_tail_probabilities, [0.75, 0.5])
+    assert diagnostics.global_tail_probability == pytest.approx(0.5)
+    assert diagnostics.targetwise_mcse[0] == pytest.approx(0.25)
+    assert diagnostics.global_mcse == pytest.approx(0.25)
+    assert diagnostics.targetwise_interval_lower[0] == pytest.approx(
+        0.067585986488543
+    )
+    assert diagnostics.targetwise_interval_upper[0] == pytest.approx(
+        0.932414013511457
+    )
+    assert diagnostics.adjusted_interval_lower[0] == pytest.approx(
+        0.19412044968324346
+    )
+    assert diagnostics.adjusted_interval_upper[0] == pytest.approx(
+        0.9936905367902902
+    )
+    assert diagnostics.global_interval_lower == pytest.approx(0.067585986488543)
+    assert diagnostics.global_interval_upper == pytest.approx(0.932414013511457)
+    assert not diagnostics.global_decision_stable
+    assert not np.any(diagnostics.adjusted_decision_stable)
+
+
+def test_monte_carlo_diagnostics_preserve_reported_decisions_and_provenance():
+    family = fpca_wild_bootstrap_projection_family_test(
+        sample_result(n_targets=3),
+        significance_level=0.10,
+    )
+    diagnostics = fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(
+        family,
+        confidence_level=0.90,
+    )
+
+    assert diagnostics.family_test_result is family
+    assert np.array_equal(
+        diagnostics.family_test_result.reject_familywise,
+        family.reject_familywise,
+    )
+    settings = diagnostics.provenance[
+        "fpca_wild_bootstrap_monte_carlo_diagnostics"
+    ]
+    assert settings["bootstrap_roots_reused"] is True
+    assert settings["additional_bootstrap_draws"] is False
+    assert settings["changes_reported_test_decisions"] is False
+    assert settings["scientific_sampling_uncertainty_quantified"] is False
+    assert settings["monte_carlo_sampling_uncertainty_quantified"] is True
+    assert settings["strong_fwer_claim_added"] is False
+
+
+def test_monte_carlo_diagnostic_frame_plot_reporting_and_validation():
+    family = fpca_wild_bootstrap_projection_family_test(sample_result(n_targets=3))
+    diagnostics = fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(family)
+    frame = fpca_wild_bootstrap_monte_carlo_diagnostic_frame(diagnostics)
+
+    assert len(frame) == 3
+    assert {
+        "targetwise_exceedances",
+        "adjusted_exceedances",
+        "adjusted_mc_lower",
+        "adjusted_mc_upper",
+        "adjusted_precision_status",
+        "reported_adjusted_p_value",
+    }.issubset(frame.columns)
+    assert set(frame["adjusted_precision_status"]).issubset(
+        {"stable_reject", "stable_non_reject", "monte_carlo_sensitive"}
+    )
+
+    text = fpca_wild_bootstrap_monte_carlo_reporting_text(diagnostics)
+    assert "Clopper-Pearson" in text
+    assert "no additional multipliers" in text
+    assert "simulation precision" in text
+    assert plot_fpca_wild_bootstrap_monte_carlo_diagnostics(
+        diagnostics,
+        max_targets=3,
+    ) is not None
+    assert plot_fpca_wild_bootstrap_monte_carlo_diagnostics(
+        diagnostics,
+        max_targets=3,
+        show_targetwise=True,
+    ) is not None
+
+    with pytest.raises(TypeError):
+        fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(object())
+    with pytest.raises(TypeError, match="confidence_level"):
+        fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(
+            family,
+            confidence_level=True,
+        )
+    with pytest.raises(ValueError, match="confidence_level"):
+        fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(
+            family,
+            confidence_level=1.0,
+        )
+    with pytest.raises(TypeError):
+        fpca_wild_bootstrap_monte_carlo_diagnostic_frame(object())
+    with pytest.raises(TypeError):
+        fpca_wild_bootstrap_monte_carlo_reporting_text(object())
+    with pytest.raises(TypeError):
+        fpca_wild_bootstrap_monte_carlo_reporting_text(diagnostics, digits=True)
+    with pytest.raises(ValueError):
+        fpca_wild_bootstrap_monte_carlo_reporting_text(diagnostics, digits=-1)
+    with pytest.raises(TypeError):
+        plot_fpca_wild_bootstrap_monte_carlo_diagnostics(
+            diagnostics,
+            max_targets=True,
+        )
+    with pytest.raises(TypeError):
+        plot_fpca_wild_bootstrap_monte_carlo_diagnostics(
+            diagnostics,
+            show_targetwise=1,
+        )
     plt.close("all")
