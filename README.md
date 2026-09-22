@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.20.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.21.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -63,7 +63,9 @@ Registration is especially explicit because latency can itself be psychologicall
 - integrated functional L2 distances;
 - deterministic FPCA-score clustering;
 - scalar-on-function regression through FPCA scores;
-- reproducible synthetic datasets and manuscript-oriented reporting helpers.
+- reproducible synthetic datasets and manuscript-oriented reporting helpers;
+- implementation-matched LaTeX mathematical contracts rendered in both GitHub and the methods site;
+- deterministic documentation plot gallery regenerated from the real package plotting APIs in CI.
 
 ## Install
 
@@ -114,7 +116,6 @@ print(summarise_fpca(fit))
 | Continuous gaze location | `[x(t), y(t)]` | `fit_mfpca()` |
 | Native irregular gaze | curve-specific time grids | `from_irregular_long_dataframe_native()` |
 | Genuinely sparse univariate gaze | covariance UFPCA + PACE scores | `fit_sparse_fpca_fdapy()` |
-| Genuinely sparse univariate gaze | native irregular grid + PACE scores | `fit_sparse_fpca_fdapy()` |
 | One derived continuous outcome | `X(t)` | `fit_fpca()` |
 | Repeated participant trials | `G_ij(t)` | `fit_multilevel_fpca()` |
 | AOI probabilities | simplex-valued `P(t)` | `fit_compositional_fpca()` |
@@ -142,11 +143,13 @@ print(summarise_fpca(fit))
 
 ## Documentation
 
+The repository-level [mathematical contracts](MATHEMATICAL_CONTRACTS.md) render directly on GitHub. The site expands those equations with assumptions, API mappings, worked examples, and a [Visual gallery](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/visual-gallery/).
+
 The methods site is configured for GitHub Pages:
 
 **https://stefanosbalaskas.github.io/eyetrajectoriespy/**
 
-It includes a tutorial gallery, representation selection, native irregular and sparse PACE workflows, FPCA/MFPCA interpretation, leakage-aware component selection, matched-bootstrap FPC uncertainty, simultaneous FPC-shape bands, spectrum uncertainty, score basis-resampling uncertainty, Gaussian FPCR bootstrap uncertainty, simultaneous slope bands, future-outcome prediction intervals, heteroscedastic wild-bootstrap projection inference, simultaneous fixed-target wild-bootstrap intervals, eigengap/subspace stability, bootstrap stability, phase analysis, registration cautions, multilevel and compositional workflows, basis/elastic interoperability, failure cases, pre-registration/reporting guidance, limitations, worked examples, and API documentation.
+It includes a tutorial gallery, representation selection, native irregular and sparse PACE workflows, FPCA/MFPCA interpretation, leakage-aware component selection, matched-bootstrap FPC uncertainty, simultaneous FPC-shape bands, spectrum uncertainty, score basis-resampling uncertainty, Gaussian FPCR bootstrap uncertainty, simultaneous slope bands, future-outcome prediction intervals, heteroscedastic wild-bootstrap projection inference, simultaneous fixed-target wild-bootstrap intervals, eigengap/subspace stability, bootstrap stability, phase analysis, registration cautions, multilevel and compositional workflows, basis/elastic interoperability, failure cases, pre-registration/reporting guidance, limitations, worked examples, and API documentation, an implementation-matched mathematical reference, and a reproducible SVG plot gallery.
 
 ## Scope boundary
 
@@ -159,6 +162,8 @@ Current local/CI qualification status and the exact pending re-check list are ma
 ```bash
 python -m pytest --cov=eyetrajectoriespy
 python -m compileall -q src
+python scripts/generate_docs_gallery.py
+python scripts/validate_docs_contracts.py
 mkdocs build --strict
 ```
 

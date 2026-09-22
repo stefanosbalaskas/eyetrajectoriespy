@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eyetrajectoriespy"
-version = "0.20.0.dev0"
+version = "0.21.0.dev0"
 description = "Functional and continuous trajectory analysis for eye-tracking data in Python"
 readme = "README.md"
 license = "MIT"
@@ -34,7 +34,7 @@ keywords = ["eye-tracking", "gaze", "functional-data-analysis", "FPCA", "MFPCA",
 fda = ["scikit-fda>=0.10.1,<0.11", "multimethod>=1.12,<2"]
 sparse = ["FDApy>=1.0.3,<1.1; python_version < '3.13'"]
 elastic = ["fdasrsf>=2.7"]
-docs = ["mkdocs>=1.6", "mkdocs-material>=9.5", "mkdocstrings[python]>=0.27"]
+docs = ["mkdocs>=1.6,<2", "mkdocs-material>=9.7.7,<10", "mkdocstrings[python]>=0.27", "PyYAML>=6.0"]
 dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.9", "build>=1.2", "twine>=6"]
 all = ["scikit-fda>=0.10.1,<0.11", "multimethod>=1.12,<2", "FDApy>=1.0.3,<1.1; python_version < '3.13'", "fdasrsf>=2.7"]
 

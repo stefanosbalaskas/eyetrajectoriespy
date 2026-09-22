@@ -3,13 +3,29 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.19 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.21 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
 eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze paths, multivariate FPCA, native irregular trajectories, repeated-trial functional decomposition, phase analysis, compositional AOI trajectories, and explicit validation of component stability.
 
-<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">mean-band inference</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
+<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">LaTeX contracts</span><span class="et-pill">reproducible plots</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">mean-band inference</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
+</div>
+
+<div class="grid cards" markdown>
+
+-   **Read the equations behind the API**
+
+    Follow implementation-matched LaTeX from quadrature weighting and FPCA through wild-bootstrap studentization, max-(|t|) testing, Monte Carlo precision, and split conformal p-values.
+
+    [:material-function-variant: Mathematical reference](methods/mathematical-reference.md)
+
+-   **Browse reproducible scientific figures**
+
+    Every gallery figure is generated from seeded synthetic data by the public plotting API during documentation CI.
+
+    [:material-chart-line: Visual gallery](methods/visual-gallery.md)
+
 </div>
 
 <div class="grid cards" markdown>
@@ -29,12 +45,6 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
 -   **Use sparse FDA instead of manufacturing dense curves**
 
     For genuinely sparse trajectories, preserve native observation times and use optional covariance UFPCA with PACE conditional-expectation scores.
-
-    [:octicons-arrow-right-24: Sparse PACE FPCA](guides/sparse-irregular-fpca.md)
-
--   **Use sparse PACE when interpolation would invent most of the curve**
-
-    Preserve native curve-specific times and delegate univariate sparse covariance estimation plus conditional scores to FDApy.
 
     [:octicons-arrow-right-24: Sparse PACE FPCA](guides/sparse-irregular-fpca.md)
 
@@ -121,9 +131,6 @@ The package is designed around the principle that **the path to an FPC score is 
 - **Would interpolation create much of the analyzed curve?**  
   Use sparse univariate covariance UFPCA with PACE scores rather than pretending the path was densely observed.
 
-- **Would interpolation create most of each curve?**  
-  Use univariate sparse covariance UFPCA with PACE conditional-expectation scores rather than manufacturing a dense trajectory.
-
 - **Do stable participant strategies differ from trial fluctuations?**  
   Use multilevel FPCA.
 
@@ -151,6 +158,8 @@ The package is designed around the principle that **the path to an FPC score is 
 </div>
 
 [Browse the tutorial gallery](tutorials/index.md){ .md-button .md-button--primary }
+[Open the visual gallery](methods/visual-gallery.md){ .md-button }
+[Read the equations](methods/mathematical-reference.md){ .md-button }
 [Open the pre-registration checklist](methods/preregistration.md){ .md-button }
 
 ## Minimal 2-D analysis
@@ -187,6 +196,15 @@ The package is designed around the principle that **the path to an FPC score is 
 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
+
+## New in 0.21 development
+
+- implementation-matched LaTeX mathematical contracts in both the GitHub repository and the methods site;
+- deterministic SVG plots generated from the real public plotting API during documentation CI;
+- a visual gallery connecting each figure to its method, worked example, API, and equation;
+- MathJax re-typesetting compatible with instant site navigation;
+- documentation contract checks for nav targets, mathematical API mappings, gallery assets, and exported API references;
+- an executable numerical example that checks selected equations against package calculations.
 
 ## New in 0.20 development
 

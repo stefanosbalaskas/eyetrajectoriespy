@@ -1,5 +1,8 @@
 # Quick start
 
+Want the equations or the expected figures first? Open the [mathematical reference](methods/mathematical-reference.md) and [visual gallery](methods/visual-gallery.md). Both are validated by the documentation workflow.
+
+
 ## 1. Build a canonical trajectory set
 
 ```python

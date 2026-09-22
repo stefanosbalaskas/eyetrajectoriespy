@@ -134,6 +134,8 @@ The diagnostic fails explicitly when:
 
 An exceedance count of zero is not treated as zero uncertainty. The exact interval still has positive width.
 
+The MCSE and exact Clopper-Pearson limits are written explicitly in the [mathematical reference](../methods/mathematical-reference.md#monte-carlo).
+
 ## API links
 
 - FPCAWildBootstrapMonteCarloDiagnosticResult

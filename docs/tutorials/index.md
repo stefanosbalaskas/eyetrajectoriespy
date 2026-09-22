@@ -4,6 +4,22 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
 <div class="grid cards" markdown>
 
+-   **See the methods before running them**
+
+    Browse deterministic figures generated from the package's plotting API, with direct links to worked examples and equations.
+
+    [Visual gallery](../methods/visual-gallery.md)
+
+-   **Read the implementation-matched equations**
+
+    Use the LaTeX mathematical reference to connect public functions to the exact estimands, transformations, studentization, and calibration implemented in code.
+
+    [Mathematical reference](../methods/mathematical-reference.md)
+
+</div>
+
+<div class="grid cards" markdown>
+
 -   **Continuous 2-D viewing strategy**
 
     Preserve horizontal and vertical location jointly and identify dominant whole-trajectory modes.
