@@ -210,3 +210,16 @@ eyetrajectoriespy 0.19 uses a narrower construction: the studentized target-root
 North, Curtis & Sham and Phipson & Smyth motivate finite-resampling corrections such as (r+1)/(B+1), rather than treating a zero observed exceedance count as a zero p-value. The 0.20 diagnostic keeps the configured 0.19 p-value rule unchanged and separately treats the retained exceedance count as a binomial Monte Carlo quantity for precision reporting.
 
 Exact Clopper-Pearson intervals are used only to describe the finite-bootstrap exceedance probability conditional on the completed analysis. They are not confidence intervals for the scientific estimand. Stoepker & Castro emphasize that adaptive/sequential Monte Carlo stopping requires its own validity framework; eyetrajectoriespy 0.20 does not implement an always-valid sequential stopping procedure.
+
+## Nonlinear dynamics, recurrence, and surrogate testing
+
+- Anderson, N. C., Bischof, W. F., Laidlaw, K. E. W., Risko, E. F., & Kingstone, A. (2013). Recurrence quantification analysis of eye movements. *Behavior Research Methods*, 45, 842–856. https://doi.org/10.3758/s13428-012-0299-5
+- Fraser, A. M., & Swinney, H. L. (1986). Independent coordinates for strange attractors from mutual information. *Physical Review A*, 33(2), 1134–1140. https://doi.org/10.1103/PhysRevA.33.1134
+- Kennel, M. B., Brown, R., & Abarbanel, H. D. I. (1992). Determining embedding dimension for phase-space reconstruction using a geometrical construction. *Physical Review A*, 45(6), 3403–3411. https://doi.org/10.1103/PhysRevA.45.3403
+- Rosenstein, M. T., Collins, J. J., & De Luca, C. J. (1993). A practical method for calculating largest Lyapunov exponents from small data sets. *Physica D*, 65(1–2), 117–134. https://doi.org/10.1016/0167-2789(93)90009-P
+- Schreiber, T., & Schmitz, A. (1996). Improved surrogate data for nonlinearity tests. *Physical Review Letters*, 77(4), 635–638. https://doi.org/10.1103/PhysRevLett.77.635
+- Marwan, N., Romano, M. C., Thiel, M., & Kurths, J. (2007). Recurrence plots for the analysis of complex systems. *Physics Reports*, 438(5–6), 237–329. https://doi.org/10.1016/j.physrep.2006.11.001
+
+Anderson et al. provide direct eye-movement precedent for recurrence quantification. Fraser–Swinney and Kennel et al. motivate the delay and embedding-dimension diagnostics. Rosenstein et al. motivate the local-divergence LLE estimator. Schreiber–Schmitz motivate iterative amplitude-adjusted Fourier surrogates. Marwan et al. provide broader recurrence-analysis definitions and cautions.
+
+The eyetrajectoriespy implementation keeps these pieces separate: AMI/FNN are diagnostics rather than automatic selectors; recurrence is sparse and uses an explicit radius policy/Theiler window; LLE fitting uses an analyst-declared interval; IAAFT testing is an explicit null-model comparison; and empirical return maps are labeled experimental rather than being called Floquet analysis.
