@@ -106,6 +106,7 @@ def test_windowed_rqa_reports_tail_instead_of_silently_dropping_it():
         radius=0.5,
         min_diagonal_length=2,
         min_vertical_length=2,
+        dimensions=("x",),
     )
     assert len(result.table) == 3
     assert result.dropped_tail_samples == 1
