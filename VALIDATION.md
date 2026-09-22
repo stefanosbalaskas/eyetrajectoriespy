@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.22.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, heteroscedastic Gaussian FPCR fixed-target wild-bootstrap inference, stabilized-volatility wild-bootstrap truncation selection, familywise simultaneous fixed-target wild-bootstrap calibration, fixed-family wild-bootstrap hypothesis testing with single-step maxT adjustment and a global family test, finite-bootstrap Monte Carlo precision diagnostics for retained resampling tail probabilities, split-conformal FPCA anomaly review, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.23.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, heteroscedastic Gaussian FPCR fixed-target wild-bootstrap inference, stabilized-volatility wild-bootstrap truncation selection, familywise simultaneous fixed-target wild-bootstrap calibration, fixed-family wild-bootstrap hypothesis testing with single-step maxT adjustment and a global family test, finite-bootstrap Monte Carlo precision diagnostics for retained resampling tail probabilities, split-conformal FPCA anomaly review, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, functional anomaly/influence diagnostics, delay-coordinate reconstruction, sparse recurrence/RQA and cross-RQA, Rosenstein local-divergence/LLE diagnostics, IAAFT surrogate testing, and experimental empirical Poincare return-map stability.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -1369,3 +1369,88 @@ Therefore 0.22 is both **PR-head CI-certified** and **exact-main requalified**, 
 6. If new registered functions are added, both generated indexes must be regenerated; docs CI will fail on stale generated content.
 
 The 0.22 programmatic mathematical registry, generated repository/site LaTeX indexes, Mermaid workflow atlas, expanded eight-figure gallery, examples, package construction, all 9 core cross-platform lanes, coverage/Ruff gates, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.22 scientific/content lineage.
+
+## 0.23 nonlinear trajectory dynamics qualification — 2026-09-22
+
+Version 0.23 extends the continuous-trajectory core with nonlinear state-space and recurrence methods while preserving the package rule that diagnostic procedures do not silently become analysis choices.
+
+No local-pass claim is made for this tranche. Qualification below is exact GitHub-hosted CI evidence plus repository-structure checks performed through the GitHub repository interface.
+
+Exact CI-certified PR head:
+
+\`95eb23a84cd63c5daa1e2429c26341a88f2f7faa\`
+
+PR #26, **“Add nonlinear trajectory dynamics, RQA, LLE, surrogates, and return maps,”** completed every pull-request qualification workflow successfully on that exact SHA:
+
+- tests workflow #103: **success**, including package construction and all **9/9** Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- representative Ubuntu / Python 3.11 log: **216 passed, 5 skipped**, **90.74% coverage** against the unchanged 90% gate, and Ruff **All checks passed**;
+- examples workflow #103: **success**, including the executable nonlinear-dynamics and empirical return-map workflows;
+- docs workflow #103: **success**, including generated function-equation freshness, deterministic nonlinear-gallery regeneration, documentation-contract validation, and strict MkDocs build;
+- docs-contract audit reported **18 mathematical registry contracts**, **84 navigation targets**, **222 documented API symbols**, **12 generated gallery SVG assets**, and **18 validated mathematical deep links**;
+- optional-fda workflow #99: **success**;
+- optional-sparse-fda workflow #87: **success**, including FDApy Python 3.11 and 3.12.
+
+The 0.23 scientific/API contract adds:
+
+- \`delay_embed_trajectory()\` for explicitly declared multivariate delay-coordinate reconstruction;
+- \`embedding_delay_diagnostics()\` with fixed-partition average mutual information and autocorrelation diagnostics, without automatic delay selection;
+- \`embedding_dimension_diagnostics()\` with Kennel-style false-nearest-neighbor diagnostics, without automatic embedding-dimension selection;
+- sparse SciPy-CSR \`recurrence_matrix()\` and \`cross_recurrence_matrix()\` with explicit fixed-radius or target-recurrence-rate policies, named state-variable compatibility checks, coordinate/time-unit compatibility checks, and explicit Theiler exclusion;
+- \`rqa_metrics()\`, \`cross_rqa_metrics()\`, and \`windowed_rqa()\` with explicit line-length thresholds and trailing-tail accounting;
+- \`local_divergence_curve()\` and \`estimate_largest_lyapunov_rosenstein()\` with positive-distance temporally separated neighbors, explicit zero-distance counts, and an analyst-declared fit interval;
+- seeded scalar \`surrogate_nonlinearity_test()\` using IAAFT surrogates, retained convergence/spectrum-mismatch diagnostics, plus-one Monte Carlo tail probabilities, and fail-closed behavior for non-converged or invalid surrogates;
+- experimental \`poincare_crossings()\`, \`fit_local_return_map()\`, and \`return_map_stability()\` with explicit section/state/neighborhood contracts, local-fit diagnostics, design condition number, Jacobian eigenvalues, and spectral radius;
+- plotting and manuscript-reporting helpers for embedding diagnostics, recurrence, windowed RQA, local divergence/LLE, IAAFT tests, and return maps;
+- five new machine-readable LaTeX registry contracts plus corresponding GitHub/site mathematical-reference sections;
+- nonlinear workflow branches in the decision map and Mermaid workflow atlas;
+- two executable/worked nonlinear examples and four additional deterministic SVG gallery figures.
+
+The implementation deliberately does **not** expose classical \`floquet_multipliers(gaze)\`, a raw-gaze monodromy matrix, \`detect_bifurcation(gaze)\`, or numerical continuation. Those require an explicitly specified/identified dynamical model and dedicated variational-equation or continuation validation. The empirical return-map Jacobian is therefore documented as an observational local-cycle diagnostic, not a classical monodromy matrix, and its eigenvalues are not reported as Floquet multipliers.
+
+The main CI failure discovered during qualification was a NumPy advanced-indexing orientation error in raw \`TrajectorySet\` recurrence state extraction. It was corrected on the PR branch before certification. The repair also kept IAAFT generation failures inside the explicit per-surrogate failure contract and regenerated both equation indexes from the registry. No quality gate or test was bypassed.
+
+No tests, coverage thresholds, scientific contracts, optional-backend checks, branch protections, or quality gates were weakened, disabled, deleted, or bypassed.
+
+PR #26 was squash-merged as:
+
+\`c11249bf03585e372b122bc51688c0f0aaf0b6ab\`
+
+The exact certified PR head and squash-merged main commit both point to Git tree:
+
+\`d5f469d05769ef2c134dbe724c9381972d5ef2e1\`
+
+so the merged nonlinear implementation, tests, examples, mathematical registry/indexes, plotting/reporting helpers, workflow atlas, gallery generator, and website documentation are byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.23 exact-main qualification and deployment — 2026-09-22
+
+The exact merged-main scientific/content commit
+
+\`c11249bf03585e372b122bc51688c0f0aaf0b6ab\`
+
+completed a fresh push-triggered qualification generation successfully:
+
+- tests workflow #104: **success**, including package construction and all **9/9** Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #104: **success**;
+- docs workflow #104: **success**, including generated-index freshness, twelve-figure gallery regeneration, documentation-contract validation, strict MkDocs build, and **successful GitHub Pages deployment**;
+- optional-fda workflow #100: **success**;
+- optional-sparse-fda workflow #88: **success**, including FDApy Python 3.11 and 3.12.
+
+Therefore 0.23 is both **PR-head CI-certified** and **exact-main requalified**, and the nonlinear-dynamics guide, equations, worked examples, workflow paths, and expanded plot gallery are deployed on the merged main lineage.
+
+## 0.23 remaining re-checks
+
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13.
+2. AMI and false-nearest-neighbor outputs are diagnostics only; version 0.23 does not provide a universal automatic rule for selecting delay or embedding dimension.
+3. RQA estimates remain conditional on the declared state representation, scaling/units, distance metric, radius policy, Theiler window, and minimum line lengths.
+4. When target recurrence rate is used, recurrence density is controlled by design; RR should not then be interpreted as an independently varying outcome across those analyses.
+5. Overlapping windowed-RQA summaries are dependent and require a separately justified downstream dependence model if used inferentially.
+6. A positive Rosenstein-style LLE is not standalone evidence of deterministic chaos. Noise, finite samples, nonstationarity, preprocessing, embedding choice, and fit-interval choice remain scientifically consequential.
+7. IAAFT testing is scalar in 0.23. Multivariate surrogates preserving cross-spectral dependence are not silently approximated.
+8. IAAFT rejection is evidence against the declared surrogate null, not identification of a unique nonlinear or chaotic mechanism.
+9. Empirical Poincare return-map stability is experimental and should be accompanied by sensitivity checks for section definition, returned state variables, neighborhood choice, numerical conditioning, and number of repeated cycles.
+10. Classical Floquet/monodromy analysis and bifurcation continuation remain outside the raw-gaze API until a validated system-identification/model-based dynamics layer exists.
+11. The Material-for-MkDocs 9.x / MkDocs 1.x site stack remains intentionally pinned; future site-platform migration should be qualified separately from scientific API development.
+12. Generated nonlinear gallery figures use deterministic synthetic data for documentation and are not empirical study results.
+
+The 0.23 delay-reconstruction, recurrence/RQA, cross-recurrence, windowed RQA, Rosenstein local-divergence/LLE, IAAFT surrogate-test, experimental empirical return-map, mathematical-registry, reporting, plotting, examples, twelve-figure gallery, package construction, all 9 core cross-platform lanes, coverage/Ruff gates, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.23 scientific/content lineage.
+
