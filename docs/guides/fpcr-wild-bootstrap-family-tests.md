@@ -121,7 +121,8 @@ Report the target family, null values, two-sided alternative, alpha, bootstrap r
 - `fpca_wild_bootstrap_family_test_frame()`
 - `plot_fpca_wild_bootstrap_family_test()`
 - `fpca_wild_bootstrap_family_test_reporting_text()`
+- `fpca_wild_bootstrap_family_test_monte_carlo_precision()`
 - `wild_bootstrap_fpca_projection()`
 - `fpca_wild_bootstrap_projection_simultaneous_interval()`
 
-See also [Simultaneous fixed-target FPCR wild-bootstrap inference](fpcr-wild-bootstrap-simultaneous.md) and [References](../methods/references.md).
+See also [Finite-B Monte Carlo precision](fpcr-wild-bootstrap-monte-carlo-precision.md), [Simultaneous fixed-target FPCR wild-bootstrap inference](fpcr-wild-bootstrap-simultaneous.md), and [References](../methods/references.md).
