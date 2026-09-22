@@ -49,6 +49,11 @@ def poincare_crossings(
         )
     if len(set(state_names)) != len(state_names):
         raise ValueError("state_dimensions must be unique")
+    if section_dimension in state_names:
+        raise ValueError(
+            "state_dimensions cannot include section_dimension because that "
+            "coordinate is constant on the declared Poincare section"
+        )
     state_indices = []
     for name in state_names:
         if name not in trajectories.dimension_names:
