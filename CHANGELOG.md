@@ -2,6 +2,19 @@
 
 ## 0.20.0.dev0 — 2026-09-22
 
+Twentieth development tranche.
+
+- finite-resample Monte Carlo precision diagnostics for the existing fixed-family Gaussian FPCR wild-bootstrap tests;
+- exact target-wise, single-step maxT-adjusted, and global exceedance counts reconstructed from the retained studentized-root matrix without rerunning the bootstrap;
+- raw resampling tail-probability estimates r/B reported separately from the 0.19 plus-one or raw test p-values, which remain unchanged;
+- plug-in Monte Carlo standard errors sqrt[p(1-p)/B] and exact Clopper-Pearson binomial intervals for the underlying resampling exceedance probability;
+- alpha-relation labels below_alpha, above_alpha, or overlaps_alpha, explicitly documented as simulation-precision diagnostics rather than new inferential decisions;
+- p-value grid step and minimum-attainable-p resolution diagnostics;
+- provenance states that the diagnostic adds no scientific-effect confidence interval, no new FWER guarantee, no subset-pivotality assumption, no clustered wild bootstrap, and no component-selection correction;
+- table, plot, reporting helper, runnable example, public API, deterministic hand-calculated tests, boundary-count tests, validation tests, and methods documentation.
+
+## 0.19.0.dev0 — 2026-09-22
+
 Nineteenth development tranche.
 
 - two-sided hypothesis tests for a predeclared family of fixed Gaussian FPCR centered projections;
