@@ -46,6 +46,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Heteroscedastic Gaussian FPCR centered-projection intervals | implemented | `wild_bootstrap_fpca_projection()` |
 | Familywise simultaneous fixed-target FPCR wild-bootstrap intervals | implemented | `fpca_wild_bootstrap_projection_simultaneous_interval()` |
 | Fixed-family FPCR wild-bootstrap hypothesis tests | implemented | `fpca_wild_bootstrap_projection_family_test()` |
+| Finite-B Monte Carlo precision for wild-bootstrap tests | implemented | `fpca_wild_bootstrap_family_test_monte_carlo_precision()` |
 | Stabilized-volatility wild-bootstrap h selection | implemented | `scan_wild_bootstrap_fpca_truncations()` / `select_fpca_wild_bootstrap_truncation()` |
 | Derived speed/acceleration/distance/path functions | implemented | kinematic helpers |
 
@@ -78,6 +79,8 @@ Review flags are descriptive diagnostics. The package does not turn them into au
 `bootstrap_fpca_regression_uncertainty()` now refits the common-grid Gaussian FPCR pipeline under paired resampling and propagates basis/regression sampling variability into the reconstructed slope and fitted conditional means.
 
 Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, clustered/repeated-participant wild-bootstrap inference, coverage-optimal automatic wild-bootstrap truncation tuning, heteroscedastic future-outcome prediction, or non-Gaussian/binomial functional-regression inference.
+
+The 0.20 precision layer quantifies finite-resample Monte Carlo error in retained bootstrap exceedance probabilities; it does not provide scientific-effect confidence intervals or strengthen the 0.19 multiplicity contract.
 
 ## Research/development candidates
 
