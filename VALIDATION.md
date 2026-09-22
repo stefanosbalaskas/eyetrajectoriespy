@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.17.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, split-conformal FPCA anomaly review, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.18.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, heteroscedastic Gaussian FPCR fixed-target wild-bootstrap inference, stabilized-volatility wild-bootstrap truncation selection, familywise simultaneous fixed-target wild-bootstrap calibration, split-conformal FPCA anomaly review, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -1030,3 +1030,76 @@ Therefore the 0.17 stabilized-volatility FPCR wild-bootstrap selection tranche i
 4. Clustered/repeated-participant wild-bootstrap inference remains outside the 0.17 contract.
 
 The 0.17 shared-multiplier truncation scan and stabilized-volatility selector, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.17 main lineage.
+
+## 0.18 pre-PR algorithm and repository integrity — 2026-09-22
+
+Before PR publication, a standalone numerical harness and the exact GitHub branch were used to validate the new familywise post-calibration contract.
+
+- replicate-wise familywise statistic exactly defined as the maximum absolute studentized root over the declared target family: **passed**;
+- familywise critical value no smaller than every same-level target-wise critical value: **passed**;
+- one-target family exactly reduced to the target-wise calibration: **passed**;
+- adding an all-zero root coordinate left the maximum calibration unchanged: **passed**;
+- critical values were nondecreasing as confidence increased: **passed**;
+- exact branch source audit: **72/72** configured MkDocs navigation targets existed;
+- exact branch API audit: **170/170** documented public symbols resolved;
+- package, project, citation, README, methods-status, and homepage version surfaces all reported the 0.18 development line;
+- `examples/fpcr_wild_bootstrap_simultaneous.py` was registered in the unchanged examples workflow;
+- the branch was six commits ahead and zero behind `main` immediately before PR creation.
+
+This pre-PR evidence was delta/structural validation only. Full integrated cross-platform qualification is recorded below.
+
+### 0.18 PR-head certification — 2026-09-22
+
+Exact certified PR head:
+
+`dad24a3bf2e11b68f582e86fb268d337b33676df`
+
+PR #21, **“Add simultaneous fixed-target FPCR wild-bootstrap inference,”** completed all unchanged pull-request qualification workflows successfully on that exact SHA:
+
+- tests workflow #77: **success**, including package construction and all **9/9** Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- representative completed core logs reported **164 passed, 5 skipped**, **92.39% coverage**, and successful Ruff checks against the unchanged 90% coverage gate;
+- examples workflow #77: **success**, including `fpcr_wild_bootstrap_simultaneous.py`;
+- docs workflow #77: **success** with strict MkDocs build;
+- optional-fda workflow #73: **success**;
+- optional-sparse-fda workflow #61: **success**, including FDApy Python 3.11 and 3.12 lanes.
+
+The implementation is a pure post-calibration of the exact studentized root matrix retained by `FPCAWildBootstrapProjectionResult`. It takes one maximum absolute studentized root across the complete fixed-target family within each bootstrap replicate and uses its requested empirical quantile as a common familywise critical value. It does not rerun FPCA, score regression, residual estimation, multiplier generation, or the wild bootstrap.
+
+No tests, coverage thresholds, workflows, branch protections, or scientific validation checks were weakened, disabled, deleted, or bypassed.
+
+PR #21 was squash-merged as:
+
+`d325ed573282f7ac53000c6d684c8128291896df`
+
+The certified PR head and squash-merged main commit both point to Git tree:
+
+`97afdab71ed82c582311641e497464d0cffa6d16`
+
+so the merged implementation, tests, examples, scientific contracts, and documentation are byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.18 exact-main qualification and deployment — 2026-09-22
+
+The exact merged-main commit
+
+`d325ed573282f7ac53000c6d684c8128291896df`
+
+completed a fresh push-triggered qualification generation successfully:
+
+- tests workflow #78: **success**, including package construction and all **9/9** Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #78: **success**, including the new simultaneous fixed-target executable example;
+- docs workflow #78: **success**, including strict MkDocs build and **successful GitHub Pages deployment**;
+- optional-fda workflow #74: **success**;
+- optional-sparse-fda workflow #62: **success**, including FDApy Python 3.11 and 3.12 lanes.
+
+Therefore the 0.18 simultaneous fixed-target heteroscedastic Gaussian FPCR wild-bootstrap tranche is both **PR-head CI-certified** and **exact-main requalified**, and the corresponding methods-site deployment is certified on the merged 0.18 scientific lineage.
+
+## 0.18 remaining re-checks
+
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this remains outside the current FDApy support contract.
+2. The simultaneous target family should be scientifically declared before confirmatory inspection. Adaptive target-family selection is not covered by the current familywise statement.
+3. The familywise calibration is conditional on the base k=g and h truncations. Data-driven truncation/component-selection uncertainty is not propagated automatically.
+4. Clustered/repeated-participant wild-bootstrap inference remains outside the current independent-curve contract.
+5. These intervals cover fixed centered FPCR target projections. They are not joint future-outcome prediction regions and do not add future scalar-response noise.
+
+The 0.18 familywise max-|t| fixed-target post-calibration, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.18 scientific lineage.
+
