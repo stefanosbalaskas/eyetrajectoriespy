@@ -370,3 +370,28 @@ Report:
 Example:
 
 > A three-component MFPCA reference was estimated from 40 proper-training gaze trajectories. Twenty disjoint calibration curves defined reconstruction-RMSE nonconformity. For each of six new target curves, the marginal split-conformal p-value was calculated as ((1+#{s_i^{calib}ge s^*})/(20+1)) with conservative greater-than-or-equal tie handling, giving a minimum attainable p-value of .0476. Curves with p ≤ .05 were flagged for review only. No calibration-conditional adjustment, multiplicity correction, or FDR guarantee was applied.
+
+
+## Heteroscedastic Gaussian FPCR wild-bootstrap projection inference
+
+Report:
+
+- Gaussian FPCR as the model family;
+- that the functional regressors and FPCA/MFPCA basis were fixed during wild resampling;
+- the independent sampling unit and any identifier column used to verify independence;
+- residual truncation k, pseudo-truth truncation g=k, and inference truncation h;
+- how k and h were chosen;
+- FPCA/MFPCA scaling;
+- multiplier family;
+- bootstrap replicate count and seed;
+- heteroscedastic score-covariance studentization;
+- that the heteroscedastic scale was recomputed inside every pseudo-fit;
+- confidence level;
+- whether targets were training or external compatible trajectories;
+- that intervals are symmetrized and target-wise;
+- that the estimand is the centered projection relative to the training functional mean;
+- exclusions: future response noise, basis refitting, clustered wild bootstrap, simultaneous target coverage, and component-selection uncertainty.
+
+Example:
+
+> Heteroscedastic uncertainty in centered Gaussian FPCR projections was evaluated with 1,000 fixed-regressor wild-bootstrap replicates using standard-normal multipliers. Residual estimation and the bootstrap pseudo-truth used k=g=2 FPCs, while inference used h=3 FPCs. In each pseudo-sample the target projection root was studentized using a heteroscedastic score-covariance scale recomputed from the pseudo-fit residuals. Ninety-five-percent symmetrized intervals were reported separately for four fixed target trajectories. Curve rows represented independent participants. The analysis did not claim FPCA-basis resampling, clustered wild-bootstrap validity, future-outcome prediction coverage, or simultaneous coverage across targets.

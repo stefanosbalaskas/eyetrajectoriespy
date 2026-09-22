@@ -322,3 +322,44 @@ Version 0.15 does not silently combine the two scores into one statistic.
 The current conformal p-values are calibrated at the curve level.
 
 Within-participant dependence is not corrected by participant metadata, and no participant-clustered conformal guarantee is provided.
+
+
+## The 0.16 wild bootstrap keeps the FPCA basis fixed
+
+This is a fixed-regressor functional-linear wild bootstrap. It does not propagate sampling uncertainty from re-estimating the functional mean, channel scaling, eigenfunctions, or FPC scores.
+
+Use the paired FPCR bootstrap when basis-estimation uncertainty is part of the scientific target.
+
+## Clustered/repeated trials are not supported by the wild-bootstrap API
+
+Independent curve rows are required.
+
+A participant contributing several trial rows violates that contract unless those trials have first been aggregated into a scientifically justified independent-unit trajectory.
+
+Supplying duplicated values through <code>independent_unit_column</code> causes an explicit failure.
+
+## Target intervals are not future-outcome prediction intervals
+
+The estimand is the centered FPCR projection for a fixed target trajectory. Future scalar response noise is not added.
+
+The 0.14 predictive layer answers a different question and currently relies on pooled residual exchangeability.
+
+## Target-wise intervals are not simultaneous
+
+Each target receives its own studentized critical value. Supplying several targets does not create a familywise or joint coverage statement.
+
+## Truncation-selection uncertainty is excluded
+
+The k=g and h truncations are fixed before the bootstrap. If chosen from the same data, their model-selection uncertainty is not propagated automatically.
+
+## Multiplier choice remains a sensitivity decision
+
+Normal and Mammen multipliers both satisfy the required first two moment conditions, but finite-sample behavior can differ.
+
+The package records the multiplier family and does not silently choose or average across them.
+
+## The implementation is a score-space analogue, not a numerical port of BTSinFLRM
+
+The 0.16 method reproduces the fixed-regressor, k/g/h, multiplier, and bootstrap-level studentization structure inside eyetrajectoriespy's common-grid FPCR score geometry.
+
+It is not claimed to be numerically identical to the companion R package for every tuning configuration or statistic.

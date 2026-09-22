@@ -280,3 +280,34 @@ Only with great caution. The current guarantee is curve-level exchangeability. M
 ## Which nonconformity score should I use?
 
 Use reconstruction RMSE when deviation from the retained functional span is the target. Use score-space Mahalanobis when unusually extreme retained FPC coordinates are scientifically meaningful. Do not choose after seeing which score flags more desired cases.
+
+
+## When should I use the wild FPCR bootstrap instead of the paired FPCR bootstrap?
+
+Use the paired bootstrap when the sampling variability of the estimated FPCA basis should be propagated and the independent unit can be resampled directly.
+
+Use the wild bootstrap when the functional regressors are conditioned on as fixed and heteroscedastic response-error inference for fixed target projections is the scientific target.
+
+## Why does the wild-bootstrap API keep the FPCA basis fixed?
+
+That is part of the fixed-regressor wild-bootstrap construction. Refitting FPCA would change the bootstrap procedure into a different estimand/resampling design.
+
+## Why are there both k and h component counts?
+
+k controls residual estimation and also defines the g=k bootstrap pseudo-truth. h controls the target projection used for inference. The methodology requires h to be at least g under the implemented contract.
+
+## Why recompute the heteroscedastic scale in every bootstrap sample?
+
+Bootstrap-level studentization is part of the 2026 method. Reusing only the original standard error can make finite-sample coverage more sensitive to the multiplier distribution.
+
+## Can I use repeated participant trials?
+
+Not as independent rows in the current API. If a participant identifier is supplied and duplicates are present, the function stops. Clustered wild-bootstrap validity is a separate methodological problem.
+
+## Are the wild-bootstrap intervals future-response prediction intervals?
+
+No. They concern the centered FPCR projection for a fixed functional target. They do not add future scalar response noise.
+
+## Which multiplier should I use?
+
+The API supports standard normal and Mammen two-point multipliers. The multiplier should be declared before inspecting results; a sensitivity comparison can be reported when scientifically justified.

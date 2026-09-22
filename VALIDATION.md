@@ -4,7 +4,7 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.15.0.dev0`
+- Package line: `0.16.0.dev0`
 - Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, split-conformal FPCA anomaly review, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
@@ -324,6 +324,22 @@ A standalone synthetic harness matching the 0.15 FPCA split-conformal contracts 
 - p-values remained within `[1/(n_calibration+1), 1]`: **passed**.
 
 This is local delta algorithmic validation only. Full repository pytest/coverage/Ruff/package/docs/optional-backend qualification remains GitHub CI evidence.
+
+## 0.16 pre-commit local algorithm validation — 2026-09-22
+
+Environment: Linux, Python 3.13.
+
+A standalone score-space harness matching the intended fixed-regressor wild-bootstrap regression, heteroscedastic sandwich scaling, bootstrap-level studentization, and target-root calibration was executed locally.
+
+- deterministic normal-multiplier studentized roots under a fixed seed: **passed**;
+- deterministic bootstrap-level heteroscedastic SEs under a fixed seed: **passed**;
+- reference projections lay within their symmetrized studentized intervals: **passed**;
+- 99% intervals were no narrower than 80% intervals under identical bootstrap roots: **passed**;
+- Mammen two-point multipliers produced finite studentized roots: **passed**;
+- the implemented Mammen support/probabilities have exact theoretical moments E(W)=0, Var(W)=1, and E(W^3)=1: **passed**;
+- k=g pseudo-truth and h>=g truncation semantics were exercised explicitly: **passed**.
+
+This is local delta algorithmic validation only. It is not a substitute for full repository pytest/coverage/Ruff/package/docs/optional-backend qualification.
 
 ## Locally unavailable checks
 

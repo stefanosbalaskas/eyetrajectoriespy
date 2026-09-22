@@ -124,3 +124,8 @@ Use [Gaussian FPCR future-outcome prediction](../examples/fpcr-future-prediction
 ### Conformal FPCA anomaly review
 
 Use [Conformal FPCA anomaly review](../examples/conformal-fpca-anomaly.md) when genuinely new common-grid trajectories must be assessed relative to a reference population. The example keeps proper training, calibration, and targets disjoint; demonstrates exact finite p-value resolution; and contrasts reconstruction versus score-space nonconformity.
+
+
+### Heteroscedastic Gaussian FPCR wild bootstrap
+
+Use [Heteroscedastic FPCR wild bootstrap](../examples/fpcr-wild-bootstrap.md) when the functional regressors are treated as fixed but scalar response variance may be heterogeneous. The example uses one trajectory per participant, makes k=g and h explicit, recomputes the heteroscedastic studentization scale in each pseudo-fit, and distinguishes target projection inference from future-outcome prediction.
