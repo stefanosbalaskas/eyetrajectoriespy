@@ -88,6 +88,47 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked example](../examples/fpcr-wild-bootstrap-monte-carlo.md) · [Mathematics](mathematical-reference.md#monte-carlo)
 
+
+-   **Sparse recurrence structure**
+
+    ![Sparse recurrence plot](../assets/gallery/recurrence-plot.svg)
+
+    Recurrent reconstructed states under an explicit target recurrence rate and Theiler exclusion.
+
+    **API:** \`delay_embed_trajectory()\`, \`recurrence_matrix()\`, \`plot_recurrence()\`
+
+    [Worked example](../examples/nonlinear-dynamics.md) · [Mathematics](mathematical-reference.md#recurrence)
+
+-   **Time-varying RQA**
+
+    ![Windowed recurrence quantification](../assets/gallery/windowed-rqa.svg)
+
+    Full-window recurrence rate, determinism, and laminarity retained over trial time.
+
+    **API:** \`windowed_rqa()\`, \`plot_windowed_rqa()\`
+
+    [Nonlinear guide](../guides/nonlinear-dynamics.md) · [Mathematics](mathematical-reference.md#recurrence)
+
+-   **Local divergence / Rosenstein LLE**
+
+    ![Local divergence with declared Lyapunov fit interval](../assets/gallery/local-divergence.svg)
+
+    Mean nearest-neighbor log divergence and the explicitly declared linear fit interval.
+
+    **API:** \`local_divergence_curve()\`, \`estimate_largest_lyapunov_rosenstein()\`, \`plot_local_divergence()\`
+
+    [Worked example](../examples/nonlinear-dynamics.md) · [Mathematics](mathematical-reference.md#local-divergence)
+
+-   **Experimental empirical return map**
+
+    ![Empirical Poincare return map](../assets/gallery/return-map.svg)
+
+    Successive section crossings and a local affine return map for a deterministic synthetic contracting cycle.
+
+    **API:** \`poincare_crossings()\`, \`fit_local_return_map()\`, \`return_map_stability()\`, \`plot_poincare_return_map()\`
+
+    [Worked example](../examples/return-map-stability.md) · [Mathematics](mathematical-reference.md#return-map-stability)
+
 </div>
 
 ## Reproduce the gallery
@@ -131,6 +172,33 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
     c_{0,1-\alpha}\widehat{\mathrm{SE}}_0.
     $$
 
+=== "Recurrence"
+
+    \`plot_recurrence()\` visualizes sparse entries satisfying
+
+    $
+    R_{ij}=\mathbb I\{\|\mathbf z_i-\mathbf z_j\|_p\le\varepsilon\}.
+    $
+
+=== "Local divergence"
+
+    \`plot_local_divergence()\` visualizes
+
+    $
+    D(k)=\frac{1}{N_k}\sum_i\log d_i(k),
+    $
+
+    with the analyst-declared LLE fit interval when an estimate is supplied.
+
+=== "Return map"
+
+    \`plot_poincare_return_map()\` visualizes successive crossings under
+
+    $
+    \mathbf z_{n+1}\approx
+    \mathbf a+\mathbf J(\mathbf z_n-\mathbf z_0).
+    $
+
 === "Monte Carlo precision"
 
     \`plot_fpca_wild_bootstrap_monte_carlo_diagnostics()\` visualizes the raw retained tail estimate and exact binomial precision limits, where
@@ -141,4 +209,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates the assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates all twelve assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
