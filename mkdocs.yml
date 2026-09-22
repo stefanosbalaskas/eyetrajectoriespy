@@ -90,6 +90,7 @@ nav:
       - Mathematical reference: methods/mathematical-reference.md
       - Visual gallery: methods/visual-gallery.md
       - Workflow atlas: methods/workflow-atlas.md
+      - RQA software conventions: methods/rqa-software-conventions.md
       - References: methods/references.md
   - API:
       - Public API: reference/api.md
