@@ -50,6 +50,18 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Stabilized-volatility wild-bootstrap h selection | implemented | `scan_wild_bootstrap_fpca_truncations()` / `select_fpca_wild_bootstrap_truncation()` |
 | Derived speed/acceleration/distance/path functions | implemented | kinematic helpers |
 
+## Documentation and mathematical contracts
+
+Version 0.21 treats documentation as a tested package surface:
+
+- the repository-level `MATHEMATICAL_CONTRACTS.md` renders the core equations directly on GitHub;
+- the site mathematical reference maps those equations to the exact public APIs and scope boundaries;
+- a deterministic SVG gallery is generated from seeded synthetic data and the real plotting functions;
+- documentation CI regenerates gallery assets and validates navigation, mathematical API mappings, MathJax wiring, and documented public exports before the strict MkDocs build;
+- the Material-for-MkDocs line is intentionally constrained to compatible 9.x releases with MkDocs <2 for this tranche.
+
+A future documentation-platform migration can be evaluated independently of the scientific API. No site-framework migration is allowed to alter numerical or scientific contracts.
+
 ## Optional specialist interoperability
 
 | Capability | Backend | Package role |
