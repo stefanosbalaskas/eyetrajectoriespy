@@ -362,3 +362,23 @@ For confirmatory familywise inference across fixed targets, pre-specify:
 - that future-outcome noise, clustered dependence, preprocessing uncertainty, and component-selection uncertainty are outside this interval unless handled separately.
 
 Do not define or shrink the target family after inspecting which marginal intervals are favorable. Changing the family changes the inferential question.
+
+
+## Fixed-family FPCR wild-bootstrap hypothesis tests
+
+For confirmatory fixed-target testing, pre-specify:
+
+- the scientific rule defining every target in the testing family;
+- the scalar or target-specific null projection values;
+- the two-sided alternative used by the current API;
+- the significance level;
+- the p-value correction, normally the default plus-one rule;
+- the planned number of bootstrap replicates and the resulting minimum attainable p-value;
+- residual truncation k, pseudo-truth g=k, inference truncation h, and any pre-specified or data-driven rule used to choose them;
+- multiplier family and channel scaling;
+- the independent sampling unit;
+- whether target-wise probabilities, single-step maxT-adjusted probabilities, and the global family test are confirmatory or descriptive;
+- that the bootstrap is not regenerated under an explicitly imposed target null;
+- that strong FWER for arbitrary subset nulls is not claimed without additional subset-pivotality or closed-testing theory.
+
+Do not drop targets after seeing their unadjusted p-values and retain the original familywise interpretation.

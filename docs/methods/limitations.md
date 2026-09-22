@@ -394,3 +394,18 @@ The package does not silently extend the grid or return the largest available ca
 Different targets can select different inference truncations.
 
 When target contrasts are compared directly, report this fact and consider whether a common pre-specified h is more appropriate for the scientific question.
+
+
+## Fixed-family maxT tests do not imply universal strong FWER control
+
+Version 0.19 uses the joint bootstrap root matrix to produce target-wise tail probabilities, single-step maxT-adjusted probabilities, and a complete-family global test.
+
+This preserves the empirical dependence among the declared targets, but the package does not impose every intersection null or verify a subset-pivotality condition.
+
+Accordingly, the adjusted values should not be described as a general closed-testing or step-down procedure with guaranteed strong FWER control for every possible subset of null hypotheses.
+
+The resampling distribution is also not regenerated under an explicitly imposed target null. The method is therefore reported as a bootstrap maxT approximation conditional on the same fixed-regressor model used for the 0.16–0.18 inference layers.
+
+Adaptive removal of targets after inspecting marginal results changes the testing family and invalidates the intended confirmatory interpretation.
+
+A small number of bootstrap replicates limits p-value resolution. With the default plus-one correction, the minimum attainable p-value is 1/(B+1).
