@@ -11,6 +11,7 @@ from .nonlinear_types import (
     LocalReturnMapResult,
     ReturnMapStabilityResult,
     SurrogateNonlinearityResult,
+    WindowedRQAFunctionalResult,
     WindowedRQAResult,
 )
 
@@ -51,6 +52,29 @@ def windowed_rqa_reporting_text(result: WindowedRQAResult) -> str:
         f"{len(result.table)} windows. The final {result.dropped_tail_samples} "
         "samples outside a complete window were retained in the audit record "
         "but not analyzed as a partial window."
+    )
+
+
+
+def windowed_rqa_functional_reporting_text(
+    result: WindowedRQAFunctionalResult,
+) -> str:
+    """Return manuscript-ready wording for RQA-derived functional trajectories."""
+
+    metric_text = ", ".join(result.metrics)
+    overlap = 100.0 * result.overlap_fraction
+    radius_policy = result.trajectories.provenance.get("radius_policy", "unknown")
+    return (
+        f"Windowed RQA was converted to functional trajectories for "
+        f"{result.n_curves} source curve(s) using {result.n_windows} complete "
+        f"windows of {result.window_samples} samples, advanced by "
+        f"{result.step_samples} samples ({overlap:.1f}% sample overlap). "
+        f"Functional dimensions were {metric_text}; the recurrence-radius "
+        f"policy was {radius_policy}. Window centers formed the functional "
+        f"time grid and {result.dropped_tail_samples} trailing samples outside "
+        "a complete window were excluded explicitly. Window rows were not "
+        "treated as independent observations; downstream inference retained "
+        "the source curve/participant as the sampling unit."
     )
 
 
