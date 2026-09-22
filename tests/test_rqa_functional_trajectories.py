@@ -129,7 +129,7 @@ def test_finite_functional_rqa_enters_mfpca_without_special_adapter():
     fit = fit_mfpca(
         result.trajectories,
         n_components=2,
-        scaling="dimension_sd",
+        scaling="none",
     )
     assert fit.scores.shape == (gaze.n_curves, 2)
     assert result.trajectories.provenance["edge_policy"] == "full_window_centers_only"
