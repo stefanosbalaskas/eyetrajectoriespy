@@ -13,3 +13,18 @@ The library will not silently convert missing gaze to zero, interpolate long tra
 ## Provenance as scientific metadata
 
 Preprocessing helpers append their specification to trajectory provenance. This supports exact reporting and sensitivity analysis; it does not replace a study protocol.
+
+## Evidence provenance is separate from numerical provenance
+
+A numerical result can be reproducible while its methodological justification is overstated. Version 0.25 therefore treats evidence metadata as another tested scientific surface for the nonlinear-dynamics layer.
+
+The nonlinear evidence registry separates:
+
+- direct behavioral-gaze applications;
+- direct eye/pupil signal applications;
+- general methodological sources.
+
+Each verified record carries both a **supports** statement and a **does not support** boundary. Candidate citations that were not verified remain in the audit trail but cannot silently enter the ordinary bibliography.
+
+A failed literature or package search is not proof of novelty. See the [nonlinear evidence audit](../methods/nonlinear-evidence-audit.md).
+
