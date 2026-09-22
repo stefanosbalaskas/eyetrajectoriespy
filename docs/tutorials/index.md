@@ -136,6 +136,11 @@ Use [Heteroscedastic FPCR wild bootstrap](../examples/fpcr-wild-bootstrap.md) wh
 Use [Simultaneous fixed-target FPCR wild bootstrap](../examples/fpcr-wild-bootstrap-simultaneous.md) when one declared family of fixed target projections needs familywise rather than separate target-wise calibration. The example reuses the exact heteroscedastic wild-bootstrap root matrix, compares target-wise with max-|t| simultaneous intervals, and makes the fixed-target scope explicit.
 
 
+### Fixed-family FPCR wild-bootstrap hypothesis tests
+
+Use [Fixed-family FPCR wild-bootstrap tests](../examples/fpcr-wild-bootstrap-family-tests.md) when a declared set of fixed target projections needs explicit two-sided testing rather than confidence intervals alone. The example compares target-wise and single-step maxT-adjusted bootstrap probabilities, reports the complete-family global test, and makes the subset-pivotality boundary explicit.
+
+
 ### Stabilized-volatility FPCR wild-bootstrap selection
 
 Use [Stabilized-volatility wild-bootstrap selection](../examples/fpcr-wild-bootstrap-selection.md) when k=g is fixed but the target-inference truncation h needs a declared data-driven tuning rule. The example scans consecutive h values with shared multipliers, plots target-specific interval stability, applies explicit rho_w/rho_c/r criteria, and demonstrates the no-silent-fallback failure contract.
