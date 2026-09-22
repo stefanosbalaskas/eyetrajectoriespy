@@ -845,6 +845,54 @@ class FPCAWildBootstrapFamilyTestResult:
         return 0.0
 
 @dataclass(frozen=True)
+class FPCAWildBootstrapMonteCarloPrecisionResult:
+    """Finite-resample precision diagnostics for fixed-family wild-bootstrap tests."""
+
+    family_test_result: FPCAWildBootstrapFamilyTestResult
+    targetwise_exceedances: np.ndarray
+    adjusted_exceedances: np.ndarray
+    global_exceedances: int
+    targetwise_tail_probabilities: np.ndarray
+    adjusted_tail_probabilities: np.ndarray
+    global_tail_probability: float
+    targetwise_mcse: np.ndarray
+    adjusted_mcse: np.ndarray
+    global_mcse: float
+    targetwise_ci_lower: np.ndarray
+    targetwise_ci_upper: np.ndarray
+    adjusted_ci_lower: np.ndarray
+    adjusted_ci_upper: np.ndarray
+    global_ci_lower: float
+    global_ci_upper: float
+    confidence_level: float
+    targetwise_alpha_relation: tuple[str, ...]
+    adjusted_alpha_relation: tuple[str, ...]
+    global_alpha_relation: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.family_test_result.n_bootstrap
+
+    @property
+    def n_targets(self) -> int:
+        return self.family_test_result.n_targets
+
+    @property
+    def pvalue_grid_step(self) -> float:
+        if self.family_test_result.pvalue_correction == "plus_one":
+            return 1.0 / (self.n_bootstrap + 1.0)
+        return 1.0 / self.n_bootstrap
+
+    @property
+    def alpha_resolvable(self) -> bool:
+        return (
+            self.family_test_result.minimum_attainable_p
+            <= self.family_test_result.significance_level
+        )
+
+
+@dataclass(frozen=True)
 class FPCAWildBootstrapTruncationScanResult:
     """Shared-multiplier wild-bootstrap interval scan over inference truncations."""
 
