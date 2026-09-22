@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.18.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.19.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -48,6 +48,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - marginal future-outcome prediction intervals for Gaussian FPCR fixed targets under centered empirical residual resampling;
 - fixed-regressor studentized wild-bootstrap intervals for centered Gaussian FPCR target projections under heteroscedastic response errors;
 - familywise max-|t| post-calibration across predeclared fixed FPCR target families using the exact stored wild-bootstrap roots;
+- fixed-family two-sided wild-bootstrap hypothesis tests with target-wise, single-step maxT-adjusted, and complete-family global bootstrap p-values;
 - stabilized-volatility scans and target-specific selection of the wild-bootstrap inference truncation `h` with shared multipliers and analyst-declared stability thresholds;
 - simultaneous functional-mean bands with curve- or equal-weight participant-level inference;
 - FPCA reconstruction/robust score-space review diagnostics and leave-one-group-out influence analysis;
@@ -130,6 +131,7 @@ print(summarise_fpca(fit))
 | Gaussian FPCR future-outcome prediction | paired-bootstrap means + independent centered residual draws | `fpca_regression_future_prediction_interval()` |
 | Heteroscedastic Gaussian FPCR projection inference | fixed-regressor studentized wild bootstrap | `wild_bootstrap_fpca_projection()` |
 | Simultaneous heteroscedastic Gaussian FPCR target inference | familywise max-|t| post-calibration over fixed targets | `fpca_wild_bootstrap_projection_simultaneous_interval()` |
+| Fixed-family heteroscedastic Gaussian FPCR hypothesis testing | target-wise + single-step maxT-adjusted bootstrap tail probabilities | `fpca_wild_bootstrap_projection_family_test()` |
 | Wild-bootstrap inference truncation selection | stabilized interval center/width across consecutive `h` values | `scan_wild_bootstrap_fpca_truncations()` / `select_fpca_wild_bootstrap_truncation()` |
 | Mean trajectory uncertainty | observed-grid Gaussian multiplier band | `multiplier_functional_mean_band()` |
 | Functional anomaly review | reconstruction + score-space diagnostics | `diagnose_fpca_outliers()` |

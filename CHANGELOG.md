@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.19.0.dev0 — 2026-09-22
+
+Nineteenth development tranche.
+
+- two-sided hypothesis tests for a predeclared family of fixed Gaussian FPCR centered projections;
+- arbitrary finite scalar or target-specific null projection values, with zero as the explicit default;
+- observed statistics use the stored heteroscedastic reference standard errors and fail explicitly for non-zero null discrepancies paired with zero standard error;
+- target-wise bootstrap tail probabilities use each target's absolute studentized root distribution;
+- single-step maxT-adjusted values use the replicate-wise maximum absolute studentized root over the complete target family;
+- complete-family global max-statistic test is reported from the same joint root distribution;
+- conservative plus-one Monte Carlo correction is the default, with the uncorrected empirical exceedance proportion available explicitly;
+- no FPCA fit, score regression, residual calculation, multiplier draw, or bootstrap replicate is rerun;
+- provenance states that the bootstrap is not explicitly null-enforced and that strong FWER control for arbitrary subset nulls is not claimed without additional subset-pivotality conditions;
+- table, plotting, reporting, public-API, deterministic, hand-calculated truth, edge-case, and regression tests.
 ## 0.18.0.dev0 — 2026-09-22
 
 Eighteenth development tranche.
