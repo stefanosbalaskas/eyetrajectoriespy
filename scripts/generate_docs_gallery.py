@@ -12,9 +12,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from eyetrajectoriespy import (
+    TrajectorySet,
+    delay_embed_trajectory,
+    estimate_largest_lyapunov_rosenstein,
+    fit_local_return_map,
     fit_mfpca,
     fpca_wild_bootstrap_family_test_monte_carlo_diagnostics,
     fpca_wild_bootstrap_projection_family_test,
+    local_divergence_curve,
     multiplier_functional_mean_band,
     plot_fpca_component,
     plot_fpca_variance,
@@ -22,11 +27,18 @@ from eyetrajectoriespy import (
     plot_fpca_wild_bootstrap_monte_carlo_diagnostics,
     plot_fpca_wild_bootstrap_projection,
     plot_functional_mean_band,
+    plot_local_divergence,
     plot_planar_trajectories,
+    plot_poincare_return_map,
+    plot_recurrence,
+    plot_windowed_rqa,
     plot_warping_functions,
+    poincare_crossings,
+    recurrence_matrix,
     register_to_landmarks,
     simulate_planar_trajectories,
     wild_bootstrap_fpca_projection,
+    windowed_rqa,
 )
 
 
@@ -46,7 +58,7 @@ def _save(ax, filename: str) -> None:
 
 def main() -> None:
     OUTPUT.mkdir(parents=True, exist_ok=True)
-    matplotlib.rcParams["svg.hashsalt"] = "eyetrajectoriespy-0.22-gallery"
+    matplotlib.rcParams["svg.hashsalt"] = "eyetrajectoriespy-0.23-gallery"
 
     gaze = simulate_planar_trajectories(
         n_participants=32,
@@ -144,6 +156,92 @@ def main() -> None:
     )
     _save(ax, "monte-carlo-precision.svg")
 
+    nonlinear_time = np.arange(360, dtype=float) * 0.01
+    nonlinear_x = np.empty(nonlinear_time.size, dtype=float)
+    nonlinear_x[0] = 0.217
+    for i in range(nonlinear_x.size - 1):
+        nonlinear_x[i + 1] = 4.0 * nonlinear_x[i] * (1.0 - nonlinear_x[i])
+    nonlinear = TrajectorySet(
+        time=nonlinear_time,
+        values=nonlinear_x[None, :, None],
+        curve_ids=("nonlinear-demo",),
+        dimension_names=("x",),
+        time_unit="s",
+        coordinate_system="arbitrary",
+    )
+    embedded = delay_embed_trajectory(
+        nonlinear,
+        embedding_dimension=2,
+        delay=1,
+        dimensions=("x",),
+    )
+    recurrence = recurrence_matrix(
+        embedded,
+        curve=0,
+        target_recurrence_rate=0.05,
+        theiler_window=8,
+    )
+    ax = plot_recurrence(recurrence)
+    _save(ax, "recurrence-plot.svg")
+
+    dynamic_rqa = windowed_rqa(
+        nonlinear,
+        curve=0,
+        window=100,
+        step=50,
+        radius=0.05,
+        theiler_window=8,
+        dimensions=("x",),
+    )
+    ax = plot_windowed_rqa(dynamic_rqa)
+    _save(ax, "windowed-rqa.svg")
+
+    divergence = local_divergence_curve(
+        embedded,
+        curve=0,
+        theiler_window=8,
+        max_horizon=7,
+    )
+    lle = estimate_largest_lyapunov_rosenstein(
+        divergence,
+        fit_start=1,
+        fit_end=4,
+    )
+    ax = plot_local_divergence(lle)
+    _save(ax, "local-divergence.svg")
+
+    cycle_time = np.linspace(0.0, 20.0 * np.pi, 2001)
+    cycle_amplitude = np.exp(-0.02 * cycle_time)
+    cycle = TrajectorySet(
+        time=cycle_time,
+        values=np.stack(
+            [
+                cycle_amplitude * np.sin(cycle_time),
+                cycle_amplitude * np.cos(cycle_time),
+            ],
+            axis=1,
+        )[None, :, :],
+        curve_ids=("cycle-demo",),
+        dimension_names=("x", "y"),
+        time_unit="s",
+        coordinate_system="arbitrary",
+    )
+    crossings = poincare_crossings(
+        cycle,
+        curve=0,
+        section_dimension="x",
+        section_value=0.0,
+        direction="positive",
+        state_dimensions=("y",),
+    )
+    return_fit = fit_local_return_map(
+        crossings,
+        reference="mean",
+        n_neighbors=8,
+    )
+    ax = plot_poincare_return_map(crossings, fit=return_fit)
+    _save(ax, "return-map.svg")
+
     expected = {
         "planar-trajectories.svg",
         "fpca-component.svg",
@@ -153,6 +251,10 @@ def main() -> None:
         "wild-bootstrap-projections.svg",
         "wild-bootstrap-family-test.svg",
         "monte-carlo-precision.svg",
+        "recurrence-plot.svg",
+        "windowed-rqa.svg",
+        "local-divergence.svg",
+        "return-map.svg",
     }
     produced = {path.name for path in OUTPUT.glob("*.svg")}
     missing = sorted(expected - produced)
