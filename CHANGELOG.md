@@ -2,6 +2,9 @@
 
 ## 0.24.0.dev0
 
+- Freeze cross-library RQA conventions in code, tests, and documentation: inclusive radius threshold, LOI/Theiler policy, recurrence-rate denominators, 0-1 ratio scale, entropy denominator, and explicit uncorrected border-line handling.
+- Keep multivariate gaze surrogates deferred until a joint MIAAFT/multivariate-Fourier null can preserve and diagnose cross-channel structure; scalar IAAFT remains explicitly univariate.
+- Add a reproducible sparse-recurrence benchmark harness and avoid unsupported wall-clock expectations in the methodological contract.
 - Add `windowed_rqa_trajectory_set()` to convert declared sliding-window RQA summaries across source curves into a native functional `TrajectorySet` while retaining every per-curve window table.
 - Record window overlap, tail handling, metric units, radius policy, undefined-value handling, and the explicit non-independence of window rows.
 - Reject recurrence rate as a downstream functional outcome when target-recurrence-rate mode controls recurrence density by design.
