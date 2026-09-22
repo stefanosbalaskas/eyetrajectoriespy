@@ -41,11 +41,8 @@ def poincare_crossings(
     curve_index = _curve_index(trajectories, curve)
     section_index = trajectories.dimension_names.index(section_dimension)
     if state_dimensions is None:
-        state_names = tuple(
-            name for name in trajectories.dimension_names if name != section_dimension
-        )
-    else:
-        state_names = tuple(state_dimensions)
+        raise ValueError("state_dimensions must be supplied explicitly")
+    state_names = tuple(state_dimensions)
     if not state_names:
         raise ValueError(
             "state_dimensions must contain at least one non-section state variable"
@@ -172,7 +169,11 @@ def fit_local_return_map(
     else:
         if not isinstance(n_neighbors, (int, np.integer)) or n_neighbors < 1:
             raise ValueError("n_neighbors must be a positive integer")
-        count = min(int(n_neighbors), x.shape[0])
+        if int(n_neighbors) > x.shape[0]:
+            raise ValueError(
+                "n_neighbors exceeds the number of available return-map transitions"
+            )
+        count = int(n_neighbors)
         selected = np.argsort(distances, kind="mergesort")[:count]
         policy = "n_neighbors"
         value = int(n_neighbors)
