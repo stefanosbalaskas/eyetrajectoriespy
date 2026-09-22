@@ -209,8 +209,12 @@ def delay_embed_trajectory(
     )
 
 
-def _average_mutual_information(x: np.ndarray, y: np.ndarray, bins: int) -> float:
-    joint, _, _ = np.histogram2d(x, y, bins=bins)
+def _average_mutual_information(
+    x: np.ndarray,
+    y: np.ndarray,
+    edges: np.ndarray,
+) -> float:
+    joint, _, _ = np.histogram2d(x, y, bins=(edges, edges))
     total = float(joint.sum())
     if total <= 0:
         raise ValueError("cannot estimate mutual information from an empty histogram")
@@ -258,12 +262,15 @@ def embedding_delay_diagnostics(
 
     centered = signal - signal.mean()
     denominator = float(np.dot(centered, centered))
+    edges = np.histogram_bin_edges(signal, bins=int(bins))
+    if np.unique(edges).size < 3:
+        raise ValueError("AMI histogram requires at least two non-degenerate bins")
     rows = []
     for lag in range(1, max_lag_samples + 1):
         x = signal[:-lag]
         y = signal[lag:]
         acf = float(np.dot(centered[:-lag], centered[lag:]) / denominator)
-        ami = _average_mutual_information(x, y, int(bins))
+        ami = _average_mutual_information(x, y, edges)
         rows.append((lag, trajectories.time[lag] - trajectories.time[0], acf, ami))
     table = pd.DataFrame(
         rows,
@@ -289,6 +296,7 @@ def embedding_delay_diagnostics(
             "criterion": "Fraser-Swinney average mutual information diagnostic",
             "automatic_delay_selection": False,
             "bins": int(bins),
+            "histogram_edges_fixed_across_lags": True,
         },
     )
 
