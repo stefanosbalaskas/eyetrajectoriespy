@@ -382,3 +382,10 @@ For confirmatory fixed-target testing, pre-specify:
 - that strong FWER for arbitrary subset nulls is not claimed without additional subset-pivotality or closed-testing theory.
 
 Do not drop targets after seeing their unadjusted p-values and retain the original familywise interpretation.
+
+
+## Finite-B Monte Carlo precision diagnostics
+
+If numerical bootstrap precision will be used confirmatorily, pre-specify the planned B, alpha, confidence level for the Monte Carlo interval, original p-value correction, and how an interval that overlaps alpha will be described.
+
+Do not increase B selectively only for targets whose first-run results are substantively preferred. If B is increased after a precision diagnostic, report that decision and rerun the complete declared analysis family consistently.
