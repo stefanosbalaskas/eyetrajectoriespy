@@ -3,6 +3,49 @@
 For mathematical definitions of the main estimands, transformations, studentization rules, and calibration statistics, see the [function → equation index](function-equation-index.md) and [implementation-matched mathematical reference](../methods/mathematical-reference.md). For decision flow, use the [workflow atlas](../methods/workflow-atlas.md); for representative rendered outputs, see the [visual gallery](../methods/visual-gallery.md).
 
 
+## Nonlinear trajectory dynamics
+
+### Delay reconstruction and embedding diagnostics
+::: eyetrajectoriespy.DelayEmbeddingResult
+::: eyetrajectoriespy.EmbeddingDelayDiagnosticResult
+::: eyetrajectoriespy.EmbeddingDimensionDiagnosticResult
+::: eyetrajectoriespy.delay_embed_trajectory
+::: eyetrajectoriespy.embedding_delay_diagnostics
+::: eyetrajectoriespy.embedding_dimension_diagnostics
+::: eyetrajectoriespy.plot_embedding_delay_diagnostics
+::: eyetrajectoriespy.plot_embedding_dimension_diagnostics
+
+### Sparse recurrence and RQA
+::: eyetrajectoriespy.RecurrenceResult
+::: eyetrajectoriespy.RQAResult
+::: eyetrajectoriespy.WindowedRQAResult
+::: eyetrajectoriespy.recurrence_matrix
+::: eyetrajectoriespy.rqa_metrics
+::: eyetrajectoriespy.windowed_rqa
+::: eyetrajectoriespy.cross_recurrence_matrix
+::: eyetrajectoriespy.cross_rqa_metrics
+::: eyetrajectoriespy.plot_recurrence
+::: eyetrajectoriespy.plot_windowed_rqa
+
+### Local divergence and surrogate testing
+::: eyetrajectoriespy.LocalDivergenceResult
+::: eyetrajectoriespy.LargestLyapunovResult
+::: eyetrajectoriespy.SurrogateNonlinearityResult
+::: eyetrajectoriespy.local_divergence_curve
+::: eyetrajectoriespy.estimate_largest_lyapunov_rosenstein
+::: eyetrajectoriespy.surrogate_nonlinearity_test
+::: eyetrajectoriespy.plot_local_divergence
+::: eyetrajectoriespy.plot_surrogate_nonlinearity
+
+### Experimental empirical return maps
+::: eyetrajectoriespy.PoincareCrossingResult
+::: eyetrajectoriespy.LocalReturnMapResult
+::: eyetrajectoriespy.ReturnMapStabilityResult
+::: eyetrajectoriespy.poincare_crossings
+::: eyetrajectoriespy.fit_local_return_map
+::: eyetrajectoriespy.return_map_stability
+::: eyetrajectoriespy.plot_poincare_return_map
+
 ## Mathematical contracts
 ::: eyetrajectoriespy.MathematicalContract
 ::: eyetrajectoriespy.list_mathematical_contracts
