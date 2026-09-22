@@ -166,7 +166,7 @@ The following entries were present in the supplied research report but were not 
 - **Attributed authors:** Dixon & DiBiasio
 - **Attributed year:** 2016
 - **Audit status:** `not_verified_in_2026-09-23_audit`
-- **Action:** Exact-title/author searches used for this audit did not recover a matching scholarly record. Genuine nearby CRQA/pupil literature exists, but it is not this citation.
+- **Action:** Exact-title/author searches used for this audit did not recover a matching scholarly record. Genuine nearby CRQA/pupil literature exists, but it is not this citation. Do not cite unless independently verified.
 
 ### Lyapunov exponents of eye movements in ADHD vs. control
 
