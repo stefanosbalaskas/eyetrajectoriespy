@@ -1,5 +1,8 @@
 # Public API
 
+For mathematical definitions of the main estimands, transformations, studentization rules, and calibration statistics, see the [implementation-matched mathematical reference](../methods/mathematical-reference.md). For representative rendered outputs, see the [visual gallery](../methods/visual-gallery.md).
+
+
 ## Core objects
 ::: eyetrajectoriespy.TrajectorySet
 ::: eyetrajectoriespy.FPCAResult
