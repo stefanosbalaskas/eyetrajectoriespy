@@ -25,7 +25,7 @@ def _scalar(values, *, curve_id="c1"):
 
 def test_sparse_recurrence_matrix_matches_hand_count():
     data = _scalar([0.0, 0.1, 1.0, 0.05])
-    result = recurrence_matrix(data, curve=0, radius=0.15)
+    result = recurrence_matrix(data, curve=0, radius=0.15, dimensions=("x",))
 
     assert result.matrix.shape == (4, 4)
     assert result.matrix.nnz == 6
@@ -37,13 +37,14 @@ def test_sparse_recurrence_matrix_matches_hand_count():
 def test_recurrence_requires_exactly_one_radius_policy():
     data = _scalar([0, 1, 0, 1, 0])
     with pytest.raises(ValueError, match="exactly one"):
-        recurrence_matrix(data, curve=0)
+        recurrence_matrix(data, curve=0, dimensions=("x",))
     with pytest.raises(ValueError, match="exactly one"):
         recurrence_matrix(
             data,
             curve=0,
             radius=0.1,
             target_recurrence_rate=0.2,
+            dimensions=("x",),
         )
 
 
@@ -54,6 +55,7 @@ def test_target_recurrence_rate_policy_is_explicit_and_sparse():
         curve=0,
         target_recurrence_rate=0.08,
         theiler_window=2,
+        dimensions=("x",),
     )
     assert result.target_recurrence_rate == pytest.approx(0.08)
     assert 0.05 <= result.achieved_recurrence_rate <= 0.11
@@ -62,7 +64,7 @@ def test_target_recurrence_rate_policy_is_explicit_and_sparse():
 
 def test_rqa_detects_repeated_diagonal_structure():
     data = _scalar([0, 1, 0, 1, 0])
-    recurrence = recurrence_matrix(data, curve=0, radius=1e-8)
+    recurrence = recurrence_matrix(data, curve=0, radius=1e-8, dimensions=("x",))
     result = rqa_metrics(
         recurrence,
         min_diagonal_length=2,
@@ -84,6 +86,8 @@ def test_cross_recurrence_and_cross_rqa():
         curve_a=0,
         curve_b=0,
         radius=1e-8,
+        dimensions_a=("x",),
+        dimensions_b=("x",),
     )
     metrics = cross_rqa_metrics(recurrence)
     assert recurrence.kind == "cross"
@@ -111,4 +115,4 @@ def test_windowed_rqa_reports_tail_instead_of_silently_dropping_it():
 def test_theiler_window_can_remove_all_pairs_explicitly():
     data = _scalar([0, 1, 2, 3])
     with pytest.raises(ValueError, match="no eligible recurrence pairs"):
-        recurrence_matrix(data, curve=0, radius=1.0, theiler_window=3)
+        recurrence_matrix(data, curve=0, radius=1.0, theiler_window=3, dimensions=("x",))
