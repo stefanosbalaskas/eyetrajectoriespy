@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.22.0.dev0 — 2026-09-22
+
+Twenty-second development tranche.
+
+- public `MathematicalContract` metadata object plus `list_mathematical_contracts()`, `get_mathematical_contract()`, and `mathematical_contract_frame()`;
+- one machine-readable function → LaTeX registry linking scientific APIs to implementation equations, stable site anchors, and explicit scope boundaries;
+- deterministic generated `FUNCTION_EQUATION_INDEX.md` for GitHub and website `reference/function-equation-index.md`, with CI freshness validation;
+- executable and worked examples demonstrating lookup by function/key and tidy function-level export;
+- Mermaid workflow atlas for representation choice, FPCA validation, Gaussian FPCR inference branches, and function → equation → figure documentation flow;
+- website gallery expanded from five to eight deterministic SVG figures with FPCA variance, registration displacement, and fixed-family test plots;
+- native Material Mermaid configuration and updated homepage/tutorial/API/README navigation;
+- documentation validator raised to require the expanded gallery, 0.22 integration, generated equation indexes, and all mathematical deep links;
+- scientific estimators, inferential defaults, coverage gate, and optional-backend contracts unchanged.
+
 ## 0.21.0.dev0 — 2026-09-22
 
 Twenty-first development tranche.
