@@ -261,7 +261,20 @@ def recurrence_matrix(
             "metric": metric,
             "theiler_window_samples": theiler,
             "sparse": True,
+            "threshold_operator": "<=",
             "diagonal_included": False,
+            "recurrence_rate_scale": "0_to_1",
+            "recurrence_rate_denominator": (
+                "eligible_off_diagonal_pairs_outside_theiler_window"
+            ),
+            "target_rate_tie_policy": (
+                None
+                if target_recurrence_rate is None
+                else (
+                    "inclusive-radius bisection; achieved recurrence rate is retained "
+                    "because distance ties can prevent an exact target"
+                )
+            ),
         },
     )
 
@@ -353,6 +366,18 @@ def cross_recurrence_matrix(
             "achieved_recurrence_rate": float(achieved),
             "metric": metric,
             "sparse": True,
+            "threshold_operator": "<=",
+            "recurrence_rate_scale": "0_to_1",
+            "recurrence_rate_denominator": "all_cross_state_pairs",
+            "time_alignment": "none",
+            "target_rate_tie_policy": (
+                None
+                if target_recurrence_rate is None
+                else (
+                    "inclusive-radius bisection; achieved recurrence rate is retained "
+                    "because distance ties can prevent an exact target"
+                )
+            ),
         },
     )
 
@@ -506,6 +531,18 @@ def rqa_metrics(
             "sampling_contract": "approximately_regular_grid",
             "sampling_step_a": float(step_a),
             "sampling_step_b": None if step_b is None else float(step_b),
+            "ratio_scale": "0_to_1",
+            "recurrence_rate_denominator_policy": recurrence.provenance.get(
+                "recurrence_rate_denominator"
+            ),
+            "line_border_policy": (
+                "finite-matrix border lines are counted at their observed length; "
+                "no border-effect correction is applied"
+            ),
+            "line_entropy_probability": (
+                "frequency of each qualifying line length divided by the total "
+                "number of qualifying lines"
+            ),
             "corm_definition": (
                 "100 * mean upper-triangle recurrence lag / (n-1)"
                 if recurrence.kind == "auto"

@@ -476,3 +476,22 @@ Sliding-window RQA creates a derived functional process; it does not create new 
 - a downstream FPCA/MFPCA/regression fit is a separate modeling step whose sampling unit must remain the source curve/participant, not the number of windows.
 
 Version 0.24 therefore provides a provenance-preserving descriptive bridge between nonlinear summaries and FDA. It does not claim a new sampling distribution, simultaneous confidence band, or independent-window theorem for overlapping RQA curves.
+
+
+### RQA software conventions are estimator choices
+
+RQA libraries disagree on line-of-identity exclusion, Theiler defaults, recurrence-rate denominators, ratio scale, normalization, and border handling. Version 0.24 freezes its own conventions and records them in provenance rather than claiming universal equivalence with another package.
+
+The recurrence threshold is inclusive (`distance <= radius`). Auto RR uses eligible off-diagonal pairs outside the declared Theiler window; cross RR uses the full rectangular all-pairs denominator; RR/DET/LAM are 0-1 ratios.
+
+Finite-matrix diagonal lines are currently counted at their observed length. No border-effect or tangential-motion correction is silently applied. Border truncation can bias diagonal line-length distributions and entropy, so analyses in which entropy or long diagonal lengths are primary outcomes should include window-size/border sensitivity or use a future explicit correction method rather than assuming the base estimator is border invariant.
+
+Target-RR mode can miss the requested rate exactly when many distances are tied. The solved inclusive radius and achieved recurrence rate are therefore the auditable realized quantities.
+
+See [RQA software conventions](rqa-software-conventions.md).
+
+### Multivariate gaze surrogates remain unimplemented
+
+Scalar IAAFT does not become a valid planar-gaze surrogate by running it independently on `x` and `y`. Independent channel randomization can alter the cross-channel structure that defines the trajectory.
+
+A future multivariate surrogate method must declare and diagnose preservation of the intended auto- and cross-channel linear structure, operate on a common regular grid, expose convergence, and state the exact null hypothesis. Version 0.24 therefore fails by omission rather than silently approximating MIAAFT.
