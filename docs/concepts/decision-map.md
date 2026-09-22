@@ -60,3 +60,27 @@ A visually appealing FPC is not automatically a reproducible viewing strategy.
 10. If registration is used, pre-specify how phase information will be retained.
 
 Use the [pre-registration checklist](../methods/preregistration.md) for a manuscript-ready version.
+
+## When the question is dynamical rather than variance-based
+
+Use the 0.23 nonlinear path when the scientific target is recurrence, state-space divergence, or repeated-cycle stability rather than dominant between-curve variation.
+
+\`\`\`text
+continuous trajectory
+    |
+    +-- nearby state returns? --------> recurrence / RQA
+    |
+    +-- changing recurrence in time? -> windowed RQA
+    |
+    +-- compare two trajectories? ----> cross recurrence
+    |
+    +-- local state divergence? ------> explicit delay embedding
+    |                                  -> Rosenstein divergence / LLE
+    |                                  -> IAAFT surrogate test
+    |
+    +-- repeated approximate cycles? -> explicit Poincare section
+                                       -> empirical local return map
+                                       -> experimental contraction / expansion
+\`\`\`
+
+Do not route raw gaze directly to classical Floquet or bifurcation-continuation claims. Those require a separately identified dynamical model.
