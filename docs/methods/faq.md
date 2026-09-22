@@ -410,3 +410,23 @@ The plug-in binomial MCSE uses q_hat=r/B. When r is 0 or B, that plug-in express
 ## Should I keep adding bootstrap replicates until the result becomes significant?
 
 No. For confirmatory work, choose B in advance or define a transparent follow-up precision rule before inspecting the result. Version 0.20 is not an always-valid sequential Monte Carlo procedure and does not authorize significance-driven optional stopping.
+
+## Should I run RQA on x/y directly or on a reconstructed state?
+
+They answer different questions. Direct x/y recurrence asks when gaze returns to nearby spatial states. Delay-state recurrence asks when the reconstructed dynamical state—including recent history—returns nearby. Version 0.23 requires you to make that representation choice explicitly.
+
+## Should I use a fixed recurrence radius or a target recurrence rate?
+
+Use a fixed radius when that spatial/state-space tolerance has a meaningful common interpretation across observations. A target recurrence rate can improve comparability of line structure when state-space scale differs, but RR is then controlled by design and should not be treated as an independently estimated outcome.
+
+## Does a positive largest Lyapunov estimate mean gaze is chaotic?
+
+No. The package reports a Rosenstein-style local-divergence estimate conditional on the declared embedding, Theiler window, horizon, and fit interval. Noise, nonstationarity, preprocessing, finite data, and stochastic forcing can produce positive slopes. Use surrogate testing and sensitivity analysis, and avoid “chaos” unless additional evidence supports that claim.
+
+## Are the return-map eigenvalues Floquet multipliers?
+
+No. Version 0.23 fits an empirical local affine map between observed section crossings. Its Jacobian is not obtained from variational equations of a known dynamical system, so its eigenvalues are not classical Floquet multipliers. A future model-based dynamics layer would need an explicit validated ODE/state-space model before exposing monodromy or Floquet calculations.
+
+## Can eyetrajectoriespy detect a bifurcation directly from gaze?
+
+Not as a classical bifurcation calculation. Classical continuation requires a specified dynamical model `dx/dt=f(x, theta)`. For observed behavior, version 0.23 offers recurrence, windowed recurrence, divergence, surrogate, and empirical return-map diagnostics without pretending the raw gaze coordinates define that model.

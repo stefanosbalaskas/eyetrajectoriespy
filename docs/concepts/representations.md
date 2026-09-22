@@ -32,3 +32,22 @@ Distance to evidence, speed, or cumulative path length can be useful univariate 
 Use `IrregularTrajectorySet` plus `fit_sparse_fpca_fdapy()` when one functional dimension is observed only at a small number of curve-specific times and a common-grid interpolation would fabricate a substantial portion of the function.
 
 This representation targets a latent smooth process estimated from pooled sparse observations. It is distinct from a densely observed planar path and from joint x/y MFPCA.
+
+## Dynamical state representations
+
+Nonlinear analysis adds a second representation decision after the trajectory itself is scientifically interpretable.
+
+Observed-state recurrence can use explicitly declared dimensions such as
+
+$$
+\mathbf z_t=[x(t),y(t)].
+$$
+
+Delay reconstruction instead uses explicit recent history,
+
+$$
+\mathbf z_t=
+[\mathbf G(t),\mathbf G(t-\tau),\ldots,\mathbf G(t-(m-1)\tau)].
+$$
+
+These representations answer different questions and are never silently substituted for one another. Channel scaling is also not introduced automatically; distances inherit the declared coordinate/state units.

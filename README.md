@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.22.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.23.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -63,6 +63,11 @@ Registration is especially explicit because latency can itself be psychologicall
 - integrated functional L2 distances;
 - deterministic FPCA-score clustering;
 - scalar-on-function regression through FPCA scores;
+- explicit delay-coordinate reconstruction with AMI/autocorrelation and false-nearest-neighbor diagnostics;
+- sparse continuous-state recurrence matrices, RQA, windowed RQA, and cross-recurrence analysis;
+- Rosenstein-style local divergence / largest-Lyapunov estimation with analyst-declared fit intervals;
+- seeded IAAFT surrogate nonlinearity tests using plus-one Monte Carlo p-values;
+- experimental empirical Poincare return maps and local cycle-to-cycle contraction/expansion diagnostics;
 - reproducible synthetic datasets and manuscript-oriented reporting helpers;
 - implementation-matched LaTeX mathematical contracts rendered in both GitHub and the methods site;
 - deterministic documentation plot gallery regenerated from the real package plotting APIs in CI;
@@ -142,6 +147,12 @@ print(summarise_fpca(fit))
 | New-trajectory conformal anomaly review | split-conformal FPCA nonconformity | `split_conformal_fpca_anomaly()` |
 | Group influence | leave-one-group-out matched FPCs | `leave_one_group_out_fpca_influence()` |
 | Scalar outcome predicted by gaze | FPCA-score approximation | `fit_scalar_on_function_regression()` |
+| Recurrent gaze-state structure | sparse recurrence / RQA | `recurrence_matrix()` / `rqa_metrics()` |
+| Time-varying recurrent dynamics | sliding full-window RQA | `windowed_rqa()` |
+| Reconstructed nonlinear state | delay coordinates with explicit (m,	au) | `delay_embed_trajectory()` |
+| Local state-space divergence | Rosenstein nearest-neighbor divergence | `local_divergence_curve()` / `estimate_largest_lyapunov_rosenstein()` |
+| Nonlinearity vs linear-stochastic null | IAAFT surrogate test | `surrogate_nonlinearity_test()` |
+| Repeated approximate cycles | empirical Poincare return map (experimental) | `poincare_crossings()` / `fit_local_return_map()` |
 
 ## Documentation
 
@@ -151,11 +162,11 @@ The methods site is configured for GitHub Pages:
 
 **https://stefanosbalaskas.github.io/eyetrajectoriespy/**
 
-It includes a tutorial gallery, representation selection, native irregular and sparse PACE workflows, FPCA/MFPCA interpretation, leakage-aware component selection, matched-bootstrap FPC uncertainty, simultaneous FPC-shape bands, spectrum uncertainty, score basis-resampling uncertainty, Gaussian FPCR bootstrap uncertainty, simultaneous slope bands, future-outcome prediction intervals, heteroscedastic wild-bootstrap projection inference, simultaneous fixed-target wild-bootstrap intervals, eigengap/subspace stability, bootstrap stability, phase analysis, registration cautions, multilevel and compositional workflows, basis/elastic interoperability, failure cases, pre-registration/reporting guidance, limitations, worked examples, and API documentation, an implementation-matched mathematical reference, and a reproducible SVG plot gallery.
+It includes a tutorial gallery, representation selection, nonlinear state-space reconstruction, recurrence/RQA, local-divergence and surrogate workflows, experimental return-map stability, native irregular and sparse PACE workflows, FPCA/MFPCA interpretation, leakage-aware component selection, matched-bootstrap FPC uncertainty, simultaneous FPC-shape bands, spectrum uncertainty, score basis-resampling uncertainty, Gaussian FPCR bootstrap uncertainty, simultaneous slope bands, future-outcome prediction intervals, heteroscedastic wild-bootstrap projection inference, simultaneous fixed-target wild-bootstrap intervals, eigengap/subspace stability, bootstrap stability, phase analysis, registration cautions, multilevel and compositional workflows, basis/elastic interoperability, failure cases, pre-registration/reporting guidance, limitations, worked examples, and API documentation, an implementation-matched mathematical reference, and a reproducible SVG plot gallery.
 
 ## Scope boundary
 
-`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages.
+`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.23 supports empirical nonlinear trajectory diagnostics, but classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
 
 ## Validation
 

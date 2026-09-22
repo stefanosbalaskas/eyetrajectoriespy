@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eyetrajectoriespy"
-version = "0.22.0.dev0"
+version = "0.23.0.dev0"
 description = "Functional and continuous trajectory analysis for eye-tracking data in Python"
 readme = "README.md"
 license = "MIT"
@@ -28,7 +28,7 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering :: Information Analysis",
 ]
-keywords = ["eye-tracking", "gaze", "functional-data-analysis", "FPCA", "MFPCA", "trajectory-analysis", "curve-registration"]
+keywords = ["eye-tracking", "gaze", "functional-data-analysis", "FPCA", "MFPCA", "trajectory-analysis", "curve-registration", "recurrence-analysis", "nonlinear-dynamics"]
 
 [project.optional-dependencies]
 fda = ["scikit-fda>=0.10.1,<0.11", "multimethod>=1.12,<2"]

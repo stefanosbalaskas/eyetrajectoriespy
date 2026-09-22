@@ -207,3 +207,99 @@ $$
 **Scope:** Marginal curve-level split-conformal interpretation under exchangeability; review flags are never automatic exclusions.
 
 [Expanded mathematical reference](../methods/mathematical-reference.md#conformal)
+
+## Delay-coordinate reconstruction and embedding diagnostics
+
+**Functions:** `delay_embed_trajectory()`, `embedding_delay_diagnostics()`, `embedding_dimension_diagnostics()`
+
+$$
+\mathbf z_t=[\mathbf G(t),\mathbf G(t-\tau),\ldots,\mathbf G(t-(m-1)\tau)]
+$$
+
+$$
+I(\tau)=\sum_{a,b}p_{ab}(\tau)\log\frac{p_{ab}(\tau)}{p_a p_b}
+$$
+
+$$
+\mathrm{FNN}_m=\frac{1}{N_m}\sum_i \mathbb I\{\text{neighbor }i\text{ fails the declared }R_{\mathrm{tol}}\text{ or }A_{\mathrm{tol}}\text{ criterion}\}
+$$
+
+**Scope:** Common-grid reconstruction only; delay and embedding dimension remain analyst-declared after diagnostics, with no silent smoothing, interpolation, or scaling.
+
+[Expanded mathematical reference](../methods/mathematical-reference.md#delay-embedding)
+
+## Sparse recurrence and recurrence quantification
+
+**Functions:** `recurrence_matrix()`, `rqa_metrics()`, `windowed_rqa()`, `cross_recurrence_matrix()`, `cross_rqa_metrics()`
+
+$$
+R_{ij}=\mathbb I\{\|\mathbf z_i-\mathbf z_j\|_p\le\varepsilon\}
+$$
+
+$$
+\mathrm{RR}=\frac{\sum_{i<j}R_{ij}}{N_{\mathrm{eligible}}}
+$$
+
+$$
+\mathrm{DET}=\frac{\sum_{\ell\ge\ell_{\min}}\ell P_d(\ell)}{\sum_{\ell\ge1}\ell P_d(\ell)}
+$$
+
+$$
+\mathrm{LAM}=\frac{\sum_{v\ge v_{\min}}v P_v(v)}{\sum_{v\ge1}v P_v(v)}
+$$
+
+**Scope:** Sparse observed-state or reconstructed-state recurrence with an explicit radius policy, metric, Theiler exclusion, and line-length thresholds.
+
+[Expanded mathematical reference](../methods/mathematical-reference.md#recurrence)
+
+## Rosenstein local divergence and largest Lyapunov estimate
+
+**Functions:** `local_divergence_curve()`, `estimate_largest_lyapunov_rosenstein()`
+
+$$
+d_i(k)=\|\mathbf z_{i+k}-\mathbf z_{j(i)+k}\|_2
+$$
+
+$$
+D(k)=\frac{1}{N_k}\sum_i\log d_i(k)
+$$
+
+$$
+D(k)\approx a+\lambda_{\max}k\Delta t
+$$
+
+**Scope:** Nearest-neighbor local-divergence estimate with explicit Theiler window and analyst-declared linear fit interval; a positive estimate is not standalone evidence of deterministic chaos.
+
+[Expanded mathematical reference](../methods/mathematical-reference.md#local-divergence)
+
+## IAAFT surrogate nonlinearity test
+
+**Functions:** `surrogate_nonlinearity_test()`
+
+$$
+p=\frac{1+\sum_{b=1}^{B}\mathbb I(T_b^*\ge T_{\mathrm{obs}})}{B+1}
+$$
+
+**Scope:** Monte Carlo test against the declared IAAFT linear-stochastic surrogate null using identical statistic settings for observed and surrogate series.
+
+[Expanded mathematical reference](../methods/mathematical-reference.md#surrogate-nonlinearity)
+
+## Empirical Poincare return-map stability
+
+**Functions:** `poincare_crossings()`, `fit_local_return_map()`, `return_map_stability()`
+
+$$
+h(\mathbf z)=0,\qquad \mathbf z_n=\text{successive section crossings}
+$$
+
+$$
+\mathbf z_{n+1}=\mathbf a+\mathbf J(\mathbf z_n-\mathbf z_0)+\boldsymbol\varepsilon_n
+$$
+
+$$
+\rho(\mathbf J)=\max_j|\lambda_j(\mathbf J)|
+$$
+
+**Scope:** Experimental local affine cycle-to-cycle diagnostic; the empirical Jacobian is not a variational-equation monodromy matrix and its eigenvalues are not classical Floquet multipliers.
+
+[Expanded mathematical reference](../methods/mathematical-reference.md#return-map-stability)

@@ -1,0 +1,222 @@
+"""Result objects for nonlinear trajectory dynamics."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Any, Mapping
+
+import numpy as np
+import pandas as pd
+from scipy.sparse import csr_matrix
+
+
+@dataclass(frozen=True)
+class DelayEmbeddingResult:
+    """Delay-coordinate state-space reconstruction for common-grid trajectories."""
+
+    values: np.ndarray
+    time: np.ndarray
+    curve_ids: tuple[str, ...]
+    source_dimension_names: tuple[str, ...]
+    state_names: tuple[str, ...]
+    embedding_dimension: int
+    delay_samples: int
+    delay_time: float
+    time_unit: str
+    coordinate_system: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_curves(self) -> int:
+        return self.values.shape[0]
+
+    @property
+    def n_states(self) -> int:
+        return self.values.shape[1]
+
+    @property
+    def state_dimension(self) -> int:
+        return self.values.shape[2]
+
+
+@dataclass(frozen=True)
+class EmbeddingDelayDiagnosticResult:
+    """Average-mutual-information and autocorrelation delay diagnostics."""
+
+    table: pd.DataFrame
+    curve_id: str
+    dimension: str
+    bins: int
+    max_lag_samples: int
+    time_unit: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class EmbeddingDimensionDiagnosticResult:
+    """False-nearest-neighbor embedding-dimension diagnostics."""
+
+    table: pd.DataFrame
+    curve_id: str
+    dimension: str
+    delay_samples: int
+    theiler_window_samples: int
+    rtol: float
+    atol: float
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class RecurrenceResult:
+    """Sparse recurrence or cross-recurrence matrix plus explicit construction metadata."""
+
+    matrix: csr_matrix
+    time_a: np.ndarray
+    time_b: np.ndarray
+    source_curve_ids: tuple[str, ...]
+    radius: float
+    target_recurrence_rate: float | None
+    achieved_recurrence_rate: float
+    metric: str
+    theiler_window_samples: int
+    kind: str
+    state_dimension: int
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def shape(self) -> tuple[int, int]:
+        return self.matrix.shape
+
+
+@dataclass(frozen=True)
+class RQAResult:
+    """Recurrence-quantification metrics with line-threshold provenance."""
+
+    recurrence_rate: float
+    determinism: float
+    mean_diagonal_length: float
+    max_diagonal_length: int
+    diagonal_entropy: float
+    laminarity: float
+    trapping_time: float
+    max_vertical_length: int
+    center_of_recurrence_mass: float
+    n_recurrence_points: int
+    n_diagonal_lines: int
+    n_vertical_lines: int
+    min_diagonal_length: int
+    min_vertical_length: int
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class WindowedRQAResult:
+    """Time-resolved RQA metrics from explicitly sized sliding windows."""
+
+    table: pd.DataFrame
+    window_samples: int
+    step_samples: int
+    dropped_tail_samples: int
+    time_unit: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class LocalDivergenceResult:
+    """Rosenstein-style mean log-divergence curve before linear fitting."""
+
+    horizons: np.ndarray
+    time_lags: np.ndarray
+    mean_log_divergence: np.ndarray
+    pair_counts: np.ndarray
+    zero_distance_counts: np.ndarray
+    nearest_neighbor_indices: np.ndarray
+    theiler_window_samples: int
+    max_horizon_samples: int
+    curve_id: str
+    time_unit: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class LargestLyapunovResult:
+    """Largest-Lyapunov estimate from an explicitly selected divergence interval."""
+
+    exponent: float
+    exponent_unit: str
+    intercept: float
+    r_squared: float
+    standard_error: float
+    fit_start: float
+    fit_end: float
+    n_fit_points: int
+    divergence: LocalDivergenceResult
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class SurrogateNonlinearityResult:
+    """Monte Carlo surrogate-data test for a declared nonlinear statistic."""
+
+    observed_statistic: float
+    surrogate_statistics: np.ndarray
+    p_value: float
+    alternative: str
+    statistic: str
+    method: str
+    n_surrogates: int
+    random_state: int | None
+    convergence_iterations: np.ndarray
+    spectral_errors: np.ndarray
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class PoincareCrossingResult:
+    """Interpolated crossings of an explicitly declared Poincare section."""
+
+    states: np.ndarray
+    times: np.ndarray
+    left_indices: np.ndarray
+    fractions: np.ndarray
+    curve_id: str
+    section_dimension: str
+    section_value: float
+    direction: str
+    state_dimensions: tuple[str, ...]
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_crossings(self) -> int:
+        return self.states.shape[0]
+
+
+@dataclass(frozen=True)
+class LocalReturnMapResult:
+    """Local affine return-map fit around an explicitly declared reference state."""
+
+    reference_state: np.ndarray
+    selected_transition_indices: np.ndarray
+    jacobian: np.ndarray
+    intercept: np.ndarray
+    residuals: np.ndarray
+    r_squared: np.ndarray
+    design_condition_number: float
+    neighborhood_policy: str
+    neighborhood_value: float | int
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_transitions(self) -> int:
+        return self.selected_transition_indices.size
+
+
+@dataclass(frozen=True)
+class ReturnMapStabilityResult:
+    """Eigenvalue-based local return-map contraction/expansion diagnostic."""
+
+    eigenvalues: np.ndarray
+    spectral_radius: float
+    classification: str
+    tolerance: float
+    provenance: Mapping[str, Any] = field(default_factory=dict)

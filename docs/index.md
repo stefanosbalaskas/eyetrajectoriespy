@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.22 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.23 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
@@ -208,6 +208,15 @@ The package is designed around the principle that **the path to an FPC score is 
 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
+
+## New in 0.23 development
+
+- explicit multivariate delay-coordinate reconstruction with diagnostic-only AMI/autocorrelation and false-nearest-neighbor curves;
+- sparse recurrence/RQA, full-window time-varying RQA, and cross-recurrence analysis with fixed-radius or target-recurrence-rate contracts;
+- Rosenstein nearest-neighbor local divergence and largest-Lyapunov estimation with an analyst-declared fit interval and retained fit diagnostics;
+- deterministic IAAFT surrogate nonlinearity testing with plus-one Monte Carlo p-values and no silent failed-surrogate replacement;
+- experimental Poincare-section / local return-map stability with an explicit warning that empirical Jacobian eigenvalues are not classical Floquet multipliers;
+- twelve-figure deterministic documentation gallery, nonlinear worked examples, equations, assumptions, limitations, reporting guidance, and public API reference.
 
 ## New in 0.22 development
 

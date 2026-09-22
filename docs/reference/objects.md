@@ -9,6 +9,20 @@ Immutable metadata linking one scientific contract to a stable key, title, regis
 
 The registry is documentation metadata only. A contract lookup does not fit a model, select components, alter defaults, or execute an estimator.
 
+## Nonlinear-dynamics result objects
+
+`DelayEmbeddingResult` preserves reconstructed state vectors, endpoint times, selected source dimensions, explicit delay in samples/time, and whether a constant physical delay exists.
+
+`EmbeddingDelayDiagnosticResult` and `EmbeddingDimensionDiagnosticResult` retain the diagnostic tables and all AMI/FNN settings without choosing `tau` or `m`.
+
+`RecurrenceResult` stores recurrence as a SciPy CSR sparse matrix together with radius policy, achieved recurrence rate, metric, Theiler exclusion, state dimension, and source provenance. `RQAResult` records line thresholds and recurrence-line counts in addition to summary metrics. `WindowedRQAResult` retains the number of trailing samples outside full windows.
+
+`LocalDivergenceResult` retains the full mean log-divergence curve, usable-neighbor counts, zero-distance counts, and neighbor assignments. `LargestLyapunovResult` adds only the analyst-declared linear fit and its slope/R²/SE.
+
+`SurrogateNonlinearityResult` retains every surrogate statistic, IAAFT iteration count, random seed, alternative, plus-one p-value, and test provenance.
+
+`PoincareCrossingResult`, `LocalReturnMapResult`, and `ReturnMapStabilityResult` are explicitly experimental. They retain section definition, interpolated crossings, neighborhood selection, fitted empirical Jacobian, residual diagnostics, design condition number, eigenvalues, spectral radius, and the non-Floquet interpretation boundary.
+
 ## `TrajectorySet`
 
 Shape: `n_curves × n_time × n_dimensions`.

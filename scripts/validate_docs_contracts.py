@@ -46,6 +46,11 @@ def main() -> None:
         "fpca_wild_bootstrap_projection_family_test()",
         "fpca_wild_bootstrap_family_test_monte_carlo_diagnostics()",
         "split_conformal_fpca_anomaly()",
+        "delay_embed_trajectory()",
+        "recurrence_matrix()",
+        "estimate_largest_lyapunov_rosenstein()",
+        "surrogate_nonlinearity_test()",
+        "return_map_stability()",
     }
     missing_math_api = sorted(name for name in required_math if name not in math_page)
     if missing_math_api:
@@ -78,8 +83,8 @@ def main() -> None:
 
     gallery = (DOCS / "methods" / "visual-gallery.md").read_text(encoding="utf-8")
     asset_refs = sorted(set(re.findall(r"\.\./assets/gallery/([^)\s]+\.svg)", gallery)))
-    if len(asset_refs) < 8:
-        raise RuntimeError("visual gallery must reference at least eight SVG figures")
+    if len(asset_refs) < 12:
+        raise RuntimeError("visual gallery must reference at least twelve SVG figures")
     missing_assets = sorted(
         name for name in asset_refs if not (DOCS / "assets" / "gallery" / name).exists()
     )
@@ -87,7 +92,7 @@ def main() -> None:
         raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.22.0.dev0"):
+    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.23.0.dev0"):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
 

@@ -1,9 +1,19 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.22.0.dev0"
+    assert et.__version__=="0.23.0.dev0"
     required={
         "MathematicalContract","get_mathematical_contract","list_mathematical_contracts","mathematical_contract_frame",
+        "DelayEmbeddingResult","EmbeddingDelayDiagnosticResult","EmbeddingDimensionDiagnosticResult","RecurrenceResult","RQAResult","WindowedRQAResult",
+        "LocalDivergenceResult","LargestLyapunovResult","SurrogateNonlinearityResult","PoincareCrossingResult","LocalReturnMapResult","ReturnMapStabilityResult",
+        "delay_embed_trajectory","embedding_delay_diagnostics","embedding_dimension_diagnostics",
+        "recurrence_matrix","rqa_metrics","windowed_rqa","cross_recurrence_matrix","cross_rqa_metrics",
+        "local_divergence_curve","estimate_largest_lyapunov_rosenstein","surrogate_nonlinearity_test",
+        "poincare_crossings","fit_local_return_map","return_map_stability",
+        "plot_embedding_delay_diagnostics","plot_embedding_dimension_diagnostics","plot_recurrence","plot_windowed_rqa",
+        "plot_local_divergence","plot_surrogate_nonlinearity","plot_poincare_return_map",
+        "rqa_reporting_text","windowed_rqa_reporting_text","largest_lyapunov_reporting_text",
+        "surrogate_nonlinearity_reporting_text","return_map_stability_reporting_text",
         "TrajectorySet","fit_fpca","fit_mfpca","fit_multilevel_fpca","fit_compositional_fpca","FPCAScoreUncertaintyResult","FPCASpectrumUncertaintyResult",
         "register_to_landmarks","fit_elastic_fpca","simulate_planar_trajectories",
         "fit_scalar_on_function_regression","plot_fpca_component",

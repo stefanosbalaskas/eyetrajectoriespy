@@ -233,3 +233,19 @@ The diagnostic confidence level concerns Monte Carlo precision only. It is not a
 Decision-stability flags are intentionally subordinate to the original test decision. They indicate whether the exact Monte Carlo interval lies wholly on the same side of alpha as that already reported decision.
 
 The method assumes a fixed completed bootstrap budget. Optional or sequential stopping based on interim p-values is outside the 0.20 validity contract.
+
+## Nonlinear trajectory dynamics
+
+Delay-coordinate and recurrence analyses assume that the chosen state variables, units, preprocessing, and temporal sampling are scientifically interpretable. Version 0.23 never rescales channels, interpolates missing values, smooths trajectories, or chooses the state variables automatically.
+
+Time-based delays, Theiler windows, divergence horizons, and LLE fit intervals require an approximately regular common grid. Sample-based delay embedding can be applied on a nonuniform common time grid, but then a single physical (	au) does not exist; the result records this explicitly.
+
+AMI and false-nearest-neighbor curves are diagnostics rather than universally valid selectors. Finite sample size, noise, nonstationarity, periodicity, filtering, and measurement precision can alter both.
+
+RQA metrics are conditional on the chosen state representation, norm, recurrence-radius policy, Theiler window, and minimum line lengths. A target recurrence rate intentionally conditions comparisons on approximately similar recurrence density and therefore changes the interpretation of RR itself.
+
+Rosenstein-style local divergence assumes that nearby reconstructed states are meaningful local neighbors and that the declared fit interval captures an approximately linear log-divergence region. Adequate temporally separated neighbors and sufficient forward trajectories are required.
+
+IAAFT testing assumes the surrogate null is scientifically meaningful: a process compatible with the observed marginal distribution and approximately the observed linear autocorrelation/power-spectrum structure. Rejection is relative to that null, not proof of a specific nonlinear generator.
+
+Empirical return-map stability additionally assumes that the declared section identifies repeated comparable cycles and that a local affine map is meaningful in the selected neighborhood. The fitted Jacobian is a data-driven local regression object, not a model-derived variational flow.

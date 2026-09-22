@@ -57,6 +57,35 @@ flowchart TD
     J --> K[Monte Carlo precision audit]
 \`\`\`
 
+## Nonlinear trajectory dynamics
+
+\`\`\`mermaid
+flowchart TD
+    A[Scientifically interpretable common-grid trajectory] --> B{Question}
+    B -->|Reconstructed state geometry| C[Declare dimensions m and tau]
+    C --> D[Delay embedding]
+    B -->|Recurrent structure| E[Declare observed/reconstructed state]
+    E --> F[Radius policy + metric + Theiler window]
+    F --> G[Sparse recurrence]
+    G --> H[RQA]
+    G --> I[Windowed or cross-RQA]
+    B -->|Local divergence| J[Delay embedding]
+    J --> K[Nearest neighbors outside Theiler window]
+    K --> L[Local divergence curve]
+    L --> M[Declare fit interval]
+    M --> N[Rosenstein LLE]
+    N --> O[IAAFT surrogate test]
+    B -->|Repeated approximate cycle| P[Declare Poincare section]
+    P --> Q[Interpolated crossings]
+    Q --> R[Declare reference + neighborhood]
+    R --> S[Empirical local return map]
+    S --> T[Spectral radius]
+    T --> U[Experimental contraction / expansion]
+\`\`\`
+
+!!! warning
+    The return-map branch is empirical. It does not produce a classical monodromy matrix or Floquet multipliers. Numerical continuation likewise requires a separately identified dynamical model.
+
 ## Function → equation → figure
 
 \`\`\`mermaid

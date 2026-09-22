@@ -200,6 +200,89 @@ _CONTRACTS = (
         site_anchor="conformal",
         scope="Marginal curve-level split-conformal interpretation under exchangeability; review flags are never automatic exclusions.",
     ),
+    MathematicalContract(
+        key="delay-embedding",
+        title="Delay-coordinate reconstruction and embedding diagnostics",
+        public_api=(
+            "delay_embed_trajectory",
+            "embedding_delay_diagnostics",
+            "embedding_dimension_diagnostics",
+        ),
+        equations=(
+            r"\mathbf z_t=[\mathbf G(t),\mathbf G(t-\tau),\ldots,"
+            r"\mathbf G(t-(m-1)\tau)]",
+            r"I(\tau)=\sum_{a,b}p_{ab}(\tau)"
+            r"\log\frac{p_{ab}(\tau)}{p_a p_b}",
+            r"\mathrm{FNN}_m=\frac{1}{N_m}\sum_i "
+            r"\mathbb I\{\text{neighbor }i\text{ fails the declared }"
+            r"R_{\mathrm{tol}}\text{ or }A_{\mathrm{tol}}\text{ criterion}\}",
+        ),
+        site_anchor="delay-embedding",
+        scope="Common-grid reconstruction only; delay and embedding dimension remain analyst-declared after diagnostics, with no silent smoothing, interpolation, or scaling.",
+    ),
+    MathematicalContract(
+        key="recurrence",
+        title="Sparse recurrence and recurrence quantification",
+        public_api=(
+            "recurrence_matrix",
+            "rqa_metrics",
+            "windowed_rqa",
+            "cross_recurrence_matrix",
+            "cross_rqa_metrics",
+        ),
+        equations=(
+            r"R_{ij}=\mathbb I\{\|\mathbf z_i-\mathbf z_j\|_p\le\varepsilon\}",
+            r"\mathrm{RR}=\frac{\sum_{i<j}R_{ij}}{N_{\mathrm{eligible}}}",
+            r"\mathrm{DET}=\frac{\sum_{\ell\ge\ell_{\min}}\ell P_d(\ell)}"
+            r"{\sum_{\ell\ge1}\ell P_d(\ell)}",
+            r"\mathrm{LAM}=\frac{\sum_{v\ge v_{\min}}v P_v(v)}"
+            r"{\sum_{v\ge1}v P_v(v)}",
+        ),
+        site_anchor="recurrence",
+        scope="Sparse observed-state or reconstructed-state recurrence with an explicit radius policy, metric, Theiler exclusion, and line-length thresholds.",
+    ),
+    MathematicalContract(
+        key="local-divergence",
+        title="Rosenstein local divergence and largest Lyapunov estimate",
+        public_api=(
+            "local_divergence_curve",
+            "estimate_largest_lyapunov_rosenstein",
+        ),
+        equations=(
+            r"d_i(k)=\|\mathbf z_{i+k}-\mathbf z_{j(i)+k}\|_2",
+            r"D(k)=\frac{1}{N_k}\sum_i\log d_i(k)",
+            r"D(k)\approx a+\lambda_{\max}k\Delta t",
+        ),
+        site_anchor="local-divergence",
+        scope="Nearest-neighbor local-divergence estimate with explicit Theiler window and analyst-declared linear fit interval; a positive estimate is not standalone evidence of deterministic chaos.",
+    ),
+    MathematicalContract(
+        key="surrogate-nonlinearity",
+        title="IAAFT surrogate nonlinearity test",
+        public_api=("surrogate_nonlinearity_test",),
+        equations=(
+            r"p=\frac{1+\sum_{b=1}^{B}\mathbb I(T_b^*\ge T_{\mathrm{obs}})}{B+1}",
+        ),
+        site_anchor="surrogate-nonlinearity",
+        scope="Monte Carlo test against the declared IAAFT linear-stochastic surrogate null using identical statistic settings for observed and surrogate series.",
+    ),
+    MathematicalContract(
+        key="return-map-stability",
+        title="Empirical Poincare return-map stability",
+        public_api=(
+            "poincare_crossings",
+            "fit_local_return_map",
+            "return_map_stability",
+        ),
+        equations=(
+            r"h(\mathbf z)=0,\qquad \mathbf z_n=\text{successive section crossings}",
+            r"\mathbf z_{n+1}=\mathbf a+\mathbf J(\mathbf z_n-\mathbf z_0)"
+            r"+\boldsymbol\varepsilon_n",
+            r"\rho(\mathbf J)=\max_j|\lambda_j(\mathbf J)|",
+        ),
+        site_anchor="return-map-stability",
+        scope="Experimental local affine cycle-to-cycle diagnostic; the empirical Jacobian is not a variational-equation monodromy matrix and its eigenvalues are not classical Floquet multipliers.",
+    ),
 )
 
 

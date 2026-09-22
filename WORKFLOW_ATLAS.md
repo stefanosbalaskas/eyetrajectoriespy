@@ -32,6 +32,23 @@ flowchart LR
     G --> H[Monte Carlo precision]
 \`\`\`
 
+## Nonlinear dynamics
+
+\`\`\`mermaid
+flowchart LR
+    A[Continuous trajectory] --> B[Explicit state definition]
+    B --> C[Delay embedding diagnostics]
+    B --> D[Sparse recurrence / RQA]
+    C --> E[Local divergence]
+    E --> F[Rosenstein LLE]
+    F --> G[IAAFT surrogate test]
+    B --> H[Declared Poincare section]
+    H --> I[Empirical local return map]
+    I --> J[Experimental spectral-radius stability]
+\`\`\`
+
+Classical Floquet/monodromy and continuation analysis are intentionally excluded from the raw-gaze pathway.
+
 ## Documentation contract
 
 \`\`\`mermaid
