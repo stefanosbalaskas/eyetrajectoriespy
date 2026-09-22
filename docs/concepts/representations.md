@@ -51,3 +51,10 @@ $$
 $$
 
 These representations answer different questions and are never silently substituted for one another. Channel scaling is also not introduced automatically; distances inherit the declared coordinate/state units.
+## RQA-metric functional trajectories
+
+`windowed_rqa_trajectory_set()` creates a derived `TrajectorySet` with `coordinate_system="rqa_metrics"`. Its dimensions are explicitly selected recurrence summaries such as RR, DET, LAM, line lengths, entropy, or CORM, and its time grid is the sequence of complete-window centers.
+
+This label distinguishes derived nonlinear summaries from screen-space coordinates. Per-metric units remain explicit in provenance because the dimensions are heterogeneous: proportions, state-step counts, nats, and percentages must not be silently treated as having common physical units.
+
+Overlapping windows remain within-curve dependent. Functionalization changes representation; it does not create new observational units.
