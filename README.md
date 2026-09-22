@@ -65,7 +65,9 @@ Registration is especially explicit because latency can itself be psychologicall
 - scalar-on-function regression through FPCA scores;
 - reproducible synthetic datasets and manuscript-oriented reporting helpers;
 - implementation-matched LaTeX mathematical contracts rendered in both GitHub and the methods site;
-- deterministic documentation plot gallery regenerated from the real package plotting APIs in CI.
+- deterministic documentation plot gallery regenerated from the real package plotting APIs in CI;
+- public function → LaTeX mathematical-contract registry with deterministic generated repository/site indexes;
+- GitHub- and website-rendered workflow atlases connecting representation, inference, functions, equations, examples, and figures.
 
 ## Install
 
@@ -143,7 +145,7 @@ print(summarise_fpca(fit))
 
 ## Documentation
 
-The repository-level [mathematical contracts](MATHEMATICAL_CONTRACTS.md) render directly on GitHub. The site expands those equations with assumptions, API mappings, worked examples, and a [Visual gallery](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/visual-gallery/).
+The repository-level [mathematical contracts](MATHEMATICAL_CONTRACTS.md), generated [function → equation index](FUNCTION_EQUATION_INDEX.md), and [workflow atlas](WORKFLOW_ATLAS.md) render directly on GitHub. The site expands them with assumptions, API mappings, worked examples, and a [Visual gallery](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/visual-gallery/).
 
 The methods site is configured for GitHub Pages:
 
@@ -162,6 +164,7 @@ Current local/CI qualification status and the exact pending re-check list are ma
 ```bash
 python -m pytest --cov=eyetrajectoriespy
 python -m compileall -q src
+python scripts/generate_function_equation_index.py --check
 python scripts/generate_docs_gallery.py
 python scripts/validate_docs_contracts.py
 mkdocs build --strict
