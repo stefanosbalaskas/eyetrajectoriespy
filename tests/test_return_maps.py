@@ -124,3 +124,16 @@ def test_poincare_requires_nonempty_state_dimensions():
             section_value=0.0,
             direction="both",
         )
+
+
+def test_poincare_rejects_section_coordinate_in_return_state():
+    data = _spiral_cycles()
+    with pytest.raises(ValueError, match="cannot include section_dimension"):
+        poincare_crossings(
+            data,
+            curve=0,
+            section_dimension="x",
+            section_value=0.0,
+            direction="positive",
+            state_dimensions=("x", "y"),
+        )
