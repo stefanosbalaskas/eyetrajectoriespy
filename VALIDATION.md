@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.19.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, heteroscedastic Gaussian FPCR fixed-target wild-bootstrap inference, stabilized-volatility wild-bootstrap truncation selection, familywise simultaneous fixed-target wild-bootstrap calibration, fixed-family wild-bootstrap hypothesis testing with single-step maxT adjustment and a global family test, split-conformal FPCA anomaly review, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.20.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, heteroscedastic Gaussian FPCR fixed-target wild-bootstrap inference, stabilized-volatility wild-bootstrap truncation selection, familywise simultaneous fixed-target wild-bootstrap calibration, fixed-family wild-bootstrap hypothesis testing with single-step maxT adjustment and a global family test, finite-bootstrap Monte Carlo precision diagnostics for retained resampling tail probabilities, split-conformal FPCA anomaly review, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -1184,3 +1184,48 @@ Therefore the 0.19 fixed-family heteroscedastic Gaussian FPCR wild-bootstrap hyp
 
 The 0.19 fixed-family target-wise and maxT-adjusted testing layer, complete-family global test, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.19 scientific lineage.
 
+
+
+## 0.20 exact-main scientific qualification and deployment — 2026-09-22
+
+Exact scientific main commit:
+
+`3c8b3cb9f83bd78bcbcbe441b47034669f687072`
+
+Version 0.20 adds finite-bootstrap Monte Carlo precision diagnostics for the 0.19 fixed-family Gaussian FPCR wild-bootstrap testing layer.
+
+Scientific/numerical contract:
+
+- target-wise, single-step maxT-adjusted, and complete-family global exceedance counts are reconstructed from the exact retained studentized-root matrix;
+- raw exceedance fractions `r/B` are diagnostic quantities and do not replace the configured 0.19 plus-one/raw hypothesis-test p-values;
+- plug-in Monte Carlo standard errors are reported alongside exact Clopper-Pearson binomial intervals, including `r=0` and `r=B` boundary cases;
+- decision-stability diagnostics require the complete Monte Carlo interval to lie on the same side of alpha as the already reported 0.19 decision;
+- no FPCA fit, score regression, residual calculation, multiplier draw, or bootstrap replicate is rerun;
+- provenance distinguishes Monte Carlo simulation precision from scientific sampling uncertainty;
+- no new strong-FWER, subset-pivotality, clustered-bootstrap, component-selection, or sequential-stopping guarantee is claimed.
+
+Exact-main GitHub qualification on `3c8b3cb9f83bd78bcbcbe441b47034669f687072`:
+
+- tests workflow #85: **success**;
+- package job: **success**;
+- Windows × Python 3.11, 3.12, 3.13: **3/3 success**;
+- Ubuntu × Python 3.11, 3.12, 3.13: **3/3 success**;
+- macOS × Python 3.11, 3.12, 3.13: **3/3 success**;
+- representative macOS / Python 3.13 log: **172 passed, 5 skipped**, **92.52% coverage** against the unchanged 90% gate, and Ruff **All checks passed**;
+- examples workflow #85: **success**, including the new Monte Carlo diagnostics example;
+- docs workflow #85: **success**, including strict build and **successful GitHub Pages deployment**;
+- optional-fda workflow #81: **success**;
+- optional-sparse-fda workflow #69: **success**, with FDApy Python 3.11 and 3.12 both green.
+
+No tests, coverage thresholds, workflows, branch protections, or scientific validation gates were weakened, disabled, deleted, or bypassed.
+
+## 0.20 remaining re-checks
+
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13.
+2. The Monte Carlo intervals quantify finite-resampling simulation precision only; they are not scientific-effect confidence intervals.
+3. The diagnostics do not strengthen the 0.19 single-step maxT multiplicity claim or establish strong FWER for arbitrary subsets.
+4. Clustered/repeated-participant wild-bootstrap inference remains outside the independent-curve contract.
+5. k/g/h and other component-selection uncertainty remain outside the precision diagnostic.
+6. Version 0.20 does not implement sequential/optional-stopping Monte Carlo testing; increasing B after inspecting results must be reported transparently.
+
+The 0.20 Monte Carlo precision implementation, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact scientific main commit above.
