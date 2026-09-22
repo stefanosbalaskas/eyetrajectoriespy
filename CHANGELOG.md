@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.25.0.dev0 — 2026-09-23
+
+Evidence-hardening development tranche; nonlinear numerical estimators are unchanged.
+
+- add `evidence/nonlinear_evidence.json` as a machine-readable nonlinear-method evidence registry with explicit evidence tiers, verified bibliographic identifiers, supported claims, and non-claims;
+- add generated repository/site nonlinear evidence audits from the same registry;
+- verify direct behavioral-gaze RQA precedent, direct eye/pupil signal RQA/CRQA and LLE precedent, and foundational recurrence/embedding/LLE/surrogate methodology separately rather than collapsing them into one evidence category;
+- add Gurtner et al. 2019 behavioral RQA, Mesin et al. 2013 pupil RQA, Piu et al. 2019 pupil CRQA, Fink et al. 2024 pupil-methods review, Eckmann et al. 1987 recurrence plots, Kantz 1994 LLE, Coco & Dale 2014 CRQA, and Wallot & Leonardi 2018 CRQA/MdRQA tutorial to the verified evidence chain;
+- retain five candidate citations from the supplied research report as explicitly unverified audit records rather than silently citing or deleting them;
+- prohibit inference of novelty from failed literature/package searches;
+- remove Wikipedia/Medium-style secondary evidence from the verified-method chain by CI contract;
+- add evidence-registry pytest contracts and docs-CI checks for generated-page freshness, DOI coverage, source quality, unverified-citation leakage, and novelty language;
+- add the evidence audit to the GitHub README, methods navigation, nonlinear guide, method comparison, limitations, roadmap, and homepage;
+- preserve the 0.24 RQA-derived functional-trajectory dependence contract: overlapping windows are not independent units and target-RR mode cannot promote RR itself to an unconstrained functional outcome.
+
 ## 0.24.0.dev0
 
 - Add `windowed_rqa_trajectory_set()` to convert declared sliding-window RQA summaries across source curves into a native functional `TrajectorySet` while retaining every per-curve window table.
