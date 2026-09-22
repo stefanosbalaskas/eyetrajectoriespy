@@ -97,6 +97,8 @@ dimension_diag = embedding_dimension_diagnostics(
 
 No dimension is selected automatically.
 
+Both AMI and false-nearest-neighbor diagnostics require an approximately regular temporal grid. Expressing a lag in samples does not remove that requirement: on an irregular physical-time grid, the same sample offset corresponds to different elapsed times. If event order is the intended axis, encode that choice explicitly as a regular event-index grid.
+
 ## 2. Sparse recurrence analysis
 
 For states \(\mathbf z_i\),
@@ -167,6 +169,8 @@ The result contains:
 - recurrence-point and qualifying-line counts.
 
 The line-length thresholds are part of the result provenance.
+
+The recurrence matrix itself can represent spatial returns among irregularly timed observations, but the standard line-based RQA summaries above require an approximately regular source grid. For cross-RQA, both source grids must be regular with matching sampling steps. No interpolation or sampling-rate correction is performed internally; the raw recurrence result remains available even when line-based RQA is not admissible.
 
 ### Windowed RQA
 
