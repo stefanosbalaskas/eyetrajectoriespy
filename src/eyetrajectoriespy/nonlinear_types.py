@@ -166,6 +166,7 @@ class SurrogateNonlinearityResult:
     n_surrogates: int
     random_state: int | None
     convergence_iterations: np.ndarray
+    spectral_errors: np.ndarray
     provenance: Mapping[str, Any] = field(default_factory=dict)
 
 
