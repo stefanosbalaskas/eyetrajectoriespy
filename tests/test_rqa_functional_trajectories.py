@@ -120,7 +120,7 @@ def test_finite_functional_rqa_enters_mfpca_without_special_adapter():
     gaze = _multi_curve(160)
     result = windowed_rqa_trajectory_set(
         gaze,
-        metrics=("recurrence_rate",),
+        metrics=("recurrence_rate", "max_diagonal_length"),
         window=40,
         step=20,
         radius=0.35,
