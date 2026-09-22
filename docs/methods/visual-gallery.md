@@ -16,7 +16,7 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     **API:** \`simulate_planar_trajectories()\`, \`plot_planar_trajectories()\`
 
-    [Worked example](../examples/evidence-inspection.md) · [Mathematics](mathematical-reference.md#quadrature-weighted-fpca--mfpca)
+    [Worked example](../examples/evidence-inspection.md) · [Mathematics](mathematical-reference.md#fpca)
 
 -   **FPC interpretation curve**
 
@@ -26,7 +26,7 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     **API:** \`fit_mfpca()\`, \`plot_fpca_component()\`
 
-    [FPCA guide](../guides/fpca.md) · [Mathematics](mathematical-reference.md#quadrature-weighted-fpca--mfpca)
+    [FPCA guide](../guides/fpca.md) · [Mathematics](mathematical-reference.md#fpca)
 
 -   **Simultaneous functional mean band**
 
@@ -36,7 +36,7 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     **API:** \`multiplier_functional_mean_band()\`, \`plot_functional_mean_band()\`
 
-    [Worked example](../examples/functional-mean-bands.md) · [Mathematics](mathematical-reference.md#simultaneous-functional-mean-band)
+    [Worked example](../examples/functional-mean-bands.md) · [Mathematics](mathematical-reference.md#mean-band)
 
 -   **Heteroscedastic FPCR target intervals**
 
@@ -46,7 +46,7 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     **API:** \`wild_bootstrap_fpca_projection()\`, \`plot_fpca_wild_bootstrap_projection()\`
 
-    [Worked example](../examples/fpcr-wild-bootstrap.md) · [Mathematics](mathematical-reference.md#heteroscedastic-gaussian-fpcr-wild-bootstrap)
+    [Worked example](../examples/fpcr-wild-bootstrap.md) · [Mathematics](mathematical-reference.md#wild-bootstrap)
 
 -   **Finite-bootstrap precision**
 
@@ -56,7 +56,7 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     **API:** \`fpca_wild_bootstrap_family_test_monte_carlo_diagnostics()\`, \`plot_fpca_wild_bootstrap_monte_carlo_diagnostics()\`
 
-    [Worked example](../examples/fpcr-wild-bootstrap-monte-carlo.md) · [Mathematics](mathematical-reference.md#finite-bootstrap-monte-carlo-precision)
+    [Worked example](../examples/fpcr-wild-bootstrap-monte-carlo.md) · [Mathematics](mathematical-reference.md#monte-carlo)
 
 </div>
 
