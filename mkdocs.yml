@@ -45,6 +45,7 @@ nav:
       - Wild-bootstrap Monte Carlo precision: guides/fpcr-wild-bootstrap-monte-carlo.md
       - Stabilized-volatility FPCR selection: guides/fpcr-wild-bootstrap-selection.md
       - Derived continuous functions: guides/derived-functions.md
+      - Nonlinear trajectory dynamics: guides/nonlinear-dynamics.md
       - Interpretation: guides/interpretation.md
   - Worked examples:
       - 2-D evidence inspection: examples/evidence-inspection.md
@@ -74,6 +75,8 @@ nav:
       - Stabilized-volatility FPCR selection: examples/fpcr-wild-bootstrap-selection.md
       - Irregular sampling & gaps: examples/irregular-data.md
       - Function → equation registry: examples/function-equation-registry.md
+      - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
+      - Empirical return-map stability: examples/return-map-stability.md
       - Failure cases: examples/failure-cases.md
   - Methods:
       - Reporting checklist: methods/reporting.md
