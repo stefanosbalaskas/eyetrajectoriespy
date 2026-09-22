@@ -21,7 +21,7 @@ The registry is documentation metadata only. A contract lookup does not fit a mo
 
 `SurrogateNonlinearityResult` retains every surrogate statistic, IAAFT iteration count, random seed, alternative, plus-one p-value, and test provenance.
 
-`PoincareCrossingResult`, `LocalReturnMapResult`, and `ReturnMapStabilityResult` are explicitly experimental. They retain section definition, interpolated crossings, neighborhood selection, fitted empirical Jacobian, residual diagnostics, eigenvalues, spectral radius, and the non-Floquet interpretation boundary.
+`PoincareCrossingResult`, `LocalReturnMapResult`, and `ReturnMapStabilityResult` are explicitly experimental. They retain section definition, interpolated crossings, neighborhood selection, fitted empirical Jacobian, residual diagnostics, design condition number, eigenvalues, spectral radius, and the non-Floquet interpretation boundary.
 
 ## `TrajectorySet`
 
