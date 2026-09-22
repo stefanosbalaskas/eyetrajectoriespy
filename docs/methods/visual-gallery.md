@@ -28,6 +28,26 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [FPCA guide](../guides/fpca.md) · [Mathematics](mathematical-reference.md#fpca)
 
+-   **Cumulative FPCA variance**
+
+    ![Cumulative functional principal component variance](../assets/gallery/fpca-variance.svg)
+
+    Retained functional variance across the fitted component sequence.
+
+    **API:** `plot_fpca_variance()`
+
+    [FPCA guide](../guides/fpca.md) · [Function → equation index](../reference/function-equation-index.md)
+
+-   **Registration displacement**
+
+    ![Landmark registration warping displacement](../assets/gallery/registration-warping.svg)
+
+    The retained phase displacement (h_i(t)-t), rather than a hidden registration side effect.
+
+    **API:** `register_to_landmarks()`, `plot_warping_functions()`
+
+    [Registration guide](../guides/registration.md) · [Mathematics](mathematical-reference.md#registration)
+
 -   **Simultaneous functional mean band**
 
     ![Functional mean simultaneous band](../assets/gallery/functional-mean-band.svg)
@@ -47,6 +67,16 @@ These figures are regenerated from deterministic synthetic data during the docum
     **API:** \`wild_bootstrap_fpca_projection()\`, \`plot_fpca_wild_bootstrap_projection()\`
 
     [Worked example](../examples/fpcr-wild-bootstrap.md) · [Mathematics](mathematical-reference.md#wild-bootstrap)
+
+-   **Fixed-family wild-bootstrap tests**
+
+    ![Target-wise and maxT adjusted wild-bootstrap p-values](../assets/gallery/wild-bootstrap-family-test.svg)
+
+    Target-wise and single-step max-(|t|) probabilities for one declared family.
+
+    **API:** `fpca_wild_bootstrap_projection_family_test()`, `plot_fpca_wild_bootstrap_family_test()`
+
+    [Worked example](../examples/fpcr-wild-bootstrap-family-tests.md) · [Mathematics](mathematical-reference.md#family-tests)
 
 -   **Finite-bootstrap precision**
 
@@ -111,4 +141,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates the assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, broken nav target, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates the assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.

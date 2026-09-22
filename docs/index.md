@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.21 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.22 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
@@ -25,6 +25,18 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
     Every gallery figure is generated from seeded synthetic data by the public plotting API during documentation CI.
 
     [:material-chart-line: Visual gallery](methods/visual-gallery.md)
+
+-   **Find the equation for a public function**
+
+    Query the package registry or browse the generated function → equation index. Every registered function maps to LaTeX, an expanded reference anchor, and an explicit scope boundary.
+
+    [:material-function: Function → equation index](reference/function-equation-index.md)
+
+-   **Follow the analysis decision flow**
+
+    Use rendered workflow diagrams to move from sampling structure and scientific object to representation, diagnostics, inference, equations, and plots.
+
+    [:material-family-tree: Workflow atlas](methods/workflow-atlas.md)
 
 </div>
 
@@ -196,6 +208,15 @@ The package is designed around the principle that **the path to an FPC score is 
 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
+
+## New in 0.22 development
+
+- public `MathematicalContract` registry linking scientific functions to implementation-matched LaTeX, stable documentation anchors, and scope statements;
+- deterministic GitHub and website function → equation indexes generated from that registry and checked for drift in CI;
+- a Mermaid workflow atlas covering representation choice, FPCA validation, Gaussian FPCR inference branches, and the function → equation → figure documentation path;
+- visual gallery expanded from five to eight deterministic SVG outputs, adding FPCA variance, registration displacement, and fixed-family wild-bootstrap testing;
+- executable and worked examples showing contract lookup by function/key and tidy registry export;
+- public API, homepage, tutorial gallery, README, and documentation validation updated so formulas are discoverable from code as well as prose.
 
 ## New in 0.21 development
 

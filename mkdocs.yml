@@ -73,6 +73,7 @@ nav:
       - Wild-bootstrap Monte Carlo precision: examples/fpcr-wild-bootstrap-monte-carlo.md
       - Stabilized-volatility FPCR selection: examples/fpcr-wild-bootstrap-selection.md
       - Irregular sampling & gaps: examples/irregular-data.md
+      - Function → equation registry: examples/function-equation-registry.md
       - Failure cases: examples/failure-cases.md
   - Methods:
       - Reporting checklist: methods/reporting.md
@@ -84,9 +85,11 @@ nav:
       - Research FAQ: methods/faq.md
       - Mathematical reference: methods/mathematical-reference.md
       - Visual gallery: methods/visual-gallery.md
+      - Workflow atlas: methods/workflow-atlas.md
       - References: methods/references.md
   - API:
       - Public API: reference/api.md
+      - Function → equation index: reference/function-equation-index.md
       - Object contracts: reference/objects.md
   - Contributing: contributing.md
 
@@ -151,7 +154,11 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.highlight
   - pymdownx.inlinehilite
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
 

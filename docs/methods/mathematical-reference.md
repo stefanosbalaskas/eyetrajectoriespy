@@ -4,6 +4,8 @@ title: Mathematical reference
 
 # Mathematical contracts
 
+Need a concise function-level lookup instead of the expanded derivation? Use the generated [function → equation index](../reference/function-equation-index.md) or query `get_mathematical_contract()` directly. Both are backed by the same 0.22 registry and validated in CI.
+
 This page records the equations implemented by \`eyetrajectoriespy\`. It is a **software contract reference**: each equation is paired with the public API that implements it and with the scope limits that matter for interpretation.
 
 !!! note "Notation"

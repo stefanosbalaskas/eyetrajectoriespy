@@ -50,4 +50,5 @@ jobs:
           python examples/fpcr_wild_bootstrap_family_test.py
           python examples/fpcr_wild_bootstrap_monte_carlo_diagnostics.py
           python examples/mathematical_contracts.py
+          python examples/function_equation_registry.py
           python examples/fpcr_wild_bootstrap_selection.py

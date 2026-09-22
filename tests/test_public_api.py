@@ -1,8 +1,9 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.21.0.dev0"
+    assert et.__version__=="0.22.0.dev0"
     required={
+        "MathematicalContract","get_mathematical_contract","list_mathematical_contracts","mathematical_contract_frame",
         "TrajectorySet","fit_fpca","fit_mfpca","fit_multilevel_fpca","fit_compositional_fpca","FPCAScoreUncertaintyResult","FPCASpectrumUncertaintyResult",
         "register_to_landmarks","fit_elastic_fpca","simulate_planar_trajectories",
         "fit_scalar_on_function_regression","plot_fpca_component",

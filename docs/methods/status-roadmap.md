@@ -52,13 +52,16 @@ This page distinguishes implemented scientific contracts from optional interoper
 
 ## Documentation and mathematical contracts
 
-Version 0.21 treats documentation as a tested package surface:
+Versions 0.21–0.22 treat documentation and mathematical metadata as tested package surfaces:
 
 - the repository-level `MATHEMATICAL_CONTRACTS.md` renders the core equations directly on GitHub;
 - the site mathematical reference maps those equations to the exact public APIs and scope boundaries;
 - a deterministic SVG gallery is generated from seeded synthetic data and the real plotting functions;
 - documentation CI regenerates gallery assets and validates navigation, mathematical API mappings, MathJax wiring, and documented public exports before the strict MkDocs build;
 - the Material-for-MkDocs line is intentionally constrained to compatible 9.x releases with MkDocs <2 for this tranche.
+- version 0.22 adds a public machine-readable mathematical-contract registry plus deterministic GitHub/site function → equation indexes;
+- the same tranche adds a rendered workflow atlas and expands the deterministic SVG gallery to eight figures;
+- CI checks that generated equation indexes still match the package registry before the strict site build.
 
 A future documentation-platform migration can be evaluated independently of the scientific API. No site-framework migration is allowed to alter numerical or scientific contracts.
 
@@ -102,4 +105,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.21.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.22.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

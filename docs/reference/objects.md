@@ -3,6 +3,12 @@
 The result objects below preserve the numerical outputs and provenance of the package contracts. Their corresponding equations are collected in the [mathematical reference](../methods/mathematical-reference.md), and representative plotting outputs are shown in the [visual gallery](../methods/visual-gallery.md).
 
 
+## `MathematicalContract`
+
+Immutable metadata linking one scientific contract to a stable key, title, registered public functions, one or more LaTeX equation bodies, an explicit mathematical-reference anchor, and a short scope boundary.
+
+The registry is documentation metadata only. A contract lookup does not fit a model, select components, alter defaults, or execute an estimator.
+
 ## `TrajectorySet`
 
 Shape: `n_curves × n_time × n_dimensions`.

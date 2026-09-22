@@ -17,10 +17,14 @@ from eyetrajectoriespy import (
     fpca_wild_bootstrap_projection_family_test,
     multiplier_functional_mean_band,
     plot_fpca_component,
+    plot_fpca_variance,
+    plot_fpca_wild_bootstrap_family_test,
     plot_fpca_wild_bootstrap_monte_carlo_diagnostics,
     plot_fpca_wild_bootstrap_projection,
     plot_functional_mean_band,
     plot_planar_trajectories,
+    plot_warping_functions,
+    register_to_landmarks,
     simulate_planar_trajectories,
     wild_bootstrap_fpca_projection,
 )
@@ -42,7 +46,7 @@ def _save(ax, filename: str) -> None:
 
 def main() -> None:
     OUTPUT.mkdir(parents=True, exist_ok=True)
-    matplotlib.rcParams["svg.hashsalt"] = "eyetrajectoriespy-0.21-gallery"
+    matplotlib.rcParams["svg.hashsalt"] = "eyetrajectoriespy-0.22-gallery"
 
     gaze = simulate_planar_trajectories(
         n_participants=32,
@@ -61,6 +65,20 @@ def main() -> None:
         dimension=fpca.dimension_names[0],
     )
     _save(ax, "fpca-component.svg")
+
+    ax = plot_fpca_variance(fpca, cumulative=True)
+    _save(ax, "fpca-variance.svg")
+
+    landmark_rng = np.random.default_rng(2107)
+    observed_landmarks = np.column_stack(
+        [
+            np.clip(landmark_rng.normal(0.65, 0.06, gaze.n_curves), 0.35, 0.95),
+            np.clip(landmark_rng.normal(1.35, 0.07, gaze.n_curves), 1.05, 1.65),
+        ]
+    )
+    registration = register_to_landmarks(gaze, observed_landmarks)
+    ax = plot_warping_functions(registration, displacement=True)
+    _save(ax, "registration-warping.svg")
 
     mean_band = multiplier_functional_mean_band(
         gaze,
@@ -108,6 +126,13 @@ def main() -> None:
         significance_level=0.05,
         pvalue_correction="plus_one",
     )
+    ax = plot_fpca_wild_bootstrap_family_test(
+        family,
+        max_targets=5,
+        show_targetwise=True,
+    )
+    _save(ax, "wild-bootstrap-family-test.svg")
+
     precision = fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(
         family,
         confidence_level=0.95,
@@ -122,8 +147,11 @@ def main() -> None:
     expected = {
         "planar-trajectories.svg",
         "fpca-component.svg",
+        "fpca-variance.svg",
+        "registration-warping.svg",
         "functional-mean-band.svg",
         "wild-bootstrap-projections.svg",
+        "wild-bootstrap-family-test.svg",
         "monte-carlo-precision.svg",
     }
     produced = {path.name for path in OUTPUT.glob("*.svg")}

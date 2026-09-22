@@ -1,7 +1,13 @@
 # Public API
 
-For mathematical definitions of the main estimands, transformations, studentization rules, and calibration statistics, see the [implementation-matched mathematical reference](../methods/mathematical-reference.md). For representative rendered outputs, see the [visual gallery](../methods/visual-gallery.md).
+For mathematical definitions of the main estimands, transformations, studentization rules, and calibration statistics, see the [function → equation index](function-equation-index.md) and [implementation-matched mathematical reference](../methods/mathematical-reference.md). For decision flow, use the [workflow atlas](../methods/workflow-atlas.md); for representative rendered outputs, see the [visual gallery](../methods/visual-gallery.md).
 
+
+## Mathematical contracts
+::: eyetrajectoriespy.MathematicalContract
+::: eyetrajectoriespy.list_mathematical_contracts
+::: eyetrajectoriespy.get_mathematical_contract
+::: eyetrajectoriespy.mathematical_contract_frame
 
 ## Core objects
 ::: eyetrajectoriespy.TrajectorySet
