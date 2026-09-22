@@ -121,6 +121,18 @@ def _require_finite(values: np.ndarray, *, context: str) -> None:
         )
 
 
+def _require_regular_temporal_grid(time: np.ndarray, *, context: str) -> float:
+    try:
+        return _regular_step(time)
+    except ValueError as exc:
+        raise ValueError(
+            f"{context} requires an approximately regular temporal grid; "
+            "sample-index lags on an irregular physical-time grid do not define a single temporal lag. "
+            "Regularize upstream explicitly or represent a scientifically intended event sequence "
+            "on an explicit regular event-index grid."
+        ) from exc
+
+
 def _embed_scalar(signal: np.ndarray, embedding_dimension: int, delay_samples: int) -> np.ndarray:
     n = signal.size - (embedding_dimension - 1) * delay_samples
     if n < 2:
@@ -246,6 +258,10 @@ def embedding_delay_diagnostics(
         raise KeyError(f"Unknown dimension {dimension!r}")
     if not isinstance(bins, (int, np.integer)) or bins < 2:
         raise ValueError("bins must be an integer >= 2")
+    _require_regular_temporal_grid(
+        trajectories.time,
+        context="embedding delay diagnostics",
+    )
     curve_index = _curve_index(trajectories, curve)
     signal = trajectories.dimension(dimension)[curve_index].astype(float, copy=False)
     _require_finite(signal, context="embedding delay diagnostics")
@@ -365,6 +381,10 @@ def embedding_dimension_diagnostics(
     if not np.isfinite(rtol) or rtol <= 0 or not np.isfinite(atol) or atol <= 0:
         raise ValueError("rtol and atol must be positive finite values")
 
+    _require_regular_temporal_grid(
+        trajectories.time,
+        context="embedding dimension diagnostics",
+    )
     curve_index = _curve_index(trajectories, curve)
     signal = trajectories.dimension(dimension)[curve_index].astype(float, copy=False)
     _require_finite(signal, context="embedding dimension diagnostics")
