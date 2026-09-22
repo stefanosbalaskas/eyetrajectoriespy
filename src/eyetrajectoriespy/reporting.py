@@ -20,6 +20,7 @@ from .types import (
     FPCARegressionUncertaintyResult,
     FPCAWildBootstrapProjectionResult,
     FPCAWildBootstrapFamilyTestResult,
+    FPCAWildBootstrapMonteCarloDiagnosticResult,
     FPCAWildBootstrapSimultaneousResult,
     FPCAWildBootstrapTruncationSelectionResult,
     FPCAResult,
@@ -556,6 +557,43 @@ def fpca_wild_bootstrap_family_test_reporting_text(
         "or clustered/repeated-participant inference."
     )
 
+
+
+def fpca_wild_bootstrap_monte_carlo_reporting_text(
+    result: FPCAWildBootstrapMonteCarloDiagnosticResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate reporting text for finite-bootstrap Monte Carlo precision."""
+
+    if not isinstance(result, FPCAWildBootstrapMonteCarloDiagnosticResult):
+        raise TypeError("result must be an FPCAWildBootstrapMonteCarloDiagnosticResult")
+    if isinstance(digits, bool) or not isinstance(digits, (int, np.integer)):
+        raise TypeError("digits must be an integer")
+    if digits < 0:
+        raise ValueError("digits must be non-negative")
+
+    family = result.family_test_result
+    sensitive = int(np.sum(~result.adjusted_decision_stable))
+    return (
+        f"Finite-resample Monte Carlo precision was assessed for the existing "
+        f"fixed-family wild-bootstrap test using the same {result.n_bootstrap} "
+        f"retained bootstrap replicates; no additional multipliers or model fits "
+        f"were generated. Raw exceedance proportions were accompanied by "
+        f"{100 * result.confidence_level:.1f}% Clopper-Pearson exact binomial "
+        f"intervals and plug-in binomial Monte Carlo standard errors. The global "
+        f"max-statistic exceedance proportion was "
+        f"{result.global_tail_probability:.{digits}f} "
+        f"({result.global_interval_lower:.{digits}f}, "
+        f"{result.global_interval_upper:.{digits}f}); "
+        f"{sensitive} of {result.n_targets} maxT-adjusted target decision(s) were "
+        f"Monte-Carlo-sensitive at alpha={family.significance_level:.{digits}f}. "
+        "These diagnostics quantify only finite-bootstrap simulation precision. "
+        "They do not replace the reported plus-one/raw test p-values, reverse test "
+        "decisions, quantify scientific sampling uncertainty, add subset-pivotality "
+        "or strong-FWER guarantees, or address clustered/repeated-participant or "
+        "component-selection uncertainty."
+    )
 
 def fpca_wild_bootstrap_simultaneous_reporting_text(
     result: FPCAWildBootstrapSimultaneousResult,
