@@ -345,3 +345,34 @@ The greater-than-or-equal rule is intentionally conservative under ties.
 A review flag is not an exclusion decision. This first conformal API does not apply calibration-conditional adjustment, BH/FDR correction, or repeated-participant clustering.
 
 See [Conformal FPCA anomaly review](guides/conformal-fpca-anomaly.md).
+
+
+## Heteroscedastic Gaussian FPCR projection inference
+
+When the scientific target is the centered FPCR projection for fixed trajectories and response variance may depend on the functional predictor, use the fixed-regressor wild-bootstrap layer:
+
+    from eyetrajectoriespy import wild_bootstrap_fpca_projection
+
+    wild = wild_bootstrap_fpca_projection(
+        gaze,
+        outcome,
+        targets=gaze.subset([0, 1, 2, 3]),
+        n_bootstrap=1000,
+        residual_components=2,
+        inference_components=3,
+        scaling="dimension_sd",
+        multiplier="normal",
+        confidence_level=0.95,
+        independent_unit_column="participant_id",
+        random_state=2026,
+    )
+
+The functional regressors and FPCA/MFPCA basis remain fixed. Residuals and the bootstrap pseudo-truth use k=g components; the target projection uses h components with h>=g.
+
+Every bootstrap root is studentized using a heteroscedastic score-covariance scale recomputed from that pseudo-fit.
+
+This API currently requires independent curve rows. If the declared independent-unit column contains duplicates, it stops rather than silently treating repeated trials as independent.
+
+The interval targets the centered functional projection relative to the training functional mean. It is not a future-outcome prediction interval and is not simultaneous across targets.
+
+See [Heteroscedastic FPCR wild bootstrap](guides/fpcr-wild-bootstrap.md).

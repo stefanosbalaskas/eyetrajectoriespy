@@ -69,6 +69,13 @@
 ::: eyetrajectoriespy.plot_fpca_cross_validation
 ::: eyetrajectoriespy.fpca_cross_validation_reporting_text
 
+## Heteroscedastic Gaussian FPCR wild-bootstrap projection inference
+::: eyetrajectoriespy.FPCAWildBootstrapProjectionResult
+::: eyetrajectoriespy.wild_bootstrap_fpca_projection
+::: eyetrajectoriespy.fpca_wild_bootstrap_projection_frame
+::: eyetrajectoriespy.plot_fpca_wild_bootstrap_projection
+::: eyetrajectoriespy.fpca_wild_bootstrap_projection_reporting_text
+
 ## Gaussian FPCR future-outcome prediction
 ::: eyetrajectoriespy.FPCARegressionPredictionIntervalResult
 ::: eyetrajectoriespy.fpca_regression_future_prediction_interval

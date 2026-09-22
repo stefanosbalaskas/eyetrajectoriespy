@@ -43,6 +43,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Paired-bootstrap Gaussian FPCR uncertainty | implemented | `bootstrap_fpca_regression_uncertainty()` |
 | Observed-grid simultaneous Gaussian FPCR slope bands | implemented | `fpca_regression_slope_simultaneous_band()` |
 | Gaussian FPCR future-outcome prediction intervals | implemented | `fpca_regression_future_prediction_interval()` |
+| Heteroscedastic Gaussian FPCR centered-projection intervals | implemented | `wild_bootstrap_fpca_projection()` |
 | Derived speed/acceleration/distance/path functions | implemented | kinematic helpers |
 
 ## Optional specialist interoperability
@@ -73,7 +74,7 @@ Review flags are descriptive diagnostics. The package does not turn them into au
 
 `bootstrap_fpca_regression_uncertainty()` now refits the common-grid Gaussian FPCR pipeline under paired resampling and propagates basis/regression sampling variability into the reconstructed slope and fitted conditional means.
 
-Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, heteroscedastic future-response modelling, or non-Gaussian/binomial functional-regression inference.
+Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, clustered/repeated-participant wild-bootstrap inference, heteroscedastic future-outcome prediction, or non-Gaussian/binomial functional-regression inference.
 
 ## Research/development candidates
 
@@ -85,4 +86,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.15.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.16.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

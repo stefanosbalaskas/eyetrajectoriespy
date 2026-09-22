@@ -85,3 +85,29 @@ This is a residual-resampling predictive approximation. It assumes one exchangea
 The resulting intervals are marginal per target. They do not claim simultaneous coverage across several target trajectories and do not define a joint multivariate future-outcome distribution.
 
 See [Gaussian FPCR future-outcome prediction](fpcr-future-prediction.md).
+
+
+## Heteroscedastic Gaussian FPCR projection inference
+
+The paired bootstrap and wild bootstrap answer related but different questions.
+
+Use <code>bootstrap_fpca_regression_uncertainty()</code> when sampling uncertainty in the functional basis itself must be propagated by resampling independent units and refitting FPCA.
+
+Use <code>wild_bootstrap_fpca_projection()</code> when the functional regressors are treated as fixed and the scientific target is a centered projection under possibly heterogeneous response errors.
+
+The 0.16 wild-bootstrap contract is:
+
+1. fit FPCA/MFPCA once and keep the functional regressors/basis fixed;
+2. estimate residuals with k retained FPC scores;
+3. use the same g=k truncation as the bootstrap pseudo-truth;
+4. choose an explicit inference truncation h with h>=g;
+5. generate pseudo-responses by multiplying k-truncation residuals by mean-zero, unit-variance multipliers;
+6. refit the score regression on the fixed scores;
+7. recompute the heteroscedastic studentization scale inside every pseudo-sample;
+8. calibrate target-wise symmetrized intervals from the absolute studentized roots.
+
+Standard-normal multipliers are the default; the mathematically mean-zero/unit-variance Mammen two-point distribution is also available.
+
+The API currently assumes independent curve rows. Declared duplicated independent-unit IDs cause an explicit failure because clustered wild-bootstrap validity is outside this tranche.
+
+See [Heteroscedastic FPCR wild bootstrap](fpcr-wild-bootstrap.md).

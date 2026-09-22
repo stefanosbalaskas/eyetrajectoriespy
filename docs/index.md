@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.15 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.16 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
@@ -188,7 +188,17 @@ The package is designed around the principle that **the path to an FPC score is 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
 
-## New in 0.15 development
+## New in 0.16 development
+
+- fixed-regressor multiplier wild-bootstrap inference for centered Gaussian FPCR target projections under heteroscedastic response errors;
+- explicit k residual truncation, g=k bootstrap pseudo-truth, and h>=g inference truncation;
+- standard-normal or mean-zero/unit-variance Mammen two-point multipliers;
+- bootstrap-level heteroscedastic studentization recomputed in every pseudo-sample;
+- fixed FPCA/MFPCA basis during wild resampling;
+- explicit rejection of declared repeated/clustered unit IDs;
+- target-wise symmetrized intervals only: no future-outcome or simultaneous-target claim.
+
+## Added in 0.15 development
 
 - marginal split-conformal anomaly p-values for new common-grid functional trajectories;
 - explicit proper-training, calibration, and target partitions;
