@@ -199,6 +199,7 @@ class LocalReturnMapResult:
     intercept: np.ndarray
     residuals: np.ndarray
     r_squared: np.ndarray
+    design_condition_number: float
     neighborhood_policy: str
     neighborhood_value: float | int
     provenance: Mapping[str, Any] = field(default_factory=dict)
