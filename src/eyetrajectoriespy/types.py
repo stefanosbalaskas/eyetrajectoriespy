@@ -756,6 +756,41 @@ class FPCARegressionPredictionIntervalResult:
 
 
 @dataclass(frozen=True)
+class FPCAWildBootstrapProjectionResult:
+    """Studentized wild-bootstrap inference for centered Gaussian FPCR projections."""
+
+    reference_fpca: FPCAResult
+    target_curve_ids: tuple[str, ...]
+    reference_projection: np.ndarray
+    pseudo_truth_projection: np.ndarray
+    reference_se: np.ndarray
+    bootstrap_projections: np.ndarray
+    bootstrap_se: np.ndarray
+    studentized_roots: np.ndarray
+    critical_values: np.ndarray
+    lower: np.ndarray
+    upper: np.ndarray
+    residuals: np.ndarray
+    confidence_level: float
+    residual_components: int
+    inference_components: int
+    scaling: str
+    multiplier: str
+    target_source: str
+    independent_unit_column: str | None
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.bootstrap_projections.shape[0]
+
+    @property
+    def n_targets(self) -> int:
+        return self.bootstrap_projections.shape[1]
+
+
+@dataclass(frozen=True)
 class FPCARegressionCVResult:
     """Outcome-tuned FPCA regression cross-validation diagnostics."""
 

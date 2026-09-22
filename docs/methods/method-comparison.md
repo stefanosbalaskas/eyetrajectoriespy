@@ -90,3 +90,13 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 | is a new curve unusually poorly reconstructed? | split_conformal_fpca_anomaly(..., nonconformity="reconstruction_rmse") | proper-training FPCA + disjoint calibration | marginal curve-level conformal p-value |
 | is a new curve extreme within the retained score span? | split_conformal_fpca_anomaly(..., nonconformity="score_mahalanobis") | proper-training FPCA/covariance + disjoint calibration | marginal curve-level conformal p-value |
 | do I need functional-depth FDR control with CCV adjustments? | specialist Kim–Park/Bates procedure | depth-based conformal framework | not implemented by 0.15 |
+
+
+## Gaussian FPCR heteroscedastic projection inference
+
+| Question | Tool | Functional basis during bootstrap | Error model / boundary |
+|---|---|---|---|
+| propagate sampling uncertainty in basis + Gaussian regression | bootstrap_fpca_regression_uncertainty() | refit in each paired sample | curve/participant paired resampling |
+| infer a fixed-target centered projection under heterogeneous response errors | wild_bootstrap_fpca_projection() | fixed | multiplier wild bootstrap with bootstrap-level heteroscedastic studentization |
+| predict a future observed response under pooled exchangeable errors | fpca_regression_future_prediction_interval() | inherited paired-bootstrap means | centered empirical future residual draw |
+| handle repeated/clustered rows with a wild bootstrap | specialist clustered method | method-specific | not implemented by 0.16 |

@@ -299,3 +299,27 @@ If new-trajectory anomaly review is confirmatory, pre-specify:
 - that the 0.15 method does not implement calibration-conditional adjustment or FDR control.
 
 Do not choose the proper/calibration split, FPC count, nonconformity score, covariance estimator, or alpha after inspecting which configuration flags the preferred curves.
+
+
+## Heteroscedastic Gaussian FPCR wild-bootstrap projection inference
+
+Pre-specify:
+
+- Gaussian scalar-on-function FPCR as the model family;
+- that the functional regressors and FPCA/MFPCA basis remain fixed during wild resampling;
+- the independent sampling unit;
+- the metadata column used to verify one row per independent unit, if available;
+- residual truncation k;
+- bootstrap pseudo-truth truncation g=k;
+- inference truncation h with h>=g;
+- how k and h were chosen;
+- FPCA/MFPCA scaling;
+- wild multiplier family;
+- bootstrap replicate count and random seed;
+- confidence level;
+- fixed target trajectories;
+- that intervals are target-wise rather than simultaneous;
+- that the estimand is the centered projection relative to the training functional mean;
+- that future-outcome noise, basis-estimation uncertainty, clustered resampling, and component-selection uncertainty are not included.
+
+Do not select k, h, or multiplier family after inspecting which configuration gives a preferred substantive conclusion.

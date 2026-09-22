@@ -157,3 +157,18 @@ The proper-training and calibration samples are assumed to represent the intende
 The marginal p-value contract uses conservative greater-than-or-equal handling of ties.
 
 Repeated trials from the same participant are not exchangeable independent curves merely because they occupy separate rows. The current API does not provide cluster-conformal validity.
+
+
+## Heteroscedastic Gaussian FPCR wild-bootstrap projection inference
+
+The 0.16 wild bootstrap treats the functional regressors and fitted FPCA/MFPCA score geometry as fixed.
+
+Curve rows must represent independent sampling units. Supplying <code>independent_unit_column</code> checks this contract by requiring unique, non-missing identifiers. Repeated or clustered IDs are rejected rather than treated as independent.
+
+Residual estimation uses k FPCs, the bootstrap pseudo-truth uses g=k, and the inferential projection uses h FPCs with h>=g. These truncation choices are part of the estimand and are not reselected inside bootstrap replicates.
+
+Wild multipliers are independent of the data and have mean zero and variance one. The supported normal and Mammen distributions are explicit method choices.
+
+Heteroscedastic studentization uses the empirical covariance of score × residual contributions and is recomputed inside every wild pseudo-sample.
+
+The target functional trajectory is fixed and interpreted through centered FPCA scores relative to the training functional mean.

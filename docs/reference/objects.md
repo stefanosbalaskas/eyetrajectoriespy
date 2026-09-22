@@ -156,6 +156,16 @@ over the observed time-by-dimension grid and does not assert continuous-domain
 coverage between sampled points.
 
 
+## FPCAWildBootstrapProjectionResult
+
+Stores the fixed FPCA/MFPCA reference, target curve IDs, h-component reference centered projections, g=k pseudo-truth projections, reference heteroscedastic standard errors, bootstrap target projections, bootstrap-level heteroscedastic standard errors, studentized roots, target-wise critical values and interval limits, k-truncation residuals, multiplier/truncation settings, seed, and provenance.
+
+The estimand is the centered functional projection relative to the training functional mean. The object does not add an intercept or future response noise.
+
+The bootstrap keeps the functional regressors and FPCA basis fixed. Residuals and the pseudo-truth use k=g components; inference uses an explicit h>=g truncation.
+
+The result records independent-curve-row semantics. It is not a clustered wild bootstrap, not a future-outcome prediction interval, not simultaneous across targets, and does not include component-selection uncertainty.
+
 ## FPCARegressionPredictionIntervalResult
 
 Stores an existing paired-bootstrap Gaussian FPCR uncertainty object together with the centered full-sample residual pool, independently sampled residual draws, future-outcome predictive draws, marginal percentile limits, predictive standard deviations, confidence level, seed, and provenance.
