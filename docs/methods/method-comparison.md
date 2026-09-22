@@ -123,3 +123,15 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 | what band covers the reconstructed functional slope over time? | `fpca_regression_slope_simultaneous_band()` | maximum over observed slope grid | different estimand; observed-grid slope band |
 
 The 0.18 familywise helper is a post-calibration of one already generated target-root matrix. It should not be described as a future-response prediction region or as clustered wild-bootstrap inference.
+
+
+## Fixed-target FPCR evidence: intervals versus tests
+
+| Question | Tool | Calibration | Boundary |
+|---|---|---|---|
+| what is the heteroscedastic interval for each fixed target separately? | `wild_bootstrap_fpca_projection()` | target-specific absolute studentized roots | marginal / target-wise |
+| what interval family covers all declared fixed targets simultaneously? | `fpca_wild_bootstrap_projection_simultaneous_interval()` | one max-|t| critical value across the shared root matrix | fixed declared family |
+| what is the bootstrap tail probability for each target null? | `fpca_wild_bootstrap_projection_family_test()` target-wise output | each target's absolute root distribution | no multiplicity adjustment |
+| what is the single-step multiplicity-adjusted probability for each target null? | `fpca_wild_bootstrap_projection_family_test()` adjusted output | replicate-wise max absolute root | complete declared family; no universal strong-FWER claim |
+| is the complete family of supplied nulls compatible with the joint root approximation? | `fpca_wild_bootstrap_projection_family_test()` global output | maximum observed statistic versus bootstrap maxima | global union-intersection style test |
+| what if I need closed/step-down strong FWER under arbitrary subset nulls? | specialist multiple-testing procedure | intersection/subset-aware calibration | not implemented by 0.19 |

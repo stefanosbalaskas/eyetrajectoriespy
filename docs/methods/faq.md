@@ -359,3 +359,34 @@ For confirmatory inference, do not choose the family after inspecting which targ
 ## Does familywise calibration solve repeated-participant dependence?
 
 No. It controls multiplicity across the fixed targets under the base wild-bootstrap sampling contract. It does not change the requirement that curve rows represent independent sampling units.
+
+
+## What does the 0.19 family test add beyond simultaneous intervals?
+
+The 0.18 interval layer gives one familywise max-|t| confidence calibration.
+
+The 0.19 layer exposes the same joint root geometry as explicit two-sided hypothesis-test evidence: target-wise bootstrap probabilities, single-step maxT-adjusted probabilities, and a complete-family global maximum-statistic p-value.
+
+## Why is the plus-one correction the default?
+
+With a finite number B of bootstrap replicates, a raw exceedance proportion can be zero simply because no simulated root was more extreme.
+
+The default `(r+1)/(B+1)` correction prevents zero Monte Carlo p-values and makes the finite resampling resolution visible. The minimum attainable value is `1/(B+1)`.
+
+## Does an adjusted p-value guarantee strong FWER for every subset of hypotheses?
+
+Not from the package contract alone.
+
+The implementation uses a single-step maximum over the complete declared family and preserves the empirical joint bootstrap dependence. Strong FWER for arbitrary subsets generally requires additional conditions such as subset pivotality or a dedicated closed/step-down construction. Version 0.19 records that those conditions are not assumed automatically.
+
+## Is the bootstrap regenerated under the null?
+
+No. The test reuses the centered studentized roots stored by the base fixed-regressor wild bootstrap.
+
+That makes the method computationally transparent and consistent with the 0.18 post-calibration philosophy, but it is not described as a null-imposed bootstrap test.
+
+## Can different targets have different null projection values?
+
+Yes. Supply one finite null value per target. A scalar null is broadcast to the entire family.
+
+Null values are in centered scalar-response projection units, not in gaze-coordinate units.
