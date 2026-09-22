@@ -206,7 +206,7 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## Delay-coordinate reconstruction and embedding diagnostics
 
-**Functions:** \`delay_embed_trajectory()\`, \`embedding_delay_diagnostics()\`, \`embedding_dimension_diagnostics()\`
+**Functions:** `delay_embed_trajectory()`, `embedding_delay_diagnostics()`, `embedding_dimension_diagnostics()`
 
 $$
 \mathbf z_t=[\mathbf G(t),\mathbf G(t-\tau),\ldots,\mathbf G(t-(m-1)\tau)]
@@ -226,7 +226,7 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## Sparse recurrence and recurrence quantification
 
-**Functions:** \`recurrence_matrix()\`, \`rqa_metrics()\`, \`windowed_rqa()\`, \`cross_recurrence_matrix()\`, \`cross_rqa_metrics()\`
+**Functions:** `recurrence_matrix()`, `rqa_metrics()`, `windowed_rqa()`, `cross_recurrence_matrix()`, `cross_rqa_metrics()`
 
 $$
 R_{ij}=\mathbb I\{\|\mathbf z_i-\mathbf z_j\|_p\le\varepsilon\}
@@ -250,7 +250,7 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## Rosenstein local divergence and largest Lyapunov estimate
 
-**Functions:** \`local_divergence_curve()\`, \`estimate_largest_lyapunov_rosenstein()\`
+**Functions:** `local_divergence_curve()`, `estimate_largest_lyapunov_rosenstein()`
 
 $$
 d_i(k)=\|\mathbf z_{i+k}-\mathbf z_{j(i)+k}\|_2
@@ -270,7 +270,7 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## IAAFT surrogate nonlinearity test
 
-**Functions:** \`surrogate_nonlinearity_test()\`
+**Functions:** `surrogate_nonlinearity_test()`
 
 $$
 p=\frac{1+\sum_{b=1}^{B}\mathbb I(T_b^*\ge T_{\mathrm{obs}})}{B+1}
@@ -282,7 +282,7 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## Empirical Poincare return-map stability
 
-**Functions:** \`poincare_crossings()\`, \`fit_local_return_map()\`, \`return_map_stability()\`
+**Functions:** `poincare_crossings()`, `fit_local_return_map()`, `return_map_stability()`
 
 $$
 h(\mathbf z)=0,\qquad \mathbf z_n=\text{successive section crossings}
