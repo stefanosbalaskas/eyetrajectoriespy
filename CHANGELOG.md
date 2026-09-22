@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.23.0.dev0 — 2026-09-22
+
+Twenty-third development tranche.
+
+- multivariate delay-coordinate reconstruction with explicit state dimensions, embedding dimension, delay, units, finite-data validation, and provenance;
+- diagnostic-only average-mutual-information/autocorrelation lag curves and Kennel-style false-nearest-neighbor dimension curves with no automatic parameter selection;
+- sparse SciPy-CSR recurrence matrices using explicit fixed-radius or target-recurrence-rate policies, Euclidean/cityblock/Chebyshev norms, and explicit Theiler exclusion;
+- line-based RQA metrics including recurrence rate, determinism, diagonal entropy, laminarity, trapping time, line maxima, counts, and auto-recurrence CORM;
+- sliding full-window RQA with explicit trailing-tail accounting plus sparse cross-recurrence / cross-RQA;
+- Rosenstein-style nearest-neighbor local-divergence curves retaining usable-pair and zero-distance counts, followed by an analyst-declared LLE fit interval with slope, units, standard error, and R²;
+- seeded IAAFT surrogate nonlinearity testing with identical observed/surrogate analysis settings, plus-one Monte Carlo p-values, retained convergence iterations, and no silent failed-surrogate replacement;
+- experimental interpolated Poincare crossings, explicit local affine return-map fitting, and eigenvalue/spectral-radius contraction/expansion diagnostics;
+- explicit prohibition on describing empirical return-map eigenvalues as classical Floquet multipliers or the fitted Jacobian as a monodromy matrix;
+- nonlinear plotting helpers, synthetic truth/edge/contract tests, executable examples, methodological guide, assumptions, limitations, preregistration/reporting guidance, references, LaTeX contracts, API documentation, and expanded deterministic gallery;
+- classical raw-gaze Floquet/monodromy analysis and numerical bifurcation continuation remain outside the public API until an explicit identified dynamical model exists.
+
 ## 0.22.0.dev0 — 2026-09-22
 
 Twenty-second development tranche.
