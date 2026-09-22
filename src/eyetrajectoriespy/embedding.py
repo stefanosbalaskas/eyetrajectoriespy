@@ -45,7 +45,9 @@ def _dimension_indices(
     trajectories: TrajectorySet,
     dimensions: Sequence[str] | None,
 ) -> tuple[int, ...]:
-    names = trajectories.dimension_names if dimensions is None else tuple(dimensions)
+    if dimensions is None:
+        raise ValueError("dimensions must be supplied explicitly")
+    names = tuple(dimensions)
     if not names:
         raise ValueError("at least one dimension must be selected")
     if len(set(names)) != len(names):
@@ -172,7 +174,15 @@ def delay_embed_trajectory(
         for lag in range(embedding_dimension)
         for name in source_names
     )
-    step = _regular_step(trajectories.time)
+    try:
+        step = _regular_step(trajectories.time)
+        delay_time = delay_samples * step
+        constant_delay_time = True
+    except ValueError:
+        if delay_units != "samples":
+            raise
+        delay_time = float("nan")
+        constant_delay_time = False
     return DelayEmbeddingResult(
         values=values,
         time=trajectories.time[endpoints].copy(),
@@ -181,7 +191,7 @@ def delay_embed_trajectory(
         state_names=state_names,
         embedding_dimension=int(embedding_dimension),
         delay_samples=delay_samples,
-        delay_time=delay_samples * step,
+        delay_time=delay_time,
         time_unit=trajectories.time_unit,
         provenance={
             "operation": "delay_embed_trajectory",
@@ -189,7 +199,8 @@ def delay_embed_trajectory(
             "dimensions": source_names,
             "embedding_dimension": int(embedding_dimension),
             "delay_samples": delay_samples,
-            "delay_time": delay_samples * step,
+            "delay_time": delay_time,
+            "constant_delay_time": constant_delay_time,
             "delay_units_requested": delay_units,
             "automatic_parameter_selection": False,
             "missing_policy": "error",
