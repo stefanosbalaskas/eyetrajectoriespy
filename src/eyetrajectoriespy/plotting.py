@@ -20,6 +20,8 @@ from .types import (
     FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
     FPCAWildBootstrapProjectionResult,
+    FPCAWildBootstrapTruncationScanResult,
+    FPCAWildBootstrapTruncationSelectionResult,
     FPCAResult,
     FPCAScoreUncertaintyResult,
     FPCASpectrumUncertaintyResult,
@@ -92,6 +94,66 @@ def plot_fpca_variance(result: FPCAResult, *, cumulative: bool = True, ax=None):
     ax.set_xlabel("Functional principal component")
     ax.set_ylabel("Cumulative variance explained (%)" if cumulative else "Variance explained (%)")
     ax.set_xticks(x)
+    return ax
+
+
+def plot_fpca_wild_bootstrap_truncation_scan(
+    result,
+    *,
+    target=0,
+    metric="width",
+    ax=None,
+):
+    """Plot interval width or center across candidate wild-bootstrap truncations."""
+
+    if isinstance(result, FPCAWildBootstrapTruncationSelectionResult):
+        scan = result.scan
+        selection = result
+    elif isinstance(result, FPCAWildBootstrapTruncationScanResult):
+        scan = result
+        selection = None
+    else:
+        raise TypeError(
+            "result must be a wild-bootstrap truncation scan or selection result"
+        )
+
+    if isinstance(target, str):
+        if target not in scan.target_curve_ids:
+            raise ValueError(f"unknown target curve_id {target!r}")
+        target_index = scan.target_curve_ids.index(target)
+    elif isinstance(target, bool) or not isinstance(target, (int, np.integer)):
+        raise TypeError("target must be an integer index or curve_id string")
+    else:
+        target_index = int(target)
+        if target_index < 0 or target_index >= scan.n_targets:
+            raise IndexError("target index is outside the scan")
+
+    if metric not in {"width", "center"}:
+        raise ValueError("metric must be 'width' or 'center'")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    values = (
+        scan.widths[:, target_index]
+        if metric == "width"
+        else scan.centers[:, target_index]
+    )
+    x = np.asarray(scan.candidate_components, dtype=int)
+    ax.plot(x, values, marker="o")
+    if selection is not None:
+        selected = selection.selected_components[target_index]
+        if np.isfinite(selected):
+            ax.axvline(
+                int(selected),
+                linestyle="--",
+                label=f"selected h={int(selected)}",
+            )
+            ax.legend()
+    ax.set_xlabel("Inference truncation h")
+    ax.set_ylabel("Interval width" if metric == "width" else "Interval center")
+    ax.set_title(
+        f"Wild-bootstrap truncation scan: {scan.target_curve_ids[target_index]}"
+    )
     return ax
 
 
