@@ -1,5 +1,8 @@
 # Object contracts
 
+The result objects below preserve the numerical outputs and provenance of the package contracts. Their corresponding equations are collected in the [mathematical reference](../methods/mathematical-reference.md), and representative plotting outputs are shown in the [visual gallery](../methods/visual-gallery.md).
+
+
 ## `TrajectorySet`
 
 Shape: `n_curves × n_time × n_dimensions`.
