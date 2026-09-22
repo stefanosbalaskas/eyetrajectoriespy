@@ -35,6 +35,10 @@ def _state_from_source(
     dimensions: Sequence[str] | None,
 ) -> tuple[np.ndarray, np.ndarray, str, str, dict]:
     if isinstance(source, TrajectorySet):
+        if dimensions is None:
+            raise ValueError(
+                "dimensions must be supplied explicitly for TrajectorySet recurrence analysis"
+            )
         index = _curve_index(source, curve)
         dim_indices = _dimension_indices(source, dimensions)
         states = source.values[index, :, dim_indices]
