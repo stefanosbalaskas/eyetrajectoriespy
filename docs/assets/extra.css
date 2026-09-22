@@ -51,3 +51,20 @@
   border-radius: .65rem;
   overflow: hidden;
 }
+
+.et-gallery img {
+  display: block;
+  width: 100%;
+  max-height: 20rem;
+  object-fit: contain;
+  margin: .45rem auto .9rem;
+  border-radius: .7rem;
+  background: var(--md-default-bg-color);
+}
+.et-gallery .md-typeset__scrollwrap {
+  margin: 0;
+}
+.md-typeset .arithmatex {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
