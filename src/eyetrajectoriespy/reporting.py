@@ -19,6 +19,7 @@ from .types import (
     FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
     FPCAWildBootstrapProjectionResult,
+    FPCAWildBootstrapFamilyTestResult,
     FPCAWildBootstrapSimultaneousResult,
     FPCAWildBootstrapTruncationSelectionResult,
     FPCAResult,
@@ -519,6 +520,41 @@ def fpca_wild_bootstrap_projection_reporting_text(
         "bootstrap intervals, and not simultaneous across targets."
     )
 
+
+
+
+def fpca_wild_bootstrap_family_test_reporting_text(
+    result: FPCAWildBootstrapFamilyTestResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate reporting text for fixed-family wild-bootstrap tests."""
+
+    if not isinstance(result, FPCAWildBootstrapFamilyTestResult):
+        raise TypeError("result must be an FPCAWildBootstrapFamilyTestResult")
+    base = result.projection_result
+    rejected = int(np.sum(result.reject_familywise))
+    correction = (
+        "(exceedances + 1)/(B + 1)"
+        if result.pvalue_correction == "plus_one"
+        else "empirical exceedance proportion"
+    )
+    return (
+        f"Two-sided fixed-target Gaussian FPCR projection hypotheses were evaluated "
+        f"for a declared family of {result.n_targets} target(s) using the exact "
+        f"studentized roots retained from {base.n_bootstrap} heteroscedastic "
+        f"wild-bootstrap replicates. Target-wise bootstrap tail probabilities and "
+        f"single-step max-|t| adjusted values used {correction}. At alpha="
+        f"{result.significance_level:.{digits}f}, {rejected} target(s) were rejected "
+        f"after familywise adjustment; the complete-family global max statistic was "
+        f"{result.global_statistic:.{digits}f} with bootstrap p="
+        f"{result.global_p_value:.{digits}f}. No second bootstrap was run. "
+        "The resampling distribution was not generated under an explicitly imposed "
+        "null, and strong family-wise error control for arbitrary subsets of null "
+        "hypotheses is not claimed without additional subset-pivotality conditions. "
+        "The tests concern fixed centered projections, not future observed outcomes "
+        "or clustered/repeated-participant inference."
+    )
 
 
 def fpca_wild_bootstrap_simultaneous_reporting_text(

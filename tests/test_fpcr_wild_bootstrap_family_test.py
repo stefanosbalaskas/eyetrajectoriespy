@@ -1,5 +1,10 @@
 from dataclasses import replace
 
+import matplotlib
+
+matplotlib.use("Agg")
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
@@ -8,7 +13,13 @@ from eyetrajectoriespy.wild_testing import (
     fpca_wild_bootstrap_family_test_frame,
     fpca_wild_bootstrap_projection_family_test,
 )
-from eyetrajectoriespy import fit_mfpca, simulate_planar_trajectories, wild_bootstrap_fpca_projection
+from eyetrajectoriespy import (
+    fit_mfpca,
+    fpca_wild_bootstrap_family_test_reporting_text,
+    plot_fpca_wild_bootstrap_family_test,
+    simulate_planar_trajectories,
+    wild_bootstrap_fpca_projection,
+)
 
 
 def sample_result(*, n_targets=3):
@@ -100,5 +111,18 @@ def test_frame_and_empirical_option():
     assert settings["bootstrap_rerun"] is False
     assert settings["null_enforced_bootstrap"] is False
     assert settings["strong_fwer_for_arbitrary_subset_nulls_claimed"] is False
+    text = fpca_wild_bootstrap_family_test_reporting_text(result)
+    assert "single-step max-|t| adjusted" in text
+    assert "No second bootstrap was run" in text
+    assert "subset-pivotality" in text
+    assert plot_fpca_wild_bootstrap_family_test(result, max_targets=3) is not None
+    assert plot_fpca_wild_bootstrap_family_test(result, max_targets=3, show_targetwise=False) is not None
     with pytest.raises(TypeError):
         fpca_wild_bootstrap_family_test_frame(object())
+    with pytest.raises(TypeError):
+        fpca_wild_bootstrap_family_test_reporting_text(object())
+    with pytest.raises(TypeError):
+        plot_fpca_wild_bootstrap_family_test(result, max_targets=True)
+    with pytest.raises(TypeError):
+        plot_fpca_wild_bootstrap_family_test(result, show_targetwise=1)
+    plt.close("all")

@@ -20,6 +20,7 @@ from .types import (
     FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
     FPCAWildBootstrapProjectionResult,
+    FPCAWildBootstrapFamilyTestResult,
     FPCAWildBootstrapSimultaneousResult,
     FPCAWildBootstrapTruncationScanResult,
     FPCAWildBootstrapTruncationSelectionResult,
@@ -197,6 +198,47 @@ def plot_fpca_wild_bootstrap_projection(
     ax.legend()
     return ax
 
+
+
+
+def plot_fpca_wild_bootstrap_family_test(
+    result: FPCAWildBootstrapFamilyTestResult,
+    *,
+    max_targets: int = 30,
+    show_targetwise: bool = True,
+    ax=None,
+):
+    """Plot target-wise and single-step adjusted bootstrap p-values."""
+
+    if not isinstance(result, FPCAWildBootstrapFamilyTestResult):
+        raise TypeError("result must be an FPCAWildBootstrapFamilyTestResult")
+    if isinstance(max_targets, bool) or not isinstance(max_targets, (int, np.integer)):
+        raise TypeError("max_targets must be an integer")
+    if max_targets < 1:
+        raise ValueError("max_targets must be positive")
+    if not isinstance(show_targetwise, bool):
+        raise TypeError("show_targetwise must be boolean")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    n = min(max_targets, result.n_targets)
+    x = np.arange(n)
+    ax.scatter(x, result.adjusted_p_values[:n], marker="o", label="single-step maxT adjusted")
+    if show_targetwise:
+        ax.scatter(x, result.targetwise_p_values[:n], marker="x", label="target-wise")
+    ax.axhline(
+        result.significance_level,
+        linestyle="--",
+        label=f"alpha={result.significance_level:g}",
+    )
+    ax.set_xticks(x)
+    ax.set_xticklabels(result.projection_result.target_curve_ids[:n], rotation=90)
+    ax.set_ylim(-0.02, 1.02)
+    ax.set_xlabel("Fixed target trajectory")
+    ax.set_ylabel("Bootstrap tail probability")
+    ax.set_title("Fixed-family heteroscedastic Gaussian FPCR tests")
+    ax.legend()
+    return ax
 
 
 def plot_fpca_wild_bootstrap_simultaneous_interval(
