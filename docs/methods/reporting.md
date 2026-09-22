@@ -463,3 +463,10 @@ Report at minimum:
 - any adaptive family definition or truncation selection, if such exploration occurred.
 
 Do not report a zero Monte Carlo p-value when the default plus-one correction was used; its lower bound is 1/(B+1).
+
+
+## Finite-B Monte Carlo precision for wild-bootstrap tests
+
+When reporting the 0.20 diagnostic, include B, the original p-value correction, alpha, the exact exceedance count, raw r/B tail estimate, Monte Carlo SE, exact binomial interval and confidence level, interval-to-alpha relation, and p-value grid step.
+
+State explicitly that these intervals quantify simulation uncertainty in the resampling tail probability only; they do not alter the 0.19 p-values, form confidence intervals for scientific effects, or add a new FWER guarantee.
