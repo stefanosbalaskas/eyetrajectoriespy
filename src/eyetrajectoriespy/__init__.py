@@ -46,6 +46,12 @@ from .kinematics import (
     speed_function,
 )
 from .multilevel import fit_multilevel_fpca
+from .mathematical_contracts import (
+    MathematicalContract,
+    get_mathematical_contract,
+    list_mathematical_contracts,
+    mathematical_contract_frame,
+)
 from .outliers import diagnose_fpca_outliers, leave_one_group_out_fpca_influence
 from .phase import (
     compare_registered_unregistered_fpca,
@@ -233,9 +239,13 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.21.0.dev0"
+__version__ = "0.22.0.dev0"
 
 __all__ = [
+    "MathematicalContract",
+    "get_mathematical_contract",
+    "list_mathematical_contracts",
+    "mathematical_contract_frame",
     "TrajectorySet",
     "IrregularTrajectorySet",
     "FPCAResult",
