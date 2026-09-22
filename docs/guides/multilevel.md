@@ -42,4 +42,4 @@ $$
 \mathbf G_{ij}(t)-\overline{\mathbf G}_{i\cdot}(t).
 $$
 
-See the [mathematical reference](../methods/mathematical-reference.md#two-level-functional-decomposition).
+See the [mathematical reference](../methods/mathematical-reference.md#multilevel).
