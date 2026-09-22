@@ -663,6 +663,37 @@ The matrix is stored sparsely. Exactly one radius policy is allowed: a fixed \(\
 
 **API:** \`recurrence_matrix()\`, \`rqa_metrics()\`, \`windowed_rqa()\`, \`cross_recurrence_matrix()\`, \`cross_rqa_metrics()\`.
 
+## Windowed RQA as functional trajectories { #functional-rqa-trajectories }
+
+Let window $w$ span source samples from $t_{w,\mathrm{start}}$ to $t_{w,\mathrm{end}}$, with center
+
+$
+c_w=
+\frac{
+t_{w,\mathrm{start}}+t_{w,\mathrm{end}}
+}{2}.
+$
+
+For source curve $i$ and selected RQA metric $q$, the derived functional value is
+
+$
+F_{iq}(c_w)=M_q\left\{R_i^{(w)}\right\},
+$
+
+where $R_i^{(w)}$ is the recurrence matrix computed under the same declared recurrence contract inside window $w$.
+
+For window length $W$ samples and step $S$ samples, explicit source-sample overlap is
+
+$
+\omega=
+\frac{\max(0,W-S)}{W}.
+$
+
+This overlap is recorded as provenance. It is not converted into an independence assumption. Even when $\omega=0$, serial dependence in the source process may remain.
+
+When target recurrence rate determines the radius, RR is controlled by construction and is therefore not accepted as a downstream functional outcome. Undefined selected metrics fail closed by default; an explicit keep policy preserves them as `NaN` without imputation.
+
+**API:** `windowed_rqa_trajectory_set()`, `plot_windowed_rqa_trajectories()`, `windowed_rqa_functional_reporting_text()`.
 ## Rosenstein local divergence and largest Lyapunov estimate { #local-divergence }
 
 For reconstructed state \(i\), let \(j(i)\) be its nearest positive-distance neighbor outside the declared Theiler window. Forward separation is
