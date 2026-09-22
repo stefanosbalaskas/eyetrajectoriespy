@@ -17,6 +17,7 @@ _ALLOWED_COORDINATE_SYSTEMS = {
     "probability_simplex",
     "simplex_logratio",
     "phase_time",
+    "rqa_metrics",
     "unknown",
 }
 

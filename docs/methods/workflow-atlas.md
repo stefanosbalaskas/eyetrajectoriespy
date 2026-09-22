@@ -69,6 +69,11 @@ flowchart TD
     F --> G[Sparse recurrence]
     G --> H[RQA]
     G --> I[Windowed or cross-RQA]
+    I --> V{Between-curve functional question?}
+    V -->|Yes| W[Promote selected windowed RQA metrics]
+    W --> X[Record overlap, edge support, tail, radius policy]
+    X --> Y[TrajectorySet of RQA functions]
+    Y --> Z[FPCA / MFPCA / regression with source-unit inference]
     B -->|Local divergence| J[Delay embedding]
     J --> K[Nearest neighbors outside Theiler window]
     K --> L[Local divergence curve]

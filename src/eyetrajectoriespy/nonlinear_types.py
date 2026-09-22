@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Mapping
+from typing import TYPE_CHECKING, Any, Mapping
 
 import numpy as np
 import pandas as pd
 from scipy.sparse import csr_matrix
+
+if TYPE_CHECKING:
+    from .types import TrajectorySet
 
 
 @dataclass(frozen=True)
@@ -119,6 +122,31 @@ class WindowedRQAResult:
     dropped_tail_samples: int
     time_unit: str
     provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
+class WindowedRQAFunctionalResult:
+    """Functional trajectory representation of windowed RQA across curves."""
+
+    trajectories: "TrajectorySet"
+    window_results: tuple[WindowedRQAResult, ...]
+    metrics: tuple[str, ...]
+    window_samples: int
+    step_samples: int
+    overlap_samples: int
+    overlap_fraction: float
+    dropped_tail_samples: int
+    time_unit: str
+    undefined_policy: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_curves(self) -> int:
+        return self.trajectories.n_curves
+
+    @property
+    def n_windows(self) -> int:
+        return self.trajectories.n_time
 
 
 @dataclass(frozen=True)

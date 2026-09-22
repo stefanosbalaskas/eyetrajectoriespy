@@ -76,6 +76,7 @@ nav:
       - Irregular sampling & gaps: examples/irregular-data.md
       - Function → equation registry: examples/function-equation-registry.md
       - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
+      - RQA-derived functional trajectories: examples/rqa-functional-trajectories.md
       - Empirical return-map stability: examples/return-map-stability.md
       - Failure cases: examples/failure-cases.md
   - Methods:

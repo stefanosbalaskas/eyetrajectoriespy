@@ -64,3 +64,12 @@ def test_missing_fraction_validation():
     validate_no_long_missing_runs(missing, max_missing_fraction=0.9)
     with pytest.raises(ValueError):
         validate_no_long_missing_runs(missing, max_missing_fraction=1.0)
+
+
+def test_rqa_metric_coordinate_system_is_valid():
+    x = base_set()
+    derived = x.with_values(
+        x.values,
+        coordinate_system="rqa_metrics",
+    )
+    validate_trajectory_set(derived, require_complete=True)

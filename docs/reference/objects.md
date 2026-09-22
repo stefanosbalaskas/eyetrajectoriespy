@@ -17,6 +17,8 @@ The registry is documentation metadata only. A contract lookup does not fit a mo
 
 `RecurrenceResult` stores recurrence as a SciPy CSR sparse matrix together with radius policy, achieved recurrence rate, metric, Theiler exclusion, state dimension, and source provenance. `RQAResult` records line thresholds and recurrence-line counts in addition to summary metrics. `WindowedRQAResult` retains the number of trailing samples outside full windows.
 
+`WindowedRQAFunctionalResult` carries a native RQA-metric `TrajectorySet` plus every per-curve `WindowedRQAResult`. It retains the selected metric list, window and step sizes, overlap samples/fraction, trailing-tail count, undefined-value policy, and the explicit statement that window rows are not independent sampling units. Solved per-window radii remain available in the retained window tables.
+
 `LocalDivergenceResult` retains the full mean log-divergence curve, usable-neighbor counts, zero-distance counts, and neighbor assignments. `LargestLyapunovResult` adds only the analyst-declared linear fit and its slope/R²/SE.
 
 `SurrogateNonlinearityResult` retains every surrogate statistic, IAAFT iteration count, random seed, alternative, plus-one p-value, and test provenance.

@@ -249,3 +249,10 @@ Rosenstein-style local divergence assumes that nearby reconstructed states are m
 IAAFT testing assumes the surrogate null is scientifically meaningful: a process compatible with the observed marginal distribution and approximately the observed linear autocorrelation/power-spectrum structure. Rejection is relative to that null, not proof of a specific nonlinear generator.
 
 Empirical return-map stability additionally assumes that the declared section identifies repeated comparable cycles and that a local affine map is meaningful in the selected neighborhood. The fitted Jacobian is a data-driven local regression object, not a model-derived variational flow.
+## Functionalized windowed RQA
+
+`windowed_rqa_trajectory_set()` assumes that all source curves share the common grid represented by the input `TrajectorySet` and that the same recurrence contract is scientifically meaningful across those curves.
+
+The derived functional grid consists of complete-window centers. Overlapping windows reuse source samples; non-overlapping windows can still be serially dependent. The package therefore assumes **no window-level independence**. Any downstream inferential procedure must define its sampling/resampling unit from the original study design.
+
+With a fixed radius, the radius must have a common interpretation in the supplied state-space units. With target-recurrence-rate mode, recurrence density is controlled by construction and RR is not a permissible downstream functional outcome.

@@ -20,6 +20,7 @@ from .nonlinear_types import (
     DelayEmbeddingResult,
     RecurrenceResult,
     RQAResult,
+    WindowedRQAFunctionalResult,
     WindowedRQAResult,
 )
 from .types import TrajectorySet
@@ -607,3 +608,227 @@ def windowed_rqa(
             "radius_policy": "fixed" if radius is not None else "target_recurrence_rate",
         },
     )
+
+_WINDOWED_RQA_FUNCTIONAL_METRIC_UNITS = {
+    "recurrence_rate": "proportion",
+    "determinism": "proportion",
+    "mean_diagonal_length": "state_steps",
+    "max_diagonal_length": "state_steps",
+    "diagonal_entropy": "nats",
+    "laminarity": "proportion",
+    "trapping_time": "state_steps",
+    "max_vertical_length": "state_steps",
+    "center_of_recurrence_mass": "percent_of_sequence_length",
+}
+
+
+def windowed_rqa_trajectory_set(
+    trajectories: TrajectorySet,
+    *,
+    metrics: Sequence[str],
+    window: float | int,
+    step: float | int,
+    window_units: str = "samples",
+    step_units: str = "samples",
+    radius: float | None = None,
+    target_recurrence_rate: float | None = None,
+    metric: str = "euclidean",
+    theiler_window: float | int = 0,
+    theiler_window_units: str = "samples",
+    dimensions: Sequence[str] | None = None,
+    min_diagonal_length: int = 2,
+    min_vertical_length: int = 2,
+    undefined_policy: str = "raise",
+) -> WindowedRQAFunctionalResult:
+    """Convert per-curve sliding-window RQA into functional trajectories.
+
+    Every input curve is analyzed with the same declared recurrence contract.
+    Window-center times become the common functional grid and selected RQA
+    metrics become functional dimensions. The complete per-curve
+    WindowedRQAResult objects are retained so solved radii and window-level
+    diagnostics are never discarded.
+
+    undefined_policy='raise' rejects any undefined selected metric.
+    undefined_policy='keep' retains undefined values as NaN. No imputation is
+    performed.
+
+    Overlapping windows deterministically reuse source samples. The result
+    records this overlap and never describes window rows as independent
+    observations. If target_recurrence_rate is used, recurrence_rate cannot be
+    selected as a functional outcome because its density is controlled by
+    construction.
+    """
+
+    if trajectories.n_curves < 1:
+        raise ValueError("functional windowed RQA requires at least one source curve")
+    metric_names = tuple(str(name) for name in metrics)
+    if not metric_names:
+        raise ValueError("metrics must contain at least one RQA metric")
+    if len(set(metric_names)) != len(metric_names):
+        raise ValueError("metrics must be unique")
+    unknown = [
+        name
+        for name in metric_names
+        if name not in _WINDOWED_RQA_FUNCTIONAL_METRIC_UNITS
+    ]
+    if unknown:
+        raise KeyError(f"Unknown functional RQA metrics: {unknown}")
+    if undefined_policy not in {"raise", "keep"}:
+        raise ValueError("undefined_policy must be 'raise' or 'keep'")
+    if target_recurrence_rate is not None and "recurrence_rate" in metric_names:
+        raise ValueError(
+            "recurrence_rate cannot be a functional outcome when "
+            "recurrence density is controlled by design through "
+            "target_recurrence_rate; "
+            "use a fixed radius or omit recurrence_rate"
+        )
+
+    per_curve = tuple(
+        windowed_rqa(
+            trajectories,
+            curve=curve_index,
+            window=window,
+            step=step,
+            window_units=window_units,
+            step_units=step_units,
+            radius=radius,
+            target_recurrence_rate=target_recurrence_rate,
+            metric=metric,
+            theiler_window=theiler_window,
+            theiler_window_units=theiler_window_units,
+            dimensions=dimensions,
+            min_diagonal_length=min_diagonal_length,
+            min_vertical_length=min_vertical_length,
+        )
+        for curve_index in range(trajectories.n_curves)
+    )
+
+    first = per_curve[0]
+    center_time = first.table["center_time"].to_numpy(dtype=float)
+    if center_time.size < 2:
+        raise ValueError(
+            "functional windowed RQA requires at least two complete windows; "
+            "reduce window, reduce step, or provide a longer trajectory"
+        )
+    for result in per_curve[1:]:
+        candidate_time = result.table["center_time"].to_numpy(dtype=float)
+        if candidate_time.shape != center_time.shape or not np.array_equal(
+            candidate_time,
+            center_time,
+        ):
+            raise RuntimeError(
+                "common-grid input produced inconsistent window-center grids"
+            )
+        if result.window_samples != first.window_samples:
+            raise RuntimeError("window sample counts differ across curves")
+        if result.step_samples != first.step_samples:
+            raise RuntimeError("step sample counts differ across curves")
+        if result.dropped_tail_samples != first.dropped_tail_samples:
+            raise RuntimeError("tail accounting differs across curves")
+
+    values = np.stack(
+        [
+            result.table.loc[:, list(metric_names)].to_numpy(dtype=float)
+            for result in per_curve
+        ],
+        axis=0,
+    )
+    nonfinite = ~np.isfinite(values)
+    if np.any(nonfinite) and undefined_policy == "raise":
+        curve_index, window_index, metric_index = np.argwhere(nonfinite)[0]
+        raise ValueError(
+            "selected windowed RQA metric is undefined: "
+            f"curve={trajectories.curve_ids[int(curve_index)]!r}, "
+            f"window_index={int(window_index)}, "
+            f"metric={metric_names[int(metric_index)]!r}; "
+            "change the recurrence/line-threshold contract or set "
+            "undefined_policy='keep' to retain NaN explicitly"
+        )
+
+    overlap_samples = max(first.window_samples - first.step_samples, 0)
+    overlap_fraction = overlap_samples / first.window_samples
+    functional = TrajectorySet(
+        time=center_time,
+        values=values,
+        curve_ids=trajectories.curve_ids,
+        dimension_names=metric_names,
+        metadata=trajectories.metadata.reset_index(drop=True),
+        coordinate_system="rqa_metrics",
+        time_unit=trajectories.time_unit,
+        provenance={
+            "operation": "windowed_rqa_trajectory_set",
+            "source_provenance": dict(trajectories.provenance),
+            "source_coordinate_system": trajectories.coordinate_system,
+            "source_dimension_names": (
+                tuple(dimensions) if dimensions is not None else None
+            ),
+            "metrics": metric_names,
+            "metric_units": {
+                name: _WINDOWED_RQA_FUNCTIONAL_METRIC_UNITS[name]
+                for name in metric_names
+            },
+            "window_samples": first.window_samples,
+            "step_samples": first.step_samples,
+            "overlap_samples": overlap_samples,
+            "overlap_fraction": float(overlap_fraction),
+            "overlapping_windows": bool(overlap_samples > 0),
+            "window_rows_are_independent": False,
+            "window_center_definition": (
+                "midpoint_of_first_and_last_observed_sample"
+            ),
+            "source_time_support": (
+                float(trajectories.time[0]),
+                float(trajectories.time[-1]),
+            ),
+            "functional_time_support": (
+                float(center_time[0]),
+                float(center_time[-1]),
+            ),
+            "leading_edge_span": float(center_time[0] - trajectories.time[0]),
+            "trailing_edge_span": float(trajectories.time[-1] - center_time[-1]),
+            "edge_policy": "full_window_centers_only",
+            "dropped_tail_samples": first.dropped_tail_samples,
+            "tail_policy": "full_windows_only_with_explicit_tail_count",
+            "radius_policy": (
+                "fixed" if radius is not None else "target_recurrence_rate"
+            ),
+            "fixed_radius": None if radius is None else float(radius),
+            "target_recurrence_rate": (
+                None
+                if target_recurrence_rate is None
+                else float(target_recurrence_rate)
+            ),
+            "recurrence_rate_controlled_by_design": bool(
+                target_recurrence_rate is not None
+            ),
+            "distance_metric": metric,
+            "theiler_window": theiler_window,
+            "theiler_window_units": theiler_window_units,
+            "min_diagonal_length": int(min_diagonal_length),
+            "min_vertical_length": int(min_vertical_length),
+            "undefined_policy": undefined_policy,
+            "undefined_value_count": int(np.sum(nonfinite)),
+            "downstream_note": (
+                "Windowed metrics are functional summaries, not independent "
+                "window-level observations; preserve the curve/participant "
+                "sampling unit in downstream inference."
+            ),
+        },
+    )
+    return WindowedRQAFunctionalResult(
+        trajectories=functional,
+        window_results=per_curve,
+        metrics=metric_names,
+        window_samples=first.window_samples,
+        step_samples=first.step_samples,
+        overlap_samples=overlap_samples,
+        overlap_fraction=float(overlap_fraction),
+        dropped_tail_samples=first.dropped_tail_samples,
+        time_unit=trajectories.time_unit,
+        undefined_policy=undefined_policy,
+        provenance={
+            "operation": "windowed_rqa_trajectory_set",
+            "functional_trajectory_provenance": dict(functional.provenance),
+        },
+    )
+

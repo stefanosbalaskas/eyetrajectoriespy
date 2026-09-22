@@ -419,4 +419,17 @@ Before inspecting nonlinear-dynamics results, predeclare where applicable:
 
 Do not define a positive LLE as “chaos” in the preregistration. If chaos is a scientific hypothesis, state the additional evidence required beyond the local-divergence estimate and specify the surrogate null being tested.
 
-Classical Floquet/monodromy and numerical-continuation claims are outside the 0.23 observational-gaze contract.
+
+For RQA-derived functional trajectories, additionally predeclare:
+
+- the selected functional RQA metrics;
+- fixed-radius versus target-recurrence-rate policy;
+- window length and step, including intended overlap;
+- whether any edge/tail loss is acceptable for the scientific question;
+- `undefined_policy` and the downstream plan if missing functional values remain;
+- the independent sampling unit for downstream FDA;
+- any downstream metric scaling and FPCA/MFPCA component-selection rule.
+
+Do not switch from fixed radius to target recurrence rate after seeing which setting creates a more favorable RR trajectory. Under target-rate mode, RR itself is controlled by construction and must not be promoted to a confirmatory functional outcome.
+
+Classical Floquet/monodromy and numerical-continuation claims remain outside the 0.24 observational-gaze contract.

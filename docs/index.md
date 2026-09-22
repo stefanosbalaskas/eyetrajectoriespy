@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.23 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.24 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
@@ -209,6 +209,15 @@ The package is designed around the principle that **the path to an FPC score is 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
 
+## New in 0.24 development
+
+- `windowed_rqa_trajectory_set()` turns explicitly configured sliding-window RQA summaries into native functional trajectories across source curves;
+- full per-curve window tables remain attached, preserving solved radii and window-level diagnostics rather than flattening away the RQA audit trail;
+- overlap, source/functional time support, edge spans, trailing-tail handling, metric units, and the non-independence of window rows are explicit provenance;
+- target-recurrence-rate mode cannot silently turn its controlled recurrence density into RR as a downstream functional outcome;
+- undefined RQA metrics fail closed by default or remain explicit `NaN` under an opt-in keep policy; they are never zero-filled or interpolated;
+- the new derived `TrajectorySet` enters the existing FPCA/MFPCA/regression ecosystem without a special adapter;
+- evidence wording now distinguishes direct eye-movement RQA and LLE precedent from genuinely experimental return-map work.
 ## New in 0.23 development
 
 - explicit multivariate delay-coordinate reconstruction with diagnostic-only AMI/autocorrelation and false-nearest-neighbor curves;

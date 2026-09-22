@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.24.0.dev0
+
+- Add `windowed_rqa_trajectory_set()` to convert declared sliding-window RQA summaries across source curves into a native functional `TrajectorySet` while retaining every per-curve window table.
+- Record window overlap, tail handling, metric units, radius policy, undefined-value handling, and the explicit non-independence of window rows.
+- Reject recurrence rate as a downstream functional outcome when target-recurrence-rate mode controls recurrence density by design.
+- Add `WindowedRQAFunctionalResult`, `plot_windowed_rqa_trajectories()`, and `windowed_rqa_functional_reporting_text()`.
+- Add a worked RQA → functional trajectories → MFPCA workflow and a deterministic gallery figure.
+- Tighten the nonlinear evidence chain with verified direct eye-movement LLE precedent and surrogate-null references.
+
 ## 0.23.0.dev0 — 2026-09-22
 
 Twenty-third development tranche.

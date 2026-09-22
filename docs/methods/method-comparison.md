@@ -142,10 +142,11 @@ The 0.18 familywise helper is a post-calibration of one already generated target
 |---|---|---|
 | Does gaze return to nearby spatial/state configurations? | `recurrence_matrix()` + `rqa_metrics()` | a unique latent cognitive state or deterministic attractor |
 | Does recurrent structure change during the trial? | `windowed_rqa()` | independent observations across overlapping windows |
+| Do between-curve differences in time-varying recurrence shape matter? | `windowed_rqa_trajectory_set()` → FPCA/MFPCA/regression | independent window rows or a new overlapping-window inferential theorem |
 | Do two trajectories share recurrent state structure? | `cross_recurrence_matrix()` + `cross_rqa_metrics()` | causal coupling or synchronization mechanism |
 | How quickly do nearby reconstructed states separate? | `local_divergence_curve()` + Rosenstein LLE | proof of deterministic chaos |
 | Is the nonlinear statistic unusual under a linear-stochastic surrogate null? | `surrogate_nonlinearity_test()` | a unique nonlinear mechanism |
 | Do repeated observed cycles contract or expand locally? | empirical Poincare return map | a monodromy matrix, Floquet multipliers, or model-based orbital stability |
 | How does a modeled attractor change with a control parameter? | not implemented in 0.23 | requires explicit system identification / continuation model |
 
-RQA and FPCA are complementary rather than substitutes. FPCA summarizes dominant between-curve functional variation; RQA summarizes within-trajectory recurrent temporal organization. Windowed RQA outputs can themselves become time-varying functional outcomes in a separately justified downstream FDA analysis.
+RQA and FPCA are complementary rather than substitutes. FPCA summarizes dominant between-curve functional variation; RQA summarizes within-trajectory recurrent temporal organization. Version 0.24 makes that bridge explicit with `windowed_rqa_trajectory_set()`, while preserving overlap, edge/tail, radius-policy, and source-unit provenance. The FDA step remains separately justified and does not turn overlapping windows into independent observations.

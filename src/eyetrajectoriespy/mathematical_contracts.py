@@ -242,6 +242,18 @@ _CONTRACTS = (
         scope="Sparse observed-state or reconstructed-state recurrence with an explicit radius policy, metric, Theiler exclusion, and line-length thresholds.",
     ),
     MathematicalContract(
+        key="functional-rqa-trajectories",
+        title="Windowed RQA as functional trajectories",
+        public_api=("windowed_rqa_trajectory_set",),
+        equations=(
+            r"F_{iq}(c_w)=M_q\{R_i^{(w)}\},\quad "
+            r"c_w=\frac{t_{w,\mathrm{start}}+t_{w,\mathrm{end}}}{2}",
+            r"\omega=\frac{\max(0,W-S)}{W}",
+        ),
+        site_anchor="functional-rqa-trajectories",
+        scope="Derived functional summaries of declared sliding-window RQA; overlapping windows reuse source samples and are not independent observational units.",
+    ),
+    MathematicalContract(
         key="local-divergence",
         title="Rosenstein local divergence and largest Lyapunov estimate",
         public_api=(

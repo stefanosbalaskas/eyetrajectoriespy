@@ -19,13 +19,16 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.RecurrenceResult
 ::: eyetrajectoriespy.RQAResult
 ::: eyetrajectoriespy.WindowedRQAResult
+::: eyetrajectoriespy.WindowedRQAFunctionalResult
 ::: eyetrajectoriespy.recurrence_matrix
 ::: eyetrajectoriespy.rqa_metrics
 ::: eyetrajectoriespy.windowed_rqa
+::: eyetrajectoriespy.windowed_rqa_trajectory_set
 ::: eyetrajectoriespy.cross_recurrence_matrix
 ::: eyetrajectoriespy.cross_rqa_metrics
 ::: eyetrajectoriespy.plot_recurrence
 ::: eyetrajectoriespy.plot_windowed_rqa
+::: eyetrajectoriespy.plot_windowed_rqa_trajectories
 
 ### Local divergence and surrogate testing
 ::: eyetrajectoriespy.LocalDivergenceResult
@@ -40,6 +43,7 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ### Nonlinear reporting helpers
 ::: eyetrajectoriespy.rqa_reporting_text
 ::: eyetrajectoriespy.windowed_rqa_reporting_text
+::: eyetrajectoriespy.windowed_rqa_functional_reporting_text
 ::: eyetrajectoriespy.largest_lyapunov_reporting_text
 ::: eyetrajectoriespy.surrogate_nonlinearity_reporting_text
 ::: eyetrajectoriespy.return_map_stability_reporting_text

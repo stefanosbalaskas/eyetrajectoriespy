@@ -62,6 +62,7 @@ from .nonlinear_reporting import (
     rqa_reporting_text,
     surrogate_nonlinearity_reporting_text,
     windowed_rqa_reporting_text,
+    windowed_rqa_functional_reporting_text,
 )
 from .nonlinear_plotting import (
     plot_embedding_delay_diagnostics,
@@ -71,6 +72,7 @@ from .nonlinear_plotting import (
     plot_recurrence,
     plot_surrogate_nonlinearity,
     plot_windowed_rqa,
+    plot_windowed_rqa_trajectories,
 )
 from .nonlinear_types import (
     DelayEmbeddingResult,
@@ -84,6 +86,7 @@ from .nonlinear_types import (
     RQAResult,
     ReturnMapStabilityResult,
     SurrogateNonlinearityResult,
+    WindowedRQAFunctionalResult,
     WindowedRQAResult,
 )
 from .recurrence import (
@@ -92,6 +95,7 @@ from .recurrence import (
     recurrence_matrix,
     rqa_metrics,
     windowed_rqa,
+    windowed_rqa_trajectory_set,
 )
 from .return_maps import (
     fit_local_return_map,
@@ -291,11 +295,12 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.23.0.dev0"
+__version__ = "0.24.0.dev0"
 
 __all__ = [
     "rqa_reporting_text",
     "windowed_rqa_reporting_text",
+    "windowed_rqa_functional_reporting_text",
     "largest_lyapunov_reporting_text",
     "surrogate_nonlinearity_reporting_text",
     "return_map_stability_reporting_text",
@@ -303,6 +308,7 @@ __all__ = [
     "plot_embedding_dimension_diagnostics",
     "plot_recurrence",
     "plot_windowed_rqa",
+    "plot_windowed_rqa_trajectories",
     "plot_local_divergence",
     "plot_surrogate_nonlinearity",
     "plot_poincare_return_map",
@@ -312,6 +318,7 @@ __all__ = [
     "RecurrenceResult",
     "RQAResult",
     "WindowedRQAResult",
+    "WindowedRQAFunctionalResult",
     "LocalDivergenceResult",
     "LargestLyapunovResult",
     "SurrogateNonlinearityResult",
@@ -324,6 +331,7 @@ __all__ = [
     "recurrence_matrix",
     "rqa_metrics",
     "windowed_rqa",
+    "windowed_rqa_trajectory_set",
     "cross_recurrence_matrix",
     "cross_rqa_metrics",
     "local_divergence_curve",

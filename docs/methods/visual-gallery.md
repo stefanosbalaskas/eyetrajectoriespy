@@ -109,6 +109,15 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Nonlinear guide](../guides/nonlinear-dynamics.md) · [Mathematics](mathematical-reference.md#recurrence)
 
+-   **RQA-derived functional trajectories**
+
+    ![Windowed RQA recurrence-rate trajectories across source curves](../assets/gallery/functional-rqa-trajectories.svg)
+
+    Sliding-window recurrence summaries promoted to a native functional representation while retaining overlap, edge/tail, and radius-policy provenance.
+
+    **API:** `windowed_rqa_trajectory_set()`, `plot_windowed_rqa_trajectories()`
+
+    [Worked example](../examples/rqa-functional-trajectories.md) · [Mathematics](mathematical-reference.md#functional-rqa-trajectories)
 -   **Local divergence / Rosenstein LLE**
 
     ![Local divergence with declared Lyapunov fit interval](../assets/gallery/local-divergence.svg)

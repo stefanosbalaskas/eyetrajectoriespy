@@ -290,6 +290,31 @@ $$
 
 Implemented by \`recurrence_matrix()\`, \`rqa_metrics()\`, \`windowed_rqa()\`, \`cross_recurrence_matrix()\`, and \`cross_rqa_metrics()\`.
 
+## Windowed RQA as functional trajectories
+
+For source curve $i$, window $w$, and selected RQA metric $q$,
+
+$
+F_{iq}(c_w)
+=
+M_q\left\{R_i^{(w)}\right\},
+\qquad
+c_w
+=
+\frac{t_{w,\mathrm{start}}+t_{w,\mathrm{end}}}{2}.
+$
+
+For a window of $W$ samples advanced by $S$ samples, the deterministic source-sample overlap is
+
+$
+\omega
+=
+\frac{\max(0,W-S)}{W}.
+$
+
+The overlap is provenance, not an independence assumption. Under target-recurrence-rate mode, recurrence rate is controlled by construction and is not accepted as a downstream functional outcome.
+
+Implemented by `windowed_rqa_trajectory_set()`.
 ## Rosenstein local divergence
 
 For each reconstructed state \(i\), let \(j(i)\) be the nearest temporally separated neighbor. Forward divergence is

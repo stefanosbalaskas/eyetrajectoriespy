@@ -4,8 +4,8 @@ Version 0.23 adds nonlinear-dynamics tools for continuous gaze trajectories whil
 
 The implementation is divided into three scientific layers:
 
-1. **established reconstruction / recurrence analysis** — delay embedding, AMI/ACF diagnostics, false-nearest-neighbor diagnostics, sparse RQA, windowed RQA, and cross-RQA;
-2. **advanced nonlinear diagnostics** — Rosenstein local divergence / largest-Lyapunov estimation and IAAFT surrogate testing;
+1. **established reconstruction / recurrence analysis** — delay embedding, AMI/ACF diagnostics, false-nearest-neighbor diagnostics, sparse RQA, windowed RQA, cross-RQA, and functionalized RQA trajectories;
+2. **advanced nonlinear diagnostics** — Rosenstein local divergence / largest-Lyapunov estimation and IAAFT surrogate testing. LLE has direct eye-movement signal-analysis precedent, but remains uncommon as a continuous behavioral-scanpath descriptor;
 3. **experimental behavioral stability** — empirical Poincare sections and local return-map contraction/expansion.
 
 Classical Floquet multipliers, monodromy matrices, and numerical bifurcation continuation are **not** raw-gaze statistics and are not exposed as such.
@@ -189,6 +189,34 @@ The returned table contains \(RR(t)\), \(DET(t)\), \(LAM(t)\), trapping time, en
 
 Only complete windows are analyzed. Any trailing samples not included in a full window are reported as \`dropped_tail_samples\`; they are never silently forgotten.
 
+### RQA metrics as functional trajectories
+
+Version 0.24 can lift the same sliding-window contract across every source curve:
+
+```python
+functional_rqa = windowed_rqa_trajectory_set(
+    gaze,
+    metrics=("recurrence_rate", "determinism", "laminarity"),
+    window=2.0,
+    step=0.5,
+    window_units="seconds",
+    step_units="seconds",
+    radius=1.25,
+    theiler_window=0.100,
+    theiler_window_units="seconds",
+    dimensions=("x", "y"),
+)
+```
+
+The window centers become a common functional time grid and the selected RQA measures become functional dimensions. The result retains the complete per-curve window tables, including solved radii, so functionalization does not discard the underlying RQA audit trail.
+
+Overlapping windows are explicitly recorded. They reuse source samples and are **not independent observations**. Downstream FDA may model the resulting within-curve temporal shape, but inferential resampling must still respect the source curve/participant sampling unit.
+
+When target recurrence rate is used, recurrence density is controlled by construction. Version 0.24 therefore refuses to use `recurrence_rate` itself as a downstream functional outcome under target-rate mode.
+
+Undefined RQA metrics fail closed by default. `undefined_policy="keep"` retains those cells as `NaN`; no zero-filling or interpolation is introduced.
+
+See the [worked functional RQA example](../examples/rqa-functional-trajectories.md).
 ### Cross recurrence
 
 \`\`\`python

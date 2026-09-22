@@ -39,6 +39,9 @@ flowchart LR
     A[Continuous trajectory] --> B[Explicit state definition]
     B --> C[Delay embedding diagnostics]
     B --> D[Sparse recurrence / RQA]
+    D --> K[Windowed RQA]
+    K --> L[RQA functional trajectories]
+    L --> M[FPCA / MFPCA / regression]
     C --> E[Local divergence]
     E --> F[Rosenstein LLE]
     F --> G[IAAFT surrogate test]
@@ -47,7 +50,7 @@ flowchart LR
     I --> J[Experimental spectral-radius stability]
 \`\`\`
 
-Classical Floquet/monodromy and continuation analysis are intentionally excluded from the raw-gaze pathway.
+Overlapping RQA windows remain within-curve dependent summaries; the source curve/participant remains the downstream sampling unit. Classical Floquet/monodromy and continuation analysis are intentionally excluded from the raw-gaze pathway.
 
 ## Documentation contract
 

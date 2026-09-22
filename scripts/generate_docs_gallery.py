@@ -32,6 +32,7 @@ from eyetrajectoriespy import (
     plot_poincare_return_map,
     plot_recurrence,
     plot_windowed_rqa,
+    plot_windowed_rqa_trajectories,
     plot_warping_functions,
     poincare_crossings,
     recurrence_matrix,
@@ -39,6 +40,7 @@ from eyetrajectoriespy import (
     simulate_planar_trajectories,
     wild_bootstrap_fpca_projection,
     windowed_rqa,
+    windowed_rqa_trajectory_set,
 )
 
 
@@ -58,7 +60,7 @@ def _save(ax, filename: str) -> None:
 
 def main() -> None:
     OUTPUT.mkdir(parents=True, exist_ok=True)
-    matplotlib.rcParams["svg.hashsalt"] = "eyetrajectoriespy-0.23-gallery"
+    matplotlib.rcParams["svg.hashsalt"] = "eyetrajectoriespy-0.24-gallery"
 
     gaze = simulate_planar_trajectories(
         n_participants=32,
@@ -196,6 +198,38 @@ def main() -> None:
     ax = plot_windowed_rqa(dynamic_rqa)
     _save(ax, "windowed-rqa.svg")
 
+    rqa_time = np.arange(240, dtype=float) * 0.01
+    rqa_curves = np.asarray(
+        [
+            np.sin(2.0 * np.pi * (1.5 + 0.08 * index) * rqa_time + 0.18 * index)
+            for index in range(6)
+        ],
+        dtype=float,
+    )[:, :, None]
+    rqa_source = TrajectorySet(
+        time=rqa_time,
+        values=rqa_curves,
+        curve_ids=tuple(f"RQA-{index + 1:02d}" for index in range(6)),
+        dimension_names=("x",),
+        time_unit="s",
+        coordinate_system="normalized",
+    )
+    functional_rqa = windowed_rqa_trajectory_set(
+        rqa_source,
+        metrics=("recurrence_rate",),
+        window=80,
+        step=40,
+        radius=0.22,
+        theiler_window=2,
+        dimensions=("x",),
+    )
+    ax = plot_windowed_rqa_trajectories(
+        functional_rqa,
+        metric="recurrence_rate",
+        show_mean=True,
+    )
+    _save(ax, "functional-rqa-trajectories.svg")
+
     divergence = local_divergence_curve(
         embedded,
         curve=0,
@@ -253,6 +287,7 @@ def main() -> None:
         "monte-carlo-precision.svg",
         "recurrence-plot.svg",
         "windowed-rqa.svg",
+        "functional-rqa-trajectories.svg",
         "local-divergence.svg",
         "return-map.svg",
     }
