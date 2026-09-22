@@ -65,6 +65,7 @@ from .plotting import (
     plot_fpca_regression_cv,
     plot_fpca_regression_mean_prediction_uncertainty,
     plot_fpca_regression_future_prediction_interval,
+    plot_fpca_wild_bootstrap_projection,
     plot_fpca_regression_slope_band,
     plot_fpca_regression_slope_uncertainty,
     plot_nested_fpca_regression_cv,
@@ -118,6 +119,7 @@ from .reporting import (
     fpca_outlier_reporting_text,
     fpca_regression_cv_reporting_text,
     fpca_regression_future_prediction_reporting_text,
+    fpca_wild_bootstrap_projection_reporting_text,
     fpca_regression_slope_band_reporting_text,
     fpca_regression_uncertainty_reporting_text,
     fpca_nested_regression_cv_reporting_text,
@@ -176,6 +178,7 @@ from .types import (
     FPCARegressionPredictionIntervalResult,
     FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
+    FPCAWildBootstrapProjectionResult,
     FPCAStabilityResult,
     FPCASubspaceComparisonResult,
     FPCASubspaceStabilityResult,
@@ -190,6 +193,10 @@ from .types import (
     SparseFPCAResult,
     TrajectorySet,
 )
+from .wild_regression import (
+    fpca_wild_bootstrap_projection_frame,
+    wild_bootstrap_fpca_projection,
+)
 from .validation import (
     validate_common_grid,
     validate_no_long_missing_runs,
@@ -197,7 +204,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.15.0.dev0"
+__version__ = "0.16.0.dev0"
 
 __all__ = [
     "TrajectorySet",
@@ -350,8 +357,13 @@ __all__ = [
     "FPCARegressionPredictionIntervalResult",
     "FPCARegressionSlopeBandResult",
     "FPCARegressionUncertaintyResult",
+    "FPCAWildBootstrapProjectionResult",
     "FPCANestedRegressionCVResult",
     "bootstrap_fpca_regression_uncertainty",
+    "wild_bootstrap_fpca_projection",
+    "fpca_wild_bootstrap_projection_frame",
+    "plot_fpca_wild_bootstrap_projection",
+    "fpca_wild_bootstrap_projection_reporting_text",
     "fpca_regression_future_prediction_interval",
     "fpca_regression_future_prediction_frame",
     "plot_fpca_regression_future_prediction_interval",

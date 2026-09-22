@@ -18,6 +18,7 @@ from .types import (
     FPCARegressionPredictionIntervalResult,
     FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
+    FPCAWildBootstrapProjectionResult,
     FPCAResult,
     FPCAScoreUncertaintyResult,
     FPCASpectrumUncertaintyResult,
@@ -443,6 +444,38 @@ def functional_mean_band_reporting_text(
         "claim continuous-domain coverage between sampled grid points."
     )
 
+
+
+def fpca_wild_bootstrap_projection_reporting_text(
+    result: FPCAWildBootstrapProjectionResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate reporting text for heteroscedastic FPCR wild-bootstrap intervals."""
+
+    median_width = float(np.median(result.upper - result.lower))
+    median_se = float(np.median(result.reference_se))
+    unit_note = (
+        f" Independence was declared by unique values of "
+        f"{result.independent_unit_column!r}."
+        if result.independent_unit_column is not None
+        else " Curve rows were assumed to be independent sampling units."
+    )
+    return (
+        f"Centered Gaussian FPCR projections were evaluated with "
+        f"{result.n_bootstrap} fixed-regressor multiplier wild-bootstrap "
+        f"replicates using {result.multiplier!r} multipliers. Residuals and the "
+        f"bootstrap pseudo-truth used k=g={result.residual_components} FPCs, "
+        f"while target inference used h={result.inference_components} FPCs. "
+        "Each bootstrap root was studentized with a bootstrap-level "
+        "heteroscedastic score-covariance scale. "
+        f"The {100 * result.confidence_level:.1f}% target-wise symmetrized "
+        f"intervals had median reference SE={median_se:.{digits}f} and median "
+        f"width={median_width:.{digits}f}.{unit_note} The estimand is the "
+        "centered projection relative to the training functional mean; these "
+        "are not future-outcome prediction intervals, not clustered wild "
+        "bootstrap intervals, and not simultaneous across targets."
+    )
 
 
 def fpca_regression_future_prediction_reporting_text(

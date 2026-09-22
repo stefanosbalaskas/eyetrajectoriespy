@@ -1,7 +1,7 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.15.0.dev0"
+    assert et.__version__=="0.16.0.dev0"
     required={
         "TrajectorySet","fit_fpca","fit_mfpca","fit_multilevel_fpca","fit_compositional_fpca","FPCAScoreUncertaintyResult","FPCASpectrumUncertaintyResult",
         "register_to_landmarks","fit_elastic_fpca","simulate_planar_trajectories",
@@ -27,8 +27,8 @@ def test_version_and_public_symbols():
         "FunctionalMeanBandResult","multiplier_functional_mean_band",
         "functional_mean_band_frame","plot_functional_mean_band",
         "functional_mean_band_reporting_text","bootstrap_fpca_score_uncertainty","fpca_score_uncertainty_frame","plot_fpca_score_uncertainty","fpca_score_uncertainty_reporting_text","bootstrap_fpca_spectrum_uncertainty","fpca_spectrum_uncertainty_frame","plot_fpca_spectrum_uncertainty","fpca_spectrum_uncertainty_reporting_text",
-        "FPCARegressionCVResult","FPCARegressionPredictionIntervalResult","FPCARegressionSlopeBandResult","FPCARegressionUncertaintyResult","FPCANestedRegressionCVResult",
-        "bootstrap_fpca_regression_uncertainty","fpca_regression_future_prediction_interval","fpca_regression_future_prediction_frame","plot_fpca_regression_future_prediction_interval","fpca_regression_future_prediction_reporting_text","fpca_regression_slope_simultaneous_band","fpca_regression_slope_band_frame","plot_fpca_regression_slope_band","fpca_regression_slope_band_reporting_text","fpca_regression_slope_uncertainty_frame","fpca_regression_prediction_uncertainty_frame","plot_fpca_regression_slope_uncertainty","plot_fpca_regression_mean_prediction_uncertainty","fpca_regression_uncertainty_reporting_text","cross_validate_fpca_regression","summarise_fpca_regression_cv",
+        "FPCARegressionCVResult","FPCARegressionPredictionIntervalResult","FPCARegressionSlopeBandResult","FPCARegressionUncertaintyResult","FPCAWildBootstrapProjectionResult","FPCANestedRegressionCVResult",
+        "bootstrap_fpca_regression_uncertainty","wild_bootstrap_fpca_projection","fpca_wild_bootstrap_projection_frame","plot_fpca_wild_bootstrap_projection","fpca_wild_bootstrap_projection_reporting_text","fpca_regression_future_prediction_interval","fpca_regression_future_prediction_frame","plot_fpca_regression_future_prediction_interval","fpca_regression_future_prediction_reporting_text","fpca_regression_slope_simultaneous_band","fpca_regression_slope_band_frame","plot_fpca_regression_slope_band","fpca_regression_slope_band_reporting_text","fpca_regression_slope_uncertainty_frame","fpca_regression_prediction_uncertainty_frame","plot_fpca_regression_slope_uncertainty","plot_fpca_regression_mean_prediction_uncertainty","fpca_regression_uncertainty_reporting_text","cross_validate_fpca_regression","summarise_fpca_regression_cv",
         "select_fpca_regression_components","nested_cross_validate_fpca_regression",
         "plot_fpca_regression_cv","plot_nested_fpca_regression_cv",
         "fpca_regression_cv_reporting_text","fpca_nested_regression_cv_reporting_text",

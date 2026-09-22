@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.16.0.dev0 — 2026-09-22
+
+Sixteenth development tranche.
+
+- fixed-regressor multiplier wild-bootstrap inference for centered Gaussian FPCR projections under possible heteroscedastic response errors;
+- residual estimation and bootstrap pseudo-truth use k=g FPCs, while target inference uses an explicitly declared h>=g truncation;
+- normal and mathematically mean-zero/unit-variance Mammen two-point multipliers;
+- bootstrap-level heteroscedastic studentization recomputed from every wild pseudo-fit;
+- symmetrized studentized target-wise intervals centered on the h-component reference projection;
+- FPCA/MFPCA basis remains fixed during wild resampling, matching the fixed-regressor construction rather than paired-bootstrap refit semantics;
+- explicit rejection of declared repeated/clustered unit IDs because clustered wild-bootstrap validity is outside this tranche;
+- intervals target centered projections relative to the training functional mean and are neither future-outcome prediction intervals nor simultaneous target intervals;
+- deterministic seeded behavior, provenance, table/plot/reporting helpers, focused tests, executable example, and expanded methodological/site guidance.
+
+
 ## 0.15.0.dev0 — 2026-09-21
 
 Fifteenth development tranche.

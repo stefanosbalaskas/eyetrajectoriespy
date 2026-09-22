@@ -19,6 +19,7 @@ from .types import (
     FPCARegressionPredictionIntervalResult,
     FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
+    FPCAWildBootstrapProjectionResult,
     FPCAResult,
     FPCAScoreUncertaintyResult,
     FPCASpectrumUncertaintyResult,
@@ -91,6 +92,46 @@ def plot_fpca_variance(result: FPCAResult, *, cumulative: bool = True, ax=None):
     ax.set_xlabel("Functional principal component")
     ax.set_ylabel("Cumulative variance explained (%)" if cumulative else "Variance explained (%)")
     ax.set_xticks(x)
+    return ax
+
+
+def plot_fpca_wild_bootstrap_projection(
+    result: FPCAWildBootstrapProjectionResult,
+    *,
+    max_targets: int = 30,
+    ax=None,
+):
+    """Plot target-wise studentized wild-bootstrap FPCR projection intervals."""
+
+    if isinstance(max_targets, bool) or not isinstance(max_targets, (int, np.integer)):
+        raise TypeError("max_targets must be an integer")
+    if max_targets < 1:
+        raise ValueError("max_targets must be positive")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    n = min(max_targets, result.n_targets)
+    x = np.arange(n)
+    center = result.reference_projection[:n]
+    lower = result.lower[:n]
+    upper = result.upper[:n]
+    yerr = np.vstack((center - lower, upper - center))
+    ax.errorbar(
+        x,
+        center,
+        yerr=yerr,
+        marker="o",
+        linestyle="none",
+        capsize=3,
+        label="studentized wild-bootstrap interval",
+    )
+    ax.axhline(0.0, linestyle="--")
+    ax.set_xticks(x)
+    ax.set_xticklabels(result.target_curve_ids[:n], rotation=90)
+    ax.set_xlabel("Fixed target trajectory")
+    ax.set_ylabel("Centered FPCR projection")
+    ax.set_title("Heteroscedastic Gaussian FPCR projection inference")
+    ax.legend()
     return ax
 
 
