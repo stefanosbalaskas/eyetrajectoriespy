@@ -194,6 +194,9 @@ def fit_local_return_map(
             "selected return-map neighborhood is rank deficient; "
             "change the declared section, state variables, reference, or neighborhood"
         )
+    condition_number = float(np.linalg.cond(design))
+    if not np.isfinite(condition_number):
+        raise ValueError("selected return-map design has a non-finite condition number")
     coefficient, _, _, _ = np.linalg.lstsq(design, y_centered, rcond=None)
     fitted = design @ coefficient
     residuals = y_centered - fitted
@@ -215,6 +218,7 @@ def fit_local_return_map(
         intercept=np.asarray(intercept, dtype=float),
         residuals=residuals,
         r_squared=r_squared,
+        design_condition_number=condition_number,
         neighborhood_policy=policy,
         neighborhood_value=value,
         provenance={
@@ -224,6 +228,7 @@ def fit_local_return_map(
             "neighborhood_policy": policy,
             "neighborhood_value": value,
             "n_selected_transitions": int(selected.size),
+            "design_condition_number": condition_number,
             "fit": "local_affine_least_squares",
             "experimental": True,
             "interpretation_boundary": (
