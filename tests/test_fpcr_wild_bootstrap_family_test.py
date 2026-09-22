@@ -275,4 +275,27 @@ def test_monte_carlo_diagnostic_frame_plot_reporting_and_validation():
             diagnostics,
             show_targetwise=1,
         )
+
+    malformed_global = replace(family, global_statistic=np.nan)
+    with pytest.raises(ValueError, match="global_statistic"):
+        fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(malformed_global)
+
+    malformed_target_reject = replace(
+        family,
+        reject_targetwise=np.asarray([True], dtype=bool),
+    )
+    with pytest.raises(ValueError, match="reject_targetwise"):
+        fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(
+            malformed_target_reject
+        )
+
+    malformed_adjusted_reject = replace(
+        family,
+        reject_familywise=np.asarray([True], dtype=bool),
+    )
+    with pytest.raises(ValueError, match="reject_familywise"):
+        fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(
+            malformed_adjusted_reject
+        )
+
     plt.close("all")
