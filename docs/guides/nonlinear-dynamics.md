@@ -1,6 +1,6 @@
 # Nonlinear trajectory dynamics
 
-Version 0.23 adds nonlinear-dynamics tools for continuous gaze trajectories while preserving the package rule that **diagnostics do not silently become analysis choices**.
+Version 0.23 introduced the nonlinear-dynamics APIs, version 0.24 added the RQA → functional-trajectory bridge, and version 0.25 hardens the supporting evidence chain. The numerical 0.23/0.24 estimators are unchanged by the 0.25 evidence audit.
 
 The implementation is divided into three scientific layers:
 
@@ -9,6 +9,18 @@ The implementation is divided into three scientific layers:
 3. **experimental behavioral stability** — empirical Poincare sections and local return-map contraction/expansion.
 
 Classical Floquet multipliers, monodromy matrices, and numerical bifurcation continuation are **not** raw-gaze statistics and are not exposed as such.
+
+## Evidence status
+
+The literature is tracked by evidence tier rather than by novelty labels:
+
+- **direct behavioral gaze:** Anderson et al. (2013) and Gurtner et al. (2019) directly support recurrence/RQA analysis of eye-movement or fixation-sequence behavior;
+- **direct eye/pupil signal:** Korda et al. (2018) provides direct largest-Lyapunov eye-movement signal precedent, while Mesin et al. (2013), Piu et al. (2019), and Fink et al. (2024) support nonlinear recurrence/cross-recurrence analysis of pupil signals;
+- **general methodology:** Eckmann, Marwan, Fraser–Swinney, Kennel, Rosenstein, Kantz, Schreiber–Schmitz, Coco–Dale, and Wallot–Leonardi support the underlying algorithms, diagnostics, recurrence framework, and surrogate-null logic.
+
+This hierarchy matters. A direct eye-signal paper is stronger evidence than analogy to gait or EEG, but it does not automatically justify the same behavioral interpretation for continuous scanpaths. Likewise, a failed literature or package search is never treated as proof of novelty.
+
+See the [generated nonlinear evidence audit](../methods/nonlinear-evidence-audit.md) for the verified records, exact supported claims, explicit non-claims, and candidate citations that were not verified in the 2026-09-23 audit.
 
 ## When to use these methods
 
