@@ -241,7 +241,10 @@ def _iaaft_one(
         if abs(previous_error - error) <= tolerance:
             return surrogate, iteration
         previous_error = error
-    return surrogate, max_iterations
+    raise RuntimeError(
+        "IAAFT surrogate did not converge within max_iterations; "
+        "increase max_iterations or relax tolerance explicitly"
+    )
 
 
 def _scalar_trajectory(
