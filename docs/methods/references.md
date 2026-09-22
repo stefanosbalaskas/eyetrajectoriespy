@@ -166,3 +166,12 @@ eyetrajectoriespy 0.15 uses the standard marginal split-conformal p-value constr
 Yeon, Dai & Nordman develop a fixed-regressor wild bootstrap for functional-linear mean-response inference that accommodates heterogeneous errors, separates residual/pseudo-truth/inference truncations, and emphasizes bootstrap-level studentization. Their companion BTSinFLRM implementation exposes several multiplier choices.
 
 The eyetrajectoriespy 0.16 implementation is a narrower score-space analogue for common-grid Gaussian FPCR: g is fixed to k, h is explicit, normal and mathematically mean-zero/unit-variance Mammen multipliers are exposed, and only target-wise centered-projection intervals are returned.
+
+
+### Stabilized-volatility truncation selection
+
+Section 5.1 of Yeon, Dai & Nordman (2026) proposes the stabilized volatility method for selecting the wild-bootstrap inference truncation h.
+
+With k selected separately and g=k, the method scans consecutive h values, tracks interval width and center, defines stability through absolute adjacent changes below rho_w and rho_c, and selects the earliest h beginning a run governed by a small integer r.
+
+Their numerical study uses rho_w=rho_c=0.01 as an illustration. eyetrajectoriespy does not treat that simulation setting as a universal package default.

@@ -395,3 +395,27 @@ Report:
 Example:
 
 > Heteroscedastic uncertainty in centered Gaussian FPCR projections was evaluated with 1,000 fixed-regressor wild-bootstrap replicates using standard-normal multipliers. Residual estimation and the bootstrap pseudo-truth used k=g=2 FPCs, while inference used h=3 FPCs. In each pseudo-sample the target projection root was studentized using a heteroscedastic score-covariance scale recomputed from the pseudo-fit residuals. Ninety-five-percent symmetrized intervals were reported separately for four fixed target trajectories. Curve rows represented independent participants. The analysis did not claim FPCA-basis resampling, clustered wild-bootstrap validity, future-outcome prediction coverage, or simultaneous coverage across targets.
+
+
+## Stabilized-volatility wild-bootstrap truncation selection
+
+Report:
+
+- residual truncation k and how it was chosen;
+- g=k;
+- complete consecutive h candidate grid;
+- fixed FPCA/MFPCA scaling;
+- multiplier family;
+- bootstrap replicate count and seed;
+- that multiplier draws were shared across h candidates;
+- confidence level;
+- width and center thresholds with scalar outcome units;
+- run parameter r and its interpretation as r+1 required stable transitions;
+- target-specific selected h values;
+- targets for which no stable run was found;
+- the configured failure behavior;
+- that the rule is a practical tuning heuristic rather than a coverage-optimality guarantee.
+
+Example:
+
+> With residual truncation k=2 and g=k, 95% heteroscedastic wild-bootstrap projection intervals were scanned over h=2,...,6 using the same standard-normal multiplier draws across h. A transition was stable when absolute changes in interval width and center were at most 0.15 and 0.10 outcome units, respectively. Using r=1, the earliest h beginning two consecutive stable transitions was selected separately for each target. No package-default threshold or largest-h fallback was used.
