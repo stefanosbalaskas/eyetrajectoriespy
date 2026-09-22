@@ -4,8 +4,8 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.18.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, heteroscedastic Gaussian FPCR fixed-target wild-bootstrap inference, stabilized-volatility wild-bootstrap truncation selection, familywise simultaneous fixed-target wild-bootstrap calibration, split-conformal FPCA anomaly review, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
+- Package line: `0.19.0.dev0`
+- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, heteroscedastic Gaussian FPCR fixed-target wild-bootstrap inference, stabilized-volatility wild-bootstrap truncation selection, familywise simultaneous fixed-target wild-bootstrap calibration, fixed-family wild-bootstrap hypothesis testing with single-step maxT adjustment and a global family test, split-conformal FPCA anomaly review, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
 ## Locally validated — 2026-09-19
@@ -1102,4 +1102,85 @@ Therefore the 0.18 simultaneous fixed-target heteroscedastic Gaussian FPCR wild-
 5. These intervals cover fixed centered FPCR target projections. They are not joint future-outcome prediction regions and do not add future scalar-response noise.
 
 The 0.18 familywise max-|t| fixed-target post-calibration, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.18 scientific lineage.
+
+## 0.19 pre-PR algorithm and repository integrity — 2026-09-22
+
+Before PR publication, the fixed-family testing contract was checked with hand-calculated finite-bootstrap fixtures and exact branch integration audits.
+
+- hand-constructed studentized roots reproduced the expected target-wise plus-one tail probabilities: **passed**;
+- the same fixture reproduced the expected single-step maxT-adjusted probabilities: **passed**;
+- the complete-family global maximum statistic and bootstrap probability matched the direct calculation: **passed**;
+- adjusted probabilities were no smaller than their corresponding target-wise probabilities: **passed**;
+- a one-target family reduced exactly to the target-wise/global calibration: **passed**;
+- scalar and target-specific finite null values were supported explicitly;
+- zero reference SE with zero null discrepancy produced a zero observed statistic, while a non-zero null discrepancy with zero SE failed explicitly;
+- plus-one and raw empirical Monte Carlo probability rules remained explicit method choices;
+- exact branch source audit: **74/74** configured MkDocs navigation targets existed;
+- exact branch API audit: **175/175** documented public symbols resolved;
+- package, project, citation, README, methods-status, and homepage version surfaces all reported the 0.19 development line;
+- `examples/fpcr_wild_bootstrap_family_test.py` was registered in the unchanged examples workflow;
+- the branch was eight commits ahead and zero behind `main` immediately before PR creation.
+
+This pre-PR evidence was algorithmic/structural validation only. Full integrated cross-platform qualification is recorded below.
+
+### 0.19 PR-head certification — 2026-09-22
+
+Exact certified PR head:
+
+`0e885c014305c8906ba4019c7f434aacadae1586`
+
+PR #22, **“Add fixed-family FPCR wild-bootstrap hypothesis tests,”** completed all unchanged pull-request qualification workflows successfully on that exact SHA:
+
+- tests workflow #80: **success**, including package construction and all **9/9** Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- a representative completed core log reported **169 passed, 5 skipped**, **92.40% coverage**, and successful Ruff checks against the unchanged 90% coverage gate;
+- examples workflow #80: **success**, including `fpcr_wild_bootstrap_family_test.py`;
+- docs workflow #80: **success** with strict MkDocs build;
+- optional-fda workflow #76: **success**;
+- optional-sparse-fda workflow #64: **success**, including FDApy Python 3.11 and 3.12 lanes.
+
+The implementation reuses the exact studentized root matrix retained by `FPCAWildBootstrapProjectionResult`. For each supplied scalar or target-specific null projection, it forms a two-sided observed studentized discrepancy, reports a target-wise bootstrap tail probability, reports a single-step maxT-adjusted probability from the replicate-wise maximum absolute root, and reports one complete-family global max-statistic p-value.
+
+The default finite-Monte-Carlo rule is `(r+1)/(B+1)`, preventing zero p-values from a finite bootstrap sample; the raw empirical exceedance fraction remains available only as an explicit alternative. Zero reference SE is accepted only when the null discrepancy is numerically zero.
+
+The testing layer does not rerun FPCA, score regression, residual estimation, multiplier generation, or bootstrap sampling. Provenance records that the resampling distribution is not explicitly regenerated under the target null, and the package does not claim strong family-wise error control for arbitrary subsets of null hypotheses without additional subset-pivotality or closed/step-down conditions.
+
+No tests, coverage thresholds, workflows, branch protections, or scientific validation checks were weakened, disabled, deleted, or bypassed.
+
+PR #22 was squash-merged as:
+
+`9fe5135d4b7477da0c68cf58a134245d30ff5678`
+
+The certified PR head and squash-merged main commit both point to Git tree:
+
+`9f8d9adb42caf2c68912abf2d688df8bd41d0e98`
+
+so the merged implementation, tests, examples, scientific contracts, and documentation are byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.19 exact-main qualification and deployment — 2026-09-22
+
+The exact merged-main commit
+
+`9fe5135d4b7477da0c68cf58a134245d30ff5678`
+
+completed a fresh push-triggered qualification generation successfully:
+
+- tests workflow #81: **success**, including package construction and all **9/9** Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #81: **success**, including the fixed-family testing executable example;
+- docs workflow #81: **success**, including strict MkDocs build and **successful GitHub Pages deployment**;
+- optional-fda workflow #77: **success**;
+- optional-sparse-fda workflow #65: **success**, including FDApy Python 3.11 and 3.12 lanes.
+
+Therefore the 0.19 fixed-family heteroscedastic Gaussian FPCR wild-bootstrap hypothesis-testing tranche is both **PR-head CI-certified** and **exact-main requalified**, and the corresponding methods-site deployment is certified on the merged 0.19 scientific lineage.
+
+## 0.19 remaining re-checks
+
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this remains outside the current FDApy support contract.
+2. The testing family and null projection values should be scientifically declared before confirmatory inspection. Adaptive target-family selection is not covered by the current multiplicity statement.
+3. The bootstrap comparison distribution is not regenerated under an explicitly imposed target null; the implementation is a post-processing test approximation built from the certified centered studentized roots.
+4. Single-step maxT adjustment is reported for the complete declared family. Strong FWER for arbitrary subsets of true nulls is not claimed without additional subset-pivotality or closed/step-down theory.
+5. The tests remain conditional on the base k=g and h truncations. Data-driven truncation/component-selection uncertainty is not propagated automatically.
+6. Clustered/repeated-participant wild-bootstrap inference remains outside the independent-curve contract.
+7. These tests concern fixed centered FPCR target projections. They are not future-outcome hypothesis tests and do not add future scalar-response noise.
+
+The 0.19 fixed-family target-wise and maxT-adjusted testing layer, complete-family global test, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.19 scientific lineage.
 
