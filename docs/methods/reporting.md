@@ -495,3 +495,21 @@ For local divergence/LLE, report the reconstructed state, Theiler window, maximu
 For IAAFT testing, report the exact statistic, surrogate algorithm, number of surrogates, seed/reproducibility policy, iteration/tolerance settings, final spectrum-mismatch diagnostics, alternative, Monte Carlo p-value rule, and interpretation of the surrogate null.
 
 For empirical return maps, report the section, crossing direction, interpolated crossing count, returned state variables, reference state, neighborhood policy/value, selected transition count, local-fit (R^2), Jacobian eigenvalues, spectral radius, and stability tolerance. Label the method experimental and state explicitly that the eigenvalues are not classical Floquet multipliers.
+## RQA-derived functional trajectories
+
+When reporting windowed RQA as functional data, report:
+
+- the source trajectory dimensions and their units/coordinate system;
+- window and step in both the supplied units and resolved sample counts;
+- the resulting overlap in samples or percentage;
+- the original source-time support and the narrower window-center functional support;
+- any trailing samples outside complete windows;
+- recurrence metric, radius policy, Theiler window, and minimum line lengths;
+- the exact RQA metrics promoted to functional dimensions and their units;
+- whether undefined metrics caused failure or were retained as missing values;
+- whether a fixed radius or a target recurrence rate was used;
+- if target recurrence rate was used, that RR was controlled by design and was not analyzed as a functional outcome;
+- the number and definition of independent source curves/participants separately from the number of windows;
+- downstream FDA scaling, component count/selection rule, and inferential sampling unit.
+
+Do not report the number of overlapping windows as the inferential sample size.
