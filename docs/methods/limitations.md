@@ -442,6 +442,8 @@ Finite noisy biological records can show positive local-divergence slopes becaus
 
 ### IAAFT rejection is null-model specific
 
+Version 0.23 implements scalar IAAFT for one explicitly selected signal dimension. Multivariate surrogate generation that preserves cross-spectral structure is not silently approximated.
+
 The surrogate test asks whether the observed statistic is unusually extreme relative to IAAFT surrogates preserving the observed amplitude distribution and approximately the Fourier-amplitude spectrum. Rejection does not prove deterministic chaos, identify a unique nonlinear mechanism, or establish stationarity.
 
 ### Return-map stability is experimental
