@@ -296,6 +296,17 @@ def fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(
     if maximum.shape != (result.n_bootstrap,) or not np.all(np.isfinite(maximum)):
         raise ValueError("max_statistics are inconsistent with the family test")
 
+    global_statistic = float(result.global_statistic)
+    if not np.isfinite(global_statistic):
+        raise ValueError("global_statistic must be finite")
+
+    targetwise_reject = np.asarray(result.reject_targetwise, dtype=bool)
+    adjusted_reject = np.asarray(result.reject_familywise, dtype=bool)
+    if targetwise_reject.shape != (result.n_targets,):
+        raise ValueError("reject_targetwise shape is inconsistent with the family test")
+    if adjusted_reject.shape != (result.n_targets,):
+        raise ValueError("reject_familywise shape is inconsistent with the family test")
+
     absolute_roots = np.abs(roots)
     absolute_observed = np.abs(observed)
     targetwise_exceedances = np.sum(
@@ -306,7 +317,7 @@ def fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(
         maximum[:, None] >= absolute_observed[None, :],
         axis=0,
     ).astype(int)
-    global_exceedances = int(np.sum(maximum >= float(result.global_statistic)))
+    global_exceedances = int(np.sum(maximum >= global_statistic))
 
     n_bootstrap = result.n_bootstrap
     targetwise_tail = targetwise_exceedances.astype(float) / float(n_bootstrap)
@@ -342,13 +353,13 @@ def fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(
     targetwise_stable = _decision_stability(
         targetwise_lower,
         targetwise_upper,
-        rejected=result.reject_targetwise,
+        rejected=targetwise_reject,
         significance_level=result.significance_level,
     )
     adjusted_stable = _decision_stability(
         adjusted_lower,
         adjusted_upper,
-        rejected=result.reject_familywise,
+        rejected=adjusted_reject,
         significance_level=result.significance_level,
     )
     global_stable = bool(
