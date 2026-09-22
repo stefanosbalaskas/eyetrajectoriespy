@@ -115,7 +115,7 @@ The 0.16 method does not include:
 - component-selection uncertainty;
 - FPCA basis resampling;
 - clustered/repeated-participant wild resampling;
-- simultaneous calibration across multiple targets;
+- automatic simultaneous calibration across multiple targets in the base routine (use the separate 0.18 familywise post-calibration helper for a predeclared fixed-target family);
 - non-Gaussian/binomial functional regression.
 
 ## Relationship to Yeon, Dai & Nordman
@@ -129,8 +129,9 @@ eyetrajectoriespy 0.16 implements a narrower score-space analogue for its common
 - g is fixed to k;
 - h is explicit and must satisfy h>=k;
 - normal and mathematically mean-zero/unit-variance Mammen multipliers are exposed;
-- intervals are symmetrized and target-wise only;
-- simultaneous target tests and null-enforced testing are not implemented.
+- the 0.16 base intervals are symmetrized and target-wise;
+- version 0.18 adds a separate familywise max-|t| post-calibration of the stored target roots without changing the base bootstrap generator;
+- null-enforced simultaneous hypothesis testing remains outside this package layer.
 
 ## Reporting example
 
@@ -143,6 +144,8 @@ eyetrajectoriespy 0.16 implements a narrower score-space analogue for its common
 - <code>fpca_wild_bootstrap_projection_frame()</code>
 - <code>plot_fpca_wild_bootstrap_projection()</code>
 - <code>fpca_wild_bootstrap_projection_reporting_text()</code>
+- <code>fpca_wild_bootstrap_projection_simultaneous_interval()</code>
+- <code>FPCAWildBootstrapSimultaneousResult</code>
 - <code>bootstrap_fpca_regression_uncertainty()</code>
 - <code>fpca_regression_future_prediction_interval()</code>
 
@@ -176,3 +179,9 @@ The scan deliberately reuses the same wild multiplier draws across all h candida
 The package does not impose 0.01 as a default threshold. That value was used in the paper's numerical study, while an absolute threshold depends on the units and scale of the scalar outcome.
 
 See [Stabilized-volatility FPCR truncation selection](fpcr-wild-bootstrap-selection.md).
+
+## Simultaneous inference across a declared target family
+
+Version 0.18 can post-calibrate the exact studentized roots stored by the base routine across all fixed targets in the result. It uses one bootstrap maximum over absolute target roots per replicate and one familywise critical value. No FPCA or wild-bootstrap computation is rerun.
+
+See [Simultaneous fixed-target FPCR wild-bootstrap inference](fpcr-wild-bootstrap-simultaneous.md).

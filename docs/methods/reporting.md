@@ -419,3 +419,24 @@ Report:
 Example:
 
 > With residual truncation k=2 and g=k, 95% heteroscedastic wild-bootstrap projection intervals were scanned over h=2,...,6 using the same standard-normal multiplier draws across h. A transition was stable when absolute changes in interval width and center were at most 0.15 and 0.10 outcome units, respectively. Using r=1, the earliest h beginning two consecutive stable transitions was selected separately for each target. No package-default threshold or largest-h fallback was used.
+
+
+## Simultaneous fixed-target FPCR wild bootstrap
+
+Report at minimum:
+
+- the number of fixed targets and the scientific rule defining the family;
+- the familywise confidence level;
+- k, g=k, and h;
+- multiplier family and number of wild-bootstrap replicates;
+- the independent sampling unit;
+- whether a participant/unit identifier was checked for uniqueness;
+- the fixed-regressor/fixed-FPCA-basis construction;
+- bootstrap-level heteroscedastic studentization;
+- the familywise max-|t| critical value;
+- whether the same-level target-wise intervals were shown for comparison;
+- that the simultaneous calibration reused the stored bootstrap roots rather than initiating a second bootstrap;
+- any data-driven truncation selection that occurred before calibration;
+- the boundary that coverage concerns only the declared fixed centered projections, not future observed responses, unlisted targets, or clustered/repeated-participant outcomes.
+
+A concise description can state that the maximum absolute studentized root was formed across all declared targets within each bootstrap replicate and its requested empirical quantile was used as a common critical value.

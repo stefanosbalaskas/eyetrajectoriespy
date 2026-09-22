@@ -187,3 +187,18 @@ Width and center thresholds are absolute quantities in scalar-outcome units and 
 The selected h may differ by target trajectory.
 
 The rule is a practical tuning heuristic and does not imply bootstrap-coverage optimality.
+
+
+## Simultaneous fixed-target FPCR wild-bootstrap inference
+
+The 0.18 simultaneous layer inherits every assumption of the underlying 0.16 wild-bootstrap result. It is not a new resampling model.
+
+The target family is the complete set of fixed trajectories stored in the supplied base result. That family should be scientifically defined before inspecting the target-wise intervals when the familywise statement is confirmatory.
+
+All targets share the same bootstrap replicates. The calibration uses the maximum absolute studentized root across targets within each replicate, preserving their empirical bootstrap dependence.
+
+The common familywise critical value is conditional on the residual truncation k, pseudo-truth g=k, inference truncation h, multiplier family, fixed FPCA basis, and independent-curve sampling contract of the base result.
+
+The familywise statement applies only to the centered fixed-target projections included in that result. It does not imply simultaneous coverage for future scalar responses or for target trajectories introduced after calibration.
+
+If h or the target family is selected adaptively from the same outcomes or intervals, that selection step is outside the stated coverage contract unless separately accounted for.
