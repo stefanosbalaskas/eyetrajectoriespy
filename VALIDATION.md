@@ -970,3 +970,63 @@ A standalone score-space harness matching the 0.17 shared-multiplier truncation 
 - a second synthetic target with no stable run remained explicitly unselected: **passed**.
 
 This is local delta algorithmic evidence only. Full repository pytest/coverage/Ruff/package/docs/examples/optional-backend qualification remains a GitHub CI responsibility for the exact PR head.
+
+
+### 0.17 PR-head certification — 2026-09-22
+
+Exact certified PR head:
+
+`47dd5ef8200fb4d80db7947dd6c1ffe5117243c7`
+
+PR #20, **“Add stabilized-volatility FPCR wild-bootstrap selection,”** completed all unchanged pull-request qualification workflows successfully on that exact SHA:
+
+- package build / distribution validation: **success**;
+- Windows × Python 3.11, 3.12, 3.13: **3/3 success**;
+- Ubuntu × Python 3.11, 3.12, 3.13: **3/3 success**;
+- macOS × Python 3.11, 3.12, 3.13: **3/3 success**;
+- full pytest/coverage/compile/Ruff gate embedded in the standard workflow: **success**;
+- executable examples, including `fpcr_wild_bootstrap_selection.py`: **success**;
+- strict MkDocs documentation build: **success**;
+- optional scikit-fda interoperability: **success**;
+- optional FDApy sparse/PACE interoperability on Python 3.11 and 3.12: **2/2 success**.
+
+Local delta validation before PR publication confirmed exact agreement between the largest shared-multiplier scan candidate and the standalone 0.16 fixed-h wild-bootstrap projection, heteroscedastic SEs, studentized roots, and interval limits under the same seed. A synthetic stabilized-volatility truth fixture selected the earliest qualifying h=3 under rho_w=0.10, rho_c=0.05, r=1, while a second target with no stable run remained explicitly unselected.
+
+The implementation fixes k, sets g=k, requires consecutive h candidates with h>=g, reuses identical wild multiplier draws across h within each bootstrap replicate, and applies analyst-supplied absolute width/center thresholds plus the published r-run criterion. No package default of 0.01 and no silent largest-h fallback were introduced.
+
+No tests, coverage thresholds, workflows, branch protections, or scientific validation checks were weakened, disabled, deleted, or bypassed.
+
+PR #20 was squash-merged as:
+
+`e38b5767b68af08508ce5a5f7afd428b736a14c8`
+
+The certified PR head and squash-merged main commit both point to Git tree:
+
+`1208697e2bd5dd58f13c94ec425d62289d8129f4`
+
+so the merged code, scientific contracts, tests, examples, and documentation are byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.17 exact-main qualification and deployment — 2026-09-22
+
+The exact merged-main commit
+
+`e38b5767b68af08508ce5a5f7afd428b736a14c8`
+
+completed a fresh push-triggered qualification generation successfully:
+
+- tests workflow #75: **success**, including package construction and all 9 Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #75: **success**;
+- docs workflow #75: **success**, including strict MkDocs build and **successful GitHub Pages deployment**;
+- optional-fda workflow #71: **success**;
+- optional-sparse-fda workflow #59: **success**, including FDApy Python 3.11 and 3.12 lanes.
+
+Therefore the 0.17 stabilized-volatility FPCR wild-bootstrap selection tranche is both **PR-head CI-certified** and **exact-main requalified**, and the corresponding methods-site deployment is certified on the merged 0.17 main lineage.
+
+## 0.17 remaining re-checks
+
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this remains outside the current FDApy support contract.
+2. Stabilized-volatility thresholds rho_w and rho_c remain analyst-declared absolute outcome-scale tolerances; no universal threshold is claimed.
+3. The method is a practical tuning heuristic, not a coverage-optimality guarantee.
+4. Clustered/repeated-participant wild-bootstrap inference remains outside the 0.17 contract.
+
+The 0.17 shared-multiplier truncation scan and stabilized-volatility selector, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.17 main lineage.
