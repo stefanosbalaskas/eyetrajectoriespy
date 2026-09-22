@@ -41,7 +41,7 @@ def _state_from_source(
             )
         index = _curve_index(source, curve)
         dim_indices = _dimension_indices(source, dimensions)
-        states = source.values[index, :, dim_indices]
+        states = source.values[index][:, dim_indices]
         names = tuple(source.dimension_names[i] for i in dim_indices)
         _require_finite(states, context="recurrence analysis")
         return (
