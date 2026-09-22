@@ -812,6 +812,39 @@ class FPCAWildBootstrapSimultaneousResult:
         return self.projection_result.n_targets
 
 @dataclass(frozen=True)
+class FPCAWildBootstrapFamilyTestResult:
+    """Bootstrap maxT tests for a fixed family of Gaussian FPCR projections."""
+
+    projection_result: FPCAWildBootstrapProjectionResult
+    null_values: np.ndarray
+    observed_statistics: np.ndarray
+    targetwise_p_values: np.ndarray
+    adjusted_p_values: np.ndarray
+    max_statistics: np.ndarray
+    global_statistic: float
+    global_p_value: float
+    reject_targetwise: np.ndarray
+    reject_familywise: np.ndarray
+    reject_global: bool
+    significance_level: float
+    pvalue_correction: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.projection_result.n_bootstrap
+
+    @property
+    def n_targets(self) -> int:
+        return self.projection_result.n_targets
+
+    @property
+    def minimum_attainable_p(self) -> float:
+        if self.pvalue_correction == "plus_one":
+            return 1.0 / (self.n_bootstrap + 1.0)
+        return 0.0
+
+@dataclass(frozen=True)
 class FPCAWildBootstrapTruncationScanResult:
     """Shared-multiplier wild-bootstrap interval scan over inference truncations."""
 
