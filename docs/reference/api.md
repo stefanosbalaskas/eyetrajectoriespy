@@ -69,6 +69,16 @@
 ::: eyetrajectoriespy.plot_fpca_cross_validation
 ::: eyetrajectoriespy.fpca_cross_validation_reporting_text
 
+## Stabilized-volatility FPCR wild-bootstrap truncation selection
+::: eyetrajectoriespy.FPCAWildBootstrapTruncationScanResult
+::: eyetrajectoriespy.FPCAWildBootstrapTruncationSelectionResult
+::: eyetrajectoriespy.scan_wild_bootstrap_fpca_truncations
+::: eyetrajectoriespy.select_fpca_wild_bootstrap_truncation
+::: eyetrajectoriespy.fpca_wild_bootstrap_truncation_scan_frame
+::: eyetrajectoriespy.fpca_wild_bootstrap_truncation_selection_frame
+::: eyetrajectoriespy.plot_fpca_wild_bootstrap_truncation_scan
+::: eyetrajectoriespy.fpca_wild_bootstrap_truncation_reporting_text
+
 ## Heteroscedastic Gaussian FPCR wild-bootstrap projection inference
 ::: eyetrajectoriespy.FPCAWildBootstrapProjectionResult
 ::: eyetrajectoriespy.wild_bootstrap_fpca_projection

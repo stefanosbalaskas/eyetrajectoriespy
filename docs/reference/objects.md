@@ -156,6 +156,18 @@ over the observed time-by-dimension grid and does not assert continuous-domain
 coverage between sampled points.
 
 
+## FPCAWildBootstrapTruncationScanResult
+
+Stores one fixed maximum-h FPCA/MFPCA reference, fixed target IDs, the consecutive candidate h grid, k=g, the common pseudo-truth projection, target × h reference projections, heteroscedastic SEs, critical values, lower/upper limits, interval centers and widths, and all candidate × bootstrap × target studentized roots.
+
+Every bootstrap pseudo-response is shared across candidate h values. The object therefore supports direct volatility comparisons without injecting independent bootstrap randomness at each h.
+
+## FPCAWildBootstrapTruncationSelectionResult
+
+Stores a truncation scan together with adjacent width/center changes, width-stability and center-stability masks, their intersection, target-specific selected candidate indices/h values and intervals, analyst-supplied rho_w/rho_c, the paper run parameter r, failure behavior, and provenance.
+
+An unselected target is represented explicitly when warn/ignore behavior is requested. The selector never substitutes the largest candidate silently.
+
 ## FPCAWildBootstrapProjectionResult
 
 Stores the fixed FPCA/MFPCA reference, target curve IDs, h-component reference centered projections, g=k pseudo-truth projections, reference heteroscedastic standard errors, bootstrap target projections, bootstrap-level heteroscedastic standard errors, studentized roots, target-wise critical values and interval limits, k-truncation residuals, multiplier/truncation settings, seed, and provenance.

@@ -4,7 +4,7 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.16.0.dev0`
+- Package line: `0.17.0.dev0`
 - Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, split-conformal FPCA anomaly review, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
@@ -955,3 +955,18 @@ Therefore the 0.16 heteroscedastic Gaussian FPCR wild-bootstrap tranche is both 
 4. The 0.16 intervals are target-wise centered-projection intervals, not simultaneous target intervals and not future-outcome prediction intervals.
 
 The 0.16 wild-bootstrap implementation, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.16 main lineage.
+
+
+## 0.17 pre-PR local algorithm validation — 2026-09-22
+
+A standalone score-space harness matching the 0.17 shared-multiplier truncation scan and stabilized-volatility rule was executed locally.
+
+- largest scan candidate exactly matched the standalone 0.16 fixed-h wild-bootstrap reference projection: **passed**;
+- largest scan candidate exactly matched standalone heteroscedastic reference SEs: **passed**;
+- largest scan candidate exactly matched standalone studentized bootstrap roots under the same seed: **passed**;
+- largest scan candidate exactly matched standalone lower and upper interval limits: **passed**;
+- repeated scans with the same seed produced identical shared-multiplier roots: **passed**;
+- synthetic truth fixture with known width/center changes selected the earliest qualifying h=3 under rho_w=0.10, rho_c=0.05, r=1: **passed**;
+- a second synthetic target with no stable run remained explicitly unselected: **passed**.
+
+This is local delta algorithmic evidence only. Full repository pytest/coverage/Ruff/package/docs/examples/optional-backend qualification remains a GitHub CI responsibility for the exact PR head.
