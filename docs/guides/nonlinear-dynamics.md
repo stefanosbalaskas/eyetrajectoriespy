@@ -170,6 +170,9 @@ The result contains:
 
 The line-length thresholds are part of the result provenance.
 
+The base estimator also freezes several software conventions that differ across RQA libraries: recurrence uses an inclusive `distance <= radius` rule; auto-recurrence excludes the line of identity and declared Theiler window from both the recurrence set and eligible-pair RR denominator; cross-recurrence uses the full rectangular all-pairs denominator; RR/DET/LAM are reported on the 0-1 scale; diagonal-line entropy is normalized over qualifying lines; and finite-matrix border lines are counted at their observed length without a hidden border correction. See [RQA software conventions](../methods/rqa-software-conventions.md).
+
+
 The recurrence matrix itself can represent spatial returns among irregularly timed observations, but the standard line-based RQA summaries above require an approximately regular source grid. For cross-RQA, both source grids must be regular with matching sampling steps. No interpolation or sampling-rate correction is performed internally; the raw recurrence result remains available even when line-based RQA is not admissible.
 
 ### Windowed RQA
@@ -326,6 +329,13 @@ A failed surrogate raises an error; no replacement replicate is silently drawn.
 
 Rejecting the surrogate null means the observed statistic is inconsistent with the declared linear-stochastic surrogate model at the chosen test level. It does not identify a unique nonlinear mechanism.
 
+### Multivariate gaze surrogates are deferred
+
+The current IAAFT implementation is **scalar**. It does not independently surrogate `x` and `y` and then call the result a multivariate gaze surrogate.
+
+A future MIAAFT/multivariate-Fourier surrogate path must preserve the declared cross-channel linear structure as well as per-channel marginal/spectral constraints, expose convergence diagnostics, state the multivariate null explicitly, and validate against a primary/reference implementation. Until that contract is met, multivariate surrogate testing remains intentionally unavailable. See [RQA software conventions](../methods/rqa-software-conventions.md#multivariate-surrogate-contract-deferred-not-approximated).
+
+
 ## 5. Experimental Poincare return-map stability
 
 For genuinely repeated gaze cycles, a section can be defined by one state variable:
@@ -383,6 +393,9 @@ A dense recurrence plot requires \(O(N^2)\) storage. Version 0.23 therefore stor
 Target-recurrence-rate mode repeatedly counts neighbors while solving for \(\varepsilon\); it avoids a full dense pairwise-distance matrix but can still be computationally demanding for very long or high-dimensional embeddings.
 
 Windowed RQA repeats recurrence construction in each declared window. Keep exploratory grids modest and report every parameter.
+
+The repository includes `benchmarks/benchmark_recurrence.py` for retained wall-clock and CSR-memory measurements. Documentation should not state a runtime threshold unless it is tied to a recorded benchmark environment and parameterization.
+
 
 ## What the package deliberately does not choose for you
 
