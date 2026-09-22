@@ -258,7 +258,7 @@ def embedding_delay_diagnostics(
         raise KeyError(f"Unknown dimension {dimension!r}")
     if not isinstance(bins, (int, np.integer)) or bins < 2:
         raise ValueError("bins must be an integer >= 2")
-    _require_regular_temporal_grid(
+    sampling_step = _require_regular_temporal_grid(
         trajectories.time,
         context="embedding delay diagnostics",
     )
@@ -314,6 +314,8 @@ def embedding_delay_diagnostics(
             "automatic_delay_selection": False,
             "bins": int(bins),
             "histogram_edges_fixed_across_lags": True,
+            "sampling_contract": "approximately_regular_grid",
+            "sampling_step": float(sampling_step),
         },
     )
 
@@ -381,7 +383,7 @@ def embedding_dimension_diagnostics(
     if not np.isfinite(rtol) or rtol <= 0 or not np.isfinite(atol) or atol <= 0:
         raise ValueError("rtol and atol must be positive finite values")
 
-    _require_regular_temporal_grid(
+    sampling_step = _require_regular_temporal_grid(
         trajectories.time,
         context="embedding dimension diagnostics",
     )
@@ -455,5 +457,7 @@ def embedding_dimension_diagnostics(
             "criterion": "Kennel-Brown-Abarbanel false nearest neighbors",
             "automatic_dimension_selection": False,
             "missing_policy": "error",
+            "sampling_contract": "approximately_regular_grid",
+            "sampling_step": float(sampling_step),
         },
     )
