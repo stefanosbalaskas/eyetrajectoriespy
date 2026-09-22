@@ -895,3 +895,63 @@ Therefore the 0.15 split-conformal FPCA anomaly-review tranche is both **PR-head
 2. Conformal anomaly p-values remain curve-level marginal review diagnostics under the declared split/exchangeability contract; calibration-conditional adjustment, repeated-participant dependence, and multiple-target FDR/familywise procedures remain separate future methods.
 
 The 0.15 split-conformal anomaly implementation, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.15 main lineage.
+
+
+### 0.16 PR-head certification — 2026-09-22
+
+Exact certified PR head:
+
+`a01c3ecd30302909f9655d780d83ca67d86294c6`
+
+PR #19, **“Add heteroscedastic Gaussian FPCR wild-bootstrap inference,”** completed all unchanged pull-request qualification workflows successfully on that exact SHA:
+
+- package build / distribution validation: **success**;
+- Windows × Python 3.11, 3.12, 3.13: **3/3 success**;
+- Ubuntu × Python 3.11, 3.12, 3.13: **3/3 success**;
+- macOS × Python 3.11, 3.12, 3.13: **3/3 success**;
+- full pytest/coverage/compile/Ruff gate embedded in the standard workflow: **success**;
+- executable examples, including `fpcr_wild_bootstrap_projection.py`: **success**;
+- strict MkDocs documentation build: **success**;
+- optional scikit-fda interoperability: **success**;
+- optional FDApy sparse/PACE interoperability on Python 3.11 and 3.12: **2/2 success**.
+
+Local delta validation before PR publication confirmed deterministic normal-multiplier studentized roots and bootstrap-level heteroscedastic standard errors, monotone interval width as confidence increased, finite Mammen-multiplier inference, and exact theoretical Mammen moments E(W)=0, Var(W)=1, and E(W^3)=1.
+
+The implementation keeps functional regressors and the FPCA/MFPCA basis fixed during wild resampling, uses residual/pseudo-truth truncation k=g, requires inference truncation h>=g, and recomputes the heteroscedastic studentization scale inside every pseudo-sample.
+
+No tests, coverage thresholds, workflows, branch protections, or scientific validation checks were weakened, disabled, deleted, or bypassed.
+
+PR #19 was squash-merged as:
+
+`9d5567c7014197137654cabe69428dbf52830133`
+
+The certified PR head and squash-merged main commit both point to Git tree:
+
+`d37f55ecd1b5a30516ae286994270169ce5c1eb8`
+
+so the merged code, scientific contracts, tests, examples, and documentation are byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.16 exact-main qualification and deployment — 2026-09-22
+
+The exact merged-main commit
+
+`9d5567c7014197137654cabe69428dbf52830133`
+
+completed a fresh push-triggered qualification generation successfully:
+
+- tests workflow #72: **success**, including package construction and all 9 Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #72: **success**;
+- docs workflow #72: **success**, including strict MkDocs build and **successful GitHub Pages deployment**;
+- optional-fda workflow #68: **success**;
+- optional-sparse-fda workflow #56: **success**, including FDApy Python 3.11 and 3.12 lanes.
+
+Therefore the 0.16 heteroscedastic Gaussian FPCR wild-bootstrap tranche is both **PR-head CI-certified** and **exact-main requalified**, and the corresponding methods-site deployment is certified on the merged 0.16 main lineage.
+
+## 0.16 remaining re-checks
+
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this remains outside the current FDApy support contract.
+2. The wild-bootstrap API currently assumes independent curve rows. Clustered/repeated-participant wild-bootstrap inference requires a separate method and validity contract.
+3. k=g and h are analyst-declared truncations. Data-driven truncation-selection uncertainty and the stabilized-volatility selection method from the 2026 literature are not yet implemented.
+4. The 0.16 intervals are target-wise centered-projection intervals, not simultaneous target intervals and not future-outcome prediction intervals.
+
+The 0.16 wild-bootstrap implementation, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.16 main lineage.
