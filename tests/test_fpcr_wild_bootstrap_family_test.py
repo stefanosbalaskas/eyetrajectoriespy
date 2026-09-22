@@ -84,7 +84,10 @@ def test_zero_se_and_validation_contracts():
     )
     assert ok.observed_statistics[0] == 0.0
     with pytest.raises(RuntimeError, match="zero reference standard error"):
-        fpca_wild_bootstrap_projection_family_test(zero, null_values=0.0)
+        fpca_wild_bootstrap_projection_family_test(
+            zero,
+            null_values=np.array([base.reference_projection[0] + 1.0, 0.0]),
+        )
     with pytest.raises(TypeError):
         fpca_wild_bootstrap_projection_family_test(object())
     with pytest.raises(TypeError, match="significance_level"):
@@ -97,6 +100,11 @@ def test_zero_se_and_validation_contracts():
         fpca_wild_bootstrap_projection_family_test(base, null_values=True)
     with pytest.raises(ValueError, match="one value per target"):
         fpca_wild_bootstrap_projection_family_test(base, null_values=[0.0])
+    with pytest.raises(ValueError, match="finite"):
+        fpca_wild_bootstrap_projection_family_test(
+            base,
+            null_values=[0.0, np.nan],
+        )
 
 
 def test_frame_and_empirical_option():
