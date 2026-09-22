@@ -37,6 +37,13 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.plot_local_divergence
 ::: eyetrajectoriespy.plot_surrogate_nonlinearity
 
+### Nonlinear reporting helpers
+::: eyetrajectoriespy.rqa_reporting_text
+::: eyetrajectoriespy.windowed_rqa_reporting_text
+::: eyetrajectoriespy.largest_lyapunov_reporting_text
+::: eyetrajectoriespy.surrogate_nonlinearity_reporting_text
+::: eyetrajectoriespy.return_map_stability_reporting_text
+
 ### Experimental empirical return maps
 ::: eyetrajectoriespy.PoincareCrossingResult
 ::: eyetrajectoriespy.LocalReturnMapResult
