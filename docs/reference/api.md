@@ -86,6 +86,13 @@
 ::: eyetrajectoriespy.plot_fpca_wild_bootstrap_projection
 ::: eyetrajectoriespy.fpca_wild_bootstrap_projection_reporting_text
 
+## Simultaneous fixed-target Gaussian FPCR wild-bootstrap inference
+::: eyetrajectoriespy.FPCAWildBootstrapSimultaneousResult
+::: eyetrajectoriespy.fpca_wild_bootstrap_projection_simultaneous_interval
+::: eyetrajectoriespy.fpca_wild_bootstrap_simultaneous_frame
+::: eyetrajectoriespy.plot_fpca_wild_bootstrap_simultaneous_interval
+::: eyetrajectoriespy.fpca_wild_bootstrap_simultaneous_reporting_text
+
 ## Gaussian FPCR future-outcome prediction
 ::: eyetrajectoriespy.FPCARegressionPredictionIntervalResult
 ::: eyetrajectoriespy.fpca_regression_future_prediction_interval

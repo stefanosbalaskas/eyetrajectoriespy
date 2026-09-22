@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.18.0.dev0 — 2026-09-22
+
+Eighteenth development tranche.
+
+- familywise simultaneous inference across a predeclared set of fixed Gaussian FPCR target projections;
+- post-calibration reuses the exact studentized wild-bootstrap roots from the 0.16/0.17 fixed-regressor engine and does not rerun FPCA, score regression, residual estimation, or multiplier generation;
+- one maximum absolute studentized root is computed across the complete target family within each bootstrap replicate;
+- the familywise critical value is the requested quantile of those replicate maxima using the same conservative higher empirical-quantile convention;
+- target-wise critical values at the same confidence level are retained for direct audit and comparison;
+- a one-target family exactly reduces to the corresponding target-wise calibration;
+- simultaneous intervals are never narrower than the same-level target-wise intervals apart from floating-point tolerance;
+- simultaneity applies only to the fixed target trajectories present in the supplied base result and does not extend to future outcomes, unlisted targets, clustered dependence, or component-selection uncertainty;
+- table, plotting, reporting, public-API, regression, and synthetic invariant tests.
+
 ## 0.17.0.dev0 — 2026-09-22
 
 Seventeenth development tranche.

@@ -110,3 +110,16 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 | how many FPCs reconstruct trajectories? | cross_validate_fpca_reconstruction() | held-out functional reconstruction | not outcome inference |
 | which h should stabilize heteroscedastic WB inference for one target? | scan_wild_bootstrap_fpca_truncations() + select_fpca_wild_bootstrap_truncation() | adjacent interval center + width stability | target-specific heuristic conditional on k=g |
 | what h is universally optimal for bootstrap coverage? | not provided | coverage-optimal tuning | unresolved by the current 2026 method |
+
+
+## Gaussian FPCR fixed-target uncertainty: target-wise versus familywise
+
+| Question | Tool | Calibration | Boundary |
+|---|---|---|---|
+| what is the heteroscedastic interval for each fixed target separately? | `wild_bootstrap_fpca_projection()` | target-specific quantile of absolute studentized roots | target-wise only |
+| what interval family protects all declared fixed targets simultaneously? | `fpca_wild_bootstrap_projection_simultaneous_interval()` | one max-|t| quantile across all targets within each shared bootstrap replicate | fixed declared target family only |
+| what is uncertainty in the fitted conditional mean with basis/regression sampling variability? | `bootstrap_fpca_regression_uncertainty()` | paired full-pipeline bootstrap | not heteroscedastic fixed-regressor wild bootstrap |
+| what is the interval for a future observed scalar response? | `fpca_regression_future_prediction_interval()` | paired-bootstrap means plus residual draw | pooled/exchangeable future-response error |
+| what band covers the reconstructed functional slope over time? | `fpca_regression_slope_simultaneous_band()` | maximum over observed slope grid | different estimand; observed-grid slope band |
+
+The 0.18 familywise helper is a post-calibration of one already generated target-root matrix. It should not be described as a future-response prediction region or as clustered wild-bootstrap inference.

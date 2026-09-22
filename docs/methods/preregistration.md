@@ -343,3 +343,22 @@ Pre-specify:
 - whether selection is primary or sensitivity analysis.
 
 Do not tune rho_w, rho_c, r, or the candidate grid after inspecting which configuration yields preferred substantive conclusions.
+
+
+## Simultaneous fixed-target FPCR wild bootstrap
+
+For confirmatory familywise inference across fixed targets, pre-specify:
+
+- the scientific rule defining every target trajectory in the family;
+- whether the family contains all planned targets or a named subset;
+- the familywise confidence level;
+- residual truncation k, pseudo-truth rule g=k, and inference truncation h, or the exact prespecified procedure used to choose them;
+- multiplier family and bootstrap replicate count;
+- channel scaling;
+- the independent sampling unit and any identifier used to verify it;
+- that the FPCA basis and functional regressors remain fixed during wild resampling;
+- that one maximum absolute studentized root is taken across the complete target family within each bootstrap replicate;
+- whether target-wise intervals will also be reported descriptively;
+- that future-outcome noise, clustered dependence, preprocessing uncertainty, and component-selection uncertainty are outside this interval unless handled separately.
+
+Do not define or shrink the target family after inspecting which marginal intervals are favorable. Changing the family changes the inferential question.

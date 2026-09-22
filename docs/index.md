@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.17 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.18 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
@@ -188,7 +188,16 @@ The package is designed around the principle that **the path to an FPC score is 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
 
-## New in 0.17 development
+## New in 0.18 development
+
+- familywise simultaneous intervals across a predeclared fixed-target FPCR family;
+- one maximum absolute studentized root per bootstrap replicate across all declared targets;
+- exact reuse of the 0.16/0.17 wild-bootstrap root matrix with no second FPCA fit or bootstrap;
+- retained same-level target-wise critical values for transparent multiplicity comparison;
+- exact reduction to the target-wise calibration when the family contains one target;
+- explicit scope boundary: fixed target projections only, not future outcomes, clustered rows, unlisted targets, or component-selection uncertainty.
+
+## Added in 0.17 development
 
 - shared-multiplier wild-bootstrap scans over consecutive inference truncations h;
 - fixed residual/pseudo-truth truncation k=g with all candidate h>=g;

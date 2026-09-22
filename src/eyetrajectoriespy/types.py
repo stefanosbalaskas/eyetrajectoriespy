@@ -791,6 +791,27 @@ class FPCAWildBootstrapProjectionResult:
 
 
 @dataclass(frozen=True)
+class FPCAWildBootstrapSimultaneousResult:
+    """Familywise simultaneous inference across fixed FPCR target projections."""
+
+    projection_result: FPCAWildBootstrapProjectionResult
+    targetwise_critical_values: np.ndarray
+    critical_value: float
+    max_statistics: np.ndarray
+    lower: np.ndarray
+    upper: np.ndarray
+    confidence_level: float
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.projection_result.n_bootstrap
+
+    @property
+    def n_targets(self) -> int:
+        return self.projection_result.n_targets
+
+@dataclass(frozen=True)
 class FPCAWildBootstrapTruncationScanResult:
     """Shared-multiplier wild-bootstrap interval scan over inference truncations."""
 

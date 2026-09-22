@@ -344,9 +344,13 @@ The estimand is the centered FPCR projection for a fixed target trajectory. Futu
 
 The 0.14 predictive layer answers a different question and currently relies on pooled residual exchangeability.
 
-## Target-wise intervals are not simultaneous
+## Base target-wise intervals and 0.18 simultaneous calibration answer different questions
 
-Each target receives its own studentized critical value. Supplying several targets does not create a familywise or joint coverage statement.
+The base `wild_bootstrap_fpca_projection()` result remains target-wise. Supplying several targets to that function alone does not create a familywise statement.
+
+Version 0.18 adds `fpca_wild_bootstrap_projection_simultaneous_interval()`, which post-calibrates one max-|t| critical value across the complete fixed-target family stored in the base result.
+
+That stronger calibration still does not create a joint future-outcome prediction region, cover targets omitted from the declared family, repair repeated-participant dependence, or propagate uncertainty from data-driven component/truncation selection.
 
 ## Truncation-selection uncertainty is excluded
 
