@@ -16,6 +16,7 @@ from .nonlinear_types import (
     PoincareCrossingResult,
     RecurrenceResult,
     SurrogateNonlinearityResult,
+    WindowedRQAFunctionalResult,
     WindowedRQAResult,
 )
 
@@ -120,6 +121,49 @@ def plot_windowed_rqa(
     ax.set_ylabel("RQA metric")
     ax.legend()
     ax.set_title("Windowed recurrence dynamics")
+    return ax
+
+
+
+def plot_windowed_rqa_trajectories(
+    result: WindowedRQAFunctionalResult,
+    *,
+    metric: str,
+    show_mean: bool = False,
+    max_curves: int | None = None,
+    ax=None,
+):
+    """Plot one functional windowed-RQA metric across source curves."""
+
+    if metric not in result.metrics:
+        raise KeyError(f"Unknown functional RQA metric {metric!r}")
+    if max_curves is not None:
+        if not isinstance(max_curves, int) or max_curves < 1:
+            raise ValueError("max_curves must be a positive integer or None")
+        n_plot = min(result.n_curves, max_curves)
+    else:
+        n_plot = result.n_curves
+    if ax is None:
+        _, ax = plt.subplots()
+    values = result.trajectories.dimension(metric)
+    time = result.trajectories.time
+    for curve_index in range(n_plot):
+        ax.plot(time, values[curve_index], alpha=0.45)
+    if show_mean:
+        ax.plot(
+            time,
+            np.nanmean(values, axis=0),
+            linewidth=2.2,
+            label="Across-curve mean",
+        )
+        ax.legend()
+    unit = result.trajectories.provenance.get("metric_units", {}).get(
+        metric,
+        "metric units",
+    )
+    ax.set_xlabel(f"Window center ({result.time_unit})")
+    ax.set_ylabel(f"{metric} ({unit})")
+    ax.set_title(f"Functional windowed RQA: {metric}")
     return ax
 
 
