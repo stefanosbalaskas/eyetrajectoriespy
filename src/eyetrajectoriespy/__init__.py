@@ -46,6 +46,42 @@ from .kinematics import (
     speed_function,
 )
 from .multilevel import fit_multilevel_fpca
+from .embedding import (
+    delay_embed_trajectory,
+    embedding_delay_diagnostics,
+    embedding_dimension_diagnostics,
+)
+from .nonlinear_dynamics import (
+    estimate_largest_lyapunov_rosenstein,
+    local_divergence_curve,
+    surrogate_nonlinearity_test,
+)
+from .nonlinear_types import (
+    DelayEmbeddingResult,
+    EmbeddingDelayDiagnosticResult,
+    EmbeddingDimensionDiagnosticResult,
+    LargestLyapunovResult,
+    LocalDivergenceResult,
+    LocalReturnMapResult,
+    PoincareCrossingResult,
+    RecurrenceResult,
+    RQAResult,
+    ReturnMapStabilityResult,
+    SurrogateNonlinearityResult,
+    WindowedRQAResult,
+)
+from .recurrence import (
+    cross_recurrence_matrix,
+    cross_rqa_metrics,
+    recurrence_matrix,
+    rqa_metrics,
+    windowed_rqa,
+)
+from .return_maps import (
+    fit_local_return_map,
+    poincare_crossings,
+    return_map_stability,
+)
 from .mathematical_contracts import (
     MathematicalContract,
     get_mathematical_contract,
@@ -239,9 +275,35 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.22.0.dev0"
+__version__ = "0.23.0.dev0"
 
 __all__ = [
+    "DelayEmbeddingResult",
+    "EmbeddingDelayDiagnosticResult",
+    "EmbeddingDimensionDiagnosticResult",
+    "RecurrenceResult",
+    "RQAResult",
+    "WindowedRQAResult",
+    "LocalDivergenceResult",
+    "LargestLyapunovResult",
+    "SurrogateNonlinearityResult",
+    "PoincareCrossingResult",
+    "LocalReturnMapResult",
+    "ReturnMapStabilityResult",
+    "delay_embed_trajectory",
+    "embedding_delay_diagnostics",
+    "embedding_dimension_diagnostics",
+    "recurrence_matrix",
+    "rqa_metrics",
+    "windowed_rqa",
+    "cross_recurrence_matrix",
+    "cross_rqa_metrics",
+    "local_divergence_curve",
+    "estimate_largest_lyapunov_rosenstein",
+    "surrogate_nonlinearity_test",
+    "poincare_crossings",
+    "fit_local_return_map",
+    "return_map_stability",
     "MathematicalContract",
     "get_mathematical_contract",
     "list_mathematical_contracts",
