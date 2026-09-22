@@ -397,3 +397,26 @@ If Monte Carlo precision will be used to judge whether the planned bootstrap bud
 - how both the original and follow-up runs will be reported.
 
 Do not repeatedly increase B until a preferred significance outcome appears and then describe the final run as though B had been fixed in advance. Version 0.20 does not implement a sequential always-valid stopping rule.
+
+## Nonlinear trajectory dynamics
+
+Before inspecting nonlinear-dynamics results, predeclare where applicable:
+
+- source trajectory dimensions and their physical/normalized units;
+- any interpolation, smoothing, filtering, registration, or coordinate transformation performed upstream;
+- whether recurrence uses observed state or a delay reconstruction;
+- delay (	au), embedding dimension (m), and the diagnostics used to justify them;
+- recurrence metric and exactly one radius policy: fixed (arepsilon) or target recurrence rate;
+- Theiler window;
+- minimum diagonal and vertical line lengths;
+- window size and step for windowed RQA;
+- cross-recurrence pairing/reference definition;
+- local-divergence maximum horizon;
+- LLE fit-start and fit-end interval;
+- IAAFT surrogate count, alternative, seed policy, maximum iterations, and convergence tolerance;
+- Poincare section variable/value, crossing direction, returned state dimensions, reference-state rule, neighborhood policy, and stability tolerance;
+- planned sensitivity analyses for all scientifically consequential tuning parameters.
+
+Do not define a positive LLE as “chaos” in the preregistration. If chaos is a scientific hypothesis, state the additional evidence required beyond the local-divergence estimate and specify the surrogate null being tested.
+
+Classical Floquet/monodromy and numerical-continuation claims are outside the 0.23 observational-gaze contract.
