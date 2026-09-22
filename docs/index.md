@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.24 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.25 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
