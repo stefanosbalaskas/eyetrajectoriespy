@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.19 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.20 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
@@ -286,6 +286,13 @@ The package is designed around the principle that **the path to an FPC score is 
 - matched reference-FPC identity for individual eigenvalues/ratios;
 - descending-rank semantics retained for cumulative explained variance;
 - explicit no-clipping and no-automatic-retention-rule safeguards.
+
+## Added in 0.20 development
+
+- finite-B Monte Carlo precision diagnostics for fixed-family Gaussian FPCR wild-bootstrap tests;
+- exact exceedance counts, raw r/B tail estimates, MCSEs, and exact Clopper-Pearson intervals;
+- explicit alpha-overlap labels and p-value grid-resolution diagnostics;
+- no change to the original p-values, no bootstrap rerun, and no new FWER or clustered-inference claim.
 
 ## Added in 0.9 development
 
