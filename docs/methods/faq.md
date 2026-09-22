@@ -390,3 +390,16 @@ That makes the method computationally transparent and consistent with the 0.18 p
 Yes. Supply one finite null value per target. A scalar null is broadcast to the entire family.
 
 Null values are in centered scalar-response projection units, not in gaze-coordinate units.
+
+
+## What does the 0.20 Monte Carlo precision layer add?
+
+It quantifies how much finite-B simulation uncertainty remains in the target-wise, maxT-adjusted, and global resampling tail probabilities. It reports exceedance counts, raw r/B estimates, MCSEs, exact binomial intervals, and whether those intervals lie below, above, or overlap alpha.
+
+## Does an interval overlapping alpha change the original test decision?
+
+No. The 0.19 p-values and rejection indicators are unchanged. The overlap label is a numerical precision diagnostic, not a replacement test or stopping rule.
+
+## Is the exact binomial interval an effect-size confidence interval?
+
+No. It is an interval for the resampling exceedance probability induced by finite bootstrap Monte Carlo sampling. It says nothing directly about uncertainty in the scientific effect size.
