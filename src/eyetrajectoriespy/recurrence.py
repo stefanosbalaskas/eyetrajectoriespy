@@ -52,6 +52,8 @@ def _state_from_source(
             {
                 "source_kind": "TrajectorySet",
                 "dimensions": names,
+                "state_names": names,
+                "coordinate_system": source.coordinate_system,
                 "source_provenance": dict(source.provenance),
             },
         )
@@ -78,6 +80,9 @@ def _state_from_source(
                 "source_kind": "DelayEmbeddingResult",
                 "embedding_dimension": source.embedding_dimension,
                 "delay_samples": source.delay_samples,
+                "delay_time": source.delay_time,
+                "state_names": source.state_names,
+                "coordinate_system": source.coordinate_system,
                 "source_provenance": dict(source.provenance),
             },
         )
@@ -284,8 +289,28 @@ def cross_recurrence_matrix(
     )
     if a.shape[1] != b.shape[1]:
         raise ValueError("cross-recurrence state spaces must have the same dimension")
+    if info_a.get("state_names") != info_b.get("state_names"):
+        raise ValueError(
+            "cross-recurrence state spaces must use the same named state variables "
+            "in the same order"
+        )
+    if info_a.get("coordinate_system") != info_b.get("coordinate_system"):
+        raise ValueError(
+            "cross-recurrence state spaces must use the same coordinate_system"
+        )
     if unit_a != unit_b:
         raise ValueError("cross-recurrence trajectories must use the same time_unit")
+    if info_a.get("source_kind") == info_b.get("source_kind") == "DelayEmbeddingResult":
+        if info_a.get("embedding_dimension") != info_b.get("embedding_dimension"):
+            raise ValueError("cross-recurrence embeddings must use the same embedding_dimension")
+        if info_a.get("delay_samples") != info_b.get("delay_samples"):
+            raise ValueError("cross-recurrence embeddings must use the same delay_samples")
+        delay_a = info_a.get("delay_time")
+        delay_b = info_b.get("delay_time")
+        if np.isfinite(delay_a) != np.isfinite(delay_b):
+            raise ValueError("cross-recurrence embeddings have incompatible delay-time semantics")
+        if np.isfinite(delay_a) and not np.isclose(delay_a, delay_b):
+            raise ValueError("cross-recurrence embeddings must use the same physical delay")
     p = _METRIC_P[metric]
     chosen_radius = (
         float(radius)
