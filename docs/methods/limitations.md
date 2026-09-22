@@ -430,6 +430,12 @@ Recurrence rate, determinism, laminarity, entropy, trapping time, and line lengt
 
 When `target_recurrence_rate` is used, recurrence density is deliberately controlled by the radius-selection rule. RR should not then be interpreted as an independently estimated outcome across those analyses.
 
+### Irregular sampling changes the RQA estimand
+
+Spatial recurrence itself can still be defined for irregularly timed state observations, so `recurrence_matrix()` does not force interpolation. Standard DET, LAM, trapping-time, and diagonal/vertical line statistics, however, treat successive row/column indices as comparable temporal advances. Version 0.24 therefore requires an approximately regular grid before `rqa_metrics()` computes those line-based summaries; cross-RQA also requires matching sampling steps on its two axes.
+
+The package does not silently resample irregular data because interpolation can itself change recurrence line structure. If regularization is scientifically justified, it must occur upstream and remain part of provenance. If an event sequence is the intended object, use an explicit regular event-index representation rather than disguising irregular physical time as equally spaced observations.
+
 ### Sliding windows are overlapping descriptive summaries
 
 Windowed RQA can create strongly dependent adjacent estimates when windows overlap. The returned functions are useful as time-varying descriptors and as inputs to a separately justified downstream analysis, but ordinary independent-observation tests should not be applied to overlapping windows without an appropriate dependence model.
