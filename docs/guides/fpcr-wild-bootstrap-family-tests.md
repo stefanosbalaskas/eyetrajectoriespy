@@ -129,7 +129,7 @@ The 0.19 tests do not cover:
 
 Report the target family, null values, two-sided alternative, alpha, bootstrap replicate count, k/g/h truncations, multiplier family, independent sampling unit, p-value correction, target-wise and maxT-adjusted probabilities, global max statistic/p-value, and the limitations above.
 
-The full target statistic, plus-one tail probability, max-|t| adjustment, and global statistic are given in the [mathematical reference](../methods/mathematical-reference.md#fixed-family-wild-bootstrap-tests).
+The full target statistic, plus-one tail probability, max-|t| adjustment, and global statistic are given in the [mathematical reference](../methods/mathematical-reference.md#family-tests).
 
 ## API links
 
