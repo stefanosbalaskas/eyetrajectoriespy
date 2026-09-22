@@ -73,6 +73,7 @@ nav:
       - Wild-bootstrap Monte Carlo precision: examples/fpcr-wild-bootstrap-monte-carlo.md
       - Stabilized-volatility FPCR selection: examples/fpcr-wild-bootstrap-selection.md
       - Irregular sampling & gaps: examples/irregular-data.md
+      - Function → equation registry: examples/function-equation-registry.md
       - Failure cases: examples/failure-cases.md
   - Methods:
       - Reporting checklist: methods/reporting.md
