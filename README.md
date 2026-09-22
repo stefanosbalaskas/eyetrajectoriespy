@@ -49,6 +49,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - fixed-regressor studentized wild-bootstrap intervals for centered Gaussian FPCR target projections under heteroscedastic response errors;
 - familywise max-|t| post-calibration across predeclared fixed FPCR target families using the exact stored wild-bootstrap roots;
 - fixed-family two-sided wild-bootstrap hypothesis tests with target-wise, single-step maxT-adjusted, and complete-family global bootstrap p-values;
+- finite-B Monte Carlo precision diagnostics for those bootstrap p-values, including exceedance counts, MCSEs, exact binomial intervals, alpha-overlap flags, and p-value resolution;
 - stabilized-volatility scans and target-specific selection of the wild-bootstrap inference truncation `h` with shared multipliers and analyst-declared stability thresholds;
 - simultaneous functional-mean bands with curve- or equal-weight participant-level inference;
 - FPCA reconstruction/robust score-space review diagnostics and leave-one-group-out influence analysis;
