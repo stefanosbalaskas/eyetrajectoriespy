@@ -94,8 +94,8 @@ surrogate = surrogate_nonlinearity_test(
     fit_start=1,
     fit_end=4,
     n_surrogates=3,
-    max_iterations=30,
-    tolerance=1e-6,
+    max_iterations=200,
+    tolerance=1e-5,
     random_state=42,
 )
 
