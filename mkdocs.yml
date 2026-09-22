@@ -41,6 +41,7 @@ nav:
       - Gaussian FPCR future-outcome prediction: guides/fpcr-future-prediction.md
       - Heteroscedastic FPCR wild bootstrap: guides/fpcr-wild-bootstrap.md
       - Simultaneous fixed-target FPCR wild bootstrap: guides/fpcr-wild-bootstrap-simultaneous.md
+      - Fixed-family FPCR wild-bootstrap tests: guides/fpcr-wild-bootstrap-family-tests.md
       - Stabilized-volatility FPCR selection: guides/fpcr-wild-bootstrap-selection.md
       - Derived continuous functions: guides/derived-functions.md
       - Interpretation: guides/interpretation.md
@@ -67,6 +68,7 @@ nav:
       - Gaussian FPCR future-outcome prediction: examples/fpcr-future-prediction.md
       - Heteroscedastic FPCR wild bootstrap: examples/fpcr-wild-bootstrap.md
       - Simultaneous fixed-target FPCR wild bootstrap: examples/fpcr-wild-bootstrap-simultaneous.md
+      - Fixed-family FPCR wild-bootstrap tests: examples/fpcr-wild-bootstrap-family-tests.md
       - Stabilized-volatility FPCR selection: examples/fpcr-wild-bootstrap-selection.md
       - Irregular sampling & gaps: examples/irregular-data.md
       - Failure cases: examples/failure-cases.md
