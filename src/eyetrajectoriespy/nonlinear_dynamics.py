@@ -10,6 +10,7 @@ from .embedding import (
     _curve_index,
     _nearest_temporally_separated,
     _require_finite,
+    _regular_step,
     _resolve_samples,
     delay_embed_trajectory,
 )
@@ -103,7 +104,7 @@ def local_divergence_curve(
         if positive.size:
             means[k] = float(np.mean(np.log(positive)))
 
-    step = float(np.median(np.diff(embedding.time)))
+    step = _regular_step(embedding.time)
     return LocalDivergenceResult(
         horizons=horizons,
         time_lags=horizons.astype(float) * step,
