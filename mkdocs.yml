@@ -42,6 +42,7 @@ nav:
       - Heteroscedastic FPCR wild bootstrap: guides/fpcr-wild-bootstrap.md
       - Simultaneous fixed-target FPCR wild bootstrap: guides/fpcr-wild-bootstrap-simultaneous.md
       - Fixed-family FPCR wild-bootstrap tests: guides/fpcr-wild-bootstrap-family-tests.md
+      - Wild-bootstrap Monte Carlo precision: guides/fpcr-wild-bootstrap-monte-carlo-precision.md
       - Stabilized-volatility FPCR selection: guides/fpcr-wild-bootstrap-selection.md
       - Derived continuous functions: guides/derived-functions.md
       - Interpretation: guides/interpretation.md
@@ -69,6 +70,7 @@ nav:
       - Heteroscedastic FPCR wild bootstrap: examples/fpcr-wild-bootstrap.md
       - Simultaneous fixed-target FPCR wild bootstrap: examples/fpcr-wild-bootstrap-simultaneous.md
       - Fixed-family FPCR wild-bootstrap tests: examples/fpcr-wild-bootstrap-family-tests.md
+      - Wild-bootstrap Monte Carlo precision: examples/fpcr-wild-bootstrap-monte-carlo-precision.md
       - Stabilized-volatility FPCR selection: examples/fpcr-wild-bootstrap-selection.md
       - Irregular sampling & gaps: examples/irregular-data.md
       - Failure cases: examples/failure-cases.md
