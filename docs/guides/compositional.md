@@ -44,4 +44,4 @@ p_k(t)
 {\sum_{\ell=1}^{K}q_\ell(t)}.
 $$
 
-See the [mathematical reference](../methods/mathematical-reference.md#compositional-aoi-trajectories).
+See the [mathematical reference](../methods/mathematical-reference.md#compositional).
