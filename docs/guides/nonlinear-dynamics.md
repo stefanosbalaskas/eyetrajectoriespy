@@ -206,7 +206,7 @@ cross = cross_recurrence_matrix(
 cross_metrics = cross_rqa_metrics(cross)
 \`\`\`
 
-This is useful for participant-participant, participant-reference, repeated-session, or expert-novice comparisons. Cross-recurrence currently does not report CORM because the auto-recurrence normalization is not transferred silently to the rectangular cross-recurrence setting.
+This is useful for participant-participant, participant-reference, repeated-session, or expert-novice comparisons. The two state spaces must use the same named variables in the same order, coordinate system, time unit, and—when embedded—the same embedding dimension and delay semantics. Cross-recurrence currently does not report CORM because the auto-recurrence normalization is not transferred silently to the rectangular cross-recurrence setting.
 
 ## 3. Local divergence and Rosenstein LLE
 
