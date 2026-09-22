@@ -193,6 +193,7 @@ def delay_embed_trajectory(
         delay_samples=delay_samples,
         delay_time=delay_time,
         time_unit=trajectories.time_unit,
+        coordinate_system=trajectories.coordinate_system,
         provenance={
             "operation": "delay_embed_trajectory",
             "source_provenance": dict(trajectories.provenance),
