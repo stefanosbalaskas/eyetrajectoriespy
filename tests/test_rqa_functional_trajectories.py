@@ -3,6 +3,7 @@ import pytest
 
 from eyetrajectoriespy import (
     TrajectorySet,
+    fit_mfpca,
     plot_windowed_rqa_trajectories,
     windowed_rqa_functional_reporting_text,
     windowed_rqa_trajectory_set,
@@ -113,3 +114,23 @@ def test_functional_rqa_plot_and_reporting_expose_dependence_contract():
     text = windowed_rqa_functional_reporting_text(result)
     assert "50.0% sample overlap" in text
     assert "not treated as independent observations" in text
+
+
+def test_finite_functional_rqa_enters_mfpca_without_special_adapter():
+    gaze = _multi_curve(160)
+    result = windowed_rqa_trajectory_set(
+        gaze,
+        metrics=("recurrence_rate",),
+        window=40,
+        step=20,
+        radius=0.35,
+        dimensions=("x",),
+    )
+    fit = fit_mfpca(
+        result.trajectories,
+        n_components=2,
+        scaling="dimension_sd",
+    )
+    assert fit.scores.shape == (gaze.n_curves, 2)
+    assert result.trajectories.provenance["edge_policy"] == "full_window_centers_only"
+    assert result.trajectories.provenance["leading_edge_span"] > 0
