@@ -55,6 +55,23 @@ def test_familywise_calibration_contract_and_width_dominance():
     assert result.n_targets == base.n_targets
     assert result.max_statistics.shape == (base.n_bootstrap,)
     assert result.targetwise_critical_values.shape == (base.n_targets,)
+    assert np.allclose(
+        result.max_statistics,
+        np.max(np.abs(base.studentized_roots), axis=1),
+    )
+    expected_targetwise = np.quantile(
+        np.abs(base.studentized_roots),
+        result.confidence_level,
+        axis=0,
+        method="higher",
+    )
+    expected_familywise = np.quantile(
+        result.max_statistics,
+        result.confidence_level,
+        method="higher",
+    )
+    assert np.allclose(result.targetwise_critical_values, expected_targetwise)
+    assert result.critical_value == pytest.approx(expected_familywise)
     assert result.critical_value >= np.max(result.targetwise_critical_values) - 1e-12
     targetwise_width = 2.0 * result.targetwise_critical_values * base.reference_se
     simultaneous_width = result.upper - result.lower
@@ -115,6 +132,14 @@ def test_frame_plot_reporting_and_validation():
         fpca_wild_bootstrap_projection_simultaneous_interval(object())
     with pytest.raises(ValueError, match="confidence_level"):
         fpca_wild_bootstrap_projection_simultaneous_interval(base, confidence_level=1.0)
+    with pytest.raises(ValueError, match="confidence_level"):
+        fpca_wild_bootstrap_projection_simultaneous_interval(base, confidence_level=np.nan)
+    with pytest.raises(TypeError, match="confidence_level"):
+        fpca_wild_bootstrap_projection_simultaneous_interval(base, confidence_level=True)
+    with pytest.raises(TypeError):
+        fpca_wild_bootstrap_simultaneous_frame(object())
+    with pytest.raises(TypeError):
+        fpca_wild_bootstrap_simultaneous_reporting_text(object())
     with pytest.raises(TypeError):
         plot_fpca_wild_bootstrap_simultaneous_interval(result, max_targets=True)
     with pytest.raises(TypeError):
