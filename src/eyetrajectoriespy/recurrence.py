@@ -500,6 +500,11 @@ def windowed_rqa(
     )
     if window_samples < 3:
         raise ValueError("window must contain at least three samples")
+    if step_samples > window_samples:
+        raise ValueError(
+            "step cannot exceed window because that would leave internal samples "
+            "unanalyzed; use step <= window"
+        )
     index = _curve_index(trajectories, curve)
     starts = np.arange(0, trajectories.n_time - window_samples + 1, step_samples)
     if starts.size == 0:
