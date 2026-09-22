@@ -176,7 +176,15 @@ The estimand is the centered functional projection relative to the training func
 
 The bootstrap keeps the functional regressors and FPCA basis fixed. Residuals and the pseudo-truth use k=g components; inference uses an explicit h>=g truncation.
 
-The result records independent-curve-row semantics. It is not a clustered wild bootstrap, not a future-outcome prediction interval, not simultaneous across targets, and does not include component-selection uncertainty.
+The result records independent-curve-row semantics. The base object remains target-wise: it is not a clustered wild bootstrap, not a future-outcome prediction interval, and does not include component-selection uncertainty. Version 0.18 can post-calibrate its stored roots across the complete fixed-target family without changing this base object.
+
+## FPCAWildBootstrapSimultaneousResult
+
+Stores an existing `FPCAWildBootstrapProjectionResult`, the same-level target-wise critical values, one familywise max-|t| critical value, bootstrap replicate-wise maximum statistics, simultaneous lower/upper limits, confidence level, and provenance.
+
+The object is a pure post-calibration result. It reuses the exact studentized roots from the base wild bootstrap and does not refit FPCA, refit score regression, recompute residuals, redraw multipliers, or rerun the bootstrap.
+
+The simultaneous family is exactly every fixed target in the base result. A one-target family reduces exactly to the target-wise calibration. The familywise claim does not extend to future outcomes, unlisted targets, clustered/repeated-participant sampling, or component-selection uncertainty.
 
 ## FPCARegressionPredictionIntervalResult
 
