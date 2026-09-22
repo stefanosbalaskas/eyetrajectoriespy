@@ -221,7 +221,7 @@ def _iaaft_one(
     rng: np.random.Generator,
     max_iterations: int,
     tolerance: float,
-) -> tuple[np.ndarray, int]:
+) -> tuple[np.ndarray, int, float]:
     sorted_target = np.sort(signal)
     target_amplitude = np.abs(np.fft.rfft(signal))
     surrogate = rng.permutation(signal)
@@ -239,7 +239,7 @@ def _iaaft_one(
         error = float(np.linalg.norm(current_amplitude - target_amplitude) / denominator)
         surrogate = ranked
         if abs(previous_error - error) <= tolerance:
-            return surrogate, iteration
+            return surrogate, iteration, error
         previous_error = error
     raise RuntimeError(
         "IAAFT surrogate did not converge within max_iterations; "
@@ -379,8 +379,9 @@ def surrogate_nonlinearity_test(
     rng = np.random.default_rng(random_state)
     surrogate_statistics = np.empty(int(n_surrogates), dtype=float)
     iterations = np.empty(int(n_surrogates), dtype=int)
+    spectral_errors = np.empty(int(n_surrogates), dtype=float)
     for b in range(int(n_surrogates)):
-        surrogate, n_iter = _iaaft_one(
+        surrogate, n_iter, spectral_error = _iaaft_one(
             signal,
             rng=rng,
             max_iterations=int(max_iterations),
@@ -399,17 +400,20 @@ def surrogate_nonlinearity_test(
                 f"surrogate {b} failed under the declared analysis contract"
             ) from exc
         iterations[b] = n_iter
+        spectral_errors[b] = spectral_error
 
+    upper = (int(np.sum(surrogate_statistics >= observed)) + 1.0) / (
+        int(n_surrogates) + 1.0
+    )
+    lower = (int(np.sum(surrogate_statistics <= observed)) + 1.0) / (
+        int(n_surrogates) + 1.0
+    )
     if alternative == "greater":
-        exceedances = int(np.sum(surrogate_statistics >= observed))
+        p_value = upper
     elif alternative == "less":
-        exceedances = int(np.sum(surrogate_statistics <= observed))
+        p_value = lower
     else:
-        center = float(np.median(surrogate_statistics))
-        exceedances = int(
-            np.sum(np.abs(surrogate_statistics - center) >= abs(observed - center))
-        )
-    p_value = (exceedances + 1.0) / (int(n_surrogates) + 1.0)
+        p_value = min(1.0, 2.0 * min(upper, lower))
 
     return SurrogateNonlinearityResult(
         observed_statistic=float(observed),
@@ -421,13 +425,17 @@ def surrogate_nonlinearity_test(
         n_surrogates=int(n_surrogates),
         random_state=random_state,
         convergence_iterations=iterations,
+        spectral_errors=spectral_errors,
         provenance={
             "operation": "surrogate_nonlinearity_test",
             "source_provenance": dict(trajectories.provenance),
             "curve_id": trajectories.curve_ids[curve_index],
             "dimension": dimension,
             "surrogate_method": "IAAFT",
-            "p_value_correction": "plus_one",
+            "p_value_correction": (
+                "plus_one" if alternative in {"greater", "less"} else "two_sided_double_min_plus_one_tails"
+            ),
+            "maximum_final_spectral_error": float(np.max(spectral_errors)),
             "common_statistic_settings": common,
             "failed_surrogate_policy": "raise",
             "interpretation_boundary": (
