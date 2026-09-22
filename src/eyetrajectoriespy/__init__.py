@@ -66,6 +66,7 @@ from .plotting import (
     plot_fpca_regression_mean_prediction_uncertainty,
     plot_fpca_regression_future_prediction_interval,
     plot_fpca_wild_bootstrap_projection,
+    plot_fpca_wild_bootstrap_simultaneous_interval,
     plot_fpca_wild_bootstrap_truncation_scan,
     plot_fpca_regression_slope_band,
     plot_fpca_regression_slope_uncertainty,
@@ -121,6 +122,7 @@ from .reporting import (
     fpca_regression_cv_reporting_text,
     fpca_regression_future_prediction_reporting_text,
     fpca_wild_bootstrap_projection_reporting_text,
+    fpca_wild_bootstrap_simultaneous_reporting_text,
     fpca_wild_bootstrap_truncation_reporting_text,
     fpca_regression_slope_band_reporting_text,
     fpca_regression_uncertainty_reporting_text,
@@ -181,6 +183,7 @@ from .types import (
     FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
     FPCAWildBootstrapProjectionResult,
+    FPCAWildBootstrapSimultaneousResult,
     FPCAWildBootstrapTruncationScanResult,
     FPCAWildBootstrapTruncationSelectionResult,
     FPCAStabilityResult,
@@ -196,6 +199,10 @@ from .types import (
     RegistrationSensitivityResult,
     SparseFPCAResult,
     TrajectorySet,
+)
+from .wild_simultaneous import (
+    fpca_wild_bootstrap_projection_simultaneous_interval,
+    fpca_wild_bootstrap_simultaneous_frame,
 )
 from .wild_selection import (
     fpca_wild_bootstrap_truncation_scan_frame,
@@ -214,7 +221,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.17.0.dev0"
+__version__ = "0.18.0.dev0"
 
 __all__ = [
     "TrajectorySet",
@@ -368,6 +375,7 @@ __all__ = [
     "FPCARegressionSlopeBandResult",
     "FPCARegressionUncertaintyResult",
     "FPCAWildBootstrapProjectionResult",
+    "FPCAWildBootstrapSimultaneousResult",
     "FPCAWildBootstrapTruncationScanResult",
     "FPCAWildBootstrapTruncationSelectionResult",
     "FPCANestedRegressionCVResult",
@@ -381,6 +389,10 @@ __all__ = [
     "fpca_wild_bootstrap_truncation_reporting_text",
     "fpca_wild_bootstrap_projection_frame",
     "plot_fpca_wild_bootstrap_projection",
+    "fpca_wild_bootstrap_projection_simultaneous_interval",
+    "fpca_wild_bootstrap_simultaneous_frame",
+    "plot_fpca_wild_bootstrap_simultaneous_interval",
+    "fpca_wild_bootstrap_simultaneous_reporting_text",
     "fpca_wild_bootstrap_projection_reporting_text",
     "fpca_regression_future_prediction_interval",
     "fpca_regression_future_prediction_frame",

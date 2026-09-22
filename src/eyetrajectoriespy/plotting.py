@@ -20,6 +20,7 @@ from .types import (
     FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
     FPCAWildBootstrapProjectionResult,
+    FPCAWildBootstrapSimultaneousResult,
     FPCAWildBootstrapTruncationScanResult,
     FPCAWildBootstrapTruncationSelectionResult,
     FPCAResult,
@@ -193,6 +194,72 @@ def plot_fpca_wild_bootstrap_projection(
     ax.set_xlabel("Fixed target trajectory")
     ax.set_ylabel("Centered FPCR projection")
     ax.set_title("Heteroscedastic Gaussian FPCR projection inference")
+    ax.legend()
+    return ax
+
+
+
+def plot_fpca_wild_bootstrap_simultaneous_interval(
+    result: FPCAWildBootstrapSimultaneousResult,
+    *,
+    max_targets: int = 30,
+    show_targetwise: bool = True,
+    ax=None,
+):
+    """Plot familywise fixed-target FPCR projection intervals."""
+
+    if not isinstance(result, FPCAWildBootstrapSimultaneousResult):
+        raise TypeError("result must be an FPCAWildBootstrapSimultaneousResult")
+    if isinstance(max_targets, bool) or not isinstance(max_targets, (int, np.integer)):
+        raise TypeError("max_targets must be an integer")
+    if max_targets < 1:
+        raise ValueError("max_targets must be positive")
+    if not isinstance(show_targetwise, bool):
+        raise TypeError("show_targetwise must be boolean")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    base = result.projection_result
+    n = min(max_targets, result.n_targets)
+    x = np.arange(n)
+    center = base.reference_projection[:n]
+    simultaneous_lower = result.lower[:n]
+    simultaneous_upper = result.upper[:n]
+    simultaneous_yerr = np.vstack(
+        (center - simultaneous_lower, simultaneous_upper - center)
+    )
+    ax.errorbar(
+        x,
+        center,
+        yerr=simultaneous_yerr,
+        marker="o",
+        linestyle="none",
+        capsize=3,
+        label="familywise simultaneous interval",
+    )
+    if show_targetwise:
+        point_lower = (
+            center - result.targetwise_critical_values[:n] * base.reference_se[:n]
+        )
+        point_upper = (
+            center + result.targetwise_critical_values[:n] * base.reference_se[:n]
+        )
+        point_yerr = np.vstack((center - point_lower, point_upper - center))
+        ax.errorbar(
+            x,
+            center,
+            yerr=point_yerr,
+            marker=".",
+            linestyle="none",
+            capsize=2,
+            label="target-wise interval",
+        )
+    ax.axhline(0.0, linestyle="--")
+    ax.set_xticks(x)
+    ax.set_xticklabels(base.target_curve_ids[:n], rotation=90)
+    ax.set_xlabel("Fixed target trajectory")
+    ax.set_ylabel("Centered FPCR projection")
+    ax.set_title("Familywise heteroscedastic Gaussian FPCR projection inference")
     ax.legend()
     return ax
 

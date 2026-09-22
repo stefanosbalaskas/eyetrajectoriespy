@@ -19,6 +19,7 @@ from .types import (
     FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
     FPCAWildBootstrapProjectionResult,
+    FPCAWildBootstrapSimultaneousResult,
     FPCAWildBootstrapTruncationSelectionResult,
     FPCAResult,
     FPCAScoreUncertaintyResult,
@@ -516,6 +517,35 @@ def fpca_wild_bootstrap_projection_reporting_text(
         "centered projection relative to the training functional mean; these "
         "are not future-outcome prediction intervals, not clustered wild "
         "bootstrap intervals, and not simultaneous across targets."
+    )
+
+
+
+def fpca_wild_bootstrap_simultaneous_reporting_text(
+    result: FPCAWildBootstrapSimultaneousResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate reporting text for simultaneous fixed-target wild-bootstrap inference."""
+
+    if not isinstance(result, FPCAWildBootstrapSimultaneousResult):
+        raise TypeError("result must be an FPCAWildBootstrapSimultaneousResult")
+    base = result.projection_result
+    median_width = float(np.median(result.upper - result.lower))
+    return (
+        f"A {100 * result.confidence_level:.1f}% familywise simultaneous interval "
+        f"was calibrated across {result.n_targets} fixed Gaussian FPCR target "
+        "projection(s) by taking the bootstrap distribution of the maximum "
+        "absolute studentized root across the complete target family. The "
+        f"resulting max-|t| critical value was {result.critical_value:.{digits}f} "
+        f"and the median simultaneous width was {median_width:.{digits}f}. "
+        f"The calibration reused the {base.n_bootstrap} fixed-regressor wild-bootstrap "
+        f"replicates from the base result (k=g={base.residual_components}, "
+        f"h={base.inference_components}, multiplier={base.multiplier!r}) without "
+        "rerunning FPCA or the bootstrap. Simultaneity applies only to the fixed "
+        "target trajectories contained in that base result; these intervals are "
+        "not future-outcome prediction intervals and do not provide clustered "
+        "or repeated-participant wild-bootstrap inference."
     )
 
 
