@@ -221,3 +221,15 @@ The default plus-one correction treats the stored bootstrap replicates as a fini
 A zero reference standard error is compatible with a target test only when the null discrepancy is numerically zero. Otherwise the test fails because a finite studentized statistic is undefined.
 
 Single-step maxT adjustment is interpreted for the complete declared family. The package does not assume subset pivotality and does not claim strong family-wise error control for arbitrary subsets of true null hypotheses.
+
+## Finite-bootstrap Monte Carlo precision diagnostics
+
+The 0.20 layer is conditional on the complete 0.19 family-test result. It does not create a new resampling distribution.
+
+Within that fixed analysis, each replicate contributes an exceedance indicator for a target-wise tail, a maxT-adjusted tail, or the global max statistic. The precision calculation treats these independently generated replicate indicators as Bernoulli draws and reports exact binomial intervals for their exceedance probability.
+
+The diagnostic confidence level concerns Monte Carlo precision only. It is not a confidence level for the target projection, regression coefficient, participant population, or family-wise scientific claim.
+
+Decision-stability flags are intentionally subordinate to the original test decision. They indicate whether the exact Monte Carlo interval lies wholly on the same side of alpha as that already reported decision.
+
+The method assumes a fixed completed bootstrap budget. Optional or sequential stopping based on interim p-values is outside the 0.20 validity contract.
