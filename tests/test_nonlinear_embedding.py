@@ -174,3 +174,38 @@ def test_sample_lag_on_irregular_common_grid_records_no_constant_delay_time():
     )
     assert np.isnan(result.delay_time)
     assert result.provenance["constant_delay_time"] is False
+
+def test_embedding_diagnostics_reject_irregular_grid_even_for_sample_lags():
+    gaze = _planar_set(60)
+    irregular_time = gaze.time.copy()
+    irregular_time[20:] += np.linspace(0.0, 0.03, irregular_time.size - 20)
+    irregular = TrajectorySet(
+        time=irregular_time,
+        values=gaze.values,
+        curve_ids=gaze.curve_ids,
+        dimension_names=gaze.dimension_names,
+        time_unit="s",
+        coordinate_system=gaze.coordinate_system,
+    )
+
+    with pytest.raises(ValueError, match="regular temporal grid"):
+        embedding_delay_diagnostics(
+            irregular,
+            curve=0,
+            dimension="x",
+            max_lag=5,
+            max_lag_units="samples",
+        )
+
+    with pytest.raises(ValueError, match="regular temporal grid"):
+        embedding_dimension_diagnostics(
+            irregular,
+            curve=0,
+            dimension="x",
+            delay=1,
+            delay_units="samples",
+            max_dimension=3,
+            theiler_window=2,
+            theiler_window_units="samples",
+        )
+
