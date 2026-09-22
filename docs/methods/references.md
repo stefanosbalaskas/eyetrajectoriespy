@@ -213,15 +213,36 @@ Exact Clopper-Pearson intervals are used only to describe the finite-bootstrap e
 
 ## Nonlinear dynamics, recurrence, and surrogate testing
 
-- Anderson, N. C., Bischof, W. F., Laidlaw, K. E. W., Risko, E. F., & Kingstone, A. (2013). Recurrence quantification analysis of eye movements. *Behavior Research Methods*, 45, 842–856. https://doi.org/10.3758/s13428-012-0299-5
+### Direct behavioral-gaze evidence
+
+- Anderson, N. C., Bischof, W. F., Laidlaw, K. E. W., Risko, E. F., & Kingstone, A. (2013). Recurrence quantification analysis of eye movements. *Behavior Research Methods*, 45(3), 842–856. https://doi.org/10.3758/s13428-012-0299-5
+- Gurtner, L. M., Bischof, W. F., & Mast, F. W. (2019). Recurrence quantification analysis of eye movements during mental imagery. *Journal of Vision*, 19(1), 17. https://doi.org/10.1167/19.1.17
+
+These papers provide direct behavioral eye-movement precedent for RQA on fixation/scanpath sequences and their temporal organization. They support recurrence as a legitimate eye-movement method, but they do not make overlapping sliding-window summaries independent observations or establish an FDA inferential theorem for derived RQA curves.
+
+### Direct eye/pupil signal evidence
+
+- Korda, A. I., Asvestas, P. A., Matsopoulos, G. K., Ventouras, E. M., & Smyrnis, N. (2018). Automatic identification of eye movements using the largest Lyapunov exponent. *Biomedical Signal Processing and Control*, 41, 10–20. https://doi.org/10.1016/j.bspc.2017.11.004
+- Mesin, L., Monaco, A., & Cattaneo, R. (2013). Investigation of nonlinear pupil dynamics by recurrence quantification analysis. *BioMed Research International*, 2013, 420509. https://doi.org/10.1155/2013/420509
+- Piu, P., Serchi, V., Rosini, F., & Rufa, A. (2019). A cross-recurrence analysis of the pupil size fluctuations in steady scotopic conditions. *Frontiers in Neuroscience*, 13, 407. https://doi.org/10.3389/fnins.2019.00407
+- Fink, L., Simola, J., Tavano, A., Lange, E., Wallot, S., & Laeng, B. (2024). From pre-processing to advanced dynamic modeling of pupil data. *Behavior Research Methods*, 56, 1376–1412. https://doi.org/10.3758/s13428-023-02098-1
+
+Korda et al. provide direct eye-movement signal-analysis precedent for largest-Lyapunov/log-divergence methods. The pupil papers provide direct RQA/CRQA precedent for ocular time-series signals and a modern methodological review of dynamic pupil analysis. This is stronger evidence than analogy to gait or other physiology, but it still does not turn a positive LLE into proof of deterministic chaos or make pupil-signal interpretations interchangeable with behavioral gaze-coordinate interpretations.
+
+### General nonlinear-methodology evidence
+
+- Eckmann, J.-P., Oliffson Kamphorst, S., & Ruelle, D. (1987). Recurrence plots of dynamical systems. *Europhysics Letters*, 4(9), 973–977. https://doi.org/10.1209/0295-5075/4/9/004
 - Fraser, A. M., & Swinney, H. L. (1986). Independent coordinates for strange attractors from mutual information. *Physical Review A*, 33(2), 1134–1140. https://doi.org/10.1103/PhysRevA.33.1134
 - Kennel, M. B., Brown, R., & Abarbanel, H. D. I. (1992). Determining embedding dimension for phase-space reconstruction using a geometrical construction. *Physical Review A*, 45(6), 3403–3411. https://doi.org/10.1103/PhysRevA.45.3403
 - Rosenstein, M. T., Collins, J. J., & De Luca, C. J. (1993). A practical method for calculating largest Lyapunov exponents from small data sets. *Physica D*, 65(1–2), 117–134. https://doi.org/10.1016/0167-2789(93)90009-P
-- Korda, A. I., Asvestas, P. A., Matsopoulos, G. K., Ventouras, E. M., & Smyrnis, N. (2018). Automatic identification of eye movements using the largest Lyapunov exponent. *Biomedical Signal Processing and Control*, 41, 10–20. https://doi.org/10.1016/j.bspc.2017.11.004
+- Kantz, H. (1994). A robust method to estimate the maximal Lyapunov exponent of a time series. *Physics Letters A*, 185(1), 77–87. https://doi.org/10.1016/0375-9601(94)90991-1
+- Coco, M. I., & Dale, R. (2014). Cross-recurrence quantification analysis of categorical and continuous time series: an R package. *Frontiers in Psychology*, 5, 510. https://doi.org/10.3389/fpsyg.2014.00510
+- Wallot, S., & Leonardi, G. (2018). Analyzing multivariate dynamics using cross-recurrence quantification analysis (CRQA), diagonal-cross-recurrence profiles (DCRP), and multidimensional recurrence quantification analysis (MdRQA) – a tutorial in R. *Frontiers in Psychology*, 9, 2232. https://doi.org/10.3389/fpsyg.2018.02232
 - Schreiber, T., & Schmitz, A. (1996). Improved surrogate data for nonlinearity tests. *Physical Review Letters*, 77(4), 635–638. https://doi.org/10.1103/PhysRevLett.77.635
 - Schreiber, T., & Schmitz, A. (2000). Surrogate time series. *Physica D*, 142(3–4), 346–382. https://doi.org/10.1016/S0167-2789(00)00043-9
 - Marwan, N., Romano, M. C., Thiel, M., & Kurths, J. (2007). Recurrence plots for the analysis of complex systems. *Physics Reports*, 438(5–6), 237–329. https://doi.org/10.1016/j.physrep.2006.11.001
 
-Anderson et al. provide direct eye-movement precedent for recurrence quantification. Korda et al. provide direct eye-movement signal-analysis precedent for largest-Lyapunov/log-divergence methods, while Rosenstein et al. motivate the estimator used here. Fraser–Swinney and Kennel et al. motivate the delay and embedding-dimension diagnostics. Schreiber–Schmitz motivate iterative amplitude-adjusted Fourier surrogates and stress that surrogate-test conclusions are conditional on the declared null. Marwan et al. provide broader recurrence-analysis definitions, cross-recurrence context, transition-detection motivation, and cautions.
+The implementation keeps these sources in their proper roles. Fraser–Swinney and Kennel et al. motivate diagnostics rather than automatic selectors. Rosenstein is the estimator family implemented by the LLE API; Kantz is methodological context, not an implemented algorithm. Coco–Dale and Wallot–Leonardi support CRQA concepts but do not imply automatic temporal alignment or causal coupling. Schreiber–Schmitz motivate the surrogate null-model framework; rejection remains conditional on that null.
 
-The eyetrajectoriespy implementation keeps these pieces separate: AMI/FNN are diagnostics rather than automatic selectors; recurrence is sparse and uses an explicit radius policy/Theiler window; LLE fitting uses an analyst-declared interval; IAAFT testing is an explicit null-model comparison; and empirical return maps are labeled experimental rather than being called Floquet analysis.
+For the full verification record—including candidate citations that were **not verified** in the 2026-09-23 audit—see [Nonlinear evidence audit](nonlinear-evidence-audit.md). A failed citation or package search is never used as proof of novelty.
+

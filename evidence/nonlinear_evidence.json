@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "audit_date": "2026-09-23",
+  "scope": "Nonlinear dynamics, recurrence analysis, local divergence/Lyapunov estimation, surrogate testing, and empirical return-map context for eyetrajectoriespy.",
+  "interpretation_rule": "Verification means that the bibliographic record was recovered from a primary publisher, PubMed/PMC, or another authoritative scholarly index. Failure to verify a candidate citation is not evidence that no related work exists and must never be used as proof of novelty.",
+  "evidence_tiers": {
+    "direct_behavioral_gaze": "Peer-reviewed application or methods paper using recurrence/RQA on behavioral eye-movement or fixation-sequence data.",
+    "direct_eye_or_pupil_signal": "Peer-reviewed application/methods paper using the method on eye-movement or pupil time-series signals, but not necessarily continuous behavioral scanpath analysis.",
+    "general_methodology": "Foundational or methodological source supporting the algorithm, estimator, null model, or recurrence framework outside a specific behavioral-gaze application."
+  },
+  "verified": [
+    {
+      "id": "anderson2013_rqa_eye_movements",
+      "tier": "direct_behavioral_gaze",
+      "method_tags": [
+        "rqa",
+        "fixation_sequences",
+        "eye_movements"
+      ],
+      "citation": "Anderson, N. C., Bischof, W. F., Laidlaw, K. E. W., Risko, E. F., & Kingstone, A. (2013). Recurrence quantification analysis of eye movements. Behavior Research Methods, 45(3), 842-856.",
+      "doi": "10.3758/s13428-012-0299-5",
+      "verification_source": "https://pubmed.ncbi.nlm.nih.gov/23344735/",
+      "supports": "Direct behavioral eye-movement precedent for RQA applied to fixation sequences and temporal scanpath structure.",
+      "does_not_support": "Does not by itself validate every continuous-state, windowed, cross-recurrence, or functional-RQA design choice in eyetrajectoriespy."
+    },
+    {
+      "id": "gurtner2019_rqa_mental_imagery",
+      "tier": "direct_behavioral_gaze",
+      "method_tags": [
+        "rqa",
+        "eye_movements",
+        "mental_imagery"
+      ],
+      "citation": "Gurtner, L. M., Bischof, W. F., & Mast, F. W. (2019). Recurrence quantification analysis of eye movements during mental imagery. Journal of Vision, 19(1), 17.",
+      "doi": "10.1167/19.1.17",
+      "verification_source": "https://pubmed.ncbi.nlm.nih.gov/30699229/",
+      "supports": "Direct behavioral-gaze precedent for RQA as a temporal eye-movement analysis alongside spatial scanpath methods.",
+      "does_not_support": "Does not establish independence of overlapping windowed RQA values or an FDA inferential theorem for RQA-derived functions."
+    },
+    {
+      "id": "korda2018_lle_eye_movements",
+      "tier": "direct_eye_or_pupil_signal",
+      "method_tags": [
+        "largest_lyapunov",
+        "local_divergence",
+        "saccades",
+        "blinks"
+      ],
+      "citation": "Korda, A. I., Asvestas, P. A., Matsopoulos, G. K., Ventouras, E. M., & Smyrnis, N. (2018). Automatic identification of eye movements using the largest Lyapunov exponent. Biomedical Signal Processing and Control, 41, 10-20.",
+      "doi": "10.1016/j.bspc.2017.11.004",
+      "verification_source": "https://www.sciencedirect.com/science/article/pii/S1746809417302574",
+      "supports": "Direct eye-movement signal-analysis precedent for largest-Lyapunov/log-divergence methods in saccade and blink identification.",
+      "does_not_support": "Does not establish that a positive behavioral-scanpath LLE proves deterministic chaos, nor that LLE is a novel eye-movement method."
+    },
+    {
+      "id": "mesin2013_pupil_rqa",
+      "tier": "direct_eye_or_pupil_signal",
+      "method_tags": [
+        "rqa",
+        "pupil",
+        "nonlinear_dynamics"
+      ],
+      "citation": "Mesin, L., Monaco, A., & Cattaneo, R. (2013). Investigation of nonlinear pupil dynamics by recurrence quantification analysis. BioMed Research International, 2013, 420509.",
+      "doi": "10.1155/2013/420509",
+      "verification_source": "https://pubmed.ncbi.nlm.nih.gov/24187665/",
+      "supports": "Direct pupil-signal precedent for nonlinear recurrence quantification.",
+      "does_not_support": "Does not establish a behavioral scanpath interpretation for pupil recurrence metrics."
+    },
+    {
+      "id": "piu2019_pupil_crqa",
+      "tier": "direct_eye_or_pupil_signal",
+      "method_tags": [
+        "cross_recurrence",
+        "pupil",
+        "crqa"
+      ],
+      "citation": "Piu, P., Serchi, V., Rosini, F., & Rufa, A. (2019). A cross-recurrence analysis of the pupil size fluctuations in steady scotopic conditions. Frontiers in Neuroscience, 13, 407.",
+      "doi": "10.3389/fnins.2019.00407",
+      "verification_source": "https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2019.00407/full",
+      "supports": "Direct pupil-signal precedent for cross-recurrence analysis.",
+      "does_not_support": "Does not imply that cross-recurrence automatically time-aligns two trajectories or establishes causal synchronization."
+    },
+    {
+      "id": "fink2024_dynamic_pupil_methods",
+      "tier": "direct_eye_or_pupil_signal",
+      "method_tags": [
+        "pupil",
+        "rqa",
+        "dynamic_modeling",
+        "methods_review"
+      ],
+      "citation": "Fink, L., Simola, J., Tavano, A., Lange, E., Wallot, S., & Laeng, B. (2024). From pre-processing to advanced dynamic modeling of pupil data. Behavior Research Methods, 56, 1376-1412.",
+      "doi": "10.3758/s13428-023-02098-1",
+      "verification_source": "https://pubmed.ncbi.nlm.nih.gov/37351785/",
+      "supports": "Modern methodological precedent discussing RQA and signal-to-signal dynamic analysis for pupil time series, including assumptions and software context.",
+      "does_not_support": "Does not make every recurrence analysis design appropriate for gaze coordinates or remove the need for method-specific sampling contracts."
+    },
+    {
+      "id": "eckmann1987_recurrence_plots",
+      "tier": "general_methodology",
+      "method_tags": [
+        "recurrence_plot",
+        "dynamical_systems"
+      ],
+      "citation": "Eckmann, J.-P., Oliffson Kamphorst, S., & Ruelle, D. (1987). Recurrence plots of dynamical systems. Europhysics Letters, 4(9), 973-977.",
+      "doi": "10.1209/0295-5075/4/9/004",
+      "verification_source": "https://doi.org/10.1209/0295-5075/4/9/004",
+      "supports": "Foundational recurrence-plot methodology.",
+      "does_not_support": "Does not provide eye-tracking-specific interpretation or parameter-selection rules."
+    },
+    {
+      "id": "marwan2007_recurrence_review",
+      "tier": "general_methodology",
+      "method_tags": [
+        "recurrence_plot",
+        "rqa",
+        "cross_recurrence"
+      ],
+      "citation": "Marwan, N., Romano, M. C., Thiel, M., & Kurths, J. (2007). Recurrence plots for the analysis of complex systems. Physics Reports, 438(5-6), 237-329.",
+      "doi": "10.1016/j.physrep.2006.11.001",
+      "verification_source": "https://doi.org/10.1016/j.physrep.2006.11.001",
+      "supports": "General definitions, variants, interpretation, and cautions for recurrence plots and RQA.",
+      "does_not_support": "Does not establish behavioral-eye-tracking novelty or an automatic parameter policy."
+    },
+    {
+      "id": "coco_dale2014_crqa",
+      "tier": "general_methodology",
+      "method_tags": [
+        "cross_recurrence",
+        "crqa",
+        "behavioral_time_series"
+      ],
+      "citation": "Coco, M. I., & Dale, R. (2014). Cross-recurrence quantification analysis of categorical and continuous time series: an R package. Frontiers in Psychology, 5, 510.",
+      "doi": "10.3389/fpsyg.2014.00510",
+      "verification_source": "https://pubmed.ncbi.nlm.nih.gov/25018736/",
+      "supports": "General CRQA methodology for continuous and categorical behavioral time series, including lag/coupling interpretation.",
+      "does_not_support": "Does not mean cross-recurrence performs synchronization or time alignment automatically."
+    },
+    {
+      "id": "wallot_leonardi2018_crqa_tutorial",
+      "tier": "general_methodology",
+      "method_tags": [
+        "cross_recurrence",
+        "crqa",
+        "multidimensional_rqa"
+      ],
+      "citation": "Wallot, S., & Leonardi, G. (2018). Analyzing multivariate dynamics using cross-recurrence quantification analysis (CRQA), diagonal-cross-recurrence profiles (DCRP), and multidimensional recurrence quantification analysis (MdRQA) - a tutorial in R. Frontiers in Psychology, 9, 2232.",
+      "doi": "10.3389/fpsyg.2018.02232",
+      "verification_source": "https://pubmed.ncbi.nlm.nih.gov/30564161/",
+      "supports": "Practical CRQA and multidimensional recurrence methodology in cognitive/behavioral time-series analysis.",
+      "does_not_support": "Does not establish that CRQA alone identifies causal coupling."
+    },
+    {
+      "id": "fraser_swinney1986_ami",
+      "tier": "general_methodology",
+      "method_tags": [
+        "embedding_delay",
+        "average_mutual_information"
+      ],
+      "citation": "Fraser, A. M., & Swinney, H. L. (1986). Independent coordinates for strange attractors from mutual information. Physical Review A, 33(2), 1134-1140.",
+      "doi": "10.1103/PhysRevA.33.1134",
+      "verification_source": "https://doi.org/10.1103/PhysRevA.33.1134",
+      "supports": "Average-mutual-information motivation for delay diagnostics.",
+      "does_not_support": "Does not justify silent automatic delay selection for finite noisy gaze data."
+    },
+    {
+      "id": "kennel1992_fnn",
+      "tier": "general_methodology",
+      "method_tags": [
+        "embedding_dimension",
+        "false_nearest_neighbors"
+      ],
+      "citation": "Kennel, M. B., Brown, R., & Abarbanel, H. D. I. (1992). Determining embedding dimension for phase-space reconstruction using a geometrical construction. Physical Review A, 45(6), 3403-3411.",
+      "doi": "10.1103/PhysRevA.45.3403",
+      "verification_source": "https://doi.org/10.1103/PhysRevA.45.3403",
+      "supports": "False-nearest-neighbor diagnostic methodology.",
+      "does_not_support": "Does not provide a universal eye-tracking embedding-dimension cutoff."
+    },
+    {
+      "id": "rosenstein1993_lle",
+      "tier": "general_methodology",
+      "method_tags": [
+        "largest_lyapunov",
+        "local_divergence"
+      ],
+      "citation": "Rosenstein, M. T., Collins, J. J., & De Luca, C. J. (1993). A practical method for calculating largest Lyapunov exponents from small data sets. Physica D, 65(1-2), 117-134.",
+      "doi": "10.1016/0167-2789(93)90009-P",
+      "verification_source": "https://doi.org/10.1016/0167-2789(93)90009-P",
+      "supports": "Estimator family implemented by eyetrajectoriespy for nearest-neighbor mean log-divergence and fitted slope.",
+      "does_not_support": "Does not create a universal minimum sample-size threshold or prove chaos from a positive fitted slope."
+    },
+    {
+      "id": "kantz1994_lle",
+      "tier": "general_methodology",
+      "method_tags": [
+        "largest_lyapunov",
+        "local_divergence",
+        "sensitivity"
+      ],
+      "citation": "Kantz, H. (1994). A robust method to estimate the maximal Lyapunov exponent of a time series. Physics Letters A, 185(1), 77-87.",
+      "doi": "10.1016/0375-9601(94)90991-1",
+      "verification_source": "https://www.sciencedirect.com/science/article/pii/0375960194909911",
+      "supports": "Independent methodological precedent for local-divergence-based maximal Lyapunov estimation and sensitivity thinking.",
+      "does_not_support": "Is not the estimator currently exposed by eyetrajectoriespy and should not be cited as if Kantz's algorithm were implemented."
+    },
+    {
+      "id": "schreiber_schmitz1996_iaaft",
+      "tier": "general_methodology",
+      "method_tags": [
+        "surrogate_testing",
+        "iaaft"
+      ],
+      "citation": "Schreiber, T., & Schmitz, A. (1996). Improved surrogate data for nonlinearity tests. Physical Review Letters, 77(4), 635-638.",
+      "doi": "10.1103/PhysRevLett.77.635",
+      "verification_source": "https://pubmed.ncbi.nlm.nih.gov/10062864/",
+      "supports": "IAAFT-style iterative surrogate construction and null-model framing.",
+      "does_not_support": "Does not make rejection proof of deterministic chaos or a unique nonlinear mechanism."
+    },
+    {
+      "id": "schreiber_schmitz2000_surrogates",
+      "tier": "general_methodology",
+      "method_tags": [
+        "surrogate_testing",
+        "null_model"
+      ],
+      "citation": "Schreiber, T., & Schmitz, A. (2000). Surrogate time series. Physica D, 142(3-4), 346-382.",
+      "doi": "10.1016/S0167-2789(00)00043-9",
+      "verification_source": "https://www.sciencedirect.com/science/article/pii/S0167278900000439",
+      "supports": "Surrogate-data hypothesis-testing framework, practical caveats, and the requirement to state the null model.",
+      "does_not_support": "Does not validate independent univariate IAAFT as a multivariate x-y gaze surrogate preserving cross-structure."
+    }
+  ],
+  "unverified_candidates": [
+    {
+      "title": "Recurrence analysis of eye movements in visual search",
+      "attributed_authors": "Klaffehn, Heimann, & Gilchrist",
+      "attributed_year": 2021,
+      "status": "not_verified_in_2026-09-23_audit",
+      "note": "Exact-title/author searches used for this audit did not recover a matching scholarly record. Do not cite unless independently verified."
+    },
+    {
+      "title": "Cross-recurrence quantification analysis of pupil and gaze trajectories",
+      "attributed_authors": "Dixon & DiBiasio",
+      "attributed_year": 2016,
+      "status": "not_verified_in_2026-09-23_audit",
+      "note": "Exact-title/author searches used for this audit did not recover a matching scholarly record. Genuine nearby CRQA/pupil literature exists, but it is not this citation. Do not cite unless independently verified."
+    },
+    {
+      "title": "Lyapunov exponents of eye movements in ADHD vs. control",
+      "attributed_authors": "Chang et al.",
+      "attributed_year": 2018,
+      "status": "not_verified_in_2026-09-23_audit",
+      "note": "Exact-title/author searches used for this audit did not recover a matching scholarly record. Use verified Korda et al. 2018 for direct eye-movement LLE precedent."
+    },
+    {
+      "title": "Dynamical systems and eye movements: Attractor dimension predicts search efficiency",
+      "attributed_authors": "Bruineberg et al.",
+      "attributed_year": 2018,
+      "status": "not_verified_in_2026-09-23_audit",
+      "note": "Exact-title/author searches used for this audit did not recover a matching scholarly record. Do not cite unless independently verified."
+    },
+    {
+      "title": "Attractor reconstruction from eye movement series in strabismus and nystagmus",
+      "attributed_authors": "Hayen, Harper, & Henson",
+      "attributed_year": 2015,
+      "status": "not_verified_in_2026-09-23_audit",
+      "note": "Exact-title/author searches used for this audit did not recover a matching scholarly record. Do not cite unless independently verified."
+    }
+  ]
+}

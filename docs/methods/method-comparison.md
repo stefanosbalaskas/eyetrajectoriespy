@@ -147,6 +147,8 @@ The 0.18 familywise helper is a post-calibration of one already generated target
 | How quickly do nearby reconstructed states separate? | `local_divergence_curve()` + Rosenstein LLE | proof of deterministic chaos |
 | Is the nonlinear statistic unusual under a linear-stochastic surrogate null? | `surrogate_nonlinearity_test()` | a unique nonlinear mechanism |
 | Do repeated observed cycles contract or expand locally? | empirical Poincare return map | a monodromy matrix, Floquet multipliers, or model-based orbital stability |
-| How does a modeled attractor change with a control parameter? | not implemented in 0.23 | requires explicit system identification / continuation model |
+| How does a modeled attractor change with a control parameter? | not implemented in 0.25 | requires explicit system identification / continuation model |
+
+Evidence strength also differs across the rows: recurrence/RQA has direct behavioral-gaze precedent; LLE has direct eye-movement signal precedent but remains uncommon as a continuous behavioral-scanpath descriptor; IAAFT is supported by general nonlinear time-series methodology; and the empirical return-map layer remains experimental. See the [nonlinear evidence audit](nonlinear-evidence-audit.md).
 
 RQA and FPCA are complementary rather than substitutes. FPCA summarizes dominant between-curve functional variation; RQA summarizes within-trajectory recurrent temporal organization. Version 0.24 makes that bridge explicit with `windowed_rqa_trajectory_set()`, while preserving overlap, edge/tail, radius-policy, and source-unit provenance. The FDA step remains separately justified and does not turn overlapping windows into independent observations.

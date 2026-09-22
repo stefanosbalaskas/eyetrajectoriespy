@@ -60,7 +60,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 
 ## Documentation and mathematical contracts
 
-Versions 0.21–0.24 treat documentation and mathematical metadata as tested package surfaces:
+Versions 0.21–0.25 treat documentation, mathematical metadata, and methodological evidence metadata as tested package surfaces:
 
 - the repository-level `MATHEMATICAL_CONTRACTS.md` renders the core equations directly on GitHub;
 - the site mathematical reference maps those equations to the exact public APIs and scope boundaries;
@@ -70,6 +70,10 @@ Versions 0.21–0.24 treat documentation and mathematical metadata as tested pac
 - version 0.22 adds a public machine-readable mathematical-contract registry plus deterministic GitHub/site function → equation indexes;
 - the same tranche adds a rendered workflow atlas and expands the deterministic SVG gallery to eight figures;
 - CI checks that generated equation indexes still match the package registry before the strict site build.
+
+- version 0.25 adds a machine-readable nonlinear-method evidence registry plus generated GitHub/site evidence audits;
+- docs CI checks evidence-page freshness, verified DOI coverage, source quality, unverified-citation exclusion, and novelty-language safeguards;
+- literature-search absence is never promoted to a novelty claim; candidate records that were not verified remain visible only in the audit trail.
 
 A future documentation-platform migration can be evaluated independently of the scientific API. No site-framework migration is allowed to alter numerical or scientific contracts.
 
@@ -103,6 +107,21 @@ Review flags are descriptive diagnostics. The package does not turn them into au
 
 Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, clustered/repeated-participant wild-bootstrap inference, coverage-optimal automatic wild-bootstrap truncation tuning, heteroscedastic future-outcome prediction, or non-Gaussian/binomial functional-regression inference.
 
+## Nonlinear evidence maturity
+
+The nonlinear methods are intentionally separated by evidence level:
+
+| Layer | Evidence status | Package status |
+|---|---|---|
+| Embedding + recurrence/RQA | direct behavioral eye-movement precedent plus foundational recurrence methodology | core |
+| Windowed RQA → functional trajectories | composition of established RQA with the package FDA core; overlap dependence explicitly retained | descriptive functional bridge |
+| Rosenstein local divergence / LLE | direct eye-movement signal precedent plus established estimator literature | advanced |
+| IAAFT surrogate testing | established nonlinear time-series null-model methodology; no gaze-specific novelty claim | advanced safeguard |
+| Empirical Poincare return maps | scientifically coherent observational cycle descriptor, without classical Floquet claim | experimental |
+| Floquet/monodromy/continuation | requires an explicit validated dynamical model | outside raw-gaze core |
+
+See the [nonlinear evidence audit](nonlinear-evidence-audit.md) for verified sources and explicit claim boundaries.
+
 ## Research/development candidates
 
 Future tranches may evaluate:
@@ -111,10 +130,10 @@ Future tranches may evaluate:
 - explicit system-identification models for gaze dynamics;
 - model-based continuation / Floquet analysis only after a validated dynamical-system contract exists.
 
-Classical `floquet_multipliers(gaze)`, monodromy matrices from raw observations, and `detect_bifurcation(gaze)` remain intentionally **not** implemented in 0.24.
+Classical `floquet_multipliers(gaze)`, monodromy matrices from raw observations, and `detect_bifurcation(gaze)` remain intentionally **not** implemented in 0.25.
 
 A candidate enters the public API only when it can preserve the package rules: explicit estimand, deterministic behavior or seed, provenance, failure diagnostics, synthetic truth tests, documentation, and runnable examples.
 
 ## Development status
 
-The current development line is **0.24.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.25.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.24 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.25 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
@@ -208,6 +208,16 @@ The package is designed around the principle that **the path to an FPC score is 
 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
+
+## New in 0.25 development
+
+- a machine-readable nonlinear evidence registry separates direct behavioral-gaze evidence, direct eye/pupil signal evidence, and general nonlinear-methodology support;
+- generated GitHub and website evidence audits state what each verified paper supports **and what it does not support**;
+- direct behavioral RQA evidence now includes Anderson et al. (2013) and Gurtner et al. (2019), while Korda et al. (2018) anchors direct eye-movement LLE precedent;
+- pupil RQA/CRQA evidence and the modern dynamic-pupil methods review are tracked separately from behavioral gaze-coordinate evidence;
+- five candidate citations from the research report that were not recovered in the verification pass are retained in the audit trail but excluded from the normal bibliography;
+- docs CI now fails on stale evidence pages, missing verified DOIs, low-quality verification sources, leakage of unverified citations into ordinary guides, or affirmative failed-search novelty claims;
+- numerical 0.23/0.24 nonlinear algorithms and their inferential contracts are unchanged.
 
 ## New in 0.24 development
 
