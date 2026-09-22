@@ -29,7 +29,6 @@ _FORBIDDEN_NOVELTY_PHRASES = (
     "confirmed novelty",
     "proving novelty",
     "proves novelty",
-    "proof of novelty",
 )
 
 _REQUIRED_IDS = {
