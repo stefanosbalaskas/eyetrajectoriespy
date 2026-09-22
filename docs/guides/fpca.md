@@ -54,4 +54,4 @@ $$
 \widehat\xi_{ik}\widehat{\boldsymbol\phi}_k(t).
 $$
 
-See the [mathematical reference](../methods/mathematical-reference.md#quadrature-weighted-fpca--mfpca) for the exact trapezoidal weights, scaling, projection, and loading back-transformation used by the package.
+See the [mathematical reference](../methods/mathematical-reference.md#fpca) for the exact trapezoidal weights, scaling, projection, and loading back-transformation used by the package.
