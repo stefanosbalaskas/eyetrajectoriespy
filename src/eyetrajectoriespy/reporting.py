@@ -20,6 +20,7 @@ from .types import (
     FPCARegressionUncertaintyResult,
     FPCAWildBootstrapProjectionResult,
     FPCAWildBootstrapFamilyTestResult,
+    FPCAWildBootstrapMonteCarloPrecisionResult,
     FPCAWildBootstrapSimultaneousResult,
     FPCAWildBootstrapTruncationSelectionResult,
     FPCAResult,
@@ -556,6 +557,50 @@ def fpca_wild_bootstrap_family_test_reporting_text(
         "or clustered/repeated-participant inference."
     )
 
+
+
+def fpca_wild_bootstrap_monte_carlo_precision_reporting_text(
+    result: FPCAWildBootstrapMonteCarloPrecisionResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate reporting text for finite-B bootstrap probability precision."""
+
+    if not isinstance(result, FPCAWildBootstrapMonteCarloPrecisionResult):
+        raise TypeError(
+            "result must be an FPCAWildBootstrapMonteCarloPrecisionResult"
+        )
+    test = result.family_test_result
+    target_overlap = sum(
+        relation == "overlaps_alpha"
+        for relation in result.targetwise_alpha_relation
+    )
+    adjusted_overlap = sum(
+        relation == "overlaps_alpha"
+        for relation in result.adjusted_alpha_relation
+    )
+    resolution = (
+        "supports"
+        if result.alpha_resolvable
+        else "does not support"
+    )
+    return (
+        f"Finite-resample Monte Carlo precision was evaluated for the "
+        f"{result.n_bootstrap} retained wild-bootstrap replicates without rerunning "
+        "FPCA, regression, residual estimation, multiplier generation, or resampling. "
+        f"Exceedance fractions were summarized with {100 * result.confidence_level:.1f}% "
+        "exact Clopper-Pearson binomial intervals and plug-in Monte Carlo standard "
+        "errors sqrt[p(1-p)/B]. "
+        f"At alpha={test.significance_level:.{digits}f}, {target_overlap} target-wise "
+        f"interval(s) and {adjusted_overlap} maxT-adjusted interval(s) overlapped alpha; "
+        f"the global interval relation was {result.global_alpha_relation!r}. "
+        f"The reported p-value grid step was {result.pvalue_grid_step:.{digits}g}, and "
+        f"the minimum attainable reported p-value {resolution} the declared alpha. "
+        "These intervals quantify simulation uncertainty in the resampling tail "
+        "probability only. They do not change the reported p-values, do not form "
+        "confidence intervals for scientific effects, and do not add family-wise "
+        "error, subset-pivotality, clustered-sampling, or component-selection guarantees."
+    )
 
 def fpca_wild_bootstrap_simultaneous_reporting_text(
     result: FPCAWildBootstrapSimultaneousResult,
