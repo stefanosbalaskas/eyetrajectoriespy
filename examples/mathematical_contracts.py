@@ -47,7 +47,7 @@ assert np.isclose(d_ab, d_ba)
 aoi = simulate_aoi_probability_trajectories(
     n_curves=8,
     n_time=31,
-    n_aois=4,
+    n_aoi=4,
     random_state=2106,
 )
 z = alr_transform(aoi.values, reference_dimension=3, epsilon=1e-8)
