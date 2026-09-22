@@ -21,6 +21,7 @@ from .types import (
     FPCARegressionUncertaintyResult,
     FPCAWildBootstrapProjectionResult,
     FPCAWildBootstrapFamilyTestResult,
+    FPCAWildBootstrapMonteCarloPrecisionResult,
     FPCAWildBootstrapSimultaneousResult,
     FPCAWildBootstrapTruncationScanResult,
     FPCAWildBootstrapTruncationSelectionResult,
@@ -240,6 +241,66 @@ def plot_fpca_wild_bootstrap_family_test(
     ax.legend()
     return ax
 
+
+
+def plot_fpca_wild_bootstrap_monte_carlo_precision(
+    result: FPCAWildBootstrapMonteCarloPrecisionResult,
+    *,
+    max_targets: int = 30,
+    probability: str = "adjusted",
+    ax=None,
+):
+    """Plot finite-B tail-probability estimates with exact binomial intervals."""
+
+    if not isinstance(result, FPCAWildBootstrapMonteCarloPrecisionResult):
+        raise TypeError(
+            "result must be an FPCAWildBootstrapMonteCarloPrecisionResult"
+        )
+    if isinstance(max_targets, bool) or not isinstance(max_targets, (int, np.integer)):
+        raise TypeError("max_targets must be an integer")
+    if max_targets < 1:
+        raise ValueError("max_targets must be positive")
+    if probability not in {"adjusted", "targetwise"}:
+        raise ValueError("probability must be 'adjusted' or 'targetwise'")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    n = min(max_targets, result.n_targets)
+    x = np.arange(n)
+    if probability == "adjusted":
+        center = result.adjusted_tail_probabilities[:n]
+        lower = result.adjusted_ci_lower[:n]
+        upper = result.adjusted_ci_upper[:n]
+        label = "maxT tail probability"
+    else:
+        center = result.targetwise_tail_probabilities[:n]
+        lower = result.targetwise_ci_lower[:n]
+        upper = result.targetwise_ci_upper[:n]
+        label = "target-wise tail probability"
+
+    yerr = np.vstack((center - lower, upper - center))
+    ax.errorbar(
+        x,
+        center,
+        yerr=yerr,
+        marker="o",
+        linestyle="none",
+        capsize=3,
+        label=label,
+    )
+    alpha = result.family_test_result.significance_level
+    ax.axhline(alpha, linestyle="--", label=f"alpha={alpha:g}")
+    ax.set_xticks(x)
+    ax.set_xticklabels(
+        result.family_test_result.projection_result.target_curve_ids[:n],
+        rotation=90,
+    )
+    ax.set_ylim(-0.02, 1.02)
+    ax.set_xlabel("Fixed target trajectory")
+    ax.set_ylabel("Resampling tail probability")
+    ax.set_title("Wild-bootstrap Monte Carlo precision")
+    ax.legend()
+    return ax
 
 def plot_fpca_wild_bootstrap_simultaneous_interval(
     result: FPCAWildBootstrapSimultaneousResult,
