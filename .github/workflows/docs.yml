@@ -30,6 +30,10 @@ jobs:
           python -m pip install -e ".[docs]"
       - name: Validate generated function-equation indexes
         run: python scripts/generate_function_equation_index.py --check
+      - name: Validate generated nonlinear evidence audit
+        run: python scripts/generate_nonlinear_evidence_audit.py --check
+      - name: Validate nonlinear evidence integrity
+        run: python scripts/validate_nonlinear_evidence.py
       - name: Generate deterministic documentation gallery
         run: python scripts/generate_docs_gallery.py
       - name: Validate documentation contracts
