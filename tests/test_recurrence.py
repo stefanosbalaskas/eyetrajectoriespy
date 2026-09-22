@@ -1,7 +1,9 @@
 import numpy as np
 import pytest
+from scipy.sparse import csr_matrix
 
 from eyetrajectoriespy import (
+    RecurrenceResult,
     TrajectorySet,
     cross_recurrence_matrix,
     cross_rqa_metrics,
@@ -247,3 +249,120 @@ def test_cross_rqa_requires_matching_regular_sampling_steps():
     with pytest.raises(ValueError, match="matching sampling steps"):
         cross_rqa_metrics(recurrence)
 
+
+
+def test_fixed_radius_threshold_is_inclusive_and_ratio_scaled():
+    data = _scalar([0.0, 1.0, 3.0])
+    result = recurrence_matrix(
+        data,
+        curve=0,
+        radius=1.0,
+        dimensions=("x",),
+    )
+
+    assert result.matrix.nnz == 2
+    assert result.achieved_recurrence_rate == pytest.approx(1 / 3)
+    assert result.provenance["threshold_operator"] == "<="
+    assert result.provenance["recurrence_rate_scale"] == "0_to_1"
+
+
+def test_auto_rr_denominator_excludes_loi_and_theiler_pairs():
+    data = _scalar([0.0, 0.0, 0.0, 0.0])
+    result = recurrence_matrix(
+        data,
+        curve=0,
+        radius=1e-8,
+        theiler_window=1,
+        dimensions=("x",),
+    )
+
+    # Eligible unordered pairs are (0,2), (0,3), and (1,3).
+    assert result.matrix.nnz == 6
+    assert result.achieved_recurrence_rate == pytest.approx(1.0)
+    assert (
+        result.provenance["recurrence_rate_denominator"]
+        == "eligible_off_diagonal_pairs_outside_theiler_window"
+    )
+
+
+def test_cross_recurrence_is_rectangular_all_pairs_without_time_alignment():
+    a = TrajectorySet(
+        time=np.array([0.0, 1.0, 2.0]),
+        values=np.array([0.0, 1.0, 2.0])[None, :, None],
+        curve_ids=("a",),
+        dimension_names=("x",),
+        time_unit="s",
+        coordinate_system="arbitrary",
+    )
+    b = TrajectorySet(
+        time=np.array([100.0, 101.0, 102.0, 103.0]),
+        values=np.array([0.0, 1.0, 2.0, 3.0])[None, :, None],
+        curve_ids=("b",),
+        dimension_names=("x",),
+        time_unit="s",
+        coordinate_system="arbitrary",
+    )
+
+    result = cross_recurrence_matrix(
+        a,
+        b,
+        curve_a=0,
+        curve_b=0,
+        radius=1e-8,
+        dimensions_a=("x",),
+        dimensions_b=("x",),
+    )
+
+    assert result.matrix.shape == (3, 4)
+    assert result.matrix.nnz == 3
+    assert result.achieved_recurrence_rate == pytest.approx(3 / 12)
+    assert result.provenance["time_alignment"] == "none"
+    assert result.provenance["recurrence_rate_denominator"] == "all_cross_state_pairs"
+
+
+def test_rqa_entropy_and_border_line_policy_are_explicit():
+    matrix = csr_matrix(
+        np.array(
+            [
+                [1, 0, 1, 0, 0],
+                [0, 1, 0, 1, 0],
+                [0, 0, 1, 0, 0],
+                [0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0],
+            ],
+            dtype=bool,
+        )
+    )
+    recurrence = RecurrenceResult(
+        matrix=matrix,
+        time_a=np.arange(5, dtype=float),
+        time_b=np.arange(5, dtype=float),
+        source_curve_ids=("a", "b"),
+        radius=1.0,
+        target_recurrence_rate=None,
+        achieved_recurrence_rate=5 / 25,
+        metric="euclidean",
+        theiler_window_samples=0,
+        kind="cross",
+        state_dimension=1,
+        provenance={
+            "recurrence_rate_denominator": "all_cross_state_pairs",
+        },
+    )
+
+    result = rqa_metrics(
+        recurrence,
+        min_diagonal_length=2,
+        min_vertical_length=2,
+    )
+
+    assert result.determinism == pytest.approx(1.0)
+    assert result.max_diagonal_length == 3
+    assert result.n_diagonal_lines == 2
+    assert result.diagonal_entropy == pytest.approx(np.log(2.0))
+    assert result.provenance["ratio_scale"] == "0_to_1"
+    assert "no border-effect correction" in result.provenance["line_border_policy"]
+    assert (
+        result.provenance["line_entropy_probability"]
+        == "frequency of each qualifying line length divided by the total number of qualifying lines"
+    )
