@@ -23,6 +23,7 @@ class DelayEmbeddingResult:
     delay_samples: int
     delay_time: float
     time_unit: str
+    coordinate_system: str
     provenance: Mapping[str, Any] = field(default_factory=dict)
 
     @property
