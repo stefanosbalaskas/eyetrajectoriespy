@@ -4,7 +4,7 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.21.0.dev0`
+- Package line: `0.22.0.dev0`
 - Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, heteroscedastic Gaussian FPCR fixed-target wild-bootstrap inference, stabilized-volatility wild-bootstrap truncation selection, familywise simultaneous fixed-target wild-bootstrap calibration, fixed-family wild-bootstrap hypothesis testing with single-step maxT adjustment and a global family test, finite-bootstrap Monte Carlo precision diagnostics for retained resampling tail probabilities, split-conformal FPCA anomaly review, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
@@ -1296,3 +1296,76 @@ Therefore 0.21 is both **PR-head CI-certified** and **exact-main requalified**, 
 5. A future documentation tranche may expand the gallery to additional optional-backend and uncertainty plots while preserving CI-small generation time.
 
 The 0.21 mathematical contracts, reproducible gallery generator, documentation-contract validator, executable equations example, package construction, all 9 core cross-platform lanes, coverage/Ruff gates, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.21 main lineage.
+
+
+## 0.22 function-equation registry and workflow-atlas qualification — 2026-09-22
+
+Version 0.22 makes the 0.21 mathematical documentation machine-readable and expands the repository/site workflow and plot documentation without changing the established scientific estimators or inferential defaults.
+
+A separate local clone could not be executed in the current checkout runner because outbound DNS resolution for github.com was unavailable. No local-pass claim is made for this tranche; exact GitHub-hosted qualification is recorded below.
+
+Exact CI-certified PR head:
+
+\`7fb0e0042a533600a3413f41911ff65b75416ab4\`
+
+PR #25, **“Add programmatic function-to-LaTeX contracts and workflow atlas,”** completed every pull-request qualification workflow successfully on that exact SHA:
+
+- tests workflow #96: **success**, including package construction and all **9/9** Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- representative macOS / Python 3.13 log: **181 passed, 5 skipped**, **92.57% coverage** against the unchanged 90% gate, and Ruff **All checks passed**;
+- examples workflow #96: **success**, including the executable function-equation registry example;
+- docs workflow #96: **success**, including generated-index freshness validation, eight-figure deterministic gallery generation, documentation-contract validation, and strict MkDocs build;
+- docs-contract audit reported **13 mathematical registry contracts**, **81 navigation targets**, **184 documented API symbols**, **8 generated gallery SVG assets**, and **13 validated mathematical deep links**;
+- optional-fda workflow #92: **success**;
+- optional-sparse-fda workflow #80: **success**, including FDApy Python 3.11 and 3.12.
+
+The 0.22 contract adds:
+
+- immutable public \`MathematicalContract\` metadata;
+- \`list_mathematical_contracts()\`, \`get_mathematical_contract()\`, and \`mathematical_contract_frame()\`;
+- one machine-readable registry connecting registered scientific public functions to implementation-matched LaTeX, stable mathematical-reference anchors, and explicit scope statements;
+- deterministic repository \`FUNCTION_EQUATION_INDEX.md\` and website \`reference/function-equation-index.md\`, both generated from the same registry and checked for drift in docs CI;
+- GitHub \`WORKFLOW_ATLAS.md\` and a website Mermaid workflow atlas covering representation choice, FPCA validation, Gaussian FPCR inference branches, and the function → equation → figure documentation path;
+- the deterministic SVG gallery expanded from five to eight figures, adding FPCA cumulative variance, registration displacement, and fixed-family wild-bootstrap test visualization;
+- executable and worked examples for registry lookup and tidy function-level export;
+- homepage, tutorial, README, API, object-contract, mathematical-reference, roadmap, workflow, and validation links tying functions, equations, examples, plots, and scientific boundaries together.
+
+The registry is documentation metadata only. Contract lookup does not fit models, select estimators/components, mutate defaults, rerun bootstrap procedures, or change any numerical scientific result.
+
+No tests, coverage thresholds, scientific contracts, optional-backend checks, branch protections, or quality gates were weakened, disabled, deleted, or bypassed.
+
+PR #25 was squash-merged as:
+
+\`37373b22359428173cf240390fd816a8fb271363\`
+
+The exact PR head and squash-merged main commit both point to Git tree:
+
+\`9569a3464de95533c99b7d05d25565aea9f512bc\`
+
+so the merged package registry, generated indexes, examples, tests, Mermaid workflow atlas, gallery generator, site UX, and documentation checks are byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.22 exact-main qualification and deployment — 2026-09-22
+
+The exact merged-main scientific/content commit
+
+\`37373b22359428173cf240390fd816a8fb271363\`
+
+completed a fresh push-triggered qualification generation successfully:
+
+- tests workflow #97: **success**, including package construction and all **9/9** Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #97: **success**;
+- docs workflow #97: **success**, including generated-index freshness checking, eight-figure gallery regeneration, documentation-contract validation, strict MkDocs build, and **successful GitHub Pages deployment**;
+- optional-fda workflow #93: **success**;
+- optional-sparse-fda workflow #81: **success**, including FDApy Python 3.11 and 3.12.
+
+Therefore 0.22 is both **PR-head CI-certified** and **exact-main requalified**, and the generated function-equation index, workflow atlas, expanded gallery, and mathematical registry documentation are deployed on the merged main lineage.
+
+## 0.22 remaining re-checks
+
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13.
+2. The Material-for-MkDocs 9.x / MkDocs 1.x site stack remains intentionally pinned; a future documentation-platform migration should be qualified independently from scientific API changes.
+3. The mathematical registry documents implementation contracts and scope boundaries. It does not claim that the underlying statistical methods are original to eyetrajectoriespy; methodological attribution remains in the method guides/references.
+4. Generated gallery figures use deterministic synthetic data for documentation and are not empirical study results.
+5. Only scientific functions with a meaningful concise mathematical contract are registered. Utility/import/reporting/plotting helpers are linked through the API and gallery rather than being assigned artificial equations.
+6. If new registered functions are added, both generated indexes must be regenerated; docs CI will fail on stale generated content.
+
+The 0.22 programmatic mathematical registry, generated repository/site LaTeX indexes, Mermaid workflow atlas, expanded eight-figure gallery, examples, package construction, all 9 core cross-platform lanes, coverage/Ruff gates, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.22 scientific/content lineage.
