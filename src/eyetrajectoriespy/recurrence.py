@@ -725,7 +725,7 @@ def windowed_rqa_trajectory_set(
 
     values = np.stack(
         [
-            result.table.loc[:, metric_names].to_numpy(dtype=float)
+            result.table.loc[:, list(metric_names)].to_numpy(dtype=float)
             for result in per_curve
         ],
         axis=0,
