@@ -381,19 +381,19 @@ def surrogate_nonlinearity_test(
     iterations = np.empty(int(n_surrogates), dtype=int)
     spectral_errors = np.empty(int(n_surrogates), dtype=float)
     for b in range(int(n_surrogates)):
-        surrogate, n_iter, spectral_error = _iaaft_one(
-            signal,
-            rng=rng,
-            max_iterations=int(max_iterations),
-            tolerance=float(tolerance),
-        )
-        surrogate_trajectory = _scalar_trajectory(
-            trajectories,
-            curve_index=curve_index,
-            dimension=dimension,
-            values=surrogate,
-        )
         try:
+            surrogate, n_iter, spectral_error = _iaaft_one(
+                signal,
+                rng=rng,
+                max_iterations=int(max_iterations),
+                tolerance=float(tolerance),
+            )
+            surrogate_trajectory = _scalar_trajectory(
+                trajectories,
+                curve_index=curve_index,
+                dimension=dimension,
+                values=surrogate,
+            )
             surrogate_statistics[b] = _lle_statistic(surrogate_trajectory, **common)
         except Exception as exc:
             raise RuntimeError(
