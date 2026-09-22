@@ -207,3 +207,183 @@ $$
 Implemented by \`split_conformal_fpca_anomaly()\`.
 
 For the full mathematical reference, including exact quadrature weights, dimension scaling, reconstruction nonconformity, simultaneous calibration, boundary cases, assumptions, and API links, see the website page linked above.
+
+## Delay-coordinate reconstruction
+
+For embedding dimension \(m\) and delay \(\tau\),
+
+$$
+\mathbf z_t=
+[
+\mathbf G(t),
+\mathbf G(t-\tau),
+\ldots,
+\mathbf G(t-(m-1)\tau)
+].
+$$
+
+Average mutual information is
+
+$$
+I(\tau)
+=
+\sum_{a,b}
+p_{ab}(\tau)
+\log
+\frac{p_{ab}(\tau)}
+{p_a p_b}.
+$$
+
+False-nearest-neighbor diagnostics evaluate whether nearest neighbors in dimension \(m\) separate excessively when the next delayed coordinate is added.
+
+Implemented by \`delay_embed_trajectory()\`, \`embedding_delay_diagnostics()\`, and \`embedding_dimension_diagnostics()\`.
+
+## Sparse recurrence quantification
+
+For reconstructed or observed state vectors,
+
+$$
+R_{ij}
+=
+\mathbb I
+\left[
+\|\mathbf z_i-\mathbf z_j\|_p
+\le \varepsilon
+\right],
+$$
+
+subject to the declared Theiler exclusion. Recurrence rate is
+
+$$
+\mathrm{RR}
+=
+\frac{
+\sum_{i<j}R_{ij}
+}{
+N_{\mathrm{eligible}}
+}.
+$$
+
+Determinism and laminarity use diagonal- and vertical-line length distributions:
+
+$$
+\mathrm{DET}
+=
+\frac{
+\sum_{\ell\ge\ell_{\min}}
+\ell P_d(\ell)
+}{
+\sum_{\ell\ge1}
+\ell P_d(\ell)
+},
+\qquad
+\mathrm{LAM}
+=
+\frac{
+\sum_{v\ge v_{\min}}
+v P_v(v)
+}{
+\sum_{v\ge1}
+v P_v(v)
+}.
+$$
+
+Implemented by \`recurrence_matrix()\`, \`rqa_metrics()\`, \`windowed_rqa()\`, \`cross_recurrence_matrix()\`, and \`cross_rqa_metrics()\`.
+
+## Rosenstein local divergence
+
+For each reconstructed state \(i\), let \(j(i)\) be the nearest temporally separated neighbor. Forward divergence is
+
+$$
+d_i(k)
+=
+\|
+\mathbf z_{i+k}
+-
+\mathbf z_{j(i)+k}
+\|_2.
+$$
+
+The mean log-divergence curve is
+
+$$
+D(k)
+=
+\frac{1}{N_k}
+\sum_i
+\log d_i(k).
+$$
+
+Over an analyst-declared linear region,
+
+$$
+D(k)
+\approx
+a+
+\lambda_{\max}k\Delta t.
+$$
+
+Implemented by \`local_divergence_curve()\` and \`estimate_largest_lyapunov_rosenstein()\`.
+
+## IAAFT surrogate testing
+
+For a one-sided greater-than alternative and \(B\) surrogate statistics,
+
+$$
+p
+=
+\frac{
+1+
+\sum_{b=1}^{B}
+\mathbb I
+\left(
+T_b^*
+\ge
+T_{\mathrm{obs}}
+\right)
+}{
+B+1
+}.
+$$
+
+Implemented by \`surrogate_nonlinearity_test()\`. The IAAFT procedure preserves the observed amplitude distribution exactly and iteratively matches the Fourier-amplitude spectrum.
+
+## Empirical Poincare return maps
+
+A declared section defines successive crossing states
+
+$$
+h(\mathbf z)=0,
+\qquad
+\mathbf z_1,\mathbf z_2,\ldots.
+$$
+
+Within an explicitly declared local neighborhood, the package fits
+
+$$
+\mathbf z_{n+1}
+=
+\mathbf a
++
+\mathbf J
+(
+\mathbf z_n-\mathbf z_0
+)
++
+\boldsymbol\varepsilon_n.
+$$
+
+The empirical contraction/expansion diagnostic is the spectral radius
+
+$$
+\rho(\mathbf J)
+=
+\max_j
+|
+\lambda_j(\mathbf J)
+|.
+$$
+
+Implemented by \`poincare_crossings()\`, \`fit_local_return_map()\`, and \`return_map_stability()\`.
+
+These are empirical return-map diagnostics. \(\mathbf J\) is **not** a variational-equation monodromy matrix and its eigenvalues are **not** classical Floquet multipliers.
