@@ -14,6 +14,7 @@ from .embedding import (
     _curve_index,
     _dimension_indices,
     _require_finite,
+    _regular_step,
     _resolve_samples,
 )
 from .nonlinear_types import (
@@ -393,6 +394,42 @@ def _line_entropy(lengths: list[int]) -> float:
     return float(-np.sum(probabilities * np.log(probabilities)))
 
 
+def _line_rqa_sampling_steps(recurrence: RecurrenceResult) -> tuple[float, float | None]:
+    try:
+        step_a = _regular_step(np.asarray(recurrence.time_a, dtype=float))
+    except ValueError as exc:
+        raise ValueError(
+            "line-based RQA metrics require an approximately regular first time/index grid; "
+            "the recurrence matrix and achieved recurrence rate remain available for spatial "
+            "recurrence analysis. Regularize upstream explicitly or use a regular event-index "
+            "representation when that is the scientific estimand."
+        ) from exc
+
+    if recurrence.kind != "cross":
+        return step_a, None
+
+    try:
+        step_b = _regular_step(np.asarray(recurrence.time_b, dtype=float))
+    except ValueError as exc:
+        raise ValueError(
+            "cross-RQA line metrics require an approximately regular second time/index grid; "
+            "cross-recurrence itself does not align or regularize the source time domains."
+        ) from exc
+
+    if not np.isclose(
+        step_a,
+        step_b,
+        rtol=1e-6,
+        atol=max(1e-12, abs(step_a) * 1e-9, abs(step_b) * 1e-9),
+    ):
+        raise ValueError(
+            "cross-RQA diagonal/vertical line metrics require matching sampling steps "
+            "on the two source grids; cross-recurrence itself remains available without "
+            "silently resampling or aligning either trajectory"
+        )
+    return step_a, step_b
+
+
 def rqa_metrics(
     recurrence: RecurrenceResult,
     *,
@@ -403,6 +440,7 @@ def rqa_metrics(
 
     if min_diagonal_length < 1 or min_vertical_length < 1:
         raise ValueError("minimum line lengths must be positive integers")
+    step_a, step_b = _line_rqa_sampling_steps(recurrence)
     matrix = recurrence.matrix.astype(bool).tocsr()
     if recurrence.kind == "auto":
         upper = triu(matrix, k=1).tocsr()
@@ -465,6 +503,9 @@ def rqa_metrics(
             "recurrence_provenance": dict(recurrence.provenance),
             "min_diagonal_length": int(min_diagonal_length),
             "min_vertical_length": int(min_vertical_length),
+            "sampling_contract": "approximately_regular_grid",
+            "sampling_step_a": float(step_a),
+            "sampling_step_b": None if step_b is None else float(step_b),
             "corm_definition": (
                 "100 * mean upper-triangle recurrence lag / (n-1)"
                 if recurrence.kind == "auto"

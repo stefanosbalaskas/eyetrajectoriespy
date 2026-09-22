@@ -97,6 +97,8 @@ dimension_diag = embedding_dimension_diagnostics(
 
 No dimension is selected automatically.
 
+Both AMI and false-nearest-neighbor diagnostics require an approximately regular temporal grid. Expressing a lag in samples does not remove that requirement: on an irregular physical-time grid, the same sample offset corresponds to different elapsed times. If event order is the intended axis, encode that choice explicitly as a regular event-index grid.
+
 ## 2. Sparse recurrence analysis
 
 For states \(\mathbf z_i\),
@@ -168,6 +170,8 @@ The result contains:
 
 The line-length thresholds are part of the result provenance.
 
+The recurrence matrix itself can represent spatial returns among irregularly timed observations, but the standard line-based RQA summaries above require an approximately regular source grid. For cross-RQA, both source grids must be regular with matching sampling steps. No interpolation or sampling-rate correction is performed internally; the raw recurrence result remains available even when line-based RQA is not admissible.
+
 ### Windowed RQA
 
 \`\`\`python
@@ -234,7 +238,11 @@ cross = cross_recurrence_matrix(
 cross_metrics = cross_rqa_metrics(cross)
 \`\`\`
 
-This is useful for participant-participant, participant-reference, repeated-session, or expert-novice comparisons. The two state spaces must use the same named variables in the same order, coordinate system, time unit, and—when embedded—the same embedding dimension and delay semantics. Cross-recurrence currently does not report CORM because the auto-recurrence normalization is not transferred silently to the rectangular cross-recurrence setting.
+This is useful for participant-participant, participant-reference, repeated-session, or expert-novice comparisons. The two state spaces must use the same named variables in the same order, coordinate system, time unit, and—when embedded—the same embedding dimension and delay semantics.
+
+A cross-recurrence matrix does **not** align, synchronize, resample, or warp the two trajectories. Its row and column axes retain the two source time/index domains. If the scientific question requires clock synchronization, a declared lag restriction, or another alignment operation, perform and document that step explicitly before cross-recurrence analysis rather than treating the recurrence calculation itself as an alignment algorithm.
+
+Cross-recurrence currently does not report CORM because the auto-recurrence normalization is not transferred silently to the rectangular cross-recurrence setting.
 
 ## 3. Local divergence and Rosenstein LLE
 

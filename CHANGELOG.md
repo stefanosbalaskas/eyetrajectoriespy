@@ -8,6 +8,8 @@
 - Add `WindowedRQAFunctionalResult`, `plot_windowed_rqa_trajectories()`, and `windowed_rqa_functional_reporting_text()`.
 - Add a worked RQA → functional trajectories → MFPCA workflow and a deterministic gallery figure.
 - Tighten the nonlinear evidence chain with verified direct eye-movement LLE precedent and surrogate-null references.
+- Verify and expand the nonlinear evidence chain with direct eye-movement RQA/CRQA/LLE sources, corrected Kantz bibliographic metadata, and an explicit rule that negative searches do not establish novelty.
+- Tighten temporal-sampling contracts: AMI/FNN diagnostics fail closed on irregular physical-time grids; spatial recurrence remains available for irregular observations, while standard line-based RQA requires a regular grid and cross-RQA requires matching sampling steps.
 
 ## 0.23.0.dev0 — 2026-09-22
 

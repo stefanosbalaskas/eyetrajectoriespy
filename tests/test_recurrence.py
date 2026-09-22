@@ -188,3 +188,62 @@ def test_cross_recurrence_rejects_different_named_state_variables():
             dimensions_a=("x",),
             dimensions_b=("pupil",),
         )
+
+def test_spatial_recurrence_allows_irregular_grid_but_line_rqa_fails_closed():
+    time = np.array([0.0, 1.0, 2.2, 3.1, 4.7])
+    values = np.array([0.0, 1.0, 0.0, 1.0, 0.0])
+    data = TrajectorySet(
+        time=time,
+        values=values[None, :, None],
+        curve_ids=("irregular",),
+        dimension_names=("x",),
+        time_unit="s",
+        coordinate_system="arbitrary",
+    )
+
+    recurrence = recurrence_matrix(
+        data,
+        curve=0,
+        radius=1e-8,
+        dimensions=("x",),
+    )
+    assert recurrence.achieved_recurrence_rate > 0
+
+    with pytest.raises(ValueError, match="regular first time/index grid"):
+        rqa_metrics(recurrence)
+
+
+def test_cross_rqa_requires_matching_regular_sampling_steps():
+    values_a = np.array([0.0, 1.0, 0.0, 1.0, 0.0])
+    values_b = np.array([1.0, 0.0, 1.0, 0.0, 1.0])
+    a = TrajectorySet(
+        time=np.arange(5, dtype=float),
+        values=values_a[None, :, None],
+        curve_ids=("a",),
+        dimension_names=("x",),
+        time_unit="s",
+        coordinate_system="arbitrary",
+    )
+    b = TrajectorySet(
+        time=np.arange(5, dtype=float) * 2.0,
+        values=values_b[None, :, None],
+        curve_ids=("b",),
+        dimension_names=("x",),
+        time_unit="s",
+        coordinate_system="arbitrary",
+    )
+
+    recurrence = cross_recurrence_matrix(
+        a,
+        b,
+        curve_a=0,
+        curve_b=0,
+        radius=1e-8,
+        dimensions_a=("x",),
+        dimensions_b=("x",),
+    )
+    assert recurrence.matrix.nnz > 0
+
+    with pytest.raises(ValueError, match="matching sampling steps"):
+        cross_rqa_metrics(recurrence)
+
