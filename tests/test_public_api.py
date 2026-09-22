@@ -12,6 +12,8 @@ def test_version_and_public_symbols():
         "poincare_crossings","fit_local_return_map","return_map_stability",
         "plot_embedding_delay_diagnostics","plot_embedding_dimension_diagnostics","plot_recurrence","plot_windowed_rqa",
         "plot_local_divergence","plot_surrogate_nonlinearity","plot_poincare_return_map",
+        "rqa_reporting_text","windowed_rqa_reporting_text","largest_lyapunov_reporting_text",
+        "surrogate_nonlinearity_reporting_text","return_map_stability_reporting_text",
         "TrajectorySet","fit_fpca","fit_mfpca","fit_multilevel_fpca","fit_compositional_fpca","FPCAScoreUncertaintyResult","FPCASpectrumUncertaintyResult",
         "register_to_landmarks","fit_elastic_fpca","simulate_planar_trajectories",
         "fit_scalar_on_function_regression","plot_fpca_component",
