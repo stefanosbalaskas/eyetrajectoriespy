@@ -4,7 +4,7 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.20.0.dev0`
+- Package line: `0.21.0.dev0`
 - Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, heteroscedastic Gaussian FPCR fixed-target wild-bootstrap inference, stabilized-volatility wild-bootstrap truncation selection, familywise simultaneous fixed-target wild-bootstrap calibration, fixed-family wild-bootstrap hypothesis testing with single-step maxT adjustment and a global family test, finite-bootstrap Monte Carlo precision diagnostics for retained resampling tail probabilities, split-conformal FPCA anomaly review, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, and functional anomaly/influence diagnostics.
 - Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
 
@@ -1229,3 +1229,70 @@ No tests, coverage thresholds, workflows, branch protections, or scientific vali
 6. Version 0.20 does not implement sequential/optional-stopping Monte Carlo testing; increasing B after inspecting results must be reported transparently.
 
 The 0.20 Monte Carlo precision implementation, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact scientific main commit above.
+
+
+## 0.21 mathematical-contract and visual-site qualification — 2026-09-22
+
+Version 0.21 makes the repository/site mathematical specification and visual documentation a tested package surface without changing the numerical estimators introduced through 0.20.
+
+Exact CI-certified PR head:
+
+\`36d046fe21542260451e9dc8308742a12fff54dc\`
+
+PR #24, **“Add mathematical contracts and reproducible visual gallery,”** completed every unchanged pull-request qualification workflow successfully on that exact SHA:
+
+- tests workflow #93: **success**, including package construction and all **9/9** Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- representative macOS / Python 3.13 log: **172 passed, 5 skipped**, **92.52% coverage** against the unchanged 90% gate, and Ruff **All checks passed**;
+- examples workflow #93: **success**, including the executable mathematical-contract example;
+- docs workflow #93: **success** with deterministic gallery generation, documentation-contract validation, and strict MkDocs build;
+- docs-contract audit reported **78 navigation targets**, **180 documented API symbols**, **5 generated gallery SVG assets**, and **7 validated mathematical deep links**;
+- optional-fda workflow #89: **success**;
+- optional-sparse-fda workflow #77: **success**, including FDApy Python 3.11 and 3.12.
+
+The 0.21 documentation contract includes:
+
+- repository-level \`MATHEMATICAL_CONTRACTS.md\` with GitHub-rendered LaTeX;
+- an expanded site mathematical reference matching the implemented quadrature weighting, FPCA/MFPCA, reconstruction, functional L2 distance, multilevel decomposition, compositional ALR, landmark registration, simultaneous functional-mean inference, Gaussian FPCR, heteroscedastic wild bootstrap, max-|t| calibration, fixed-family testing, Monte Carlo precision, and split-conformal p-value calculations;
+- a deterministic SVG gallery generated from the real public plotting APIs using seeded synthetic data, deterministic SVG hashing, and timestamp-free metadata;
+- a MathJax instant-navigation hook that re-typesets equations after client-side navigation;
+- stable explicit mathematical deep-link anchors checked by CI;
+- homepage/tutorial/API/object/quickstart navigation linking methods, equations, examples, plots, and public APIs;
+- documentation dependency bounds on the compatible Material-for-MkDocs 9.x / MkDocs 1.x line for this tranche.
+
+No tests, coverage thresholds, scientific contracts, optional-backend checks, branch protections, or quality gates were weakened, disabled, deleted, or bypassed.
+
+PR #24 was squash-merged as:
+
+\`76da25c41d28f1c0c39c482df73f2ffb8fe54a0a\`
+
+The exact PR head and squash-merged main commit both point to Git tree:
+
+\`ffe3914017882e1bb1a9e91aaf6ff8ce5a2d65ac\`
+
+so the merged package metadata, mathematical contracts, examples, workflows, gallery generator, site UX, and documentation checks are byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.21 exact-main qualification and deployment — 2026-09-22
+
+The exact merged-main commit
+
+\`76da25c41d28f1c0c39c482df73f2ffb8fe54a0a\`
+
+completed a fresh push-triggered qualification generation successfully:
+
+- tests workflow #94: **success**, including package construction and all **9/9** Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #94: **success**;
+- docs workflow #94: **success**, including gallery regeneration, documentation-contract validation, strict MkDocs build, and **successful GitHub Pages deployment**;
+- optional-fda workflow #90: **success**;
+- optional-sparse-fda workflow #78: **success**, including FDApy Python 3.11 and 3.12.
+
+Therefore 0.21 is both **PR-head CI-certified** and **exact-main requalified**, and the mathematical reference / reproducible visual gallery are deployed on the merged main lineage.
+
+## 0.21 remaining re-checks
+
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13.
+2. The Material-for-MkDocs 9.x / MkDocs 1.x documentation stack is intentionally pinned for this tranche; any future site-framework migration should be qualified independently and must not alter scientific/API contracts.
+3. The mathematical reference documents the equations implemented by the package. It is not a claim that every underlying method is novel to eyetrajectoriespy; methodological attribution remains in the references/method guides.
+4. Generated gallery figures use deterministic synthetic data for documentation and should not be interpreted as empirical study results.
+5. A future documentation tranche may expand the gallery to additional optional-backend and uncertainty plots while preserving CI-small generation time.
+
+The 0.21 mathematical contracts, reproducible gallery generator, documentation-contract validator, executable equations example, package construction, all 9 core cross-platform lanes, coverage/Ruff gates, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.21 main lineage.
