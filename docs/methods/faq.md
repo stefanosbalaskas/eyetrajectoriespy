@@ -336,3 +336,26 @@ r is the paper's run parameter. The selected h must begin r+1 consecutive stable
 ## What happens if nothing stabilizes?
 
 The default is an error. Optional warn/ignore modes preserve an unselected target for diagnostics. The package never silently substitutes the largest h.
+
+
+## When should I use simultaneous fixed-target wild-bootstrap calibration?
+
+Use it when the scientific claim concerns a predeclared **family** of fixed target projections and you want one familywise calibration rather than separate marginal statements.
+
+If each target is an unrelated descriptive analysis and no familywise claim is intended, the base target-wise intervals may be the appropriate object.
+
+## Does simultaneous calibration rerun FPCA or the wild bootstrap?
+
+No. The 0.18 helper reuses the exact studentized-root matrix stored in an existing `FPCAWildBootstrapProjectionResult`.
+
+It performs no new random-number generation and does not refit the FPCA basis, score regressions, or residual model.
+
+## Can I add or remove targets after seeing the marginal intervals?
+
+You can define a different scientific family, but that is a different calibration problem. Construct a new base result containing the intended target family and calibrate that complete family.
+
+For confirmatory inference, do not choose the family after inspecting which target-wise intervals are favorable and then report the result as if the family had been predeclared.
+
+## Does familywise calibration solve repeated-participant dependence?
+
+No. It controls multiplicity across the fixed targets under the base wild-bootstrap sampling contract. It does not change the requirement that curve rows represent independent sampling units.
