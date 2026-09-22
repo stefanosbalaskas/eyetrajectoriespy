@@ -390,3 +390,23 @@ That makes the method computationally transparent and consistent with the 0.18 p
 Yes. Supply one finite null value per target. A scalar null is broadcast to the entire family.
 
 Null values are in centered scalar-response projection units, not in gaze-coordinate units.
+
+## What does the 0.20 Monte Carlo diagnostic add?
+
+It quantifies how much finite-bootstrap simulation noise remains in the exceedance counts used by the 0.19 family test. It reports raw r/B tail fractions, plug-in binomial MCSEs, exact Clopper-Pearson intervals, and conservative stability flags relative to alpha.
+
+## Does it change my p-values?
+
+No. The configured 0.19 p-values remain unchanged. In particular, a plus-one p-value stays (r+1)/(B+1). The raw r/B quantity is reported only as the binomial quantity used for the precision diagnostic.
+
+## Is the Clopper-Pearson interval a confidence interval for the scientific effect?
+
+No. It is an interval for the bootstrap exceedance probability conditional on the completed fitted analysis and finite Monte Carlo run. It does not quantify participant-sampling, model, FPCA-basis, preprocessing, or truncation-selection uncertainty.
+
+## Why can the MCSE be zero when the exact interval is not?
+
+The plug-in binomial MCSE uses q_hat=r/B. When r is 0 or B, that plug-in expression is zero. An exact binomial interval still reflects finite-sample uncertainty at those boundaries, so the interval is the preferred boundary diagnostic.
+
+## Should I keep adding bootstrap replicates until the result becomes significant?
+
+No. For confirmatory work, choose B in advance or define a transparent follow-up precision rule before inspecting the result. Version 0.20 is not an always-valid sequential Monte Carlo procedure and does not authorize significance-driven optional stopping.
