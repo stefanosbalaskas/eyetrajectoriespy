@@ -430,3 +430,14 @@ No. Version 0.23 fits an empirical local affine map between observed section cro
 ## Can eyetrajectoriespy detect a bifurcation directly from gaze?
 
 Not as a classical bifurcation calculation. Classical continuation requires a specified dynamical model `dx/dt=f(x, theta)`. For observed behavior, version 0.23 offers recurrence, windowed recurrence, divergence, surrogate, and empirical return-map diagnostics without pretending the raw gaze coordinates define that model.
+## Do more sliding RQA windows increase my sample size?
+
+No. Windows are time points of a derived functional trajectory, not new participants or independent trials. Overlap makes the reuse of source samples explicit, and serial dependence can remain even without overlap. Use the original curve/participant design to define the inferential unit.
+
+## Can I analyze RR(t) after forcing every window to the same target recurrence rate?
+
+Not as an independently varying functional outcome. Target-rate mode controls recurrence density by construction. Version 0.24 rejects `recurrence_rate` in `windowed_rqa_trajectory_set()` under that policy. You can analyze other declared RQA measures while retaining the solved radius for every window.
+
+## Does RQA-to-FPCA provide a new confidence theorem for overlapping windows?
+
+No. It is a provenance-preserving representation bridge. It lets the existing FDA core describe between-curve variation in time-varying recurrence organization; inference still requires a design-appropriate sampling unit and assumptions.
