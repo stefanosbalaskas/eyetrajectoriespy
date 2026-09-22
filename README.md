@@ -116,7 +116,6 @@ print(summarise_fpca(fit))
 | Continuous gaze location | `[x(t), y(t)]` | `fit_mfpca()` |
 | Native irregular gaze | curve-specific time grids | `from_irregular_long_dataframe_native()` |
 | Genuinely sparse univariate gaze | covariance UFPCA + PACE scores | `fit_sparse_fpca_fdapy()` |
-| Genuinely sparse univariate gaze | native irregular grid + PACE scores | `fit_sparse_fpca_fdapy()` |
 | One derived continuous outcome | `X(t)` | `fit_fpca()` |
 | Repeated participant trials | `G_ij(t)` | `fit_multilevel_fpca()` |
 | AOI probabilities | simplex-valued `P(t)` | `fit_compositional_fpca()` |
@@ -144,7 +143,7 @@ print(summarise_fpca(fit))
 
 ## Documentation
 
-The repository-level [mathematical contracts](MATHEMATICAL_CONTRACTS.md) render directly on GitHub. The site expands those equations with assumptions, API mappings, worked examples, and a reproducible visual gallery.
+The repository-level [mathematical contracts](MATHEMATICAL_CONTRACTS.md) render directly on GitHub. The site expands those equations with assumptions, API mappings, worked examples, and a [Visual gallery](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/visual-gallery/).
 
 The methods site is configured for GitHub Pages:
 
