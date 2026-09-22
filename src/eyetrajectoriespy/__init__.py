@@ -56,6 +56,15 @@ from .nonlinear_dynamics import (
     local_divergence_curve,
     surrogate_nonlinearity_test,
 )
+from .nonlinear_plotting import (
+    plot_embedding_delay_diagnostics,
+    plot_embedding_dimension_diagnostics,
+    plot_local_divergence,
+    plot_poincare_return_map,
+    plot_recurrence,
+    plot_surrogate_nonlinearity,
+    plot_windowed_rqa,
+)
 from .nonlinear_types import (
     DelayEmbeddingResult,
     EmbeddingDelayDiagnosticResult,
@@ -278,6 +287,13 @@ from .validation import (
 __version__ = "0.23.0.dev0"
 
 __all__ = [
+    "plot_embedding_delay_diagnostics",
+    "plot_embedding_dimension_diagnostics",
+    "plot_recurrence",
+    "plot_windowed_rqa",
+    "plot_local_divergence",
+    "plot_surrogate_nonlinearity",
+    "plot_poincare_return_map",
     "DelayEmbeddingResult",
     "EmbeddingDelayDiagnosticResult",
     "EmbeddingDimensionDiagnosticResult",
