@@ -50,8 +50,25 @@ def main() -> None:
         raise RuntimeError(
             f"mathematical reference is missing API contracts: {missing_math_api}"
         )
-    if math_page.count("$$") < 20 or root_math.count("$$") < 10:
+    if math_page.count("$") < 20 or root_math.count("$") < 10:
         raise RuntimeError("mathematical contract pages lost expected LaTeX blocks")
+
+    math_fragments: set[str] = set()
+    for markdown_path in DOCS.rglob("*.md"):
+        source = markdown_path.read_text(encoding="utf-8")
+        math_fragments.update(
+            re.findall(r"mathematical-reference\.md#([A-Za-z0-9_-]+)", source)
+        )
+    missing_fragments = sorted(
+        fragment
+        for fragment in math_fragments
+        if f"{{ #{fragment} }}" not in math_page
+    )
+    if missing_fragments:
+        raise RuntimeError(
+            "mathematical-reference links use undefined explicit anchors: "
+            f"{missing_fragments}"
+        )
 
     mathjax = (DOCS / "javascripts" / "mathjax.js").read_text(encoding="utf-8")
     if "document$.subscribe" not in mathjax or "typesetPromise" not in mathjax:
@@ -85,7 +102,8 @@ def main() -> None:
         "docs contracts OK: "
         f"{len(nav)} nav targets, "
         f"{len(symbols)} documented API symbols, "
-        f"{len(asset_refs)} gallery assets"
+        f"{len(asset_refs)} gallery assets, "
+        f"{len(math_fragments)} mathematical deep links"
     )
 
 
