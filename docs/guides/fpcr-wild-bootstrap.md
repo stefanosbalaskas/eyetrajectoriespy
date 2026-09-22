@@ -32,8 +32,11 @@ The 2026 wild-bootstrap construction distinguishes three truncation levels:
 
 The 0.16 API follows the practical contract
 
-    g = k
-    h >= g
+$
+g=k,
+\qquad
+h\ge g.
+$
 
 through:
 
@@ -46,11 +49,17 @@ The equality g=k is not hidden or estimated by the package.
 
 First fit the k-component Gaussian score regression and obtain residuals.
 
-For each bootstrap replicate:
+For each bootstrap replicate,
 
-    Y_star = fitted_k + residual_k * W
+$
+Y_i^*
+=
+\widehat Y_{i,k}
++
+\widehat\varepsilon_{i,k}W_i,
+$
 
-where W is a mean-zero, unit-variance multiplier.
+where \(W_i\) is a mean-zero, unit-variance multiplier.
 
 The package supports:
 
@@ -67,10 +76,19 @@ In score space, the package forms the empirical covariance of score × residual 
 
 The same construction is repeated using each pseudo-fit residual vector.
 
-The bootstrap root is therefore:
+The bootstrap root is therefore
 
-    (bootstrap h-projection - g-pseudo-truth projection)
-    / bootstrap heteroscedastic SE
+$
+T_0^*
+=
+\frac{
+\widehat\theta_{0,h}^*
+-
+\widehat\theta_{0,g}
+}{
+\widehat{\mathrm{SE}}_0^*
+}.
+$
 
 The symmetrized target-wise interval uses the requested quantile of the absolute bootstrap roots multiplied by the full-sample heteroscedastic SE.
 
@@ -136,6 +154,8 @@ eyetrajectoriespy 0.16 implements a narrower score-space analogue for its common
 ## Reporting example
 
 > Heteroscedastic uncertainty in centered Gaussian FPCR target projections was evaluated using 1,000 fixed-regressor multiplier wild-bootstrap replicates with standard-normal multipliers. Residual estimation and the bootstrap pseudo-truth used k=g=2 FPCs, while inference used h=3 FPCs. Each bootstrap projection root was studentized with a heteroscedastic score-covariance scale recomputed from the pseudo-fit residuals. Ninety-five-percent symmetrized intervals were reported separately for each fixed target trajectory. Curve rows were treated as independent sampling units; the analysis did not claim clustered wild-bootstrap validity, future-outcome prediction coverage, or simultaneous coverage across targets.
+
+See the [mathematical reference](../methods/mathematical-reference.md#heteroscedastic-gaussian-fpcr-wild-bootstrap) for the exact score-covariance studentization and target standard-error equations.
 
 ## API links
 
