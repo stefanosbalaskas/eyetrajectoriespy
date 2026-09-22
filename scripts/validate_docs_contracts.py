@@ -1,0 +1,93 @@
+"""Validate documentation navigation, math, gallery, and API-link contracts."""
+
+from __future__ import annotations
+
+import re
+from pathlib import Path
+
+import yaml
+
+
+ROOT = Path(__file__).resolve().parents[1]
+DOCS = ROOT / "docs"
+
+
+def _nav_paths(node):
+    if isinstance(node, str):
+        yield node
+    elif isinstance(node, list):
+        for item in node:
+            yield from _nav_paths(item)
+    elif isinstance(node, dict):
+        for value in node.values():
+            yield from _nav_paths(value)
+
+
+def main() -> None:
+    config = yaml.safe_load((ROOT / "mkdocs.yml").read_text(encoding="utf-8"))
+    nav = list(_nav_paths(config.get("nav", [])))
+    missing_nav = sorted(path for path in nav if not (DOCS / path).exists())
+    if missing_nav:
+        raise RuntimeError(f"missing MkDocs nav targets: {missing_nav}")
+
+    math_page = (DOCS / "methods" / "mathematical-reference.md").read_text(
+        encoding="utf-8"
+    )
+    root_math = (ROOT / "MATHEMATICAL_CONTRACTS.md").read_text(encoding="utf-8")
+    required_math = {
+        "functional_trapezoid_weights()",
+        "fit_mfpca()",
+        "fit_multilevel_fpca()",
+        "fit_compositional_fpca()",
+        "multiplier_functional_mean_band()",
+        "wild_bootstrap_fpca_projection()",
+        "fpca_wild_bootstrap_projection_family_test()",
+        "fpca_wild_bootstrap_family_test_monte_carlo_diagnostics()",
+        "split_conformal_fpca_anomaly()",
+    }
+    missing_math_api = sorted(name for name in required_math if name not in math_page)
+    if missing_math_api:
+        raise RuntimeError(
+            f"mathematical reference is missing API contracts: {missing_math_api}"
+        )
+    if math_page.count("$$") < 20 or root_math.count("$$") < 10:
+        raise RuntimeError("mathematical contract pages lost expected LaTeX blocks")
+
+    mathjax = (DOCS / "javascripts" / "mathjax.js").read_text(encoding="utf-8")
+    if "document$.subscribe" not in mathjax or "typesetPromise" not in mathjax:
+        raise RuntimeError("MathJax instant-navigation hook is incomplete")
+
+    gallery = (DOCS / "methods" / "visual-gallery.md").read_text(encoding="utf-8")
+    asset_refs = sorted(set(re.findall(r"\.\./assets/gallery/([^)\s]+\.svg)", gallery)))
+    if len(asset_refs) < 5:
+        raise RuntimeError("visual gallery must reference at least five SVG figures")
+    missing_assets = sorted(
+        name for name in asset_refs if not (DOCS / "assets" / "gallery" / name).exists()
+    )
+    if missing_assets:
+        raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
+
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    for required in ("MATHEMATICAL_CONTRACTS.md", "Visual gallery", "0.21.0.dev0"):
+        if required not in readme:
+            raise RuntimeError(f"README integration missing {required!r}")
+
+    public_api = (ROOT / "src" / "eyetrajectoriespy" / "__init__.py").read_text(
+        encoding="utf-8"
+    )
+    documented = (DOCS / "reference" / "api.md").read_text(encoding="utf-8")
+    symbols = set(re.findall(r"::: eyetrajectoriespy\.([A-Za-z0-9_]+)", documented))
+    unresolved = sorted(name for name in symbols if f'"{name}"' not in public_api)
+    if unresolved:
+        raise RuntimeError(f"documented API symbols are not exported: {unresolved}")
+
+    print(
+        "docs contracts OK: "
+        f"{len(nav)} nav targets, "
+        f"{len(symbols)} documented API symbols, "
+        f"{len(asset_refs)} gallery assets"
+    )
+
+
+if __name__ == "__main__":
+    main()
