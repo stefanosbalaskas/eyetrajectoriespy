@@ -56,6 +56,13 @@ from .nonlinear_dynamics import (
     local_divergence_curve,
     surrogate_nonlinearity_test,
 )
+from .nonlinear_reporting import (
+    largest_lyapunov_reporting_text,
+    return_map_stability_reporting_text,
+    rqa_reporting_text,
+    surrogate_nonlinearity_reporting_text,
+    windowed_rqa_reporting_text,
+)
 from .nonlinear_plotting import (
     plot_embedding_delay_diagnostics,
     plot_embedding_dimension_diagnostics,
@@ -287,6 +294,11 @@ from .validation import (
 __version__ = "0.23.0.dev0"
 
 __all__ = [
+    "rqa_reporting_text",
+    "windowed_rqa_reporting_text",
+    "largest_lyapunov_reporting_text",
+    "surrogate_nonlinearity_reporting_text",
+    "return_map_stability_reporting_text",
     "plot_embedding_delay_diagnostics",
     "plot_embedding_dimension_diagnostics",
     "plot_recurrence",
