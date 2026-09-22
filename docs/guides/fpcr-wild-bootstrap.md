@@ -155,7 +155,7 @@ eyetrajectoriespy 0.16 implements a narrower score-space analogue for its common
 
 > Heteroscedastic uncertainty in centered Gaussian FPCR target projections was evaluated using 1,000 fixed-regressor multiplier wild-bootstrap replicates with standard-normal multipliers. Residual estimation and the bootstrap pseudo-truth used k=g=2 FPCs, while inference used h=3 FPCs. Each bootstrap projection root was studentized with a heteroscedastic score-covariance scale recomputed from the pseudo-fit residuals. Ninety-five-percent symmetrized intervals were reported separately for each fixed target trajectory. Curve rows were treated as independent sampling units; the analysis did not claim clustered wild-bootstrap validity, future-outcome prediction coverage, or simultaneous coverage across targets.
 
-See the [mathematical reference](../methods/mathematical-reference.md#heteroscedastic-gaussian-fpcr-wild-bootstrap) for the exact score-covariance studentization and target standard-error equations.
+See the [mathematical reference](../methods/mathematical-reference.md#wild-bootstrap) for the exact score-covariance studentization and target standard-error equations.
 
 ## API links
 
