@@ -96,6 +96,21 @@ The default `pvalue_correction="plus_one"` uses `(r+1)/(B+1)`.
 
 The explicit `pvalue_correction="none"` option reports the raw empirical exceedance fraction `r/B`. That option can produce zero with finite B and should be described as such.
 
+## Monte Carlo precision of the finite bootstrap run
+
+Version 0.20 can audit the finite-replicate precision of these target-wise, maxT-adjusted, and global bootstrap probabilities without changing the 0.19 test result.
+
+Use:
+
+    diagnostics = fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(
+        tests,
+        confidence_level=0.95,
+    )
+
+The diagnostic reports exceedance counts, raw r/B fractions, plug-in binomial MCSEs, Clopper-Pearson exact intervals, and conservative decision-stability flags. The configured plus-one/raw p-values and rejection indicators remain unchanged.
+
+See **Wild-bootstrap Monte Carlo precision** for the full contract, interpretation, optional-stopping boundary, reporting guidance, and worked example.
+
 ## What remains outside the contract
 
 The 0.19 tests do not cover:
