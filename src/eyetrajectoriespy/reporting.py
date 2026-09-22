@@ -19,6 +19,7 @@ from .types import (
     FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
     FPCAWildBootstrapProjectionResult,
+    FPCAWildBootstrapTruncationSelectionResult,
     FPCAResult,
     FPCAScoreUncertaintyResult,
     FPCASpectrumUncertaintyResult,
@@ -444,6 +445,46 @@ def functional_mean_band_reporting_text(
         "claim continuous-domain coverage between sampled grid points."
     )
 
+
+
+def fpca_wild_bootstrap_truncation_reporting_text(
+    result: FPCAWildBootstrapTruncationSelectionResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate reporting text for stabilized-volatility truncation selection."""
+
+    if not isinstance(result, FPCAWildBootstrapTruncationSelectionResult):
+        raise TypeError(
+            "result must be an FPCAWildBootstrapTruncationSelectionResult"
+        )
+    selected = result.selected_components
+    n_selected = int(np.sum(np.isfinite(selected)))
+    if n_selected:
+        selected_values = selected[np.isfinite(selected)].astype(int)
+        selection_summary = (
+            f"Selected h ranged from {selected_values.min()} to "
+            f"{selected_values.max()} across {n_selected} target(s)."
+        )
+    else:
+        selection_summary = "No target received a qualifying h."
+
+    return (
+        "Wild-bootstrap inference truncation was evaluated by a shared-multiplier "
+        "stabilized-volatility scan over consecutive h values "
+        f"{result.scan.candidate_components}. Residual estimation and the "
+        f"bootstrap pseudo-truth used k=g={result.scan.residual_components}. "
+        f"A transition was width-stable when its absolute width change was <= "
+        f"{result.width_threshold:.{digits}f} and center-stable when its absolute "
+        f"center change was <= {result.center_threshold:.{digits}f}; both "
+        f"conditions were required. The paper run parameter was r="
+        f"{result.stability_run}, requiring {result.stability_run + 1} "
+        "consecutive stable transitions, and the earliest qualifying h was "
+        f"selected separately for each target. {selection_summary} Thresholds "
+        "were analyst supplied in scalar-outcome units; the package imposed no "
+        "0.01 default and did not silently substitute the largest candidate when "
+        "stability was absent."
+    )
 
 
 def fpca_wild_bootstrap_projection_reporting_text(

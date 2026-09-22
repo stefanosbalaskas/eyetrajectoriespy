@@ -125,6 +125,32 @@ def _draw_wild_multipliers(
     raise ValueError("multiplier must be 'normal' or 'mammen'")
 
 
+def _validate_independent_curve_rows(
+    trajectories: TrajectorySet,
+    *,
+    independent_unit_column: str | None,
+) -> None:
+    """Validate the independent-curve sampling contract for wild bootstrap."""
+
+    if independent_unit_column is None:
+        return
+    if independent_unit_column not in trajectories.metadata.columns:
+        raise ValueError(
+            f"metadata does not contain independent-unit column "
+            f"{independent_unit_column!r}"
+        )
+    unit = trajectories.metadata[independent_unit_column]
+    if unit.isna().any():
+        raise ValueError("independent_unit_column contains missing values")
+    if unit.astype(str).duplicated().any():
+        raise ValueError(
+            "wild bootstrap currently requires independent curve rows; "
+            "repeated/clustered unit IDs are not supported. Aggregate to "
+            "independent-unit trajectories or use the participant-level "
+            "paired FPCR bootstrap instead."
+        )
+
+
 def wild_bootstrap_fpca_projection(
     trajectories: TrajectorySet,
     outcome: np.ndarray | pd.Series,
@@ -208,22 +234,10 @@ def wild_bootstrap_fpca_projection(
     if not 0 < confidence_level < 1:
         raise ValueError("confidence_level must lie in (0, 1)")
 
-    if independent_unit_column is not None:
-        if independent_unit_column not in trajectories.metadata.columns:
-            raise ValueError(
-                f"metadata does not contain independent-unit column "
-                f"{independent_unit_column!r}"
-            )
-        unit = trajectories.metadata[independent_unit_column]
-        if unit.isna().any():
-            raise ValueError("independent_unit_column contains missing values")
-        if unit.astype(str).duplicated().any():
-            raise ValueError(
-                "wild bootstrap currently requires independent curve rows; "
-                "repeated/clustered unit IDs are not supported. Aggregate to "
-                "independent-unit trajectories or use the participant-level "
-                "paired FPCR bootstrap instead."
-            )
+    _validate_independent_curve_rows(
+        trajectories,
+        independent_unit_column=independent_unit_column,
+    )
 
     reference_fpca = _fit_for_trajectories(
         trajectories,

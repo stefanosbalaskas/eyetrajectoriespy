@@ -791,6 +791,71 @@ class FPCAWildBootstrapProjectionResult:
 
 
 @dataclass(frozen=True)
+class FPCAWildBootstrapTruncationScanResult:
+    """Shared-multiplier wild-bootstrap interval scan over inference truncations."""
+
+    reference_fpca: FPCAResult
+    target_curve_ids: tuple[str, ...]
+    candidate_components: tuple[int, ...]
+    residual_components: int
+    pseudo_truth_projection: np.ndarray
+    reference_projections: np.ndarray
+    reference_se: np.ndarray
+    critical_values: np.ndarray
+    lower: np.ndarray
+    upper: np.ndarray
+    centers: np.ndarray
+    widths: np.ndarray
+    studentized_roots: np.ndarray
+    confidence_level: float
+    scaling: str
+    multiplier: str
+    target_source: str
+    independent_unit_column: str | None
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.studentized_roots.shape[1]
+
+    @property
+    def n_targets(self) -> int:
+        return self.studentized_roots.shape[2]
+
+    @property
+    def n_candidates(self) -> int:
+        return len(self.candidate_components)
+
+
+@dataclass(frozen=True)
+class FPCAWildBootstrapTruncationSelectionResult:
+    """Stabilized-volatility selection from a wild-bootstrap truncation scan."""
+
+    scan: FPCAWildBootstrapTruncationScanResult
+    width_changes: np.ndarray
+    center_changes: np.ndarray
+    stable_width: np.ndarray
+    stable_center: np.ndarray
+    stable_both: np.ndarray
+    selected_candidate_indices: np.ndarray
+    selected_components: np.ndarray
+    selected_centers: np.ndarray
+    selected_widths: np.ndarray
+    selected_lower: np.ndarray
+    selected_upper: np.ndarray
+    width_threshold: float
+    center_threshold: float
+    stability_run: int
+    on_failure: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_targets(self) -> int:
+        return self.scan.n_targets
+
+
+@dataclass(frozen=True)
 class FPCARegressionCVResult:
     """Outcome-tuned FPCA regression cross-validation diagnostics."""
 

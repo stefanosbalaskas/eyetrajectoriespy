@@ -100,3 +100,13 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 | infer a fixed-target centered projection under heterogeneous response errors | wild_bootstrap_fpca_projection() | fixed | multiplier wild bootstrap with bootstrap-level heteroscedastic studentization |
 | predict a future observed response under pooled exchangeable errors | fpca_regression_future_prediction_interval() | inherited paired-bootstrap means | centered empirical future residual draw |
 | handle repeated/clustered rows with a wild bootstrap | specialist clustered method | method-specific | not implemented by 0.16 |
+
+
+## Choosing the FPCR truncation for different goals
+
+| Question | Method | Selection target | Important boundary |
+|---|---|---|---|
+| how many FPCs best predict a scalar outcome? | cross_validate_fpca_regression() | held-out outcome loss | predictive criterion |
+| how many FPCs reconstruct trajectories? | cross_validate_fpca_reconstruction() | held-out functional reconstruction | not outcome inference |
+| which h should stabilize heteroscedastic WB inference for one target? | scan_wild_bootstrap_fpca_truncations() + select_fpca_wild_bootstrap_truncation() | adjacent interval center + width stability | target-specific heuristic conditional on k=g |
+| what h is universally optimal for bootstrap coverage? | not provided | coverage-optimal tuning | unresolved by the current 2026 method |

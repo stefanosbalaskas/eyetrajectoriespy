@@ -20,6 +20,7 @@ Use the **research question and data structure** to choose the representation.
 | Do I need one band across the sampled Gaussian FPCR slope grid? | studentized max calibration of paired-bootstrap slopes | choose global versus per-dimension scope explicitly; observed-grid claim only |
 | Do I need an interval for a future observed scalar response, not only its conditional mean? | paired-bootstrap target means + centered empirical residual draw | Gaussian FPCR only; common/exchangeable residual distribution assumed |
 | May Gaussian FPCR response variance be heteroscedastic and I need target projection inference? | fixed-regressor studentized wild bootstrap | independent curve rows; explicit k=g and h>=g truncations; not future-outcome prediction |
+| How should I choose h for fixed-regressor wild-bootstrap target inference? | stabilized-volatility scan of interval width + center | consecutive h grid, shared multiplier draws, explicit outcome-scale thresholds and r |
 | Do I need a whole-curve uncertainty statement for an individual FPC? | matched bootstrap simultaneous FPC band | choose component-wise vs familywise scope; inspect eigengaps/subspaces |
 | Do adjacent FPCs rotate or swap? | eigengap + principal-angle subspace stability | interpret the span when axes are weakly identified |
 | Is one curve/participant unusually influential? | FPCA review + leave-one-group-out influence | flag for review, never auto-exclude |

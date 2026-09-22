@@ -147,3 +147,32 @@ eyetrajectoriespy 0.16 implements a narrower score-space analogue for its common
 - <code>fpca_regression_future_prediction_interval()</code>
 
 See [References](../methods/references.md).
+
+
+## Selecting h instead of fixing it arbitrarily
+
+Version 0.17 adds the stabilized-volatility strategy proposed with the 2026 wild-bootstrap method.
+
+Conditional on a fixed residual truncation k and g=k, construct target-wise intervals over a consecutive candidate set H of h values.
+
+For each adjacent transition h to h+1, define width stability and center stability by whether the absolute changes remain below analyst-declared thresholds.
+
+A transition is stable only when both conditions hold.
+
+The paper then selects the earliest h starting a run of r+1 stable transitions.
+
+eyetrajectoriespy exposes this in two stages:
+
+    scan = scan_wild_bootstrap_fpca_truncations(...)
+    selected = select_fpca_wild_bootstrap_truncation(
+        scan,
+        width_threshold=...,
+        center_threshold=...,
+        stability_run=...,
+    )
+
+The scan deliberately reuses the same wild multiplier draws across all h candidates.
+
+The package does not impose 0.01 as a default threshold. That value was used in the paper's numerical study, while an absolute threshold depends on the units and scale of the scalar outcome.
+
+See [Stabilized-volatility FPCR truncation selection](fpcr-wild-bootstrap-selection.md).

@@ -323,3 +323,23 @@ Pre-specify:
 - that future-outcome noise, basis-estimation uncertainty, clustered resampling, and component-selection uncertainty are not included.
 
 Do not select k, h, or multiplier family after inspecting which configuration gives a preferred substantive conclusion.
+
+
+## Stabilized-volatility wild-bootstrap truncation selection
+
+Pre-specify:
+
+- how residual truncation k will be selected;
+- that g=k;
+- the consecutive candidate h grid H;
+- the wild-bootstrap multiplier family;
+- bootstrap replicate count and seed;
+- confidence level;
+- width threshold rho_w in outcome units;
+- center threshold rho_c in outcome units;
+- paper run parameter r;
+- whether h may vary by target;
+- behavior if no stable run is found;
+- whether selection is primary or sensitivity analysis.
+
+Do not tune rho_w, rho_c, r, or the candidate grid after inspecting which configuration yields preferred substantive conclusions.

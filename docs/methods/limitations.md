@@ -363,3 +363,30 @@ The package records the multiplier family and does not silently choose or averag
 The 0.16 method reproduces the fixed-regressor, k/g/h, multiplier, and bootstrap-level studentization structure inside eyetrajectoriespy's common-grid FPCR score geometry.
 
 It is not claimed to be numerically identical to the companion R package for every tuning configuration or statistic.
+
+
+## Stabilized-volatility selection has no universal threshold
+
+The 0.01 width/center thresholds illustrated in the 2026 simulation study are not unit-free.
+
+Transplanting them unchanged to outcomes on different scales can make the rule arbitrarily strict or permissive.
+
+Version 0.17 therefore has no package default for rho_w or rho_c.
+
+## Stabilization does not prove optimal coverage
+
+The stabilized-volatility method chooses a region where interval center and width stop changing materially.
+
+It does not provide a theorem that the selected h minimizes coverage error for a finite sample.
+
+## The candidate grid matters
+
+If the stable region lies beyond the largest candidate h, selection can fail.
+
+The package does not silently extend the grid or return the largest available candidate.
+
+## Target-specific h complicates cross-target comparisons
+
+Different targets can select different inference truncations.
+
+When target contrasts are compared directly, report this fact and consider whether a common pre-specified h is more appropriate for the scientific question.

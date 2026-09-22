@@ -66,6 +66,7 @@ from .plotting import (
     plot_fpca_regression_mean_prediction_uncertainty,
     plot_fpca_regression_future_prediction_interval,
     plot_fpca_wild_bootstrap_projection,
+    plot_fpca_wild_bootstrap_truncation_scan,
     plot_fpca_regression_slope_band,
     plot_fpca_regression_slope_uncertainty,
     plot_nested_fpca_regression_cv,
@@ -120,6 +121,7 @@ from .reporting import (
     fpca_regression_cv_reporting_text,
     fpca_regression_future_prediction_reporting_text,
     fpca_wild_bootstrap_projection_reporting_text,
+    fpca_wild_bootstrap_truncation_reporting_text,
     fpca_regression_slope_band_reporting_text,
     fpca_regression_uncertainty_reporting_text,
     fpca_nested_regression_cv_reporting_text,
@@ -179,6 +181,8 @@ from .types import (
     FPCARegressionSlopeBandResult,
     FPCARegressionUncertaintyResult,
     FPCAWildBootstrapProjectionResult,
+    FPCAWildBootstrapTruncationScanResult,
+    FPCAWildBootstrapTruncationSelectionResult,
     FPCAStabilityResult,
     FPCASubspaceComparisonResult,
     FPCASubspaceStabilityResult,
@@ -193,6 +197,12 @@ from .types import (
     SparseFPCAResult,
     TrajectorySet,
 )
+from .wild_selection import (
+    fpca_wild_bootstrap_truncation_scan_frame,
+    fpca_wild_bootstrap_truncation_selection_frame,
+    scan_wild_bootstrap_fpca_truncations,
+    select_fpca_wild_bootstrap_truncation,
+)
 from .wild_regression import (
     fpca_wild_bootstrap_projection_frame,
     wild_bootstrap_fpca_projection,
@@ -204,7 +214,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.16.0.dev0"
+__version__ = "0.17.0.dev0"
 
 __all__ = [
     "TrajectorySet",
@@ -358,9 +368,17 @@ __all__ = [
     "FPCARegressionSlopeBandResult",
     "FPCARegressionUncertaintyResult",
     "FPCAWildBootstrapProjectionResult",
+    "FPCAWildBootstrapTruncationScanResult",
+    "FPCAWildBootstrapTruncationSelectionResult",
     "FPCANestedRegressionCVResult",
     "bootstrap_fpca_regression_uncertainty",
     "wild_bootstrap_fpca_projection",
+    "scan_wild_bootstrap_fpca_truncations",
+    "select_fpca_wild_bootstrap_truncation",
+    "fpca_wild_bootstrap_truncation_scan_frame",
+    "fpca_wild_bootstrap_truncation_selection_frame",
+    "plot_fpca_wild_bootstrap_truncation_scan",
+    "fpca_wild_bootstrap_truncation_reporting_text",
     "fpca_wild_bootstrap_projection_frame",
     "plot_fpca_wild_bootstrap_projection",
     "fpca_wild_bootstrap_projection_reporting_text",

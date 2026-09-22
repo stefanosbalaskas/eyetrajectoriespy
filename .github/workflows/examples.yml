@@ -46,3 +46,4 @@ jobs:
           python examples/fpcr_future_prediction_intervals.py
           python examples/conformal_fpca_anomaly.py
           python examples/fpcr_wild_bootstrap_projection.py
+          python examples/fpcr_wild_bootstrap_selection.py

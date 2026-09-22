@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.17.0.dev0 — 2026-09-22
+
+Seventeenth development tranche.
+
+- stabilized-volatility selection of Gaussian FPCR wild-bootstrap inference truncation h;
+- residual truncation k remains explicit and bootstrap pseudo-truth uses g=k;
+- consecutive h candidate grids with h>=g are required;
+- one fixed FPCA/MFPCA basis is fitted at the largest candidate h;
+- identical wild multiplier draws are reused across every candidate h within each bootstrap replicate, preventing independent Monte Carlo noise from masquerading as truncation volatility;
+- target-wise interval centers and widths are retained for every candidate;
+- analyst-supplied absolute width and center thresholds define stable transitions; the paper's 0.01 simulation setting is not silently imposed as a package default;
+- the paper run parameter r is explicit and requires r+1 consecutive stable transitions;
+- the earliest qualifying h is selected separately for each target;
+- absent stable runs fail by default, with explicit warn/ignore alternatives that retain unselected targets rather than silently choosing the largest h;
+- scan/selection result objects, long-form diagnostics, plotting/reporting helpers, synthetic truth/regression tests, executable example, and expanded methodological/site guidance.
+
+
 ## 0.16.0.dev0 — 2026-09-22
 
 Sixteenth development tranche.

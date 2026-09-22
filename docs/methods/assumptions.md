@@ -172,3 +172,18 @@ Wild multipliers are independent of the data and have mean zero and variance one
 Heteroscedastic studentization uses the empirical covariance of score × residual contributions and is recomputed inside every wild pseudo-sample.
 
 The target functional trajectory is fixed and interpreted through centered FPCA scores relative to the training functional mean.
+
+
+## Stabilized-volatility wild-bootstrap truncation selection
+
+The 0.17 selector is conditional on a fixed residual truncation k and g=k.
+
+Candidate h values must be consecutive and at least g.
+
+The interval scan uses identical multiplier draws across candidate h values so neighboring interval changes primarily reflect truncation rather than independent Monte Carlo draws.
+
+Width and center thresholds are absolute quantities in scalar-outcome units and must be scientifically or operationally justified for the study.
+
+The selected h may differ by target trajectory.
+
+The rule is a practical tuning heuristic and does not imply bootstrap-coverage optimality.

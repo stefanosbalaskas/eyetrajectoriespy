@@ -129,3 +129,8 @@ Use [Conformal FPCA anomaly review](../examples/conformal-fpca-anomaly.md) when 
 ### Heteroscedastic Gaussian FPCR wild bootstrap
 
 Use [Heteroscedastic FPCR wild bootstrap](../examples/fpcr-wild-bootstrap.md) when the functional regressors are treated as fixed but scalar response variance may be heterogeneous. The example uses one trajectory per participant, makes k=g and h explicit, recomputes the heteroscedastic studentization scale in each pseudo-fit, and distinguishes target projection inference from future-outcome prediction.
+
+
+### Stabilized-volatility FPCR wild-bootstrap selection
+
+Use [Stabilized-volatility wild-bootstrap selection](../examples/fpcr-wild-bootstrap-selection.md) when k=g is fixed but the target-inference truncation h needs a declared data-driven tuning rule. The example scans consecutive h values with shared multipliers, plots target-specific interval stability, applies explicit rho_w/rho_c/r criteria, and demonstrates the no-silent-fallback failure contract.

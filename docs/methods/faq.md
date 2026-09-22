@@ -311,3 +311,28 @@ No. They concern the centered FPCR projection for a fixed functional target. The
 ## Which multiplier should I use?
 
 The API supports standard normal and Mammen two-point multipliers. The multiplier should be declared before inspecting results; a sensitivity comparison can be reported when scientifically justified.
+
+
+## What is the stabilized-volatility method?
+
+It is a practical rule for choosing the wild-bootstrap inference truncation h by finding where adjacent interval widths and centers both stop changing materially.
+
+## Why must h candidates be consecutive?
+
+The published rule compares h directly with h+1. A non-consecutive grid changes the meaning of the stability criterion.
+
+## Why reuse the same bootstrap multipliers across h?
+
+If every h used independent bootstrap random numbers, changes in interval width or center would mix truncation sensitivity with avoidable Monte Carlo variability.
+
+## Why is there no default 0.01 threshold?
+
+The paper used 0.01 in a numerical study, but width and center are measured in scalar-outcome units. The same number can mean very different things for differently scaled outcomes.
+
+## What does r mean?
+
+r is the paper's run parameter. The selected h must begin r+1 consecutive stable transitions. Thus r=0 means one stable transition and r=1 means two.
+
+## What happens if nothing stabilizes?
+
+The default is an error. Optional warn/ignore modes preserve an unselected target for diagnostics. The package never silently substitutes the largest h.

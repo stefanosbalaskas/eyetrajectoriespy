@@ -111,3 +111,26 @@ Standard-normal multipliers are the default; the mathematically mean-zero/unit-v
 The API currently assumes independent curve rows. Declared duplicated independent-unit IDs cause an explicit failure because clustered wild-bootstrap validity is outside this tranche.
 
 See [Heteroscedastic FPCR wild bootstrap](fpcr-wild-bootstrap.md).
+
+
+## Stabilized-volatility selection of wild-bootstrap h
+
+The 2026 wild-bootstrap methodology separates the residual truncation k, pseudo-truth truncation g, and target-inference truncation h.
+
+A practical workflow is:
+
+1. choose k using prediction-oriented cross-validation;
+2. set g=k;
+3. scan a finite consecutive candidate set of h values beginning at or above g;
+4. inspect where target-specific wild-bootstrap interval widths and centers stabilize;
+5. select the earliest h beginning a sufficiently long stable run.
+
+<code>scan_wild_bootstrap_fpca_truncations()</code> fits one FPCA/MFPCA basis at the largest candidate and uses the same multiplier draw across all h values within every bootstrap replicate.
+
+This shared-randomness design prevents independent Monte Carlo draws from appearing as interval volatility.
+
+<code>select_fpca_wild_bootstrap_truncation()</code> implements the stabilized-volatility rule with explicit width threshold, center threshold, and paper run parameter r.
+
+No stability threshold is package-defaulted. The absolute thresholds are expressed in the scalar outcome's units.
+
+See [Stabilized-volatility FPCR truncation selection](fpcr-wild-bootstrap-selection.md).
