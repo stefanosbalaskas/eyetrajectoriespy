@@ -136,3 +136,55 @@ def test_windowed_rqa_rejects_internal_gaps_between_windows():
             radius=0.5,
             dimensions=("x",),
         )
+
+
+def test_cross_recurrence_rejects_coordinate_semantic_mismatch():
+    a = _scalar([0, 1, 0, 1, 0], curve_id="a")
+    b = TrajectorySet(
+        time=a.time,
+        values=a.values.copy(),
+        curve_ids=("b",),
+        dimension_names=("x",),
+        time_unit="samples",
+        coordinate_system="different",
+    )
+    with pytest.raises(ValueError, match="coordinate_system"):
+        cross_recurrence_matrix(
+            a,
+            b,
+            curve_a=0,
+            curve_b=0,
+            radius=0.1,
+            dimensions_a=("x",),
+            dimensions_b=("x",),
+        )
+
+
+def test_cross_recurrence_rejects_different_named_state_variables():
+    time = np.arange(5, dtype=float)
+    a = TrajectorySet(
+        time=time,
+        values=np.arange(5, dtype=float)[None, :, None],
+        curve_ids=("a",),
+        dimension_names=("x",),
+        time_unit="samples",
+        coordinate_system="normalized",
+    )
+    b = TrajectorySet(
+        time=time,
+        values=np.arange(5, dtype=float)[None, :, None],
+        curve_ids=("b",),
+        dimension_names=("pupil",),
+        time_unit="samples",
+        coordinate_system="normalized",
+    )
+    with pytest.raises(ValueError, match="same named state variables"):
+        cross_recurrence_matrix(
+            a,
+            b,
+            curve_a=0,
+            curve_b=0,
+            radius=0.1,
+            dimensions_a=("x",),
+            dimensions_b=("pupil",),
+        )
