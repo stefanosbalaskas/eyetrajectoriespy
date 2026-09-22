@@ -183,8 +183,20 @@ def test_monte_carlo_diagnostics_recover_hand_counts_and_exact_intervals():
     )
     assert diagnostics.global_interval_lower == pytest.approx(0.067585986488543)
     assert diagnostics.global_interval_upper == pytest.approx(0.932414013511457)
-    assert not diagnostics.global_decision_stable
-    assert not np.any(diagnostics.adjusted_decision_stable)
+    assert diagnostics.global_decision_stable
+    assert np.all(diagnostics.adjusted_decision_stable)
+
+    threshold_family = fpca_wild_bootstrap_projection_family_test(
+        manual,
+        significance_level=0.50,
+    )
+    threshold_diagnostics = (
+        fpca_wild_bootstrap_family_test_monte_carlo_diagnostics(
+            threshold_family
+        )
+    )
+    assert not threshold_diagnostics.global_decision_stable
+    assert not np.any(threshold_diagnostics.adjusted_decision_stable)
 
 
 def test_monte_carlo_diagnostics_preserve_reported_decisions_and_provenance():
