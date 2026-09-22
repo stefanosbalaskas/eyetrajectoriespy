@@ -16,6 +16,18 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [Mathematical reference](../methods/mathematical-reference.md)
 
+-   **Query equations from Python**
+
+    Inspect the same function → LaTeX contracts programmatically and export a tidy function-level table.
+
+    [Function → equation registry](../examples/function-equation-registry.md)
+
+-   **See the decision flow**
+
+    Follow rendered diagrams from representation choice through validation and inferential scope.
+
+    [Workflow atlas](../methods/workflow-atlas.md)
+
 </div>
 
 <div class="grid cards" markdown>
