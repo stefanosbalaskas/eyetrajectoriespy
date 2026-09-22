@@ -295,7 +295,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.24.0.dev0"
+__version__ = "0.25.0.dev0"
 
 __all__ = [
     "rqa_reporting_text",
