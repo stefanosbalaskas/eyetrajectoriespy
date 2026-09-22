@@ -440,3 +440,26 @@ Report at minimum:
 - the boundary that coverage concerns only the declared fixed centered projections, not future observed responses, unlisted targets, or clustered/repeated-participant outcomes.
 
 A concise description can state that the maximum absolute studentized root was formed across all declared targets within each bootstrap replicate and its requested empirical quantile was used as a common critical value.
+
+
+## Fixed-family FPCR wild-bootstrap hypothesis tests
+
+Report at minimum:
+
+- the number and scientific definition of fixed targets in the family;
+- every null projection value, including whether a common zero null was used;
+- the two-sided alternative and alpha;
+- k, g=k, h, scaling, multiplier family, and bootstrap replicate count;
+- the independent sampling unit;
+- that observed statistics used the stored heteroscedastic reference standard errors;
+- target-wise bootstrap tail probabilities;
+- single-step maxT-adjusted probabilities;
+- the complete-family global maximum statistic and bootstrap p-value;
+- whether the plus-one or raw empirical p-value rule was used;
+- the minimum attainable p-value implied by B when plus-one correction is used;
+- that the exact stored root matrix was reused without a second bootstrap;
+- that the bootstrap was not explicitly regenerated under the target null;
+- that strong FWER for arbitrary subset nulls is not claimed without additional conditions;
+- any adaptive family definition or truncation selection, if such exploration occurred.
+
+Do not report a zero Monte Carlo p-value when the default plus-one correction was used; its lower bound is 1/(B+1).

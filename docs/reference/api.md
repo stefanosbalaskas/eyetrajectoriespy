@@ -93,6 +93,13 @@
 ::: eyetrajectoriespy.plot_fpca_wild_bootstrap_simultaneous_interval
 ::: eyetrajectoriespy.fpca_wild_bootstrap_simultaneous_reporting_text
 
+## Fixed-family Gaussian FPCR wild-bootstrap hypothesis tests
+::: eyetrajectoriespy.FPCAWildBootstrapFamilyTestResult
+::: eyetrajectoriespy.fpca_wild_bootstrap_projection_family_test
+::: eyetrajectoriespy.fpca_wild_bootstrap_family_test_frame
+::: eyetrajectoriespy.plot_fpca_wild_bootstrap_family_test
+::: eyetrajectoriespy.fpca_wild_bootstrap_family_test_reporting_text
+
 ## Gaussian FPCR future-outcome prediction
 ::: eyetrajectoriespy.FPCARegressionPredictionIntervalResult
 ::: eyetrajectoriespy.fpca_regression_future_prediction_interval

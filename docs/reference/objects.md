@@ -186,6 +186,18 @@ The object is a pure post-calibration result. It reuses the exact studentized ro
 
 The simultaneous family is exactly every fixed target in the base result. A one-target family reduces exactly to the target-wise calibration. The familywise claim does not extend to future outcomes, unlisted targets, clustered/repeated-participant sampling, or component-selection uncertainty.
 
+## FPCAWildBootstrapFamilyTestResult
+
+Stores an existing `FPCAWildBootstrapProjectionResult`, supplied scalar or target-specific null values, observed studentized null discrepancies, target-wise bootstrap tail probabilities, single-step maxT-adjusted probabilities, replicate-wise maximum statistics, the complete-family global statistic/p-value, target/global rejection indicators at the declared alpha level, p-value correction, and provenance.
+
+The result is a pure post-processing object. It reuses the exact studentized roots from the base wild bootstrap and does not rerun FPCA, score regression, residual estimation, multiplier generation, or bootstrap sampling.
+
+With `pvalue_correction="plus_one"`, the minimum attainable probability is `1/(B+1)`; the explicit `"none"` option reports the raw empirical exceedance fraction and may return zero.
+
+The package records that the bootstrap distribution is not explicitly generated under the null. Single-step maxT adjustment is reported for the complete declared family, while strong FWER control for arbitrary subsets of nulls is not claimed without additional subset-pivotality conditions.
+
+The tests target fixed centered FPCR projections. They are not future-outcome tests, clustered/repeated-participant wild-bootstrap tests, or automatic corrections for adaptive family/truncation selection.
+
 ## FPCARegressionPredictionIntervalResult
 
 Stores an existing paired-bootstrap Gaussian FPCR uncertainty object together with the centered full-sample residual pool, independently sampled residual draws, future-outcome predictive draws, marginal percentile limits, predictive standard deviations, confidence level, seed, and provenance.

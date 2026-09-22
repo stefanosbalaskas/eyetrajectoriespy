@@ -142,3 +142,11 @@ Report:
 - `fpca_wild_bootstrap_simultaneous_reporting_text()`
 
 See also [Heteroscedastic FPCR wild bootstrap](fpcr-wild-bootstrap.md), [Stabilized-volatility FPCR selection](fpcr-wild-bootstrap-selection.md), and [References](../methods/references.md).
+
+## From simultaneous intervals to explicit tests
+
+Version 0.19 uses the same declared fixed-target family and the same stored studentized root matrix to report target-wise bootstrap probabilities, single-step maxT-adjusted probabilities, and a complete-family global maximum-statistic test.
+
+This is a separate evidence layer rather than a new bootstrap generator. It also makes the strong-FWER boundary explicit: the package does not assume subset pivotality or claim a closed/step-down procedure for arbitrary subsets of null hypotheses.
+
+See [Fixed-family FPCR wild-bootstrap hypothesis tests](fpcr-wild-bootstrap-family-tests.md).
