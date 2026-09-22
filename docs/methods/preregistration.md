@@ -382,3 +382,18 @@ For confirmatory fixed-target testing, pre-specify:
 - that strong FWER for arbitrary subset nulls is not claimed without additional subset-pivotality or closed-testing theory.
 
 Do not drop targets after seeing their unadjusted p-values and retain the original familywise interpretation.
+
+## Finite-bootstrap Monte Carlo precision diagnostics
+
+If Monte Carlo precision will be used to judge whether the planned bootstrap budget is adequate, pre-specify:
+
+- the initial number of bootstrap replicates B;
+- the diagnostic confidence level;
+- which probabilities will be audited: target-wise, maxT-adjusted, global, or all three;
+- the significance level used by the original family test;
+- the rule for calling a result Monte-Carlo-sensitive;
+- whether a larger fixed bootstrap run will be triggered by a sensitivity flag;
+- the maximum follow-up bootstrap budget, if a second fixed run is planned;
+- how both the original and follow-up runs will be reported.
+
+Do not repeatedly increase B until a preferred significance outcome appears and then describe the final run as though B had been fixed in advance. Version 0.20 does not implement a sequential always-valid stopping rule.
