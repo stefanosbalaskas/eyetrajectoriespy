@@ -119,6 +119,8 @@ def test_iaaft_surrogate_test_is_seeded_plus_one_and_retains_all_surrogates():
 
     assert result.surrogate_statistics.shape == (3,)
     assert result.convergence_iterations.shape == (3,)
+    assert result.spectral_errors.shape == (3,)
+    assert np.isfinite(result.spectral_errors).all()
     assert result.p_value in {0.25, 0.5, 0.75, 1.0}
     assert result.provenance["p_value_correction"] == "plus_one"
 
