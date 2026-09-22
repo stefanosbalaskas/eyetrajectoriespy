@@ -31,3 +31,27 @@ Inspect mean ± one or two score-SD component trajectories. For planar gaze, int
 ## Reconstruction
 
 `reconstruct_fpca()` supports sensitivity checks: compare low-dimensional reconstructions with the original paths to understand what the retained representation preserves.
+
+
+## Mathematical contract
+
+The implementation performs PCA after quadrature weighting the centered functional observations. With optional dimension scaling \(s_d\), the weighted representation is
+
+$$
+Z_{i,m,d}
+=
+\frac{G_{id}(t_m)-\widehat\mu_d(t_m)}{s_d}\sqrt{w_m}.
+$$
+
+Reconstruction with \(K\) retained FPCs is
+
+$$
+\widehat{\mathbf G}^{(K)}_i(t)
+=
+\widehat{\boldsymbol\mu}(t)
++
+\sum_{k=1}^{K}
+\widehat\xi_{ik}\widehat{\boldsymbol\phi}_k(t).
+$$
+
+See the [mathematical reference](../methods/mathematical-reference.md#quadrature-weighted-fpca--mfpca) for the exact trapezoidal weights, scaling, projection, and loading back-transformation used by the package.
