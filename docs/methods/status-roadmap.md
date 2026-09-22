@@ -59,7 +59,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 
 ## Documentation and mathematical contracts
 
-Versions 0.21–0.22 treat documentation and mathematical metadata as tested package surfaces:
+Versions 0.21–0.23 treat documentation and mathematical metadata as tested package surfaces:
 
 - the repository-level `MATHEMATICAL_CONTRACTS.md` renders the core equations directly on GitHub;
 - the site mathematical reference maps those equations to the exact public APIs and scope boundaries;
