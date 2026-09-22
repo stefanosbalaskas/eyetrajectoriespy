@@ -3,6 +3,7 @@ import numpy as np
 from eyetrajectoriespy import (
     LargestLyapunovResult,
     LocalDivergenceResult,
+    LocalReturnMapResult,
     RecurrenceResult,
     RQAResult,
     ReturnMapStabilityResult,
@@ -105,11 +106,30 @@ def test_reporting_helpers_preserve_scope_language():
     assert "plus-one Monte Carlo" in surrogate_text
     assert "not as proof" in surrogate_text
 
+    fit = LocalReturnMapResult(
+        reference_state=np.array([0.0]),
+        selected_transition_indices=np.array([0, 1, 2]),
+        jacobian=np.array([[0.8]]),
+        intercept=np.array([0.0]),
+        residuals=np.zeros((3, 1)),
+        r_squared=np.array([0.9]),
+        design_condition_number=2.0,
+        neighborhood_policy="n_neighbors",
+        neighborhood_value=3,
+        provenance={
+            "crossing_provenance": {
+                "section_dimension": "x",
+                "section_value": 0.0,
+                "direction": "positive",
+            }
+        },
+    )
     stability = ReturnMapStabilityResult(
         eigenvalues=np.array([0.8 + 0j]),
         spectral_radius=0.8,
         classification="contracting",
         tolerance=1e-6,
     )
-    return_text = return_map_stability_reporting_text(stability)
+    return_text = return_map_stability_reporting_text(fit, stability)
+    assert "condition number" in return_text
     assert "not interpreted as classical Floquet multipliers" in return_text
