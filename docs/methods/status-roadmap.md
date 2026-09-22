@@ -90,4 +90,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.20.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.21.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
