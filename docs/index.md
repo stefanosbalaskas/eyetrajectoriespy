@@ -188,7 +188,16 @@ The package is designed around the principle that **the path to an FPC score is 
 !!! important "Not a replacement for event analysis"
     Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
 
-## New in 0.19 development
+## New in 0.20 development
+
+- finite-bootstrap Monte Carlo precision diagnostics for fixed-family wild-bootstrap tests;
+- target-wise, maxT-adjusted, and global exceedance counts recovered from the exact retained root matrix;
+- raw r/B tail estimates, plug-in binomial MCSEs, and Clopper-Pearson exact intervals;
+- conservative decision-stability flags relative to the already reported alpha-level decision;
+- no new multiplier draws, no refits, and no changes to the configured 0.19 p-values or rejection indicators;
+- explicit boundary between simulation precision and scientific sampling uncertainty, plus no sequential-stopping or stronger-FWER claim.
+
+## Added in 0.19 development
 
 - explicit two-sided tests for fixed Gaussian FPCR centered projections against scalar or target-specific null values;
 - target-wise bootstrap tail probabilities from each stored studentized-root distribution;

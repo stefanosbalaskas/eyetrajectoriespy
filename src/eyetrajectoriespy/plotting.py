@@ -21,6 +21,7 @@ from .types import (
     FPCARegressionUncertaintyResult,
     FPCAWildBootstrapProjectionResult,
     FPCAWildBootstrapFamilyTestResult,
+    FPCAWildBootstrapMonteCarloDiagnosticResult,
     FPCAWildBootstrapSimultaneousResult,
     FPCAWildBootstrapTruncationScanResult,
     FPCAWildBootstrapTruncationSelectionResult,
@@ -240,6 +241,78 @@ def plot_fpca_wild_bootstrap_family_test(
     ax.legend()
     return ax
 
+
+
+def plot_fpca_wild_bootstrap_monte_carlo_diagnostics(
+    result: FPCAWildBootstrapMonteCarloDiagnosticResult,
+    *,
+    max_targets: int = 30,
+    show_targetwise: bool = False,
+    ax=None,
+):
+    """Plot finite-bootstrap tail estimates with exact binomial intervals."""
+
+    if not isinstance(result, FPCAWildBootstrapMonteCarloDiagnosticResult):
+        raise TypeError("result must be an FPCAWildBootstrapMonteCarloDiagnosticResult")
+    if isinstance(max_targets, bool) or not isinstance(max_targets, (int, np.integer)):
+        raise TypeError("max_targets must be an integer")
+    if max_targets < 1:
+        raise ValueError("max_targets must be positive")
+    if not isinstance(show_targetwise, bool):
+        raise TypeError("show_targetwise must be boolean")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    n = min(max_targets, result.n_targets)
+    x = np.arange(n)
+    adjusted = result.adjusted_tail_probabilities[:n]
+    adjusted_yerr = np.vstack(
+        (
+            adjusted - result.adjusted_interval_lower[:n],
+            result.adjusted_interval_upper[:n] - adjusted,
+        )
+    )
+    ax.errorbar(
+        x,
+        adjusted,
+        yerr=adjusted_yerr,
+        marker="o",
+        linestyle="none",
+        capsize=3,
+        label="maxT tail probability",
+    )
+
+    if show_targetwise:
+        targetwise = result.targetwise_tail_probabilities[:n]
+        targetwise_yerr = np.vstack(
+            (
+                targetwise - result.targetwise_interval_lower[:n],
+                result.targetwise_interval_upper[:n] - targetwise,
+            )
+        )
+        ax.errorbar(
+            x,
+            targetwise,
+            yerr=targetwise_yerr,
+            marker="x",
+            linestyle="none",
+            capsize=3,
+            label="target-wise tail probability",
+        )
+
+    alpha = result.significance_level
+    ax.axhline(alpha, linestyle="--", label=f"alpha={alpha:g}")
+    ax.set_xticks(x)
+    ax.set_xticklabels(
+        result.family_test_result.projection_result.target_curve_ids[:n],
+        rotation=90,
+    )
+    ax.set_ylim(-0.02, 1.02)
+    ax.set_xlabel("Fixed target trajectory")
+    ax.set_ylabel("Bootstrap exceedance probability")
+    ax.set_title("Monte Carlo precision of fixed-family wild-bootstrap tests")
+    ax.legend()
+    return ax
 
 def plot_fpca_wild_bootstrap_simultaneous_interval(
     result: FPCAWildBootstrapSimultaneousResult,

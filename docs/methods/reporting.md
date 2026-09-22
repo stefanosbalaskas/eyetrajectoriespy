@@ -463,3 +463,23 @@ Report at minimum:
 - any adaptive family definition or truncation selection, if such exploration occurred.
 
 Do not report a zero Monte Carlo p-value when the default plus-one correction was used; its lower bound is 1/(B+1).
+
+## Finite-bootstrap Monte Carlo precision diagnostics
+
+When version 0.20 diagnostics are used, report:
+
+- the original fixed-family testing procedure and its p-value correction;
+- the planned bootstrap replicate count B;
+- the diagnostic confidence level;
+- target-wise, adjusted, and global exceedance counts where relevant;
+- that raw r/B values are diagnostic exceedance fractions rather than replacements for the configured test p-values;
+- the Monte Carlo SE definition;
+- that Clopper-Pearson exact binomial intervals quantify finite-simulation precision;
+- the number of maxT-adjusted decisions flagged as Monte-Carlo-sensitive at the declared alpha;
+- that the diagnostic reused the existing roots and generated no new multipliers or model fits;
+- whether additional bootstrap replicates were generated after seeing the diagnostic;
+- that these intervals do not quantify participant-sampling uncertainty or strengthen the multiplicity claim.
+
+Example:
+
+> The fixed-family wild-bootstrap test used 1,999 replicates and the plus-one p-value rule. Finite-bootstrap precision was evaluated post hoc from the retained roots using raw exceedance counts, plug-in binomial Monte Carlo SEs, and 95% Clopper-Pearson intervals. Adjusted decisions were flagged as Monte-Carlo-sensitive when the exact interval was not wholly on the same side of alpha=.05 as the reported decision. No additional resampling was performed for the diagnostic.

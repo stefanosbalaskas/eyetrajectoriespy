@@ -100,6 +100,13 @@
 ::: eyetrajectoriespy.plot_fpca_wild_bootstrap_family_test
 ::: eyetrajectoriespy.fpca_wild_bootstrap_family_test_reporting_text
 
+## Wild-bootstrap finite Monte Carlo precision diagnostics
+::: eyetrajectoriespy.FPCAWildBootstrapMonteCarloDiagnosticResult
+::: eyetrajectoriespy.fpca_wild_bootstrap_family_test_monte_carlo_diagnostics
+::: eyetrajectoriespy.fpca_wild_bootstrap_monte_carlo_diagnostic_frame
+::: eyetrajectoriespy.plot_fpca_wild_bootstrap_monte_carlo_diagnostics
+::: eyetrajectoriespy.fpca_wild_bootstrap_monte_carlo_reporting_text
+
 ## Gaussian FPCR future-outcome prediction
 ::: eyetrajectoriespy.FPCARegressionPredictionIntervalResult
 ::: eyetrajectoriespy.fpca_regression_future_prediction_interval

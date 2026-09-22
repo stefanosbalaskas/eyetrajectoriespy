@@ -67,6 +67,7 @@ from .plotting import (
     plot_fpca_regression_future_prediction_interval,
     plot_fpca_wild_bootstrap_projection,
     plot_fpca_wild_bootstrap_family_test,
+    plot_fpca_wild_bootstrap_monte_carlo_diagnostics,
     plot_fpca_wild_bootstrap_simultaneous_interval,
     plot_fpca_wild_bootstrap_truncation_scan,
     plot_fpca_regression_slope_band,
@@ -124,6 +125,7 @@ from .reporting import (
     fpca_regression_future_prediction_reporting_text,
     fpca_wild_bootstrap_projection_reporting_text,
     fpca_wild_bootstrap_family_test_reporting_text,
+    fpca_wild_bootstrap_monte_carlo_reporting_text,
     fpca_wild_bootstrap_simultaneous_reporting_text,
     fpca_wild_bootstrap_truncation_reporting_text,
     fpca_regression_slope_band_reporting_text,
@@ -186,6 +188,7 @@ from .types import (
     FPCARegressionUncertaintyResult,
     FPCAWildBootstrapProjectionResult,
     FPCAWildBootstrapFamilyTestResult,
+    FPCAWildBootstrapMonteCarloDiagnosticResult,
     FPCAWildBootstrapSimultaneousResult,
     FPCAWildBootstrapTruncationScanResult,
     FPCAWildBootstrapTruncationSelectionResult,
@@ -205,6 +208,8 @@ from .types import (
 )
 from .wild_testing import (
     fpca_wild_bootstrap_family_test_frame,
+    fpca_wild_bootstrap_family_test_monte_carlo_diagnostics,
+    fpca_wild_bootstrap_monte_carlo_diagnostic_frame,
     fpca_wild_bootstrap_projection_family_test,
 )
 from .wild_simultaneous import (
@@ -228,7 +233,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.19.0.dev0"
+__version__ = "0.20.0.dev0"
 
 __all__ = [
     "TrajectorySet",
@@ -383,6 +388,7 @@ __all__ = [
     "FPCARegressionUncertaintyResult",
     "FPCAWildBootstrapProjectionResult",
     "FPCAWildBootstrapFamilyTestResult",
+    "FPCAWildBootstrapMonteCarloDiagnosticResult",
     "FPCAWildBootstrapSimultaneousResult",
     "FPCAWildBootstrapTruncationScanResult",
     "FPCAWildBootstrapTruncationSelectionResult",
@@ -399,8 +405,12 @@ __all__ = [
     "plot_fpca_wild_bootstrap_projection",
     "fpca_wild_bootstrap_projection_family_test",
     "fpca_wild_bootstrap_family_test_frame",
+    "fpca_wild_bootstrap_family_test_monte_carlo_diagnostics",
+    "fpca_wild_bootstrap_monte_carlo_diagnostic_frame",
     "plot_fpca_wild_bootstrap_family_test",
+    "plot_fpca_wild_bootstrap_monte_carlo_diagnostics",
     "fpca_wild_bootstrap_family_test_reporting_text",
+    "fpca_wild_bootstrap_monte_carlo_reporting_text",
     "fpca_wild_bootstrap_projection_simultaneous_interval",
     "fpca_wild_bootstrap_simultaneous_frame",
     "plot_fpca_wild_bootstrap_simultaneous_interval",

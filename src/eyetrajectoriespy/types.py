@@ -845,6 +845,45 @@ class FPCAWildBootstrapFamilyTestResult:
         return 0.0
 
 @dataclass(frozen=True)
+class FPCAWildBootstrapMonteCarloDiagnosticResult:
+    """Monte Carlo precision diagnostics for a fixed-family wild-bootstrap test."""
+
+    family_test_result: FPCAWildBootstrapFamilyTestResult
+    confidence_level: float
+    targetwise_exceedances: np.ndarray
+    adjusted_exceedances: np.ndarray
+    global_exceedances: int
+    targetwise_tail_probabilities: np.ndarray
+    adjusted_tail_probabilities: np.ndarray
+    global_tail_probability: float
+    targetwise_mcse: np.ndarray
+    adjusted_mcse: np.ndarray
+    global_mcse: float
+    targetwise_interval_lower: np.ndarray
+    targetwise_interval_upper: np.ndarray
+    adjusted_interval_lower: np.ndarray
+    adjusted_interval_upper: np.ndarray
+    global_interval_lower: float
+    global_interval_upper: float
+    targetwise_decision_stable: np.ndarray
+    adjusted_decision_stable: np.ndarray
+    global_decision_stable: bool
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.family_test_result.n_bootstrap
+
+    @property
+    def n_targets(self) -> int:
+        return self.family_test_result.n_targets
+
+    @property
+    def significance_level(self) -> float:
+        return self.family_test_result.significance_level
+
+
+@dataclass(frozen=True)
 class FPCAWildBootstrapTruncationScanResult:
     """Shared-multiplier wild-bootstrap interval scan over inference truncations."""
 

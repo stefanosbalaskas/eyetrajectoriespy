@@ -198,6 +198,16 @@ The package records that the bootstrap distribution is not explicitly generated 
 
 The tests target fixed centered FPCR projections. They are not future-outcome tests, clustered/repeated-participant wild-bootstrap tests, or automatic corrections for adaptive family/truncation selection.
 
+## FPCAWildBootstrapMonteCarloDiagnosticResult
+
+Stores an existing `FPCAWildBootstrapFamilyTestResult`, target-wise and maxT-adjusted bootstrap exceedance counts, raw exceedance fractions, plug-in binomial Monte Carlo standard errors, Clopper-Pearson exact binomial interval limits, complete-family global precision diagnostics, decision-stability flags, the diagnostic confidence level, and provenance.
+
+The object reuses the exact roots and observed test statistics from the supplied family-test result. It performs no new bootstrap draws and does not change the reported p-values or rejection indicators.
+
+The exact intervals quantify finite Monte Carlo simulation precision conditional on the completed bootstrap design. They are not confidence intervals for target projections, do not quantify participant-sampling uncertainty, and do not add subset-pivotality, strong-FWER, clustered-bootstrap, or component-selection guarantees.
+
+A `False` stability flag means the exact Monte Carlo interval is not wholly on the same side of alpha as the existing reported decision. It is a precision warning, not a reversal of the hypothesis-test result.
+
 ## FPCARegressionPredictionIntervalResult
 
 Stores an existing paired-bootstrap Gaussian FPCR uncertainty object together with the centered full-sample residual pool, independently sampled residual draws, future-outcome predictive draws, marginal percentile limits, predictive standard deviations, confidence level, seed, and provenance.

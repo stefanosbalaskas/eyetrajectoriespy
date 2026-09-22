@@ -409,3 +409,15 @@ The resampling distribution is also not regenerated under an explicitly imposed 
 Adaptive removal of targets after inspecting marginal results changes the testing family and invalidates the intended confirmatory interpretation.
 
 A small number of bootstrap replicates limits p-value resolution. With the default plus-one correction, the minimum attainable p-value is 1/(B+1).
+
+## Monte Carlo precision is not scientific uncertainty
+
+Version 0.20 quantifies only the simulation variability caused by using finitely many retained bootstrap replicates.
+
+A narrow exact binomial interval does not imply that the FPCA basis, functional regression, target family, truncation choice, preprocessing pipeline, or participant sample is known precisely.
+
+The plug-in Monte Carlo SE can equal zero when every retained replicate is on the same side of the observed statistic. The exact Clopper-Pearson interval should therefore be preferred for boundary-count interpretation.
+
+The diagnostic does not change the configured plus-one/raw p-value rule, does not reverse a reported decision, and does not add strong-FWER or subset-pivotality guarantees.
+
+Version 0.20 also does not implement an always-valid sequential Monte Carlo procedure. Repeatedly increasing B after inspecting significance until a preferred threshold is crossed is outside the package contract and should not be described as a pre-specified fixed-budget analysis.

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.20.0.dev0 — 2026-09-22
+
+Twentieth development tranche.
+
+- finite-bootstrap Monte Carlo precision diagnostics for the 0.19 fixed-family Gaussian FPCR wild-bootstrap hypothesis-test layer;
+- target-wise, single-step maxT-adjusted, and complete-family global bootstrap exceedance counts are recovered from the exact retained root matrix without any new resampling;
+- raw exceedance fractions r/B are reported only as diagnostic binomial quantities and never replace the configured plus-one/raw hypothesis-test p-values;
+- plug-in binomial Monte Carlo standard errors are accompanied by Clopper-Pearson exact intervals, including boundary cases with zero or B exceedances;
+- conservative decision-stability flags require the full Monte Carlo interval to lie on the same side of alpha as the already reported test decision;
+- diagnostics never reverse or recompute the 0.19 rejection indicators;
+- provenance distinguishes Monte Carlo simulation precision from scientific sampling uncertainty and records that no additional strong-FWER, clustered-bootstrap, component-selection, or sequential-stopping guarantee is added;
+- dedicated table, plot, reporting helper, methodological guide, worked example, references, preregistration guidance, limitations, FAQ, and executable CI example;
+- deterministic hand-calculated count/interval tests plus validation, public-API, plotting, reporting, and provenance tests.
+
 ## 0.19.0.dev0 — 2026-09-22
 
 Nineteenth development tranche.
