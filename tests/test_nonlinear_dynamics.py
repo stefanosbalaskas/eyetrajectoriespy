@@ -69,6 +69,7 @@ def test_rosenstein_lle_requires_declared_fit_interval_and_is_finite():
     )
 
     assert np.isfinite(result.exponent)
+    assert result.exponent > 0
     assert result.exponent_unit == "1/s"
     assert np.isfinite(result.r_squared)
     assert result.n_fit_points == 5
@@ -111,8 +112,8 @@ def test_iaaft_surrogate_test_is_seeded_plus_one_and_retains_all_surrogates():
         fit_start=1,
         fit_end=4,
         n_surrogates=3,
-        max_iterations=30,
-        tolerance=1e-6,
+        max_iterations=200,
+        tolerance=1e-5,
         random_state=123,
     )
 
@@ -133,8 +134,8 @@ def test_iaaft_surrogate_test_is_seeded_plus_one_and_retains_all_surrogates():
         fit_start=1,
         fit_end=4,
         n_surrogates=3,
-        max_iterations=30,
-        tolerance=1e-6,
+        max_iterations=200,
+        tolerance=1e-5,
         random_state=123,
     )
     np.testing.assert_allclose(
@@ -159,4 +160,25 @@ def test_surrogate_test_rejects_unsupported_statistic():
             fit_start=1,
             fit_end=3,
             n_surrogates=2,
+        )
+
+
+def test_iaaft_nonconvergence_fails_instead_of_accepting_replica():
+    data = _logistic_set(300)
+    with pytest.raises(RuntimeError, match="surrogate 0 failed"):
+        surrogate_nonlinearity_test(
+            data,
+            curve=0,
+            dimension="x",
+            statistic="largest_lyapunov",
+            embedding_dimension=2,
+            delay=1,
+            theiler_window=8,
+            max_horizon=7,
+            fit_start=1,
+            fit_end=4,
+            n_surrogates=1,
+            max_iterations=1,
+            tolerance=1e-15,
+            random_state=9,
         )
