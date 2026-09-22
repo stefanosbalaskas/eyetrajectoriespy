@@ -61,6 +61,7 @@ def test_local_return_map_recovers_contracting_cycle_map():
 
     assert fit.jacobian.shape == (1, 1)
     assert fit.n_transitions == 8
+    assert np.isfinite(fit.design_condition_number)
     assert 0 < stability.spectral_radius < 1
     assert stability.classification == "contracting"
     assert stability.provenance["experimental"] is True
