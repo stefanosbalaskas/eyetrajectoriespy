@@ -9,7 +9,7 @@ This page records the equations implemented by \`eyetrajectoriespy\`. It is a **
 !!! note "Notation"
     \(i\) indexes trajectories or independent units, \(t_m\) the observed common grid, \(d\) functional dimensions, and \(k\) retained functional principal components. Bold symbols denote vectors or matrices.
 
-## Quadrature on the observed grid
+## Quadrature on the observed grid { #quadrature }
 
 For strictly increasing grid points \(t_1,\ldots,t_M\), \`functional_trapezoid_weights()\` uses trapezoidal weights
 
@@ -32,7 +32,7 @@ $$
 
 **API:** \`functional_trapezoid_weights()\`.
 
-## Quadrature-weighted FPCA / MFPCA
+## Quadrature-weighted FPCA / MFPCA { #fpca }
 
 Let \(\mathbf G_i(t_m)\in\mathbb R^D\) and
 
@@ -110,7 +110,7 @@ where \(a\) is an analyst-selected score-SD multiplier.
 
 **API:** \`fit_fpca()\`, \`fit_mfpca()\`, \`transform_fpca()\`, \`reconstruct_fpca()\`, \`component_trajectories()\`.
 
-## Integrated functional \(L^2\) distance
+## Integrated functional \(L^2\) distance { #functional-l2 }
 
 For two complete multivariate trajectories \(\mathbf a,\mathbf b\) and optional non-negative dimension weights \(\omega_d\),
 
@@ -128,7 +128,7 @@ $$
 
 **API:** \`functional_l2_distance()\`, \`pairwise_functional_distances()\`.
 
-## Two-level functional decomposition
+## Two-level functional decomposition { #multilevel }
 
 For participant \(i\), trial \(j\), the implemented transparent functional-ANOVA decomposition is
 
@@ -158,7 +158,7 @@ Separate FPCAs are then fit to \(\mathbf U_i\) and \(\mathbf V_{ij}\).
 
 **API:** \`fit_multilevel_fpca()\`.
 
-## Compositional AOI trajectories
+## Compositional AOI trajectories { #compositional }
 
 At every time point the AOI probabilities obey
 
@@ -184,7 +184,7 @@ $$
 
 **API:** \`alr_transform()\`, \`inverse_alr()\`, \`fit_compositional_fpca()\`.
 
-## Landmark registration
+## Landmark registration { #registration }
 
 For curve \(i\), \`register_to_landmarks()\` constructs a monotone piecewise-linear warp \(h_i(t)\) that maps reference landmark times to observed landmark times and evaluates
 
@@ -202,7 +202,7 @@ $$
 
 **API:** \`register_to_landmarks()\`, \`warping_displacement()\`, \`phase_summary()\`.
 
-## Simultaneous functional mean band
+## Simultaneous functional mean band { #mean-band }
 
 Let \(\mathbf X_i(t_m)\) denote the independent inferential units: either curves or equal-weight participant-average curves. The mean and pointwise standard error are
 
@@ -250,7 +250,7 @@ $$
 
 **API:** \`multiplier_functional_mean_band()\`.
 
-## Scalar-on-function regression through FPC scores
+## Scalar-on-function regression through FPC scores { #fpcr }
 
 The Gaussian score-space approximation is
 
@@ -280,7 +280,7 @@ $$
 
 **API:** \`fit_scalar_on_function_regression()\`.
 
-## Heteroscedastic Gaussian FPCR wild bootstrap
+## Heteroscedastic Gaussian FPCR wild bootstrap { #wild-bootstrap }
 
 For retained score matrix \(\boldsymbol\Xi_h\), the fitted score regression uses
 
@@ -385,7 +385,7 @@ $$
 
 **API:** \`wild_bootstrap_fpca_projection()\`.
 
-## Simultaneous fixed-target calibration
+## Simultaneous fixed-target calibration { #simultaneous-wild-bootstrap }
 
 For a predeclared family \(j=1,\ldots,J\), each replicate contributes
 
@@ -400,7 +400,7 @@ A single empirical quantile of \(M^{*(b)}\) calibrates all fixed targets.
 
 **API:** \`fpca_wild_bootstrap_projection_simultaneous_interval()\`.
 
-## Fixed-family wild-bootstrap tests
+## Fixed-family wild-bootstrap tests { #family-tests }
 
 For supplied null value \(\theta_{0j}\),
 
@@ -455,7 +455,7 @@ $$
 
 **API:** \`fpca_wild_bootstrap_projection_family_test()\`.
 
-## Finite-bootstrap Monte Carlo precision
+## Finite-bootstrap Monte Carlo precision { #monte-carlo }
 
 For any retained exceedance count \(r\) out of \(B\),
 
@@ -497,7 +497,7 @@ These limits quantify **simulation precision of the bootstrap tail probability**
 
 **API:** \`fpca_wild_bootstrap_family_test_monte_carlo_diagnostics()\`.
 
-## Split-conformal FPCA anomaly review
+## Split-conformal FPCA anomaly review { #conformal }
 
 Let \(A_1,\ldots,A_m\) be calibration nonconformity scores and \(A_\mathrm{new}\) the target score. The implemented conservative p-value is
 
@@ -532,7 +532,7 @@ $$
 
 **API:** \`split_conformal_fpca_anomaly()\`.
 
-## Contract boundaries
+## Contract boundaries { #boundaries }
 
 The equations above describe what the software computes; they do not enlarge the scientific scope of the underlying method. In particular:
 
