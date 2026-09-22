@@ -135,3 +135,17 @@ The 0.18 familywise helper is a post-calibration of one already generated target
 | what is the single-step multiplicity-adjusted probability for each target null? | `fpca_wild_bootstrap_projection_family_test()` adjusted output | replicate-wise max absolute root | complete declared family; no universal strong-FWER claim |
 | is the complete family of supplied nulls compatible with the joint root approximation? | `fpca_wild_bootstrap_projection_family_test()` global output | maximum observed statistic versus bootstrap maxima | global union-intersection style test |
 | what if I need closed/step-down strong FWER under arbitrary subset nulls? | specialist multiple-testing procedure | intersection/subset-aware calibration | not implemented by 0.19 |
+
+## Nonlinear trajectory dynamics
+
+| Scientific question | Preferred 0.23 tool | What it does not establish |
+|---|---|---|
+| Does gaze return to nearby spatial/state configurations? | `recurrence_matrix()` + `rqa_metrics()` | a unique latent cognitive state or deterministic attractor |
+| Does recurrent structure change during the trial? | `windowed_rqa()` | independent observations across overlapping windows |
+| Do two trajectories share recurrent state structure? | `cross_recurrence_matrix()` + `cross_rqa_metrics()` | causal coupling or synchronization mechanism |
+| How quickly do nearby reconstructed states separate? | `local_divergence_curve()` + Rosenstein LLE | proof of deterministic chaos |
+| Is the nonlinear statistic unusual under a linear-stochastic surrogate null? | `surrogate_nonlinearity_test()` | a unique nonlinear mechanism |
+| Do repeated observed cycles contract or expand locally? | empirical Poincare return map | a monodromy matrix, Floquet multipliers, or model-based orbital stability |
+| How does a modeled attractor change with a control parameter? | not implemented in 0.23 | requires explicit system identification / continuation model |
+
+RQA and FPCA are complementary rather than substitutes. FPCA summarizes dominant between-curve functional variation; RQA summarizes within-trajectory recurrent temporal organization. Windowed RQA outputs can themselves become time-varying functional outcomes in a separately justified downstream FDA analysis.
