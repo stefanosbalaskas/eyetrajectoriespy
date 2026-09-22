@@ -83,7 +83,7 @@ def test_return_map_requires_explicit_neighborhood_policy():
 def test_return_map_rejects_rank_deficient_constant_state():
     time = np.linspace(0.0, 12.0 * np.pi, 1201)
     x = np.sin(time)
-    y = np.cos(time)
+    y = np.ones_like(time)
     data = TrajectorySet(
         time=time,
         values=np.stack([x, y], axis=1)[None, :, :],
