@@ -483,3 +483,15 @@ When version 0.20 diagnostics are used, report:
 Example:
 
 > The fixed-family wild-bootstrap test used 1,999 replicates and the plus-one p-value rule. Finite-bootstrap precision was evaluated post hoc from the retained roots using raw exceedance counts, plug-in binomial Monte Carlo SEs, and 95% Clopper-Pearson intervals. Adjusted decisions were flagged as Monte-Carlo-sensitive when the exact interval was not wholly on the same side of alpha=.05 as the reported decision. No additional resampling was performed for the diagnostic.
+
+## Nonlinear trajectory dynamics
+
+For delay reconstruction and RQA, report the source sampling grid/rate, analyzed dimensions, preprocessing, (m), (	au), recurrence metric, radius policy and resulting radius, Theiler window, line thresholds, and whether the state was observed or reconstructed. If a target recurrence rate was used, report both the target and achieved rate.
+
+For windowed RQA, also report the window and step, whether windows overlap, number of windows, and `dropped_tail_samples`.
+
+For local divergence/LLE, report the reconstructed state, Theiler window, maximum divergence horizon, analyst-declared fit interval, fitted (lambda_{max}) with units, (R^2), standard error, and number of fit points. Use language such as “Rosenstein-style local-divergence estimate” rather than “proof of chaos.”
+
+For IAAFT testing, report the exact statistic, surrogate algorithm, number of surrogates, seed/reproducibility policy, iteration/tolerance settings, alternative, plus-one p-value rule, and interpretation of the surrogate null.
+
+For empirical return maps, report the section, crossing direction, interpolated crossing count, returned state variables, reference state, neighborhood policy/value, selected transition count, local-fit (R^2), Jacobian eigenvalues, spectral radius, and stability tolerance. Label the method experimental and state explicitly that the eigenvalues are not classical Floquet multipliers.
