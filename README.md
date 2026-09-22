@@ -158,7 +158,7 @@ print(summarise_fpca(fit))
 
 ## Documentation
 
-The repository-level [mathematical contracts](MATHEMATICAL_CONTRACTS.md), generated [function → equation index](FUNCTION_EQUATION_INDEX.md), and [workflow atlas](WORKFLOW_ATLAS.md) render directly on GitHub. The site expands them with assumptions, API mappings, worked examples, and a [Visual gallery](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/visual-gallery/).
+The repository-level [mathematical contracts](MATHEMATICAL_CONTRACTS.md), generated [function → equation index](FUNCTION_EQUATION_INDEX.md), [workflow atlas](WORKFLOW_ATLAS.md), and generated [nonlinear evidence audit](NONLINEAR_EVIDENCE_AUDIT.md) render directly on GitHub. The site expands them with assumptions, evidence tiers, API mappings, worked examples, and a [Visual gallery](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/visual-gallery/).
 
 The methods site is configured for GitHub Pages:
 
