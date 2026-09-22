@@ -678,7 +678,8 @@ def windowed_rqa_trajectory_set(
     if target_recurrence_rate is not None and "recurrence_rate" in metric_names:
         raise ValueError(
             "recurrence_rate cannot be a functional outcome when "
-            "target_recurrence_rate controls recurrence density by design; "
+            "recurrence density is controlled by design through "
+            "target_recurrence_rate; "
             "use a fixed radius or omit recurrence_rate"
         )
 
