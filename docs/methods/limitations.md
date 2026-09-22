@@ -421,3 +421,35 @@ The plug-in Monte Carlo SE can equal zero when every retained replicate is on th
 The diagnostic does not change the configured plus-one/raw p-value rule, does not reverse a reported decision, and does not add strong-FWER or subset-pivotality guarantees.
 
 Version 0.20 also does not implement an always-valid sequential Monte Carlo procedure. Repeatedly increasing B after inspecting significance until a preferred threshold is crossed is outside the package contract and should not be described as a pre-specified fixed-budget analysis.
+
+## Nonlinear-dynamics limitations
+
+### RQA metrics are parameter-dependent
+
+Recurrence rate, determinism, laminarity, entropy, trapping time, and line lengths can change materially with the state representation, recurrence norm, radius, Theiler window, and minimum line lengths. Version 0.23 records these choices and does not present one parameterization as universally correct.
+
+When `target_recurrence_rate` is used, recurrence density is deliberately controlled by the radius-selection rule. RR should not then be interpreted as an independently estimated outcome across those analyses.
+
+### Sliding windows are overlapping descriptive summaries
+
+Windowed RQA can create strongly dependent adjacent estimates when windows overlap. The returned functions are useful as time-varying descriptors and as inputs to a separately justified downstream analysis, but ordinary independent-observation tests should not be applied to overlapping windows without an appropriate dependence model.
+
+The final incomplete tail is not analyzed and its exact number of samples is reported.
+
+### A positive Lyapunov estimate is not proof of chaos
+
+Finite noisy biological records can show positive local-divergence slopes because of measurement noise, nonstationarity, filtering, stochastic forcing, embedding choices, nearest-neighbor scarcity, or fit-interval choice. The 0.23 result is explicitly a Rosenstein-style estimate conditional on declared settings.
+
+### IAAFT rejection is null-model specific
+
+The surrogate test asks whether the observed statistic is unusually extreme relative to IAAFT surrogates preserving the observed amplitude distribution and approximately the Fourier-amplitude spectrum. Rejection does not prove deterministic chaos, identify a unique nonlinear mechanism, or establish stationarity.
+
+### Return-map stability is experimental
+
+The empirical Poincare workflow assumes meaningful repeated crossings and sufficient local return transitions. Section placement, crossing direction, included state variables, reference state, neighborhood rule, noise, and cycle count can change the fitted Jacobian.
+
+The eigenvalues of that fitted Jacobian are **not Floquet multipliers**. Classical Floquet analysis requires a specified dynamical model and variational equations around a periodic orbit.
+
+### Classical continuation is not implemented
+
+Version 0.23 does not expose `detect_bifurcation(gaze)`, numerical continuation, a monodromy matrix, or `floquet_multipliers(gaze)`. Those would require an identified dynamical system (dot{mathbf x}=f(mathbf x,	heta)) and dedicated model-validation contracts. Raw gaze observations are not silently treated as a known ODE.
