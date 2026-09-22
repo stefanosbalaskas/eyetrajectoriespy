@@ -141,6 +141,10 @@ Use [Simultaneous fixed-target FPCR wild bootstrap](../examples/fpcr-wild-bootst
 Use [Fixed-family FPCR wild-bootstrap tests](../examples/fpcr-wild-bootstrap-family-tests.md) when a declared set of fixed target projections needs explicit two-sided testing rather than confidence intervals alone. The example compares target-wise and single-step maxT-adjusted bootstrap probabilities, reports the complete-family global test, and makes the subset-pivotality boundary explicit.
 
 
+### Wild-bootstrap Monte Carlo precision
+
+Use [Wild-bootstrap Monte Carlo precision](../examples/fpcr-wild-bootstrap-monte-carlo.md) after a fixed-family test when the finite number of retained bootstrap replicates needs an explicit precision audit. The example reports exceedance counts, raw tail fractions, MCSEs, exact binomial intervals, and stability flags without changing the original plus-one/raw test probabilities.
+
 ### Stabilized-volatility FPCR wild-bootstrap selection
 
 Use [Stabilized-volatility wild-bootstrap selection](../examples/fpcr-wild-bootstrap-selection.md) when k=g is fixed but the target-inference truncation h needs a declared data-driven tuning rule. The example scans consecutive h values with shared multipliers, plots target-specific interval stability, applies explicit rho_w/rho_c/r criteria, and demonstrates the no-silent-fallback failure contract.
