@@ -140,6 +140,7 @@ def test_time_based_parameters_require_regular_grid():
             embedding_dimension=2,
             delay=0.01,
             delay_units="seconds",
+            dimensions=("x",),
         )
 
 
