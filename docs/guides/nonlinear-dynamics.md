@@ -329,7 +329,7 @@ $$
 \boldsymbol\varepsilon_n.
 $$
 
-The spectral radius
+The fit also retains its design condition number and per-state fit \(R^2\), with no package-imposed condition-number cutoff. The spectral radius
 
 $$
 \rho(\mathbf J)=\max_j|\lambda_j(\mathbf J)|
