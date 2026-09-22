@@ -422,6 +422,12 @@ The diagnostic does not change the configured plus-one/raw p-value rule, does no
 
 Version 0.20 also does not implement an always-valid sequential Monte Carlo procedure. Repeatedly increasing B after inspecting significance until a preferred threshold is crossed is outside the package contract and should not be described as a pre-specified fixed-budget analysis.
 
+## Evidence-search limitations
+
+The 0.25 nonlinear evidence audit verifies a defined set of records from authoritative scholarly sources; it is not an exhaustive proof that no other relevant paper or software implementation exists. Exact-title searches that fail to recover a candidate citation are recorded only as **not verified in this audit**.
+
+Absence from the audit must not be reported as proof of novelty, absence of prior use, or absence of software. The generated [nonlinear evidence audit](nonlinear-evidence-audit.md) keeps verified support and unverified candidates separate.
+
 ## Nonlinear-dynamics limitations
 
 ### RQA metrics are parameter-dependent
