@@ -455,3 +455,18 @@ The eigenvalues of that fitted Jacobian are **not Floquet multipliers**. Classic
 ### Classical continuation is not implemented
 
 Version 0.23 does not expose `detect_bifurcation(gaze)`, numerical continuation, a monodromy matrix, or `floquet_multipliers(gaze)`. Those would require an identified dynamical system (dot{mathbf x}=f(mathbf x,	heta)) and dedicated model-validation contracts. Raw gaze observations are not silently treated as a known ODE.
+## RQA-derived functional trajectories
+
+Sliding-window RQA creates a derived functional process; it does not create new independent experimental units.
+
+- overlapping windows deterministically reuse source samples;
+- even non-overlapping windows can remain serially dependent because they come from one continuous source process;
+- the functional time support begins at the first full-window center and ends at the last full-window center, so edge support is narrower than the original trajectory;
+- trailing samples outside the final complete window remain explicit in provenance rather than becoming a partial window;
+- fixed-radius and target-recurrence-rate analyses have different interpretations;
+- when target recurrence rate is used, RR is controlled by design and 0.24 refuses to expose RR itself as a downstream functional outcome;
+- DET, LAM, line lengths, entropy, and CORM remain conditional on the declared state representation, radius policy, metric, Theiler exclusion, and line thresholds;
+- an undefined window-level metric remains undefined; `undefined_policy="keep"` preserves `NaN` but does not make the downstream FDA missing-data-safe automatically;
+- a downstream FPCA/MFPCA/regression fit is a separate modeling step whose sampling unit must remain the source curve/participant, not the number of windows.
+
+Version 0.24 therefore provides a provenance-preserving descriptive bridge between nonlinear summaries and FDA. It does not claim a new sampling distribution, simultaneous confidence band, or independent-window theorem for overlapping RQA curves.
