@@ -1,0 +1,227 @@
+"""Plots for nonlinear trajectory dynamics and recurrence diagnostics."""
+
+from __future__ import annotations
+
+from collections.abc import Sequence
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+from .nonlinear_types import (
+    EmbeddingDelayDiagnosticResult,
+    EmbeddingDimensionDiagnosticResult,
+    LargestLyapunovResult,
+    LocalDivergenceResult,
+    LocalReturnMapResult,
+    PoincareCrossingResult,
+    RecurrenceResult,
+    SurrogateNonlinearityResult,
+    WindowedRQAResult,
+)
+
+
+def plot_embedding_delay_diagnostics(
+    result: EmbeddingDelayDiagnosticResult,
+    *,
+    ax=None,
+):
+    """Plot AMI and autocorrelation against lag without selecting a delay."""
+
+    if ax is None:
+        _, ax = plt.subplots()
+    table = result.table
+    ax.plot(table["lag_time"], table["average_mutual_information"], marker="o", label="AMI")
+    ax.set_xlabel(f"Lag ({result.time_unit})")
+    ax.set_ylabel("Average mutual information")
+    ax2 = ax.twinx()
+    ax2.plot(table["lag_time"], table["autocorrelation"], linestyle="--", label="ACF")
+    ax2.set_ylabel("Autocorrelation")
+    marked = table["first_ami_local_minimum"].to_numpy(dtype=bool)
+    if np.any(marked):
+        ax.scatter(
+            table.loc[marked, "lag_time"],
+            table.loc[marked, "average_mutual_information"],
+            marker="x",
+            s=70,
+            label="First AMI local minimum",
+        )
+    ax.set_title(f"Embedding-delay diagnostics: {result.curve_id} / {result.dimension}")
+    return ax
+
+
+def plot_embedding_dimension_diagnostics(
+    result: EmbeddingDimensionDiagnosticResult,
+    *,
+    ax=None,
+):
+    """Plot false-nearest-neighbor fraction against embedding dimension."""
+
+    if ax is None:
+        _, ax = plt.subplots()
+    table = result.table
+    ax.plot(
+        table["embedding_dimension"],
+        table["false_neighbor_fraction"],
+        marker="o",
+    )
+    ax.set_xlabel("Embedding dimension")
+    ax.set_ylabel("False-nearest-neighbor fraction")
+    ax.set_ylim(bottom=0)
+    ax.set_title(f"FNN diagnostics: {result.curve_id} / {result.dimension}")
+    return ax
+
+
+def plot_recurrence(
+    result: RecurrenceResult,
+    *,
+    max_points: int | None = 200_000,
+    ax=None,
+):
+    """Plot the sparse recurrence matrix without densifying it."""
+
+    if max_points is not None and result.matrix.nnz > max_points:
+        raise ValueError(
+            "recurrence matrix exceeds max_points; increase max_points explicitly "
+            "rather than silently subsampling recurrence points"
+        )
+    if ax is None:
+        _, ax = plt.subplots()
+    coo = result.matrix.tocoo()
+    ax.scatter(coo.col, coo.row, s=4, marker="s")
+    ax.set_xlabel("State index B" if result.kind == "cross" else "State index")
+    ax.set_ylabel("State index A" if result.kind == "cross" else "State index")
+    ax.invert_yaxis()
+    ax.set_aspect("equal", adjustable="box")
+    ax.set_title(
+        f"{'Cross-' if result.kind == 'cross' else ''}recurrence "
+        f"(RR={result.achieved_recurrence_rate:.3f})"
+    )
+    return ax
+
+
+def plot_windowed_rqa(
+    result: WindowedRQAResult,
+    *,
+    metrics: Sequence[str] = ("recurrence_rate", "determinism", "laminarity"),
+    ax=None,
+):
+    """Plot selected time-varying RQA metrics."""
+
+    if not metrics:
+        raise ValueError("metrics must contain at least one column")
+    missing = [metric for metric in metrics if metric not in result.table.columns]
+    if missing:
+        raise KeyError(f"Unknown windowed RQA metric columns: {missing}")
+    if ax is None:
+        _, ax = plt.subplots()
+    for metric in metrics:
+        ax.plot(result.table["center_time"], result.table[metric], marker="o", label=metric)
+    ax.set_xlabel(f"Window center ({result.time_unit})")
+    ax.set_ylabel("RQA metric")
+    ax.legend()
+    ax.set_title("Windowed recurrence dynamics")
+    return ax
+
+
+def plot_local_divergence(
+    result: LocalDivergenceResult | LargestLyapunovResult,
+    *,
+    ax=None,
+):
+    """Plot the mean log-divergence curve and an explicit LLE fit when present."""
+
+    fit = result if isinstance(result, LargestLyapunovResult) else None
+    divergence = fit.divergence if fit is not None else result
+    if ax is None:
+        _, ax = plt.subplots()
+    ax.plot(
+        divergence.time_lags,
+        divergence.mean_log_divergence,
+        marker="o",
+        label="Mean log divergence",
+    )
+    if fit is not None:
+        mask = (
+            (divergence.time_lags >= fit.fit_start)
+            & (divergence.time_lags <= fit.fit_end)
+            & np.isfinite(divergence.mean_log_divergence)
+        )
+        normalized = divergence.time_unit.lower()
+        if normalized in {"s", "sec", "second", "seconds"}:
+            x_fit = divergence.time_lags[mask]
+        elif normalized in {"ms", "millisecond", "milliseconds"}:
+            x_fit = divergence.time_lags[mask] * 1e-3
+        else:
+            x_fit = divergence.time_lags[mask]
+        y_fit = fit.intercept + fit.exponent * x_fit
+        ax.plot(
+            divergence.time_lags[mask],
+            y_fit,
+            linestyle="--",
+            label=f"LLE fit: {fit.exponent:.3g} {fit.exponent_unit}",
+        )
+    ax.set_xlabel(f"Divergence lag ({divergence.time_unit})")
+    ax.set_ylabel("Mean log distance")
+    ax.legend()
+    ax.set_title(f"Local divergence: {divergence.curve_id}")
+    return ax
+
+
+def plot_surrogate_nonlinearity(
+    result: SurrogateNonlinearityResult,
+    *,
+    bins: int = 20,
+    ax=None,
+):
+    """Plot the surrogate statistic distribution and observed statistic."""
+
+    if not isinstance(bins, int) or bins < 2:
+        raise ValueError("bins must be an integer >= 2")
+    if ax is None:
+        _, ax = plt.subplots()
+    ax.hist(result.surrogate_statistics, bins=bins, alpha=0.7)
+    ax.axvline(result.observed_statistic, linestyle="--", label="Observed")
+    ax.set_xlabel(result.statistic)
+    ax.set_ylabel("Surrogate count")
+    ax.set_title(f"{result.method.upper()} surrogate test (p={result.p_value:.3g})")
+    ax.legend()
+    return ax
+
+
+def plot_poincare_return_map(
+    crossings: PoincareCrossingResult,
+    *,
+    fit: LocalReturnMapResult | None = None,
+    ax=None,
+):
+    """Plot a one-dimensional empirical return map x_n -> x_(n+1)."""
+
+    if crossings.states.shape[1] != 1:
+        raise ValueError(
+            "plot_poincare_return_map currently requires one returned state dimension; "
+            "select one state dimension explicitly rather than projecting silently"
+        )
+    if crossings.n_crossings < 2:
+        raise ValueError("at least two crossings are required for a return-map plot")
+    x = crossings.states[:-1, 0]
+    y = crossings.states[1:, 0]
+    if ax is None:
+        _, ax = plt.subplots()
+    ax.scatter(x, y, label="Successive crossings")
+    low = float(min(np.min(x), np.min(y)))
+    high = float(max(np.max(x), np.max(y)))
+    ax.plot([low, high], [low, high], linestyle=":", label="Identity")
+    if fit is not None:
+        grid = np.linspace(low, high, 100)
+        centered = grid - fit.reference_state[0]
+        predicted = (
+            fit.reference_state[0]
+            + fit.intercept[0]
+            + fit.jacobian[0, 0] * centered
+        )
+        ax.plot(grid, predicted, linestyle="--", label="Local affine fit")
+    ax.set_xlabel(f"{crossings.state_dimensions[0]} at crossing n")
+    ax.set_ylabel(f"{crossings.state_dimensions[0]} at crossing n+1")
+    ax.legend()
+    ax.set_title("Empirical Poincare return map")
+    return ax
