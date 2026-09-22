@@ -248,6 +248,22 @@ $$
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#recurrence
 
+## Windowed RQA as functional trajectories
+
+**Functions:** `windowed_rqa_trajectory_set()`
+
+$$
+F_{iq}(c_w)=M_q\{R_i^{(w)}\},\quad c_w=\frac{t_{w,\mathrm{start}}+t_{w,\mathrm{end}}}{2}
+$$
+
+$$
+\omega=\frac{\max(0,W-S)}{W}
+$$
+
+**Scope:** Derived functional summaries of declared sliding-window RQA; overlapping windows reuse source samples and are not independent observational units.
+
+Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#functional-rqa-trajectories
+
 ## Rosenstein local divergence and largest Lyapunov estimate
 
 **Functions:** `local_divergence_curve()`, `estimate_largest_lyapunov_rosenstein()`
