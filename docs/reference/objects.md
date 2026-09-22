@@ -198,6 +198,19 @@ The package records that the bootstrap distribution is not explicitly generated 
 
 The tests target fixed centered FPCR projections. They are not future-outcome tests, clustered/repeated-participant wild-bootstrap tests, or automatic corrections for adaptive family/truncation selection.
 
+
+## FPCAWildBootstrapMonteCarloPrecisionResult
+
+Stores an existing `FPCAWildBootstrapFamilyTestResult`, target-wise and maxT-adjusted exceedance counts, complete-family global exceedance count, raw resampling tail-probability estimates, plug-in Monte Carlo standard errors, exact Clopper-Pearson interval limits, alpha-relation labels, confidence level, and provenance.
+
+The object is a pure finite-resample diagnostic. It reconstructs counts from the exact stored studentized roots and observed statistics; it does not rerun FPCA, regression, residual estimation, multiplier generation, or bootstrap sampling.
+
+The raw estimate `r/B` is intentionally stored separately from the family-test p-value. In particular, a plus-one p-value `(r+1)/(B+1)` remains unchanged.
+
+The alpha relation can be `below_alpha`, `above_alpha`, or `overlaps_alpha`. This describes whether the exact Monte Carlo interval for the resampling tail probability is numerically separated from the declared threshold. It does not replace the original test decision.
+
+The intervals quantify Monte Carlo simulation uncertainty only. They are not confidence intervals for a scientific effect, do not add a new family-wise error guarantee, do not assume subset pivotality, and do not solve clustered dependence or component-selection uncertainty.
+
 ## FPCARegressionPredictionIntervalResult
 
 Stores an existing paired-bootstrap Gaussian FPCR uncertainty object together with the centered full-sample residual pool, independently sampled residual draws, future-outcome predictive draws, marginal percentile limits, predictive standard deviations, confidence level, seed, and provenance.
