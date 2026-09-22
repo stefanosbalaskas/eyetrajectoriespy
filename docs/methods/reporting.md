@@ -492,6 +492,6 @@ For windowed RQA, also report the window and step, whether windows overlap, numb
 
 For local divergence/LLE, report the reconstructed state, Theiler window, maximum divergence horizon, analyst-declared fit interval, fitted (lambda_{max}) with units, (R^2), standard error, and number of fit points. Use language such as “Rosenstein-style local-divergence estimate” rather than “proof of chaos.”
 
-For IAAFT testing, report the exact statistic, surrogate algorithm, number of surrogates, seed/reproducibility policy, iteration/tolerance settings, alternative, plus-one p-value rule, and interpretation of the surrogate null.
+For IAAFT testing, report the exact statistic, surrogate algorithm, number of surrogates, seed/reproducibility policy, iteration/tolerance settings, final spectrum-mismatch diagnostics, alternative, Monte Carlo p-value rule, and interpretation of the surrogate null.
 
 For empirical return maps, report the section, crossing direction, interpolated crossing count, returned state variables, reference state, neighborhood policy/value, selected transition count, local-fit (R^2), Jacobian eigenvalues, spectral radius, and stability tolerance. Label the method experimental and state explicitly that the eigenvalues are not classical Floquet multipliers.
