@@ -5,8 +5,6 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-import yaml
-
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
@@ -24,8 +22,12 @@ def _nav_paths(node):
 
 
 def main() -> None:
-    config = yaml.safe_load((ROOT / "mkdocs.yml").read_text(encoding="utf-8"))
-    nav = list(_nav_paths(config.get("nav", [])))
+    config_text = (ROOT / "mkdocs.yml").read_text(encoding="utf-8")
+    nav = re.findall(
+        r":\s+([A-Za-z0-9_./-]+\.md)\s*$",
+        config_text,
+        flags=re.MULTILINE,
+    )
     missing_nav = sorted(path for path in nav if not (DOCS / path).exists())
     if missing_nav:
         raise RuntimeError(f"missing MkDocs nav targets: {missing_nav}")
@@ -76,8 +78,8 @@ def main() -> None:
 
     gallery = (DOCS / "methods" / "visual-gallery.md").read_text(encoding="utf-8")
     asset_refs = sorted(set(re.findall(r"\.\./assets/gallery/([^)\s]+\.svg)", gallery)))
-    if len(asset_refs) < 5:
-        raise RuntimeError("visual gallery must reference at least five SVG figures")
+    if len(asset_refs) < 8:
+        raise RuntimeError("visual gallery must reference at least eight SVG figures")
     missing_assets = sorted(
         name for name in asset_refs if not (DOCS / "assets" / "gallery" / name).exists()
     )
@@ -85,7 +87,7 @@ def main() -> None:
         raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for required in ("MATHEMATICAL_CONTRACTS.md", "Visual gallery", "0.21.0.dev0"):
+    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.22.0.dev0"):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
 
