@@ -123,3 +123,16 @@ def test_raw_recurrence_requires_explicit_dimensions():
     data = _scalar([0, 1, 0, 1, 0])
     with pytest.raises(ValueError, match="dimensions must be supplied explicitly"):
         recurrence_matrix(data, curve=0, radius=0.2)
+
+
+def test_windowed_rqa_rejects_internal_gaps_between_windows():
+    data = _scalar(np.sin(np.linspace(0, 6 * np.pi, 50)))
+    with pytest.raises(ValueError, match="step cannot exceed window"):
+        windowed_rqa(
+            data,
+            curve=0,
+            window=10,
+            step=11,
+            radius=0.5,
+            dimensions=("x",),
+        )
