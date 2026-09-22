@@ -659,6 +659,8 @@ def windowed_rqa_trajectory_set(
     construction.
     """
 
+    if trajectories.n_curves < 1:
+        raise ValueError("functional windowed RQA requires at least one source curve")
     metric_names = tuple(str(name) for name in metrics)
     if not metric_names:
         raise ValueError("metrics must contain at least one RQA metric")
@@ -773,6 +775,17 @@ def windowed_rqa_trajectory_set(
             "window_center_definition": (
                 "midpoint_of_first_and_last_observed_sample"
             ),
+            "source_time_support": (
+                float(trajectories.time[0]),
+                float(trajectories.time[-1]),
+            ),
+            "functional_time_support": (
+                float(center_time[0]),
+                float(center_time[-1]),
+            ),
+            "leading_edge_span": float(center_time[0] - trajectories.time[0]),
+            "trailing_edge_span": float(trajectories.time[-1] - center_time[-1]),
+            "edge_policy": "full_window_centers_only",
             "dropped_tail_samples": first.dropped_tail_samples,
             "tail_policy": "full_windows_only_with_explicit_tail_count",
             "radius_policy": (
