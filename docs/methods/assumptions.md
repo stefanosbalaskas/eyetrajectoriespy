@@ -221,3 +221,12 @@ The default plus-one correction treats the stored bootstrap replicates as a fini
 A zero reference standard error is compatible with a target test only when the null discrepancy is numerically zero. Otherwise the test fails because a finite studentized statistic is undefined.
 
 Single-step maxT adjustment is interpreted for the complete declared family. The package does not assume subset pivotality and does not claim strong family-wise error control for arbitrary subsets of true null hypotheses.
+
+
+## Finite-B Monte Carlo precision diagnostics
+
+The 0.20 layer treats each retained bootstrap exceedance indicator as a Bernoulli draw conditional on the observed data and bootstrap construction. The exact binomial interval quantifies uncertainty in the underlying resampling exceedance probability caused by finite B.
+
+The plug-in MCSE can equal zero when r is 0 or B; the exact interval remains the primary boundary-aware precision summary.
+
+These diagnostics inherit every scientific assumption of the underlying 0.19 test and do not establish model validity, subset pivotality, strong FWER, clustered dependence handling, or component-selection robustness.
