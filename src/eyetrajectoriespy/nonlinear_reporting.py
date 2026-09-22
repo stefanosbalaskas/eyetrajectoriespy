@@ -8,6 +8,7 @@ from .nonlinear_types import (
     LargestLyapunovResult,
     RecurrenceResult,
     RQAResult,
+    LocalReturnMapResult,
     ReturnMapStabilityResult,
     SurrogateNonlinearityResult,
     WindowedRQAResult,
@@ -81,13 +82,16 @@ def surrogate_nonlinearity_reporting_text(
         f"{result.method.upper()} surrogates using the "
         f"{result.statistic.replace('_', ' ')} statistic and a "
         f"{result.alternative} alternative. A plus-one Monte Carlo p-value "
-        f"was used (p={result.p_value:.4g}; random_state={result.random_state}). "
+        f"was used (p={result.p_value:.4g}; random_state={result.random_state}); "
+        f"the maximum retained final relative spectrum mismatch was "
+        f"{np.max(result.spectral_errors):.4g}. "
         "The test was interpreted relative to the declared surrogate null, "
         "not as proof of a unique nonlinear or chaotic mechanism."
     )
 
 
 def return_map_stability_reporting_text(
+    fit: LocalReturnMapResult,
     result: ReturnMapStabilityResult,
 ) -> str:
     """Return manuscript-ready wording for experimental empirical return-map stability."""
@@ -96,11 +100,24 @@ def return_map_stability_reporting_text(
         f"{value.real:.4g}{value.imag:+.4g}i" if abs(value.imag) > 1e-12 else f"{value.real:.4g}"
         for value in result.eigenvalues
     )
+    r2_text = ", ".join(
+        "nan" if not np.isfinite(value) else f"{value:.3f}"
+        for value in fit.r_squared
+    )
+    crossing = fit.provenance.get("crossing_provenance", {})
+    section = crossing.get("section_dimension", "unknown")
+    section_value = crossing.get("section_value", "unknown")
+    direction = crossing.get("direction", "unknown")
     return (
-        "Experimental empirical return-map stability was summarized from the "
-        f"local fitted Jacobian eigenvalues ({eigenvalue_text}), with spectral "
-        f"radius {result.spectral_radius:.4g} and tolerance {result.tolerance:.4g}; "
-        f"the map was classified as {result.classification}. These eigenvalues "
-        "were not interpreted as classical Floquet multipliers and the fitted "
-        "Jacobian was not described as a monodromy matrix."
+        "Experimental empirical return-map stability used section "
+        f"{section}={section_value} with {direction} crossings and a "
+        f"{fit.neighborhood_policy} neighborhood ({fit.neighborhood_value}); "
+        f"{fit.n_transitions} transitions were fitted. The local design "
+        f"condition number was {fit.design_condition_number:.4g} and per-state "
+        f"R^2 values were [{r2_text}]. Jacobian eigenvalues were "
+        f"({eigenvalue_text}), with spectral radius {result.spectral_radius:.4g} "
+        f"and tolerance {result.tolerance:.4g}; the map was classified as "
+        f"{result.classification}. These eigenvalues were not interpreted as "
+        "classical Floquet multipliers and the fitted Jacobian was not described "
+        "as a monodromy matrix."
     )
