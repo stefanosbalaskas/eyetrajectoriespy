@@ -82,6 +82,8 @@ nav:
       - Method comparison: methods/method-comparison.md
       - Capability status & roadmap: methods/status-roadmap.md
       - Research FAQ: methods/faq.md
+      - Mathematical reference: methods/mathematical-reference.md
+      - Visual gallery: methods/visual-gallery.md
       - References: methods/references.md
   - API:
       - Public API: reference/api.md
@@ -115,6 +117,8 @@ theme:
     - navigation.tracking
     - navigation.top
     - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
     - content.action.edit
     - search.suggest
     - search.highlight
@@ -152,7 +156,8 @@ markdown_extensions:
       alternate_style: true
 
 extra_javascript:
-  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 extra_css:
   - assets/extra.css
 
