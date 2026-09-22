@@ -117,3 +117,9 @@ def test_theiler_window_can_remove_all_pairs_explicitly():
     data = _scalar([0, 1, 2, 3])
     with pytest.raises(ValueError, match="no eligible recurrence pairs"):
         recurrence_matrix(data, curve=0, radius=1.0, theiler_window=3, dimensions=("x",))
+
+
+def test_raw_recurrence_requires_explicit_dimensions():
+    data = _scalar([0, 1, 0, 1, 0])
+    with pytest.raises(ValueError, match="dimensions must be supplied explicitly"):
+        recurrence_matrix(data, curve=0, radius=0.2)
