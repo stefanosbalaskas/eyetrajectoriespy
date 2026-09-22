@@ -49,6 +49,13 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Finite-bootstrap Monte Carlo precision diagnostics | implemented | `fpca_wild_bootstrap_family_test_monte_carlo_diagnostics()` |
 | Stabilized-volatility wild-bootstrap h selection | implemented | `scan_wild_bootstrap_fpca_truncations()` / `select_fpca_wild_bootstrap_truncation()` |
 | Derived speed/acceleration/distance/path functions | implemented | kinematic helpers |
+| Delay-coordinate state reconstruction | implemented | `delay_embed_trajectory()` |
+| AMI / false-nearest-neighbor diagnostics | implemented, diagnostic-only | `embedding_delay_diagnostics()` / `embedding_dimension_diagnostics()` |
+| Sparse recurrence / RQA | implemented | `recurrence_matrix()` / `rqa_metrics()` |
+| Windowed and cross recurrence | implemented | `windowed_rqa()` / `cross_recurrence_matrix()` |
+| Rosenstein local divergence / LLE | implemented with explicit fit interval | `local_divergence_curve()` / `estimate_largest_lyapunov_rosenstein()` |
+| IAAFT surrogate nonlinearity test | implemented | `surrogate_nonlinearity_test()` |
+| Empirical Poincare return-map stability | experimental | `poincare_crossings()` / `fit_local_return_map()` / `return_map_stability()` |
 
 ## Documentation and mathematical contracts
 
@@ -99,7 +106,11 @@ Still not provided are full uncertainty procedures that jointly include target m
 
 Future tranches may evaluate:
 
-- richer multilevel functional mixed-effects backends.
+- richer multilevel functional mixed-effects backends;
+- explicit system-identification models for gaze dynamics;
+- model-based continuation / Floquet analysis only after a validated dynamical-system contract exists.
+
+Classical `floquet_multipliers(gaze)`, monodromy matrices from raw observations, and `detect_bifurcation(gaze)` are intentionally **not** implemented in 0.23.
 
 A candidate enters the public API only when it can preserve the package rules: explicit estimand, deterministic behavior or seed, provenance, failure diagnostics, synthetic truth tests, documentation, and runnable examples.
 
