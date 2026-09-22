@@ -2,6 +2,22 @@
 
 ## 0.21.0.dev0 — 2026-09-22
 
+Twenty-first development tranche.
+
+- implementation-matched mathematical reference with LaTeX equations for quadrature weighting, FPCA/MFPCA, reconstruction, functional L2 distance, multilevel decomposition, compositional ALR, registration, simultaneous mean inference, Gaussian FPCR, heteroscedastic wild bootstrap, max-|t| calibration, family testing, Monte Carlo precision, and split conformal anomaly review;
+- repository-level `MATHEMATICAL_CONTRACTS.md` so equations render directly on GitHub as well as on the methods website;
+- MathJax 3 configuration upgraded for Material instant navigation with explicit re-typesetting after client-side page changes;
+- deterministic SVG visual gallery generated from the real package plotting APIs and synthetic seeded data;
+- gallery generation uses a non-interactive backend, deterministic SVG hashing, and timestamp-free metadata;
+- dedicated visual-gallery page linking each plot to its public API, worked example, and mathematical equation;
+- documentation contract validator checks MkDocs nav targets, equation/API mappings, MathJax wiring, generated gallery assets, README integration, and documented public API exports;
+- docs CI now regenerates the gallery and validates documentation contracts before the unchanged strict MkDocs build;
+- executable mathematical-contract example numerically checks quadrature-domain length, FPCA reconstruction identity, L2 symmetry, and ALR round-trip behavior;
+- homepage/tutorial UX refreshed with mathematical-reference and gallery entry points, corrected legacy equation markup, and removal of duplicate sparse-FPCA cards;
+- documentation dependencies constrained to the compatible Material-for-MkDocs 9.x / MkDocs 1.x line and raised to the 2026 security-fixed Material release floor.
+
+## 0.20.0.dev0 — 2026-09-22
+
 Twentieth development tranche.
 
 - finite-bootstrap Monte Carlo precision diagnostics for the 0.19 fixed-family Gaussian FPCR wild-bootstrap hypothesis-test layer;
