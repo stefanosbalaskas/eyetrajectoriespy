@@ -825,3 +825,57 @@ Therefore the 0.14 Gaussian FPCR future-outcome prediction tranche is both **PR-
 2. Future-outcome prediction currently assumes a pooled exchangeable/common residual distribution. A heteroscedastic/wild-bootstrap extension should be considered only as a separate method with its own assumptions, theory, tests, and reporting contract.
 
 The 0.14 future-outcome prediction implementation, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.14 main lineage.
+
+
+### 0.15 PR-head certification — 2026-09-21
+
+Exact certified PR head:
+
+`d8fabfd3ca7011cec4c4979605e0faf578807bad`
+
+PR #18, **“Add split-conformal FPCA anomaly review,”** completed all unchanged pull-request qualification workflows successfully on that exact SHA:
+
+- package build / distribution validation: **success**;
+- Windows × Python 3.11, 3.12, 3.13: **3/3 success**;
+- Ubuntu × Python 3.11, 3.12, 3.13: **3/3 success**;
+- macOS × Python 3.11, 3.12, 3.13: **3/3 success**;
+- full pytest/coverage/compile/Ruff gate embedded in the standard workflow: **success**;
+- executable examples, including the conformal anomaly example: **success**;
+- strict MkDocs documentation build: **success**;
+- optional scikit-fda interoperability: **success**;
+- optional FDApy sparse/PACE interoperability on Python 3.11 and 3.12: **2/2 success**.
+
+No tests, coverage thresholds, workflows, branch protections, or scientific validation checks were weakened, disabled, deleted, or bypassed.
+
+PR #18 was squash-merged as:
+
+`901b2cf057c57d99d9f02fbfdf71dd6dc07dc667`
+
+The certified PR head and squash-merged main commit both point to Git tree:
+
+`cb516a458464aed2a8f65dcf8c9a0b1c8e49cd2b`
+
+so the merged code, scientific contracts, tests, examples, and documentation are byte-for-byte identical to the exact CI-certified PR-head tree.
+
+### 0.15 exact-main qualification and deployment — 2026-09-21
+
+The exact merged-main commit
+
+`901b2cf057c57d99d9f02fbfdf71dd6dc07dc667`
+
+completed a fresh push-triggered qualification generation successfully:
+
+- tests workflow #69: **success**, including package construction and all 9 Windows/Ubuntu/macOS × Python 3.11–3.13 lanes;
+- examples workflow #69: **success**;
+- docs workflow #69: **success**, including strict MkDocs build and **successful GitHub Pages deployment**;
+- optional-fda workflow #65: **success**;
+- optional-sparse-fda workflow #53: **success**, including FDApy Python 3.11 and 3.12 lanes.
+
+Therefore the 0.15 split-conformal FPCA anomaly-review tranche is both **PR-head CI-certified** and **exact-main requalified**, and the corresponding methods-site deployment is certified on the merged 0.15 main lineage.
+
+## 0.15 remaining re-checks
+
+1. Reassess FDApy/Python 3.13 interoperability only when the FDApy/NumPy dependency line supports Python 3.13; this remains outside the current FDApy support contract.
+2. Conformal anomaly p-values remain curve-level marginal review diagnostics under the declared split/exchangeability contract; calibration-conditional adjustment, repeated-participant dependence, and multiple-target FDR/familywise procedures remain separate future methods.
+
+The 0.15 split-conformal anomaly implementation, package construction, all 9 core cross-platform lanes, coverage/compile/Ruff gates, executable examples, strict documentation, GitHub Pages deployment, scikit-fda interoperability, and FDApy sparse/PACE interoperability on Python 3.11–3.12 are GitHub CI-certified on the exact merged 0.15 main lineage.
