@@ -135,3 +135,12 @@ The 0.18 familywise helper is a post-calibration of one already generated target
 | what is the single-step multiplicity-adjusted probability for each target null? | `fpca_wild_bootstrap_projection_family_test()` adjusted output | replicate-wise max absolute root | complete declared family; no universal strong-FWER claim |
 | is the complete family of supplied nulls compatible with the joint root approximation? | `fpca_wild_bootstrap_projection_family_test()` global output | maximum observed statistic versus bootstrap maxima | global union-intersection style test |
 | what if I need closed/step-down strong FWER under arbitrary subset nulls? | specialist multiple-testing procedure | intersection/subset-aware calibration | not implemented by 0.19 |
+
+
+## Bootstrap p-value magnitude versus Monte Carlo precision
+
+| Question | Tool | Output | Boundary |
+|---|---|---|---|
+| what p-value did the fixed-family test report? | `fpca_wild_bootstrap_projection_family_test()` | target-wise, maxT-adjusted, and global p-values | inferential approximation under the 0.19 contract |
+| how precisely was that resampling tail probability estimated with finite B? | `fpca_wild_bootstrap_family_test_monte_carlo_precision()` | exceedance counts, r/B, MCSE, exact binomial interval, alpha relation | simulation precision only |
+| does finite-B precision prove strong FWER or model validity? | not provided by the precision layer | none | requires separate inferential assumptions/procedures |
