@@ -71,6 +71,10 @@ Versions 0.21–0.25 treat documentation, mathematical metadata, and methodologi
 - the same tranche adds a rendered workflow atlas and expands the deterministic SVG gallery to eight figures;
 - CI checks that generated equation indexes still match the package registry before the strict site build.
 
+- version 0.25 adds a machine-readable nonlinear-method evidence registry plus generated GitHub/site evidence audits;
+- docs CI checks evidence-page freshness, verified DOI coverage, source quality, unverified-citation exclusion, and novelty-language safeguards;
+- literature-search absence is never promoted to a novelty claim; candidate records that were not verified remain visible only in the audit trail.
+
 A future documentation-platform migration can be evaluated independently of the scientific API. No site-framework migration is allowed to alter numerical or scientific contracts.
 
 ## Optional specialist interoperability
@@ -102,6 +106,21 @@ Review flags are descriptive diagnostics. The package does not turn them into au
 `bootstrap_fpca_regression_uncertainty()` now refits the common-grid Gaussian FPCR pipeline under paired resampling and propagates basis/regression sampling variability into the reconstructed slope and fitted conditional means.
 
 Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, clustered/repeated-participant wild-bootstrap inference, coverage-optimal automatic wild-bootstrap truncation tuning, heteroscedastic future-outcome prediction, or non-Gaussian/binomial functional-regression inference.
+
+## Nonlinear evidence maturity
+
+The nonlinear methods are intentionally separated by evidence level:
+
+| Layer | Evidence status | Package status |
+|---|---|---|
+| Embedding + recurrence/RQA | direct behavioral eye-movement precedent plus foundational recurrence methodology | core |
+| Windowed RQA → functional trajectories | composition of established RQA with the package FDA core; overlap dependence explicitly retained | descriptive functional bridge |
+| Rosenstein local divergence / LLE | direct eye-movement signal precedent plus established estimator literature | advanced |
+| IAAFT surrogate testing | established nonlinear time-series null-model methodology; no gaze-specific novelty claim | advanced safeguard |
+| Empirical Poincare return maps | scientifically coherent observational cycle descriptor, without classical Floquet claim | experimental |
+| Floquet/monodromy/continuation | requires an explicit validated dynamical model | outside raw-gaze core |
+
+See the [nonlinear evidence audit](nonlinear-evidence-audit.md) for verified sources and explicit claim boundaries.
 
 ## Research/development candidates
 
