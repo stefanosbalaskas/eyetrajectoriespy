@@ -105,6 +105,7 @@ def test_delay_diagnostics_are_diagnostic_not_selector():
     assert result.table["first_ami_local_minimum"].sum() <= 1
     assert np.isfinite(result.table["average_mutual_information"]).all()
     assert result.provenance["automatic_delay_selection"] is False
+    assert result.provenance["histogram_edges_fixed_across_lags"] is True
 
 
 def test_false_nearest_neighbor_diagnostics_return_bounded_fractions():
@@ -140,3 +141,35 @@ def test_time_based_parameters_require_regular_grid():
             delay=0.01,
             delay_units="seconds",
         )
+
+
+def test_delay_embedding_requires_explicit_state_dimensions():
+    gaze = _planar_set(30)
+    with pytest.raises(ValueError, match="dimensions must be supplied explicitly"):
+        delay_embed_trajectory(
+            gaze,
+            embedding_dimension=2,
+            delay=1,
+        )
+
+
+def test_sample_lag_on_irregular_common_grid_records_no_constant_delay_time():
+    gaze = _planar_set(30)
+    time = gaze.time.copy()
+    time[10:] += np.linspace(0.0, 0.02, time.size - 10)
+    irregular = TrajectorySet(
+        time=time,
+        values=gaze.values,
+        curve_ids=gaze.curve_ids,
+        dimension_names=gaze.dimension_names,
+        time_unit="s",
+    )
+    result = delay_embed_trajectory(
+        irregular,
+        embedding_dimension=2,
+        delay=1,
+        delay_units="samples",
+        dimensions=("x",),
+    )
+    assert np.isnan(result.delay_time)
+    assert result.provenance["constant_delay_time"] is False
