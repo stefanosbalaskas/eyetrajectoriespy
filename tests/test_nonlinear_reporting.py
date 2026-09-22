@@ -99,6 +99,7 @@ def test_reporting_helpers_preserve_scope_language():
         n_surrogates=3,
         random_state=42,
         convergence_iterations=np.array([10, 11, 12]),
+        spectral_errors=np.array([0.01, 0.02, 0.015]),
     )
     surrogate_text = surrogate_nonlinearity_reporting_text(surrogate)
     assert "plus-one Monte Carlo" in surrogate_text
