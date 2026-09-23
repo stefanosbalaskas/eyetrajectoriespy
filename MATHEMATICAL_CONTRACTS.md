@@ -46,6 +46,38 @@ $$
 
 Implemented by `functional_l2_distance()`.
 
+## Order-preserving discrete Fréchet trajectory distance
+
+For sampled paths \(P=(\mathbf p_1,\ldots,\mathbf p_m)\) and \(Q=(\mathbf q_1,\ldots,\mathbf q_n)\),
+
+$
+d_{\boldsymbol\omega}(\mathbf p_i,\mathbf q_j)
+=
+\left[
+\sum_{d=1}^{D}\omega_d(p_{id}-q_{jd})^2
+\right]^{1/2},
+$
+
+and
+
+$
+C_{ij}
+=
+\max
+\left\{
+d_{\boldsymbol\omega}(\mathbf p_i,\mathbf q_j),
+\min(C_{i-1,j},C_{i-1,j-1},C_{i,j-1})
+\right\}.
+$
+
+The discrete Fréchet distance is
+
+$
+\delta_{dF}(P,Q)=C_{mn}.
+$
+
+Implemented by `discrete_frechet_distance()` and `pairwise_discrete_frechet_distances()`. Timestamps are not part of the distance; no scaling, interpolation, simplification, or downsampling is introduced automatically.
+
 ## Continuous planar trajectory geometry
 
 For a declared planar path \(\mathbf G(t)=[x(t),y(t)]^\top\),
