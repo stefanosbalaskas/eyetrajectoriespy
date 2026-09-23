@@ -706,3 +706,22 @@ The discontinuity between \(+\pi\) and \(-\pi\) is representational, not physica
 ### Tortuosity is undefined for zero endpoint displacement
 
 The implemented ratio uses path length divided by endpoint displacement. Closed and sufficiently near-closed paths are undefined under the declared `min_displacement`; the package returns NaN or raises according to the explicit policy rather than adding a denominator epsilon.
+
+
+## Discrete Fréchet limits
+
+### Bottleneck sensitivity
+
+The final distance is the maximum local separation along the optimal monotone coupling. One local outlier or spatial excursion can therefore dominate the result.
+
+### Time is not preserved
+
+The recurrence uses sequence indices, not timestamps. Two paths traversed at different rates can be close under discrete Fréchet even when their trial-time correspondence differs substantially.
+
+### Coordinate scaling changes the distance
+
+Anisotropic rescaling of dimensions changes the local Euclidean metric and therefore the Fréchet result. No automatic normalization is performed.
+
+### Couplings need not be unique
+
+Multiple optimal monotone couplings can attain the same distance. The audit result returns one deterministic optimum and must not be interpreted as a unique latent correspondence.
