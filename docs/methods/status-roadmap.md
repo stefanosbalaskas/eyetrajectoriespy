@@ -52,17 +52,19 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Delay-coordinate state reconstruction | implemented | `delay_embed_trajectory()` |
 | AMI / false-nearest-neighbor diagnostics | implemented, diagnostic-only | `embedding_delay_diagnostics()` / `embedding_dimension_diagnostics()` |
 | Sparse recurrence / RQA | implemented | `recurrence_matrix()` / `rqa_metrics()` |
+| Reconstructed-state RQA parameter sensitivity | implemented; descriptive multiverse, no automatic selector | `rqa_parameter_sensitivity()` |
 | Windowed and cross recurrence | implemented | `windowed_rqa()` / `cross_recurrence_matrix()` |
 | RQA-derived functional trajectories | implemented; descriptive functional bridge | `windowed_rqa_trajectory_set()` |
 | Functional RQA window/step sensitivity | implemented; descriptive, no automatic selector | `windowed_rqa_sensitivity()` |
 | Functional RQA mean band | implemented; complete curve/participant functions are inference units | `windowed_rqa_functional_mean_band()` |
 | Rosenstein local divergence / LLE | implemented with explicit fit interval | `local_divergence_curve()` / `estimate_largest_lyapunov_rosenstein()` |
+| Rosenstein-LLE parameter sensitivity | implemented; descriptive multiverse, no chaos-probability interpretation | `lyapunov_parameter_sensitivity()` |
 | IAAFT surrogate nonlinearity test | implemented | `surrogate_nonlinearity_test()` |
 | Empirical Poincare return-map stability | experimental | `poincare_crossings()` / `fit_local_return_map()` / `return_map_stability()` |
 
 ## Documentation and mathematical contracts
 
-Versions 0.21–0.25 treat documentation and mathematical metadata as tested package surfaces:
+Versions 0.21–0.26 treat documentation and mathematical metadata as tested package surfaces:
 
 - the repository-level `MATHEMATICAL_CONTRACTS.md` renders the core equations directly on GitHub;
 - the site mathematical reference maps those equations to the exact public APIs and scope boundaries;
@@ -113,10 +115,10 @@ Future tranches may evaluate:
 - explicit system-identification models for gaze dynamics;
 - model-based continuation / Floquet analysis only after a validated dynamical-system contract exists.
 
-Classical `floquet_multipliers(gaze)`, monodromy matrices from raw observations, and `detect_bifurcation(gaze)` remain intentionally **not** implemented in 0.25.
+Classical `floquet_multipliers(gaze)`, monodromy matrices from raw observations, and `detect_bifurcation(gaze)` remain intentionally **not** implemented in 0.26.
 
 A candidate enters the public API only when it can preserve the package rules: explicit estimand, deterministic behavior or seed, provenance, failure diagnostics, synthetic truth tests, documentation, and runnable examples.
 
 ## Development status
 
-The current development line is **0.25.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.26.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

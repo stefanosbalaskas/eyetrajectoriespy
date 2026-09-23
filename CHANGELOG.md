@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.26.0.dev0
+
+- Add `rqa_parameter_sensitivity()` for a fully declared Cartesian multiverse over embedding dimension, delay, fixed-radius or target-RR threshold policy, Theiler window, and minimum diagonal/vertical line lengths.
+- Require exactly one RQA threshold family and retain requested plus resolved delay, radius, recurrence-rate, Theiler, line-threshold, metric, and qualifying-line/count information for every specification.
+- Add descriptive RQA variation summaries (finite fraction, quartiles, range, and SD) without ranking or selecting a preferred parameter combination.
+- Add `lyapunov_parameter_sensitivity()` over embedding dimension, delay, Theiler window, and analyst-declared Rosenstein fit intervals while reusing divergence curves across fit intervals for the same reconstruction.
+- Retain exponent, fit R², slope SE, fitted-point count, usable-pair support, zero-distance counts, and descriptive positive/negative slope frequencies across the declared LLE grid.
+- State explicitly that positive-specification frequency is not a probability of deterministic chaos and that sensitivity-grid summaries are not sampling distributions.
+- Fail the entire sensitivity call when any declared specification is invalid rather than silently dropping, repairing, or replacing problematic combinations.
+- Add explicit one-parameter sensitivity plotting helpers that refuse hidden averaging across unspecified parameter dimensions.
+- Keep RQA sensitivity memory-bounded by retaining tidy metrics/provenance rather than one sparse recurrence matrix per grid point.
+- Add result contracts, reporting helpers, tests, executable/worked examples, mathematical-contract registration, preregistration/reporting guidance, limitations, and site navigation.
+
 ## 0.25.0.dev0
 
 - Add `windowed_rqa_sensitivity()` for predeclared window/step sensitivity grids without automatic tuning selection.

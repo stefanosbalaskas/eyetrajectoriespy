@@ -530,3 +530,48 @@ The 0.25 mean band does not solve the inferential problem of one participant con
 ### Window-selection and recurrence-tuning uncertainty remain conditional
 
 The band is conditional on the declared window, step, radius policy, Theiler window, line thresholds, state representation, preprocessing, and selected functional outcomes. It does not propagate uncertainty from choosing those settings after looking at the data.
+
+
+## Nonlinear parameter-sensitivity limits
+
+### A sensitivity grid is not a sampling distribution
+
+`rqa_parameter_sensitivity()` and `lyapunov_parameter_sensitivity()` summarize the numerical consequences of an analyst-declared set of defensible analysis choices.
+
+The minimum, quartiles, median, range, standard deviation, or positive-LLE fraction across that grid do not have the interpretation of confidence intervals, posterior intervals, p-values, or probabilities. The grid is usually deterministic and chosen by the analyst.
+
+### The grid itself can create a misleading robustness story
+
+A narrow grid can make an unstable method look robust. An implausibly broad grid can make a scientifically well-motivated primary specification look artificially fragile.
+
+Version 0.26 therefore does not define universal ranges for embedding dimension, delay, recurrence radius, target RR, Theiler window, line thresholds, or LLE fit intervals. Those ranges must be justified from the measurement process, diagnostics, scientific question, and relevant literature.
+
+### No specification is selected automatically
+
+The sensitivity layer does not rank specifications by DET, LAM, RR, LLE magnitude, fit R², standard error, or any combined score.
+
+Selecting the most favorable specification after inspecting the grid changes the scientific analysis and introduces selection uncertainty that the sensitivity table does not correct.
+
+### Failed specifications do not disappear
+
+If any declared combination cannot be evaluated, the entire sensitivity call raises an error identifying the failing specification.
+
+This avoids a common robustness failure mode in which difficult parameter combinations are removed and only successful or favorable analyses remain visible. It also means a very broad grid can fail because some corners are not admissible for the available data length.
+
+### Target-RR sensitivity controls recurrence rate
+
+When `target_recurrence_rates` is the threshold grid, RR is an imposed design target rather than an unconstrained outcome. Distance ties can make the achieved value differ slightly from the requested target, which is why both are retained.
+
+Under this policy, apparent RR stability is not evidence that recurrence density is naturally robust.
+
+### RQA matrices are not retained for every sensitivity specification
+
+The RQA sensitivity result keeps the complete parameter/metric audit table but not one sparse recurrence matrix per specification. This is an explicit memory contract for potentially large Cartesian grids.
+
+If a particular recurrence plot needs inspection, reconstruct that specification through the base embedding and recurrence APIs. This is not silent data loss: the parameter choice and numerical RQA outcomes remain in the sensitivity result.
+
+### Positive LLE frequency is not chaos probability
+
+The fraction of declared Rosenstein specifications with positive slopes only describes sign consistency over the chosen grid.
+
+Noise, nonstationarity, finite data, reconstruction choices, neighbor scarcity, and fit-interval choice remain relevant. Even a positive slope for every declared specification is not sufficient evidence of a deterministic chaotic mechanism.

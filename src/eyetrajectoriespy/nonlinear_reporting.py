@@ -6,8 +6,10 @@ import numpy as np
 
 from .nonlinear_types import (
     LargestLyapunovResult,
+    LyapunovParameterSensitivityResult,
     RecurrenceResult,
     RQAResult,
+    RQAParameterSensitivityResult,
     LocalReturnMapResult,
     ReturnMapStabilityResult,
     SurrogateNonlinearityResult,
@@ -128,6 +130,57 @@ def windowed_rqa_mean_band_reporting_text(
         "objects, preserving within-function temporal dependence. The procedure "
         "does not provide a within-trajectory block-bootstrap guarantee or "
         "treat overlapping windows as independent observations."
+    )
+
+
+
+def rqa_parameter_sensitivity_reporting_text(
+    result: RQAParameterSensitivityResult,
+) -> str:
+    """Return manuscript-ready wording for an RQA parameter multiverse."""
+
+    summary = result.summary_table.set_index("metric")
+    det = summary.loc["determinism"]
+    lam = summary.loc["laminarity"]
+    rr = summary.loc["recurrence_rate"]
+    threshold_policy = result.provenance.get("threshold_policy", "unknown")
+    controlled = (
+        " Recurrence rate was controlled by the target-rate design and was "
+        "not treated as an independent robustness outcome."
+        if threshold_policy == "target_recurrence_rate"
+        else ""
+    )
+    return (
+        f"RQA robustness was evaluated across {result.n_specifications} "
+        f"predeclared parameter specifications for curve {result.curve_id!r}. "
+        f"DET ranged from {det['minimum']:.4g} to {det['maximum']:.4g}, "
+        f"LAM from {lam['minimum']:.4g} to {lam['maximum']:.4g}, and RR from "
+        f"{rr['minimum']:.4g} to {rr['maximum']:.4g}. Every Cartesian-product "
+        "specification was retained in the sensitivity table; no parameter "
+        "combination was selected automatically and invalid specifications "
+        "were configured to fail the analysis rather than disappear silently."
+        + controlled
+    )
+
+
+def lyapunov_parameter_sensitivity_reporting_text(
+    result: LyapunovParameterSensitivityResult,
+) -> str:
+    """Return manuscript-ready wording for Rosenstein-LLE sensitivity."""
+
+    summary = result.summary_table.set_index("metric")
+    exponent = summary.loc["exponent"]
+    return (
+        f"Rosenstein local-divergence sensitivity was evaluated across "
+        f"{result.n_specifications} predeclared reconstruction, Theiler-window, "
+        f"and fit-interval specifications for curve {result.curve_id!r}. "
+        f"Estimated exponents ranged from {exponent['minimum']:.4g} to "
+        f"{exponent['maximum']:.4g} {result.exponent_unit}; "
+        f"{100.0 * exponent['positive_specification_fraction']:.1f}% of finite "
+        "declared specifications had positive slopes. This percentage was "
+        "reported only as descriptive sensitivity across the declared analysis "
+        "grid, not as a probability of deterministic chaos. No reconstruction "
+        "or fit interval was selected automatically."
     )
 
 

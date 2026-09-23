@@ -288,7 +288,7 @@ v P_v(v)
 }.
 $$
 
-Implemented by \`recurrence_matrix()\`, \`rqa_metrics()\`, \`windowed_rqa()\`, \`cross_recurrence_matrix()\`, and \`cross_rqa_metrics()\`.
+Implemented by \`recurrence_matrix()\`, \`rqa_metrics()\`, \`rqa_parameter_sensitivity()\`, \`windowed_rqa()\`, \`cross_recurrence_matrix()\`, and \`cross_rqa_metrics()\`.
 
 ## Windowed RQA as functional trajectories
 
@@ -348,7 +348,7 @@ a+
 \lambda_{\max}k\Delta t.
 $$
 
-Implemented by \`local_divergence_curve()\` and \`estimate_largest_lyapunov_rosenstein()\`.
+Implemented by \`local_divergence_curve()\`, \`estimate_largest_lyapunov_rosenstein()\`, and \`lyapunov_parameter_sensitivity()\`.
 
 ## IAAFT surrogate testing
 

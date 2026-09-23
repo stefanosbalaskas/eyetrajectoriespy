@@ -330,6 +330,47 @@ No automated “linear region” selector is used.
 !!! warning "Interpretation"
     A positive estimated \(\lambda_{\max}\) does **not** by itself prove deterministic chaos in gaze behavior. Noise, filtering, nonstationarity, short records, embedding choices, and fit-interval choice can all create or alter apparent divergence.
 
+### Sensitivity across reconstruction and fit choices
+
+Version 0.26 adds a separate robustness layer for the parameter dependence of both RQA and Rosenstein LLE.
+
+For reconstructed-state RQA:
+
+```python
+rqa_sensitivity = rqa_parameter_sensitivity(
+    gaze,
+    curve=0,
+    dimensions=("x", "y"),
+    embedding_dimensions=(2, 3, 4),
+    delays=(3, 5, 7),
+    radii=(0.5, 1.0, 1.5),
+    theiler_windows=(3, 6, 9),
+    min_diagonal_lengths=(2, 3),
+    min_vertical_lengths=(2, 3),
+)
+```
+
+For Rosenstein local divergence:
+
+```python
+lle_sensitivity = lyapunov_parameter_sensitivity(
+    gaze,
+    curve=0,
+    dimensions=("x", "y"),
+    embedding_dimensions=(2, 3, 4),
+    delays=(3, 5),
+    theiler_windows=(6, 12),
+    fit_intervals=((1, 5), (2, 6), (3, 7)),
+    max_horizon=10,
+)
+```
+
+These APIs evaluate the complete declared Cartesian grid. They do not optimize a radius, choose an embedding, choose a Theiler window, or select an LLE fit interval.
+
+The returned quartiles/ranges describe variation **across analysis specifications**. They are not confidence intervals. Likewise, the fraction of declared LLE specifications with positive slopes is not a probability that gaze is chaotic.
+
+If any declared specification is invalid, the sensitivity call fails and identifies it; the failed row is not silently removed. See [nonlinear parameter sensitivity](../methods/nonlinear-parameter-sensitivity.md).
+
 ## 4. IAAFT surrogate testing
 
 The package therefore pairs the LLE estimator with an explicit surrogate-data test:

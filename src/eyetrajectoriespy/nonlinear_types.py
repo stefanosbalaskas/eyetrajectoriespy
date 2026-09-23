@@ -177,6 +177,38 @@ class WindowedRQAMeanBandResult:
 
 
 @dataclass(frozen=True)
+class RQAParameterSensitivityResult:
+    """Declared multiverse of reconstructed-state RQA specifications."""
+
+    table: pd.DataFrame
+    summary_table: pd.DataFrame
+    parameter_columns: tuple[str, ...]
+    metric_columns: tuple[str, ...]
+    curve_id: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_specifications(self) -> int:
+        return len(self.table)
+
+
+@dataclass(frozen=True)
+class LyapunovParameterSensitivityResult:
+    """Declared multiverse of Rosenstein LLE specifications."""
+
+    table: pd.DataFrame
+    summary_table: pd.DataFrame
+    parameter_columns: tuple[str, ...]
+    curve_id: str
+    exponent_unit: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_specifications(self) -> int:
+        return len(self.table)
+
+
+@dataclass(frozen=True)
 class LocalDivergenceResult:
     """Rosenstein-style mean log-divergence curve before linear fitting."""
 

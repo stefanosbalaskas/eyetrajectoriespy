@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,10 +11,12 @@ from .nonlinear_types import (
     EmbeddingDelayDiagnosticResult,
     EmbeddingDimensionDiagnosticResult,
     LargestLyapunovResult,
+    LyapunovParameterSensitivityResult,
     LocalDivergenceResult,
     LocalReturnMapResult,
     PoincareCrossingResult,
     RecurrenceResult,
+    RQAParameterSensitivityResult,
     SurrogateNonlinearityResult,
     WindowedRQAFunctionalResult,
     WindowedRQAResult,
@@ -210,6 +212,103 @@ def plot_windowed_rqa_sensitivity(
     ax.set_ylabel(metric)
     ax.set_title(f"Window/step sensitivity: {curve_ids[curve_index]} / {metric}")
     ax.legend()
+    return ax
+
+
+
+def _filtered_sensitivity_slice(
+    table,
+    *,
+    parameter: str,
+    response: str,
+    filters: Mapping[str, object] | None,
+):
+    if parameter not in table.columns:
+        raise KeyError(f"Unknown sensitivity parameter column {parameter!r}")
+    if response not in table.columns:
+        raise KeyError(f"Unknown sensitivity response column {response!r}")
+    selected = table.copy()
+    if filters:
+        for key, value in filters.items():
+            if key not in selected.columns:
+                raise KeyError(f"Unknown sensitivity filter column {key!r}")
+            selected = selected.loc[selected[key] == value]
+    if selected.empty:
+        raise ValueError("filters leave no sensitivity specifications")
+    if bool(selected.duplicated(subset=[parameter], keep=False).any()):
+        raise ValueError(
+            "the requested slice contains multiple rows per parameter value; "
+            "add filters for the remaining varying parameters. No averaging or "
+            "other hidden aggregation is performed."
+        )
+    return selected.sort_values(parameter)
+
+
+def plot_rqa_sensitivity(
+    result: RQAParameterSensitivityResult,
+    *,
+    parameter: str,
+    metric: str,
+    filters: Mapping[str, object] | None = None,
+    ax=None,
+):
+    """Plot one explicit one-parameter slice of an RQA sensitivity grid."""
+
+    if metric not in result.metric_columns:
+        raise KeyError(f"Unknown RQA sensitivity metric {metric!r}")
+    selected = _filtered_sensitivity_slice(
+        result.table,
+        parameter=parameter,
+        response=metric,
+        filters=filters,
+    )
+    if ax is None:
+        _, ax = plt.subplots()
+    ax.plot(selected[parameter], selected[metric], marker="o")
+    ax.set_xlabel(parameter)
+    ax.set_ylabel(metric)
+    ax.set_title(f"RQA parameter sensitivity: {result.curve_id}")
+    return ax
+
+
+def plot_lyapunov_sensitivity(
+    result: LyapunovParameterSensitivityResult,
+    *,
+    parameter: str,
+    response: str = "exponent",
+    filters: Mapping[str, object] | None = None,
+    ax=None,
+):
+    """Plot one explicit one-parameter slice of an LLE sensitivity grid."""
+
+    allowed = {
+        "exponent",
+        "r_squared",
+        "standard_error",
+        "n_fit_points",
+        "minimum_pair_count_in_fit",
+        "total_zero_distance_count_in_fit",
+    }
+    if response not in allowed:
+        raise KeyError(f"Unknown LLE sensitivity response {response!r}")
+    selected = _filtered_sensitivity_slice(
+        result.table,
+        parameter=parameter,
+        response=response,
+        filters=filters,
+    )
+    if ax is None:
+        _, ax = plt.subplots()
+    ax.plot(selected[parameter], selected[response], marker="o")
+    if response == "exponent":
+        ax.axhline(0.0, linestyle=":")
+    ax.set_xlabel(parameter)
+    ax.set_ylabel(
+        f"{response} ({result.exponent_unit})"
+        if response == "exponent"
+        else response
+    )
+    ax.set_title(f"Rosenstein sensitivity: {result.curve_id}")
     return ax
 
 

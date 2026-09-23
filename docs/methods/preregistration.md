@@ -459,3 +459,34 @@ For a functional RQA mean band, additionally pre-specify:
 - that window/step selection uncertainty is not included unless a separate procedure is specified.
 
 Do not reduce the step merely to create more apparent observations for inference. A denser derived RQA grid increases temporal sampling of the functional summary and often source-sample reuse; it does not create additional independent participants or curves.
+
+
+## Nonlinear parameter-sensitivity multiverse
+
+If reconstructed-state RQA robustness will be evaluated, pre-specify:
+
+- the source trajectory dimensions;
+- the complete embedding-dimension grid;
+- the complete delay grid and units;
+- exactly one threshold family: fixed radii or target recurrence rates;
+- the complete threshold grid;
+- the Theiler-window grid and units;
+- the minimum diagonal-line grid;
+- the minimum vertical-line grid;
+- the recurrence distance metric;
+- the RQA outcomes whose variation will be interpreted;
+- whether a primary specification exists independently of the sensitivity grid.
+
+If Rosenstein-LLE robustness will be evaluated, pre-specify:
+
+- source dimensions;
+- embedding-dimension and delay grids;
+- Theiler-window grid;
+- maximum divergence horizon;
+- every fit interval and its units;
+- which diagnostics (slope, R², SE, usable-pair support) will be reported;
+- whether sign consistency is descriptive or tied to a separately stated hypothesis.
+
+Do not choose the sensitivity grid after inspecting which values preserve a preferred conclusion. Do not define the specification with the largest positive exponent, largest DET/LAM, highest R², or smallest standard error as the primary analysis unless that selection rule itself was independently justified and its selection uncertainty is handled separately.
+
+The package will not convert the fraction of positive LLE specifications into a probability of deterministic chaos.
