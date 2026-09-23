@@ -64,12 +64,14 @@ from .functional_rqa import (
     windowed_rqa_functional_mean_band,
     windowed_rqa_sensitivity,
 )
+from .rqa_inference import bootstrap_rqa_metric_means
 from .nonlinear_reporting import (
     largest_lyapunov_reporting_text,
     lyapunov_parameter_sensitivity_reporting_text,
     return_map_stability_reporting_text,
     rqa_parameter_sensitivity_reporting_text,
     recurrence_radius_profile_reporting_text,
+    rqa_metric_mean_bootstrap_reporting_text,
     rqa_reporting_text,
     surrogate_nonlinearity_reporting_text,
     windowed_rqa_reporting_text,
@@ -85,6 +87,7 @@ from .nonlinear_plotting import (
     plot_poincare_return_map,
     plot_recurrence,
     plot_recurrence_rate_curve,
+    plot_rqa_metric_mean_bootstrap,
     plot_rqa_sensitivity,
     plot_surrogate_nonlinearity,
     plot_windowed_rqa,
@@ -102,6 +105,7 @@ from .nonlinear_types import (
     PoincareCrossingResult,
     RecurrenceRadiusProfileResult,
     RecurrenceResult,
+    RQAMeanBootstrapResult,
     RQAParameterSensitivityResult,
     RQAResult,
     ReturnMapStabilityResult,
@@ -318,10 +322,11 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.27.0.dev0"
+__version__ = "0.28.0.dev0"
 
 __all__ = [
     "recurrence_radius_profile_reporting_text",
+    "rqa_metric_mean_bootstrap_reporting_text",
     "rqa_reporting_text",
     "rqa_parameter_sensitivity_reporting_text",
     "windowed_rqa_reporting_text",
@@ -336,6 +341,7 @@ __all__ = [
     "plot_embedding_dimension_diagnostics",
     "plot_recurrence",
     "plot_recurrence_rate_curve",
+    "plot_rqa_metric_mean_bootstrap",
     "plot_rqa_sensitivity",
     "plot_windowed_rqa",
     "plot_windowed_rqa_trajectories",
@@ -350,6 +356,7 @@ __all__ = [
     "RecurrenceRadiusProfileResult",
     "RecurrenceResult",
     "RQAResult",
+    "RQAMeanBootstrapResult",
     "RQAParameterSensitivityResult",
     "WindowedRQAResult",
     "WindowedRQAFunctionalResult",
@@ -369,6 +376,7 @@ __all__ = [
     "recurrence_radius_profile",
     "rqa_metrics",
     "rqa_parameter_sensitivity",
+    "bootstrap_rqa_metric_means",
     "windowed_rqa",
     "windowed_rqa_trajectory_set",
     "windowed_rqa_sensitivity",
