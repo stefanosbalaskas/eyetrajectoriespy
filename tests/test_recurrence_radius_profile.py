@@ -109,13 +109,18 @@ def test_radius_profile_first_shell_includes_zero_distance_pairs():
 
 
 @pytest.mark.parametrize("theiler", [0, 1, 2])
-def test_radius_profile_matches_recurrence_matrix_at_every_declared_radius(theiler):
+@pytest.mark.parametrize("metric", ["euclidean", "cityblock", "chebyshev"])
+def test_radius_profile_matches_recurrence_matrix_at_every_declared_radius(
+    theiler,
+    metric,
+):
     data = _scalar(np.sin(np.linspace(0.0, 4.0 * np.pi, 40)))
     radii = (0.05, 0.10, 0.20, 0.40)
     profile = recurrence_radius_profile(
         data,
         curve=0,
         radii=radii,
+        metric=metric,
         theiler_window=theiler,
         dimensions=("x",),
     )
@@ -126,6 +131,7 @@ def test_radius_profile_matches_recurrence_matrix_at_every_declared_radius(theil
             data,
             curve=0,
             radius=radius,
+            metric=metric,
             theiler_window=theiler,
             dimensions=("x",),
         )
