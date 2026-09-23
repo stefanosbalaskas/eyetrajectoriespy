@@ -4,10 +4,12 @@ from .conformal import conformal_fpca_anomaly_frame, split_conformal_fpca_anomal
 from .analysis import (
     cluster_fpca_scores,
     discrete_frechet_distance,
+    dynamic_time_warping_cost,
     fit_scalar_on_function_regression,
     functional_l2_distance,
     nearest_trajectory_indices,
     pairwise_discrete_frechet_distances,
+    pairwise_dynamic_time_warping_costs,
     pairwise_functional_distances,
     score_distance_matrix,
 )
@@ -273,6 +275,7 @@ from .stability import (
 )
 from .types import (
     DiscreteFrechetResult,
+    DynamicTimeWarpingResult,
     BasisProjectionResult,
     FPCAComponentBandResult,
     FPCAComponentEnvelopeResult,
@@ -336,7 +339,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.32.0.dev0"
+__version__ = "0.33.0.dev0"
 
 __all__ = [
     "recurrence_radius_profile_reporting_text",
@@ -417,6 +420,7 @@ __all__ = [
     "mathematical_contract_frame",
     "TrajectorySet",
     "DiscreteFrechetResult",
+    "DynamicTimeWarpingResult",
     "IrregularTrajectorySet",
     "FPCAResult",
     "FPCAScoreUncertaintyResult",
@@ -485,6 +489,8 @@ __all__ = [
     "functional_l2_distance",
     "discrete_frechet_distance",
     "pairwise_discrete_frechet_distances",
+    "dynamic_time_warping_cost",
+    "pairwise_dynamic_time_warping_costs",
     "pairwise_functional_distances",
     "nearest_trajectory_indices",
     "score_distance_matrix",
