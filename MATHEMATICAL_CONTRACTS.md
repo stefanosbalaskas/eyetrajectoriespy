@@ -46,6 +46,38 @@ $$
 
 Implemented by `functional_l2_distance()`.
 
+## Discrete Fréchet trajectory distance
+
+For ordered point sequences \(P\) and \(Q\),
+
+$
+d_w(\mathbf p_i,\mathbf q_j)
+=
+\left[
+\sum_r \omega_r(p_{ir}-q_{jr})^2
+\right]^{1/2},
+$
+
+and
+
+$
+D_{i,j}
+=
+\max
+\left\{
+d_w(\mathbf p_i,\mathbf q_j),
+\min(D_{i-1,j},D_{i-1,j-1},D_{i,j-1})
+\right\}.
+$
+
+The discrete Fréchet distance is
+
+$
+\delta_{dF}(P,Q)=D_{m,n}.
+$
+
+Implemented by discrete_frechet_distance() and pairwise_discrete_frechet_distances(). Couplings preserve sequence order without backtracking; elapsed time is not used and no hidden preprocessing is introduced.
+
 ## Continuous planar trajectory geometry
 
 For a declared planar path \(\mathbf G(t)=[x(t),y(t)]^\top\),
