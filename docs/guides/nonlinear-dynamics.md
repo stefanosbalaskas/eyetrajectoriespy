@@ -224,6 +224,47 @@ When target recurrence rate is used, recurrence density is controlled by constru
 Undefined RQA metrics fail closed by default. `undefined_policy="keep"` retains those cells as `NaN`; no zero-filling or interpolation is introduced.
 
 See the [worked functional RQA example](../examples/rqa-functional-trajectories.md).
+
+### Window/step sensitivity and independent-unit inference
+
+Version 0.25 adds an explicit sensitivity layer rather than a default window size:
+
+```python
+sensitivity = windowed_rqa_sensitivity(
+    gaze,
+    metrics=("recurrence_rate", "determinism", "laminarity"),
+    window_step_pairs=((40, 20), (40, 10), (60, 20)),
+    radius=0.35,
+    theiler_window=2,
+    dimensions=("x", "y"),
+)
+```
+
+Every declared window/step pair is retained. The design table separates window span, derived-profile grid spacing, overlap fraction, analyzed-source coverage, reused-sample fraction, and mean/maximum window membership. None of those quantities is re-labeled as an effective independent sample size.
+
+Pairwise profile diagnostics use only exact shared window centers. No interpolation is introduced merely to compare two sensitivity specifications, and the function never selects a preferred window/step setting automatically.
+
+For population mean inference on the derived functions, use a scientifically justified independent unit:
+
+```python
+mean_band = windowed_rqa_functional_mean_band(
+    gaze,
+    metrics=("determinism", "laminarity"),
+    window=40,
+    step=20,
+    unit="participant",
+    participant_column="participant_id",
+    radius=0.35,
+    theiler_window=2,
+    dimensions=("x", "y"),
+    n_multiplier=2000,
+    random_state=42,
+)
+```
+
+The participant/curve residual function is multiplied as a whole across the complete window-center-by-metric grid. Overlapping window rows are never bootstrapped as independent observations. This preserves within-function dependence in the existing multiplier-band calibration while keeping the independent sampling unit explicit.
+
+This procedure is **not** a moving/block bootstrap within one long trajectory and does not propagate post-hoc window-selection uncertainty. See [functional RQA sensitivity and dependence](../methods/rqa-functional-dependence.md) and the [worked 0.25 example](../examples/rqa-functional-sensitivity.md).
 ### Cross recurrence
 
 \`\`\`python
