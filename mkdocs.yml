@@ -45,6 +45,7 @@ nav:
       - Wild-bootstrap Monte Carlo precision: guides/fpcr-wild-bootstrap-monte-carlo.md
       - Stabilized-volatility FPCR selection: guides/fpcr-wild-bootstrap-selection.md
       - Derived continuous functions: guides/derived-functions.md
+      - Continuous trajectory geometry: methods/trajectory-geometry.md
       - Nonlinear trajectory dynamics: guides/nonlinear-dynamics.md
       - Recurrence-threshold diagnostics: methods/recurrence-threshold-diagnostics.md
       - RQA population bootstrap: methods/rqa-population-bootstrap.md
@@ -79,6 +80,7 @@ nav:
       - Wild-bootstrap Monte Carlo precision: examples/fpcr-wild-bootstrap-monte-carlo.md
       - Stabilized-volatility FPCR selection: examples/fpcr-wild-bootstrap-selection.md
       - Irregular sampling & gaps: examples/irregular-data.md
+      - Continuous trajectory geometry: examples/trajectory-geometry.md
       - Function → equation registry: examples/function-equation-registry.md
       - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
       - Recurrence-threshold diagnostics: examples/recurrence-threshold-diagnostics.md
