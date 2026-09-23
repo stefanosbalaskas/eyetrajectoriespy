@@ -226,6 +226,22 @@ class LyapunovParameterSensitivityResult:
 
 
 @dataclass(frozen=True)
+class KantzParameterSensitivityResult:
+    """Declared multiverse of Kantz LLE neighborhood specifications."""
+
+    table: pd.DataFrame
+    summary_table: pd.DataFrame
+    parameter_columns: tuple[str, ...]
+    curve_id: str
+    exponent_unit: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_specifications(self) -> int:
+        return len(self.table)
+
+
+@dataclass(frozen=True)
 class RQAMeanBootstrapResult:
     """Bootstrap uncertainty for population-average per-curve RQA metrics."""
 
