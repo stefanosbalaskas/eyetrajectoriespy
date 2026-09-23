@@ -48,6 +48,26 @@ $$
 
 [Expanded mathematical reference](../methods/mathematical-reference.md#functional-l2)
 
+## Discrete Fréchet trajectory distance
+
+**Functions:** `discrete_frechet_distance()`, `pairwise_discrete_frechet_distances()`
+
+$
+d_w(mathbf p_i,mathbf q_j)=left[sum_romega_r(p_{ir}-q_{jr})^2ight]^{1/2}
+$
+
+$
+D_{i,j}=maxleft{d_w(mathbf p_i,mathbf q_j),min(D_{i-1,j},D_{i-1,j-1},D_{i,j-1})ight}
+$
+
+$
+delta_{dF}(P,Q)=D_{m,n}
+$
+
+**Scope:** Ordered complete point sequences with monotone coupling and no backtracking; elapsed time is not part of the recurrence, and no interpolation, resampling, normalization, or path simplification is introduced automatically.
+
+[Expanded mathematical reference](../methods/mathematical-reference.md#discrete-frechet)
+
 ## Continuous planar trajectory geometry
 
 **Functions:** `heading_function()`, `signed_curvature_function()`, `turning_rate_function()`, `trajectory_tortuosity()`
