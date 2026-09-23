@@ -52,17 +52,17 @@ $$
 
 **Functions:** `discrete_frechet_distance()`, `pairwise_discrete_frechet_distances()`
 
-$
-d_w(mathbf p_i,mathbf q_j)=left[sum_romega_r(p_{ir}-q_{jr})^2ight]^{1/2}
-$
+$$
+d_w(\mathbf p_i,\mathbf q_j)=\left[\sum_r\omega_r(p_{ir}-q_{jr})^2\right]^{1/2}
+$$
 
-$
-D_{i,j}=maxleft{d_w(mathbf p_i,mathbf q_j),min(D_{i-1,j},D_{i-1,j-1},D_{i,j-1})ight}
-$
+$$
+D_{i,j}=\max\left\{d_w(\mathbf p_i,\mathbf q_j),\min(D_{i-1,j},D_{i-1,j-1},D_{i,j-1})\right\}
+$$
 
-$
-delta_{dF}(P,Q)=D_{m,n}
-$
+$$
+\delta_{dF}(P,Q)=D_{m,n}
+$$
 
 **Scope:** Ordered complete point sequences with monotone coupling and no backtracking; elapsed time is not part of the recurrence, and no interpolation, resampling, normalization, or path simplification is introduced automatically.
 
