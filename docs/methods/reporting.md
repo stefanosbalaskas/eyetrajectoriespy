@@ -669,3 +669,21 @@ For `kantz_parameter_sensitivity()`, report the complete declared grid and the n
 If a primary Kantz specification existed, distinguish it from the sensitivity grid. Do not report the most convenient radius or fit interval as though it were primary.
 
 State explicitly that the positive-specification fraction is descriptive across declared analysis choices and not a probability of deterministic chaos.
+
+
+## Continuous trajectory geometry
+
+When continuous geometry is reported, state:
+
+- selected planar dimensions and coordinate system;
+- whether the two axes use the same spatial scale;
+- screen \(y\)-axis orientation if curvature/turning sign is interpreted visually;
+- preprocessing and any explicit smoothing performed upstream;
+- derivative method and observed time unit;
+- \`min_speed\` and \`undefined_policy\`;
+- number/fraction of undefined samples by curve or analysis set;
+- whether heading remained wrapped;
+- curvature units and turning-rate units;
+- tortuosity definition, \`min_displacement\`, and treatment of closed/near-closed paths.
+
+Do not describe continuous signed curvature as interchangeable with event-level saccade maximum-deviation, area-curvature, or polynomial-fit metrics.
