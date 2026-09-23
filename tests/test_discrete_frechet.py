@@ -123,6 +123,22 @@ def test_input_contracts_fail_closed():
         discrete_frechet_distance(valid, valid, return_coupling=1)
 
 
+def test_pairwise_weights_are_validated_with_single_curve():
+    trajectories = TrajectorySet(
+        time=np.array([0.0, 1.0]),
+        values=np.zeros((1, 2, 2)),
+        curve_ids=("a",),
+        dimension_names=("x", "y"),
+        coordinate_system="normalized",
+        time_unit="s",
+    )
+    with pytest.raises(ValueError, match="one value per dimension"):
+        pairwise_discrete_frechet_distances(
+            trajectories,
+            dimension_weights=np.array([1.0]),
+        )
+
+
 def test_pairwise_dimension_contracts_fail_closed():
     trajectories = TrajectorySet(
         time=np.array([0.0, 1.0]),
