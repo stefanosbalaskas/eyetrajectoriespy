@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.31.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.32.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -62,6 +62,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - continuous speed, acceleration, landmark-distance, and path-length functions;
 - continuous wrapped heading, signed curvature, turning-rate functions, and explicit path-length/displacement tortuosity with low-speed undefinedness retained;
 - integrated functional L2 distances;
+- order-preserving discrete Fréchet trajectory distances with explicit compared dimensions/weights and no hidden temporal alignment, resampling, or simplification;
 - deterministic FPCA-score clustering;
 - scalar-on-function regression through FPCA scores;
 - explicit delay-coordinate reconstruction with AMI/autocorrelation and false-nearest-neighbor diagnostics;
@@ -131,6 +132,7 @@ print(summarise_fpca(fit))
 |---|---|---|
 | Continuous gaze location | `[x(t), y(t)]` | `fit_mfpca()` |
 | Continuous planar geometry | `heading(t)`, signed curvature, turning rate, tortuosity | `heading_function()` / `signed_curvature_function()` / `turning_rate_function()` / `trajectory_tortuosity()` |
+| Ordered sampled route similarity | discrete Fréchet distance | `discrete_frechet_distance()` / `pairwise_discrete_frechet_distances()` |
 | Native irregular gaze | curve-specific time grids | `from_irregular_long_dataframe_native()` |
 | Genuinely sparse univariate gaze | covariance UFPCA + PACE scores | `fit_sparse_fpca_fdapy()` |
 | One derived continuous outcome | `X(t)` | `fit_fpca()` |
@@ -185,7 +187,7 @@ It includes a tutorial gallery, representation selection, nonlinear state-space 
 
 ## Scope boundary
 
-`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.31 adds provenance-aware continuous planar geometry—heading, signed curvature, turning rate, and tortuosity—with no hidden smoothing, coordinate rescaling, denominator stabilization, or low-speed imputation. The nonlinear/RQA layers from 0.23–0.30 remain intact. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
+`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.32 adds order-preserving discrete Fréchet trajectory distance for sampled routes with explicit dimensions and point-metric weights. Timestamps are not part of this distance, and the package performs no hidden interpolation, resampling, simplification, downsampling, or time warping. Version 0.31 continuous geometry and the nonlinear/RQA layers remain intact. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
 
 ## Validation
 
