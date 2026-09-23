@@ -312,6 +312,26 @@ $$
 
 [Expanded mathematical reference](../methods/mathematical-reference.md#local-divergence)
 
+## Kantz neighborhood divergence and largest Lyapunov estimate
+
+**Functions:** `kantz_divergence_curve()`, `estimate_largest_lyapunov_kantz()`
+
+$
+\mathcal N_i(\varepsilon)=\{j:\|\mathbf z_i-\mathbf z_j\|_2\le\varepsilon,\ |i-j|>w\}
+$
+
+$
+S(\varepsilon,k)=\frac{1}{N_k}\sum_i\log\left[\frac{1}{|\mathcal N_i(k)|}\sum_{j\in\mathcal N_i(k)}\|\mathbf z_{i+k}-\mathbf z_{j+k}\|_2\right]
+$
+
+$
+S(\varepsilon,k)\approx a+\lambda_{\max}k\Delta t
+$
+
+**Scope:** Fixed-radius Kantz neighborhood divergence with explicit minimum neighbor count, Theiler exclusion, and analyst-declared fit interval; no automatic radius expansion or chaos classification.
+
+[Expanded mathematical reference](../methods/mathematical-reference.md#kantz-local-divergence)
+
 ## IAAFT surrogate nonlinearity test
 
 **Functions:** `surrogate_nonlinearity_test()`
