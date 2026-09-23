@@ -2,14 +2,15 @@
 
 Version 0.26 adds explicit robustness analysis for the nonlinear estimators that were already present in the package. The purpose is not to search for the parameter combination that produces the most interesting result. It is to make the dependence of RQA and Rosenstein-style local-divergence estimates on defensible analysis choices visible.
 
-The two entry points are:
+The three entry points are:
 
 ```python
 rqa_parameter_sensitivity(...)
 lyapunov_parameter_sensitivity(...)
+kantz_parameter_sensitivity(...)
 ```
 
-Both evaluate the full Cartesian product of the declared grid and return every successful specification. They never rank, optimize, or automatically select a preferred setting.
+All evaluate the full Cartesian product of the declared grid and return every successful specification. They never rank, optimize, or automatically select a preferred setting.
 
 ## Why this is a separate scientific layer
 
@@ -26,14 +27,25 @@ $$
 
 Likewise, a Rosenstein slope is conditional on reconstruction, temporal exclusion, and the fitted divergence interval,
 
-$$
-\widehat\lambda_{\max}
+$
+\widehat\lambda_{\max}^{(R)}
 =
-\widehat\lambda_{\max}
+\widehat\lambda_{\max}^{(R)}
 \left(
 m,\tau,w,[t_a,t_b]
 \right).
-$$
+$
+
+For Kantz, the fixed neighborhood radius and minimum-neighbor rule are additional declared analysis dimensions,
+
+$
+\widehat\lambda_{\max}^{(K)}
+=
+\widehat\lambda_{\max}^{(K)}
+\left(
+m,\tau,\varepsilon,n_{\min},w,[t_a,t_b]
+\right).
+$
 
 The base APIs already preserve those choices. Version 0.26 adds a structured way to evaluate a predeclared neighborhood of choices without turning the package into a parameter optimizer.
 
@@ -122,6 +134,72 @@ The table records:
 - minimum usable-pair count in the fit interval;
 - zero-distance counts in the fit interval.
 
+## Kantz-LLE parameter sensitivity
+
+Version 0.30 adds `kantz_parameter_sensitivity()` for the neighborhood-based estimator.
+
+```python
+from eyetrajectoriespy import kantz_parameter_sensitivity
+
+kantz = kantz_parameter_sensitivity(
+    gaze,
+    curve=0,
+    dimensions=("x", "y"),
+    embedding_dimensions=(2, 3, 4),
+    delays=(3, 5),
+    radii=(0.05, 0.08, 0.12),
+    min_neighbors=(2, 4),
+    theiler_windows=(6, 12),
+    fit_intervals=((1, 5), (2, 6)),
+    max_horizon=10,
+)
+```
+
+The complete declared Cartesian product is evaluated. There is no internal search for a radius that maximizes the exponent, fit quality, support, or positivity.
+
+For each resolved embedding/radius/minimum-neighbor/Theiler specification, the Kantz divergence curve is computed once and reused across the declared fit intervals.
+
+The table retains:
+
+- requested and resolved reconstruction settings;
+- fixed radius;
+- minimum-neighbor requirement;
+- requested and resolved Theiler window;
+- requested and resolved fit interval;
+- maximum divergence horizon;
+- exponent, units, intercept, $R^2$, and slope standard error;
+- number of fitted divergence points;
+- fraction of reconstructed reference states that satisfy the minimum-neighbor rule at horizon zero;
+- minimum contributing-reference count in the fitted interval;
+- minimum contributing-pair count in the fitted interval;
+- zero-mean neighborhood counts in the fitted interval.
+
+The supported-reference fraction is a **support diagnostic**, not an inferential weight. A high value does not make a radius scientifically preferable; it only describes how much of the reconstructed state set is supported under that declared neighborhood rule.
+
+If any declared radius/minimum-neighbor combination yields no supported reference state, the entire sensitivity analysis fails and identifies that specification. The package does not silently remove the sparse-neighborhood row or expand the radius.
+
+### Plot one explicit Kantz slice
+
+```python
+from eyetrajectoriespy import plot_kantz_sensitivity
+
+ax = plot_kantz_sensitivity(
+    kantz,
+    parameter="radius",
+    response="exponent",
+    filters={
+        "embedding_dimension": 2,
+        "requested_delay": 3.0,
+        "min_neighbors": 4,
+        "requested_theiler_window": 6.0,
+        "requested_fit_start": 1.0,
+        "requested_fit_end": 5.0,
+    },
+)
+```
+
+As with the other sensitivity plots, the helper refuses to average over unspecified parameter dimensions.
+
 ## Descriptive stability summaries
 
 Both result objects include `summary_table`.
@@ -173,7 +251,7 @@ This differs from silent result dropping: all parameter choices and all reported
 
 ## Plotting without hidden aggregation
 
-`plot_rqa_sensitivity()` and `plot_lyapunov_sensitivity()` deliberately plot only one explicit one-parameter slice.
+`plot_rqa_sensitivity()`, `plot_lyapunov_sensitivity()`, and `plot_kantz_sensitivity()` deliberately plot only one explicit one-parameter slice.
 
 ```python
 ax = plot_rqa_sensitivity(
@@ -205,7 +283,7 @@ A defensible grid should come from:
 5. published conventions for the specific analysis;
 6. values that would have been scientifically defensible before inspecting the desired outcome.
 
-Kraemer et al. show that recurrence characteristics can depend strongly on threshold and embedding dimension, motivating explicit threshold sensitivity rather than a universal epsilon. Rosenstein et al. describe robustness of their estimator across reconstruction choices, but that does not eliminate the need to inspect those choices in a new finite biological data set.
+Kraemer et al. show that recurrence characteristics can depend strongly on threshold and embedding dimension, motivating explicit threshold sensitivity rather than a universal epsilon. Rosenstein et al. describe robustness of their estimator across reconstruction choices, but that does not eliminate the need to inspect those choices in a new finite biological data set. Kantz's neighborhood method makes the local scale explicit through $\varepsilon$; a robust analysis should therefore expose plausible radius/minimum-neighbor dependence rather than hide it inside a tuned setting.
 
 ## Reporting
 
