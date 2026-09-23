@@ -20,15 +20,20 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.RQAResult
 ::: eyetrajectoriespy.WindowedRQAResult
 ::: eyetrajectoriespy.WindowedRQAFunctionalResult
+::: eyetrajectoriespy.WindowedRQASensitivityResult
+::: eyetrajectoriespy.WindowedRQAMeanBandResult
 ::: eyetrajectoriespy.recurrence_matrix
 ::: eyetrajectoriespy.rqa_metrics
 ::: eyetrajectoriespy.windowed_rqa
 ::: eyetrajectoriespy.windowed_rqa_trajectory_set
+::: eyetrajectoriespy.windowed_rqa_sensitivity
+::: eyetrajectoriespy.windowed_rqa_functional_mean_band
 ::: eyetrajectoriespy.cross_recurrence_matrix
 ::: eyetrajectoriespy.cross_rqa_metrics
 ::: eyetrajectoriespy.plot_recurrence
 ::: eyetrajectoriespy.plot_windowed_rqa
 ::: eyetrajectoriespy.plot_windowed_rqa_trajectories
+::: eyetrajectoriespy.plot_windowed_rqa_sensitivity
 
 ### Local divergence and surrogate testing
 ::: eyetrajectoriespy.LocalDivergenceResult
@@ -44,6 +49,8 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.rqa_reporting_text
 ::: eyetrajectoriespy.windowed_rqa_reporting_text
 ::: eyetrajectoriespy.windowed_rqa_functional_reporting_text
+::: eyetrajectoriespy.windowed_rqa_sensitivity_reporting_text
+::: eyetrajectoriespy.windowed_rqa_mean_band_reporting_text
 ::: eyetrajectoriespy.largest_lyapunov_reporting_text
 ::: eyetrajectoriespy.surrogate_nonlinearity_reporting_text
 ::: eyetrajectoriespy.return_map_stability_reporting_text
