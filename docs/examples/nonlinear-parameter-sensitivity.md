@@ -195,7 +195,8 @@ print(
         [
             "specification_id",
             "embedding_dimension",
-            "radius",
+            "requested_radius",
+            "resolved_radius",
             "min_neighbors",
             "theiler_window_samples",
             "fit_start_samples",
@@ -217,7 +218,7 @@ from eyetrajectoriespy import plot_kantz_sensitivity
 
 ax = plot_kantz_sensitivity(
     kantz,
-    parameter="radius",
+    parameter="requested_radius",
     response="exponent",
     filters={
         "embedding_dimension": 2,
