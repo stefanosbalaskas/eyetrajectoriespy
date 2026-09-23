@@ -660,3 +660,12 @@ When `kantz_divergence_curve()` and `estimate_largest_lyapunov_kantz()` are used
 - that a positive slope was not interpreted as standalone evidence of deterministic chaos.
 
 If Rosenstein and Kantz disagree, report the difference as estimator sensitivity rather than retaining only the preferred result.
+
+
+### Kantz sensitivity analysis
+
+For `kantz_parameter_sensitivity()`, report the complete declared grid and the number of Cartesian-product specifications; the range/quantiles of exponent and fit diagnostics; the range of supported-reference fractions; minimum reference/pair support where relevant; and whether sign or substantive interpretation changed across the grid.
+
+If a primary Kantz specification existed, distinguish it from the sensitivity grid. Do not report the most convenient radius or fit interval as though it were primary.
+
+State explicitly that the positive-specification fraction is descriptive across declared analysis choices and not a probability of deterministic chaos.
