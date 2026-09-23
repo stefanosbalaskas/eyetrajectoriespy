@@ -563,3 +563,20 @@ If a robustness multiverse is planned, pre-specify the full sets of embedding di
 Pre-specify the failure rule. The 0.30 API fails the complete analysis if any declared specification is invalid rather than removing inconvenient settings.
 
 Do not define the sensitivity grid after inspecting which radii produce positive exponents, high (R^2), small standard errors, or high neighborhood support.
+
+
+## Continuous trajectory geometry
+
+If heading, curvature, turning rate, or tortuosity will be analyzed, pre-specify:
+
+- the two planar dimensions;
+- coordinate system and any calibration to pixels, physical units, or degrees of visual angle;
+- whether horizontal and vertical scales are commensurate;
+- recorded \(y\)-axis orientation if signed geometry will be interpreted;
+- upstream filtering/smoothing, if any;
+- \`min_speed\` and \`undefined_policy\`;
+- whether wrapped heading will be analyzed directly or transformed using a declared circular/unwrapping method;
+- \`min_displacement\` and undefined handling for tortuosity;
+- whether geometry is a primary outcome or exploratory derived function.
+
+Do not choose a low-speed threshold, coordinate rescaling, or heading unwrapping strategy after inspecting which version produces the preferred condition difference.

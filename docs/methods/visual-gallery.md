@@ -89,6 +89,16 @@ These figures are regenerated from deterministic synthetic data during the docum
     [Worked example](../examples/fpcr-wild-bootstrap-monte-carlo.md) · [Mathematics](mathematical-reference.md#monte-carlo)
 
 
+-   **Continuous signed curvature**
+
+    ![Signed curvature over time for a smooth planar trajectory](../assets/gallery/trajectory-curvature.svg)
+
+    Continuous local path curvature computed from the observed planar trajectory without hidden smoothing, interpolation, or denominator stabilization.
+
+    **API:** `signed_curvature_function()`, `plot_trajectory_overlay()`
+
+    [Worked example](../examples/trajectory-geometry.md) · [Method guide](trajectory-geometry.md) · [Mathematics](mathematical-reference.md#trajectory-geometry)
+
 -   **Sparse recurrence structure**
 
     ![Sparse recurrence plot](../assets/gallery/recurrence-plot.svg)
@@ -258,4 +268,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates all seventeen assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates all eighteen assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.

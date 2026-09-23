@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.30.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.31.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -60,6 +60,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - optional elastic SRVF curve analysis through `fdasrsf`;
 - optional B-spline/Fourier basis projection and functional outlier screening through `scikit-fda` with retained provenance;
 - continuous speed, acceleration, landmark-distance, and path-length functions;
+- continuous wrapped heading, signed curvature, turning-rate functions, and explicit path-length/displacement tortuosity with low-speed undefinedness retained;
 - integrated functional L2 distances;
 - deterministic FPCA-score clustering;
 - scalar-on-function regression through FPCA scores;
@@ -129,6 +130,7 @@ print(summarise_fpca(fit))
 | Scientific object | Representation | Entry point |
 |---|---|---|
 | Continuous gaze location | `[x(t), y(t)]` | `fit_mfpca()` |
+| Continuous planar geometry | `heading(t)`, signed curvature, turning rate, tortuosity | `heading_function()` / `signed_curvature_function()` / `turning_rate_function()` / `trajectory_tortuosity()` |
 | Native irregular gaze | curve-specific time grids | `from_irregular_long_dataframe_native()` |
 | Genuinely sparse univariate gaze | covariance UFPCA + PACE scores | `fit_sparse_fpca_fdapy()` |
 | One derived continuous outcome | `X(t)` | `fit_fpca()` |
@@ -183,7 +185,7 @@ It includes a tutorial gallery, representation selection, nonlinear state-space 
 
 ## Scope boundary
 
-`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.30 adds declared Kantz maximal-Lyapunov sensitivity across reconstruction, radius, minimum-neighbor, Theiler, and fit choices without automatic tuning, while retaining the named 0.29 Rosenstein/Kantz estimators and earlier RQA robustness/inference layers. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
+`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.31 adds provenance-aware continuous planar geometry—heading, signed curvature, turning rate, and tortuosity—with no hidden smoothing, coordinate rescaling, denominator stabilization, or low-speed imputation. The nonlinear/RQA layers from 0.23–0.30 remain intact. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
 
 ## Validation
 

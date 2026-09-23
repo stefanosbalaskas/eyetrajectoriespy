@@ -70,6 +70,33 @@ _CONTRACTS = (
         scope="Complete trajectories on a common grid; optional dimension weights must be non-negative.",
     ),
     MathematicalContract(
+        key="trajectory-geometry",
+        title="Continuous planar trajectory geometry",
+        public_api=(
+            "heading_function",
+            "signed_curvature_function",
+            "turning_rate_function",
+            "trajectory_tortuosity",
+        ),
+        equations=(
+            r"\theta(t)=\operatorname{atan2}\{y'(t),x'(t)\}",
+            r"\kappa(t)=\frac{x'(t)y''(t)-y'(t)x''(t)}"
+            r"{\{x'(t)^2+y'(t)^2\}^{3/2}}",
+            r"\omega(t)=\frac{x'(t)y''(t)-y'(t)x''(t)}"
+            r"{x'(t)^2+y'(t)^2}=\kappa(t)\|\mathbf G'(t)\|",
+            r"T=\frac{\sum_{m=1}^{M-1}"
+            r"\|\mathbf G(t_{m+1})-\mathbf G(t_m)\|_2}"
+            r"{\|\mathbf G(t_M)-\mathbf G(t_1)\|_2}",
+        ),
+        site_anchor="trajectory-geometry",
+        scope=(
+            "Complete declared planar coordinates with numerical derivatives "
+            "computed without hidden smoothing; low-speed and zero-displacement "
+            "undefinedness is explicit, and geometric interpretation remains "
+            "conditional on source coordinate scaling and axis orientation."
+        ),
+    ),
+    MathematicalContract(
         key="multilevel",
         title="Two-level participant / trial decomposition",
         public_api=("fit_multilevel_fpca",),

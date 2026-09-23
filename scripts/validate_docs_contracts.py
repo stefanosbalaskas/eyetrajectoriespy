@@ -41,6 +41,10 @@ def main() -> None:
         "fit_mfpca()",
         "fit_multilevel_fpca()",
         "fit_compositional_fpca()",
+        "heading_function()",
+        "signed_curvature_function()",
+        "turning_rate_function()",
+        "trajectory_tortuosity()",
         "multiplier_functional_mean_band()",
         "wild_bootstrap_fpca_projection()",
         "fpca_wild_bootstrap_projection_family_test()",
@@ -90,8 +94,8 @@ def main() -> None:
 
     gallery = (DOCS / "methods" / "visual-gallery.md").read_text(encoding="utf-8")
     asset_refs = sorted(set(re.findall(r"\.\./assets/gallery/([^)\s]+\.svg)", gallery)))
-    if len(asset_refs) < 17:
-        raise RuntimeError("visual gallery must reference at least seventeen SVG figures")
+    if len(asset_refs) < 18:
+        raise RuntimeError("visual gallery must reference at least eighteen SVG figures")
     missing_assets = sorted(
         name for name in asset_refs if not (DOCS / "assets" / "gallery" / name).exists()
     )
@@ -99,7 +103,7 @@ def main() -> None:
         raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.30.0.dev0"):
+    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.31.0.dev0"):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
 

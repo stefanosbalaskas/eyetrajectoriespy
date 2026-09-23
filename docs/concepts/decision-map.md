@@ -7,6 +7,7 @@ Use the **research question and data structure** to choose the representation.
 | Where does gaze move over trial time? | joint 2-D MFPCA | harmonize stimulus geometry first |
 | Are curves sampled at different times? | native irregular trajectories | do not force a grid during import |
 | How does distance from a target evolve? | derived univariate function + FPCA | landmark definition must be meaningful |
+| How does a planar path bend or turn over time? | heading / signed curvature / turning rate | use commensurate x/y units; declare low-speed handling and axis orientation |
 | Are stable participant strategies different from trial fluctuations? | multilevel FPCA | preserve participant → trial nesting |
 | How does allocation among AOIs evolve? | compositional FPCA | probabilities must remain on the simplex |
 | Do people traverse similar paths at different times? | registration + phase FPCA | do not erase meaningful latency |

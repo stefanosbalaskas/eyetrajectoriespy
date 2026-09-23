@@ -14,6 +14,7 @@ flowchart LR
     D --> G[Explicit projection]
     G --> F
     F --> H[FPCA / MFPCA]
+    F --> L[Heading / curvature / turning rate]
     F --> I[Multilevel]
     F --> J[Compositional]
     F --> K[Registration / phase]

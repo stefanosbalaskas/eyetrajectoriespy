@@ -213,6 +213,16 @@ North, Curtis & Sham and Phipson & Smyth motivate finite-resampling corrections 
 
 Exact Clopper-Pearson intervals are used only to describe the finite-bootstrap exceedance probability conditional on the completed analysis. They are not confidence intervals for the scientific estimand. Stoepker & Castro emphasize that adaptive/sequential Monte Carlo stopping requires its own validity framework; eyetrajectoriespy 0.20 does not implement an always-valid sequential stopping procedure.
 
+## Eye-movement trajectory geometry
+
+- Ludwig, C. J. H., & Gilchrist, I. D. (2002). Measuring saccade curvature: A curve-fitting approach. *Behavior Research Methods, Instruments, & Computers*, 34(4), 618–624. https://doi.org/10.3758/BF03195490
+- Ross, N. M., Goettker, A., Schütz, A. C., Braun, D. I., & Gegenfurtner, K. R. (2017). Discrimination of curvature from motion during smooth pursuit eye movements and fixation. *Journal of Neurophysiology*, 118(3), 1762–1774. https://doi.org/10.1152/jn.00324.2017
+- Laborde, Q., Roques, A., Armougum, A., Vayatis, N., Bargiotas, I., & Oudre, L. (2025). Vision toolkit part 2. features and metrics for assessing oculomotor signal: a review. *Frontiers in Physiology*, 16, 1661026. https://doi.org/10.3389/fphys.2025.1661026
+
+Ludwig and Gilchrist show that saccade curvature is not one uniquely defined quantity: maximum deviation, area-based measures, and polynomial-fit metrics capture related but distinct trajectory properties. Ross et al. provide direct smooth-pursuit precedent for curvature-sensitive eye-movement trajectories. Laborde et al. review contemporary oculomotor features and continue to treat direction/curvature as established signal descriptors.
+
+The 0.31 geometry layer does not claim novelty for eye-movement curvature itself and does not reproduce those event-level saccade metrics. It implements provenance-aware continuous planar heading, signed curvature, turning rate, and path-length/displacement tortuosity as functional or trajectory-level outcomes. Their interpretation remains conditional on coordinate scaling, recorded axis orientation, preprocessing, and the declared low-speed rule.
+
 ## Nonlinear dynamics, recurrence, and surrogate testing
 
 - Schinkel, S., Marwan, N., Dimigen, O., & Kurths, J. (2009). Confidence bounds of recurrence-based complexity measures. *Physics Letters A*, 373(26), 2245–2250. https://doi.org/10.1016/j.physleta.2009.04.045
@@ -257,4 +267,4 @@ For the 0.28 population-RQA uncertainty layer, Schinkel et al. provide direct pr
 For the 0.29 Kantz-LLE layer, Kantz (1994) is the primary neighborhood-divergence method source and Hegger, Kantz & Schreiber (1999) provide practical implementation context through TISEAN. TISEAN exposes Kantz and Rosenstein as separate maximal-exponent routines rather than aliases. eyetrajectoriespy follows that distinction: the Kantz radius and minimum-neighbor rule are explicit, neighborhoods are not enlarged automatically, and the fit interval remains analyst-declared. Korda et al. provide direct eye-movement precedent for LLE/log-divergence signal analysis, but that application precedent is not treated as proof that behavioral gaze is a low-dimensional deterministic chaotic system.
 
 
-For the 0.30 Kantz-sensitivity layer, Kantz (1994) makes the local neighborhood scale (arepsilon) part of the maximal-Lyapunov construction, while Hegger, Kantz & Schreiber (1999) retain this neighborhood-based algorithm as a distinct TISEAN implementation. eyetrajectoriespy uses that evidence to justify exposing radius/minimum-neighbor dependence as an analyst-declared robustness grid. It does not infer a universal radius, optimize (arepsilon), or convert grid stability into a probability that behavioral gaze is chaotic.
+For the 0.30 Kantz-sensitivity layer, Kantz (1994) makes the local neighborhood scale (ε) part of the maximal-Lyapunov construction, while Hegger, Kantz & Schreiber (1999) retain this neighborhood-based algorithm as a distinct TISEAN implementation. eyetrajectoriespy uses that evidence to justify exposing radius/minimum-neighbor dependence as an analyst-declared robustness grid. It does not infer a universal radius, optimize (ε), or convert grid stability into a probability that behavioral gaze is chaotic.

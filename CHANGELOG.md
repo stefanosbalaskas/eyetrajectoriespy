@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.31.0.dev0
+
+- Add `heading_function()`, `signed_curvature_function()`, `turning_rate_function()`, and `trajectory_tortuosity()` for continuous planar gaze geometry.
+- Resolve named planar dimensions explicitly; default `x`/`y` is used only when those names exist, and arbitrary alternate channel names must be supplied.
+- Use observed-grid numerical derivatives with `numpy.gradient(..., edge_order=2)`; no smoothing, interpolation, coordinate scaling, angle unwrapping, or denominator epsilon is introduced.
+- Add explicit `min_speed` and `undefined_policy` contracts for heading/curvature/turning rate; low-speed undefined samples remain NaN or fail the analysis rather than becoming zero.
+- Define tortuosity as observed polyline path length divided by endpoint displacement, with explicit `min_displacement` and undefined-policy handling for closed or near-closed paths.
+- Preserve sample-level undefined counts/fractions, source coordinate semantics, selected planar dimensions, units, and derivative decisions in provenance.
+- Correctly scope curvature sign to the recorded coordinate-axis orientation; the package does not assume screen y increases upward.
+- Add analytic straight-line, circle, low-speed, dimension-selection, closed-path, and two-point tortuosity tests.
+- Add mathematical contracts, API docs, method guidance, worked/executable examples, reporting/preregistration/limitations guidance, literature context, and deterministic gallery integration.
+
 ## 0.30.0.dev0
 
 - Add `kantz_parameter_sensitivity()` for the complete analyst-declared Cartesian grid of embedding dimension, delay, fixed radius, minimum neighbors, Theiler window, and fit interval.

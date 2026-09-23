@@ -314,6 +314,10 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.acceleration_magnitude_function
 ::: eyetrajectoriespy.distance_to_landmark_function
 ::: eyetrajectoriespy.cumulative_path_length
+::: eyetrajectoriespy.heading_function
+::: eyetrajectoriespy.signed_curvature_function
+::: eyetrajectoriespy.turning_rate_function
+::: eyetrajectoriespy.trajectory_tortuosity
 
 ## Downstream analysis
 ::: eyetrajectoriespy.functional_l2_distance

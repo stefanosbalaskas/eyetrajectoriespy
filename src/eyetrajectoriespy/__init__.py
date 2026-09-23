@@ -43,7 +43,11 @@ from .kinematics import (
     cumulative_path_length,
     differentiate_trajectories,
     distance_to_landmark_function,
+    heading_function,
+    signed_curvature_function,
     speed_function,
+    trajectory_tortuosity,
+    turning_rate_function,
 )
 from .multilevel import fit_multilevel_fpca
 from .embedding import (
@@ -329,7 +333,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.30.0.dev0"
+__version__ = "0.31.0.dev0"
 
 __all__ = [
     "recurrence_radius_profile_reporting_text",
@@ -470,6 +474,10 @@ __all__ = [
     "acceleration_magnitude_function",
     "distance_to_landmark_function",
     "cumulative_path_length",
+    "heading_function",
+    "signed_curvature_function",
+    "turning_rate_function",
+    "trajectory_tortuosity",
     "functional_l2_distance",
     "pairwise_functional_distances",
     "nearest_trajectory_indices",
