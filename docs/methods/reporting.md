@@ -687,3 +687,10 @@ When continuous geometry is reported, state:
 - tortuosity definition, `min_displacement`, and treatment of closed/near-closed paths.
 
 Do not describe continuous signed curvature as interchangeable with event-level saccade maximum-deviation, area-curvature, or polynomial-fit metrics.
+
+
+## Discrete Fréchet trajectory comparison
+
+Report the trajectory representation, coordinate dimensions and units, sequence lengths, any dimension weights, upstream interpolation/smoothing/resampling/path simplification, and whether the coupling was inspected.
+
+State explicitly that the method preserved point order but did not use elapsed-time correspondence. If latency is scientifically meaningful, report the complementary time-preserving analysis rather than implying Fréchet captured timing.
