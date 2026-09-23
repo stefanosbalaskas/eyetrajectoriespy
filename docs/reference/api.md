@@ -53,10 +53,13 @@ For mathematical definitions of the main estimands, transformations, studentizat
 
 ### Local divergence and surrogate testing
 ::: eyetrajectoriespy.LocalDivergenceResult
+::: eyetrajectoriespy.KantzDivergenceResult
 ::: eyetrajectoriespy.LargestLyapunovResult
 ::: eyetrajectoriespy.SurrogateNonlinearityResult
 ::: eyetrajectoriespy.local_divergence_curve
+::: eyetrajectoriespy.kantz_divergence_curve
 ::: eyetrajectoriespy.estimate_largest_lyapunov_rosenstein
+::: eyetrajectoriespy.estimate_largest_lyapunov_kantz
 ::: eyetrajectoriespy.surrogate_nonlinearity_test
 ::: eyetrajectoriespy.plot_local_divergence
 ::: eyetrajectoriespy.plot_surrogate_nonlinearity
