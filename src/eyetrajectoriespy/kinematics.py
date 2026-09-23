@@ -23,6 +23,11 @@ def differentiate_trajectories(
     """
 
     validate_trajectory_set(trajectories, require_complete=True)
+    if trajectories.n_time < 3:
+        raise ValueError(
+            "numerical differentiation with edge_order=2 requires at least "
+            "three time samples"
+        )
     if order not in {1, 2}:
         raise ValueError("order must be 1 or 2")
     values = trajectories.values.copy()
@@ -171,11 +176,6 @@ def _resolve_planar_dimensions(
         if missing:
             raise KeyError(f"Unknown trajectory dimensions: {missing}")
 
-    if trajectories.n_time < 3:
-        raise ValueError(
-            "planar differential geometry requires at least three time samples "
-            "for second-order edge-aware numerical derivatives"
-        )
     indices = (
         trajectories.dimension_names.index(names[0]),
         trajectories.dimension_names.index(names[1]),
@@ -206,6 +206,11 @@ def _planar_derivatives(
     dimensions: Sequence[str] | None,
 ) -> tuple[tuple[str, str], np.ndarray, np.ndarray, np.ndarray]:
     names, indices = _resolve_planar_dimensions(trajectories, dimensions)
+    if trajectories.n_time < 3:
+        raise ValueError(
+            "planar differential geometry requires at least three time samples "
+            "for second-order edge-aware numerical derivatives"
+        )
     planar = trajectories.values[:, :, indices]
     velocity = np.gradient(
         planar,
@@ -375,7 +380,9 @@ def signed_curvature_function(
         undefined_mask=undefined,
         value_unit=coordinate_unit,
         extra_provenance={
-            "orientation_sign": "positive_counterclockwise",
+            "orientation_sign": (
+                "positive_under_the_recorded_x_y_axis_orientation"
+            ),
             "denominator_epsilon": None,
         },
     )
