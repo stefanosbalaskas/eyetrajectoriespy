@@ -258,3 +258,14 @@ Empirical return-map stability additionally assumes that the declared section id
 The derived functional grid consists of complete-window centers. Overlapping windows reuse source samples; non-overlapping windows can still be serially dependent. The package therefore assumes **no window-level independence**. Any downstream inferential procedure must define its sampling/resampling unit from the original study design.
 
 With a fixed radius, the radius must have a common interpretation in the supplied state-space units. With target-recurrence-rate mode, recurrence density is controlled by construction and RR is not a permissible downstream functional outcome.
+
+
+## Population bootstrap for RQA summaries
+
+`bootstrap_rqa_metric_means()` assumes that the declared resampling unit reflects the independent sampling design. Curve-level resampling is appropriate only when source curves are the independent units. Repeated trials from the same participant should generally use participant-level inference.
+
+Participant mode treats the estimand as the equal-weight mean of participant-average curve-level RQA metrics. It conditions on the observed set of trials for each participant and does not model within-participant trial-sampling uncertainty.
+
+The recurrence/RQA specification is fixed before resampling. Radius policy, embedding, distance metric, Theiler exclusion, and line thresholds are not re-selected inside bootstrap replicates.
+
+Percentile intervals assume that resampling the observed independent units is a defensible approximation to population sampling variation. They do not model tracker noise, calibration error, preprocessing uncertainty, or the temporal-data-generating process within one trajectory.
