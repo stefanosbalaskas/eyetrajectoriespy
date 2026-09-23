@@ -6,6 +6,7 @@ import numpy as np
 
 from .nonlinear_types import (
     KantzDivergenceResult,
+    KantzParameterSensitivityResult,
     LargestLyapunovResult,
     LyapunovParameterSensitivityResult,
     RecurrenceRadiusProfileResult,
@@ -230,6 +231,31 @@ def rqa_parameter_sensitivity_reporting_text(
         "combination was selected automatically and invalid specifications "
         "were configured to fail the analysis rather than disappear silently."
         + controlled
+    )
+
+
+def kantz_parameter_sensitivity_reporting_text(
+    result: KantzParameterSensitivityResult,
+) -> str:
+    """Return manuscript-ready wording for declared Kantz-LLE sensitivity."""
+
+    summary = result.summary_table.set_index("metric")
+    exponent = summary.loc["exponent"]
+    support = summary.loc["initial_supported_reference_fraction"]
+    return (
+        f"Kantz local-divergence sensitivity was evaluated across "
+        f"{result.n_specifications} predeclared reconstruction, radius, "
+        f"minimum-neighbor, Theiler-window, and fit-interval specifications "
+        f"for curve {result.curve_id!r}. Estimated exponents ranged from "
+        f"{exponent['minimum']:.4g} to {exponent['maximum']:.4g} "
+        f"{result.exponent_unit}; "
+        f"{100.0 * exponent['positive_specification_fraction']:.1f}% of "
+        "finite declared specifications had positive slopes. Initial "
+        f"supported-reference fractions ranged from {support['minimum']:.3f} "
+        f"to {support['maximum']:.3f}. These quantities describe sensitivity "
+        "across the declared analysis grid, not sampling uncertainty or a "
+        "probability of deterministic chaos. No radius, reconstruction, "
+        "minimum-neighbor rule, or fit interval was selected automatically."
     )
 
 
