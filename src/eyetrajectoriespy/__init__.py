@@ -304,12 +304,14 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.24.0.dev0"
+__version__ = "0.25.0.dev0"
 
 __all__ = [
     "rqa_reporting_text",
     "windowed_rqa_reporting_text",
     "windowed_rqa_functional_reporting_text",
+    "windowed_rqa_sensitivity_reporting_text",
+    "windowed_rqa_mean_band_reporting_text",
     "largest_lyapunov_reporting_text",
     "surrogate_nonlinearity_reporting_text",
     "return_map_stability_reporting_text",
@@ -318,6 +320,7 @@ __all__ = [
     "plot_recurrence",
     "plot_windowed_rqa",
     "plot_windowed_rqa_trajectories",
+    "plot_windowed_rqa_sensitivity",
     "plot_local_divergence",
     "plot_surrogate_nonlinearity",
     "plot_poincare_return_map",
@@ -328,6 +331,8 @@ __all__ = [
     "RQAResult",
     "WindowedRQAResult",
     "WindowedRQAFunctionalResult",
+    "WindowedRQASensitivityResult",
+    "WindowedRQAMeanBandResult",
     "LocalDivergenceResult",
     "LargestLyapunovResult",
     "SurrogateNonlinearityResult",
@@ -341,6 +346,8 @@ __all__ = [
     "rqa_metrics",
     "windowed_rqa",
     "windowed_rqa_trajectory_set",
+    "windowed_rqa_sensitivity",
+    "windowed_rqa_functional_mean_band",
     "cross_recurrence_matrix",
     "cross_rqa_metrics",
     "local_divergence_curve",
