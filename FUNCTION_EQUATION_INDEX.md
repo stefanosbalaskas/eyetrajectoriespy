@@ -226,7 +226,7 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## Sparse recurrence and recurrence quantification
 
-**Functions:** `recurrence_matrix()`, `rqa_metrics()`, `windowed_rqa()`, `cross_recurrence_matrix()`, `cross_rqa_metrics()`
+**Functions:** `recurrence_matrix()`, `rqa_metrics()`, `rqa_parameter_sensitivity()`, `windowed_rqa()`, `cross_recurrence_matrix()`, `cross_rqa_metrics()`
 
 $$
 R_{ij}=\mathbb I\{\|\mathbf z_i-\mathbf z_j\|_p\le\varepsilon\}
@@ -266,7 +266,7 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## Rosenstein local divergence and largest Lyapunov estimate
 
-**Functions:** `local_divergence_curve()`, `estimate_largest_lyapunov_rosenstein()`
+**Functions:** `local_divergence_curve()`, `estimate_largest_lyapunov_rosenstein()`, `lyapunov_parameter_sensitivity()`
 
 $$
 d_i(k)=\|\mathbf z_{i+k}-\mathbf z_{j(i)+k}\|_2
