@@ -668,3 +668,14 @@ Measurement noise, filtering, nonstationarity, finite records, task changes, rec
 ### The surrogate test remains Rosenstein-specific
 
 The current IAAFT test continues to use the package's named Rosenstein LLE statistic. Kantz surrogate testing requires a separately declared statistic contract and is not silently substituted in 0.29.
+
+
+### Sensitivity grids do not solve radius selection
+
+Version 0.30 makes radius/minimum-neighbor dependence visible but does not create a universally valid selection rule. A narrow exponent range over one declared grid does not prove robustness outside that grid, and a wide range does not identify which setting is correct.
+
+The package does not rank settings by exponent magnitude, fit (R^2), slope standard error, supported-reference fraction, or sign.
+
+### Grid fractions are not inferential probabilities
+
+The fraction of declared specifications with a positive exponent is a descriptive property of the analyst-defined multiverse. It is not a posterior probability of chaos, a p-value, or a confidence level. Likewise, supported-reference fractions describe neighborhood support and are not sampling uncertainty.
