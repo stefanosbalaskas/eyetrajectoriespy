@@ -10,9 +10,11 @@ matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 from eyetrajectoriespy import (
     TrajectorySet,
+    bootstrap_rqa_metric_means,
     delay_embed_trajectory,
     estimate_largest_lyapunov_rosenstein,
     fit_local_return_map,
@@ -32,6 +34,7 @@ from eyetrajectoriespy import (
     plot_poincare_return_map,
     plot_recurrence,
     plot_recurrence_rate_curve,
+    plot_rqa_metric_mean_bootstrap,
     plot_windowed_rqa,
     plot_windowed_rqa_trajectories,
     plot_warping_functions,
@@ -197,6 +200,48 @@ def main() -> None:
     ax = plot_recurrence_rate_curve(radius_profile)
     _save(ax, "recurrence-radius-profile.svg")
 
+    rqa_bootstrap_time = np.arange(120, dtype=float) * 0.01
+    rqa_bootstrap_values = []
+    rqa_bootstrap_participants = []
+    for participant_index in range(8):
+        for trial_index in range(2):
+            phase = 0.10 * participant_index + 0.05 * trial_index
+            signal = np.sin(
+                2.0 * np.pi * 1.8 * rqa_bootstrap_time + phase
+            )
+            rqa_bootstrap_values.append(signal[:, None])
+            rqa_bootstrap_participants.append(
+                f"P{participant_index + 1:02d}"
+            )
+    rqa_bootstrap_source = TrajectorySet(
+        time=rqa_bootstrap_time,
+        values=np.asarray(rqa_bootstrap_values, dtype=float),
+        curve_ids=tuple(
+            f"RB-{index + 1:02d}"
+            for index in range(len(rqa_bootstrap_values))
+        ),
+        dimension_names=("x",),
+        metadata=pd.DataFrame(
+            {"participant_id": rqa_bootstrap_participants}
+        ),
+        time_unit="s",
+        coordinate_system="normalized",
+    )
+    rqa_bootstrap = bootstrap_rqa_metric_means(
+        rqa_bootstrap_source,
+        dimensions=("x",),
+        metrics=("recurrence_rate", "determinism", "laminarity"),
+        radius=0.18,
+        theiler_window=2,
+        unit="participant",
+        participant_column="participant_id",
+        confidence_level=0.95,
+        n_bootstrap=160,
+        random_state=2108,
+    )
+    ax = plot_rqa_metric_mean_bootstrap(rqa_bootstrap)
+    _save(ax, "rqa-population-bootstrap.svg")
+
     dynamic_rqa = windowed_rqa(
         nonlinear,
         curve=0,
@@ -298,6 +343,7 @@ def main() -> None:
         "monte-carlo-precision.svg",
         "recurrence-plot.svg",
         "recurrence-radius-profile.svg",
+        "rqa-population-bootstrap.svg",
         "windowed-rqa.svg",
         "functional-rqa-trajectories.svg",
         "local-divergence.svg",
