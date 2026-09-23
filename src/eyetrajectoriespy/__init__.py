@@ -3,9 +3,11 @@
 from .conformal import conformal_fpca_anomaly_frame, split_conformal_fpca_anomaly
 from .analysis import (
     cluster_fpca_scores,
+    discrete_frechet_distance,
     fit_scalar_on_function_regression,
     functional_l2_distance,
     nearest_trajectory_indices,
+    pairwise_discrete_frechet_distances,
     pairwise_functional_distances,
     score_distance_matrix,
 )
@@ -333,7 +335,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.31.0.dev0"
+__version__ = "0.32.0.dev0"
 
 __all__ = [
     "recurrence_radius_profile_reporting_text",
@@ -479,6 +481,8 @@ __all__ = [
     "turning_rate_function",
     "trajectory_tortuosity",
     "functional_l2_distance",
+    "discrete_frechet_distance",
+    "pairwise_discrete_frechet_distances",
     "pairwise_functional_distances",
     "nearest_trajectory_indices",
     "score_distance_matrix",
