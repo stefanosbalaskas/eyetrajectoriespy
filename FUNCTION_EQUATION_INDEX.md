@@ -310,7 +310,7 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## Kantz neighborhood divergence and largest Lyapunov estimate
 
-**Functions:** `kantz_divergence_curve()`, `estimate_largest_lyapunov_kantz()`
+**Functions:** `kantz_divergence_curve()`, `estimate_largest_lyapunov_kantz()`, `kantz_parameter_sensitivity()`
 
 $$
 \mathcal N_i(\varepsilon)=\{j:\|\mathbf z_i-\mathbf z_j\|_2\le\varepsilon,\ |i-j|>w\}
