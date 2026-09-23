@@ -432,4 +432,30 @@ For RQA-derived functional trajectories, additionally predeclare:
 
 Do not switch from fixed radius to target recurrence rate after seeing which setting creates a more favorable RR trajectory. Under target-rate mode, RR itself is controlled by construction and must not be promoted to a confirmatory functional outcome.
 
-Classical Floquet/monodromy and numerical-continuation claims remain outside the 0.24 observational-gaze contract.
+Classical Floquet/monodromy and numerical-continuation claims remain outside the 0.25 observational-gaze contract.
+
+
+## Functional RQA sensitivity and dependence-aware inference
+
+If sliding-window RQA functions are a primary or confirmatory analysis, pre-specify:
+
+- one primary window/step specification, if there is a primary analysis;
+- the complete sensitivity grid of alternative window/step pairs;
+- which RQA functional metrics are compared across the grid;
+- the recurrence radius policy and all recurrence parameters held fixed across the sensitivity grid;
+- the rule for interpreting material disagreement across specifications;
+- that sensitivity profiles will be compared only at exact shared centers unless a separately justified alignment method is declared;
+- that no automatic window/step selector will be applied.
+
+For a functional RQA mean band, additionally pre-specify:
+
+- curve versus participant inference unit;
+- the participant column and repeated-trial aggregation rule;
+- confidence level;
+- multiplier replicate count and seed;
+- the observed functional time-by-metric domain entering the simultaneous maximum;
+- that complete derived functions, not sliding-window rows, are the resampling objects;
+- that the procedure is not a moving/block bootstrap for a single long trajectory;
+- that window/step selection uncertainty is not included unless a separate procedure is specified.
+
+Do not reduce the step merely to create more apparent observations for inference. A denser derived RQA grid increases temporal sampling of the functional summary and often source-sample reuse; it does not create additional independent participants or curves.
