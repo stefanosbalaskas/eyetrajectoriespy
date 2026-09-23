@@ -31,11 +31,13 @@ from eyetrajectoriespy import (
     plot_planar_trajectories,
     plot_poincare_return_map,
     plot_recurrence,
+    plot_recurrence_rate_curve,
     plot_windowed_rqa,
     plot_windowed_rqa_trajectories,
     plot_warping_functions,
     poincare_crossings,
     recurrence_matrix,
+    recurrence_radius_profile,
     register_to_landmarks,
     simulate_planar_trajectories,
     wild_bootstrap_fpca_projection,
@@ -186,6 +188,15 @@ def main() -> None:
     ax = plot_recurrence(recurrence)
     _save(ax, "recurrence-plot.svg")
 
+    radius_profile = recurrence_radius_profile(
+        embedded,
+        curve=0,
+        radii=(0.01, 0.02, 0.04, 0.06, 0.08, 0.12, 0.18),
+        theiler_window=8,
+    )
+    ax = plot_recurrence_rate_curve(radius_profile)
+    _save(ax, "recurrence-radius-profile.svg")
+
     dynamic_rqa = windowed_rqa(
         nonlinear,
         curve=0,
@@ -286,6 +297,7 @@ def main() -> None:
         "wild-bootstrap-family-test.svg",
         "monte-carlo-precision.svg",
         "recurrence-plot.svg",
+        "recurrence-radius-profile.svg",
         "windowed-rqa.svg",
         "functional-rqa-trajectories.svg",
         "local-divergence.svg",
