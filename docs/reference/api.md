@@ -35,6 +35,14 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.plot_windowed_rqa_trajectories
 ::: eyetrajectoriespy.plot_windowed_rqa_sensitivity
 
+### Declared nonlinear parameter sensitivity
+::: eyetrajectoriespy.RQAParameterSensitivityResult
+::: eyetrajectoriespy.LyapunovParameterSensitivityResult
+::: eyetrajectoriespy.rqa_parameter_sensitivity
+::: eyetrajectoriespy.lyapunov_parameter_sensitivity
+::: eyetrajectoriespy.plot_rqa_sensitivity
+::: eyetrajectoriespy.plot_lyapunov_sensitivity
+
 ### Local divergence and surrogate testing
 ::: eyetrajectoriespy.LocalDivergenceResult
 ::: eyetrajectoriespy.LargestLyapunovResult
@@ -47,11 +55,13 @@ For mathematical definitions of the main estimands, transformations, studentizat
 
 ### Nonlinear reporting helpers
 ::: eyetrajectoriespy.rqa_reporting_text
+::: eyetrajectoriespy.rqa_parameter_sensitivity_reporting_text
 ::: eyetrajectoriespy.windowed_rqa_reporting_text
 ::: eyetrajectoriespy.windowed_rqa_functional_reporting_text
 ::: eyetrajectoriespy.windowed_rqa_sensitivity_reporting_text
 ::: eyetrajectoriespy.windowed_rqa_mean_band_reporting_text
 ::: eyetrajectoriespy.largest_lyapunov_reporting_text
+::: eyetrajectoriespy.lyapunov_parameter_sensitivity_reporting_text
 ::: eyetrajectoriespy.surrogate_nonlinearity_reporting_text
 ::: eyetrajectoriespy.return_map_stability_reporting_text
 
