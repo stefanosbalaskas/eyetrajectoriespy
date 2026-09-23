@@ -550,3 +550,41 @@ When `windowed_rqa_functional_mean_band()` is used, additionally report:
 - that the band is conditional on the declared window/step and recurrence specification.
 
 If the primary specification was selected after examining the sensitivity results, state that explicitly and do not present the band as if window-selection uncertainty had been included.
+
+
+## Reconstructed-state nonlinear parameter sensitivity
+
+When `rqa_parameter_sensitivity()` is used, report:
+
+- the complete embedding-dimension grid;
+- delay grid, supplied units, and resolved sample delays;
+- fixed-radius versus target-RR policy;
+- complete threshold grid;
+- solved radius and achieved RR where target-rate mode is used;
+- Theiler-window grid and resolved sample windows;
+- minimum diagonal- and vertical-line grids;
+- recurrence distance metric;
+- total number of Cartesian-product specifications;
+- finite-result fraction for each primary RQA outcome;
+- minimum, quartiles, median, maximum, and range for the primary robustness outcomes;
+- any specification that made the analysis fail and how the preregistered grid was subsequently handled;
+- that no preferred specification was selected automatically;
+- that the sensitivity summary is descriptive across analysis choices rather than sampling uncertainty.
+
+Under target-rate sensitivity, state explicitly that RR was controlled by design.
+
+When `lyapunov_parameter_sensitivity()` is used, report:
+
+- embedding-dimension and delay grids;
+- Theiler-window grid;
+- maximum divergence horizon;
+- every declared fit interval and units;
+- total number of evaluated specifications;
+- exponent range and quartiles;
+- fit R² and slope-SE variation;
+- usable-pair support and any zero-distance issues;
+- counts/fractions of positive and negative fitted slopes if reported;
+- that positive-specification frequency is descriptive across the declared grid and not a probability of deterministic chaos;
+- that no fit interval or reconstruction setting was selected automatically.
+
+If one specification is highlighted as primary, state the independent scientific reason for that choice rather than selecting it from the robustness table after inspection.
