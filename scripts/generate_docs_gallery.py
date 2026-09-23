@@ -334,7 +334,7 @@ def main() -> None:
     )
     ax = plot_kantz_sensitivity(
         kantz_sensitivity,
-        parameter="radius",
+        parameter="requested_radius",
         response="exponent",
         filters={
             "embedding_dimension": 2,
