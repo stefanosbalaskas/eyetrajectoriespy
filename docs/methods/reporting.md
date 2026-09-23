@@ -613,3 +613,29 @@ When `recurrence_radius_profile()` is used, report:
 If target recurrence rate is used subsequently, report the requested target, solved radius, and achieved RR, and state that recurrence density was controlled by design.
 
 Do not call the largest, flattest, steepest, or visually most convenient radius “optimal” unless a separate validated optimization criterion was genuinely part of the method.
+
+
+## Population bootstrap for RQA summaries
+
+When `bootstrap_rqa_metric_means()` is used, report:
+
+- source state representation and selected dimensions;
+- embedding dimension/delay if used;
+- fixed radius or target recurrence rate;
+- distance metric;
+- Theiler window and resolved sample count;
+- minimum diagonal/vertical line thresholds;
+- selected RQA metrics;
+- curve versus participant inference unit;
+- participant identifier and number of curves per participant when relevant;
+- number of independent bootstrap units;
+- bootstrap replicate count and random seed;
+- confidence level and percentile interval method;
+- observed population mean, bootstrap SE, bias, and interval for each metric;
+- that undefined selected source-curve metrics caused failure rather than deletion/imputation;
+- that the interval is conditional on the fixed RQA specification;
+- that within-single-trajectory recurrence uncertainty, trial-level hierarchical resampling, and parameter-selection uncertainty were not included.
+
+Under target-RR mode, state that recurrence density was controlled by design and RR was not treated as an inferential outcome.
+
+Do not report the number of trials or recurrence points as the independent bootstrap sample size when participants are the sampling unit.
