@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.24.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.25.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -66,6 +66,8 @@ Registration is especially explicit because latency can itself be psychologicall
 - explicit delay-coordinate reconstruction with AMI/autocorrelation and false-nearest-neighbor diagnostics;
 - sparse continuous-state recurrence matrices, RQA, windowed RQA, and cross-recurrence analysis;
 - first-class RQA-derived functional trajectories for FDA of time-varying RR/DET/LAM and related metrics, with explicit overlap/dependence provenance;
+- declared window/step sensitivity grids for functional RQA with source-sample reuse diagnostics, exact-shared-center profile comparisons, and no automatic tuning selection;
+- simultaneous functional-RQA mean bands that resample complete curve- or equal-weight participant-level functions rather than overlapping window rows;
 - Rosenstein-style local divergence / largest-Lyapunov estimation with analyst-declared fit intervals;
 - seeded IAAFT surrogate nonlinearity tests using plus-one Monte Carlo p-values;
 - experimental empirical Poincare return maps and local cycle-to-cycle contraction/expansion diagnostics;
@@ -151,6 +153,8 @@ print(summarise_fpca(fit))
 | Recurrent gaze-state structure | sparse recurrence / RQA | `recurrence_matrix()` / `rqa_metrics()` |
 | Time-varying recurrent dynamics | sliding full-window RQA | `windowed_rqa()` |
 | RQA dynamics as functional outcomes | window-center RQA metric trajectories with retained overlap/radius provenance | `windowed_rqa_trajectory_set()` |
+| Functional RQA parameter sensitivity | declared window/step grid with overlap/reuse and exact-center profile diagnostics | `windowed_rqa_sensitivity()` |
+| Functional RQA mean uncertainty | whole-function curve/participant multiplier band | `windowed_rqa_functional_mean_band()` |
 | Reconstructed nonlinear state | delay coordinates with explicit (m,	au) | `delay_embed_trajectory()` |
 | Local state-space divergence | Rosenstein nearest-neighbor divergence | `local_divergence_curve()` / `estimate_largest_lyapunov_rosenstein()` |
 | Nonlinearity vs linear-stochastic null | IAAFT surrogate test | `surrogate_nonlinearity_test()` |
@@ -168,7 +172,7 @@ It includes a tutorial gallery, representation selection, nonlinear state-space 
 
 ## Scope boundary
 
-`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.24 supports empirical nonlinear trajectory diagnostics and RQA-derived functional trajectories, but classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
+`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.25 adds sensitivity and dependence-aware inference for RQA-derived functional trajectories while preserving source curve/participant sampling units. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
 
 ## Validation
 
