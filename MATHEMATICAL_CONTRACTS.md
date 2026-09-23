@@ -48,35 +48,35 @@ Implemented by \`functional_l2_distance()\`.
 
 ## Continuous planar trajectory geometry
 
-For a declared planar path (mathbf G(t)=[x(t),y(t)]^\top),
+For a declared planar path \(\mathbf G(t)=[x(t),y(t)]^\top\),
 
-$
+$$
 \theta(t)
 =
 \operatorname{atan2}\{y'(t),x'(t)\},
-$
+$$
 
-$
+$$
 \kappa(t)
 =
 \frac{x'(t)y''(t)-y'(t)x''(t)}
 {\{x'(t)^2+y'(t)^2\}^{3/2}},
-$
+$$
 
 and
 
-$
+$$
 \omega(t)
 =
 \frac{x'(t)y''(t)-y'(t)x''(t)}
 {x'(t)^2+y'(t)^2}
 =
 \kappa(t)\|\mathbf G'(t)\|.
-$
+$$
 
 Observed-path tortuosity is
 
-$
+$$
 T
 =
 \frac{
@@ -85,9 +85,9 @@ T
 }{
 \|\mathbf G(t_M)-\mathbf G(t_1)\|_2
 }.
-$
+$$
 
-Implemented by `heading_function()`, `signed_curvature_function()`, `turning_rate_function()`, and `trajectory_tortuosity()`.
+Implemented by \`heading_function()\`, \`signed_curvature_function()\`, \`turning_rate_function()\`, and \`trajectory_tortuosity()\`.
 
 No smoothing, interpolation, axis inversion, coordinate rescaling, or denominator epsilon is introduced automatically. Low-speed and zero-displacement undefinedness remains explicit.
 
