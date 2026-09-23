@@ -269,3 +269,14 @@ Participant mode treats the estimand as the equal-weight mean of participant-ave
 The recurrence/RQA specification is fixed before resampling. Radius policy, embedding, distance metric, Theiler exclusion, and line thresholds are not re-selected inside bootstrap replicates.
 
 Percentile intervals assume that resampling the observed independent units is a defensible approximation to population sampling variation. They do not model tracker noise, calibration error, preprocessing uncertainty, or the temporal-data-generating process within one trajectory.
+
+
+## Kantz neighborhood divergence
+
+`kantz_divergence_curve()` assumes that Euclidean neighborhoods in the declared reconstructed state space are scientifically meaningful local neighborhoods. Channel scaling, embedding, delay, coordinate units, and preprocessing therefore directly affect which states fall within the declared radius.
+
+The radius is fixed for the analysis. It is not an adaptive bandwidth and is not enlarged until a desired neighbor count is achieved.
+
+The minimum-neighbor rule controls which reference states contribute. Loss of reference support at later horizons is retained explicitly through reference and pair counts.
+
+As with Rosenstein LLE, the temporal grid must be approximately regular so forward sample horizons correspond to a stable elapsed-time increment. The fitted linear interval must be scientifically declared and interpreted conditionally on the reconstruction and neighborhood contract.
