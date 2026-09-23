@@ -226,6 +226,7 @@ _CONTRACTS = (
         public_api=(
             "recurrence_matrix",
             "rqa_metrics",
+            "rqa_parameter_sensitivity",
             "windowed_rqa",
             "cross_recurrence_matrix",
             "cross_rqa_metrics",
@@ -259,6 +260,7 @@ _CONTRACTS = (
         public_api=(
             "local_divergence_curve",
             "estimate_largest_lyapunov_rosenstein",
+            "lyapunov_parameter_sensitivity",
         ),
         equations=(
             r"d_i(k)=\|\mathbf z_{i+k}-\mathbf z_{j(i)+k}\|_2",
