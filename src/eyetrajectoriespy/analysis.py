@@ -174,6 +174,8 @@ def pairwise_discrete_frechet_distances(
         names = tuple(dimensions)
         if not names:
             raise ValueError("dimensions must contain at least one name")
+        if not all(isinstance(name, str) for name in names):
+            raise TypeError("dimension names must be strings")
         if len(set(names)) != len(names):
             raise ValueError("dimensions must not contain duplicates")
         missing = [name for name in names if name not in trajectories.dimension_names]
