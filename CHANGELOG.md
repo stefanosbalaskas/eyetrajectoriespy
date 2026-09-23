@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.28.0.dev0
+
+- Add `bootstrap_rqa_metric_means()` for percentile-bootstrap uncertainty in population-average curve-level RQA summaries under one fixed recurrence specification.
+- Support `unit="curve"` and equal-weight `unit="participant"`; participant mode averages selected trial-level RQA metrics within participant before resampling, preventing trial pseudo-replication.
+- Retain per-curve realized radius, achieved RR, resolved Theiler window, selected metrics, the actual bootstrap-unit table, all bootstrap mean replicates, bias/SE, and percentile intervals.
+- Under target-recurrence-rate mode, reject RR as an inferential outcome because recurrence density is controlled by design.
+- Fail closed when any selected curve-level RQA metric is undefined; curves are never silently dropped, imputed, or assigned zero.
+- Make the scope explicit: between-unit population sampling uncertainty only; no within-single-trajectory recurrence-line bootstrap, moving/block bootstrap, hierarchical trial bootstrap, measurement-error model, or parameter-selection uncertainty.
+- Add `RQAMeanBootstrapResult`, `plot_rqa_metric_mean_bootstrap()`, and `rqa_metric_mean_bootstrap_reporting_text()`.
+- Add reproducibility, equal-weight participant, target-RR, undefined-metric, embedding, design-error, plotting, and reporting tests.
+- Add a dedicated mathematical contract, methods page, worked/executable example, preregistration/reporting guidance, assumptions, limitations, references, API docs, gallery figure, and CI integration.
+
 ## 0.27.0.dev0
 
 - Add `recurrence_radius_profile()` for an exact recurrence-rate curve over a strictly increasing analyst-declared radius grid.
