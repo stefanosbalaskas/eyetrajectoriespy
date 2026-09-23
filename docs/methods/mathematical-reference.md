@@ -783,6 +783,49 @@ The fitted slope is the Rosenstein-style largest-Lyapunov estimate. A positive e
 
 **API:** \`local_divergence_curve()\`, \`estimate_largest_lyapunov_rosenstein()\`, \`lyapunov_parameter_sensitivity()\`. The sensitivity API reuses the same divergence and linear-fit equations across analyst-declared reconstruction, Theiler, and fit-interval specifications.
 
+## Kantz neighborhood divergence and largest Lyapunov estimate { #kantz-local-divergence }
+
+For reconstructed state $i$, define a fixed-radius neighborhood after the declared Theiler exclusion,
+
+$
+\mathcal N_i(\varepsilon)
+=
+\left\{
+j:
+\|\mathbf z_i-\mathbf z_j\|_2\le\varepsilon,
+\ |i-j|>w
+\right\}.
+$
+
+For horizon $k$, only neighbors whose forward states remain observed are retained. A reference contributes only when at least the declared minimum number of neighbors remains. Its mean forward separation is computed first, then logged, and the logs are averaged across contributing references:
+
+$
+S(\varepsilon,k)
+=
+\frac{1}{N_k}
+\sum_i
+\log
+\left[
+\frac{1}{|\mathcal N_i(k)|}
+\sum_{j\in\mathcal N_i(k)}
+\|\mathbf z_{i+k}-\mathbf z_{j+k}\|_2
+\right].
+$
+
+Over an analyst-declared linear region,
+
+$
+S(\varepsilon,k)
+\approx
+a+\lambda_{\max}k\Delta t.
+$
+
+The radius and minimum-neighbor count are explicit inputs. The package does not expand the neighborhood automatically when a reference has too few neighbors. Reference counts, pair counts, zero-mean-neighborhood counts, and each reference state's initial neighbor count are retained for audit.
+
+The fitted slope is a Kantz-style maximal-Lyapunov estimate. It is a conditional local-divergence estimate under the declared reconstruction, radius, Theiler window, minimum-neighbor rule, and fit interval; a positive slope is not standalone evidence of deterministic chaos.
+
+**API:** `kantz_divergence_curve()` and `estimate_largest_lyapunov_kantz()`.
+
 ## IAAFT surrogate nonlinearity test { #surrogate-nonlinearity }
 
 Version 0.23 uses iterative amplitude-adjusted Fourier transform surrogates for the explicitly supported largest-Lyapunov statistic. Every surrogate is analyzed with exactly the same embedding, Theiler window, divergence horizon, and fit interval as the observed signal.
