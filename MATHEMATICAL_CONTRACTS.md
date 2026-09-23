@@ -290,6 +290,49 @@ $$
 
 Implemented by \`recurrence_matrix()\`, \`recurrence_radius_profile()\`, \`rqa_metrics()\`, \`rqa_parameter_sensitivity()\`, \`windowed_rqa()\`, \`cross_recurrence_matrix()\`, and \`cross_rqa_metrics()\`.
 
+## Population mean bootstrap for curve-level RQA metrics
+
+For one fixed recurrence/RQA specification $\theta$,
+
+$
+M_{iq}
+=
+Q_q\{R_i(\theta)\}.
+$
+
+If participant $p$ contributes $m_p$ curves, participant-level inference uses
+
+$
+U_{pq}
+=
+m_p^{-1}
+\sum_{j=1}^{m_p}
+M_{pjq}.
+$
+
+A bootstrap population-mean replicate is
+
+$
+\overline U_q^{*(b)}
+=
+n^{-1}
+\sum_{r=1}^{n}
+U_{I_r^{(b)}q},
+$
+
+and the implemented percentile interval is
+
+$
+CI_{1-\alpha}
+=
+\left[
+Q_{\alpha/2}(\overline U_q^*),
+Q_{1-\alpha/2}(\overline U_q^*)
+\right].
+$
+
+Implemented by bootstrap_rqa_metric_means(). The bootstrap targets between-unit population sampling uncertainty conditional on the fixed RQA specification; it does not estimate within-single-trajectory or parameter-selection uncertainty.
+
 ## Windowed RQA as functional trajectories
 
 For source curve $i$, window $w$, and selected RQA metric $q$,
