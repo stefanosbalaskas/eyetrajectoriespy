@@ -1,3 +1,8 @@
+import matplotlib
+
+matplotlib.use("Agg")
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
@@ -5,7 +10,9 @@ from eyetrajectoriespy import (
     TrajectorySet,
     delay_embed_trajectory,
     recurrence_matrix,
+    plot_recurrence_rate_curve,
     recurrence_radius_profile,
+    recurrence_radius_profile_reporting_text,
 )
 
 
@@ -217,3 +224,22 @@ def test_radius_profile_fails_when_theiler_leaves_no_eligible_pairs():
             theiler_window=3,
             dimensions=("x",),
         )
+
+
+def test_radius_profile_plot_and_reporting_keep_selection_boundary_visible():
+    data = _scalar([0.0, 1.0, 3.0])
+    result = recurrence_radius_profile(
+        data,
+        curve=0,
+        radii=(0.5, 1.0, 2.0),
+        dimensions=("x",),
+    )
+
+    ax = plot_recurrence_rate_curve(result)
+    assert "Recurrence radius profile" in ax.get_title()
+    assert ax.get_ylabel() == "Recurrence rate"
+
+    text = recurrence_radius_profile_reporting_text(result)
+    assert "No radius was selected automatically" in text
+    assert "eligible pair distances" in text
+    plt.close("all")
