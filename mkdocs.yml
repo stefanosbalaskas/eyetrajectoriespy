@@ -46,6 +46,7 @@ nav:
       - Stabilized-volatility FPCR selection: guides/fpcr-wild-bootstrap-selection.md
       - Derived continuous functions: guides/derived-functions.md
       - Continuous trajectory geometry: methods/trajectory-geometry.md
+      - Discrete Fréchet trajectory distance: methods/discrete-frechet.md
       - Nonlinear trajectory dynamics: guides/nonlinear-dynamics.md
       - Recurrence-threshold diagnostics: methods/recurrence-threshold-diagnostics.md
       - RQA population bootstrap: methods/rqa-population-bootstrap.md
@@ -81,6 +82,7 @@ nav:
       - Stabilized-volatility FPCR selection: examples/fpcr-wild-bootstrap-selection.md
       - Irregular sampling & gaps: examples/irregular-data.md
       - Continuous trajectory geometry: examples/trajectory-geometry.md
+      - Discrete Fréchet trajectory distance: examples/discrete-frechet.md
       - Function → equation registry: examples/function-equation-registry.md
       - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
       - Recurrence-threshold diagnostics: examples/recurrence-threshold-diagnostics.md
