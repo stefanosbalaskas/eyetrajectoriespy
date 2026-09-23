@@ -535,3 +535,22 @@ If population uncertainty for RQA metrics will be reported, pre-specify:
 Do not switch from participant- to curve-level resampling after seeing narrower intervals. Do not select recurrence parameters after inspecting which settings produce the preferred confidence interval.
 
 If target-RR mode is used, do not pre-register RR itself as an independent bootstrap outcome.
+
+
+## Kantz largest-Lyapunov estimation
+
+If Kantz LLE will be used, pre-specify:
+
+- source dimensions and preprocessing;
+- embedding dimension and delay;
+- coordinate/state scaling;
+- fixed neighborhood radius;
+- minimum neighbors per reference;
+- Theiler window and units;
+- maximum divergence horizon and units;
+- linear fit interval and units;
+- whether Rosenstein will also be reported as a robustness comparison;
+- how insufficient neighborhood support will be interpreted;
+- any separate radius-sensitivity grid.
+
+Do not select the Kantz radius or fit interval by searching for the strongest positive exponent or best (R^2). Do not switch between Rosenstein and Kantz after outcome inspection without reporting that estimator selection.
