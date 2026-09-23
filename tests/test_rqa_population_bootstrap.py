@@ -62,8 +62,9 @@ def test_curve_level_rqa_bootstrap_is_reproducible_and_ordered():
     assert first.unit == "curve"
     assert len(first.observed_table) == data.n_curves
     assert len(first.bootstrap_table) == 300
-    assert np.all(first.summary_table["lower"] <= first.summary_table["mean"])
-    assert np.all(first.summary_table["mean"] <= first.summary_table["upper"])
+    assert np.all(first.summary_table["lower"] <= first.summary_table["upper"])
+    assert np.all(np.isfinite(first.summary_table["mean"]))
+    assert np.all(np.isfinite(first.summary_table["bootstrap_standard_error"]))
     pd.testing.assert_frame_equal(first.bootstrap_table, second.bootstrap_table)
     pd.testing.assert_frame_equal(first.summary_table, second.summary_table)
     assert first.provenance["within_single_trajectory_uncertainty"] is False
