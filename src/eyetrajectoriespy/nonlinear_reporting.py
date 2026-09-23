@@ -5,6 +5,7 @@ from __future__ import annotations
 import numpy as np
 
 from .nonlinear_types import (
+    KantzDivergenceResult,
     LargestLyapunovResult,
     LyapunovParameterSensitivityResult,
     RecurrenceRadiusProfileResult,
@@ -254,10 +255,19 @@ def lyapunov_parameter_sensitivity_reporting_text(
 
 
 def largest_lyapunov_reporting_text(result: LargestLyapunovResult) -> str:
-    """Return wording that keeps the Rosenstein estimate distinct from chaos claims."""
+    """Return named-estimator LLE wording without turning slope into a chaos claim."""
+
+    if isinstance(result.divergence, KantzDivergenceResult):
+        method = (
+            f"Kantz fixed-radius neighborhood divergence "
+            f"(radius={result.divergence.radius:.4g}, "
+            f"min_neighbors={result.divergence.min_neighbors})"
+        )
+    else:
+        method = "Rosenstein nearest-neighbor divergence"
 
     return (
-        f"A Rosenstein-style local-divergence estimate was fitted over "
+        f"A {method} estimate was fitted over "
         f"{result.fit_start:.4g} to {result.fit_end:.4g} "
         f"{result.divergence.time_unit} using {result.n_fit_points} divergence "
         f"points. The estimated largest Lyapunov exponent was "
