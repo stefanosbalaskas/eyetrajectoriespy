@@ -1,6 +1,7 @@
 import numpy as np
 
 from eyetrajectoriespy import (
+    KantzDivergenceResult,
     LargestLyapunovResult,
     LocalDivergenceResult,
     LocalReturnMapResult,
@@ -89,6 +90,37 @@ def test_reporting_helpers_preserve_scope_language():
     )
     lle_text = largest_lyapunov_reporting_text(lle)
     assert "not as standalone evidence of deterministic chaos" in lle_text
+
+    kantz_divergence = KantzDivergenceResult(
+        horizons=np.arange(5),
+        time_lags=np.arange(5, dtype=float) * 0.01,
+        mean_log_divergence=np.linspace(-2, 0, 5),
+        reference_counts=np.full(5, 10),
+        pair_counts=np.full(5, 40),
+        zero_mean_neighborhood_counts=np.zeros(5, dtype=int),
+        initial_neighbor_counts=np.full(20, 4),
+        radius=0.08,
+        min_neighbors=2,
+        theiler_window_samples=4,
+        max_horizon_samples=4,
+        curve_id="c",
+        time_unit="s",
+    )
+    kantz_lle = LargestLyapunovResult(
+        exponent=2.2,
+        exponent_unit="1/s",
+        intercept=-2.1,
+        r_squared=0.94,
+        standard_error=0.12,
+        fit_start=0.01,
+        fit_end=0.04,
+        n_fit_points=4,
+        divergence=kantz_divergence,
+    )
+    kantz_text = largest_lyapunov_reporting_text(kantz_lle)
+    assert "Kantz fixed-radius neighborhood divergence" in kantz_text
+    assert "radius=0.08" in kantz_text
+    assert "not as standalone evidence of deterministic chaos" in kantz_text
 
     surrogate = SurrogateNonlinearityResult(
         observed_statistic=2.0,
