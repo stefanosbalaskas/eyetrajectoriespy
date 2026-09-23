@@ -244,6 +244,27 @@ _CONTRACTS = (
         scope="Sparse observed-state or reconstructed-state recurrence with an explicit radius policy, metric, Theiler exclusion, and line-length thresholds.",
     ),
     MathematicalContract(
+        key="rqa-population-bootstrap",
+        title="Population mean bootstrap for curve-level RQA metrics",
+        public_api=("bootstrap_rqa_metric_means",),
+        equations=(
+            r"M_{iq}=Q_q\{R_i(\theta)\}",
+            r"U_{pq}=m_p^{-1}\sum_{j=1}^{m_p}M_{pjq}",
+            r"\overline U_q^{*(b)}="
+            r"n^{-1}\sum_{r=1}^{n}U_{I_r^{(b)}q}",
+            r"CI_{1-\alpha}="
+            r"[Q_{\alpha/2}(\overline U_q^*),"
+            r"Q_{1-\alpha/2}(\overline U_q^*)]",
+        ),
+        site_anchor="rqa-population-bootstrap",
+        scope=(
+            "Percentile bootstrap for the between-unit population mean of "
+            "fixed-specification curve-level RQA summaries; participant mode "
+            "first averages curve metrics within participant. It does not "
+            "estimate within-single-trajectory or parameter-selection uncertainty."
+        ),
+    ),
+    MathematicalContract(
         key="functional-rqa-trajectories",
         title="Windowed RQA as functional trajectories",
         public_api=("windowed_rqa_trajectory_set", "windowed_rqa_sensitivity"),
