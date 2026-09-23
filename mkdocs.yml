@@ -46,6 +46,7 @@ nav:
       - Stabilized-volatility FPCR selection: guides/fpcr-wild-bootstrap-selection.md
       - Derived continuous functions: guides/derived-functions.md
       - Nonlinear trajectory dynamics: guides/nonlinear-dynamics.md
+      - Nonlinear parameter sensitivity: methods/nonlinear-parameter-sensitivity.md
       - Functional RQA sensitivity & dependence: methods/rqa-functional-dependence.md
       - Interpretation: guides/interpretation.md
   - Worked examples:
@@ -77,6 +78,7 @@ nav:
       - Irregular sampling & gaps: examples/irregular-data.md
       - Function → equation registry: examples/function-equation-registry.md
       - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
+      - Nonlinear parameter sensitivity: examples/nonlinear-parameter-sensitivity.md
       - RQA-derived functional trajectories: examples/rqa-functional-trajectories.md
       - Functional RQA sensitivity & inference: examples/rqa-functional-sensitivity.md
       - Empirical return-map stability: examples/return-map-stability.md
