@@ -23,6 +23,7 @@ from eyetrajectoriespy import (
     fpca_wild_bootstrap_family_test_monte_carlo_diagnostics,
     fpca_wild_bootstrap_projection_family_test,
     kantz_divergence_curve,
+    kantz_parameter_sensitivity,
     local_divergence_curve,
     multiplier_functional_mean_band,
     plot_fpca_component,
@@ -31,6 +32,7 @@ from eyetrajectoriespy import (
     plot_fpca_wild_bootstrap_monte_carlo_diagnostics,
     plot_fpca_wild_bootstrap_projection,
     plot_functional_mean_band,
+    plot_kantz_sensitivity,
     plot_local_divergence,
     plot_planar_trajectories,
     plot_poincare_return_map,
@@ -318,6 +320,33 @@ def main() -> None:
     ax = plot_local_divergence(kantz_lle)
     _save(ax, "kantz-divergence.svg")
 
+    kantz_sensitivity = kantz_parameter_sensitivity(
+        nonlinear,
+        curve=0,
+        dimensions=("x",),
+        embedding_dimensions=(2,),
+        delays=(1,),
+        radii=(0.04, 0.06, 0.08, 0.10, 0.12),
+        min_neighbors=(2,),
+        theiler_windows=(8,),
+        fit_intervals=((1, 4),),
+        max_horizon=7,
+    )
+    ax = plot_kantz_sensitivity(
+        kantz_sensitivity,
+        parameter="radius",
+        response="exponent",
+        filters={
+            "embedding_dimension": 2,
+            "requested_delay": 1.0,
+            "min_neighbors": 2,
+            "requested_theiler_window": 8.0,
+            "requested_fit_start": 1.0,
+            "requested_fit_end": 4.0,
+        },
+    )
+    _save(ax, "kantz-sensitivity.svg")
+
     cycle_time = np.linspace(0.0, 20.0 * np.pi, 2001)
     cycle_amplitude = np.exp(-0.02 * cycle_time)
     cycle = TrajectorySet(
@@ -366,6 +395,7 @@ def main() -> None:
         "functional-rqa-trajectories.svg",
         "local-divergence.svg",
         "kantz-divergence.svg",
+        "kantz-sensitivity.svg",
         "return-map.svg",
     }
     produced = {path.name for path in OUTPUT.glob("*.svg")}
