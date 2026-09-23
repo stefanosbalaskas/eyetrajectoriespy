@@ -254,7 +254,7 @@ def test_kantz_parameter_sensitivity_evaluates_declared_cartesian_grid():
     assert result.n_specifications == 8
     assert result.exponent_unit == "1/s"
     assert result.table["specification_id"].is_unique
-    assert set(result.table["radius"]) == {0.05, 0.08}
+    assert set(result.table["requested_radius"]) == {0.05, 0.08}
     assert set(result.table["min_neighbors"]) == {1, 2}
     assert np.all(np.isfinite(result.table["exponent"]))
     assert np.all(result.table["minimum_reference_count_in_fit"] > 0)
@@ -334,7 +334,7 @@ def test_kantz_sensitivity_plot_requires_explicit_one_parameter_slice():
     with pytest.raises(ValueError, match="No averaging"):
         plot_kantz_sensitivity(
             result,
-            parameter="radius",
+            parameter="requested_radius",
         )
     ax = plot_kantz_sensitivity(
         result,
