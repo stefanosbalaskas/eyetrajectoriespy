@@ -293,6 +293,30 @@ _CONTRACTS = (
         scope="Nearest-neighbor local-divergence estimate with explicit Theiler window and analyst-declared linear fit interval; a positive estimate is not standalone evidence of deterministic chaos.",
     ),
     MathematicalContract(
+        key="kantz-local-divergence",
+        title="Kantz neighborhood divergence and largest Lyapunov estimate",
+        public_api=(
+            "kantz_divergence_curve",
+            "estimate_largest_lyapunov_kantz",
+        ),
+        equations=(
+            r"\mathcal N_i(\varepsilon)=\{j:"
+            r"\|\mathbf z_i-\mathbf z_j\|_2\le\varepsilon,"
+            r"\ |i-j|>w\}",
+            r"S(\varepsilon,k)=\frac{1}{N_k}\sum_i"
+            r"\log\left[\frac{1}{|\mathcal N_i(k)|}"
+            r"\sum_{j\in\mathcal N_i(k)}"
+            r"\|\mathbf z_{i+k}-\mathbf z_{j+k}\|_2\right]",
+            r"S(\varepsilon,k)\approx a+\lambda_{\max}k\Delta t",
+        ),
+        site_anchor="kantz-local-divergence",
+        scope=(
+            "Fixed-radius Kantz neighborhood divergence with explicit minimum "
+            "neighbor count, Theiler exclusion, and analyst-declared fit "
+            "interval; no automatic radius expansion or chaos classification."
+        ),
+    ),
+    MathematicalContract(
         key="surrogate-nonlinearity",
         title="IAAFT surrogate nonlinearity test",
         public_api=("surrogate_nonlinearity_test",),
