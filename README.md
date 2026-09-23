@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.32.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.33.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -63,6 +63,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - continuous wrapped heading, signed curvature, turning-rate functions, and explicit path-length/displacement tortuosity with low-speed undefinedness retained;
 - integrated functional L2 distances;
 - discrete Fréchet trajectory distance and pairwise matrices with auditable monotone couplings and no elapsed-time matching;
+- raw cumulative dynamic-time-warping trajectory costs with auditable monotone warping paths, no path-length normalization, and no hidden global constraint;
 - deterministic FPCA-score clustering;
 - scalar-on-function regression through FPCA scores;
 - explicit delay-coordinate reconstruction with AMI/autocorrelation and false-nearest-neighbor diagnostics;
@@ -133,6 +134,7 @@ print(summarise_fpca(fit))
 | Continuous gaze location | `[x(t), y(t)]` | `fit_mfpca()` |
 | Continuous planar geometry | `heading(t)`, signed curvature, turning rate, tortuosity | `heading_function()` / `signed_curvature_function()` / `turning_rate_function()` / `trajectory_tortuosity()` |
 | Ordered trajectory similarity | discrete Fréchet bottleneck distance | `discrete_frechet_distance()` / `pairwise_discrete_frechet_distances()` |
+| Elastic ordered trajectory alignment | raw cumulative DTW cost | `dynamic_time_warping_cost()` / `pairwise_dynamic_time_warping_costs()` |
 | Native irregular gaze | curve-specific time grids | `from_irregular_long_dataframe_native()` |
 | Genuinely sparse univariate gaze | covariance UFPCA + PACE scores | `fit_sparse_fpca_fdapy()` |
 | One derived continuous outcome | `X(t)` | `fit_fpca()` |
