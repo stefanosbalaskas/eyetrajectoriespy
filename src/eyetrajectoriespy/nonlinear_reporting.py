@@ -7,6 +7,7 @@ import numpy as np
 from .nonlinear_types import (
     LargestLyapunovResult,
     LyapunovParameterSensitivityResult,
+    RecurrenceRadiusProfileResult,
     RecurrenceResult,
     RQAResult,
     RQAParameterSensitivityResult,
@@ -18,6 +19,43 @@ from .nonlinear_types import (
     WindowedRQAResult,
     WindowedRQASensitivityResult,
 )
+
+
+def recurrence_radius_profile_reporting_text(
+    result: RecurrenceRadiusProfileResult,
+) -> str:
+    """Return manuscript-ready wording for recurrence-threshold diagnostics."""
+
+    table = result.table
+    coverage = float(
+        result.provenance.get(
+            "maximum_radius_coverage_fraction",
+            table["recurrence_rate"].iloc[-1],
+        )
+    )
+    complete = bool(
+        result.provenance.get("full_distance_distribution_captured", False)
+    )
+    coverage_text = (
+        "the supplied maximum radius covered the complete eligible "
+        "pair-distance distribution"
+        if complete
+        else (
+            f"the supplied maximum radius covered {100.0 * coverage:.1f}% "
+            "of eligible pair distances"
+        )
+    )
+    return (
+        f"Recurrence-threshold diagnostics evaluated {result.n_radii} "
+        f"predeclared radii for curve {result.curve_id!r} using the "
+        f"{result.metric} state-space distance and a Theiler window of "
+        f"{result.theiler_window_samples} samples. RR increased from "
+        f"{table['recurrence_rate'].iloc[0]:.4g} to "
+        f"{table['recurrence_rate'].iloc[-1]:.4g}; {coverage_text}. "
+        "Cumulative and shell pair counts were computed with the same "
+        "eligible-pair denominator and inclusive radius rule as the base "
+        "recurrence estimator. No radius was selected automatically."
+    )
 
 
 def rqa_reporting_text(
