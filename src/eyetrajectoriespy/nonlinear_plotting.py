@@ -18,6 +18,7 @@ from .nonlinear_types import (
     SurrogateNonlinearityResult,
     WindowedRQAFunctionalResult,
     WindowedRQAResult,
+    WindowedRQASensitivityResult,
 )
 
 
@@ -164,6 +165,51 @@ def plot_windowed_rqa_trajectories(
     ax.set_xlabel(f"Window center ({result.time_unit})")
     ax.set_ylabel(f"{metric} ({unit})")
     ax.set_title(f"Functional windowed RQA: {metric}")
+    return ax
+
+
+def plot_windowed_rqa_sensitivity(
+    result: WindowedRQASensitivityResult,
+    *,
+    curve: int | str,
+    metric: str,
+    ax=None,
+):
+    """Overlay one curve/metric across declared window/step specifications."""
+
+    if metric not in result.metrics:
+        raise KeyError(f"Unknown functional RQA metric {metric!r}")
+    curve_ids = result.analyses[0].trajectories.curve_ids
+    if isinstance(curve, str):
+        try:
+            curve_index = curve_ids.index(curve)
+        except ValueError as exc:
+            raise KeyError(f"Unknown curve_id {curve!r}") from exc
+    elif isinstance(curve, (int, np.integer)):
+        curve_index = int(curve)
+        if curve_index < 0 or curve_index >= len(curve_ids):
+            raise IndexError("curve index is out of range")
+    else:
+        raise TypeError("curve must be an integer index or curve_id string")
+
+    if ax is None:
+        _, ax = plt.subplots()
+
+    specification_ids = tuple(result.provenance["specification_ids"])
+    for specification_id, analysis in zip(
+        specification_ids, result.analyses, strict=True
+    ):
+        values = analysis.trajectories.dimension(metric)[curve_index]
+        label = (
+            f"{specification_id}: W={analysis.window_samples}, "
+            f"S={analysis.step_samples}"
+        )
+        ax.plot(analysis.trajectories.time, values, marker="o", label=label)
+
+    ax.set_xlabel(f"Window center ({result.analyses[0].time_unit})")
+    ax.set_ylabel(metric)
+    ax.set_title(f"Window/step sensitivity: {curve_ids[curve_index]} / {metric}")
+    ax.legend()
     return ax
 
 

@@ -53,5 +53,6 @@ jobs:
           python examples/function_equation_registry.py
           python examples/nonlinear_dynamics.py
           python examples/rqa_functional_trajectories.py
+          python examples/rqa_functional_sensitivity.py
           python examples/return_map_stability.py
           python examples/fpcr_wild_bootstrap_selection.py

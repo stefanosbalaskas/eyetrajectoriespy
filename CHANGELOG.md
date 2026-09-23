@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.25.0.dev0
+
+- Add `windowed_rqa_sensitivity()` for predeclared window/step sensitivity grids without automatic tuning selection.
+- Quantify deterministic overlap through analyzed-source coverage, reused-sample fraction, mean/max window membership, window span, profile-grid spacing, support, and tail diagnostics.
+- Compare functional RQA profiles across specifications only at exact shared window centers; no interpolation or hidden alignment is used.
+- Add descriptive per-curve/per-metric sensitivity summaries plus pairwise RMSE, absolute-difference, and correlation diagnostics where exact common centers exist.
+- Add `windowed_rqa_functional_mean_band()`, which derives finite functional RQA trajectories and reuses the package's simultaneous Gaussian multiplier band at explicitly declared curve or equal-weight participant units.
+- Preserve complete derived functions during inference rather than resampling overlapping window rows; participant-level inference averages repeated trial curves within participant before weighting participants equally.
+- State explicitly that source-sample reuse diagnostics do not estimate an effective independent sample size and that the new band is not a within-single-trajectory block bootstrap.
+- Add plotting/reporting helpers, result contracts, tests, a worked sensitivity/dependence example, expanded API/site guidance, and methodological references for RQA parameter sensitivity and independent-unit functional inference.
+
 ## 0.24.0.dev0
 
 - Freeze cross-library RQA conventions in code, tests, and documentation: inclusive radius threshold, LOI/Theiler policy, recurrence-rate denominators, 0-1 ratio scale, entropy denominator, and explicit uncorrected border-line handling.

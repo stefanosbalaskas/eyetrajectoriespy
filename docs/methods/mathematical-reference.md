@@ -250,7 +250,7 @@ $$
 c_{1-\alpha}\widehat{\mathrm{SE}}_d(t_m).
 $$
 
-**API:** \`multiplier_functional_mean_band()\`.
+**API:** \`multiplier_functional_mean_band()\`; \`windowed_rqa_functional_mean_band()\` reuses this calibration after constructing the declared RQA-derived functional trajectories.
 
 ## Scalar-on-function regression through FPC scores { #fpcr }
 
@@ -693,7 +693,7 @@ This overlap is recorded as provenance. It is not converted into an independence
 
 When target recurrence rate determines the radius, RR is controlled by construction and is therefore not accepted as a downstream functional outcome. Undefined selected metrics fail closed by default; an explicit keep policy preserves them as `NaN` without imputation.
 
-**API:** `windowed_rqa_trajectory_set()`, `plot_windowed_rqa_trajectories()`, `windowed_rqa_functional_reporting_text()`.
+**API:** `windowed_rqa_trajectory_set()`, `windowed_rqa_sensitivity()`, `plot_windowed_rqa_trajectories()`, `plot_windowed_rqa_sensitivity()`, `windowed_rqa_functional_reporting_text()`, and `windowed_rqa_sensitivity_reporting_text()`. The sensitivity API evaluates the same functionalization contract across a predeclared window/step grid without automatic selection or interpolation.
 ## Rosenstein local divergence and largest Lyapunov estimate { #local-divergence }
 
 For reconstructed state \(i\), let \(j(i)\) be its nearest positive-distance neighbor outside the declared Theiler window. Forward separation is

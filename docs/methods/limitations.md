@@ -495,3 +495,38 @@ See [RQA software conventions](rqa-software-conventions.md).
 Scalar IAAFT does not become a valid planar-gaze surrogate by running it independently on `x` and `y`. Independent channel randomization can alter the cross-channel structure that defines the trajectory.
 
 A future multivariate surrogate method must declare and diagnose preservation of the intended auto- and cross-channel linear structure, operate on a common regular grid, expose convergence, and state the exact null hypothesis. Version 0.24 therefore fails by omission rather than silently approximating MIAAFT.
+
+
+## Functional RQA sensitivity and dependence limits
+
+### Sensitivity diagnostics do not select a window
+
+`windowed_rqa_sensitivity()` evaluates a declared window/step grid and retains every specification. Its RMSE, absolute-difference, correlation, overlap, coverage, and sample-reuse summaries are diagnostics; they are not an optimization criterion and no preferred specification is returned.
+
+Searching many window/step combinations after inspecting the scientific result and then reporting only the most convenient profile is outside the intended confirmatory contract. A primary specification and sensitivity grid should be predeclared when possible.
+
+### A denser RQA profile is not a larger independent sample
+
+Reducing the step produces more window centers and often more deterministic sample reuse. The reported profile-grid spacing describes the sampling grid of the **derived function** only. It is not an estimate of effective independent temporal resolution, degrees of freedom, or effective sample size.
+
+The overlap diagnostics quantify direct source-sample reuse. They do not model all serial dependence. Adjacent non-overlapping windows can remain statistically dependent because they derive from one continuous process.
+
+### Pairwise sensitivity comparisons do not invent a common grid
+
+Profiles from different window specifications are compared only at exact shared window-center times. If there are no exact common centers, pairwise RMSE/correlation remain undefined. Version 0.25 does not interpolate sensitivity profiles merely to manufacture comparable rows.
+
+### Functional RQA mean bands require independent source units
+
+`windowed_rqa_functional_mean_band()` applies the existing studentized Gaussian multiplier band to complete RQA-derived functional curves.
+
+With `unit="participant"`, repeated trial curves are averaged within participant and participants are equally weighted. With `unit="curve"`, source curves are treated as independent units and that assumption must be justified by the design.
+
+The procedure does not resample sliding-window rows. One multiplier acts on the complete residual function for each independent unit, preserving within-function time-by-metric dependence in the bootstrap draw.
+
+### This is not a block bootstrap for one long trajectory
+
+The 0.25 mean band does not solve the inferential problem of one participant contributing one long serially dependent trajectory. A moving/block/stationary bootstrap would require a distinct estimand, block construction, block-length rule, stationarity/mixing assumptions, edge treatment, and validation. Those choices are not silently imported into the current API.
+
+### Window-selection and recurrence-tuning uncertainty remain conditional
+
+The band is conditional on the declared window, step, radius policy, Theiler window, line thresholds, state representation, preprocessing, and selected functional outcomes. It does not propagate uncertainty from choosing those settings after looking at the data.

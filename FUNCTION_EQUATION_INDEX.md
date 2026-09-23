@@ -94,7 +94,7 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## Simultaneous functional mean multiplier band
 
-**Functions:** `multiplier_functional_mean_band()`
+**Functions:** `multiplier_functional_mean_band()`, `windowed_rqa_functional_mean_band()`
 
 $$
 M^{(b)}=\max_{m,d}\left|\frac{n^{-1/2}\sum_i e_i^{(b)}\{X_{id}(t_m)-\overline X_d(t_m)\}}{\widehat\sigma_d(t_m)}\right|
@@ -250,7 +250,7 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## Windowed RQA as functional trajectories
 
-**Functions:** `windowed_rqa_trajectory_set()`
+**Functions:** `windowed_rqa_trajectory_set()`, `windowed_rqa_sensitivity()`
 
 $$
 F_{iq}(c_w)=M_q\{R_i^{(w)}\},\quad c_w=\frac{t_{w,\mathrm{start}}+t_{w,\mathrm{end}}}{2}

@@ -75,6 +75,8 @@ Degras D. *Simultaneous confidence bands for the mean of functional data*. WIREs
 
 Liebl D, Reimherr M. *Fast and fair simultaneous confidence bands for functional parameters*. Journal of the Royal Statistical Society Series B. 2023;85(3):842–868. doi:10.1093/jrsssb/qkad026.
 
+- Park, S. Y., Staicu, A.-M., Xiao, L., & Crainiceanu, C. M. (2018). Simple fixed-effects inference for complex functional models. *Biostatistics*, 19(2), 137–152. https://doi.org/10.1093/biostatistics/kxx026
+
 The current eyetrajectoriespy implementation uses a studentized Gaussian multiplier maximum over the observed common grid. It is intentionally narrower in scope than general continuous-domain confidence-band frameworks.
 
 
@@ -228,6 +230,8 @@ Exact Clopper-Pearson intervals are used only to describe the finite-bootstrap e
 - Schreiber, T., & Schmitz, A. (1996). Improved surrogate data for nonlinearity tests. *Physical Review Letters*, 77(4), 635–638. https://doi.org/10.1103/PhysRevLett.77.635
 - Schreiber, T., & Schmitz, A. (2000). Surrogate time series. *Physica D*, 142(3–4), 346–382. https://doi.org/10.1016/S0167-2789(00)00043-9
 - Marwan, N., Romano, M. C., Thiel, M., & Kurths, J. (2007). Recurrence plots for the analysis of complex systems. *Physics Reports*, 438(5–6), 237–329. https://doi.org/10.1016/j.physrep.2006.11.001
+- Kraemer, K.-H., Donner, R. V., Heitzig, J., & Marwan, N. (2018). Recurrence threshold selection for obtaining robust recurrence characteristics in different embedding dimensions. *Chaos*, 28(8), 085720. https://doi.org/10.1063/1.5024914
+- Vojtechovska, M., Muczková, M., & Popelka, S. (2025). Exploring Gaze Re-Inspection Dynamics with Running Recurrence Quantification Analysis (RRQA). *Proceedings of the 2025 Symposium on Eye Tracking Research and Applications*, Article 97, 1–7. https://doi.org/10.1145/3715669.3725875
 - Braun, T., Fernandez, C. N., Eroglu, D., Hartland, A., Breitenbach, S. F. M., & Marwan, N. (2022). Sampling rate-corrected analysis of irregularly sampled time series. *Physical Review E*, 105(2), 024206. https://doi.org/10.1103/PhysRevE.105.024206
 - Antary, N., Trauth, M. H., & Marwan, N. (2023). Interpolation and sampling effects on recurrence quantification measures. *Chaos*, 33(10), 103105. https://doi.org/10.1063/5.0167413
 
@@ -236,3 +240,5 @@ Anderson et al. and Gurtner et al. provide direct behavioral eye-movement preced
 Evidence status is deliberately conservative. An exact record is cited only when its bibliographic identity was independently verified. Failure to identify a paper, implementation, or package in a search is reported only as **not identified in the searches performed**; it is not treated as proof of novelty. Blogs, Wikipedia, and other tertiary explanations are not part of the scientific evidence chain for this nonlinear layer.
 
 The eyetrajectoriespy implementation keeps these pieces separate: AMI/FNN are diagnostics rather than automatic selectors; recurrence is sparse and uses an explicit radius policy/Theiler window; LLE fitting uses an analyst-declared interval; IAAFT testing is an explicit null-model comparison; and empirical return maps are labeled experimental rather than being called Floquet analysis.
+
+For the 0.25 functional-RQA layer, Kraemer et al. reinforce that recurrence summaries depend on declared recurrence parameters rather than one universal threshold, while Vojtechovska et al. show that temporal recurrence profiling in eye tracking is itself sensitive to the limitations of fixed sliding windows. Park et al. provide the broader functional-data principle used for dependence-aware inference: resample independent observational units such as subjects while retaining the complex within-unit functional dependence. eyetrajectoriespy reuses that independent-unit principle through its existing whole-function multiplier band; it does not claim to numerically reproduce Park et al.'s bootstrap algorithm.

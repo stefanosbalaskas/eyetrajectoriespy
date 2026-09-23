@@ -10,7 +10,7 @@ import pandas as pd
 from scipy.sparse import csr_matrix
 
 if TYPE_CHECKING:
-    from .types import TrajectorySet
+    from .types import FunctionalMeanBandResult, TrajectorySet
 
 
 @dataclass(frozen=True)
@@ -147,6 +147,33 @@ class WindowedRQAFunctionalResult:
     @property
     def n_windows(self) -> int:
         return self.trajectories.n_time
+
+
+@dataclass(frozen=True)
+class WindowedRQASensitivityResult:
+    """Declared window/step sensitivity analyses for functional RQA."""
+
+    analyses: tuple[WindowedRQAFunctionalResult, ...]
+    design_table: pd.DataFrame
+    summary_table: pd.DataFrame
+    pairwise_table: pd.DataFrame
+    metrics: tuple[str, ...]
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_specifications(self) -> int:
+        return len(self.analyses)
+
+
+@dataclass(frozen=True)
+class WindowedRQAMeanBandResult:
+    """Unit-level simultaneous mean band for functional RQA trajectories."""
+
+    functional_rqa: WindowedRQAFunctionalResult
+    band: "FunctionalMeanBandResult"
+    unit: str
+    participant_column: str | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
