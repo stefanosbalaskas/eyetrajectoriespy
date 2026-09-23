@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.32.0.dev0
+
+- Add `discrete_frechet_distance()` for the exact discrete Fréchet distance between finite sampled paths under a fixed weighted-Euclidean point metric.
+- Add `pairwise_discrete_frechet_distances()` for complete `TrajectorySet` objects with required explicit dimension selection.
+- Preserve monotone path order while allowing one sequence to advance as the other holds its current sample; timestamps are not included in the distance.
+- Use the Eiter–Mannila dynamic-programming recurrence with O(mn) runtime and rolling O(min(m,n)) auxiliary memory rather than a dense cost matrix.
+- Require finite path values and finite strictly positive point-metric weights; no channel standardization, coordinate conversion, interpolation, resampling, simplification, downsampling, or automatic weighting is introduced.
+- Support variable-length sampled arrays in the low-level API while keeping the package pairwise API explicit about the compared state dimensions.
+- Keep discrete Fréchet distinct from continuous Fréchet, common-time functional L2, registration, and DTW; no coupling path or temporal-warping output is claimed in this tranche.
+- Add mathematical contracts, analytic/order/weight/error tests, method guidance, worked/executable examples, assumptions, limitations, preregistration/reporting guidance, references, API docs, navigation, and CI integration.
+
 ## 0.31.0.dev0
 
 - Add `heading_function()`, `signed_curvature_function()`, `turning_rate_function()`, and `trajectory_tortuosity()` for continuous planar gaze geometry.
