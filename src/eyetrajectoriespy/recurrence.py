@@ -208,9 +208,16 @@ def recurrence_radius_profile(
         raise ValueError(f"metric must be one of {sorted(_METRIC_P)}")
     if isinstance(radii, (str, bytes)):
         raise TypeError("radii must be a non-string sequence")
-    radius_array = np.asarray(tuple(radii), dtype=float)
-    if radius_array.ndim != 1 or radius_array.size < 2:
+    radius_values = tuple(radii)
+    if len(radius_values) < 2:
         raise ValueError("radii must contain at least two values")
+    for value in radius_values:
+        if isinstance(value, (bool, np.bool_)) or not isinstance(
+            value,
+            (int, float, np.integer, np.floating),
+        ):
+            raise TypeError("radii values must be numeric and not boolean")
+    radius_array = np.asarray(radius_values, dtype=float)
     if not np.all(np.isfinite(radius_array)) or np.any(radius_array <= 0):
         raise ValueError("radii must contain only positive finite values")
     if not np.all(np.diff(radius_array) > 0):
