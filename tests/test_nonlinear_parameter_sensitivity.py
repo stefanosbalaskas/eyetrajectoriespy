@@ -9,6 +9,7 @@ import pytest
 from eyetrajectoriespy import (
     TrajectorySet,
     kantz_parameter_sensitivity,
+    kantz_parameter_sensitivity_reporting_text,
     lyapunov_parameter_sensitivity,
     plot_kantz_sensitivity,
     plot_lyapunov_sensitivity,
@@ -150,6 +151,11 @@ def test_lyapunov_parameter_sensitivity_retains_fit_quality_and_sign_summary():
     exponent = result.summary_table.set_index("metric").loc["exponent"]
     assert exponent["n_specifications"] == 8
     assert 0 <= exponent["positive_specification_fraction"] <= 1
+
+    report = kantz_parameter_sensitivity_reporting_text(result)
+    assert "Kantz local-divergence sensitivity" in report
+    assert "not sampling uncertainty or a probability of deterministic chaos" in report
+    assert "No radius" in report
     assert (
         exponent["n_positive"]
         + exponent["n_negative"]
