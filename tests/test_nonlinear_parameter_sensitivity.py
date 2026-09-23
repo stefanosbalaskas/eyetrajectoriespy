@@ -8,7 +8,10 @@ import pytest
 
 from eyetrajectoriespy import (
     TrajectorySet,
+    kantz_parameter_sensitivity,
+    kantz_parameter_sensitivity_reporting_text,
     lyapunov_parameter_sensitivity,
+    plot_kantz_sensitivity,
     plot_lyapunov_sensitivity,
     plot_rqa_sensitivity,
     rqa_parameter_sensitivity,
@@ -226,6 +229,127 @@ def test_sensitivity_plots_require_explicit_one_parameter_slice():
     )
     assert "Rosenstein sensitivity" in ax2.get_title()
     plt.close("all")
+
+
+def test_kantz_parameter_sensitivity_evaluates_declared_cartesian_grid():
+    data = _logistic_set(560)
+    result = kantz_parameter_sensitivity(
+        data,
+        curve=0,
+        dimensions=("x",),
+        embedding_dimensions=(2,),
+        delays=(1,),
+        radii=(0.05, 0.08),
+        min_neighbors=(1, 2),
+        theiler_windows=(6,),
+        fit_intervals=((1, 4), (2, 5)),
+        max_horizon=8,
+    )
+
+    assert result.n_specifications == 8
+    assert result.exponent_unit == "1/s"
+    assert result.table["specification_id"].is_unique
+    assert set(result.table["requested_radius"]) == {0.05, 0.08}
+    assert set(result.table["min_neighbors"]) == {1, 2}
+    assert np.all(np.isfinite(result.table["exponent"]))
+    assert np.all(result.table["minimum_reference_count_in_fit"] > 0)
+    assert np.all(result.table["minimum_pair_count_in_fit"] > 0)
+    assert np.all(
+        (result.table["initial_supported_reference_fraction"] > 0)
+        & (result.table["initial_supported_reference_fraction"] <= 1)
+    )
+    assert result.provenance["automatic_parameter_selection"] is False
+    assert result.provenance["automatic_radius_selection"] is False
+    assert result.provenance["automatic_fit_interval_selection"] is False
+    assert result.provenance["failed_specification_policy"] == "raise_entire_analysis"
+    assert "not a probability" in result.provenance["positive_fraction_interpretation"]
+
+    exponent = result.summary_table.set_index("metric").loc["exponent"]
+    assert exponent["n_specifications"] == 8
+    assert 0 <= exponent["positive_specification_fraction"] <= 1
+
+    report = kantz_parameter_sensitivity_reporting_text(result)
+    assert "Kantz local-divergence sensitivity" in report
+    assert "not sampling uncertainty or a probability of deterministic chaos" in report
+    assert "No radius" in report
+
+
+def test_kantz_sensitivity_fails_entire_grid_for_unsupported_neighborhood():
+    data = _logistic_set(360)
+    with pytest.raises(ValueError, match="Kantz sensitivity divergence failed"):
+        kantz_parameter_sensitivity(
+            data,
+            curve=0,
+            dimensions=("x",),
+            embedding_dimensions=(2,),
+            delays=(1,),
+            radii=(1e-12,),
+            min_neighbors=(5,),
+            theiler_windows=(6,),
+            fit_intervals=((1, 4),),
+            max_horizon=7,
+        )
+
+
+def test_kantz_sensitivity_rejects_duplicate_radius_and_min_neighbor_grids():
+    data = _logistic_set(360)
+    common = dict(
+        trajectories=data,
+        curve=0,
+        dimensions=("x",),
+        embedding_dimensions=(2,),
+        delays=(1,),
+        theiler_windows=(6,),
+        fit_intervals=((1, 4),),
+        max_horizon=7,
+    )
+    with pytest.raises(ValueError, match="radii must not contain duplicate"):
+        kantz_parameter_sensitivity(
+            **common,
+            radii=(0.05, 0.05),
+            min_neighbors=(2,),
+        )
+    with pytest.raises(ValueError, match="min_neighbors must not contain duplicate"):
+        kantz_parameter_sensitivity(
+            **common,
+            radii=(0.05,),
+            min_neighbors=(2, 2),
+        )
+
+
+def test_kantz_sensitivity_plot_requires_explicit_one_parameter_slice():
+    data = _logistic_set(520)
+    result = kantz_parameter_sensitivity(
+        data,
+        curve=0,
+        dimensions=("x",),
+        embedding_dimensions=(2,),
+        delays=(1,),
+        radii=(0.05, 0.08),
+        min_neighbors=(1, 2),
+        theiler_windows=(6,),
+        fit_intervals=((1, 4),),
+        max_horizon=7,
+    )
+    with pytest.raises(ValueError, match="No averaging"):
+        plot_kantz_sensitivity(
+            result,
+            parameter="requested_radius",
+        )
+    ax = plot_kantz_sensitivity(
+        result,
+        parameter="requested_radius",
+        filters={
+            "embedding_dimension": 2,
+            "requested_delay": 1.0,
+            "min_neighbors": 2,
+            "requested_theiler_window": 6.0,
+            "requested_fit_start": 1.0,
+            "requested_fit_end": 4.0,
+        },
+    )
+    assert "Kantz sensitivity" in ax.get_title()
+    plt.close(ax.figure)
 
 
 def test_sensitivity_grid_validation_rejects_duplicates_and_unknown_dimensions():

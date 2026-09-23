@@ -119,16 +119,6 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked example](../examples/rqa-population-bootstrap.md) · [Method guide](rqa-population-bootstrap.md) · [Mathematics](mathematical-reference.md#rqa-population-bootstrap)
 
--   **Population uncertainty for RQA summaries**
-
-    ![Participant-level bootstrap intervals for population-average RQA metrics](../assets/gallery/rqa-population-bootstrap.svg)
-
-    Percentile-bootstrap uncertainty for fixed-specification curve-level RQA metrics using equal-weight participant inference units.
-
-    **API:** `bootstrap_rqa_metric_means()`, `plot_rqa_metric_mean_bootstrap()`
-
-    [Worked example](../examples/rqa-population-bootstrap.md) · [Method guide](rqa-population-bootstrap.md) · [Mathematics](mathematical-reference.md#rqa-population-bootstrap)
-
 -   **Time-varying RQA**
 
     ![Windowed recurrence quantification](../assets/gallery/windowed-rqa.svg)
@@ -167,6 +157,16 @@ These figures are regenerated from deterministic synthetic data during the docum
     **API:** `kantz_divergence_curve()`, `estimate_largest_lyapunov_kantz()`, `plot_local_divergence()`
 
     [Worked comparison](../examples/kantz-lle.md) · [Method guide](kantz-lle.md) · [Mathematics](mathematical-reference.md#kantz-local-divergence)
+
+-   **Kantz radius sensitivity**
+
+    ![Kantz largest-Lyapunov estimate over a declared radius grid](../assets/gallery/kantz-sensitivity.svg)
+
+    Exponent sensitivity over a predeclared fixed-radius grid with reconstruction, minimum-neighbor, Theiler, and fit settings held explicit.
+
+    **API:** `kantz_parameter_sensitivity()`, `plot_kantz_sensitivity()`
+
+    [Worked example](../examples/nonlinear-parameter-sensitivity.md) · [Sensitivity guide](nonlinear-parameter-sensitivity.md) · [Mathematics](mathematical-reference.md#kantz-local-divergence)
 
 -   **Experimental empirical return map**
 
@@ -258,4 +258,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates all sixteen assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates all seventeen assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.

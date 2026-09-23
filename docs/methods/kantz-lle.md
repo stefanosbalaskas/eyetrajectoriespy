@@ -129,6 +129,40 @@ Korda et al. provide direct eye-movement signal-analysis precedent for largest-L
 
 Kantz (1994) is the primary method source for the neighborhood-based estimator, and Hegger, Kantz, and Schreiber (1999) document its practical TISEAN implementation.
 
+## Sensitivity across neighborhood and fit choices
+
+Version 0.30 adds `kantz_parameter_sensitivity()` for a predeclared robustness grid over:
+
+- embedding dimension;
+- delay;
+- fixed radius;
+- minimum neighbors;
+- Theiler window;
+- fit interval.
+
+The function retains every Cartesian-product specification and the associated neighborhood-support diagnostics. It does not rank or optimize those choices.
+
+```python
+sensitivity = kantz_parameter_sensitivity(
+    data,
+    curve=0,
+    dimensions=("x",),
+    embedding_dimensions=(2, 3),
+    delays=(1,),
+    radii=(0.05, 0.08, 0.12),
+    min_neighbors=(1, 2, 4),
+    theiler_windows=(6, 10),
+    fit_intervals=((1, 4), (2, 5)),
+    max_horizon=8,
+)
+```
+
+Use `plot_kantz_sensitivity()` only after filtering the grid to one explicit varying parameter. The helper refuses hidden averaging across the remaining dimensions.
+
+A positive-specification fraction is descriptive of the declared grid. It is not a chaos probability or confidence level.
+
+See [nonlinear parameter sensitivity](nonlinear-parameter-sensitivity.md).
+
 ## Reporting
 
 Report:

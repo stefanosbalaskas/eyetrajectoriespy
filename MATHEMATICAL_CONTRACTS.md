@@ -426,7 +426,7 @@ S(\varepsilon,k)
 a+\lambda_{\max}k\Delta t.
 $$
 
-Implemented by `kantz_divergence_curve()` and `estimate_largest_lyapunov_kantz()`. Radius, minimum-neighbor count, Theiler exclusion, and fit interval remain explicit; the package does not enlarge neighborhoods automatically.
+Implemented by `kantz_divergence_curve()`, `estimate_largest_lyapunov_kantz()`, and `kantz_parameter_sensitivity()`. Radius, minimum-neighbor count, Theiler exclusion, and fit interval remain explicit; the package does not enlarge neighborhoods or select a preferred sensitivity specification automatically.
 
 ## IAAFT surrogate testing
 

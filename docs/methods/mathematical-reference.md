@@ -824,7 +824,7 @@ The radius and minimum-neighbor count are explicit inputs. The package does not 
 
 The fitted slope is a Kantz-style maximal-Lyapunov estimate. It is a conditional local-divergence estimate under the declared reconstruction, radius, Theiler window, minimum-neighbor rule, and fit interval; a positive slope is not standalone evidence of deterministic chaos.
 
-**API:** `kantz_divergence_curve()` and `estimate_largest_lyapunov_kantz()`.
+**API:** `kantz_divergence_curve()`, `estimate_largest_lyapunov_kantz()`, and `kantz_parameter_sensitivity()`. The sensitivity API reuses the same neighborhood-divergence and linear-fit equations across the complete analyst-declared reconstruction, radius, minimum-neighbor, Theiler, and fit-interval grid without selecting a preferred specification.
 
 ## IAAFT surrogate nonlinearity test { #surrogate-nonlinearity }
 

@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.30.0.dev0
+
+- Add `kantz_parameter_sensitivity()` for the complete analyst-declared Cartesian grid of embedding dimension, delay, fixed radius, minimum neighbors, Theiler window, and fit interval.
+- Reuse each resolved Kantz divergence curve across declared fit intervals without changing the estimator.
+- Retain exponent/fit diagnostics plus initial supported-reference fraction and minimum reference/pair support inside each fitted interval.
+- Fail the entire sensitivity analysis when any declared specification is invalid; no failed radius/minimum-neighbor combination is silently dropped or enlarged.
+- Add `KantzParameterSensitivityResult`, `plot_kantz_sensitivity()`, and `kantz_parameter_sensitivity_reporting_text()`.
+- Plotting requires an explicit one-parameter slice and refuses hidden averaging across unspecified sensitivity dimensions.
+- Positive-specification fractions and support fractions remain descriptive properties of the declared grid; they are not chaos probabilities, confidence intervals, or model weights.
+- Extend the mathematical contract, API reference, nonlinear-sensitivity guide/worked example/executable example, reporting/preregistration/limitations guidance, references, README/status surfaces, and tests.
+
 ## 0.29.0.dev0
 
 - Add `kantz_divergence_curve()` as a named fixed-radius neighborhood local-divergence estimator alongside the existing Rosenstein nearest-neighbor path.

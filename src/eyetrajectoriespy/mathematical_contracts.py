@@ -298,6 +298,7 @@ _CONTRACTS = (
         public_api=(
             "kantz_divergence_curve",
             "estimate_largest_lyapunov_kantz",
+            "kantz_parameter_sensitivity",
         ),
         equations=(
             r"\mathcal N_i(\varepsilon)=\{j:"

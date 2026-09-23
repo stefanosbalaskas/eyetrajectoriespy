@@ -11,6 +11,7 @@ from .nonlinear_types import (
     EmbeddingDelayDiagnosticResult,
     EmbeddingDimensionDiagnosticResult,
     KantzDivergenceResult,
+    KantzParameterSensitivityResult,
     LargestLyapunovResult,
     LyapunovParameterSensitivityResult,
     LocalDivergenceResult,
@@ -330,6 +331,49 @@ def plot_rqa_sensitivity(
     ax.set_xlabel(parameter)
     ax.set_ylabel(metric)
     ax.set_title(f"RQA parameter sensitivity: {result.curve_id}")
+    return ax
+
+
+def plot_kantz_sensitivity(
+    result: KantzParameterSensitivityResult,
+    *,
+    parameter: str,
+    response: str = "exponent",
+    filters: Mapping[str, object] | None = None,
+    ax=None,
+):
+    """Plot one explicit one-parameter slice of a Kantz sensitivity grid."""
+
+    allowed = {
+        "exponent",
+        "r_squared",
+        "standard_error",
+        "n_fit_points",
+        "minimum_reference_count_in_fit",
+        "minimum_pair_count_in_fit",
+        "initial_supported_reference_fraction",
+        "total_zero_mean_neighborhood_count_in_fit",
+    }
+    if response not in allowed:
+        raise KeyError(f"Unknown Kantz sensitivity response {response!r}")
+    selected = _filtered_sensitivity_slice(
+        result.table,
+        parameter=parameter,
+        response=response,
+        filters=filters,
+    )
+    if ax is None:
+        _, ax = plt.subplots()
+    ax.plot(selected[parameter], selected[response], marker="o")
+    if response == "exponent":
+        ax.axhline(0.0, linestyle=":")
+    ax.set_xlabel(parameter)
+    ax.set_ylabel(
+        f"{response} ({result.exponent_unit})"
+        if response == "exponent"
+        else response
+    )
+    ax.set_title(f"Kantz sensitivity: {result.curve_id}")
     return ax
 
 

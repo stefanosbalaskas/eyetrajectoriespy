@@ -402,6 +402,26 @@ Use a comparison only after holding the embedding, Theiler window, divergence ho
 
 See [Kantz LLE guidance](../methods/kantz-lle.md) and the [worked estimator comparison](../examples/kantz-lle.md).
 
+
+Version 0.30 adds a separate robustness multiverse for this estimator:
+
+```python
+kantz_sensitivity = kantz_parameter_sensitivity(
+    gaze,
+    curve=0,
+    dimensions=("x", "y"),
+    embedding_dimensions=(2, 3),
+    delays=(3, 5),
+    radii=(0.05, 0.08, 0.12),
+    min_neighbors=(2, 4),
+    theiler_windows=(6, 12),
+    fit_intervals=((1, 5), (2, 6)),
+    max_horizon=10,
+)
+```
+
+The complete grid is retained. The function does not select the radius, minimum-neighbor rule, reconstruction, or fit interval that produces the strongest exponent or best fit. See [nonlinear parameter sensitivity](../methods/nonlinear-parameter-sensitivity.md).
+
 ### Sensitivity across reconstruction and fit choices
 
 Version 0.26 adds a separate robustness layer for the parameter dependence of both RQA and Rosenstein LLE.
