@@ -587,3 +587,12 @@ Do not choose a low-speed threshold, coordinate rescaling, or heading unwrapping
 If discrete Fréchet will be used, pre-specify the trajectory representation, included dimensions, coordinate units/scaling, optional dimension weights, any upstream resampling or simplification, and whether the distance is primary or sensitivity analysis.
 
 Do not choose coordinate scaling, dimensions, or preprocessing after inspecting which version produces the preferred group separation. State whether elapsed timing is intentionally ignored by the comparison.
+
+
+## Dynamic time warping trajectory comparison
+
+If DTW will be used, pre-specify the trajectory representation, selected dimensions, coordinate units/scaling, optional dimension weights, local cost metric, step pattern, path-normalization rule, global constraint, slope constraint, and upstream preprocessing.
+
+For the 0.33 implementation, the declared contract is raw cumulative cost under the unconstrained symmetric three-step recurrence.
+
+Do not add a warping window, normalization rule, or coordinate transformation after inspecting which version produces the preferred group separation. State whether elapsed timing is intentionally ignored by the alignment.
