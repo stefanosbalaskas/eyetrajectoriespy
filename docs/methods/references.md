@@ -276,3 +276,12 @@ For the 0.30 Kantz-sensitivity layer, Kantz (1994) makes the local neighborhood 
 - Laborde, Q., Roques, A., Armougum, A., Vayatis, N., Bargiotas, I., & Oudre, L. (2026). Vision toolkit part 3. Scanpaths and derived representations for gaze behavior characterization: a review. *Frontiers in Physiology*, 16, 1721768. https://doi.org/10.3389/fphys.2025.1721768
 
 Eiter and Mannila provide the discrete Fréchet dynamic-programming definition. Laborde et al. classify discrete Fréchet among established elastic scanpath-comparison methods and emphasize method choice according to representation and scientific question. Version 0.32 therefore does not claim novelty for the metric itself; it exposes an explicit coupling/provenance contract inside the continuous-trajectory framework.
+
+
+## Dynamic time warping
+
+- Sakoe, H., & Chiba, S. (1978). Dynamic programming algorithm optimization for spoken word recognition. *IEEE Transactions on Acoustics, Speech, and Signal Processing*, 26(1), 43–49. https://doi.org/10.1109/TASSP.1978.1163055
+
+Sakoe and Chiba formalize dynamic-programming time normalization and discuss symmetric/asymmetric forms plus path constraints. The contemporary scanpath review by Laborde et al. (2026), cited above under trajectory similarity, treats DTW as an established elastic scanpath-comparison method that sums local alignment discrepancies while allowing local acceleration/deceleration.
+
+Version 0.33 deliberately freezes one narrow contract: symmetric three-step recurrence, raw cumulative weighted-Euclidean cost, no global window, no slope constraint, and no path-length normalization. This avoids silently choosing among incompatible DTW conventions.
