@@ -61,13 +61,14 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Functional RQA mean band | implemented; complete curve/participant functions are inference units | `windowed_rqa_functional_mean_band()` |
 | Rosenstein local divergence / LLE | implemented with explicit fit interval | `local_divergence_curve()` / `estimate_largest_lyapunov_rosenstein()` |
 | Kantz neighborhood divergence / LLE | implemented; fixed radius, explicit minimum neighbors, no adaptive radius expansion | `kantz_divergence_curve()` / `estimate_largest_lyapunov_kantz()` |
+| Kantz-LLE parameter sensitivity | implemented; descriptive Cartesian multiverse, no radius/fit optimization | `kantz_parameter_sensitivity()` |
 | Rosenstein-LLE parameter sensitivity | implemented; descriptive multiverse, no chaos-probability interpretation | `lyapunov_parameter_sensitivity()` |
 | IAAFT surrogate nonlinearity test | implemented | `surrogate_nonlinearity_test()` |
 | Empirical Poincare return-map stability | experimental | `poincare_crossings()` / `fit_local_return_map()` / `return_map_stability()` |
 
 ## Documentation and mathematical contracts
 
-Versions 0.21–0.29 treat documentation and mathematical metadata as tested package surfaces:
+Versions 0.21–0.30 treat documentation and mathematical metadata as tested package surfaces:
 
 - the repository-level `MATHEMATICAL_CONTRACTS.md` renders the core equations directly on GitHub;
 - the site mathematical reference maps those equations to the exact public APIs and scope boundaries;
@@ -118,10 +119,10 @@ Future tranches may evaluate:
 - explicit system-identification models for gaze dynamics;
 - model-based continuation / Floquet analysis only after a validated dynamical-system contract exists.
 
-Classical `floquet_multipliers(gaze)`, monodromy matrices from raw observations, and `detect_bifurcation(gaze)` remain intentionally **not** implemented in 0.29.
+Classical `floquet_multipliers(gaze)`, monodromy matrices from raw observations, and `detect_bifurcation(gaze)` remain intentionally **not** implemented in 0.30.
 
 A candidate enters the public API only when it can preserve the package rules: explicit estimand, deterministic behavior or seed, provenance, failure diagnostics, synthetic truth tests, documentation, and runnable examples.
 
 ## Development status
 
-The current development line is **0.29.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.30.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
