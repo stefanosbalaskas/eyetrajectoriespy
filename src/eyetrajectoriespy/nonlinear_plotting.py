@@ -10,6 +10,7 @@ import numpy as np
 from .nonlinear_types import (
     EmbeddingDelayDiagnosticResult,
     EmbeddingDimensionDiagnosticResult,
+    KantzDivergenceResult,
     LargestLyapunovResult,
     LyapunovParameterSensitivityResult,
     LocalDivergenceResult,
@@ -374,7 +375,7 @@ def plot_lyapunov_sensitivity(
 
 
 def plot_local_divergence(
-    result: LocalDivergenceResult | LargestLyapunovResult,
+    result: LocalDivergenceResult | KantzDivergenceResult | LargestLyapunovResult,
     *,
     ax=None,
 ):
@@ -413,7 +414,8 @@ def plot_local_divergence(
     ax.set_xlabel(f"Divergence lag ({divergence.time_unit})")
     ax.set_ylabel("Mean log distance")
     ax.legend()
-    ax.set_title(f"Local divergence: {divergence.curve_id}")
+    family = divergence.provenance.get("estimator_family", "local divergence")
+    ax.set_title(f"{family}: {divergence.curve_id}")
     return ax
 
 
