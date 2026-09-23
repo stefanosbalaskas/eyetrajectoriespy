@@ -725,3 +725,26 @@ Anisotropic rescaling of dimensions changes the local Euclidean metric and there
 ### Couplings need not be unique
 
 Multiple optimal monotone couplings can attain the same distance. The audit result returns one deterministic optimum and must not be interpreted as a unique latent correspondence.
+
+
+## Dynamic time warping limits
+
+### Raw cost depends on path length and sampling density
+
+Version 0.33 reports the unnormalized sum of local distances. Longer or more densely sampled paths can therefore accumulate larger costs even when local discrepancies are similar.
+
+### Warping can suppress timing differences
+
+DTW deliberately permits local index stretching/compression. Similar spatial sequences traversed at different rates can align closely even when response latency or physical timing differs.
+
+### No global warping constraint is imposed
+
+The current recurrence has no Sakoe–Chiba band, Itakura parallelogram, slope constraint, or maximum consecutive horizontal/vertical-run rule. Highly flexible alignments can therefore occur when the data permit them.
+
+### DTW cost is not claimed to be a metric
+
+The package does not label the raw cumulative DTW value a mathematical distance metric. Downstream methods that require metric properties should not assume them.
+
+### Warping paths need not be unique
+
+Multiple paths can have identical cumulative cost. The audit result returns one deterministic optimum under the documented tie order and should not be interpreted as a unique latent correspondence.
