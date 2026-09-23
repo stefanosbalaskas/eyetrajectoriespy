@@ -289,3 +289,18 @@ As with Rosenstein LLE, the temporal grid must be approximately regular so forwa
 Radius and minimum-neighbor values must therefore be interpreted jointly with coordinate scaling and state-space construction. A radius is not comparable across analyses that silently change channel units or normalization.
 
 The supported-reference fraction is descriptive support under one declared neighborhood rule. It is not an inverse-variance weight, effective sample size, or automatic criterion for preferring that radius.
+
+
+## Continuous trajectory geometry
+
+The heading, curvature, turning-rate, and tortuosity APIs assume that the two declared planar dimensions form a scientifically meaningful Euclidean coordinate system.
+
+Horizontal and vertical axes should therefore be commensurate. Coordinates normalized independently to display width and height can distort angle, curvature, path length, and tortuosity when the physical/visual scales differ.
+
+The sign of curvature and turning rate follows the **recorded coordinate orientation**. In common screen coordinates where \(y\) increases downward, visual clockwise/counterclockwise interpretation is reversed relative to a conventional Cartesian \(y\)-up plot.
+
+Differential geometry assumes the observed trajectory is complete and has at least three time points. Derivatives are computed on the supplied strictly increasing grid without hidden smoothing or interpolation.
+
+The \`min_speed\` threshold is part of the estimand. The default zero threshold masks only exactly stationary numerical derivatives; any positive near-zero threshold must be scientifically declared.
+
+Wrapped heading is circular data. Ordinary Euclidean FDA of heading requires an explicit representation decision because the \(-\pi/+ \pi\) branch cut is not a true directional discontinuity.
