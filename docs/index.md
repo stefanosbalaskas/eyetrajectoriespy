@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.24 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.31 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
@@ -136,6 +136,9 @@ The package is designed around the principle that **the path to an FPC score is 
 
 - **Where does gaze move over trial time?**  
   Use joint 2-D MFPCA.
+
+- **How does the path bend and turn over trial time?**  
+  Use continuous heading, signed curvature, and turning-rate functions with explicit low-speed handling.
 
 - **Are sample times irregular across trials?**  
   Preserve them in an <code>IrregularTrajectorySet</code> before choosing a projection.
