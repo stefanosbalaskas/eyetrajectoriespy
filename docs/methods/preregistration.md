@@ -554,3 +554,12 @@ If Kantz LLE will be used, pre-specify:
 - any separate radius-sensitivity grid.
 
 Do not select the Kantz radius or fit interval by searching for the strongest positive exponent or best (R^2). Do not switch between Rosenstein and Kantz after outcome inspection without reporting that estimator selection.
+
+
+### Kantz sensitivity analysis
+
+If a robustness multiverse is planned, pre-specify the full sets of embedding dimensions, delays, radii, minimum-neighbor requirements, Theiler windows, fit intervals, and maximum horizon. State whether one primary specification exists independently of the sensitivity analysis.
+
+Pre-specify the failure rule. The 0.30 API fails the complete analysis if any declared specification is invalid rather than removing inconvenient settings.
+
+Do not define the sensitivity grid after inspecting which radii produce positive exponents, high (R^2), small standard errors, or high neighborhood support.
