@@ -134,17 +134,17 @@ $$
 
 For a declared planar trajectory
 
-$
+$$
 \mathbf G(t)=
 \begin{bmatrix}
 x(t)\\
 y(t)
 \end{bmatrix},
-$
+$$
 
 the wrapped heading function is
 
-$
+$$
 \theta(t)
 =
 \operatorname{atan2}
@@ -152,13 +152,13 @@ $
 y'(t),
 x'(t)
 \right\}.
-$
+$$
 
-`heading_function()` reports this angle in radians on the recorded coordinate axes. It does not unwrap the angle automatically.
+\`heading_function()\` reports this angle in radians on the recorded coordinate axes. It does not unwrap the angle automatically.
 
 The signed curvature is
 
-$
+$$
 \kappa(t)
 =
 \frac{
@@ -168,11 +168,11 @@ x'(t)y''(t)-y'(t)x''(t)
 x'(t)^2+y'(t)^2
 \right\}^{3/2}
 }.
-$
+$$
 
 The signed turning rate is
 
-$
+$$
 \omega(t)
 =
 \frac{
@@ -185,25 +185,25 @@ x'(t)^2+y'(t)^2
 \left\|
 \mathbf G'(t)
 \right\|.
-$
+$$
 
-The implementation differentiates numerically with respect to the observed time grid using `numpy.gradient(..., edge_order=2)`. It does not smooth, interpolate, rescale, or add a denominator epsilon.
+The implementation differentiates numerically with respect to the observed time grid using \`numpy.gradient(..., edge_order=2)\`. It does not smooth, interpolate, rescale, or add a denominator epsilon.
 
 Heading, curvature, and turning rate are undefined where
 
-$
+$$
 \left\|
 \mathbf G'(t)
 \right\|
 \le
 v_{\min},
-$
+$$
 
-where `min_speed` is an explicit analysis parameter. The default (v_{\min}=0) masks only mathematically stationary samples; a positive threshold must be chosen explicitly if near-zero velocity is scientifically regarded as unstable. Under `undefined_policy="nan"`, undefined samples remain missing rather than being changed to zero. Under `undefined_policy="raise"`, any such sample aborts the calculation.
+where \`min_speed\` is an explicit analysis parameter. The default \(v_{\min}=0\) masks only mathematically stationary samples; a positive threshold must be chosen explicitly if near-zero velocity is scientifically regarded as unstable. Under \`undefined_policy="nan"\`, undefined samples remain missing rather than being changed to zero. Under \`undefined_policy="raise"\`, any such sample aborts the calculation.
 
 For a complete observed path, tortuosity is defined as
 
-$
+$$
 T
 =
 \frac{
@@ -216,13 +216,13 @@ T
 \mathbf G(t_M)-\mathbf G(t_1)
 \right\|_2
 }.
-$
+$$
 
-A straight path has (T=1). If endpoint displacement is at or below the declared `min_displacement`, the ratio is undefined; the same explicit `nan` versus `raise` policy applies.
+A straight path has \(T=1\). If endpoint displacement is at or below the declared \`min_displacement\`, the ratio is undefined; the same explicit \`nan\` versus \`raise\` policy applies.
 
-These quantities depend on the **metric and orientation of the supplied coordinates**. Separately normalized screen axes can distort Euclidean geometry if horizontal and vertical units are not commensurate. Likewise, if recorded screen (y) increases downward, the visual interpretation of curvature/turning sign is reversed relative to a conventional Cartesian (y)-up display. The package does not guess or silently flip either axis.
+These quantities depend on the **metric and orientation of the supplied coordinates**. Separately normalized screen axes can distort Euclidean geometry if horizontal and vertical units are not commensurate. Likewise, if recorded screen \(y\) increases downward, the visual interpretation of curvature/turning sign is reversed relative to a conventional Cartesian \(y\)-up display. The package does not guess or silently flip either axis.
 
-**API:** `heading_function()`, `signed_curvature_function()`, `turning_rate_function()`, and `trajectory_tortuosity()`.
+**API:** \`heading_function()\`, \`signed_curvature_function()\`, \`turning_rate_function()\`, and \`trajectory_tortuosity()\`.
 
 ## Two-level functional decomposition { #multilevel }
 
