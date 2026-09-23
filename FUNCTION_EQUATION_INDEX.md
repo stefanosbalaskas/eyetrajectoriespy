@@ -226,7 +226,7 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## Sparse recurrence and recurrence quantification
 
-**Functions:** `recurrence_matrix()`, `rqa_metrics()`, `rqa_parameter_sensitivity()`, `windowed_rqa()`, `cross_recurrence_matrix()`, `cross_rqa_metrics()`
+**Functions:** `recurrence_matrix()`, `recurrence_radius_profile()`, `rqa_metrics()`, `rqa_parameter_sensitivity()`, `windowed_rqa()`, `cross_recurrence_matrix()`, `cross_rqa_metrics()`
 
 $$
 R_{ij}=\mathbb I\{\|\mathbf z_i-\mathbf z_j\|_p\le\varepsilon\}

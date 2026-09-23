@@ -144,6 +144,30 @@ You must declare exactly one radius policy:
 
 Target-rate mode solves for a radius; the achieved rate and solved radius remain visible.
 
+### Radius / pair-distance diagnostics
+
+Before interpreting a fixed recurrence radius, inspect the mapping from radius to recurrence density over a scientifically declared grid:
+
+```python
+profile = recurrence_radius_profile(
+    gaze,
+    curve=0,
+    dimensions=("x", "y"),
+    radii=(0.02, 0.04, 0.06, 0.08, 0.12),
+    metric="euclidean",
+    theiler_window=0.05,
+    theiler_window_units="seconds",
+)
+```
+
+The returned recurrence-rate column is the empirical CDF of eligible pairwise state-space distances at the supplied thresholds. Shell counts/fractions record how much pair-distance mass enters between successive radii.
+
+The diagnostic uses the same inclusive threshold and eligible-pair denominator as `recurrence_matrix()`, applies the Theiler exclusion exactly, and does not construct a dense distance matrix.
+
+No radius is selected. The supplied grid is never sorted, deduplicated, extended, or optimized by the package. If the maximum declared radius does not capture all eligible pair distances, the result records that the distance profile is partial.
+
+See [recurrence-threshold diagnostics](../methods/recurrence-threshold-diagnostics.md).
+
 ### RQA metrics
 
 \`\`\`python

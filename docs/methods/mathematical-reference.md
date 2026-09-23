@@ -661,7 +661,7 @@ $$
 
 The matrix is stored sparsely. Exactly one radius policy is allowed: a fixed \(\varepsilon\), or an explicit target recurrence rate from which \(\varepsilon\) is solved numerically.
 
-**API:** \`recurrence_matrix()\`, \`rqa_metrics()\`, \`rqa_parameter_sensitivity()\`, \`windowed_rqa()\`, \`cross_recurrence_matrix()\`, \`cross_rqa_metrics()\`. The sensitivity API evaluates the same recurrence/RQA equations over a predeclared parameter grid without automatic selection.
+**API:** \`recurrence_matrix()\`, \`recurrence_radius_profile()\`, \`rqa_metrics()\`, \`rqa_parameter_sensitivity()\`, \`windowed_rqa()\`, \`cross_recurrence_matrix()\`, \`cross_rqa_metrics()\`. The radius-profile API evaluates the same RR equation over a declared radius grid, while the sensitivity API evaluates the broader recurrence/RQA contract over a predeclared parameter grid without automatic selection.
 
 ## Windowed RQA as functional trajectories { #functional-rqa-trajectories }
 

@@ -69,6 +69,7 @@ from .nonlinear_reporting import (
     lyapunov_parameter_sensitivity_reporting_text,
     return_map_stability_reporting_text,
     rqa_parameter_sensitivity_reporting_text,
+    recurrence_radius_profile_reporting_text,
     rqa_reporting_text,
     surrogate_nonlinearity_reporting_text,
     windowed_rqa_reporting_text,
@@ -83,6 +84,7 @@ from .nonlinear_plotting import (
     plot_lyapunov_sensitivity,
     plot_poincare_return_map,
     plot_recurrence,
+    plot_recurrence_rate_curve,
     plot_rqa_sensitivity,
     plot_surrogate_nonlinearity,
     plot_windowed_rqa,
@@ -98,6 +100,7 @@ from .nonlinear_types import (
     LocalDivergenceResult,
     LocalReturnMapResult,
     PoincareCrossingResult,
+    RecurrenceRadiusProfileResult,
     RecurrenceResult,
     RQAParameterSensitivityResult,
     RQAResult,
@@ -112,6 +115,7 @@ from .recurrence import (
     cross_recurrence_matrix,
     cross_rqa_metrics,
     recurrence_matrix,
+    recurrence_radius_profile,
     rqa_metrics,
     windowed_rqa,
     windowed_rqa_trajectory_set,
@@ -314,9 +318,10 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.26.0.dev0"
+__version__ = "0.27.0.dev0"
 
 __all__ = [
+    "recurrence_radius_profile_reporting_text",
     "rqa_reporting_text",
     "rqa_parameter_sensitivity_reporting_text",
     "windowed_rqa_reporting_text",
@@ -330,6 +335,7 @@ __all__ = [
     "plot_embedding_delay_diagnostics",
     "plot_embedding_dimension_diagnostics",
     "plot_recurrence",
+    "plot_recurrence_rate_curve",
     "plot_rqa_sensitivity",
     "plot_windowed_rqa",
     "plot_windowed_rqa_trajectories",
@@ -341,6 +347,7 @@ __all__ = [
     "DelayEmbeddingResult",
     "EmbeddingDelayDiagnosticResult",
     "EmbeddingDimensionDiagnosticResult",
+    "RecurrenceRadiusProfileResult",
     "RecurrenceResult",
     "RQAResult",
     "RQAParameterSensitivityResult",
@@ -359,6 +366,7 @@ __all__ = [
     "embedding_delay_diagnostics",
     "embedding_dimension_diagnostics",
     "recurrence_matrix",
+    "recurrence_radius_profile",
     "rqa_metrics",
     "rqa_parameter_sensitivity",
     "windowed_rqa",

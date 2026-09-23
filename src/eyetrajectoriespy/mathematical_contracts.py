@@ -225,6 +225,7 @@ _CONTRACTS = (
         title="Sparse recurrence and recurrence quantification",
         public_api=(
             "recurrence_matrix",
+            "recurrence_radius_profile",
             "rqa_metrics",
             "rqa_parameter_sensitivity",
             "windowed_rqa",

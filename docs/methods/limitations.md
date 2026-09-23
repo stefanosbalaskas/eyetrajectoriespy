@@ -575,3 +575,36 @@ If a particular recurrence plot needs inspection, reconstruct that specification
 The fraction of declared Rosenstein specifications with positive slopes only describes sign consistency over the chosen grid.
 
 Noise, nonstationarity, finite data, reconstruction choices, neighbor scarcity, and fit-interval choice remain relevant. Even a positive slope for every declared specification is not sufficient evidence of a deterministic chaotic mechanism.
+
+
+## Recurrence-threshold diagnostic limits
+
+### The radius profile is descriptive, not a threshold selector
+
+`recurrence_radius_profile()` returns the exact recurrence density over a user-declared radius grid. A steep or flat region is a property of that empirical distance distribution; it is not automatically an optimal operating point.
+
+The package does not maximize DET/LAM separation, search for a plateau, enforce a target RR band, or choose a threshold from the plotted curve.
+
+### The radius grid determines what part of the distance distribution is visible
+
+Shell fractions are binned over the declared radii. If the largest radius reaches RR=0.10, only the first 10% of eligible pairwise-distance mass is represented by the table.
+
+Use `maximum_radius_coverage_fraction` and `full_distance_distribution_captured` before describing the shell table as the complete pair-distance distribution.
+
+### Numeric radius values are representation dependent
+
+A radius has meaning only relative to the state variables, coordinate system, dimensions, embedding, metric, and any upstream scaling.
+
+The same numeric epsilon can imply very different recurrence densities after changing from pixels to normalized coordinates, adding another state dimension, changing embedding dimension, or scaling one channel. Version 0.27 does not normalize state channels to make radii superficially comparable.
+
+### Theiler exclusion changes both the empirical CDF and denominator
+
+The profile removes temporally near pairs under the same Theiler contract as the base recurrence estimator. Changing the Theiler window can therefore alter the observed pair-distance distribution as well as the recurrence denominator.
+
+Do not compare radius profiles with different Theiler policies as though only epsilon changed.
+
+### Exact pair counts do not remove measurement uncertainty
+
+The tree-based calculation is exact for the observed state vectors and declared metric. It does not account for tracker noise, calibration uncertainty, preprocessing uncertainty, interpolation uncertainty, or latent-state error.
+
+A precisely calculated RR(radius) curve can still be scientifically sensitive to those upstream choices.

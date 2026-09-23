@@ -288,7 +288,7 @@ v P_v(v)
 }.
 $$
 
-Implemented by \`recurrence_matrix()\`, \`rqa_metrics()\`, \`rqa_parameter_sensitivity()\`, \`windowed_rqa()\`, \`cross_recurrence_matrix()\`, and \`cross_rqa_metrics()\`.
+Implemented by \`recurrence_matrix()\`, \`recurrence_radius_profile()\`, \`rqa_metrics()\`, \`rqa_parameter_sensitivity()\`, \`windowed_rqa()\`, \`cross_recurrence_matrix()\`, and \`cross_rqa_metrics()\`.
 
 ## Windowed RQA as functional trajectories
 

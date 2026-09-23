@@ -17,12 +17,14 @@ For mathematical definitions of the main estimands, transformations, studentizat
 
 ### Sparse recurrence and RQA
 ::: eyetrajectoriespy.RecurrenceResult
+::: eyetrajectoriespy.RecurrenceRadiusProfileResult
 ::: eyetrajectoriespy.RQAResult
 ::: eyetrajectoriespy.WindowedRQAResult
 ::: eyetrajectoriespy.WindowedRQAFunctionalResult
 ::: eyetrajectoriespy.WindowedRQASensitivityResult
 ::: eyetrajectoriespy.WindowedRQAMeanBandResult
 ::: eyetrajectoriespy.recurrence_matrix
+::: eyetrajectoriespy.recurrence_radius_profile
 ::: eyetrajectoriespy.rqa_metrics
 ::: eyetrajectoriespy.windowed_rqa
 ::: eyetrajectoriespy.windowed_rqa_trajectory_set
@@ -31,6 +33,7 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.cross_recurrence_matrix
 ::: eyetrajectoriespy.cross_rqa_metrics
 ::: eyetrajectoriespy.plot_recurrence
+::: eyetrajectoriespy.plot_recurrence_rate_curve
 ::: eyetrajectoriespy.plot_windowed_rqa
 ::: eyetrajectoriespy.plot_windowed_rqa_trajectories
 ::: eyetrajectoriespy.plot_windowed_rqa_sensitivity
@@ -54,6 +57,7 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.plot_surrogate_nonlinearity
 
 ### Nonlinear reporting helpers
+::: eyetrajectoriespy.recurrence_radius_profile_reporting_text
 ::: eyetrajectoriespy.rqa_reporting_text
 ::: eyetrajectoriespy.rqa_parameter_sensitivity_reporting_text
 ::: eyetrajectoriespy.windowed_rqa_reporting_text

@@ -92,6 +92,23 @@ class RecurrenceResult:
 
 
 @dataclass(frozen=True)
+class RecurrenceRadiusProfileResult:
+    """Exact recurrence-rate profile over an analyst-declared radius grid."""
+
+    table: pd.DataFrame
+    curve_id: str
+    metric: str
+    theiler_window_samples: int
+    state_dimension: int
+    eligible_pair_count: int
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_radii(self) -> int:
+        return len(self.table)
+
+
+@dataclass(frozen=True)
 class RQAResult:
     """Recurrence-quantification metrics with line-threshold provenance."""
 

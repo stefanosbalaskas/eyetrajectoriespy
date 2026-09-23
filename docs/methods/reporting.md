@@ -588,3 +588,28 @@ When `lyapunov_parameter_sensitivity()` is used, report:
 - that no fit interval or reconstruction setting was selected automatically.
 
 If one specification is highlighted as primary, state the independent scientific reason for that choice rather than selecting it from the robustness table after inspection.
+
+
+## Recurrence-threshold profile
+
+When `recurrence_radius_profile()` is used, report:
+
+- source state representation and selected dimensions;
+- coordinate/state units and any upstream scaling;
+- observed-state versus delay-embedded representation;
+- distance metric;
+- complete declared radius grid;
+- inclusive threshold convention;
+- Theiler window in supplied units and resolved samples;
+- number of eligible off-diagonal pairs;
+- recurrence rate at each reported radius or the complete profile table;
+- shell pair counts/fractions when they are interpreted;
+- recurrence-rate coverage at the maximum supplied radius;
+- whether the full eligible pair-distance distribution was captured;
+- that no dense distance matrix was required by the implementation;
+- that the package did not select a radius automatically;
+- the separate scientific or design rule used for any primary radius.
+
+If target recurrence rate is used subsequently, report the requested target, solved radius, and achieved RR, and state that recurrence density was controlled by design.
+
+Do not call the largest, flattest, steepest, or visually most convenient radius “optimal” unless a separate validated optimization criterion was genuinely part of the method.

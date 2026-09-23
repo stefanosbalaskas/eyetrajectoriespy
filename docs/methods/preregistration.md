@@ -490,3 +490,23 @@ If Rosenstein-LLE robustness will be evaluated, pre-specify:
 Do not choose the sensitivity grid after inspecting which values preserve a preferred conclusion. Do not define the specification with the largest positive exponent, largest DET/LAM, highest R², or smallest standard error as the primary analysis unless that selection rule itself was independently justified and its selection uncertainty is handled separately.
 
 The package will not convert the fraction of positive LLE specifications into a probability of deterministic chaos.
+
+
+## Recurrence-threshold diagnostics
+
+If a radius profile will be used to justify or audit recurrence thresholds, pre-specify:
+
+- source trajectory/state representation;
+- dimensions and coordinate/state units;
+- any upstream channel scaling or normalization;
+- observed-state versus delay-embedded analysis;
+- recurrence distance metric;
+- complete strictly increasing radius grid;
+- Theiler window and units;
+- whether the profile is exploratory, a sensitivity diagnostic, or part of a threshold-selection protocol;
+- the independent rule used to define any primary radius;
+- whether a target-recurrence-rate analysis will be compared against the fixed-radius profile.
+
+Do not choose the displayed radius range after inspecting where the recurrence-rate curve produces the preferred RQA result. Do not convert a visually flat or steep section into an “optimal epsilon” rule unless that selection rule was separately specified and validated.
+
+If the maximum radius does not capture the complete eligible pair-distance distribution, pre-specify how partial coverage will be reported.

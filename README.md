@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.26.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.27.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -65,6 +65,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - scalar-on-function regression through FPCA scores;
 - explicit delay-coordinate reconstruction with AMI/autocorrelation and false-nearest-neighbor diagnostics;
 - sparse continuous-state recurrence matrices, RQA, windowed RQA, and cross-recurrence analysis;
+- exact recurrence-radius profiles exposing RR(radius) and pair-distance shell mass over analyst-declared thresholds without dense distance matrices or automatic radius selection;
 - first-class RQA-derived functional trajectories for FDA of time-varying RR/DET/LAM and related metrics, with explicit overlap/dependence provenance;
 - declared window/step sensitivity grids for functional RQA with source-sample reuse diagnostics, exact-shared-center profile comparisons, and no automatic tuning selection;
 - simultaneous functional-RQA mean bands that resample complete curve- or equal-weight participant-level functions rather than overlapping window rows;
@@ -153,6 +154,7 @@ print(summarise_fpca(fit))
 | Group influence | leave-one-group-out matched FPCs | `leave_one_group_out_fpca_influence()` |
 | Scalar outcome predicted by gaze | FPCA-score approximation | `fit_scalar_on_function_regression()` |
 | Recurrent gaze-state structure | sparse recurrence / RQA | `recurrence_matrix()` / `rqa_metrics()` |
+| Recurrence-threshold diagnostics | exact RR(radius) curve and pair-distance shell profile | `recurrence_radius_profile()` |
 | RQA robustness across analysis choices | declared reconstruction/threshold/Theiler/line-length multiverse | `rqa_parameter_sensitivity()` |
 | Time-varying recurrent dynamics | sliding full-window RQA | `windowed_rqa()` |
 | RQA dynamics as functional outcomes | window-center RQA metric trajectories with retained overlap/radius provenance | `windowed_rqa_trajectory_set()` |
@@ -176,7 +178,7 @@ It includes a tutorial gallery, representation selection, nonlinear state-space 
 
 ## Scope boundary
 
-`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.26 adds explicit reconstructed-state RQA and Rosenstein-LLE parameter sensitivity without automatic parameter selection, while retaining the 0.25 dependence-aware functional-RQA layer. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
+`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.27 adds explicit recurrence-threshold diagnostics through exact RR(radius) and pair-distance shell profiles, while retaining the 0.26 nonlinear robustness multiverses and 0.25 dependence-aware functional-RQA layer. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
 
 ## Validation
 

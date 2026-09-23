@@ -15,6 +15,7 @@ from .nonlinear_types import (
     LocalDivergenceResult,
     LocalReturnMapResult,
     PoincareCrossingResult,
+    RecurrenceRadiusProfileResult,
     RecurrenceResult,
     RQAParameterSensitivityResult,
     SurrogateNonlinearityResult,
@@ -100,6 +101,28 @@ def plot_recurrence(
         f"{'Cross-' if result.kind == 'cross' else ''}recurrence "
         f"(RR={result.achieved_recurrence_rate:.3f})"
     )
+    return ax
+
+
+def plot_recurrence_rate_curve(
+    result: RecurrenceRadiusProfileResult,
+    *,
+    ax=None,
+):
+    """Plot exact recurrence rate against the declared radius grid."""
+
+    if ax is None:
+        _, ax = plt.subplots()
+    table = result.table
+    ax.plot(
+        table["radius"],
+        table["recurrence_rate"],
+        marker="o",
+    )
+    ax.set_xlabel(f"Radius ({result.metric} state-space distance)")
+    ax.set_ylabel("Recurrence rate")
+    ax.set_ylim(bottom=0.0, top=1.0)
+    ax.set_title(f"Recurrence radius profile: {result.curve_id}")
     return ax
 
 

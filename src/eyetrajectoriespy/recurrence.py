@@ -19,6 +19,7 @@ from .embedding import (
 )
 from .nonlinear_types import (
     DelayEmbeddingResult,
+    RecurrenceRadiusProfileResult,
     RecurrenceResult,
     RQAResult,
     WindowedRQAFunctionalResult,
@@ -180,6 +181,165 @@ def _validate_radius_policy(
         np.isfinite(target_recurrence_rate) and 0 < target_recurrence_rate < 1
     ):
         raise ValueError("target_recurrence_rate must be strictly between 0 and 1")
+
+
+def recurrence_radius_profile(
+    source: TrajectorySet | DelayEmbeddingResult,
+    *,
+    curve: int | str,
+    radii: Sequence[float],
+    metric: str = "euclidean",
+    theiler_window: float | int = 0,
+    theiler_window_units: str = "samples",
+    dimensions: Sequence[str] | None = None,
+) -> RecurrenceRadiusProfileResult:
+    """Compute exact recurrence density over a declared increasing radius grid.
+
+    The table is the empirical cumulative distribution of eligible pairwise
+    state-space distances evaluated at the supplied radii. It is computed
+    without materializing an N x N distance matrix.
+
+    Theiler-excluded temporal neighbors are removed from both the pair counts
+    and recurrence-rate denominator using the same contract as
+    :func:`recurrence_matrix`. No radius is selected automatically.
+    """
+
+    if metric not in _METRIC_P:
+        raise ValueError(f"metric must be one of {sorted(_METRIC_P)}")
+    if isinstance(radii, (str, bytes)):
+        raise TypeError("radii must be a non-string sequence")
+    radius_values = tuple(radii)
+    if len(radius_values) < 2:
+        raise ValueError("radii must contain at least two values")
+    for value in radius_values:
+        if isinstance(value, (bool, np.bool_)) or not isinstance(
+            value,
+            (int, float, np.integer, np.floating),
+        ):
+            raise TypeError("radii values must be numeric and not boolean")
+    radius_array = np.asarray(radius_values, dtype=float)
+    if not np.all(np.isfinite(radius_array)) or np.any(radius_array <= 0):
+        raise ValueError("radii must contain only positive finite values")
+    if not np.all(np.diff(radius_array) > 0):
+        raise ValueError(
+            "radii must be strictly increasing with no duplicates; "
+            "the package does not sort or deduplicate the declared profile grid"
+        )
+
+    states, time, curve_id, time_unit, source_info = _state_from_source(
+        source,
+        curve=curve,
+        dimensions=dimensions,
+    )
+    theiler = _resolve_samples(
+        time,
+        theiler_window,
+        units=theiler_window_units,
+        time_unit=time_unit,
+        name="theiler_window",
+        allow_zero=True,
+    )
+    eligible = _eligible_auto_pairs(states.shape[0], theiler)
+    if eligible <= 0:
+        raise ValueError("Theiler window leaves no eligible recurrence pairs")
+
+    p = _METRIC_P[metric]
+    tree = cKDTree(states)
+    ordered_counts = np.asarray(
+        tree.count_neighbors(tree, radius_array, p=p, cumulative=True),
+        dtype=np.int64,
+    )
+    unique_off_diagonal = (ordered_counts - states.shape[0]) // 2
+
+    excluded = np.zeros(radius_array.size, dtype=np.int64)
+    for lag in range(1, theiler + 1):
+        differences = states[lag:] - states[:-lag]
+        if p == np.inf:
+            distances = np.max(np.abs(differences), axis=1)
+        elif p == 1.0:
+            distances = np.sum(np.abs(differences), axis=1)
+        else:
+            distances = np.sqrt(np.sum(differences * differences, axis=1))
+        distances.sort()
+        excluded += np.searchsorted(
+            distances,
+            radius_array,
+            side="right",
+        ).astype(np.int64)
+
+    recurrent_pairs = unique_off_diagonal - excluded
+    if np.any(recurrent_pairs < 0):
+        raise RuntimeError("Theiler correction produced a negative pair count")
+    if np.any(np.diff(recurrent_pairs) < 0):
+        raise RuntimeError("cumulative recurrence counts must be non-decreasing")
+
+    recurrence_rate = recurrent_pairs.astype(float) / float(eligible)
+    shell_pairs = np.diff(
+        np.concatenate([np.array([0], dtype=np.int64), recurrent_pairs])
+    )
+    shell_fraction = shell_pairs.astype(float) / float(eligible)
+
+    table = pd.DataFrame(
+        {
+            "radius": radius_array,
+            "cumulative_recurrent_pairs": recurrent_pairs,
+            "recurrence_rate": recurrence_rate,
+            "shell_pair_count": shell_pairs,
+            "shell_pair_fraction": shell_fraction,
+            "excluded_theiler_pairs_within_radius": excluded,
+        }
+    )
+    table["previous_radius"] = np.concatenate(
+        [np.array([np.nan]), radius_array[:-1]]
+    )
+    table = table[
+        [
+            "previous_radius",
+            "radius",
+            "shell_pair_count",
+            "shell_pair_fraction",
+            "cumulative_recurrent_pairs",
+            "recurrence_rate",
+            "excluded_theiler_pairs_within_radius",
+        ]
+    ]
+
+    return RecurrenceRadiusProfileResult(
+        table=table,
+        curve_id=curve_id,
+        metric=metric,
+        theiler_window_samples=theiler,
+        state_dimension=states.shape[1],
+        eligible_pair_count=int(eligible),
+        provenance={
+            "operation": "recurrence_radius_profile",
+            **source_info,
+            "metric": metric,
+            "theiler_window_samples": theiler,
+            "theiler_window_units_requested": theiler_window_units,
+            "eligible_pair_count": int(eligible),
+            "radius_grid_declared_by_user": True,
+            "automatic_radius_selection": False,
+            "radius_grid_sorted_or_deduplicated": False,
+            "threshold_operator": "<=",
+            "recurrence_rate_scale": "0_to_1",
+            "recurrence_rate_denominator": (
+                "eligible_off_diagonal_pairs_outside_theiler_window"
+            ),
+            "distance_profile_interpretation": (
+                "recurrence_rate is the empirical CDF of eligible pairwise "
+                "state-space distances evaluated at each declared radius; "
+                "shell_pair_fraction is the empirical mass in "
+                "the first shell d <= radius[0], then "
+                "(previous_radius, radius] for later rows"
+            ),
+            "distance_matrix_materialized": False,
+            "maximum_radius_coverage_fraction": float(recurrence_rate[-1]),
+            "full_distance_distribution_captured": bool(
+                np.isclose(recurrence_rate[-1], 1.0)
+            ),
+        },
+    )
 
 
 def recurrence_matrix(
