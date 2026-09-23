@@ -314,6 +314,11 @@ def estimate_largest_lyapunov_rosenstein(
     evidence that behavioral gaze is a deterministic chaotic system.
     """
 
+    if not isinstance(divergence, LocalDivergenceResult):
+        raise TypeError(
+            "estimate_largest_lyapunov_rosenstein requires LocalDivergenceResult"
+        )
+
     start, end = _fit_interval_samples(divergence, fit_start, fit_end, fit_units)
     mask = (
         (divergence.horizons >= start)
@@ -353,6 +358,72 @@ def estimate_largest_lyapunov_rosenstein(
             "interpretation_boundary": (
                 "positive exponent estimates local exponential divergence; "
                 "it is not standalone evidence of deterministic chaos"
+            ),
+        },
+    )
+
+
+def estimate_largest_lyapunov_kantz(
+    divergence: KantzDivergenceResult,
+    *,
+    fit_start: float | int,
+    fit_end: float | int,
+    fit_units: str = "samples",
+) -> LargestLyapunovResult:
+    """Fit the declared linear segment of a Kantz divergence curve."""
+
+    if not isinstance(divergence, KantzDivergenceResult):
+        raise TypeError(
+            "estimate_largest_lyapunov_kantz requires KantzDivergenceResult"
+        )
+    start, end = _fit_interval_samples(
+        divergence,
+        fit_start,
+        fit_end,
+        fit_units,
+    )
+    mask = (
+        (divergence.horizons >= start)
+        & (divergence.horizons <= end)
+        & np.isfinite(divergence.mean_log_divergence)
+        & (divergence.reference_counts > 0)
+    )
+    if int(np.sum(mask)) < 3:
+        raise ValueError(
+            "the declared fit interval contains fewer than three finite "
+            "Kantz divergence points"
+        )
+
+    raw_time = divergence.time_lags[mask]
+    normalized_unit = divergence.time_unit.lower()
+    if normalized_unit in _TIME_TO_SECONDS:
+        x = raw_time * _TIME_TO_SECONDS[normalized_unit]
+        exponent_unit = "1/s"
+    else:
+        x = raw_time
+        exponent_unit = f"1/{divergence.time_unit}"
+    y = divergence.mean_log_divergence[mask]
+    fit = stats.linregress(x, y)
+    return LargestLyapunovResult(
+        exponent=float(fit.slope),
+        exponent_unit=exponent_unit,
+        intercept=float(fit.intercept),
+        r_squared=float(fit.rvalue**2),
+        standard_error=float(fit.stderr),
+        fit_start=float(divergence.time_lags[start]),
+        fit_end=float(divergence.time_lags[end]),
+        n_fit_points=int(np.sum(mask)),
+        divergence=divergence,
+        provenance={
+            "operation": "estimate_largest_lyapunov_kantz",
+            "divergence_provenance": dict(divergence.provenance),
+            "fit_start_samples": start,
+            "fit_end_samples": end,
+            "fit_interval_selected_automatically": False,
+            "interpretation_boundary": (
+                "positive exponent estimates local exponential divergence "
+                "under the declared Kantz neighborhood contract; it is not "
+                "standalone evidence of deterministic chaos"
             ),
         },
     )
