@@ -679,3 +679,30 @@ The package does not rank settings by exponent magnitude, fit (R^2), slope stand
 ### Grid fractions are not inferential probabilities
 
 The fraction of declared specifications with a positive exponent is a descriptive property of the analyst-defined multiverse. It is not a posterior probability of chaos, a p-value, or a confidence level. Likewise, supported-reference fractions describe neighborhood support and are not sampling uncertainty.
+
+
+## Continuous trajectory geometry limits
+
+### Numerical derivatives amplify noise
+
+Heading, curvature, and turning rate inherit the noise sensitivity of first and second numerical derivatives. Version 0.31 deliberately does not smooth before differentiation. A scientifically justified smoother must be applied explicitly upstream and reported.
+
+### Near-zero velocity is intrinsically problematic
+
+Curvature divides by speed cubed and turning rate by speed squared. Values near stationary periods can therefore become unstable even when they are mathematically finite. The package exposes \`min_speed\` rather than choosing a universal threshold.
+
+### Coordinate scaling changes the geometry
+
+Curvature and tortuosity are not invariant to anisotropic scaling of \(x\) and \(y\). Separately normalized screen axes can therefore change the estimand. Convert to a meaningful isotropic spatial metric upstream if geometric interpretation requires it.
+
+### Signed curvature depends on axis orientation
+
+The formula is evaluated in the recorded coordinates. If screen \(y\) increases downward, visual sign interpretation is reversed relative to a standard \(y\)-up Cartesian plot. No silent axis flip is performed.
+
+### Wrapped heading is not ordinary Euclidean data
+
+The discontinuity between \(+\pi\) and \(-\pi\) is representational, not physical. Standard linear summaries or FPCA on wrapped heading can be misleading without an explicit circular-data strategy.
+
+### Tortuosity is undefined for zero endpoint displacement
+
+The implemented ratio uses path length divided by endpoint displacement. Closed and sufficiently near-closed paths are undefined under the declared \`min_displacement\`; the package returns NaN or raises according to the explicit policy rather than adding a denominator epsilon.
