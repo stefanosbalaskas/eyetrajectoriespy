@@ -12,7 +12,9 @@ from .nonlinear_types import (
     ReturnMapStabilityResult,
     SurrogateNonlinearityResult,
     WindowedRQAFunctionalResult,
+    WindowedRQAMeanBandResult,
     WindowedRQAResult,
+    WindowedRQASensitivityResult,
 )
 
 
@@ -75,6 +77,57 @@ def windowed_rqa_functional_reporting_text(
         "a complete window were excluded explicitly. Window rows were not "
         "treated as independent observations; downstream inference retained "
         "the source curve/participant as the sampling unit."
+    )
+
+
+def windowed_rqa_sensitivity_reporting_text(
+    result: WindowedRQASensitivityResult,
+) -> str:
+    """Return manuscript-ready wording for declared window/step sensitivity."""
+
+    design = result.design_table
+    overlap_min = 100.0 * float(design["overlap_fraction"].min())
+    overlap_max = 100.0 * float(design["overlap_fraction"].max())
+    spacing_min = float(design["profile_grid_spacing_time"].min())
+    spacing_max = float(design["profile_grid_spacing_time"].max())
+    return (
+        f"Functional RQA sensitivity was evaluated across "
+        f"{result.n_specifications} predeclared window/step specifications. "
+        f"Sample overlap ranged from {overlap_min:.1f}% to {overlap_max:.1f}% "
+        f"and derived-profile grid spacing ranged from {spacing_min:.4g} to "
+        f"{spacing_max:.4g} {design['profile_time_unit'].iloc[0]}. "
+        "Overlap diagnostics quantified deterministic source-sample reuse; "
+        "they were not converted into an effective independent sample size. "
+        "Pairwise profile comparisons used exact shared window centers only, "
+        "with no interpolation and no automatic selection of a preferred "
+        "window/step specification."
+    )
+
+
+def windowed_rqa_mean_band_reporting_text(
+    result: WindowedRQAMeanBandResult,
+) -> str:
+    """Return wording for unit-level simultaneous functional-RQA inference."""
+
+    band = result.band
+    overlap = 100.0 * result.functional_rqa.overlap_fraction
+    if result.unit == "participant":
+        unit_text = (
+            f"participant-level units defined by "
+            f"{result.participant_column!r}"
+        )
+    else:
+        unit_text = "curve-level units"
+    return (
+        f"Windowed RQA functions used {result.functional_rqa.window_samples}-sample "
+        f"windows advanced by {result.functional_rqa.step_samples} samples "
+        f"({overlap:.1f}% overlap). Simultaneous observed-grid mean inference "
+        f"used {len(band.unit_ids)} independent {unit_text} and a "
+        f"{100.0 * band.confidence_level:.1f}% Gaussian multiplier band. "
+        "Complete derived functions, not window rows, were the resampling "
+        "objects, preserving within-function temporal dependence. The procedure "
+        "does not provide a within-trajectory block-bootstrap guarantee or "
+        "treat overlapping windows as independent observations."
     )
 
 
