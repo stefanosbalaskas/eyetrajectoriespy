@@ -35,6 +35,7 @@ from eyetrajectoriespy import (
     plot_kantz_sensitivity,
     plot_local_divergence,
     plot_planar_trajectories,
+    plot_trajectory_overlay,
     plot_poincare_return_map,
     plot_recurrence,
     plot_recurrence_rate_curve,
@@ -46,6 +47,7 @@ from eyetrajectoriespy import (
     recurrence_matrix,
     recurrence_radius_profile,
     register_to_landmarks,
+    signed_curvature_function,
     simulate_planar_trajectories,
     wild_bootstrap_fpca_projection,
     windowed_rqa,
@@ -91,6 +93,33 @@ def main() -> None:
 
     ax = plot_fpca_variance(fpca, cumulative=True)
     _save(ax, "fpca-variance.svg")
+
+    geometry_time = np.linspace(0.0, 2.5, 241)
+    geometry_values = np.column_stack(
+        [
+            geometry_time,
+            0.35 * np.sin(2.0 * np.pi * geometry_time / 2.5),
+        ]
+    )[None, :, :]
+    geometry_source = TrajectorySet(
+        time=geometry_time,
+        values=geometry_values,
+        curve_ids=("geometry-demo",),
+        dimension_names=("x", "y"),
+        time_unit="s",
+        coordinate_system="degrees",
+    )
+    geometry_curvature = signed_curvature_function(
+        geometry_source,
+        min_speed=0.0,
+    )
+    ax = plot_trajectory_overlay(
+        geometry_curvature,
+        dimension="signed_curvature",
+        max_curves=None,
+        alpha=1.0,
+    )
+    _save(ax, "trajectory-curvature.svg")
 
     landmark_rng = np.random.default_rng(2107)
     observed_landmarks = np.column_stack(
@@ -383,6 +412,7 @@ def main() -> None:
         "planar-trajectories.svg",
         "fpca-component.svg",
         "fpca-variance.svg",
+        "trajectory-curvature.svg",
         "registration-warping.svg",
         "functional-mean-band.svg",
         "wild-bootstrap-projections.svg",
