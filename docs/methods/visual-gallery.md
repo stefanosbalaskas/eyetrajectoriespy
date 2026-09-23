@@ -119,6 +119,16 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked example](../examples/rqa-population-bootstrap.md) · [Method guide](rqa-population-bootstrap.md) · [Mathematics](mathematical-reference.md#rqa-population-bootstrap)
 
+-   **Population uncertainty for RQA summaries**
+
+    ![Participant-level bootstrap intervals for population-average RQA metrics](../assets/gallery/rqa-population-bootstrap.svg)
+
+    Percentile-bootstrap uncertainty for fixed-specification curve-level RQA metrics using equal-weight participant inference units.
+
+    **API:** `bootstrap_rqa_metric_means()`, `plot_rqa_metric_mean_bootstrap()`
+
+    [Worked example](../examples/rqa-population-bootstrap.md) · [Method guide](rqa-population-bootstrap.md) · [Mathematics](mathematical-reference.md#rqa-population-bootstrap)
+
 -   **Time-varying RQA**
 
     ![Windowed recurrence quantification](../assets/gallery/windowed-rqa.svg)
