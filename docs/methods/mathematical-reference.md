@@ -663,6 +663,55 @@ The matrix is stored sparsely. Exactly one radius policy is allowed: a fixed \(\
 
 **API:** \`recurrence_matrix()\`, \`recurrence_radius_profile()\`, \`rqa_metrics()\`, \`rqa_parameter_sensitivity()\`, \`windowed_rqa()\`, \`cross_recurrence_matrix()\`, \`cross_rqa_metrics()\`. The radius-profile API evaluates the same RR equation over a declared radius grid, while the sensitivity API evaluates the broader recurrence/RQA contract over a predeclared parameter grid without automatic selection.
 
+## Population mean bootstrap for curve-level RQA metrics { #rqa-population-bootstrap }
+
+For source curve $i$ and selected RQA metric $q$, let
+
+$$
+M_{iq}=Q_q\{R_i(\theta)\},
+$$
+
+where $\theta$ is one fixed, fully declared recurrence/RQA specification.
+
+With curve-level inference, the independent units are $M_{iq}$ directly. With repeated trials nested in participant $p$, participant mode first forms
+
+$$
+U_{pq}
+=
+\frac{1}{m_p}
+\sum_{j=1}^{m_p}
+M_{pjq},
+$$
+
+so each participant receives equal inferential weight regardless of trial count.
+
+For bootstrap replicate $b$, resample the $n$ independent unit indices with replacement and compute
+
+$$
+\overline U_q^{*(b)}
+=
+\frac{1}{n}
+\sum_{r=1}^{n}
+U_{I_r^{(b)}q}.
+$$
+
+The implemented percentile interval is
+
+$$
+CI_{1-\alpha}
+=
+\left[
+Q_{\alpha/2}\{\overline U_q^*\},
+Q_{1-\alpha/2}\{\overline U_q^*\}
+\right].
+$$
+
+This estimates between-unit population sampling uncertainty in the mean of fixed-specification curve-level RQA summaries. Curve-level RQA values are deterministic summaries of the observed curves under the declared contract and are therefore computed once before unit resampling. The procedure does **not** implement Schinkel-style within-single-series recurrence-line resampling, a moving/block bootstrap, hierarchical trial resampling, or parameter-selection uncertainty.
+
+Under target-recurrence-rate mode, recurrence density is controlled by design and recurrence_rate is not accepted as a bootstrap outcome.
+
+**API:** bootstrap_rqa_metric_means(), plot_rqa_metric_mean_bootstrap(), and rqa_metric_mean_bootstrap_reporting_text().
+
 ## Windowed RQA as functional trajectories { #functional-rqa-trajectories }
 
 Let window $w$ span source samples from $t_{w,\mathrm{start}}$ to $t_{w,\mathrm{end}}$, with center

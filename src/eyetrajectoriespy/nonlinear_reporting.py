@@ -9,6 +9,7 @@ from .nonlinear_types import (
     LyapunovParameterSensitivityResult,
     RecurrenceRadiusProfileResult,
     RecurrenceResult,
+    RQAMeanBootstrapResult,
     RQAResult,
     RQAParameterSensitivityResult,
     LocalReturnMapResult,
@@ -82,6 +83,36 @@ def rqa_reporting_text(
         f"RR was {metrics.recurrence_rate:.4g}, DET {metrics.determinism:.4g}, "
         f"LAM {metrics.laminarity:.4g}, and trapping time "
         f"{metrics.trapping_time:.4g}."
+    )
+
+
+def rqa_metric_mean_bootstrap_reporting_text(
+    result: RQAMeanBootstrapResult,
+) -> str:
+    """Return manuscript-ready wording for population-average RQA uncertainty."""
+
+    metric_text = ", ".join(result.metrics)
+    if result.unit == "participant":
+        unit_text = (
+            f"{result.n_units} equal-weight participant units defined by "
+            f"{result.participant_column!r}; repeated curve-level RQA metrics "
+            "were averaged within participant before resampling"
+        )
+    else:
+        unit_text = f"{result.n_units} curve-level independent units"
+
+    return (
+        f"Population-average RQA uncertainty for {metric_text} used "
+        f"{result.n_bootstrap} percentile bootstrap replicates at the "
+        f"{100.0 * result.confidence_level:.1f}% level and {unit_text}. "
+        "Each source curve was summarized under one fixed declared RQA "
+        "specification before unit-level resampling. Undefined selected "
+        "curve-level metrics caused analysis failure rather than deletion or "
+        "imputation. These intervals describe between-unit population sampling "
+        "uncertainty conditional on the declared RQA specification; they do "
+        "not estimate within-single-trajectory recurrence uncertainty, "
+        "recurrence-line resampling uncertainty, or parameter-selection "
+        "uncertainty."
     )
 
 

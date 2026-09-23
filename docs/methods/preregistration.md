@@ -510,3 +510,28 @@ If a radius profile will be used to justify or audit recurrence thresholds, pre-
 Do not choose the displayed radius range after inspecting where the recurrence-rate curve produces the preferred RQA result. Do not convert a visually flat or steep section into an “optimal epsilon” rule unless that selection rule was separately specified and validated.
 
 If the maximum radius does not capture the complete eligible pair-distance distribution, pre-specify how partial coverage will be reported.
+
+
+## Population bootstrap for RQA summaries
+
+If population uncertainty for RQA metrics will be reported, pre-specify:
+
+- source trajectory dimensions and any delay embedding;
+- fixed radius versus target-recurrence-rate policy;
+- recurrence distance metric;
+- Theiler window and units;
+- minimum diagonal and vertical line lengths;
+- the exact RQA metrics to receive intervals;
+- curve versus participant resampling unit;
+- participant identifier for repeated-trial designs;
+- that participant mode averages curve-level RQA metrics within participant before resampling;
+- confidence level;
+- bootstrap replicate count;
+- random-seed policy;
+- percentile interval as the interval method;
+- how undefined source-curve metrics will be handled;
+- any separate parameter-sensitivity analysis.
+
+Do not switch from participant- to curve-level resampling after seeing narrower intervals. Do not select recurrence parameters after inspecting which settings produce the preferred confidence interval.
+
+If target-RR mode is used, do not pre-register RR itself as an independent bootstrap outcome.

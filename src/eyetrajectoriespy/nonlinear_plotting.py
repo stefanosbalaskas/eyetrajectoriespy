@@ -17,6 +17,7 @@ from .nonlinear_types import (
     PoincareCrossingResult,
     RecurrenceRadiusProfileResult,
     RecurrenceResult,
+    RQAMeanBootstrapResult,
     RQAParameterSensitivityResult,
     SurrogateNonlinearityResult,
     WindowedRQAFunctionalResult,
@@ -123,6 +124,43 @@ def plot_recurrence_rate_curve(
     ax.set_ylabel("Recurrence rate")
     ax.set_ylim(bottom=0.0, top=1.0)
     ax.set_title(f"Recurrence radius profile: {result.curve_id}")
+    return ax
+
+
+def plot_rqa_metric_mean_bootstrap(
+    result: RQAMeanBootstrapResult,
+    *,
+    metrics: Sequence[str] | None = None,
+    ax=None,
+):
+    """Plot population-average RQA metrics with percentile-bootstrap intervals."""
+
+    selected_metrics = result.metrics if metrics is None else tuple(metrics)
+    if not selected_metrics:
+        raise ValueError("metrics must contain at least one RQA metric")
+    unknown = [metric for metric in selected_metrics if metric not in result.metrics]
+    if unknown:
+        raise KeyError(f"Unknown bootstrap RQA metrics: {unknown}")
+
+    table = result.summary_table.set_index("metric").loc[list(selected_metrics)]
+    x = np.arange(len(selected_metrics), dtype=float)
+    mean = table["mean"].to_numpy(dtype=float)
+    lower = table["lower"].to_numpy(dtype=float)
+    upper = table["upper"].to_numpy(dtype=float)
+    yerr = np.vstack([mean - lower, upper - mean])
+
+    if ax is None:
+        _, ax = plt.subplots()
+    ax.errorbar(
+        x,
+        mean,
+        yerr=yerr,
+        fmt="o",
+        capsize=4,
+    )
+    ax.set_xticks(x, selected_metrics, rotation=30, ha="right")
+    ax.set_ylabel("RQA metric")
+    ax.set_title(f"RQA population mean ({result.unit}-level bootstrap)")
     return ax
 
 

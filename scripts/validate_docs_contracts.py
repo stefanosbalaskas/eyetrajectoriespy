@@ -50,6 +50,7 @@ def main() -> None:
         "recurrence_matrix()",
         "recurrence_radius_profile()",
         "rqa_parameter_sensitivity()",
+        "bootstrap_rqa_metric_means()",
         "windowed_rqa_trajectory_set()",
         "estimate_largest_lyapunov_rosenstein()",
         "lyapunov_parameter_sensitivity()",
@@ -87,8 +88,8 @@ def main() -> None:
 
     gallery = (DOCS / "methods" / "visual-gallery.md").read_text(encoding="utf-8")
     asset_refs = sorted(set(re.findall(r"\.\./assets/gallery/([^)\s]+\.svg)", gallery)))
-    if len(asset_refs) < 14:
-        raise RuntimeError("visual gallery must reference at least fourteen SVG figures")
+    if len(asset_refs) < 15:
+        raise RuntimeError("visual gallery must reference at least fifteen SVG figures")
     missing_assets = sorted(
         name for name in asset_refs if not (DOCS / "assets" / "gallery" / name).exists()
     )
@@ -96,7 +97,7 @@ def main() -> None:
         raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.27.0.dev0"):
+    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.28.0.dev0"):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
 

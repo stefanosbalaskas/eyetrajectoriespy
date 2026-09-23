@@ -47,6 +47,7 @@ nav:
       - Derived continuous functions: guides/derived-functions.md
       - Nonlinear trajectory dynamics: guides/nonlinear-dynamics.md
       - Recurrence-threshold diagnostics: methods/recurrence-threshold-diagnostics.md
+      - RQA population bootstrap: methods/rqa-population-bootstrap.md
       - Nonlinear parameter sensitivity: methods/nonlinear-parameter-sensitivity.md
       - Functional RQA sensitivity & dependence: methods/rqa-functional-dependence.md
       - Interpretation: guides/interpretation.md
@@ -80,6 +81,7 @@ nav:
       - Function → equation registry: examples/function-equation-registry.md
       - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
       - Recurrence-threshold diagnostics: examples/recurrence-threshold-diagnostics.md
+      - RQA population bootstrap: examples/rqa-population-bootstrap.md
       - Nonlinear parameter sensitivity: examples/nonlinear-parameter-sensitivity.md
       - RQA-derived functional trajectories: examples/rqa-functional-trajectories.md
       - Functional RQA sensitivity & inference: examples/rqa-functional-sensitivity.md

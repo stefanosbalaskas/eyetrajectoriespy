@@ -38,6 +38,11 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.plot_windowed_rqa_trajectories
 ::: eyetrajectoriespy.plot_windowed_rqa_sensitivity
 
+### Population uncertainty for RQA summaries
+::: eyetrajectoriespy.RQAMeanBootstrapResult
+::: eyetrajectoriespy.bootstrap_rqa_metric_means
+::: eyetrajectoriespy.plot_rqa_metric_mean_bootstrap
+
 ### Declared nonlinear parameter sensitivity
 ::: eyetrajectoriespy.RQAParameterSensitivityResult
 ::: eyetrajectoriespy.LyapunovParameterSensitivityResult
@@ -58,6 +63,7 @@ For mathematical definitions of the main estimands, transformations, studentizat
 
 ### Nonlinear reporting helpers
 ::: eyetrajectoriespy.recurrence_radius_profile_reporting_text
+::: eyetrajectoriespy.rqa_metric_mean_bootstrap_reporting_text
 ::: eyetrajectoriespy.rqa_reporting_text
 ::: eyetrajectoriespy.rqa_parameter_sensitivity_reporting_text
 ::: eyetrajectoriespy.windowed_rqa_reporting_text

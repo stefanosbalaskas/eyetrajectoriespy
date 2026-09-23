@@ -608,3 +608,38 @@ Do not compare radius profiles with different Theiler policies as though only ep
 The tree-based calculation is exact for the observed state vectors and declared metric. It does not account for tracker noise, calibration uncertainty, preprocessing uncertainty, interpolation uncertainty, or latent-state error.
 
 A precisely calculated RR(radius) curve can still be scientifically sensitive to those upstream choices.
+
+
+## RQA population-bootstrap limits
+
+### Population uncertainty is not within-trajectory uncertainty
+
+Version 0.28 resamples independent curves or equal-weight participant averages of curve-level RQA metrics. It therefore quantifies between-unit sampling uncertainty in a population mean.
+
+It does not provide a confidence interval for the RQA of one observed trajectory, and it does not resample recurrence lines, temporal blocks, or raw within-curve samples.
+
+### Participant mode conditions on observed trials
+
+With repeated trials, selected RQA metrics are averaged within participant before participant resampling. This prevents trial pseudo-replication and equalizes participant weight, but the resulting interval conditions on the observed trial set for each participant.
+
+A hierarchical participant-plus-trial bootstrap would be a different inferential contract and is not silently approximated.
+
+### Percentile intervals are marginal and finite-sample dependent
+
+The implemented intervals are metric-wise percentile bootstrap intervals. They are not simultaneous across multiple RQA metrics and are not BCa/studentized intervals.
+
+Percentile intervals are not guaranteed to contain the observed point estimate in every finite sample.
+
+### Parameter-selection uncertainty is excluded
+
+The bootstrap is conditional on the declared state representation, embedding, radius policy, metric, Theiler window, and line thresholds.
+
+If those settings were selected after inspecting the same data, the interval does not correct for that selection. Use the separate sensitivity APIs to expose robustness, and report post-hoc choice transparently.
+
+### Undefined metrics fail rather than disappear
+
+If a requested RQA metric is undefined for any source curve, the analysis terminates. Deleting that curve, replacing the metric with zero, or silently changing recurrence settings would alter the population estimand.
+
+### Target-RR mode changes the estimand
+
+When target recurrence rate controls recurrence density, RR is not an independent outcome. Version 0.28 therefore refuses to bootstrap recurrence rate under target-RR mode.

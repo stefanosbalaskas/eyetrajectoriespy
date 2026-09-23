@@ -226,6 +226,27 @@ class LyapunovParameterSensitivityResult:
 
 
 @dataclass(frozen=True)
+class RQAMeanBootstrapResult:
+    """Bootstrap uncertainty for population-average per-curve RQA metrics."""
+
+    observed_table: pd.DataFrame
+    unit_table: pd.DataFrame
+    bootstrap_table: pd.DataFrame
+    summary_table: pd.DataFrame
+    metrics: tuple[str, ...]
+    unit: str
+    unit_ids: tuple[str, ...]
+    participant_column: str | None
+    confidence_level: float
+    n_bootstrap: int
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_units(self) -> int:
+        return len(self.unit_ids)
+
+
+@dataclass(frozen=True)
 class LocalDivergenceResult:
     """Rosenstein-style mean log-divergence curve before linear fitting."""
 

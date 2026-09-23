@@ -53,6 +53,7 @@ jobs:
           python examples/function_equation_registry.py
           python examples/nonlinear_dynamics.py
           python examples/recurrence_threshold_diagnostics.py
+          python examples/rqa_population_bootstrap.py
           python examples/nonlinear_parameter_sensitivity.py
           python examples/rqa_functional_trajectories.py
           python examples/rqa_functional_sensitivity.py
