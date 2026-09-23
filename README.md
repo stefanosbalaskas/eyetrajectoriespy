@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.28.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.29.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -72,6 +72,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - simultaneous functional-RQA mean bands that resample complete curve- or equal-weight participant-level functions rather than overlapping window rows;
 - declared reconstructed-state RQA parameter multiverses over embedding, delay, threshold, Theiler, and line-length choices with no automatic selector;
 - Rosenstein-style local divergence / largest-Lyapunov estimation with analyst-declared fit intervals;
+- named Kantz fixed-radius neighborhood divergence / largest-Lyapunov estimation with explicit radius, minimum-neighbor, Theiler, and fit contracts;
 - declared Rosenstein-LLE sensitivity over reconstruction, Theiler, and fit-interval choices with descriptive sign/magnitude stability summaries;
 - seeded IAAFT surrogate nonlinearity tests using plus-one Monte Carlo p-values;
 - experimental empirical Poincare return maps and local cycle-to-cycle contraction/expansion diagnostics;
@@ -164,6 +165,7 @@ print(summarise_fpca(fit))
 | Functional RQA mean uncertainty | whole-function curve/participant multiplier band | `windowed_rqa_functional_mean_band()` |
 | Reconstructed nonlinear state | delay coordinates with explicit (m,	au) | `delay_embed_trajectory()` |
 | Local state-space divergence | Rosenstein nearest-neighbor divergence | `local_divergence_curve()` / `estimate_largest_lyapunov_rosenstein()` |
+| Neighborhood-based maximal Lyapunov estimate | Kantz fixed-radius local-neighborhood divergence | `kantz_divergence_curve()` / `estimate_largest_lyapunov_kantz()` |
 | LLE robustness across analysis choices | declared reconstruction/Theiler/fit-interval multiverse | `lyapunov_parameter_sensitivity()` |
 | Nonlinearity vs linear-stochastic null | IAAFT surrogate test | `surrogate_nonlinearity_test()` |
 | Repeated approximate cycles | empirical Poincare return map (experimental) | `poincare_crossings()` / `fit_local_return_map()` |
@@ -180,7 +182,7 @@ It includes a tutorial gallery, representation selection, nonlinear state-space 
 
 ## Scope boundary
 
-`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.28 adds population-level bootstrap uncertainty for fixed-specification RQA summaries using curve or equal-weight participant inference units, while retaining the 0.27 threshold diagnostics and 0.26 robustness multiverses. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
+`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.29 adds a named Kantz maximal-Lyapunov estimator alongside the existing Rosenstein path, while retaining the 0.28 population-RQA uncertainty layer, 0.27 threshold diagnostics, and 0.26 robustness multiverses. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
 
 ## Validation
 
