@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.29.0.dev0
+
+- Add `kantz_divergence_curve()` as a named fixed-radius neighborhood local-divergence estimator alongside the existing Rosenstein nearest-neighbor path.
+- Add `estimate_largest_lyapunov_kantz()` with the same explicit analyst-declared fit-interval requirement and no automatic linear-region selection.
+- Add `KantzDivergenceResult` retaining radius, minimum-neighbor requirement, initial neighbor counts, per-horizon contributing-reference/pair counts, and zero-mean-neighborhood counts.
+- The Kantz radius is never expanded, tuned, or selected automatically; insufficient support excludes that reference/horizon and zero support at horizon zero fails the analysis.
+- Keep Rosenstein and Kantz family-specific: the named fitters reject the wrong divergence-result type rather than silently treating the methods as aliases.
+- Keep the existing IAAFT surrogate test Rosenstein-based in this tranche; adding Kantz does not silently change the hypothesis-test statistic.
+- Generalize local-divergence plotting/reporting so the estimator family remains visible and positive slopes are still not described as standalone evidence of deterministic chaos.
+- Add hand-counted neighborhood tests, fail-closed parameter tests, family-mismatch tests, logistic-map regression tests, plotting/reporting coverage, method guidance, worked/executable examples, references, mathematical contracts, and site integration.
+
 ## 0.28.0.dev0
 
 - Add `bootstrap_rqa_metric_means()` for percentile-bootstrap uncertainty in population-average curve-level RQA summaries under one fixed recurrence specification.
