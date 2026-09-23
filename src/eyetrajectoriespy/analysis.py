@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
+
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
@@ -57,6 +59,146 @@ def pairwise_functional_distances(
             )
             result[i, j] = result[j, i] = d
     return result
+
+
+
+def _frechet_path_array(values: np.ndarray, *, name: str) -> np.ndarray:
+    """Validate one finite non-empty sampled curve for discrete Fréchet analysis."""
+
+    array = np.asarray(values, dtype=float)
+    if array.ndim != 2:
+        raise ValueError(f"{name} must have shape (n_points, n_dimensions)")
+    if array.shape[0] < 1 or array.shape[1] < 1:
+        raise ValueError(f"{name} must contain at least one point and one dimension")
+    if not np.all(np.isfinite(array)):
+        raise ValueError(f"{name} must contain only finite values")
+    return array
+
+
+def _frechet_dimension_weights(
+    dimension_weights: np.ndarray | Sequence[float] | None,
+    *,
+    n_dimensions: int,
+) -> np.ndarray:
+    if dimension_weights is None:
+        return np.ones(n_dimensions, dtype=float)
+    weights = np.asarray(dimension_weights, dtype=float)
+    if weights.shape != (n_dimensions,):
+        raise ValueError(
+            "dimension_weights must contain one value per compared dimension"
+        )
+    if not np.all(np.isfinite(weights)) or np.any(weights <= 0):
+        raise ValueError("dimension_weights must be finite and strictly positive")
+    return weights
+
+
+def discrete_frechet_distance(
+    a: np.ndarray,
+    b: np.ndarray,
+    *,
+    dimension_weights: np.ndarray | Sequence[float] | None = None,
+) -> float:
+    """Compute the discrete Fréchet distance between two sampled curves.
+
+    The point metric is weighted Euclidean distance. The dynamic program
+    preserves point order but may advance one curve while holding the other
+    curve's current point. Actual timestamps are not part of this distance.
+
+    The implementation uses rolling dynamic-programming rows, so auxiliary
+    memory is O(min(n_a, n_b)); runtime remains O(n_a * n_b).
+    """
+
+    left = _frechet_path_array(a, name="a")
+    right = _frechet_path_array(b, name="b")
+    if left.shape[1] != right.shape[1]:
+        raise ValueError("a and b must have the same number of dimensions")
+    weights = _frechet_dimension_weights(
+        dimension_weights,
+        n_dimensions=left.shape[1],
+    )
+
+    # Keep the shorter sequence on the dynamic-programming columns so the
+    # auxiliary memory contract is O(min(n_a, n_b)).
+    if right.shape[0] > left.shape[0]:
+        left, right = right, left
+
+    previous = np.empty(right.shape[0], dtype=float)
+    current = np.empty(right.shape[0], dtype=float)
+
+    for i in range(left.shape[0]):
+        point_distances = np.sqrt(
+            np.sum(
+                (right - left[i][None, :]) ** 2 * weights[None, :],
+                axis=1,
+            )
+        )
+        for j in range(right.shape[0]):
+            distance = float(point_distances[j])
+            if i == 0 and j == 0:
+                current[j] = distance
+            elif i == 0:
+                current[j] = max(current[j - 1], distance)
+            elif j == 0:
+                current[j] = max(previous[j], distance)
+            else:
+                current[j] = max(
+                    distance,
+                    min(previous[j], previous[j - 1], current[j - 1]),
+                )
+        previous, current = current, previous
+
+    return float(previous[-1])
+
+
+def pairwise_discrete_frechet_distances(
+    trajectories: TrajectorySet,
+    *,
+    dimensions: Sequence[str] | None = None,
+    dimension_weights: np.ndarray | Sequence[float] | None = None,
+) -> np.ndarray:
+    """Pairwise discrete Fréchet distances for complete sampled trajectories.
+
+    Unlike integrated functional L2 distance, this comparison does not require
+    point i in one curve to correspond to point i in the other. It preserves
+    traversal order while allowing monotone differences in progression along
+    the sampled paths. The TrajectorySet time grid is therefore not included
+    in the distance itself.
+    """
+
+    validate_trajectory_set(trajectories, require_complete=True)
+    if dimensions is None:
+        names = trajectories.dimension_names
+    else:
+        if isinstance(dimensions, (str, bytes)):
+            raise TypeError("dimensions must be a non-string sequence of names")
+        names = tuple(dimensions)
+        if not names:
+            raise ValueError("dimensions must contain at least one name")
+        if len(set(names)) != len(names):
+            raise ValueError("dimensions must not contain duplicates")
+        missing = [name for name in names if name not in trajectories.dimension_names]
+        if missing:
+            raise KeyError(f"Unknown trajectory dimensions: {missing}")
+    indices = tuple(trajectories.dimension_names.index(name) for name in names)
+    weights = _frechet_dimension_weights(
+        dimension_weights,
+        n_dimensions=len(indices),
+    )
+
+    n = trajectories.n_curves
+    result = np.zeros((n, n), dtype=float)
+    for i in range(n):
+        a = trajectories.values[i][:, indices]
+        for j in range(i + 1, n):
+            b = trajectories.values[j][:, indices]
+            distance = discrete_frechet_distance(
+                a,
+                b,
+                dimension_weights=weights,
+            )
+            result[i, j] = result[j, i] = distance
+    return result
+
 
 
 def cluster_fpca_scores(
