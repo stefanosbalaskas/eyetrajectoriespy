@@ -393,6 +393,41 @@ $$
 
 Implemented by \`local_divergence_curve()\`, \`estimate_largest_lyapunov_rosenstein()\`, and \`lyapunov_parameter_sensitivity()\`.
 
+## Kantz neighborhood divergence
+
+For reconstructed state $i$, declare a fixed-radius neighborhood outside the Theiler window:
+
+$
+\mathcal N_i(\varepsilon)
+=
+\{j:\|\mathbf z_i-\mathbf z_j\|_2\le\varepsilon,\ |i-j|>w\}.
+$
+
+For horizon $k$, average forward distances inside each surviving neighborhood and then average their logarithms across reference states:
+
+$
+S(\varepsilon,k)
+=
+\frac{1}{N_k}
+\sum_i
+\log
+\left[
+\frac{1}{|\mathcal N_i(k)|}
+\sum_{j\in\mathcal N_i(k)}
+\|\mathbf z_{i+k}-\mathbf z_{j+k}\|_2
+\right].
+$
+
+Over an analyst-declared linear region,
+
+$
+S(\varepsilon,k)
+\approx
+a+\lambda_{\max}k\Delta t.
+$
+
+Implemented by `kantz_divergence_curve()` and `estimate_largest_lyapunov_kantz()`. Radius, minimum-neighbor count, Theiler exclusion, and fit interval remain explicit; the package does not enlarge neighborhoods automatically.
+
 ## IAAFT surrogate testing
 
 For a one-sided greater-than alternative and \(B\) surrogate statistics,
