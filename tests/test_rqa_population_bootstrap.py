@@ -92,7 +92,7 @@ def test_participant_bootstrap_uses_equal_weight_participant_metric_means():
             {"participant_id": ["A", "A", "A", "B"]}
         ),
         time_unit="samples",
-        coordinate_system="arbitrary",
+        coordinate_system="normalized",
     )
 
     result = bootstrap_rqa_metric_means(
@@ -173,7 +173,7 @@ def test_undefined_selected_metric_fails_instead_of_dropping_curve():
         curve_ids=("a", "b"),
         dimension_names=("x",),
         time_unit="samples",
-        coordinate_system="arbitrary",
+        coordinate_system="normalized",
     )
 
     with pytest.raises(ValueError, match="undefined for curve"):
