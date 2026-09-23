@@ -243,3 +243,15 @@ def test_radius_profile_plot_and_reporting_keep_selection_boundary_visible():
     assert "No radius was selected automatically" in text
     assert "eligible pair distances" in text
     plt.close("all")
+
+
+@pytest.mark.parametrize("radii", [("0.1", 0.2), (True, 0.2)])
+def test_radius_profile_rejects_implicitly_coercible_radius_values(radii):
+    data = _scalar([0.0, 1.0, 2.0, 3.0])
+    with pytest.raises(TypeError, match="numeric and not boolean"):
+        recurrence_radius_profile(
+            data,
+            curve=0,
+            radii=radii,
+            dimensions=("x",),
+        )
