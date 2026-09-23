@@ -255,3 +255,6 @@ For the 0.28 population-RQA uncertainty layer, Schinkel et al. provide direct pr
 
 
 For the 0.29 Kantz-LLE layer, Kantz (1994) is the primary neighborhood-divergence method source and Hegger, Kantz & Schreiber (1999) provide practical implementation context through TISEAN. TISEAN exposes Kantz and Rosenstein as separate maximal-exponent routines rather than aliases. eyetrajectoriespy follows that distinction: the Kantz radius and minimum-neighbor rule are explicit, neighborhoods are not enlarged automatically, and the fit interval remains analyst-declared. Korda et al. provide direct eye-movement precedent for LLE/log-divergence signal analysis, but that application precedent is not treated as proof that behavioral gaze is a low-dimensional deterministic chaotic system.
+
+
+For the 0.30 Kantz-sensitivity layer, Kantz (1994) makes the local neighborhood scale (arepsilon) part of the maximal-Lyapunov construction, while Hegger, Kantz & Schreiber (1999) retain this neighborhood-based algorithm as a distinct TISEAN implementation. eyetrajectoriespy uses that evidence to justify exposing radius/minimum-neighbor dependence as an analyst-declared robustness grid. It does not infer a universal radius, optimize (arepsilon), or convert grid stability into a probability that behavioral gaze is chaotic.
