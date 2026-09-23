@@ -92,6 +92,28 @@ _CONTRACTS = (
         ),
     ),
     MathematicalContract(
+        key="dynamic-time-warping",
+        title="Dynamic time warping cumulative trajectory cost",
+        public_api=(
+            "dynamic_time_warping_cost",
+            "pairwise_dynamic_time_warping_costs",
+        ),
+        equations=(
+            r"d_w(\mathbf p_i,\mathbf q_j)="
+            r"\left[\sum_r\omega_r(p_{ir}-q_{jr})^2\right]^{1/2}",
+            r"C_{i,j}=d_w(\mathbf p_i,\mathbf q_j)+"
+            r"\min(C_{i-1,j},C_{i-1,j-1},C_{i,j-1})",
+            r"\operatorname{DTWcost}(P,Q)=C_{m,n}",
+        ),
+        site_anchor="dynamic-time-warping",
+        scope=(
+            "Raw cumulative symmetric three-step DTW cost for complete ordered "
+            "point sequences; no path-length normalization, global window, "
+            "slope constraint, elapsed-time correspondence, interpolation, "
+            "resampling, normalization, or path simplification is introduced."
+        ),
+    ),
+    MathematicalContract(
         key="trajectory-geometry",
         title="Continuous planar trajectory geometry",
         public_api=(
