@@ -319,6 +319,12 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.turning_rate_function
 ::: eyetrajectoriespy.trajectory_tortuosity
 
+## Trajectory distances
+::: eyetrajectoriespy.functional_l2_distance
+::: eyetrajectoriespy.pairwise_functional_distances
+::: eyetrajectoriespy.discrete_frechet_distance
+::: eyetrajectoriespy.pairwise_discrete_frechet_distances
+
 ## Downstream analysis
 ::: eyetrajectoriespy.functional_l2_distance
 ::: eyetrajectoriespy.pairwise_functional_distances
