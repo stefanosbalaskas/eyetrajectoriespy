@@ -282,12 +282,12 @@ def recurrence_radius_profile(
             "excluded_theiler_pairs_within_radius": excluded,
         }
     )
-    table["lower_radius_exclusive"] = np.concatenate(
-        [np.array([0.0]), radius_array[:-1]]
+    table["previous_radius"] = np.concatenate(
+        [np.array([np.nan]), radius_array[:-1]]
     )
     table = table[
         [
-            "lower_radius_exclusive",
+            "previous_radius",
             "radius",
             "shell_pair_count",
             "shell_pair_fraction",
@@ -323,7 +323,8 @@ def recurrence_radius_profile(
                 "recurrence_rate is the empirical CDF of eligible pairwise "
                 "state-space distances evaluated at each declared radius; "
                 "shell_pair_fraction is the empirical mass in "
-                "(previous_radius, radius]"
+                "the first shell d <= radius[0], then "
+                "(previous_radius, radius] for later rows"
             ),
             "distance_matrix_materialized": False,
             "maximum_radius_coverage_fraction": float(recurrence_rate[-1]),
