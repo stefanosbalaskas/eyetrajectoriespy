@@ -186,6 +186,12 @@ def pairwise_discrete_frechet_distances(
     indices = [trajectories.dimension_names.index(name) for name in selected]
     values = trajectories.values[:, :, indices]
     n = trajectories.n_curves
+    if n > 0:
+        _validate_discrete_frechet_inputs(
+            values[0],
+            values[0],
+            dimension_weights=dimension_weights,
+        )
     result = np.zeros((n, n), dtype=float)
     for i in range(n):
         for j in range(i + 1, n):
