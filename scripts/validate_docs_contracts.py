@@ -50,6 +50,7 @@ def main() -> None:
         "recurrence_matrix()",
         "recurrence_radius_profile()",
         "rqa_parameter_sensitivity()",
+        "bootstrap_rqa_metric_means()",
         "windowed_rqa_trajectory_set()",
         "estimate_largest_lyapunov_rosenstein()",
         "lyapunov_parameter_sensitivity()",
