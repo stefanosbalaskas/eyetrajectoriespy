@@ -48,6 +48,7 @@ nav:
       - Nonlinear trajectory dynamics: guides/nonlinear-dynamics.md
       - Recurrence-threshold diagnostics: methods/recurrence-threshold-diagnostics.md
       - RQA population bootstrap: methods/rqa-population-bootstrap.md
+      - Kantz largest-Lyapunov estimation: methods/kantz-lle.md
       - Nonlinear parameter sensitivity: methods/nonlinear-parameter-sensitivity.md
       - Functional RQA sensitivity & dependence: methods/rqa-functional-dependence.md
       - Interpretation: guides/interpretation.md
@@ -82,6 +83,7 @@ nav:
       - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
       - Recurrence-threshold diagnostics: examples/recurrence-threshold-diagnostics.md
       - RQA population bootstrap: examples/rqa-population-bootstrap.md
+      - Rosenstein vs Kantz LLE: examples/kantz-lle.md
       - Nonlinear parameter sensitivity: examples/nonlinear-parameter-sensitivity.md
       - RQA-derived functional trajectories: examples/rqa-functional-trajectories.md
       - Functional RQA sensitivity & inference: examples/rqa-functional-sensitivity.md
