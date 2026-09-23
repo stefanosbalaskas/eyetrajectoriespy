@@ -130,6 +130,54 @@ $$
 
 **API:** `functional_l2_distance()`, `pairwise_functional_distances()`.
 
+## Order-preserving discrete Fréchet trajectory distance { #discrete-frechet }
+
+For sampled paths
+
+$
+P=(\mathbf p_1,\ldots,\mathbf p_m),
+\qquad
+Q=(\mathbf q_1,\ldots,\mathbf q_n),
+$
+
+the declared weighted-Euclidean point metric is
+
+$
+d_{\boldsymbol\omega}(\mathbf p_i,\mathbf q_j)
+=
+\left[
+\sum_{d=1}^{D}
+\omega_d
+(p_{id}-q_{jd})^2
+\right]^{1/2},
+$
+
+with finite strictly positive weights.
+
+The discrete Fréchet dynamic program uses
+
+$
+C_{ij}
+=
+\max
+\left\{
+d_{\boldsymbol\omega}(\mathbf p_i,\mathbf q_j),
+\min(C_{i-1,j},C_{i-1,j-1},C_{i,j-1})
+\right\},
+$
+
+with the corresponding monotone boundary recurrences, and returns
+
+$
+\delta_{dF}(P,Q)=C_{mn}.
+$
+
+The coupling preserves point order but can hold one path while advancing the other. Actual timestamps are not part of the point metric or recurrence. Therefore a small value means that the **ordered sampled routes** can be coupled while keeping their maximum spatial/state separation small; it does not mean that matched locations were reached at the same trial times.
+
+The implementation uses rolling dynamic-programming rows, giving \(O(mn)\) runtime and \(O(\min(m,n))\) auxiliary memory. It does not allocate the full \(m\times n\) cost matrix, resample either path, interpolate, simplify, downsample, standardize channels, or select weights automatically.
+
+**API:** `discrete_frechet_distance()` and `pairwise_discrete_frechet_distances()`.
+
 ## Continuous planar trajectory geometry { #trajectory-geometry }
 
 For a declared planar trajectory
