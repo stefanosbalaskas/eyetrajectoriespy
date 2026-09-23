@@ -52,7 +52,9 @@ from .embedding import (
     embedding_dimension_diagnostics,
 )
 from .nonlinear_dynamics import (
+    estimate_largest_lyapunov_kantz,
     estimate_largest_lyapunov_rosenstein,
+    kantz_divergence_curve,
     local_divergence_curve,
     surrogate_nonlinearity_test,
 )
@@ -98,6 +100,7 @@ from .nonlinear_types import (
     DelayEmbeddingResult,
     EmbeddingDelayDiagnosticResult,
     EmbeddingDimensionDiagnosticResult,
+    KantzDivergenceResult,
     LargestLyapunovResult,
     LyapunovParameterSensitivityResult,
     LocalDivergenceResult,
@@ -322,7 +325,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.28.0.dev0"
+__version__ = "0.29.0.dev0"
 
 __all__ = [
     "recurrence_radius_profile_reporting_text",
@@ -363,6 +366,7 @@ __all__ = [
     "WindowedRQASensitivityResult",
     "WindowedRQAMeanBandResult",
     "LocalDivergenceResult",
+    "KantzDivergenceResult",
     "LargestLyapunovResult",
     "LyapunovParameterSensitivityResult",
     "SurrogateNonlinearityResult",
@@ -384,7 +388,9 @@ __all__ = [
     "cross_recurrence_matrix",
     "cross_rqa_metrics",
     "local_divergence_curve",
+    "kantz_divergence_curve",
     "estimate_largest_lyapunov_rosenstein",
+    "estimate_largest_lyapunov_kantz",
     "lyapunov_parameter_sensitivity",
     "surrogate_nonlinearity_test",
     "poincare_crossings",
