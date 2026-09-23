@@ -165,99 +165,47 @@ When an audit result is requested, the package returns one deterministic optimal
 
 **API:** `discrete_frechet_distance()`, `pairwise_discrete_frechet_distances()`.
 
+## Dynamic time warping cumulative trajectory cost { #dynamic-time-warping }
+
+For ordered point sequences \(P=(p_1,\ldots,p_m)\) and \(Q=(q_1,\ldots,q_n)\), the local weighted Euclidean cost is
+
+$$
+d_w(\mathbf p_i,\mathbf q_j)
+=
+\left[
+\sum_r \omega_r(p_{ir}-q_{jr})^2
+\right]^{1/2}.
+$$
+
+The version 0.33 symmetric three-step recurrence is
+
+$$
+C_{i,j}
+=
+d_w(\mathbf p_i,\mathbf q_j)
++
+\min\left(
+C_{i-1,j},
+C_{i-1,j-1},
+C_{i,j-1}
+\right),
+$$
+
+with cumulative first-row and first-column costs and
+
+$$
+\operatorname{DTWcost}(P,Q)=C_{m,n}.
+$$
+
+The returned scalar is the raw cumulative sum of local costs along the optimal path. It is not divided by warping-path length or sequence length.
+
+The implemented path is monotone and does not backtrack. Observed timestamp values do not enter the recurrence. Version 0.33 imposes no Sakoe–Chiba band, Itakura constraint, slope constraint, or other global path restriction.
+
+When an audit result is requested, the package returns one deterministic optimal warping path. Multiple optimal paths can exist, so the returned path is not claimed to be unique.
+
+**API:** `dynamic_time_warping_cost()`, `pairwise_dynamic_time_warping_costs()`.
+
 ## Continuous planar trajectory geometry { #trajectory-geometry }
-
-For a declared planar trajectory
-
-$$
-\mathbf G(t)=
-\begin{bmatrix}
-x(t)\\
-y(t)
-\end{bmatrix},
-$$
-
-the wrapped heading function is
-
-$$
-\theta(t)
-=
-\operatorname{atan2}
-\left\{
-y'(t),
-x'(t)
-\right\}.
-$$
-
-`heading_function()` reports this angle in radians on the recorded coordinate axes. It does not unwrap the angle automatically.
-
-The signed curvature is
-
-$$
-\kappa(t)
-=
-\frac{
-x'(t)y''(t)-y'(t)x''(t)
-}{
-\left\{
-x'(t)^2+y'(t)^2
-\right\}^{3/2}
-}.
-$$
-
-The signed turning rate is
-
-$$
-\omega(t)
-=
-\frac{
-x'(t)y''(t)-y'(t)x''(t)
-}{
-x'(t)^2+y'(t)^2
-}
-=
-\kappa(t)
-\left\|
-\mathbf G'(t)
-\right\|.
-$$
-
-The implementation differentiates numerically with respect to the observed time grid using `numpy.gradient(..., edge_order=2)`. It does not smooth, interpolate, rescale, or add a denominator epsilon.
-
-Heading, curvature, and turning rate are undefined where
-
-$$
-\left\|
-\mathbf G'(t)
-\right\|
-\le
-v_{\min},
-$$
-
-where `min_speed` is an explicit analysis parameter. The default \(v_{\min}=0\) masks only mathematically stationary samples; a positive threshold must be chosen explicitly if near-zero velocity is scientifically regarded as unstable. Under `undefined_policy="nan"`, undefined samples remain missing rather than being changed to zero. Under `undefined_policy="raise"`, any such sample aborts the calculation.
-
-For a complete observed path, tortuosity is defined as
-
-$$
-T
-=
-\frac{
-\sum_{m=1}^{M-1}
-\left\|
-\mathbf G(t_{m+1})-\mathbf G(t_m)
-\right\|_2
-}{
-\left\|
-\mathbf G(t_M)-\mathbf G(t_1)
-\right\|_2
-}.
-$$
-
-A straight path has \(T=1\). If endpoint displacement is at or below the declared `min_displacement`, the ratio is undefined; the same explicit `nan` versus `raise` policy applies.
-
-These quantities depend on the **metric and orientation of the supplied coordinates**. Separately normalized screen axes can distort Euclidean geometry if horizontal and vertical units are not commensurate. Likewise, if recorded screen \(y\) increases downward, the visual interpretation of curvature/turning sign is reversed relative to a conventional Cartesian \(y\)-up display. The package does not guess or silently flip either axis.
-
-**API:** `heading_function()`, `signed_curvature_function()`, `turning_rate_function()`, and `trajectory_tortuosity()`.
 
 ## Two-level functional decomposition { #multilevel }
 
