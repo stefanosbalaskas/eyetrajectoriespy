@@ -99,6 +99,7 @@ For mathematical definitions of the main estimands, transformations, studentizat
 
 ## Core objects
 ::: eyetrajectoriespy.TrajectorySet
+::: eyetrajectoriespy.DiscreteFrechetResult
 ::: eyetrajectoriespy.FPCAResult
 ::: eyetrajectoriespy.RegistrationResult
 ::: eyetrajectoriespy.CompositionalFPCAResult
@@ -322,6 +323,8 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ## Downstream analysis
 ::: eyetrajectoriespy.functional_l2_distance
 ::: eyetrajectoriespy.pairwise_functional_distances
+::: eyetrajectoriespy.discrete_frechet_distance
+::: eyetrajectoriespy.pairwise_discrete_frechet_distances
 ::: eyetrajectoriespy.cluster_fpca_scores
 ::: eyetrajectoriespy.fit_scalar_on_function_regression
 

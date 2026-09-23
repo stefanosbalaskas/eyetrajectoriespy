@@ -130,6 +130,41 @@ $$
 
 **API:** `functional_l2_distance()`, `pairwise_functional_distances()`.
 
+## Discrete Fréchet trajectory distance { #discrete-frechet }
+
+For ordered point sequences \(P=(p_1,\ldots,p_m)\) and \(Q=(q_1,\ldots,q_n)\), define the optional weighted Euclidean local distance
+
+$$
+d_w(\mathbf p_i,\mathbf q_j)
+=
+\left[
+\sum_r \omega_r(p_{ir}-q_{jr})^2
+\right]^{1/2}.
+$$
+
+The dynamic-programming recurrence is
+
+$$
+D_{i,j}
+=
+\max\left\{
+d_w(\mathbf p_i,\mathbf q_j),
+\min(D_{i-1,j},D_{i-1,j-1},D_{i,j-1})
+\right\},
+$$
+
+with first-row and first-column cumulative maxima and
+
+$$
+\delta_{dF}(P,Q)=D_{m,n}.
+$$
+
+The admissible coupling is monotone and does not backtrack. Elapsed timestamps do not appear in the recurrence. Version 0.32 does not interpolate, resample, normalize, simplify, smooth, or delete trajectory points before evaluation.
+
+When an audit result is requested, the package returns one deterministic optimal coupling. Multiple optimal couplings can exist, so that path is not claimed to be unique.
+
+**API:** `discrete_frechet_distance()`, `pairwise_discrete_frechet_distances()`.
+
 ## Continuous planar trajectory geometry { #trajectory-geometry }
 
 For a declared planar trajectory

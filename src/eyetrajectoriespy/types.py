@@ -154,6 +154,19 @@ class TrajectorySet:
 
 
 @dataclass(frozen=True)
+class DiscreteFrechetResult:
+    """Discrete Fréchet distance plus one deterministic optimal coupling."""
+
+    distance: float
+    coupling: np.ndarray
+    local_distances: np.ndarray
+    n_points_a: int
+    n_points_b: int
+    n_dimensions: int
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
 class FPCAResult:
     """Result from grid-based functional principal component analysis."""
 

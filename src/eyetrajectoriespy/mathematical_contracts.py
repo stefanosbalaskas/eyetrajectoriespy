@@ -70,6 +70,28 @@ _CONTRACTS = (
         scope="Complete trajectories on a common grid; optional dimension weights must be non-negative.",
     ),
     MathematicalContract(
+        key="discrete-frechet",
+        title="Discrete Fréchet trajectory distance",
+        public_api=(
+            "discrete_frechet_distance",
+            "pairwise_discrete_frechet_distances",
+        ),
+        equations=(
+            r"d_w(\mathbf p_i,\mathbf q_j)="
+            r"\left[\sum_r\omega_r(p_{ir}-q_{jr})^2\right]^{1/2}",
+            r"D_{i,j}=\max\left\{d_w(\mathbf p_i,\mathbf q_j),"
+            r"\min(D_{i-1,j},D_{i-1,j-1},D_{i,j-1})\right\}",
+            r"\delta_{dF}(P,Q)=D_{m,n}",
+        ),
+        site_anchor="discrete-frechet",
+        scope=(
+            "Ordered complete point sequences with monotone coupling and no "
+            "backtracking; elapsed time is not part of the recurrence, and no "
+            "interpolation, resampling, normalization, or path simplification "
+            "is introduced automatically."
+        ),
+    ),
+    MathematicalContract(
         key="trajectory-geometry",
         title="Continuous planar trajectory geometry",
         public_api=(

@@ -304,3 +304,12 @@ Differential geometry assumes the observed trajectory is complete and has at lea
 The `min_speed` threshold is part of the estimand. The default zero threshold masks only exactly stationary numerical derivatives; any positive near-zero threshold must be scientifically declared.
 
 Wrapped heading is circular data. Ordinary Euclidean FDA of heading requires an explicit representation decision because the \(-\pi/+ \pi\) branch cut is not a true directional discontinuity.
+
+
+## Discrete Fréchet trajectory distance
+
+Discrete Fréchet assumes that the ordered point sequence itself is the relevant trajectory representation. The local geometry depends directly on coordinate units and any explicit dimension weights.
+
+The coupling preserves order but not elapsed-time correspondence. It is therefore suitable for order-preserving geometric comparison, not for analyses where latency or physical traversal speed is itself the estimand.
+
+All points must be finite. The package does not silently delete missing samples or repair incomplete paths before comparison.

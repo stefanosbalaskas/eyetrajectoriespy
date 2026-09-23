@@ -268,3 +268,11 @@ For the 0.29 Kantz-LLE layer, Kantz (1994) is the primary neighborhood-divergenc
 
 
 For the 0.30 Kantz-sensitivity layer, Kantz (1994) makes the local neighborhood scale (ε) part of the maximal-Lyapunov construction, while Hegger, Kantz & Schreiber (1999) retain this neighborhood-based algorithm as a distinct TISEAN implementation. eyetrajectoriespy uses that evidence to justify exposing radius/minimum-neighbor dependence as an analyst-declared robustness grid. It does not infer a universal radius, optimize (ε), or convert grid stability into a probability that behavioral gaze is chaotic.
+
+
+## Trajectory similarity and discrete Fréchet
+
+- Eiter, T., & Mannila, H. (1994). Computing discrete Fréchet distance. Christian Doppler Laboratory for Expert Systems, Technical Report CD-TR 94/64, Technical University of Vienna.
+- Laborde, Q., Roques, A., Armougum, A., Vayatis, N., Bargiotas, I., & Oudre, L. (2026). Vision toolkit part 3. Scanpaths and derived representations for gaze behavior characterization: a review. *Frontiers in Physiology*, 16, 1721768. https://doi.org/10.3389/fphys.2025.1721768
+
+Eiter and Mannila provide the discrete Fréchet dynamic-programming definition. Laborde et al. classify discrete Fréchet among established elastic scanpath-comparison methods and emphasize method choice according to representation and scientific question. Version 0.32 therefore does not claim novelty for the metric itself; it exposes an explicit coupling/provenance contract inside the continuous-trajectory framework.

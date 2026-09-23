@@ -580,3 +580,10 @@ If heading, curvature, turning rate, or tortuosity will be analyzed, pre-specify
 - whether geometry is a primary outcome or exploratory derived function.
 
 Do not choose a low-speed threshold, coordinate rescaling, or heading unwrapping strategy after inspecting which version produces the preferred condition difference.
+
+
+## Discrete Fréchet trajectory comparison
+
+If discrete Fréchet will be used, pre-specify the trajectory representation, included dimensions, coordinate units/scaling, optional dimension weights, any upstream resampling or simplification, and whether the distance is primary or sensitivity analysis.
+
+Do not choose coordinate scaling, dimensions, or preprocessing after inspecting which version produces the preferred group separation. State whether elapsed timing is intentionally ignored by the comparison.

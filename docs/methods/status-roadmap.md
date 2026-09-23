@@ -38,6 +38,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Two-level participant/trial FPCA | implemented | `fit_multilevel_fpca()` |
 | Compositional AOI FPCA | implemented | `fit_compositional_fpca()` |
 | Functional distances | implemented | `functional_l2_distance()` |
+| Discrete Fréchet trajectory distance | implemented; monotone order-preserving coupling, no elapsed-time correspondence | `discrete_frechet_distance()` / `pairwise_discrete_frechet_distances()` |
 | FPCA-score clustering | implemented | `cluster_fpca_scores()` |
 | Score-based scalar-on-function regression | implemented | `fit_scalar_on_function_regression()` |
 | Paired-bootstrap Gaussian FPCR uncertainty | implemented | `bootstrap_fpca_regression_uncertainty()` |
@@ -69,7 +70,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 
 ## Documentation and mathematical contracts
 
-Versions 0.21–0.31 treat documentation and mathematical metadata as tested package surfaces:
+Versions 0.21–0.32 treat documentation and mathematical metadata as tested package surfaces:
 
 - the repository-level `MATHEMATICAL_CONTRACTS.md` renders the core equations directly on GitHub;
 - the site mathematical reference maps those equations to the exact public APIs and scope boundaries;
@@ -126,4 +127,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.31.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.32.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

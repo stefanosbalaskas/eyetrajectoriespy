@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.32.0.dev0
+
+- Add `discrete_frechet_distance()` for exact dynamic-programming discrete Fréchet distance between complete ordered point sequences, including unequal sequence lengths.
+- Add `DiscreteFrechetResult` with one deterministic optimal monotone coupling, coupled local distances, dimensionality, and provenance.
+- Add `pairwise_discrete_frechet_distances()` for complete `TrajectorySet` collections with explicit dimension selection.
+- Preserve sequence order without backtracking while deliberately excluding elapsed-time correspondence from the recurrence.
+- Add explicit optional dimension weights with no hidden normalization; no interpolation, resampling, smoothing, coordinate normalization, path simplification, or outlier removal is introduced.
+- Document deterministic tie handling for non-unique optimal couplings and retain the boundary that the returned coupling is one optimum rather than a unique alignment claim.
+- Add hand-computable unequal-length, symmetry, bottleneck-outlier, weighting, pairwise-dimension, coupling-monotonicity, and fail-closed input tests.
+- Add mathematical contract, API docs, method/worked/executable examples, reporting/preregistration/limitations guidance, references, README/status integration, and examples CI.
+
 ## 0.31.0.dev0
 
 - Add `heading_function()`, `signed_curvature_function()`, `turning_rate_function()`, and `trajectory_tortuosity()` for continuous planar gaze geometry.
