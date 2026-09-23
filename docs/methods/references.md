@@ -215,6 +215,8 @@ Exact Clopper-Pearson intervals are used only to describe the finite-bootstrap e
 
 ## Nonlinear dynamics, recurrence, and surrogate testing
 
+- Schinkel, S., Marwan, N., Dimigen, O., & Kurths, J. (2009). Confidence bounds of recurrence-based complexity measures. *Physics Letters A*, 373(26), 2245–2250. https://doi.org/10.1016/j.physleta.2009.04.045
+
 - Anderson, N. C., Bischof, W. F., Laidlaw, K. E. W., Risko, E. F., & Kingstone, A. (2013). Recurrence quantification analysis of eye movements. *Behavior Research Methods*, 45, 842–856. https://doi.org/10.3758/s13428-012-0299-5
 - Gurtner, L. M., Bischof, W. F., & Mast, F. W. (2019). Recurrence quantification analysis of eye movements during mental imagery. *Journal of Vision*, 19(1), 17. https://doi.org/10.1167/19.1.17
 - Richardson, D. C., Dale, R., & Kirkham, N. Z. (2007). The art of conversation is coordination: Common ground and the coupling of eye movements during dialogue. *Psychological Science*, 18(5), 407–413. https://doi.org/10.1111/j.1467-9280.2007.01914.x
@@ -246,3 +248,6 @@ For the 0.25 functional-RQA layer, Kraemer et al. reinforce that recurrence summ
 For the 0.26 reconstructed-state sensitivity layer, Kraemer et al. specifically motivate treating recurrence threshold and embedding choices as consequential analysis dimensions rather than adopting a universal epsilon. Rosenstein et al. report robustness of their LLE estimator to embedding dimension, data length, reconstruction delay, and noise in their studied settings, while Kantz develops a related local-divergence approach. eyetrajectoriespy uses these sources to justify transparent sensitivity analysis, not to claim that robustness in one benchmark transfers automatically to finite behavioral gaze data.
 
 For the 0.27 recurrence-threshold diagnostic layer, Kraemer et al. are especially important because they identify the empirical distribution of pairwise state-space distances as a key characteristic for threshold choice and show threshold/embedding dependence of recurrence characteristics. Marwan et al. provide the broader recurrence-plot framework and threshold context. The package exposes the exact empirical RR(epsilon) curve and shell mass over a declared grid but deliberately does not encode a universal or optimized threshold rule.
+
+
+For the 0.28 population-RQA uncertainty layer, Schinkel et al. provide direct precedent for bootstrap uncertainty in recurrence-based measures, but their within-time-series recurrence bootstrap target is not treated as interchangeable with a population sampling bootstrap across experimental units. eyetrajectoriespy 0.28 instead resamples independent curves or participant-average RQA summaries to target the between-unit population mean. This follows the broader functional-data principle already used elsewhere in the package: preserve complex within-unit structure and resample the genuinely independent observational units when the study design is participant based.
