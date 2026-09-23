@@ -313,3 +313,16 @@ Discrete Fréchet assumes that the ordered point sequence itself is the relevant
 The coupling preserves order but not elapsed-time correspondence. It is therefore suitable for order-preserving geometric comparison, not for analyses where latency or physical traversal speed is itself the estimand.
 
 All points must be finite. The package does not silently delete missing samples or repair incomplete paths before comparison.
+
+
+## Dynamic time warping trajectory cost
+
+Version 0.33 treats DTW as a cumulative alignment **cost** on complete ordered point sequences.
+
+The local weighted Euclidean cost depends directly on coordinate units and any declared dimension weights. No coordinate normalization is performed internally.
+
+The warping path preserves point order but not elapsed-time correspondence. Timestamp values, physical speed, dwell duration, and response latency are outside the recurrence.
+
+The implemented step pattern is the unconstrained symmetric predecessor set (diagonal, advance the first sequence, or advance the second sequence). No global or slope constraint is assumed.
+
+The returned scalar is the raw sum of local distances along the optimal path. It is not normalized by path length or sequence length.
