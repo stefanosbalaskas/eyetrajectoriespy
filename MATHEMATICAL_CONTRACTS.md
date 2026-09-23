@@ -32,7 +32,7 @@ $$
 \sum_{k=1}^{K}\widehat\xi_{ik}\widehat{\boldsymbol\phi}_k(t).
 $$
 
-Implemented by \`fit_fpca()\`, \`fit_mfpca()\`, \`transform_fpca()\`, and \`reconstruct_fpca()\`.
+Implemented by `fit_fpca()`, `fit_mfpca()`, `transform_fpca()`, and `reconstruct_fpca()`.
 
 ## Functional distance
 
@@ -44,7 +44,7 @@ d_{L^2}(\mathbf a,\mathbf b)
 \right]^{1/2}.
 $$
 
-Implemented by \`functional_l2_distance()\`.
+Implemented by `functional_l2_distance()`.
 
 ## Continuous planar trajectory geometry
 
@@ -87,7 +87,7 @@ T
 }.
 $$
 
-Implemented by \`heading_function()\`, \`signed_curvature_function()\`, \`turning_rate_function()\`, and \`trajectory_tortuosity()\`.
+Implemented by `heading_function()`, `signed_curvature_function()`, `turning_rate_function()`, and `trajectory_tortuosity()`.
 
 No smoothing, interpolation, axis inversion, coordinate rescaling, or denominator epsilon is introduced automatically. Low-speed and zero-displacement undefinedness remains explicit.
 
@@ -99,7 +99,7 @@ $$
 \boldsymbol\mu(t)+\mathbf U_i(t)+\mathbf V_{ij}(t).
 $$
 
-Implemented by \`fit_multilevel_fpca()\`.
+Implemented by `fit_multilevel_fpca()`.
 
 ## Compositional AOI transform
 
@@ -115,7 +115,7 @@ $$
 p_k(t)=\frac{q_k(t)}{\sum_{\ell=1}^{K}q_\ell(t)}.
 $$
 
-Implemented by \`alr_transform()\`, \`inverse_alr()\`, and \`fit_compositional_fpca()\`.
+Implemented by `alr_transform()`, `inverse_alr()`, and `fit_compositional_fpca()`.
 
 ## Landmark registration
 
@@ -125,7 +125,7 @@ $$
 \Delta_i(t)=h_i(t)-t.
 $$
 
-Implemented by \`register_to_landmarks()\`.
+Implemented by `register_to_landmarks()`.
 
 ## Functional mean multiplier band
 
@@ -150,7 +150,7 @@ $$
 c_{1-\alpha}\frac{\widehat\sigma_d(t_m)}{\sqrt n}.
 $$
 
-Implemented by \`multiplier_functional_mean_band()\`.
+Implemented by `multiplier_functional_mean_band()`.
 
 ## Heteroscedastic FPCR wild bootstrap
 
@@ -199,7 +199,7 @@ T_0^*
 \qquad g=k,\quad h\ge g.
 $$
 
-Implemented by \`wild_bootstrap_fpca_projection()\`.
+Implemented by `wild_bootstrap_fpca_projection()`.
 
 ## Fixed-family testing
 
@@ -221,7 +221,7 @@ $$
 M^{*(b)}=\max_j|T_j^{*(b)}|.
 $$
 
-Implemented by \`fpca_wild_bootstrap_projection_family_test()\`.
+Implemented by `fpca_wild_bootstrap_projection_family_test()`.
 
 ## Finite-bootstrap precision
 
@@ -235,7 +235,7 @@ $$
 
 Exact Clopper-Pearson limits are used for the retained exceedance count \(r\). They quantify Monte Carlo simulation precision only and do not alter the scientific test.
 
-Implemented by \`fpca_wild_bootstrap_family_test_monte_carlo_diagnostics()\`.
+Implemented by `fpca_wild_bootstrap_family_test_monte_carlo_diagnostics()`.
 
 ## Split conformal anomaly p-value
 
@@ -249,7 +249,7 @@ m+1
 }.
 $$
 
-Implemented by \`split_conformal_fpca_anomaly()\`.
+Implemented by `split_conformal_fpca_anomaly()`.
 
 For the full mathematical reference, including exact quadrature weights, dimension scaling, reconstruction nonconformity, simultaneous calibration, boundary cases, assumptions, and API links, see the website page linked above.
 
@@ -281,7 +281,7 @@ $$
 
 False-nearest-neighbor diagnostics evaluate whether nearest neighbors in dimension \(m\) separate excessively when the next delayed coordinate is added.
 
-Implemented by \`delay_embed_trajectory()\`, \`embedding_delay_diagnostics()\`, and \`embedding_dimension_diagnostics()\`.
+Implemented by `delay_embed_trajectory()`, `embedding_delay_diagnostics()`, and `embedding_dimension_diagnostics()`.
 
 ## Sparse recurrence quantification
 
@@ -333,7 +333,7 @@ v P_v(v)
 }.
 $$
 
-Implemented by \`recurrence_matrix()\`, \`recurrence_radius_profile()\`, \`rqa_metrics()\`, \`rqa_parameter_sensitivity()\`, \`windowed_rqa()\`, \`cross_recurrence_matrix()\`, and \`cross_rqa_metrics()\`.
+Implemented by `recurrence_matrix()`, `recurrence_radius_profile()`, `rqa_metrics()`, `rqa_parameter_sensitivity()`, `windowed_rqa()`, `cross_recurrence_matrix()`, and `cross_rqa_metrics()`.
 
 ## Population mean bootstrap for curve-level RQA metrics
 
@@ -436,7 +436,7 @@ a+
 \lambda_{\max}k\Delta t.
 $$
 
-Implemented by \`local_divergence_curve()\`, \`estimate_largest_lyapunov_rosenstein()\`, and \`lyapunov_parameter_sensitivity()\`.
+Implemented by `local_divergence_curve()`, `estimate_largest_lyapunov_rosenstein()`, and `lyapunov_parameter_sensitivity()`.
 
 ## Kantz neighborhood divergence
 
@@ -494,7 +494,7 @@ B+1
 }.
 $$
 
-Implemented by \`surrogate_nonlinearity_test()\`. The IAAFT procedure preserves the observed amplitude distribution exactly and iteratively matches the Fourier-amplitude spectrum.
+Implemented by `surrogate_nonlinearity_test()`. The IAAFT procedure preserves the observed amplitude distribution exactly and iteratively matches the Fourier-amplitude spectrum.
 
 ## Empirical Poincare return maps
 
@@ -532,6 +532,6 @@ $$
 |.
 $$
 
-Implemented by \`poincare_crossings()\`, \`fit_local_return_map()\`, and \`return_map_stability()\`.
+Implemented by `poincare_crossings()`, `fit_local_return_map()`, and `return_map_stability()`.
 
 These are empirical return-map diagnostics. \(\mathbf J\) is **not** a variational-equation monodromy matrix and its eigenvalues are **not** classical Floquet multipliers.

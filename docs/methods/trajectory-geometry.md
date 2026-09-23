@@ -16,10 +16,10 @@ G_i(t)
 
 The core functions are:
 
-- \`heading_function()\`;
-- \`signed_curvature_function()\`;
-- \`turning_rate_function()\`;
-- \`trajectory_tortuosity()\`.
+- `heading_function()`;
+- `signed_curvature_function()`;
+- `turning_rate_function()`;
+- `trajectory_tortuosity()`.
 
 All require a complete planar trajectory. Differential quantities require at least three time samples because the implementation uses second-order edge-aware numerical gradients.
 
@@ -67,19 +67,19 @@ Heading, curvature, and turning rate are unstable or undefined when speed approa
 
 The API therefore exposes
 
-\`min_speed\`
+`min_speed`
 
 and
 
-\`undefined_policy\`.
+`undefined_policy`.
 
-The default \`min_speed=0.0\` has a narrow meaning: only mathematically stationary samples are masked. It is **not** a package-selected scientific threshold.
+The default `min_speed=0.0` has a narrow meaning: only mathematically stationary samples are masked. It is **not** a package-selected scientific threshold.
 
 If your measurement resolution makes near-zero velocity unreliable, choose a positive threshold explicitly and report it.
 
 With:
 
-\`undefined_policy="nan"\`
+`undefined_policy="nan"`
 
 samples satisfying
 
@@ -91,7 +91,7 @@ remain missing. They are never converted to zero.
 
 With:
 
-\`undefined_policy="raise"\`
+`undefined_policy="raise"`
 
 the function aborts and identifies affected curve/sample counts.
 
@@ -130,7 +130,7 @@ T
 
 A straight trajectory has \(T=1\); more circuitous open paths have \(T>1\).
 
-A closed path has zero endpoint displacement and therefore undefined tortuosity under this definition. The package does not add an epsilon or return infinity silently. Use \`undefined_policy="nan"\` or \`"raise"\` explicitly.
+A closed path has zero endpoint displacement and therefore undefined tortuosity under this definition. The package does not add an epsilon or return infinity silently. Use `undefined_policy="nan"` or `"raise"` explicitly.
 
 ## Relation to eye-movement literature
 
@@ -149,8 +149,8 @@ Report:
 - screen \(y\)-axis orientation if sign is interpreted visually;
 - preprocessing and any upstream smoothing;
 - derivative method;
-- \`min_speed\`;
-- \`undefined_policy\`;
+- `min_speed`;
+- `undefined_policy`;
 - number/fraction of undefined samples;
 - whether heading remained wrapped;
 - curvature and turning-rate units;

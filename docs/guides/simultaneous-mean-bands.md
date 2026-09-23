@@ -10,7 +10,7 @@ For multivariate gaze trajectories, the package treats the observed functional o
 
 ## What eyetrajectoriespy estimates
 
-\`multiplier_functional_mean_band()\` uses a studentized Gaussian multiplier bootstrap for the empirical mean process.
+`multiplier_functional_mean_band()` uses a studentized Gaussian multiplier bootstrap for the empirical mean process.
 
 At each bootstrap replication, Gaussian multipliers are applied to centered inference-unit trajectories. The calibration statistic is the maximum absolute standardized deviation over the complete observed time × dimension grid.
 
@@ -33,7 +33,7 @@ This is not the same as drawing independent 95% intervals at every time point.
 
 If every trajectory is an independent sampling unit:
 
-\`\`\`python
+```python
 band = multiplier_functional_mean_band(
     gaze,
     confidence_level=0.95,
@@ -41,7 +41,7 @@ band = multiplier_functional_mean_band(
     unit="curve",
     random_state=2026,
 )
-\`\`\`
+```
 
 The estimand is the equal-weight mean across curves.
 
@@ -51,7 +51,7 @@ If participants contribute repeated trials, those curves are not independent pop
 
 Use:
 
-\`\`\`python
+```python
 band = multiplier_functional_mean_band(
     gaze,
     confidence_level=0.95,
@@ -60,7 +60,7 @@ band = multiplier_functional_mean_band(
     participant_column="participant_id",
     random_state=2026,
 )
-\`\`\`
+```
 
 The package first averages each participant's observed trajectories and then applies mean inference to those participant-average functions.
 
@@ -78,7 +78,7 @@ Participants with more observed trials do **not** receive larger inferential wei
 The current implementation controls the maximum multiplier statistic across:
 
 - every sampled time point; and
-- every functional dimension in the \`TrajectorySet\`.
+- every functional dimension in the `TrajectorySet`.
 
 For x(t), y(t), a single critical value is therefore calibrated over both channels.
 
@@ -86,12 +86,12 @@ However, the implementation does **not** claim continuous-domain coverage betwee
 
 That distinction is recorded in provenance:
 
-\`\`\`python
+```python
 band.provenance["functional_mean_band"][
     "continuous_between_grid_points"
 ]
 # False
-\`\`\`
+```
 
 If continuous-domain inference is scientifically essential, use a method whose theoretical target and smoothing assumptions explicitly establish that coverage.
 
@@ -125,7 +125,7 @@ Report the exact number and random seed.
 
 ## Probability-simplex trajectories
 
-Direct Euclidean bands are rejected for \`coordinate_system="probability_simplex"\`.
+Direct Euclidean bands are rejected for `coordinate_system="probability_simplex"`.
 
 A lower or upper Euclidean band for AOI probabilities can violate non-negativity and sum-to-one constraints.
 
@@ -146,7 +146,7 @@ The band does **not** establish:
 - causal effects;
 - simultaneous coverage between sampled grid points;
 - validity under informative missingness;
-- independence of repeated trials when \`unit="curve"\`;
+- independence of repeated trials when `unit="curve"`;
 - compositional validity for probability-simplex trajectories;
 - coverage for a condition difference unless a dedicated difference-of-means procedure is used.
 
@@ -154,15 +154,15 @@ The band does **not** establish:
 
 > The mean two-dimensional gaze trajectory was estimated using participant-level functional inference. Trial trajectories were first averaged within participant so each participant contributed one equal-weight functional unit. A 95% simultaneous band was calibrated across the full sampled time × coordinate grid using 5,000 Gaussian multiplier replicates and the maximum absolute studentized mean-process statistic. The procedure therefore controls multiplicity across the observed x(t) and y(t) grid jointly. The band was interpreted as an observed-grid simultaneous band rather than a continuous-domain confidence band between sampled time points.
 
-Use \`functional_mean_band_reporting_text()\` as a reproducible starting point.
+Use `functional_mean_band_reporting_text()` as a reproducible starting point.
 
 ## API links
 
-- \`multiplier_functional_mean_band()\`
-- \`functional_mean_band_frame()\`
-- \`plot_functional_mean_band()\`
-- \`functional_mean_band_reporting_text()\`
-- \`FunctionalMeanBandResult\`
+- `multiplier_functional_mean_band()`
+- `functional_mean_band_frame()`
+- `plot_functional_mean_band()`
+- `functional_mean_band_reporting_text()`
+- `FunctionalMeanBandResult`
 
 ## Methodological context
 

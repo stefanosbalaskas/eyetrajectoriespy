@@ -101,7 +101,7 @@ ax = plot_trajectory_overlay(
 ax.figure.savefig("signed-curvature.svg")
 ~~~
 
-The curvature result is a native \`TrajectorySet\` and can enter compatible functional workflows if its missing-value contract is satisfied.
+The curvature result is a native `TrajectorySet` and can enter compatible functional workflows if its missing-value contract is satisfied.
 
 ## Low-speed handling
 
@@ -115,9 +115,9 @@ curvature = signed_curvature_function(
 print(curvature.provenance["undefined_sample_counts"])
 ~~~
 
-Undefined samples stay \`NaN\`; they are not changed to zero or repaired.
+Undefined samples stay `NaN`; they are not changed to zero or repaired.
 
-Use \`undefined_policy="raise"\` when any low-speed undefinedness should stop the analysis.
+Use `undefined_policy="raise"` when any low-speed undefinedness should stop the analysis.
 
 ## Interpretation boundary
 

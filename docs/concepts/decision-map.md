@@ -66,7 +66,7 @@ Use the [pre-registration checklist](../methods/preregistration.md) for a manusc
 
 Use the 0.23 nonlinear path when the scientific target is recurrence, state-space divergence, or repeated-cycle stability rather than dominant between-curve variation.
 
-\`\`\`text
+```text
 continuous trajectory
     |
     +-- nearby state returns? --------> recurrence / RQA
@@ -82,6 +82,6 @@ continuous trajectory
     +-- repeated approximate cycles? -> explicit Poincare section
                                        -> empirical local return map
                                        -> experimental contraction / expansion
-\`\`\`
+```
 
 Do not route raw gaze directly to classical Floquet or bifurcation-continuation claims. Those require a separately identified dynamical model.

@@ -6,14 +6,14 @@ title: Mathematical reference
 
 Need a concise function-level lookup instead of the expanded derivation? Use the generated [function → equation index](../reference/function-equation-index.md) or query `get_mathematical_contract()` directly. Both are backed by the same 0.22 registry and validated in CI.
 
-This page records the equations implemented by \`eyetrajectoriespy\`. It is a **software contract reference**: each equation is paired with the public API that implements it and with the scope limits that matter for interpretation.
+This page records the equations implemented by `eyetrajectoriespy`. It is a **software contract reference**: each equation is paired with the public API that implements it and with the scope limits that matter for interpretation.
 
 !!! note "Notation"
     \(i\) indexes trajectories or independent units, \(t_m\) the observed common grid, \(d\) functional dimensions, and \(k\) retained functional principal components. Bold symbols denote vectors or matrices.
 
 ## Quadrature on the observed grid { #quadrature }
 
-For strictly increasing grid points \(t_1,\ldots,t_M\), \`functional_trapezoid_weights()\` uses trapezoidal weights
+For strictly increasing grid points \(t_1,\ldots,t_M\), `functional_trapezoid_weights()` uses trapezoidal weights
 
 $$
 w_1=\frac{t_2-t_1}{2},\qquad
@@ -26,13 +26,13 @@ $$
 w_m=\frac{(t_m-t_{m-1})+(t_{m+1}-t_m)}{2}.
 $$
 
-When \`normalize=True\`,
+When `normalize=True`,
 
 $$
 \widetilde w_m=\frac{w_m}{\sum_{\ell=1}^{M}w_\ell}.
 $$
 
-**API:** \`functional_trapezoid_weights()\`.
+**API:** `functional_trapezoid_weights()`.
 
 ## Quadrature-weighted FPCA / MFPCA { #fpca }
 
@@ -44,7 +44,7 @@ $$
 \frac{1}{n}\sum_{i=1}^{n}\mathbf G_i(t_m).
 $$
 
-With \`scaling="dimension_sd"\`, dimension \(d\) is scaled by the square root of its mean integrated variance,
+With `scaling="dimension_sd"`, dimension \(d\) is scaled by the square root of its mean integrated variance,
 
 $$
 s_d
@@ -60,7 +60,7 @@ w_m
 \right]^{1/2}.
 $$
 
-For \`scaling="none"\`, \(s_d=1\).
+For `scaling="none"`, \(s_d=1\).
 
 The implementation forms the weighted Euclidean representation
 
@@ -99,7 +99,7 @@ $$
 \sum_{k=1}^{K}\widehat\xi_{ik}\widehat{\boldsymbol\phi}_k(t_m).
 $$
 
-The interpretation curves from \`component_trajectories()\` are
+The interpretation curves from `component_trajectories()` are
 
 $$
 \widehat{\boldsymbol\mu}(t)
@@ -110,7 +110,7 @@ $$
 
 where \(a\) is an analyst-selected score-SD multiplier.
 
-**API:** \`fit_fpca()\`, \`fit_mfpca()\`, \`transform_fpca()\`, \`reconstruct_fpca()\`, \`component_trajectories()\`.
+**API:** `fit_fpca()`, `fit_mfpca()`, `transform_fpca()`, `reconstruct_fpca()`, `component_trajectories()`.
 
 ## Integrated functional \(L^2\) distance { #functional-l2 }
 
@@ -128,7 +128,7 @@ w_m
 \right]^{1/2}.
 $$
 
-**API:** \`functional_l2_distance()\`, \`pairwise_functional_distances()\`.
+**API:** `functional_l2_distance()`, `pairwise_functional_distances()`.
 
 ## Continuous planar trajectory geometry { #trajectory-geometry }
 
@@ -154,7 +154,7 @@ x'(t)
 \right\}.
 $$
 
-\`heading_function()\` reports this angle in radians on the recorded coordinate axes. It does not unwrap the angle automatically.
+`heading_function()` reports this angle in radians on the recorded coordinate axes. It does not unwrap the angle automatically.
 
 The signed curvature is
 
@@ -187,7 +187,7 @@ x'(t)^2+y'(t)^2
 \right\|.
 $$
 
-The implementation differentiates numerically with respect to the observed time grid using \`numpy.gradient(..., edge_order=2)\`. It does not smooth, interpolate, rescale, or add a denominator epsilon.
+The implementation differentiates numerically with respect to the observed time grid using `numpy.gradient(..., edge_order=2)`. It does not smooth, interpolate, rescale, or add a denominator epsilon.
 
 Heading, curvature, and turning rate are undefined where
 
@@ -199,7 +199,7 @@ $$
 v_{\min},
 $$
 
-where \`min_speed\` is an explicit analysis parameter. The default \(v_{\min}=0\) masks only mathematically stationary samples; a positive threshold must be chosen explicitly if near-zero velocity is scientifically regarded as unstable. Under \`undefined_policy="nan"\`, undefined samples remain missing rather than being changed to zero. Under \`undefined_policy="raise"\`, any such sample aborts the calculation.
+where `min_speed` is an explicit analysis parameter. The default \(v_{\min}=0\) masks only mathematically stationary samples; a positive threshold must be chosen explicitly if near-zero velocity is scientifically regarded as unstable. Under `undefined_policy="nan"`, undefined samples remain missing rather than being changed to zero. Under `undefined_policy="raise"`, any such sample aborts the calculation.
 
 For a complete observed path, tortuosity is defined as
 
@@ -218,11 +218,11 @@ T
 }.
 $$
 
-A straight path has \(T=1\). If endpoint displacement is at or below the declared \`min_displacement\`, the ratio is undefined; the same explicit \`nan\` versus \`raise\` policy applies.
+A straight path has \(T=1\). If endpoint displacement is at or below the declared `min_displacement`, the ratio is undefined; the same explicit `nan` versus `raise` policy applies.
 
 These quantities depend on the **metric and orientation of the supplied coordinates**. Separately normalized screen axes can distort Euclidean geometry if horizontal and vertical units are not commensurate. Likewise, if recorded screen \(y\) increases downward, the visual interpretation of curvature/turning sign is reversed relative to a conventional Cartesian \(y\)-up display. The package does not guess or silently flip either axis.
 
-**API:** \`heading_function()\`, \`signed_curvature_function()\`, \`turning_rate_function()\`, and \`trajectory_tortuosity()\`.
+**API:** `heading_function()`, `signed_curvature_function()`, `turning_rate_function()`, and `trajectory_tortuosity()`.
 
 ## Two-level functional decomposition { #multilevel }
 
@@ -252,7 +252,7 @@ $$
 
 Separate FPCAs are then fit to \(\mathbf U_i\) and \(\mathbf V_{ij}\).
 
-**API:** \`fit_multilevel_fpca()\`.
+**API:** `fit_multilevel_fpca()`.
 
 ## Compositional AOI trajectories { #compositional }
 
@@ -278,11 +278,11 @@ $$
 p_k(t)=\frac{q_k(t)}{\sum_{\ell=1}^{K}q_\ell(t)}.
 $$
 
-**API:** \`alr_transform()\`, \`inverse_alr()\`, \`fit_compositional_fpca()\`.
+**API:** `alr_transform()`, `inverse_alr()`, `fit_compositional_fpca()`.
 
 ## Landmark registration { #registration }
 
-For curve \(i\), \`register_to_landmarks()\` constructs a monotone piecewise-linear warp \(h_i(t)\) that maps reference landmark times to observed landmark times and evaluates
+For curve \(i\), `register_to_landmarks()` constructs a monotone piecewise-linear warp \(h_i(t)\) that maps reference landmark times to observed landmark times and evaluates
 
 $$
 \mathbf G_i^{\mathrm{reg}}(t)
@@ -296,7 +296,7 @@ $$
 \Delta_i(t)=h_i(t)-t.
 $$
 
-**API:** \`register_to_landmarks()\`, \`warping_displacement()\`, \`phase_summary()\`.
+**API:** `register_to_landmarks()`, `warping_displacement()`, `phase_summary()`.
 
 ## Simultaneous functional mean band { #mean-band }
 
@@ -344,7 +344,7 @@ $$
 c_{1-\alpha}\widehat{\mathrm{SE}}_d(t_m).
 $$
 
-**API:** \`multiplier_functional_mean_band()\`; \`windowed_rqa_functional_mean_band()\` reuses this calibration after constructing the declared RQA-derived functional trajectories.
+**API:** `multiplier_functional_mean_band()`; `windowed_rqa_functional_mean_band()` reuses this calibration after constructing the declared RQA-derived functional trajectories.
 
 ## Scalar-on-function regression through FPC scores { #fpcr }
 
@@ -374,7 +374,7 @@ $$
 \mathbf z_i^\top\boldsymbol\gamma.
 $$
 
-**API:** \`fit_scalar_on_function_regression()\`.
+**API:** `fit_scalar_on_function_regression()`.
 
 ## Heteroscedastic Gaussian FPCR wild bootstrap { #wild-bootstrap }
 
@@ -479,7 +479,7 @@ $$
 c_{0,1-\alpha}\widehat{\mathrm{SE}}_0.
 $$
 
-**API:** \`wild_bootstrap_fpca_projection()\`.
+**API:** `wild_bootstrap_fpca_projection()`.
 
 ## Simultaneous fixed-target calibration { #simultaneous-wild-bootstrap }
 
@@ -494,7 +494,7 @@ $$
 
 A single empirical quantile of \(M^{*(b)}\) calibrates all fixed targets.
 
-**API:** \`fpca_wild_bootstrap_projection_simultaneous_interval()\`.
+**API:** `fpca_wild_bootstrap_projection_simultaneous_interval()`.
 
 ## Fixed-family wild-bootstrap tests { #family-tests }
 
@@ -549,7 +549,7 @@ T_{\mathrm{global}}
 \max_j |T_j|.
 $$
 
-**API:** \`fpca_wild_bootstrap_projection_family_test()\`.
+**API:** `fpca_wild_bootstrap_projection_family_test()`.
 
 ## Finite-bootstrap Monte Carlo precision { #monte-carlo }
 
@@ -591,7 +591,7 @@ $$
 
 These limits quantify **simulation precision of the bootstrap tail probability**, not uncertainty in the scientific effect.
 
-**API:** \`fpca_wild_bootstrap_family_test_monte_carlo_diagnostics()\`.
+**API:** `fpca_wild_bootstrap_family_test_monte_carlo_diagnostics()`.
 
 ## Split-conformal FPCA anomaly review { #conformal }
 
@@ -626,7 +626,7 @@ D\sum_{m=1}^{M}w_m
 \right]^{1/2}.
 $$
 
-**API:** \`split_conformal_fpca_anomaly()\`.
+**API:** `split_conformal_fpca_anomaly()`.
 
 ## Contract boundaries { #boundaries }
 
@@ -655,7 +655,7 @@ $$
 ].
 $$
 
-The package does not choose \(m\) or \(\tau\) silently. \`embedding_delay_diagnostics()\` reports autocorrelation and Fraser–Swinney-style average mutual information,
+The package does not choose \(m\) or \(\tau\) silently. `embedding_delay_diagnostics()` reports autocorrelation and Fraser–Swinney-style average mutual information,
 
 $$
 I(\tau)
@@ -670,9 +670,9 @@ p_a p_b
 },
 $$
 
-while \`embedding_dimension_diagnostics()\` reports Kennel-style false-nearest-neighbor fractions across analyst-requested dimensions. The diagnostic marks a first AMI local minimum when present but does not turn that mark into an analysis setting automatically.
+while `embedding_dimension_diagnostics()` reports Kennel-style false-nearest-neighbor fractions across analyst-requested dimensions. The diagnostic marks a first AMI local minimum when present but does not turn that mark into an analysis setting automatically.
 
-**API:** \`delay_embed_trajectory()\`, \`embedding_delay_diagnostics()\`, \`embedding_dimension_diagnostics()\`.
+**API:** `delay_embed_trajectory()`, `embedding_delay_diagnostics()`, `embedding_dimension_diagnostics()`.
 
 ## Sparse recurrence and recurrence quantification { #recurrence }
 
@@ -755,7 +755,7 @@ $$
 
 The matrix is stored sparsely. Exactly one radius policy is allowed: a fixed \(\varepsilon\), or an explicit target recurrence rate from which \(\varepsilon\) is solved numerically.
 
-**API:** \`recurrence_matrix()\`, \`recurrence_radius_profile()\`, \`rqa_metrics()\`, \`rqa_parameter_sensitivity()\`, \`windowed_rqa()\`, \`cross_recurrence_matrix()\`, \`cross_rqa_metrics()\`. The radius-profile API evaluates the same RR equation over a declared radius grid, while the sensitivity API evaluates the broader recurrence/RQA contract over a predeclared parameter grid without automatic selection.
+**API:** `recurrence_matrix()`, `recurrence_radius_profile()`, `rqa_metrics()`, `rqa_parameter_sensitivity()`, `windowed_rqa()`, `cross_recurrence_matrix()`, `cross_rqa_metrics()`. The radius-profile API evaluates the same RR equation over a declared radius grid, while the sensitivity API evaluates the broader recurrence/RQA contract over a predeclared parameter grid without automatic selection.
 
 ## Population mean bootstrap for curve-level RQA metrics { #rqa-population-bootstrap }
 
@@ -875,7 +875,7 @@ $$
 
 The fitted slope is the Rosenstein-style largest-Lyapunov estimate. A positive estimate is evidence of local exponential separation under the declared reconstruction, not standalone proof that behavioral gaze is generated by a deterministic chaotic attractor.
 
-**API:** \`local_divergence_curve()\`, \`estimate_largest_lyapunov_rosenstein()\`, \`lyapunov_parameter_sensitivity()\`. The sensitivity API reuses the same divergence and linear-fit equations across analyst-declared reconstruction, Theiler, and fit-interval specifications.
+**API:** `local_divergence_curve()`, `estimate_largest_lyapunov_rosenstein()`, `lyapunov_parameter_sensitivity()`. The sensitivity API reuses the same divergence and linear-fit equations across analyst-declared reconstruction, Theiler, and fit-interval specifications.
 
 ## Kantz neighborhood divergence and largest Lyapunov estimate { #kantz-local-divergence }
 
@@ -947,7 +947,7 @@ The plus-one correction prevents zero Monte Carlo p-values. Two-sided testing is
 
 Rejecting the surrogate null is evidence against the declared linear-stochastic surrogate model. It does not identify a unique nonlinear mechanism and does not prove chaos.
 
-**API:** \`surrogate_nonlinearity_test()\`.
+**API:** `surrogate_nonlinearity_test()`.
 
 ## Empirical Poincare return-map stability { #return-map-stability }
 
@@ -957,9 +957,9 @@ $$
 h(\mathbf z)=0,
 $$
 
-\`poincare_crossings()\` linearly interpolates successive crossing states. The section, crossing direction, and returned state dimensions are all explicit.
+`poincare_crossings()` linearly interpolates successive crossing states. The section, crossing direction, and returned state dimensions are all explicit.
 
-Within an analyst-declared reference and neighborhood, \`fit_local_return_map()\` estimates
+Within an analyst-declared reference and neighborhood, `fit_local_return_map()` estimates
 
 $$
 \mathbf z_{n+1}
@@ -987,7 +987,7 @@ $$
 
 With tolerance \(\delta\), the package labels \(\rho<1-\delta\) as contracting, \(\rho>1+\delta\) as expanding, and values inside the tolerance band as near-neutral.
 
-**API:** \`poincare_crossings()\`, \`fit_local_return_map()\`, \`return_map_stability()\`.
+**API:** `poincare_crossings()`, `fit_local_return_map()`, `return_map_stability()`.
 
 !!! warning "Not Floquet analysis"
     The fitted \(\mathbf J\) is an empirical local return-map Jacobian. It is not obtained by integrating variational equations around a known periodic orbit, so it must not be reported as a classical monodromy matrix or as a Floquet-multiplier calculation. Classical model-based Floquet and numerical-continuation APIs remain outside the 0.23 raw-gaze contract.

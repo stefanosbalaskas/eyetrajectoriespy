@@ -4,7 +4,7 @@ This example uses deterministic synthetic data so the workflow can be run in CI.
 
 ## Create a continuous trajectory
 
-\`\`\`python
+```python
 import numpy as np
 from eyetrajectoriespy import TrajectorySet
 
@@ -23,11 +23,11 @@ gaze = TrajectorySet(
     time_unit="s",
     coordinate_system="arbitrary",
 )
-\`\`\`
+```
 
 ## Inspect delay and dimension diagnostics
 
-\`\`\`python
+```python
 from eyetrajectoriespy import (
     embedding_delay_diagnostics,
     embedding_dimension_diagnostics,
@@ -49,13 +49,13 @@ dimension_diag = embedding_dimension_diagnostics(
     max_dimension=5,
     theiler_window=10,
 )
-\`\`\`
+```
 
 These are diagnostics only. The analysis still declares its own \(m\) and \(\tau\).
 
 ## Reconstruct state space
 
-\`\`\`python
+```python
 from eyetrajectoriespy import delay_embed_trajectory
 
 embedded = delay_embed_trajectory(
@@ -64,11 +64,11 @@ embedded = delay_embed_trajectory(
     delay=1,
     dimensions=("x",),
 )
-\`\`\`
+```
 
 ## Sparse recurrence and RQA
 
-\`\`\`python
+```python
 from eyetrajectoriespy import recurrence_matrix, rqa_metrics
 
 recurrence = recurrence_matrix(
@@ -85,13 +85,13 @@ metrics = rqa_metrics(
 )
 
 print(metrics)
-\`\`\`
+```
 
-The solved radius and achieved recurrence rate remain in \`recurrence\`.
+The solved radius and achieved recurrence rate remain in `recurrence`.
 
 ## Time-varying recurrence
 
-\`\`\`python
+```python
 from eyetrajectoriespy import windowed_rqa
 
 dynamic = windowed_rqa(
@@ -106,11 +106,11 @@ dynamic = windowed_rqa(
 
 print(dynamic.table)
 print("tail samples not in a full window:", dynamic.dropped_tail_samples)
-\`\`\`
+```
 
 ## Local divergence and LLE
 
-\`\`\`python
+```python
 from eyetrajectoriespy import (
     local_divergence_curve,
     estimate_largest_lyapunov_rosenstein,
@@ -131,13 +131,13 @@ lle = estimate_largest_lyapunov_rosenstein(
 
 print(lle.exponent, lle.exponent_unit)
 print(lle.r_squared)
-\`\`\`
+```
 
 The fit interval is deliberately explicit.
 
 ## IAAFT surrogate test
 
-\`\`\`python
+```python
 from eyetrajectoriespy import surrogate_nonlinearity_test
 
 surrogate = surrogate_nonlinearity_test(
@@ -158,13 +158,13 @@ surrogate = surrogate_nonlinearity_test(
 )
 
 print(surrogate.p_value)
-\`\`\`
+```
 
 For research use, choose the surrogate count before examining the result and use substantially more than this CI-sized example.
 
 ## Plots
 
-\`\`\`python
+```python
 from eyetrajectoriespy import (
     plot_embedding_delay_diagnostics,
     plot_embedding_dimension_diagnostics,
@@ -180,6 +180,6 @@ plot_recurrence(recurrence)
 plot_windowed_rqa(dynamic)
 plot_local_divergence(lle)
 plot_surrogate_nonlinearity(surrogate)
-\`\`\`
+```
 
 See the [visual gallery](../methods/visual-gallery.md) for CI-generated SVG versions.

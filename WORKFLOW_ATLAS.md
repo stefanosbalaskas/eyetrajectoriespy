@@ -4,7 +4,7 @@ GitHub renders these Mermaid diagrams directly in the repository. The website co
 
 ## Representation
 
-\`\`\`mermaid
+```mermaid
 flowchart LR
     A[Time-indexed gaze] --> B{Sampling}
     B -->|Common grid| C[TrajectorySet]
@@ -18,11 +18,11 @@ flowchart LR
     F --> I[Multilevel]
     F --> J[Compositional]
     F --> K[Registration / phase]
-\`\`\`
+```
 
 ## Inference
 
-\`\`\`mermaid
+```mermaid
 flowchart LR
     A[FPCA representation] --> B{Target}
     B --> C[Mean band]
@@ -31,11 +31,11 @@ flowchart LR
     E --> F[Simultaneous fixed targets]
     E --> G[Fixed-family tests]
     G --> H[Monte Carlo precision]
-\`\`\`
+```
 
 ## Nonlinear dynamics
 
-\`\`\`mermaid
+```mermaid
 flowchart LR
     A[Continuous trajectory] --> B[Explicit state definition]
     B --> C[Delay embedding diagnostics]
@@ -49,13 +49,13 @@ flowchart LR
     B --> H[Declared Poincare section]
     H --> I[Empirical local return map]
     I --> J[Experimental spectral-radius stability]
-\`\`\`
+```
 
 Overlapping RQA windows remain within-curve dependent summaries; the source curve/participant remains the downstream sampling unit. Classical Floquet/monodromy and continuation analysis are intentionally excluded from the raw-gaze pathway.
 
 ## Documentation contract
 
-\`\`\`mermaid
+```mermaid
 flowchart LR
     A[Public function] --> B[MathematicalContract registry]
     B --> C[Repository LaTeX index]
@@ -67,6 +67,6 @@ flowchart LR
     D --> H
     E --> H
     G --> H
-\`\`\`
+```
 
 Website: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/workflow-atlas/

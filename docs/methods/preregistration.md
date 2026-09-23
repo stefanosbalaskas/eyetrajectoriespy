@@ -574,9 +574,9 @@ If heading, curvature, turning rate, or tortuosity will be analyzed, pre-specify
 - whether horizontal and vertical scales are commensurate;
 - recorded \(y\)-axis orientation if signed geometry will be interpreted;
 - upstream filtering/smoothing, if any;
-- \`min_speed\` and \`undefined_policy\`;
+- `min_speed` and `undefined_policy`;
 - whether wrapped heading will be analyzed directly or transformed using a declared circular/unwrapping method;
-- \`min_displacement\` and undefined handling for tortuosity;
+- `min_displacement` and undefined handling for tortuosity;
 - whether geometry is a primary outcome or exploratory derived function.
 
 Do not choose a low-speed threshold, coordinate rescaling, or heading unwrapping strategy after inspecting which version produces the preferred condition difference.

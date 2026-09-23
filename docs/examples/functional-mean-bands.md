@@ -8,7 +8,7 @@ The important design decision is made before inference:
 
 ## Generate repeated-trial trajectories
 
-\`\`\`python
+```python
 from eyetrajectoriespy import simulate_planar_trajectories
 
 gaze = simulate_planar_trajectories(
@@ -17,13 +17,13 @@ gaze = simulate_planar_trajectories(
     n_time=81,
     random_state=2026,
 )
-\`\`\`
+```
 
 The synthetic data contain x(t), y(t) trajectories on a common normalized screen coordinate system.
 
 ## Fit a participant-level simultaneous band
 
-\`\`\`python
+```python
 from eyetrajectoriespy import multiplier_functional_mean_band
 
 band = multiplier_functional_mean_band(
@@ -34,7 +34,7 @@ band = multiplier_functional_mean_band(
     participant_column="participant_id",
     random_state=2026,
 )
-\`\`\`
+```
 
 The function first averages each participant's four trials.
 
@@ -42,13 +42,13 @@ The multiplier bootstrap therefore sees 20 independent participant-average funct
 
 ## Inspect the result contract
 
-\`\`\`python
+```python
 print(band.n_units)
 print(band.critical_value)
 print(
     band.provenance["functional_mean_band"]
 )
-\`\`\`
+```
 
 Important provenance fields include:
 
@@ -63,12 +63,12 @@ Important provenance fields include:
 
 ## Convert to a tidy table
 
-\`\`\`python
+```python
 from eyetrajectoriespy import functional_mean_band_frame
 
 frame = functional_mean_band_frame(band)
 print(frame.head())
-\`\`\`
+```
 
 The table contains:
 
@@ -81,14 +81,14 @@ The table contains:
 
 ## Plot x(t)
 
-\`\`\`python
+```python
 from eyetrajectoriespy import plot_functional_mean_band
 
 plot_functional_mean_band(
     band,
     dimension="x",
 )
-\`\`\`
+```
 
 Repeat for y(t). The same critical value was calibrated jointly across both dimensions and all sampled times.
 
@@ -109,7 +109,7 @@ X_{B1}(t)
 \right].
 \]
 
-This is the estimand used by \`unit="participant"\`.
+This is the estimand used by `unit="participant"`.
 
 It is not silently interchangeable with the curve-weighted mean.
 
@@ -117,7 +117,7 @@ It is not silently interchangeable with the curve-weighted mean.
 
 With the same data, multiplier count, and random seed:
 
-\`\`\`python
+```python
 band_90 = multiplier_functional_mean_band(
     gaze,
     confidence_level=0.90,
@@ -137,17 +137,17 @@ band_99 = multiplier_functional_mean_band(
 )
 
 assert band_99.critical_value >= band_90.critical_value
-\`\`\`
+```
 
 ## Reporting helper
 
-\`\`\`python
+```python
 from eyetrajectoriespy import functional_mean_band_reporting_text
 
 print(
     functional_mean_band_reporting_text(band)
 )
-\`\`\`
+```
 
 The generated wording includes the effective sampling unit, estimand, confidence level, multiplier count, critical value, and the observed-grid coverage limitation.
 
@@ -155,12 +155,12 @@ The generated wording includes the effective sampling unit, estimand, confidence
 
 This is syntactically valid:
 
-\`\`\`python
+```python
 curve_band = multiplier_functional_mean_band(
     gaze,
     unit="curve",
 )
-\`\`\`
+```
 
 But it answers a different inferential question and assumes curves are independent units.
 
