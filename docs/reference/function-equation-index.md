@@ -48,6 +48,26 @@ $$
 
 [Expanded mathematical reference](../methods/mathematical-reference.md#functional-l2)
 
+## Order-preserving discrete Frechet trajectory distance
+
+**Functions:** `discrete_frechet_distance()`, `pairwise_discrete_frechet_distances()`
+
+$
+d_{\boldsymbol\omega}(\mathbf p_i,\mathbf q_j)=\left[\sum_{d=1}^{D}\omega_d(p_{id}-q_{jd})^2\right]^{1/2}
+$
+
+$
+C_{ij}=\max\left\{d_{\boldsymbol\omega}(\mathbf p_i,\mathbf q_j),\min(C_{i-1,j},C_{i-1,j-1},C_{i,j-1})\right\}
+$
+
+$
+\delta_{dF}(P,Q)=C_{mn}
+$
+
+**Scope:** Discrete sampled-curve comparison with monotone order-preserving coupling and a fixed weighted-Euclidean point metric; timestamps are not included, no resampling or scaling is performed, and the result is not the continuous Frechet distance.
+
+[Expanded mathematical reference](../methods/mathematical-reference.md#discrete-frechet)
+
 ## Continuous planar trajectory geometry
 
 **Functions:** `heading_function()`, `signed_curvature_function()`, `turning_rate_function()`, `trajectory_tortuosity()`
