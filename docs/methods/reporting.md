@@ -694,3 +694,12 @@ Do not describe continuous signed curvature as interchangeable with event-level 
 Report the trajectory representation, coordinate dimensions and units, sequence lengths, any dimension weights, upstream interpolation/smoothing/resampling/path simplification, and whether the coupling was inspected.
 
 State explicitly that the method preserved point order but did not use elapsed-time correspondence. If latency is scientifically meaningful, report the complementary time-preserving analysis rather than implying Fréchet captured timing.
+
+
+## Dynamic time warping trajectory comparison
+
+Report the trajectory representation, selected dimensions and coordinate units, dimension weights, sequence lengths, local cost metric, step pattern, path-normalization rule, global-window rule, slope constraint, and any upstream interpolation/resampling/smoothing/path simplification.
+
+For version 0.33, report: weighted Euclidean local cost; symmetric three-step recurrence; raw unnormalized cumulative cost; no global window; no slope constraint.
+
+State explicitly that point order was preserved but observed elapsed time was not used. If latency or traversal speed is scientifically meaningful, report the complementary time-preserving analysis.
