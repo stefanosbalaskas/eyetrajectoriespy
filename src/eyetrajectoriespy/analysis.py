@@ -79,6 +79,8 @@ def discrete_frechet_distance(
     then advancing a, then advancing b.
     """
 
+    if not isinstance(return_coupling, (bool, np.bool_)):
+        raise TypeError("return_coupling must be boolean")
     a_arr, b_arr, weights = _validate_discrete_frechet_inputs(
         a, b, dimension_weights=dimension_weights
     )
