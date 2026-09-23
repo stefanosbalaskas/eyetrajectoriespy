@@ -112,7 +112,7 @@ _CONTRACTS = (
     MathematicalContract(
         key="mean-band",
         title="Simultaneous functional mean multiplier band",
-        public_api=("multiplier_functional_mean_band",),
+        public_api=("multiplier_functional_mean_band", "windowed_rqa_functional_mean_band"),
         equations=(
             r"M^{(b)}=\max_{m,d}\left|"
             r"\frac{n^{-1/2}\sum_i e_i^{(b)}\{X_{id}(t_m)-\overline X_d(t_m)\}}"
@@ -244,7 +244,7 @@ _CONTRACTS = (
     MathematicalContract(
         key="functional-rqa-trajectories",
         title="Windowed RQA as functional trajectories",
-        public_api=("windowed_rqa_trajectory_set",),
+        public_api=("windowed_rqa_trajectory_set", "windowed_rqa_sensitivity"),
         equations=(
             r"F_{iq}(c_w)=M_q\{R_i^{(w)}\},\quad "
             r"c_w=\frac{t_{w,\mathrm{start}}+t_{w,\mathrm{end}}}{2}",
