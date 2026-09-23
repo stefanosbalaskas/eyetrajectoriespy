@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
+
 import numpy as np
+import pandas as pd
 
 from .types import TrajectorySet
 from .validation import validate_trajectory_set
