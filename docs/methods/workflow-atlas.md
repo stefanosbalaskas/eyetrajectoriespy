@@ -18,6 +18,7 @@ flowchart LR
     D --> G[Explicit common-grid projection]
     G --> F
     F -->|Planar x/y| H[MFPCA]
+    F -->|Planar geometry| M[Heading / curvature / turning rate]
     F -->|One function| I[FPCA]
     F -->|Repeated trials| J[Multilevel FPCA]
     F -->|AOI probabilities| K[ALR + compositional FPCA]
