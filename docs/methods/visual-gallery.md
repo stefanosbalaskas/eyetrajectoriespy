@@ -99,6 +99,16 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked example](../examples/nonlinear-dynamics.md) · [Mathematics](mathematical-reference.md#recurrence)
 
+-   **Recurrence threshold profile**
+
+    ![Recurrence rate over an analyst-declared radius grid](../assets/gallery/recurrence-radius-profile.svg)
+
+    Exact RR(radius) diagnostics and pair-distance threshold sensitivity without automatic radius selection.
+
+    **API:** `recurrence_radius_profile()`, `plot_recurrence_rate_curve()`
+
+    [Worked example](../examples/recurrence-threshold-diagnostics.md) · [Method guide](recurrence-threshold-diagnostics.md) · [Mathematics](mathematical-reference.md#recurrence)
+
 -   **Time-varying RQA**
 
     ![Windowed recurrence quantification](../assets/gallery/windowed-rqa.svg)
@@ -218,4 +228,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates all twelve assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates all fourteen assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
