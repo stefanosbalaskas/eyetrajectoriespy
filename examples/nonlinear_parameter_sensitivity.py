@@ -103,7 +103,8 @@ print(
     kantz.table[
         [
             "specification_id",
-            "radius",
+            "requested_radius",
+            "resolved_radius",
             "min_neighbors",
             "initial_supported_reference_fraction",
             "minimum_reference_count_in_fit",
