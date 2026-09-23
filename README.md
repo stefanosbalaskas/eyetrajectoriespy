@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.25.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.26.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -68,7 +68,9 @@ Registration is especially explicit because latency can itself be psychologicall
 - first-class RQA-derived functional trajectories for FDA of time-varying RR/DET/LAM and related metrics, with explicit overlap/dependence provenance;
 - declared window/step sensitivity grids for functional RQA with source-sample reuse diagnostics, exact-shared-center profile comparisons, and no automatic tuning selection;
 - simultaneous functional-RQA mean bands that resample complete curve- or equal-weight participant-level functions rather than overlapping window rows;
+- declared reconstructed-state RQA parameter multiverses over embedding, delay, threshold, Theiler, and line-length choices with no automatic selector;
 - Rosenstein-style local divergence / largest-Lyapunov estimation with analyst-declared fit intervals;
+- declared Rosenstein-LLE sensitivity over reconstruction, Theiler, and fit-interval choices with descriptive sign/magnitude stability summaries;
 - seeded IAAFT surrogate nonlinearity tests using plus-one Monte Carlo p-values;
 - experimental empirical Poincare return maps and local cycle-to-cycle contraction/expansion diagnostics;
 - reproducible synthetic datasets and manuscript-oriented reporting helpers;
@@ -151,12 +153,14 @@ print(summarise_fpca(fit))
 | Group influence | leave-one-group-out matched FPCs | `leave_one_group_out_fpca_influence()` |
 | Scalar outcome predicted by gaze | FPCA-score approximation | `fit_scalar_on_function_regression()` |
 | Recurrent gaze-state structure | sparse recurrence / RQA | `recurrence_matrix()` / `rqa_metrics()` |
+| RQA robustness across analysis choices | declared reconstruction/threshold/Theiler/line-length multiverse | `rqa_parameter_sensitivity()` |
 | Time-varying recurrent dynamics | sliding full-window RQA | `windowed_rqa()` |
 | RQA dynamics as functional outcomes | window-center RQA metric trajectories with retained overlap/radius provenance | `windowed_rqa_trajectory_set()` |
 | Functional RQA parameter sensitivity | declared window/step grid with overlap/reuse and exact-center profile diagnostics | `windowed_rqa_sensitivity()` |
 | Functional RQA mean uncertainty | whole-function curve/participant multiplier band | `windowed_rqa_functional_mean_band()` |
 | Reconstructed nonlinear state | delay coordinates with explicit (m,	au) | `delay_embed_trajectory()` |
 | Local state-space divergence | Rosenstein nearest-neighbor divergence | `local_divergence_curve()` / `estimate_largest_lyapunov_rosenstein()` |
+| LLE robustness across analysis choices | declared reconstruction/Theiler/fit-interval multiverse | `lyapunov_parameter_sensitivity()` |
 | Nonlinearity vs linear-stochastic null | IAAFT surrogate test | `surrogate_nonlinearity_test()` |
 | Repeated approximate cycles | empirical Poincare return map (experimental) | `poincare_crossings()` / `fit_local_return_map()` |
 
@@ -172,7 +176,7 @@ It includes a tutorial gallery, representation selection, nonlinear state-space 
 
 ## Scope boundary
 
-`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.25 adds sensitivity and dependence-aware inference for RQA-derived functional trajectories while preserving source curve/participant sampling units. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
+`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.26 adds explicit reconstructed-state RQA and Rosenstein-LLE parameter sensitivity without automatic parameter selection, while retaining the 0.25 dependence-aware functional-RQA layer. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
 
 ## Validation
 
