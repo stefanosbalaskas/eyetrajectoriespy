@@ -256,21 +256,21 @@ $$
 
 **Functions:** `bootstrap_rqa_metric_means()`
 
-$
+$$
 M_{iq}=Q_q\{R_i(\theta)\}
-$
+$$
 
-$
+$$
 U_{pq}=m_p^{-1}\sum_{j=1}^{m_p}M_{pjq}
-$
+$$
 
-$
+$$
 \overline U_q^{*(b)}=n^{-1}\sum_{r=1}^{n}U_{I_r^{(b)}q}
-$
+$$
 
-$
+$$
 CI_{1-\alpha}=[Q_{\alpha/2}(\overline U_q^*),Q_{1-\alpha/2}(\overline U_q^*)]
-$
+$$
 
 **Scope:** Percentile bootstrap for the between-unit population mean of fixed-specification curve-level RQA summaries; participant mode first averages curve metrics within participant. It does not estimate within-single-trajectory or parameter-selection uncertainty.
 
