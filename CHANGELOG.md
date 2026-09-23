@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.27.0.dev0
+
+- Add `recurrence_radius_profile()` for an exact recurrence-rate curve over a strictly increasing analyst-declared radius grid.
+- Interpret RR(radius) explicitly as the empirical CDF of eligible pairwise state-space distances under the same inclusive threshold and Theiler-denominator contract as `recurrence_matrix()`.
+- Add shell pair counts/fractions so the same table exposes binned pair-distance mass between consecutive declared radii.
+- Apply Theiler exclusions exactly to cumulative pair counts without materializing a dense N x N distance matrix.
+- Record eligible-pair count, partial/full distance-distribution coverage, state dimension, metric, source provenance, and the no-automatic-selection contract.
+- Reject sorting, deduplication, boolean/string coercion, or other silent repairs of the declared radius grid.
+- Add `plot_recurrence_rate_curve()` and `recurrence_radius_profile_reporting_text()`.
+- Add hand-count, base-estimator-equivalence, zero-distance, Theiler, embedded-state, typing, plotting/reporting, and failure-contract tests.
+- Add a dedicated threshold-diagnostics methods page, worked/executable example, scalable benchmark, mathematical-contract registration, API/docs integration, and preregistration/reporting/limitations guidance.
+- No universal RR/radius recommendation or “optimal epsilon” selector is introduced.
+
 ## 0.26.0.dev0
 
 - Add `rqa_parameter_sensitivity()` for a fully declared Cartesian multiverse over embedding dimension, delay, fixed-radius or target-RR threshold policy, Theiler window, and minimum diagonal/vertical line lengths.
