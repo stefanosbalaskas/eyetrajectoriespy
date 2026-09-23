@@ -166,16 +166,85 @@ The positive-specification fraction is not a p-value, posterior probability, or 
 
 The more important diagnostic is the complete table: whether sign, magnitude, fit quality, or usable-pair support changes materially when the reconstruction or fit interval changes.
 
-## 5. Reporting text
+## 5. Kantz-LLE sensitivity
+
+The neighborhood-based estimator adds radius and minimum-neighbor choices to the multiverse.
+
+```python
+from eyetrajectoriespy import kantz_parameter_sensitivity
+
+kantz = kantz_parameter_sensitivity(
+    trajectory,
+    curve="logistic",
+    dimensions=("x",),
+    embedding_dimensions=(2, 3),
+    delays=(1,),
+    radii=(0.05, 0.08),
+    min_neighbors=(1, 2),
+    theiler_windows=(6, 10),
+    fit_intervals=((1, 4), (2, 5)),
+    max_horizon=8,
+)
+```
+
+Inspect the scientific settings and support together:
+
+```python
+print(
+    kantz.table[
+        [
+            "specification_id",
+            "embedding_dimension",
+            "radius",
+            "min_neighbors",
+            "theiler_window_samples",
+            "fit_start_samples",
+            "fit_end_samples",
+            "exponent",
+            "r_squared",
+            "initial_supported_reference_fraction",
+            "minimum_reference_count_in_fit",
+            "minimum_pair_count_in_fit",
+        ]
+    ]
+)
+```
+
+Plotting still requires a fully declared one-parameter slice:
+
+```python
+from eyetrajectoriespy import plot_kantz_sensitivity
+
+ax = plot_kantz_sensitivity(
+    kantz,
+    parameter="radius",
+    response="exponent",
+    filters={
+        "embedding_dimension": 2,
+        "requested_delay": 1.0,
+        "min_neighbors": 2,
+        "requested_theiler_window": 6.0,
+        "requested_fit_start": 1.0,
+        "requested_fit_end": 4.0,
+    },
+)
+```
+
+The supported-reference fraction is not a model weight or uncertainty estimate. It only shows how much of the reconstructed state set satisfies the declared neighborhood rule.
+
+## 6. Reporting text
+
 
 ```python
 from eyetrajectoriespy import (
+    kantz_parameter_sensitivity_reporting_text,
     lyapunov_parameter_sensitivity_reporting_text,
     rqa_parameter_sensitivity_reporting_text,
 )
 
 print(rqa_parameter_sensitivity_reporting_text(rqa))
 print(lyapunov_parameter_sensitivity_reporting_text(lle))
+print(kantz_parameter_sensitivity_reporting_text(kantz))
 ```
 
 ## What this example does not do
@@ -185,6 +254,7 @@ It does not:
 - optimize a recurrence radius;
 - select an embedding dimension;
 - select an LLE fit interval;
+- select a Kantz radius or minimum-neighbor rule;
 - turn sensitivity-grid frequencies into inferential probabilities;
 - bootstrap uncertainty;
 - prove deterministic chaos.
