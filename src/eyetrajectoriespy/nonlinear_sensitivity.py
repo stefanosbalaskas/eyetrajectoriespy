@@ -11,10 +11,13 @@ import pandas as pd
 
 from .embedding import delay_embed_trajectory
 from .nonlinear_dynamics import (
+    estimate_largest_lyapunov_kantz,
     estimate_largest_lyapunov_rosenstein,
+    kantz_divergence_curve,
     local_divergence_curve,
 )
 from .nonlinear_types import (
+    KantzParameterSensitivityResult,
     LyapunovParameterSensitivityResult,
     RQAParameterSensitivityResult,
 )
@@ -39,6 +42,16 @@ _LLE_SUMMARY_METRICS = (
     "r_squared",
     "standard_error",
     "n_fit_points",
+)
+
+_KANTZ_LLE_SUMMARY_METRICS = (
+    "exponent",
+    "r_squared",
+    "standard_error",
+    "n_fit_points",
+    "minimum_reference_count_in_fit",
+    "minimum_pair_count_in_fit",
+    "initial_supported_reference_fraction",
 )
 
 
