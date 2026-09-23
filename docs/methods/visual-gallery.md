@@ -109,6 +109,16 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked example](../examples/recurrence-threshold-diagnostics.md) · [Method guide](recurrence-threshold-diagnostics.md) · [Mathematics](mathematical-reference.md#recurrence)
 
+-   **Population uncertainty for RQA summaries**
+
+    ![Participant-level bootstrap intervals for population-average RQA metrics](../assets/gallery/rqa-population-bootstrap.svg)
+
+    Percentile-bootstrap uncertainty for fixed-specification curve-level RQA metrics using equal-weight participant inference units.
+
+    **API:** `bootstrap_rqa_metric_means()`, `plot_rqa_metric_mean_bootstrap()`
+
+    [Worked example](../examples/rqa-population-bootstrap.md) · [Method guide](rqa-population-bootstrap.md) · [Mathematics](mathematical-reference.md#rqa-population-bootstrap)
+
 -   **Time-varying RQA**
 
     ![Windowed recurrence quantification](../assets/gallery/windowed-rqa.svg)
@@ -228,4 +238,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates all fourteen assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates all fifteen assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
