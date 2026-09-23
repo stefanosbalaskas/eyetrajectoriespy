@@ -59,6 +59,7 @@ from .nonlinear_dynamics import (
     surrogate_nonlinearity_test,
 )
 from .nonlinear_sensitivity import (
+    kantz_parameter_sensitivity,
     lyapunov_parameter_sensitivity,
     rqa_parameter_sensitivity,
 )
@@ -68,6 +69,7 @@ from .functional_rqa import (
 )
 from .rqa_inference import bootstrap_rqa_metric_means
 from .nonlinear_reporting import (
+    kantz_parameter_sensitivity_reporting_text,
     largest_lyapunov_reporting_text,
     lyapunov_parameter_sensitivity_reporting_text,
     return_map_stability_reporting_text,
@@ -84,6 +86,7 @@ from .nonlinear_reporting import (
 from .nonlinear_plotting import (
     plot_embedding_delay_diagnostics,
     plot_embedding_dimension_diagnostics,
+    plot_kantz_sensitivity,
     plot_local_divergence,
     plot_lyapunov_sensitivity,
     plot_poincare_return_map,
@@ -101,6 +104,7 @@ from .nonlinear_types import (
     EmbeddingDelayDiagnosticResult,
     EmbeddingDimensionDiagnosticResult,
     KantzDivergenceResult,
+    KantzParameterSensitivityResult,
     LargestLyapunovResult,
     LyapunovParameterSensitivityResult,
     LocalDivergenceResult,
@@ -325,7 +329,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.29.0.dev0"
+__version__ = "0.30.0.dev0"
 
 __all__ = [
     "recurrence_radius_profile_reporting_text",
@@ -336,6 +340,7 @@ __all__ = [
     "windowed_rqa_functional_reporting_text",
     "windowed_rqa_sensitivity_reporting_text",
     "windowed_rqa_mean_band_reporting_text",
+    "kantz_parameter_sensitivity_reporting_text",
     "largest_lyapunov_reporting_text",
     "lyapunov_parameter_sensitivity_reporting_text",
     "surrogate_nonlinearity_reporting_text",
@@ -349,6 +354,7 @@ __all__ = [
     "plot_windowed_rqa",
     "plot_windowed_rqa_trajectories",
     "plot_windowed_rqa_sensitivity",
+    "plot_kantz_sensitivity",
     "plot_local_divergence",
     "plot_lyapunov_sensitivity",
     "plot_surrogate_nonlinearity",
@@ -367,6 +373,7 @@ __all__ = [
     "WindowedRQAMeanBandResult",
     "LocalDivergenceResult",
     "KantzDivergenceResult",
+    "KantzParameterSensitivityResult",
     "LargestLyapunovResult",
     "LyapunovParameterSensitivityResult",
     "SurrogateNonlinearityResult",
@@ -389,6 +396,7 @@ __all__ = [
     "cross_rqa_metrics",
     "local_divergence_curve",
     "kantz_divergence_curve",
+    "kantz_parameter_sensitivity",
     "estimate_largest_lyapunov_rosenstein",
     "estimate_largest_lyapunov_kantz",
     "lyapunov_parameter_sensitivity",
