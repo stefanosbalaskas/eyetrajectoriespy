@@ -290,3 +290,200 @@ def _geometry_result(
             **(extra_provenance or {}),
         },
     )
+
+
+def heading_function(
+    trajectories: TrajectorySet,
+    *,
+    dimensions: Sequence[str] | None = None,
+    min_speed: float = 0.0,
+    undefined_policy: str = "nan",
+) -> TrajectorySet:
+    """Compute wrapped planar heading in radians without smoothing or unwrapping."""
+
+    names, velocity, _, speed = _planar_derivatives(
+        trajectories,
+        dimensions=dimensions,
+    )
+    heading = np.arctan2(velocity[:, :, 1], velocity[:, :, 0])
+    heading, undefined = _apply_low_speed_contract(
+        heading,
+        speed=speed,
+        min_speed=min_speed,
+        undefined_policy=undefined_policy,
+        curve_ids=trajectories.curve_ids,
+        quantity="heading",
+    )
+    return _geometry_result(
+        trajectories,
+        values=heading,
+        dimension_name="heading",
+        planar_dimensions=names,
+        min_speed=min_speed,
+        undefined_policy=undefined_policy,
+        undefined_mask=undefined,
+        value_unit="radian",
+        extra_provenance={
+            "angle_range": "[-pi, pi]",
+            "angle_unwrapped": False,
+        },
+    )
+
+
+def signed_curvature_function(
+    trajectories: TrajectorySet,
+    *,
+    dimensions: Sequence[str] | None = None,
+    min_speed: float = 0.0,
+    undefined_policy: str = "nan",
+) -> TrajectorySet:
+    """Compute signed planar curvature without hidden denominator stabilization."""
+
+    names, velocity, acceleration, speed = _planar_derivatives(
+        trajectories,
+        dimensions=dimensions,
+    )
+    vx = velocity[:, :, 0]
+    vy = velocity[:, :, 1]
+    ax = acceleration[:, :, 0]
+    ay = acceleration[:, :, 1]
+    numerator = vx * ay - vy * ax
+    speed_squared = vx**2 + vy**2
+    denominator = np.power(speed_squared, 1.5)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        curvature = numerator / denominator
+    curvature, undefined = _apply_low_speed_contract(
+        curvature,
+        speed=speed,
+        min_speed=min_speed,
+        undefined_policy=undefined_policy,
+        curve_ids=trajectories.curve_ids,
+        quantity="signed curvature",
+    )
+    coordinate_unit = {
+        "degrees": "1/degree",
+        "pixels": "1/pixel",
+        "normalized": "1/normalized_coordinate",
+    }.get(trajectories.coordinate_system, "inverse_source_coordinate_unit")
+    return _geometry_result(
+        trajectories,
+        values=curvature,
+        dimension_name="signed_curvature",
+        planar_dimensions=names,
+        min_speed=min_speed,
+        undefined_policy=undefined_policy,
+        undefined_mask=undefined,
+        value_unit=coordinate_unit,
+        extra_provenance={
+            "orientation_sign": "positive_counterclockwise",
+            "denominator_epsilon": None,
+        },
+    )
+
+
+def turning_rate_function(
+    trajectories: TrajectorySet,
+    *,
+    dimensions: Sequence[str] | None = None,
+    min_speed: float = 0.0,
+    undefined_policy: str = "nan",
+) -> TrajectorySet:
+    """Compute signed heading-change rate directly from planar derivatives."""
+
+    names, velocity, acceleration, speed = _planar_derivatives(
+        trajectories,
+        dimensions=dimensions,
+    )
+    vx = velocity[:, :, 0]
+    vy = velocity[:, :, 1]
+    ax = acceleration[:, :, 0]
+    ay = acceleration[:, :, 1]
+    numerator = vx * ay - vy * ax
+    speed_squared = vx**2 + vy**2
+    with np.errstate(divide="ignore", invalid="ignore"):
+        rate = numerator / speed_squared
+    rate, undefined = _apply_low_speed_contract(
+        rate,
+        speed=speed,
+        min_speed=min_speed,
+        undefined_policy=undefined_policy,
+        curve_ids=trajectories.curve_ids,
+        quantity="turning rate",
+    )
+    return _geometry_result(
+        trajectories,
+        values=rate,
+        dimension_name="turning_rate",
+        planar_dimensions=names,
+        min_speed=min_speed,
+        undefined_policy=undefined_policy,
+        undefined_mask=undefined,
+        value_unit=f"radian/{trajectories.time_unit}",
+        extra_provenance={
+            "computed_from_wrapped_heading": False,
+            "denominator_epsilon": None,
+        },
+    )
+
+
+def trajectory_tortuosity(
+    trajectories: TrajectorySet,
+    *,
+    dimensions: Sequence[str] | None = None,
+    min_displacement: float = 0.0,
+    undefined_policy: str = "nan",
+) -> pd.DataFrame:
+    """Return path-length / endpoint-displacement tortuosity per curve."""
+
+    names, indices = _resolve_planar_dimensions(trajectories, dimensions)
+    threshold = _nonnegative_finite_threshold(
+        min_displacement,
+        name="min_displacement",
+    )
+    policy = _validate_undefined_policy(undefined_policy)
+    planar = trajectories.values[:, :, indices]
+    steps = np.linalg.norm(np.diff(planar, axis=1), axis=2)
+    path_length = np.sum(steps, axis=1)
+    displacement = np.linalg.norm(planar[:, -1, :] - planar[:, 0, :], axis=1)
+    undefined = displacement <= threshold
+
+    if np.any(undefined) and policy == "raise":
+        affected = [
+            trajectories.curve_ids[index]
+            for index in np.flatnonzero(undefined)
+        ]
+        raise ValueError(
+            "trajectory tortuosity is undefined where endpoint displacement "
+            f"<= min_displacement={threshold}; affected curves: {affected[:8]}"
+        )
+
+    tortuosity = np.full(trajectories.n_curves, np.nan, dtype=float)
+    valid = ~undefined
+    tortuosity[valid] = path_length[valid] / displacement[valid]
+
+    table = pd.DataFrame(
+        {
+            "curve_id": trajectories.curve_ids,
+            "path_length": path_length,
+            "endpoint_displacement": displacement,
+            "tortuosity": tortuosity,
+            "undefined": undefined,
+        }
+    )
+    for column in trajectories.metadata.columns:
+        if column not in table.columns:
+            table[column] = trajectories.metadata[column].to_numpy()
+
+    table.attrs["provenance"] = {
+        **dict(trajectories.provenance),
+        "operation": "trajectory_tortuosity",
+        "source_coordinate_system": trajectories.coordinate_system,
+        "planar_dimensions": names,
+        "definition": "path_length / endpoint_displacement",
+        "min_displacement": threshold,
+        "undefined_rule": "endpoint_displacement <= min_displacement",
+        "undefined_policy": policy,
+        "denominator_epsilon": None,
+        "smoothing": False,
+    }
+    return table
