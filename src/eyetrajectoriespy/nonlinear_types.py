@@ -264,6 +264,26 @@ class LocalDivergenceResult:
 
 
 @dataclass(frozen=True)
+class KantzDivergenceResult:
+    """Kantz neighborhood-averaged mean log-divergence curve."""
+
+    horizons: np.ndarray
+    time_lags: np.ndarray
+    mean_log_divergence: np.ndarray
+    reference_counts: np.ndarray
+    pair_counts: np.ndarray
+    zero_mean_neighborhood_counts: np.ndarray
+    initial_neighbor_counts: np.ndarray
+    radius: float
+    min_neighbors: int
+    theiler_window_samples: int
+    max_horizon_samples: int
+    curve_id: str
+    time_unit: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
 class LargestLyapunovResult:
     """Largest-Lyapunov estimate from an explicitly selected divergence interval."""
 
@@ -275,7 +295,7 @@ class LargestLyapunovResult:
     fit_start: float
     fit_end: float
     n_fit_points: int
-    divergence: LocalDivergenceResult
+    divergence: LocalDivergenceResult | KantzDivergenceResult
     provenance: Mapping[str, Any] = field(default_factory=dict)
 
 
