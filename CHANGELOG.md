@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.33.0.dev0
+
+- Add `dynamic_time_warping_cost()` for raw cumulative symmetric three-step DTW over complete ordered multivariate point sequences.
+- Add `DynamicTimeWarpingResult` retaining one deterministic optimal warping path, coupled local distances, sequence sizes, dimensionality, and method provenance.
+- Add `pairwise_dynamic_time_warping_costs()` for complete `TrajectorySet` collections with explicit dimension selection.
+- Keep the scalar result explicitly a **cost**, not a metric distance: no path-length normalization or metric claim is introduced.
+- Do not impose a Sakoe–Chiba band, Itakura constraint, slope constraint, or maximum horizontal/vertical run in this tranche.
+- Preserve sequence order without backtracking while deliberately excluding elapsed timestamps, response latency, dwell time, or physical speed from the recurrence.
+- Reuse explicit weighted-Euclidean local costs without hidden interpolation, resampling, smoothing, coordinate normalization, path simplification, or outlier deletion.
+- Add hand-computable unequal-length, Fréchet-vs-DTW estimand, symmetry, weighting, pairwise-dimension, path-monotonicity, and fail-closed contract tests.
+- Add mathematical contract, API docs, method/worked/executable examples, assumptions, limitations, reporting, preregistration, references, README/status integration, and examples CI.
+
 ## 0.32.0.dev0
 
 - Add `discrete_frechet_distance()` for exact dynamic-programming discrete Fréchet distance between complete ordered point sequences, including unequal sequence lengths.
