@@ -8,7 +8,7 @@ These diagrams show **decision order**, not an automatic pipeline. eyetrajectori
 
 ## Representation first
 
-\`\`\`mermaid
+```mermaid
 flowchart LR
     A[Raw time-indexed gaze] --> B{Sampling structure}
     B -->|Common dense grid| C[TrajectorySet]
@@ -23,11 +23,11 @@ flowchart LR
     F -->|Repeated trials| J[Multilevel FPCA]
     F -->|AOI probabilities| K[ALR + compositional FPCA]
     F -->|Timing deformation| L[Registration + phase]
-\`\`\`
+```
 
 ## FPCA validation before interpretation
 
-\`\`\`mermaid
+```mermaid
 flowchart LR
     A[Choose representation] --> B[Fit FPCA / MFPCA]
     B --> C[Reconstruction]
@@ -40,11 +40,11 @@ flowchart LR
     F --> H
     G --> I[Downstream model]
     H --> I
-\`\`\`
+```
 
 ## Gaussian FPCR inference branches
 
-\`\`\`mermaid
+```mermaid
 flowchart TD
     A[FPCA scores + scalar outcome] --> B{Scientific target}
     B -->|Sampling uncertainty in fitted FPCR| C[Paired full-pipeline bootstrap]
@@ -56,11 +56,11 @@ flowchart TD
     D --> I[Fixed-family max-|t| interval]
     D --> J[Fixed-family tests]
     J --> K[Monte Carlo precision audit]
-\`\`\`
+```
 
 ## Nonlinear trajectory dynamics
 
-\`\`\`mermaid
+```mermaid
 flowchart TD
     A[Scientifically interpretable common-grid trajectory] --> B{Question}
     B -->|Reconstructed state geometry| C[Declare dimensions m and tau]
@@ -87,14 +87,14 @@ flowchart TD
     R --> S[Empirical local return map]
     S --> T[Spectral radius]
     T --> U[Experimental contraction / expansion]
-\`\`\`
+```
 
 !!! warning
     The return-map branch is empirical. It does not produce a classical monodromy matrix or Floquet multipliers. Numerical continuation likewise requires a separately identified dynamical model.
 
 ## Function → equation → figure
 
-\`\`\`mermaid
+```mermaid
 flowchart LR
     A[Public function] --> B[MathematicalContract registry]
     B --> C[FUNCTION_EQUATION_INDEX.md]
@@ -107,7 +107,7 @@ flowchart LR
     D --> I
     E --> I
     H --> I
-\`\`\`
+```
 
 ## Use the atlas with the contracts
 

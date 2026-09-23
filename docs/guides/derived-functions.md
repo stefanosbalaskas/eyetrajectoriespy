@@ -19,10 +19,10 @@ Cumulative path length captures exploratory extent over trial time but does not 
 
 Version 0.31 extends the derived-function layer from kinematics to planar differential geometry.
 
-- \`heading_function()\` returns wrapped direction in radians;
-- \`signed_curvature_function()\` returns local signed path curvature;
-- \`turning_rate_function()\` returns signed angular change per unit time;
-- \`trajectory_tortuosity()\` returns observed path length divided by endpoint displacement.
+- `heading_function()` returns wrapped direction in radians;
+- `signed_curvature_function()` returns local signed path curvature;
+- `turning_rate_function()` returns signed angular change per unit time;
+- `trajectory_tortuosity()` returns observed path length divided by endpoint displacement.
 
 These quantities remain conditional on the declared coordinate metric. Separately normalized horizontal/vertical axes can distort Euclidean geometry, and screen \(y\)-axis direction affects the visual interpretation of signed curvature.
 
@@ -30,7 +30,7 @@ These quantities remain conditional on the declared coordinate metric. Separatel
 
 Curvature and turning direction become unstable as speed approaches zero. The package does not add a small denominator epsilon or choose a near-zero threshold silently.
 
-Use \`min_speed\` and \`undefined_policy\` explicitly. Missing geometry remains \`NaN\` rather than being converted to zero.
+Use `min_speed` and `undefined_policy` explicitly. Missing geometry remains `NaN` rather than being converted to zero.
 
 ## Heading is circular
 

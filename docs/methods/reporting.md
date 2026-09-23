@@ -680,10 +680,10 @@ When continuous geometry is reported, state:
 - screen \(y\)-axis orientation if curvature/turning sign is interpreted visually;
 - preprocessing and any explicit smoothing performed upstream;
 - derivative method and observed time unit;
-- \`min_speed\` and \`undefined_policy\`;
+- `min_speed` and `undefined_policy`;
 - number/fraction of undefined samples by curve or analysis set;
 - whether heading remained wrapped;
 - curvature units and turning-rate units;
-- tortuosity definition, \`min_displacement\`, and treatment of closed/near-closed paths.
+- tortuosity definition, `min_displacement`, and treatment of closed/near-closed paths.
 
 Do not describe continuous signed curvature as interchangeable with event-level saccade maximum-deviation, area-curvature, or polynomial-fit metrics.

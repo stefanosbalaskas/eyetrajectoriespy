@@ -4,7 +4,7 @@ Version 0.22 exposes the documentation mathematics as a small read-only public r
 
 ## Inspect a contract
 
-\`\`\`python
+```python
 from eyetrajectoriespy import get_mathematical_contract
 
 contract = get_mathematical_contract("fit_mfpca")
@@ -15,7 +15,7 @@ print(contract.site_anchor)
 
 for equation in contract.equations:
     print(equation)
-\`\`\`
+```
 
 The FPCA registry entry includes the weighted representation
 
@@ -40,15 +40,15 @@ $$
 
 The same object can be retrieved by its stable contract key:
 
-\`\`\`python
+```python
 assert get_mathematical_contract("fpca") is contract
-\`\`\`
+```
 
 Keys are documentation identifiers, while the function names connect the contract to the public package API.
 
 ## Build a tidy function table
 
-\`\`\`python
+```python
 from eyetrajectoriespy import mathematical_contract_frame
 
 frame = mathematical_contract_frame()
@@ -57,18 +57,18 @@ print(
         ["contract_key", "function", "site_anchor", "scope"]
     ]
 )
-\`\`\`
+```
 
-The table contains one row per registered public scientific function. The \`latex\` column contains the implementation-matched equation bodies, and \`scope\` records the main interpretive boundary.
+The table contains one row per registered public scientific function. The `latex` column contains the implementation-matched equation bodies, and `scope` records the main interpretive boundary.
 
 ## List all contracts
 
-\`\`\`python
+```python
 from eyetrajectoriespy import list_mathematical_contracts
 
 for item in list_mathematical_contracts():
     print(item.key, item.title)
-\`\`\`
+```
 
 The order is stable and is also used by the generated [function → equation index](../reference/function-equation-index.md).
 

@@ -4,7 +4,7 @@ This experimental workflow is for repeated approximate cycles. It deliberately s
 
 ## Synthetic decaying cycle
 
-\`\`\`python
+```python
 import numpy as np
 from eyetrajectoriespy import TrajectorySet
 
@@ -21,11 +21,11 @@ cycle = TrajectorySet(
     time_unit="s",
     coordinate_system="arbitrary",
 )
-\`\`\`
+```
 
 ## Declare the Poincare section
 
-\`\`\`python
+```python
 from eyetrajectoriespy import poincare_crossings
 
 crossings = poincare_crossings(
@@ -38,13 +38,13 @@ crossings = poincare_crossings(
 )
 
 print(crossings.n_crossings)
-\`\`\`
+```
 
 The crossing times and returned state values are linearly interpolated rather than snapped to the sample grid.
 
 ## Fit a local return map
 
-\`\`\`python
+```python
 from eyetrajectoriespy import fit_local_return_map
 
 fit = fit_local_return_map(
@@ -55,13 +55,13 @@ fit = fit_local_return_map(
 
 print(fit.jacobian)
 print(fit.r_squared)
-\`\`\`
+```
 
 A radius-based neighborhood can be used instead, but exactly one neighborhood policy must be declared.
 
 ## Summarize contraction or expansion
 
-\`\`\`python
+```python
 from eyetrajectoriespy import return_map_stability
 
 stability = return_map_stability(
@@ -72,20 +72,20 @@ stability = return_map_stability(
 print(stability.eigenvalues)
 print(stability.spectral_radius)
 print(stability.classification)
-\`\`\`
+```
 
 For this deterministic synthetic decaying cycle, the return map is contracting.
 
 ## Plot the map
 
-\`\`\`python
+```python
 from eyetrajectoriespy import plot_poincare_return_map
 
 plot_poincare_return_map(
     crossings,
     fit=fit,
 )
-\`\`\`
+```
 
 ## Interpretation boundary
 

@@ -32,6 +32,17 @@ def main() -> None:
     if missing_nav:
         raise RuntimeError(f"missing MkDocs nav targets: {missing_nav}")
 
+    escaped_backticks = []
+    for markdown_path in ROOT.rglob("*.md"):
+        source = markdown_path.read_text(encoding="utf-8")
+        if "\\`" in source:
+            escaped_backticks.append(str(markdown_path.relative_to(ROOT)))
+    if escaped_backticks:
+        raise RuntimeError(
+            "Markdown files contain escaped backticks that break inline-code "
+            f"or fenced-code rendering: {sorted(escaped_backticks)}"
+        )
+
     math_page = (DOCS / "methods" / "mathematical-reference.md").read_text(
         encoding="utf-8"
     )

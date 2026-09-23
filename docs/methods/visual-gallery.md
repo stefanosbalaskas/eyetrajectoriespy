@@ -14,7 +14,7 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     Whole-path inspection before dimensional reduction.
 
-    **API:** \`simulate_planar_trajectories()\`, \`plot_planar_trajectories()\`
+    **API:** `simulate_planar_trajectories()`, `plot_planar_trajectories()`
 
     [Worked example](../examples/evidence-inspection.md) · [Mathematics](mathematical-reference.md#fpca)
 
@@ -24,7 +24,7 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     Mean and score-SD perturbations for one functional dimension.
 
-    **API:** \`fit_mfpca()\`, \`plot_fpca_component()\`
+    **API:** `fit_mfpca()`, `plot_fpca_component()`
 
     [FPCA guide](../guides/fpca.md) · [Mathematics](mathematical-reference.md#fpca)
 
@@ -54,7 +54,7 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     Observed-grid Gaussian multiplier calibration.
 
-    **API:** \`multiplier_functional_mean_band()\`, \`plot_functional_mean_band()\`
+    **API:** `multiplier_functional_mean_band()`, `plot_functional_mean_band()`
 
     [Worked example](../examples/functional-mean-bands.md) · [Mathematics](mathematical-reference.md#mean-band)
 
@@ -64,7 +64,7 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     Studentized fixed-regressor wild-bootstrap intervals for centered target projections.
 
-    **API:** \`wild_bootstrap_fpca_projection()\`, \`plot_fpca_wild_bootstrap_projection()\`
+    **API:** `wild_bootstrap_fpca_projection()`, `plot_fpca_wild_bootstrap_projection()`
 
     [Worked example](../examples/fpcr-wild-bootstrap.md) · [Mathematics](mathematical-reference.md#wild-bootstrap)
 
@@ -84,7 +84,7 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     Exact binomial intervals around retained bootstrap exceedance probabilities.
 
-    **API:** \`fpca_wild_bootstrap_family_test_monte_carlo_diagnostics()\`, \`plot_fpca_wild_bootstrap_monte_carlo_diagnostics()\`
+    **API:** `fpca_wild_bootstrap_family_test_monte_carlo_diagnostics()`, `plot_fpca_wild_bootstrap_monte_carlo_diagnostics()`
 
     [Worked example](../examples/fpcr-wild-bootstrap-monte-carlo.md) · [Mathematics](mathematical-reference.md#monte-carlo)
 
@@ -105,7 +105,7 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     Recurrent reconstructed states under an explicit target recurrence rate and Theiler exclusion.
 
-    **API:** \`delay_embed_trajectory()\`, \`recurrence_matrix()\`, \`plot_recurrence()\`
+    **API:** `delay_embed_trajectory()`, `recurrence_matrix()`, `plot_recurrence()`
 
     [Worked example](../examples/nonlinear-dynamics.md) · [Mathematics](mathematical-reference.md#recurrence)
 
@@ -135,7 +135,7 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     Full-window recurrence rate, determinism, and laminarity retained over trial time.
 
-    **API:** \`windowed_rqa()\`, \`plot_windowed_rqa()\`
+    **API:** `windowed_rqa()`, `plot_windowed_rqa()`
 
     [Nonlinear guide](../guides/nonlinear-dynamics.md) · [Mathematics](mathematical-reference.md#recurrence)
 
@@ -154,7 +154,7 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     Mean nearest-neighbor log divergence and the explicitly declared linear fit interval.
 
-    **API:** \`local_divergence_curve()\`, \`estimate_largest_lyapunov_rosenstein()\`, \`plot_local_divergence()\`
+    **API:** `local_divergence_curve()`, `estimate_largest_lyapunov_rosenstein()`, `plot_local_divergence()`
 
     [Worked example](../examples/nonlinear-dynamics.md) · [Mathematics](mathematical-reference.md#local-divergence)
 
@@ -184,7 +184,7 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     Successive section crossings and a local affine return map for a deterministic synthetic contracting cycle.
 
-    **API:** \`poincare_crossings()\`, \`fit_local_return_map()\`, \`return_map_stability()\`, \`plot_poincare_return_map()\`
+    **API:** `poincare_crossings()`, `fit_local_return_map()`, `return_map_stability()`, `plot_poincare_return_map()`
 
     [Worked example](../examples/return-map-stability.md) · [Mathematics](mathematical-reference.md#return-map-stability)
 
@@ -194,9 +194,9 @@ These figures are regenerated from deterministic synthetic data during the docum
 
 Run:
 
-\`\`\`bash
+```bash
 python scripts/generate_docs_gallery.py
-\`\`\`
+```
 
 The generator uses the package itself, fixed random seeds, the non-interactive Matplotlib backend, deterministic SVG hashing, and timestamp-free SVG metadata.
 
@@ -204,7 +204,7 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 === "FPCA"
 
-    \`plot_fpca_component()\` visualizes
+    `plot_fpca_component()` visualizes
 
     $$
     \widehat{\boldsymbol\mu}(t)
@@ -213,7 +213,7 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 === "Mean band"
 
-    \`plot_functional_mean_band()\` visualizes
+    `plot_functional_mean_band()` visualizes
 
     $$
     \overline X_d(t_m)
@@ -223,7 +223,7 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 === "Wild bootstrap"
 
-    \`plot_fpca_wild_bootstrap_projection()\` visualizes
+    `plot_fpca_wild_bootstrap_projection()` visualizes
 
     $$
     \widehat\theta_{0,h}
@@ -233,7 +233,7 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 === "Recurrence"
 
-    \`plot_recurrence()\` visualizes sparse entries satisfying
+    `plot_recurrence()` visualizes sparse entries satisfying
 
     $
     R_{ij}=\mathbb I\{\|\mathbf z_i-\mathbf z_j\|_p\le\varepsilon\}.
@@ -241,7 +241,7 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 === "Local divergence"
 
-    \`plot_local_divergence()\` visualizes
+    `plot_local_divergence()` visualizes
 
     $
     D(k)=\frac{1}{N_k}\sum_i\log d_i(k),
@@ -251,7 +251,7 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 === "Return map"
 
-    \`plot_poincare_return_map()\` visualizes successive crossings under
+    `plot_poincare_return_map()` visualizes successive crossings under
 
     $
     \mathbf z_{n+1}\approx
@@ -260,7 +260,7 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 === "Monte Carlo precision"
 
-    \`plot_fpca_wild_bootstrap_monte_carlo_diagnostics()\` visualizes the raw retained tail estimate and exact binomial precision limits, where
+    `plot_fpca_wild_bootstrap_monte_carlo_diagnostics()` visualizes the raw retained tail estimate and exact binomial precision limits, where
 
     $$
     \widehat q=\frac{r}{B}.
@@ -268,4 +268,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates all eighteen assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates all eighteen assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.

@@ -40,7 +40,7 @@ $$
 
 Example:
 
-\`\`\`python
+```python
 from eyetrajectoriespy import delay_embed_trajectory
 
 embedded = delay_embed_trajectory(
@@ -50,13 +50,13 @@ embedded = delay_embed_trajectory(
     delay_units="seconds",
     dimensions=("x", "y"),
 )
-\`\`\`
+```
 
 The package requires a common grid. Time-based delays require an approximately regular grid and must map to an integer number of observed samples. Missing values are not dropped or interpolated.
 
 ### Delay diagnostics
 
-\`embedding_delay_diagnostics()\` reports:
+`embedding_delay_diagnostics()` reports:
 
 - lag in samples and time units;
 - autocorrelation;
@@ -65,7 +65,7 @@ The package requires a common grid. Time-based delays require an approximately r
 
 The marker is a diagnostic only.
 
-\`\`\`python
+```python
 delay_diag = embedding_delay_diagnostics(
     gaze,
     curve=0,
@@ -74,13 +74,13 @@ delay_diag = embedding_delay_diagnostics(
     max_lag_units="seconds",
     bins=16,
 )
-\`\`\`
+```
 
 ### Embedding-dimension diagnostics
 
-\`embedding_dimension_diagnostics()\` implements Kennel-style false-nearest-neighbor fractions across requested dimensions.
+`embedding_dimension_diagnostics()` implements Kennel-style false-nearest-neighbor fractions across requested dimensions.
 
-\`\`\`python
+```python
 dimension_diag = embedding_dimension_diagnostics(
     gaze,
     curve=0,
@@ -93,7 +93,7 @@ dimension_diag = embedding_dimension_diagnostics(
     rtol=10.0,
     atol=2.0,
 )
-\`\`\`
+```
 
 No dimension is selected automatically.
 
@@ -112,13 +112,13 @@ R_{ij}
 ].
 $$
 
-\`recurrence_matrix()\` stores the matrix as SciPy CSR rather than creating an \(N\times N\) dense Boolean array.
+`recurrence_matrix()` stores the matrix as SciPy CSR rather than creating an \(N\times N\) dense Boolean array.
 
 You must declare exactly one radius policy:
 
 === "Fixed radius"
 
-    \`\`\`python
+    ```python
     recurrence = recurrence_matrix(
         embedded,
         curve=0,
@@ -127,11 +127,11 @@ You must declare exactly one radius policy:
         theiler_window=0.100,
         theiler_window_units="seconds",
     )
-    \`\`\`
+    ```
 
 === "Target recurrence rate"
 
-    \`\`\`python
+    ```python
     recurrence = recurrence_matrix(
         embedded,
         curve=0,
@@ -140,7 +140,7 @@ You must declare exactly one radius policy:
         theiler_window=0.100,
         theiler_window_units="seconds",
     )
-    \`\`\`
+    ```
 
 Target-rate mode solves for a radius; the achieved rate and solved radius remain visible.
 
@@ -170,7 +170,7 @@ See [recurrence-threshold diagnostics](../methods/recurrence-threshold-diagnosti
 
 ### RQA metrics
 
-\`\`\`python
+```python
 from eyetrajectoriespy import rqa_metrics
 
 metrics = rqa_metrics(
@@ -178,7 +178,7 @@ metrics = rqa_metrics(
     min_diagonal_length=2,
     min_vertical_length=2,
 )
-\`\`\`
+```
 
 The result contains:
 
@@ -201,7 +201,7 @@ The recurrence matrix itself can represent spatial returns among irregularly tim
 
 ### Windowed RQA
 
-\`\`\`python
+```python
 dynamic = windowed_rqa(
     gaze,
     curve=0,
@@ -214,11 +214,11 @@ dynamic = windowed_rqa(
     theiler_window_units="seconds",
     dimensions=("x", "y"),
 )
-\`\`\`
+```
 
 The returned table contains \(RR(t)\), \(DET(t)\), \(LAM(t)\), trapping time, entropy, CORM, and the radius used in each window.
 
-Only complete windows are analyzed. Any trailing samples not included in a full window are reported as \`dropped_tail_samples\`; they are never silently forgotten.
+Only complete windows are analyzed. Any trailing samples not included in a full window are reported as `dropped_tail_samples`; they are never silently forgotten.
 
 ### RQA metrics as functional trajectories
 
@@ -291,7 +291,7 @@ The participant/curve residual function is multiplied as a whole across the comp
 This procedure is **not** a moving/block bootstrap within one long trajectory and does not propagate post-hoc window-selection uncertainty. See [functional RQA sensitivity and dependence](../methods/rqa-functional-dependence.md) and the [worked 0.25 example](../examples/rqa-functional-sensitivity.md).
 ### Cross recurrence
 
-\`\`\`python
+```python
 cross = cross_recurrence_matrix(
     gaze_a,
     gaze_b,
@@ -304,7 +304,7 @@ cross = cross_recurrence_matrix(
 )
 
 cross_metrics = cross_rqa_metrics(cross)
-\`\`\`
+```
 
 This is useful for participant-participant, participant-reference, repeated-session, or expert-novice comparisons. The two state spaces must use the same named variables in the same order, coordinate system, time unit, and—when embedded—the same embedding dimension and delay semantics.
 
@@ -316,7 +316,7 @@ Cross-recurrence currently does not report CORM because the auto-recurrence norm
 
 Start from an explicit delay embedding:
 
-\`\`\`python
+```python
 divergence = local_divergence_curve(
     embedded,
     curve=0,
@@ -325,7 +325,7 @@ divergence = local_divergence_curve(
     max_horizon=0.300,
     max_horizon_units="seconds",
 )
-\`\`\`
+```
 
 For each state \(i\), the nearest positive-distance neighbor outside the Theiler window is followed forward:
 
@@ -340,14 +340,14 @@ The result retains the mean log-distance, usable-pair count, and zero-distance c
 
 Then declare the fit interval yourself:
 
-\`\`\`python
+```python
 lle = estimate_largest_lyapunov_rosenstein(
     divergence,
     fit_start=0.03,
     fit_end=0.12,
     fit_units="seconds",
 )
-\`\`\`
+```
 
 No automated “linear region” selector is used.
 
@@ -467,7 +467,7 @@ If any declared specification is invalid, the sensitivity call fails and identif
 
 The package therefore pairs the LLE estimator with an explicit surrogate-data test:
 
-\`\`\`python
+```python
 test = surrogate_nonlinearity_test(
     gaze,
     curve=0,
@@ -488,7 +488,7 @@ test = surrogate_nonlinearity_test(
     alternative="greater",
     random_state=42,
 )
-\`\`\`
+```
 
 Every IAAFT surrogate preserves the source amplitude distribution exactly and iteratively approximates its Fourier-amplitude spectrum. Each surrogate is processed with the same embedding and LLE settings.
 
@@ -514,7 +514,7 @@ A future MIAAFT/multivariate-Fourier surrogate path must preserve the declared c
 
 For genuinely repeated gaze cycles, a section can be defined by one state variable:
 
-\`\`\`python
+```python
 crossings = poincare_crossings(
     gaze,
     curve=0,
@@ -523,13 +523,13 @@ crossings = poincare_crossings(
     direction="positive",
     state_dimensions=("y",),
 )
-\`\`\`
+```
 
 Crossings are linearly interpolated between observed samples.
 
 Fit a local return map only after declaring both a reference and neighborhood:
 
-\`\`\`python
+```python
 local_map = fit_local_return_map(
     crossings,
     reference="median",
@@ -537,7 +537,7 @@ local_map = fit_local_return_map(
 )
 
 stability = return_map_stability(local_map)
-\`\`\`
+```
 
 The local affine approximation is
 

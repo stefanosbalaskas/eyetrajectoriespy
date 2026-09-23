@@ -1237,7 +1237,7 @@ Version 0.21 makes the repository/site mathematical specification and visual doc
 
 Exact CI-certified PR head:
 
-\`36d046fe21542260451e9dc8308742a12fff54dc\`
+`36d046fe21542260451e9dc8308742a12fff54dc`
 
 PR #24, **“Add mathematical contracts and reproducible visual gallery,”** completed every unchanged pull-request qualification workflow successfully on that exact SHA:
 
@@ -1251,7 +1251,7 @@ PR #24, **“Add mathematical contracts and reproducible visual gallery,”** co
 
 The 0.21 documentation contract includes:
 
-- repository-level \`MATHEMATICAL_CONTRACTS.md\` with GitHub-rendered LaTeX;
+- repository-level `MATHEMATICAL_CONTRACTS.md` with GitHub-rendered LaTeX;
 - an expanded site mathematical reference matching the implemented quadrature weighting, FPCA/MFPCA, reconstruction, functional L2 distance, multilevel decomposition, compositional ALR, landmark registration, simultaneous functional-mean inference, Gaussian FPCR, heteroscedastic wild bootstrap, max-|t| calibration, fixed-family testing, Monte Carlo precision, and split-conformal p-value calculations;
 - a deterministic SVG gallery generated from the real public plotting APIs using seeded synthetic data, deterministic SVG hashing, and timestamp-free metadata;
 - a MathJax instant-navigation hook that re-typesets equations after client-side navigation;
@@ -1263,11 +1263,11 @@ No tests, coverage thresholds, scientific contracts, optional-backend checks, br
 
 PR #24 was squash-merged as:
 
-\`76da25c41d28f1c0c39c482df73f2ffb8fe54a0a\`
+`76da25c41d28f1c0c39c482df73f2ffb8fe54a0a`
 
 The exact PR head and squash-merged main commit both point to Git tree:
 
-\`ffe3914017882e1bb1a9e91aaf6ff8ce5a2d65ac\`
+`ffe3914017882e1bb1a9e91aaf6ff8ce5a2d65ac`
 
 so the merged package metadata, mathematical contracts, examples, workflows, gallery generator, site UX, and documentation checks are byte-for-byte identical to the exact CI-certified PR-head tree.
 
@@ -1275,7 +1275,7 @@ so the merged package metadata, mathematical contracts, examples, workflows, gal
 
 The exact merged-main commit
 
-\`76da25c41d28f1c0c39c482df73f2ffb8fe54a0a\`
+`76da25c41d28f1c0c39c482df73f2ffb8fe54a0a`
 
 completed a fresh push-triggered qualification generation successfully:
 
@@ -1306,7 +1306,7 @@ A separate local clone could not be executed in the current checkout runner beca
 
 Exact CI-certified PR head:
 
-\`7fb0e0042a533600a3413f41911ff65b75416ab4\`
+`7fb0e0042a533600a3413f41911ff65b75416ab4`
 
 PR #25, **“Add programmatic function-to-LaTeX contracts and workflow atlas,”** completed every pull-request qualification workflow successfully on that exact SHA:
 
@@ -1320,11 +1320,11 @@ PR #25, **“Add programmatic function-to-LaTeX contracts and workflow atlas,”
 
 The 0.22 contract adds:
 
-- immutable public \`MathematicalContract\` metadata;
-- \`list_mathematical_contracts()\`, \`get_mathematical_contract()\`, and \`mathematical_contract_frame()\`;
+- immutable public `MathematicalContract` metadata;
+- `list_mathematical_contracts()`, `get_mathematical_contract()`, and `mathematical_contract_frame()`;
 - one machine-readable registry connecting registered scientific public functions to implementation-matched LaTeX, stable mathematical-reference anchors, and explicit scope statements;
-- deterministic repository \`FUNCTION_EQUATION_INDEX.md\` and website \`reference/function-equation-index.md\`, both generated from the same registry and checked for drift in docs CI;
-- GitHub \`WORKFLOW_ATLAS.md\` and a website Mermaid workflow atlas covering representation choice, FPCA validation, Gaussian FPCR inference branches, and the function → equation → figure documentation path;
+- deterministic repository `FUNCTION_EQUATION_INDEX.md` and website `reference/function-equation-index.md`, both generated from the same registry and checked for drift in docs CI;
+- GitHub `WORKFLOW_ATLAS.md` and a website Mermaid workflow atlas covering representation choice, FPCA validation, Gaussian FPCR inference branches, and the function → equation → figure documentation path;
 - the deterministic SVG gallery expanded from five to eight figures, adding FPCA cumulative variance, registration displacement, and fixed-family wild-bootstrap test visualization;
 - executable and worked examples for registry lookup and tidy function-level export;
 - homepage, tutorial, README, API, object-contract, mathematical-reference, roadmap, workflow, and validation links tying functions, equations, examples, plots, and scientific boundaries together.
@@ -1335,11 +1335,11 @@ No tests, coverage thresholds, scientific contracts, optional-backend checks, br
 
 PR #25 was squash-merged as:
 
-\`37373b22359428173cf240390fd816a8fb271363\`
+`37373b22359428173cf240390fd816a8fb271363`
 
 The exact PR head and squash-merged main commit both point to Git tree:
 
-\`9569a3464de95533c99b7d05d25565aea9f512bc\`
+`9569a3464de95533c99b7d05d25565aea9f512bc`
 
 so the merged package registry, generated indexes, examples, tests, Mermaid workflow atlas, gallery generator, site UX, and documentation checks are byte-for-byte identical to the exact CI-certified PR-head tree.
 
@@ -1347,7 +1347,7 @@ so the merged package registry, generated indexes, examples, tests, Mermaid work
 
 The exact merged-main scientific/content commit
 
-\`37373b22359428173cf240390fd816a8fb271363\`
+`37373b22359428173cf240390fd816a8fb271363`
 
 completed a fresh push-triggered qualification generation successfully:
 
@@ -1378,7 +1378,7 @@ No local-pass claim is made for this tranche. Qualification below is exact GitHu
 
 Exact CI-certified PR head:
 
-\`95eb23a84cd63c5daa1e2429c26341a88f2f7faa\`
+`95eb23a84cd63c5daa1e2429c26341a88f2f7faa`
 
 PR #26, **“Add nonlinear trajectory dynamics, RQA, LLE, surrogates, and return maps,”** completed every pull-request qualification workflow successfully on that exact SHA:
 
@@ -1392,32 +1392,32 @@ PR #26, **“Add nonlinear trajectory dynamics, RQA, LLE, surrogates, and return
 
 The 0.23 scientific/API contract adds:
 
-- \`delay_embed_trajectory()\` for explicitly declared multivariate delay-coordinate reconstruction;
-- \`embedding_delay_diagnostics()\` with fixed-partition average mutual information and autocorrelation diagnostics, without automatic delay selection;
-- \`embedding_dimension_diagnostics()\` with Kennel-style false-nearest-neighbor diagnostics, without automatic embedding-dimension selection;
-- sparse SciPy-CSR \`recurrence_matrix()\` and \`cross_recurrence_matrix()\` with explicit fixed-radius or target-recurrence-rate policies, named state-variable compatibility checks, coordinate/time-unit compatibility checks, and explicit Theiler exclusion;
-- \`rqa_metrics()\`, \`cross_rqa_metrics()\`, and \`windowed_rqa()\` with explicit line-length thresholds and trailing-tail accounting;
-- \`local_divergence_curve()\` and \`estimate_largest_lyapunov_rosenstein()\` with positive-distance temporally separated neighbors, explicit zero-distance counts, and an analyst-declared fit interval;
-- seeded scalar \`surrogate_nonlinearity_test()\` using IAAFT surrogates, retained convergence/spectrum-mismatch diagnostics, plus-one Monte Carlo tail probabilities, and fail-closed behavior for non-converged or invalid surrogates;
-- experimental \`poincare_crossings()\`, \`fit_local_return_map()\`, and \`return_map_stability()\` with explicit section/state/neighborhood contracts, local-fit diagnostics, design condition number, Jacobian eigenvalues, and spectral radius;
+- `delay_embed_trajectory()` for explicitly declared multivariate delay-coordinate reconstruction;
+- `embedding_delay_diagnostics()` with fixed-partition average mutual information and autocorrelation diagnostics, without automatic delay selection;
+- `embedding_dimension_diagnostics()` with Kennel-style false-nearest-neighbor diagnostics, without automatic embedding-dimension selection;
+- sparse SciPy-CSR `recurrence_matrix()` and `cross_recurrence_matrix()` with explicit fixed-radius or target-recurrence-rate policies, named state-variable compatibility checks, coordinate/time-unit compatibility checks, and explicit Theiler exclusion;
+- `rqa_metrics()`, `cross_rqa_metrics()`, and `windowed_rqa()` with explicit line-length thresholds and trailing-tail accounting;
+- `local_divergence_curve()` and `estimate_largest_lyapunov_rosenstein()` with positive-distance temporally separated neighbors, explicit zero-distance counts, and an analyst-declared fit interval;
+- seeded scalar `surrogate_nonlinearity_test()` using IAAFT surrogates, retained convergence/spectrum-mismatch diagnostics, plus-one Monte Carlo tail probabilities, and fail-closed behavior for non-converged or invalid surrogates;
+- experimental `poincare_crossings()`, `fit_local_return_map()`, and `return_map_stability()` with explicit section/state/neighborhood contracts, local-fit diagnostics, design condition number, Jacobian eigenvalues, and spectral radius;
 - plotting and manuscript-reporting helpers for embedding diagnostics, recurrence, windowed RQA, local divergence/LLE, IAAFT tests, and return maps;
 - five new machine-readable LaTeX registry contracts plus corresponding GitHub/site mathematical-reference sections;
 - nonlinear workflow branches in the decision map and Mermaid workflow atlas;
 - two executable/worked nonlinear examples and four additional deterministic SVG gallery figures.
 
-The implementation deliberately does **not** expose classical \`floquet_multipliers(gaze)\`, a raw-gaze monodromy matrix, \`detect_bifurcation(gaze)\`, or numerical continuation. Those require an explicitly specified/identified dynamical model and dedicated variational-equation or continuation validation. The empirical return-map Jacobian is therefore documented as an observational local-cycle diagnostic, not a classical monodromy matrix, and its eigenvalues are not reported as Floquet multipliers.
+The implementation deliberately does **not** expose classical `floquet_multipliers(gaze)`, a raw-gaze monodromy matrix, `detect_bifurcation(gaze)`, or numerical continuation. Those require an explicitly specified/identified dynamical model and dedicated variational-equation or continuation validation. The empirical return-map Jacobian is therefore documented as an observational local-cycle diagnostic, not a classical monodromy matrix, and its eigenvalues are not reported as Floquet multipliers.
 
-The main CI failure discovered during qualification was a NumPy advanced-indexing orientation error in raw \`TrajectorySet\` recurrence state extraction. It was corrected on the PR branch before certification. The repair also kept IAAFT generation failures inside the explicit per-surrogate failure contract and regenerated both equation indexes from the registry. No quality gate or test was bypassed.
+The main CI failure discovered during qualification was a NumPy advanced-indexing orientation error in raw `TrajectorySet` recurrence state extraction. It was corrected on the PR branch before certification. The repair also kept IAAFT generation failures inside the explicit per-surrogate failure contract and regenerated both equation indexes from the registry. No quality gate or test was bypassed.
 
 No tests, coverage thresholds, scientific contracts, optional-backend checks, branch protections, or quality gates were weakened, disabled, deleted, or bypassed.
 
 PR #26 was squash-merged as:
 
-\`c11249bf03585e372b122bc51688c0f0aaf0b6ab\`
+`c11249bf03585e372b122bc51688c0f0aaf0b6ab`
 
 The exact certified PR head and squash-merged main commit both point to Git tree:
 
-\`d5f469d05769ef2c134dbe724c9381972d5ef2e1\`
+`d5f469d05769ef2c134dbe724c9381972d5ef2e1`
 
 so the merged nonlinear implementation, tests, examples, mathematical registry/indexes, plotting/reporting helpers, workflow atlas, gallery generator, and website documentation are byte-for-byte identical to the exact CI-certified PR-head tree.
 
@@ -1425,7 +1425,7 @@ so the merged nonlinear implementation, tests, examples, mathematical registry/i
 
 The exact merged-main scientific/content commit
 
-\`c11249bf03585e372b122bc51688c0f0aaf0b6ab\`
+`c11249bf03585e372b122bc51688c0f0aaf0b6ab`
 
 completed a fresh push-triggered qualification generation successfully:
 

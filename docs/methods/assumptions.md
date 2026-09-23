@@ -301,6 +301,6 @@ The sign of curvature and turning rate follows the **recorded coordinate orienta
 
 Differential geometry assumes the observed trajectory is complete and has at least three time points. Derivatives are computed on the supplied strictly increasing grid without hidden smoothing or interpolation.
 
-The \`min_speed\` threshold is part of the estimand. The default zero threshold masks only exactly stationary numerical derivatives; any positive near-zero threshold must be scientifically declared.
+The `min_speed` threshold is part of the estimand. The default zero threshold masks only exactly stationary numerical derivatives; any positive near-zero threshold must be scientifically declared.
 
 Wrapped heading is circular data. Ordinary Euclidean FDA of heading requires an explicit representation decision because the \(-\pi/+ \pi\) branch cut is not a true directional discontinuity.

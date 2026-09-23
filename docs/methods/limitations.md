@@ -689,7 +689,7 @@ Heading, curvature, and turning rate inherit the noise sensitivity of first and 
 
 ### Near-zero velocity is intrinsically problematic
 
-Curvature divides by speed cubed and turning rate by speed squared. Values near stationary periods can therefore become unstable even when they are mathematically finite. The package exposes \`min_speed\` rather than choosing a universal threshold.
+Curvature divides by speed cubed and turning rate by speed squared. Values near stationary periods can therefore become unstable even when they are mathematically finite. The package exposes `min_speed` rather than choosing a universal threshold.
 
 ### Coordinate scaling changes the geometry
 
@@ -705,4 +705,4 @@ The discontinuity between \(+\pi\) and \(-\pi\) is representational, not physica
 
 ### Tortuosity is undefined for zero endpoint displacement
 
-The implemented ratio uses path length divided by endpoint displacement. Closed and sufficiently near-closed paths are undefined under the declared \`min_displacement\`; the package returns NaN or raises according to the explicit policy rather than adding a denominator epsilon.
+The implemented ratio uses path length divided by endpoint displacement. Closed and sufficiently near-closed paths are undefined under the declared `min_displacement`; the package returns NaN or raises according to the explicit policy rather than adding a denominator epsilon.
