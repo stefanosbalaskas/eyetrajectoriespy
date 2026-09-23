@@ -1,7 +1,7 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.30.0.dev0"
+    assert et.__version__=="0.31.0.dev0"
     required={
         "MathematicalContract","get_mathematical_contract","list_mathematical_contracts","mathematical_contract_frame",
         "DelayEmbeddingResult","EmbeddingDelayDiagnosticResult","EmbeddingDimensionDiagnosticResult","RecurrenceResult","RecurrenceRadiusProfileResult","RQAResult","RQAMeanBootstrapResult","RQAParameterSensitivityResult","WindowedRQAResult","WindowedRQAFunctionalResult","WindowedRQASensitivityResult","WindowedRQAMeanBandResult",
@@ -15,7 +15,7 @@ def test_version_and_public_symbols():
         "recurrence_radius_profile_reporting_text","rqa_metric_mean_bootstrap_reporting_text","rqa_reporting_text","rqa_parameter_sensitivity_reporting_text","windowed_rqa_reporting_text","windowed_rqa_functional_reporting_text","windowed_rqa_sensitivity_reporting_text","windowed_rqa_mean_band_reporting_text","kantz_parameter_sensitivity_reporting_text","largest_lyapunov_reporting_text","lyapunov_parameter_sensitivity_reporting_text",
         "surrogate_nonlinearity_reporting_text","return_map_stability_reporting_text",
         "TrajectorySet","fit_fpca","fit_mfpca","fit_multilevel_fpca","fit_compositional_fpca","FPCAScoreUncertaintyResult","FPCASpectrumUncertaintyResult",
-        "register_to_landmarks","fit_elastic_fpca","simulate_planar_trajectories",
+        "register_to_landmarks","fit_elastic_fpca","simulate_planar_trajectories","heading_function","signed_curvature_function","turning_rate_function","trajectory_tortuosity",
         "fit_scalar_on_function_regression","plot_fpca_component",
         "IrregularTrajectorySet","from_irregular_long_dataframe_native","bootstrap_fpca_stability",
         "fit_phase_fpca","compare_registered_unregistered_fpca","to_skfda_basis",
