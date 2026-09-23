@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.27.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.28.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -66,6 +66,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - explicit delay-coordinate reconstruction with AMI/autocorrelation and false-nearest-neighbor diagnostics;
 - sparse continuous-state recurrence matrices, RQA, windowed RQA, and cross-recurrence analysis;
 - exact recurrence-radius profiles exposing RR(radius) and pair-distance shell mass over analyst-declared thresholds without dense distance matrices or automatic radius selection;
+- percentile bootstrap uncertainty for population-average fixed-specification RQA metrics with curve- or equal-weight participant-level resampling and no trial pseudo-replication;
 - first-class RQA-derived functional trajectories for FDA of time-varying RR/DET/LAM and related metrics, with explicit overlap/dependence provenance;
 - declared window/step sensitivity grids for functional RQA with source-sample reuse diagnostics, exact-shared-center profile comparisons, and no automatic tuning selection;
 - simultaneous functional-RQA mean bands that resample complete curve- or equal-weight participant-level functions rather than overlapping window rows;
@@ -156,6 +157,7 @@ print(summarise_fpca(fit))
 | Recurrent gaze-state structure | sparse recurrence / RQA | `recurrence_matrix()` / `rqa_metrics()` |
 | Recurrence-threshold diagnostics | exact RR(radius) curve and pair-distance shell profile | `recurrence_radius_profile()` |
 | RQA robustness across analysis choices | declared reconstruction/threshold/Theiler/line-length multiverse | `rqa_parameter_sensitivity()` |
+| Population uncertainty for RQA summaries | percentile bootstrap over independent curves or equal-weight participant averages | `bootstrap_rqa_metric_means()` |
 | Time-varying recurrent dynamics | sliding full-window RQA | `windowed_rqa()` |
 | RQA dynamics as functional outcomes | window-center RQA metric trajectories with retained overlap/radius provenance | `windowed_rqa_trajectory_set()` |
 | Functional RQA parameter sensitivity | declared window/step grid with overlap/reuse and exact-center profile diagnostics | `windowed_rqa_sensitivity()` |
@@ -178,7 +180,7 @@ It includes a tutorial gallery, representation selection, nonlinear state-space 
 
 ## Scope boundary
 
-`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.27 adds explicit recurrence-threshold diagnostics through exact RR(radius) and pair-distance shell profiles, while retaining the 0.26 nonlinear robustness multiverses and 0.25 dependence-aware functional-RQA layer. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
+`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.28 adds population-level bootstrap uncertainty for fixed-specification RQA summaries using curve or equal-weight participant inference units, while retaining the 0.27 threshold diagnostics and 0.26 robustness multiverses. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
 
 ## Validation
 
