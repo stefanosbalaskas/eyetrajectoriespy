@@ -48,8 +48,10 @@ def main() -> None:
         "split_conformal_fpca_anomaly()",
         "delay_embed_trajectory()",
         "recurrence_matrix()",
+        "rqa_parameter_sensitivity()",
         "windowed_rqa_trajectory_set()",
         "estimate_largest_lyapunov_rosenstein()",
+        "lyapunov_parameter_sensitivity()",
         "surrogate_nonlinearity_test()",
         "return_map_stability()",
     }
