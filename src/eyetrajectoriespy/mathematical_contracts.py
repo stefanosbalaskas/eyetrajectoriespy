@@ -70,6 +70,30 @@ _CONTRACTS = (
         scope="Complete trajectories on a common grid; optional dimension weights must be non-negative.",
     ),
     MathematicalContract(
+        key="discrete-frechet",
+        title="Order-preserving discrete Frechet trajectory distance",
+        public_api=(
+            "discrete_frechet_distance",
+            "pairwise_discrete_frechet_distances",
+        ),
+        equations=(
+            r"d_{\boldsymbol\omega}(\mathbf p_i,\mathbf q_j)="
+            r"\left[\sum_{d=1}^{D}\omega_d"
+            r"(p_{id}-q_{jd})^2\right]^{1/2}",
+            r"C_{ij}=\max\left\{d_{\boldsymbol\omega}"
+            r"(\mathbf p_i,\mathbf q_j),"
+            r"\min(C_{i-1,j},C_{i-1,j-1},C_{i,j-1})\right\}",
+            r"\delta_{dF}(P,Q)=C_{mn}",
+        ),
+        site_anchor="discrete-frechet",
+        scope=(
+            "Discrete sampled-curve comparison with monotone order-preserving "
+            "coupling and a fixed weighted-Euclidean point metric; timestamps "
+            "are not included, no resampling or scaling is performed, and the "
+            "result is not the continuous Frechet distance."
+        ),
+    ),
+    MathematicalContract(
         key="trajectory-geometry",
         title="Continuous planar trajectory geometry",
         public_api=(
