@@ -49,6 +49,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Finite-bootstrap Monte Carlo precision diagnostics | implemented | `fpca_wild_bootstrap_family_test_monte_carlo_diagnostics()` |
 | Stabilized-volatility wild-bootstrap h selection | implemented | `scan_wild_bootstrap_fpca_truncations()` / `select_fpca_wild_bootstrap_truncation()` |
 | Derived speed/acceleration/distance/path functions | implemented | kinematic helpers |
+| Continuous planar trajectory geometry | implemented; wrapped heading, signed curvature, turning rate, explicit tortuosity | `heading_function()` / `signed_curvature_function()` / `turning_rate_function()` / `trajectory_tortuosity()` |
 | Delay-coordinate state reconstruction | implemented | `delay_embed_trajectory()` |
 | AMI / false-nearest-neighbor diagnostics | implemented, diagnostic-only | `embedding_delay_diagnostics()` / `embedding_dimension_diagnostics()` |
 | Sparse recurrence / RQA | implemented | `recurrence_matrix()` / `rqa_metrics()` |
@@ -68,7 +69,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 
 ## Documentation and mathematical contracts
 
-Versions 0.21–0.30 treat documentation and mathematical metadata as tested package surfaces:
+Versions 0.21–0.31 treat documentation and mathematical metadata as tested package surfaces:
 
 - the repository-level `MATHEMATICAL_CONTRACTS.md` renders the core equations directly on GitHub;
 - the site mathematical reference maps those equations to the exact public APIs and scope boundaries;
@@ -119,10 +120,10 @@ Future tranches may evaluate:
 - explicit system-identification models for gaze dynamics;
 - model-based continuation / Floquet analysis only after a validated dynamical-system contract exists.
 
-Classical `floquet_multipliers(gaze)`, monodromy matrices from raw observations, and `detect_bifurcation(gaze)` remain intentionally **not** implemented in 0.30.
+Classical `floquet_multipliers(gaze)`, monodromy matrices from raw observations, and `detect_bifurcation(gaze)` remain intentionally **not** implemented in 0.31.
 
 A candidate enters the public API only when it can preserve the package rules: explicit estimand, deterministic behavior or seed, provenance, failure diagnostics, synthetic truth tests, documentation, and runnable examples.
 
 ## Development status
 
-The current development line is **0.30.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.31.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
