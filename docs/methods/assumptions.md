@@ -280,3 +280,12 @@ The radius is fixed for the analysis. It is not an adaptive bandwidth and is not
 The minimum-neighbor rule controls which reference states contribute. Loss of reference support at later horizons is retained explicitly through reference and pair counts.
 
 As with Rosenstein LLE, the temporal grid must be approximately regular so forward sample horizons correspond to a stable elapsed-time increment. The fitted linear interval must be scientifically declared and interpreted conditionally on the reconstruction and neighborhood contract.
+
+
+### Kantz sensitivity grids
+
+`kantz_parameter_sensitivity()` assumes every value in the declared grid was scientifically defensible independently of the observed preferred result. The Cartesian grid is an analyst-defined robustness set, not a data-driven tuning space.
+
+Radius and minimum-neighbor values must therefore be interpreted jointly with coordinate scaling and state-space construction. A radius is not comparable across analyses that silently change channel units or normalization.
+
+The supported-reference fraction is descriptive support under one declared neighborhood rule. It is not an inverse-variance weight, effective sample size, or automatic criterion for preferring that radius.
