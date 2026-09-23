@@ -12,6 +12,7 @@ from .fpca import functional_trapezoid_weights
 from .types import (
     ClusterResult,
     DiscreteFrechetResult,
+    DynamicTimeWarpingResult,
     FPCAResult,
     FunctionalRegressionResult,
     TrajectorySet,
@@ -199,6 +200,150 @@ def pairwise_discrete_frechet_distances(
                 values[i], values[j], dimension_weights=dimension_weights
             )
             result[i, j] = result[j, i] = float(distance)
+    return result
+
+
+def dynamic_time_warping_cost(
+    a: np.ndarray,
+    b: np.ndarray,
+    *,
+    dimension_weights: np.ndarray | None = None,
+    return_path: bool = False,
+) -> float | DynamicTimeWarpingResult:
+    """Compute raw cumulative dynamic-time-warping cost.
+
+    The recurrence uses the symmetric three-step predecessor set: diagonal,
+    advance a, or advance b. No path-length normalization, global window,
+    slope constraint, interpolation, resampling, or coordinate normalization
+    is applied. Elapsed timestamps are not used.
+
+    With return_path=True, one deterministic optimal warping path is returned.
+    Multiple optimal paths can exist; ties prefer a diagonal predecessor,
+    then advancing a, then advancing b.
+    """
+
+    if not isinstance(return_path, (bool, np.bool_)):
+        raise TypeError("return_path must be boolean")
+    a_arr, b_arr, weights = _validate_trajectory_sequence_inputs(
+        a, b, dimension_weights=dimension_weights
+    )
+    n_a, n_b = a_arr.shape[0], b_arr.shape[0]
+    local = np.sqrt(
+        np.sum(
+            (a_arr[:, None, :] - b_arr[None, :, :]) ** 2
+            * weights[None, None, :],
+            axis=2,
+        )
+    )
+
+    cumulative = np.full((n_a, n_b), np.inf, dtype=float)
+    predecessor = np.full((n_a, n_b, 2), -1, dtype=int)
+    cumulative[0, 0] = local[0, 0]
+
+    for i in range(1, n_a):
+        cumulative[i, 0] = cumulative[i - 1, 0] + local[i, 0]
+        predecessor[i, 0] = (i - 1, 0)
+    for j in range(1, n_b):
+        cumulative[0, j] = cumulative[0, j - 1] + local[0, j]
+        predecessor[0, j] = (0, j - 1)
+
+    for i in range(1, n_a):
+        for j in range(1, n_b):
+            candidates = (
+                (cumulative[i - 1, j - 1], i - 1, j - 1),
+                (cumulative[i - 1, j], i - 1, j),
+                (cumulative[i, j - 1], i, j - 1),
+            )
+            previous, prev_i, prev_j = min(candidates, key=lambda item: item[0])
+            cumulative[i, j] = local[i, j] + previous
+            predecessor[i, j] = (prev_i, prev_j)
+
+    cost = float(cumulative[-1, -1])
+    if not return_path:
+        return cost
+
+    path: list[tuple[int, int]] = []
+    i, j = n_a - 1, n_b - 1
+    while True:
+        path.append((i, j))
+        if i == 0 and j == 0:
+            break
+        i, j = predecessor[i, j]
+    path.reverse()
+    warping_path = np.asarray(path, dtype=int)
+    coupled_local = local[warping_path[:, 0], warping_path[:, 1]]
+    return DynamicTimeWarpingResult(
+        cost=cost,
+        warping_path=warping_path,
+        local_distances=coupled_local,
+        n_points_a=n_a,
+        n_points_b=n_b,
+        n_dimensions=a_arr.shape[1],
+        provenance={
+            "operation": "dynamic_time_warping_cost",
+            "local_metric": "weighted_euclidean",
+            "dimension_weights": weights.tolist(),
+            "cumulative_cost": "sum_of_local_distances",
+            "path_length_normalization": False,
+            "elapsed_time_used": False,
+            "sample_order_preserved": True,
+            "backtracking_allowed": False,
+            "global_window": None,
+            "slope_constraint": None,
+            "interpolation": False,
+            "resampling": False,
+            "coordinate_normalization": False,
+            "path_simplification": False,
+            "tie_break_order": ("diagonal", "advance_a", "advance_b"),
+            "optimal_path_not_necessarily_unique": True,
+            "metric_claim": False,
+        },
+    )
+
+
+def pairwise_dynamic_time_warping_costs(
+    trajectories: TrajectorySet,
+    *,
+    dimensions: tuple[str, ...] | list[str] | None = None,
+    dimension_weights: np.ndarray | None = None,
+) -> np.ndarray:
+    """Pairwise raw DTW cost matrix for complete trajectories.
+
+    dimensions=None uses every stored functional dimension. The TrajectorySet
+    time values do not enter the DTW recurrence.
+    """
+
+    validate_trajectory_set(trajectories, require_complete=True)
+    if dimensions is None:
+        selected = trajectories.dimension_names
+    else:
+        if isinstance(dimensions, (str, bytes)):
+            raise TypeError("dimensions must be a non-string sequence")
+        selected = tuple(dimensions)
+        if not selected:
+            raise ValueError("dimensions must contain at least one dimension")
+        if len(set(selected)) != len(selected):
+            raise ValueError("dimensions must not contain duplicates")
+        missing = [
+            name for name in selected if name not in trajectories.dimension_names
+        ]
+        if missing:
+            raise KeyError(f"Unknown trajectory dimensions: {missing}")
+
+    indices = [trajectories.dimension_names.index(name) for name in selected]
+    values = trajectories.values[:, :, indices]
+    n = trajectories.n_curves
+    if n > 0:
+        _validate_trajectory_sequence_inputs(
+            values[0], values[0], dimension_weights=dimension_weights
+        )
+    result = np.zeros((n, n), dtype=float)
+    for i in range(n):
+        for j in range(i + 1, n):
+            cost = dynamic_time_warping_cost(
+                values[i], values[j], dimension_weights=dimension_weights
+            )
+            result[i, j] = result[j, i] = float(cost)
     return result
 
 
