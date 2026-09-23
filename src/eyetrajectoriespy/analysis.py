@@ -19,13 +19,13 @@ from .types import (
 from .validation import validate_trajectory_set
 
 
-def _validate_discrete_frechet_inputs(
+def _validate_trajectory_sequence_inputs(
     a: np.ndarray,
     b: np.ndarray,
     *,
     dimension_weights: np.ndarray | None,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Validate two complete point sequences for discrete Fréchet analysis."""
+    """Validate two complete point sequences for elastic trajectory analysis."""
 
     a_arr = np.asarray(a, dtype=float)
     b_arr = np.asarray(b, dtype=float)
@@ -39,7 +39,7 @@ def _validate_discrete_frechet_inputs(
         raise ValueError("a and b must contain at least one dimension")
     if not np.all(np.isfinite(a_arr)) or not np.all(np.isfinite(b_arr)):
         raise ValueError(
-            "discrete Fréchet distance requires finite complete point sequences"
+            "elastic trajectory comparison requires finite complete point sequences"
         )
 
     if dimension_weights is None:
@@ -81,7 +81,7 @@ def discrete_frechet_distance(
 
     if not isinstance(return_coupling, (bool, np.bool_)):
         raise TypeError("return_coupling must be boolean")
-    a_arr, b_arr, weights = _validate_discrete_frechet_inputs(
+    a_arr, b_arr, weights = _validate_trajectory_sequence_inputs(
         a, b, dimension_weights=dimension_weights
     )
     n_a, n_b = a_arr.shape[0], b_arr.shape[0]
@@ -187,7 +187,7 @@ def pairwise_discrete_frechet_distances(
     values = trajectories.values[:, :, indices]
     n = trajectories.n_curves
     if n > 0:
-        _validate_discrete_frechet_inputs(
+        _validate_trajectory_sequence_inputs(
             values[0],
             values[0],
             dimension_weights=dimension_weights,
