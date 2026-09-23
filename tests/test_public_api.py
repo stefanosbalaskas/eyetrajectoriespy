@@ -1,14 +1,14 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.28.0.dev0"
+    assert et.__version__=="0.29.0.dev0"
     required={
         "MathematicalContract","get_mathematical_contract","list_mathematical_contracts","mathematical_contract_frame",
         "DelayEmbeddingResult","EmbeddingDelayDiagnosticResult","EmbeddingDimensionDiagnosticResult","RecurrenceResult","RecurrenceRadiusProfileResult","RQAResult","RQAMeanBootstrapResult","RQAParameterSensitivityResult","WindowedRQAResult","WindowedRQAFunctionalResult","WindowedRQASensitivityResult","WindowedRQAMeanBandResult",
-        "LocalDivergenceResult","LargestLyapunovResult","LyapunovParameterSensitivityResult","SurrogateNonlinearityResult","PoincareCrossingResult","LocalReturnMapResult","ReturnMapStabilityResult",
+        "LocalDivergenceResult","KantzDivergenceResult","LargestLyapunovResult","LyapunovParameterSensitivityResult","SurrogateNonlinearityResult","PoincareCrossingResult","LocalReturnMapResult","ReturnMapStabilityResult",
         "delay_embed_trajectory","embedding_delay_diagnostics","embedding_dimension_diagnostics",
         "recurrence_matrix","recurrence_radius_profile","rqa_metrics","rqa_parameter_sensitivity","bootstrap_rqa_metric_means","windowed_rqa","windowed_rqa_trajectory_set","windowed_rqa_sensitivity","windowed_rqa_functional_mean_band","cross_recurrence_matrix","cross_rqa_metrics",
-        "local_divergence_curve","estimate_largest_lyapunov_rosenstein","lyapunov_parameter_sensitivity","surrogate_nonlinearity_test",
+        "local_divergence_curve","kantz_divergence_curve","estimate_largest_lyapunov_rosenstein","estimate_largest_lyapunov_kantz","lyapunov_parameter_sensitivity","surrogate_nonlinearity_test",
         "poincare_crossings","fit_local_return_map","return_map_stability",
         "plot_embedding_delay_diagnostics","plot_embedding_dimension_diagnostics","plot_recurrence","plot_recurrence_rate_curve","plot_rqa_metric_mean_bootstrap","plot_rqa_sensitivity","plot_windowed_rqa","plot_windowed_rqa_trajectories","plot_windowed_rqa_sensitivity",
         "plot_local_divergence","plot_lyapunov_sensitivity","plot_surrogate_nonlinearity","plot_poincare_return_map",

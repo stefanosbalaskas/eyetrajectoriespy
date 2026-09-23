@@ -5,7 +5,7 @@ Version 0.23 adds nonlinear-dynamics tools for continuous gaze trajectories whil
 The implementation is divided into three scientific layers:
 
 1. **established reconstruction / recurrence analysis** — delay embedding, AMI/ACF diagnostics, false-nearest-neighbor diagnostics, sparse RQA, windowed RQA, cross-RQA, and functionalized RQA trajectories;
-2. **advanced nonlinear diagnostics** — Rosenstein local divergence / largest-Lyapunov estimation and IAAFT surrogate testing. LLE has direct eye-movement signal-analysis precedent, but remains uncommon as a continuous behavioral-scanpath descriptor;
+2. **advanced nonlinear diagnostics** — named Rosenstein and Kantz local-divergence / largest-Lyapunov estimation plus IAAFT surrogate testing. LLE has direct eye-movement signal-analysis precedent, but remains uncommon as a continuous behavioral-scanpath descriptor;
 3. **experimental behavioral stability** — empirical Poincare sections and local return-map contraction/expansion.
 
 Classical Floquet multipliers, monodromy matrices, and numerical bifurcation continuation are **not** raw-gaze statistics and are not exposed as such.
@@ -353,6 +353,54 @@ No automated “linear region” selector is used.
 
 !!! warning "Interpretation"
     A positive estimated \(\lambda_{\max}\) does **not** by itself prove deterministic chaos in gaze behavior. Noise, filtering, nonstationarity, short records, embedding choices, and fit-interval choice can all create or alter apparent divergence.
+
+### Kantz fixed-radius neighborhood divergence
+
+Version 0.29 adds the second named maximal-Lyapunov path rather than treating all local-divergence estimators as interchangeable.
+
+`local_divergence_curve()` follows one nearest temporally separated neighbor per reference state (Rosenstein-style). `kantz_divergence_curve()` instead uses every eligible neighbor inside one analyst-declared radius, averages their forward distances within each reference neighborhood, takes the log of that mean distance, and then averages across reference states.
+
+```python
+from eyetrajectoriespy import (
+    kantz_divergence_curve,
+    estimate_largest_lyapunov_kantz,
+)
+
+kantz = kantz_divergence_curve(
+    embedded,
+    curve=0,
+    radius=0.08,
+    min_neighbors=4,
+    theiler_window=0.100,
+    theiler_window_units="seconds",
+    max_horizon=0.300,
+    max_horizon_units="seconds",
+)
+
+kantz_lle = estimate_largest_lyapunov_kantz(
+    kantz,
+    fit_start=0.03,
+    fit_end=0.12,
+    fit_units="seconds",
+)
+```
+
+The radius is never expanded automatically. A reference state with too few eligible neighbors simply does not contribute at that horizon; if no reference state is usable at horizon zero, the function fails and asks for an explicit scientific change to radius or `min_neighbors`.
+
+The result retains:
+
+- the declared radius and minimum-neighbor requirement;
+- every reference state's initial neighbor count;
+- contributing-reference count at each horizon;
+- contributing pair count at each horizon;
+- neighborhoods whose forward mean distance is exactly zero;
+- the declared Theiler and divergence horizon.
+
+Rosenstein and Kantz may produce different divergence curves because their neighborhood definitions differ. That difference is methodological sensitivity, not evidence that one implementation is defective.
+
+Use a comparison only after holding the embedding, Theiler window, divergence horizon, time units, and fit interval fixed. Do not search over the Kantz radius and then report only the most convenient exponent.
+
+See [Kantz LLE guidance](../methods/kantz-lle.md) and the [worked estimator comparison](../examples/kantz-lle.md).
 
 ### Sensitivity across reconstruction and fit choices
 

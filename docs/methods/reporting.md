@@ -639,3 +639,24 @@ When `bootstrap_rqa_metric_means()` is used, report:
 Under target-RR mode, state that recurrence density was controlled by design and RR was not treated as an inferential outcome.
 
 Do not report the number of trials or recurrence points as the independent bootstrap sample size when participants are the sampling unit.
+
+
+## Kantz largest-Lyapunov estimation
+
+When `kantz_divergence_curve()` and `estimate_largest_lyapunov_kantz()` are used, report:
+
+- source dimensions, coordinate units, and preprocessing;
+- embedding dimension and delay;
+- fixed neighborhood radius;
+- minimum-neighbor requirement;
+- Theiler window;
+- maximum divergence horizon;
+- contributing reference and pair counts across the fitted interval;
+- fit interval;
+- exponent and units;
+- (R^2) and slope standard error;
+- whether Rosenstein was evaluated under the same reconstruction for sensitivity;
+- that the radius and fit interval were not selected automatically;
+- that a positive slope was not interpreted as standalone evidence of deterministic chaos.
+
+If Rosenstein and Kantz disagree, report the difference as estimator sensitivity rather than retaining only the preferred result.

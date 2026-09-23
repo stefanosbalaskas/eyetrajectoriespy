@@ -10,8 +10,10 @@ from eyetrajectoriespy import (
     delay_embed_trajectory,
     embedding_delay_diagnostics,
     embedding_dimension_diagnostics,
+    estimate_largest_lyapunov_kantz,
     estimate_largest_lyapunov_rosenstein,
     fit_local_return_map,
+    kantz_divergence_curve,
     local_divergence_curve,
     plot_embedding_delay_diagnostics,
     plot_embedding_dimension_diagnostics,
@@ -87,12 +89,27 @@ def test_nonlinear_plot_helpers_return_axes():
         divergence, fit_start=1, fit_end=4
     )
 
+    kantz_divergence = kantz_divergence_curve(
+        embedded,
+        curve=0,
+        radius=0.08,
+        theiler_window=5,
+        max_horizon=6,
+        min_neighbors=2,
+    )
+    kantz_lle = estimate_largest_lyapunov_kantz(
+        kantz_divergence,
+        fit_start=1,
+        fit_end=4,
+    )
+
     for ax in (
         plot_embedding_delay_diagnostics(delay),
         plot_embedding_dimension_diagnostics(dimension),
         plot_recurrence(recurrence),
         plot_windowed_rqa(dynamic),
         plot_local_divergence(lle),
+        plot_local_divergence(kantz_lle),
     ):
         assert hasattr(ax, "plot") or hasattr(ax, "scatter")
         plt.close(ax.figure)

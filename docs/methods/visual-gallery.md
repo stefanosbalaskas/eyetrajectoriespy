@@ -158,6 +158,16 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked example](../examples/nonlinear-dynamics.md) · [Mathematics](mathematical-reference.md#local-divergence)
 
+-   **Kantz neighborhood divergence**
+
+    ![Kantz fixed-radius neighborhood divergence with declared LLE fit](../assets/gallery/kantz-divergence.svg)
+
+    Fixed-radius local-neighborhood divergence with explicit minimum-neighbor support and analyst-declared fit interval.
+
+    **API:** `kantz_divergence_curve()`, `estimate_largest_lyapunov_kantz()`, `plot_local_divergence()`
+
+    [Worked comparison](../examples/kantz-lle.md) · [Method guide](kantz-lle.md) · [Mathematics](mathematical-reference.md#kantz-local-divergence)
+
 -   **Experimental empirical return map**
 
     ![Empirical Poincare return map](../assets/gallery/return-map.svg)
@@ -248,4 +258,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates all fifteen assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates all sixteen assets before the strict MkDocs build and runs \`scripts/validate_docs_contracts.py\`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.

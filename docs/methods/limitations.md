@@ -643,3 +643,28 @@ If a requested RQA metric is undefined for any source curve, the analysis termin
 ### Target-RR mode changes the estimand
 
 When target recurrence rate controls recurrence density, RR is not an independent outcome. Version 0.28 therefore refuses to bootstrap recurrence rate under target-RR mode.
+
+
+## Kantz LLE limits
+
+### Radius choice remains consequential
+
+Kantz divergence replaces one nearest neighbor with a fixed-radius neighborhood; it does not remove neighborhood-choice sensitivity. A radius that is too small can leave too few supported reference states, while a large radius can average over states that are no longer locally comparable.
+
+Version 0.29 deliberately does not implement adaptive radius growth, automatic scale selection, or a universal radius default.
+
+### Minimum-neighbor support can decay with horizon
+
+Forward evolution near the end of the reconstructed record removes some neighborhood pairs. The package retains reference and pair counts at each horizon, but it does not convert those counts into a reliability correction or automatic stopping rule.
+
+### Rosenstein and Kantz estimates need not agree
+
+The methods use different neighborhood definitions and can produce different divergence curves and fitted slopes. Agreement is not guaranteed and disagreement is not automatically a software error.
+
+### Positive slope is not proof of chaos
+
+Measurement noise, filtering, nonstationarity, finite records, task changes, reconstruction choices, and the declared radius/fit interval can affect the slope. The estimator is therefore reported as a conditional local-divergence estimate rather than a chaos classifier.
+
+### The surrogate test remains Rosenstein-specific
+
+The current IAAFT test continues to use the package's named Rosenstein LLE statistic. Kantz surrogate testing requires a separately declared statistic contract and is not silently substituted in 0.29.

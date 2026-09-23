@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 from scipy import stats
+from scipy.spatial import cKDTree
 
 from .embedding import (
     _TIME_TO_SECONDS,
@@ -16,6 +17,7 @@ from .embedding import (
 )
 from .nonlinear_types import (
     DelayEmbeddingResult,
+    KantzDivergenceResult,
     LargestLyapunovResult,
     LocalDivergenceResult,
     SurrogateNonlinearityResult,
@@ -128,8 +130,149 @@ def local_divergence_curve(
     )
 
 
+def kantz_divergence_curve(
+    embedding: DelayEmbeddingResult,
+    *,
+    curve: int | str,
+    radius: float,
+    theiler_window: float | int,
+    max_horizon: float | int,
+    min_neighbors: int = 2,
+    theiler_window_units: str = "samples",
+    max_horizon_units: str = "samples",
+) -> KantzDivergenceResult:
+    """Compute a Kantz-style neighborhood-averaged log-divergence curve.
+
+    The neighborhood radius is fixed and analyst-declared. Reference states
+    with fewer than the declared minimum neighbors are not enlarged or
+    repaired automatically.
+    """
+
+    if isinstance(radius, (bool, np.bool_)) or not isinstance(
+        radius, (int, float, np.integer, np.floating)
+    ):
+        raise TypeError("radius must be numeric and not boolean")
+    if not np.isfinite(radius) or float(radius) <= 0:
+        raise ValueError("radius must be a positive finite value")
+    if isinstance(min_neighbors, (bool, np.bool_)) or not isinstance(
+        min_neighbors, (int, np.integer)
+    ):
+        raise TypeError("min_neighbors must be an integer")
+    if int(min_neighbors) < 1:
+        raise ValueError("min_neighbors must be at least 1")
+
+    index = _embedded_curve_index(embedding, curve)
+    states = np.asarray(embedding.values[index], dtype=float)
+    _require_finite(states, context="Kantz local divergence")
+    theiler = _resolve_samples(
+        embedding.time,
+        theiler_window,
+        units=theiler_window_units,
+        time_unit=embedding.time_unit,
+        name="theiler_window",
+        allow_zero=True,
+    )
+    max_horizon_samples = _resolve_samples(
+        embedding.time,
+        max_horizon,
+        units=max_horizon_units,
+        time_unit=embedding.time_unit,
+        name="max_horizon",
+        allow_zero=True,
+    )
+    if max_horizon_samples < 1:
+        raise ValueError("max_horizon must be at least one sample")
+    if max_horizon_samples >= embedding.n_states:
+        raise ValueError(
+            "max_horizon must be smaller than the number of reconstructed states"
+        )
+
+    tree = cKDTree(states)
+    neighborhoods: list[np.ndarray] = []
+    initial_neighbor_counts = np.zeros(states.shape[0], dtype=int)
+    for reference in range(states.shape[0]):
+        candidates = np.asarray(
+            tree.query_ball_point(states[reference], r=float(radius)),
+            dtype=int,
+        )
+        keep = (candidates != reference) & (
+            np.abs(candidates - reference) > theiler
+        )
+        neighbors = np.sort(candidates[keep])
+        neighborhoods.append(neighbors)
+        initial_neighbor_counts[reference] = int(neighbors.size)
+
+    horizons = np.arange(max_horizon_samples + 1, dtype=int)
+    means = np.full(horizons.size, np.nan, dtype=float)
+    reference_counts = np.zeros(horizons.size, dtype=int)
+    pair_counts = np.zeros(horizons.size, dtype=int)
+    zero_mean_counts = np.zeros(horizons.size, dtype=int)
+
+    for k in horizons:
+        log_reference_means: list[float] = []
+        for reference, neighbors in enumerate(neighborhoods):
+            if reference + k >= states.shape[0]:
+                continue
+            valid_neighbors = neighbors[neighbors + k < states.shape[0]]
+            if valid_neighbors.size < int(min_neighbors):
+                continue
+            distances = np.linalg.norm(
+                states[valid_neighbors + k] - states[reference + k],
+                axis=1,
+            )
+            pair_counts[k] += int(distances.size)
+            mean_distance = float(np.mean(distances))
+            if mean_distance <= 0:
+                zero_mean_counts[k] += 1
+                continue
+            log_reference_means.append(float(np.log(mean_distance)))
+        reference_counts[k] = len(log_reference_means)
+        if log_reference_means:
+            means[k] = float(np.mean(log_reference_means))
+
+    if reference_counts[0] == 0:
+        raise ValueError(
+            "no reference state has the declared minimum number of eligible "
+            "neighbors inside radius; increase radius or lower min_neighbors "
+            "explicitly"
+        )
+
+    step = _regular_step(embedding.time)
+    return KantzDivergenceResult(
+        horizons=horizons,
+        time_lags=horizons.astype(float) * step,
+        mean_log_divergence=means,
+        reference_counts=reference_counts,
+        pair_counts=pair_counts,
+        zero_mean_neighborhood_counts=zero_mean_counts,
+        initial_neighbor_counts=initial_neighbor_counts,
+        radius=float(radius),
+        min_neighbors=int(min_neighbors),
+        theiler_window_samples=theiler,
+        max_horizon_samples=max_horizon_samples,
+        curve_id=embedding.curve_ids[index],
+        time_unit=embedding.time_unit,
+        provenance={
+            "operation": "kantz_divergence_curve",
+            "embedding_provenance": dict(embedding.provenance),
+            "estimator_family": "Kantz fixed-radius neighborhood divergence",
+            "radius": float(radius),
+            "min_neighbors": int(min_neighbors),
+            "theiler_window_samples": theiler,
+            "max_horizon_samples": max_horizon_samples,
+            "distance_metric": "euclidean",
+            "radius_selected_automatically": False,
+            "neighborhood_expansion_policy": "none_fail_or_skip_reference",
+            "zero_mean_neighborhood_policy": (
+                "excluded_from_log_and_counted_explicitly"
+            ),
+            "automatic_fit_interval_selection": False,
+        },
+    )
+
+
 def _fit_interval_samples(
-    divergence: LocalDivergenceResult,
+    divergence: LocalDivergenceResult | KantzDivergenceResult,
     start: float | int,
     end: float | int,
     units: str,
@@ -171,6 +314,11 @@ def estimate_largest_lyapunov_rosenstein(
     evidence that behavioral gaze is a deterministic chaotic system.
     """
 
+    if not isinstance(divergence, LocalDivergenceResult):
+        raise TypeError(
+            "estimate_largest_lyapunov_rosenstein requires LocalDivergenceResult"
+        )
+
     start, end = _fit_interval_samples(divergence, fit_start, fit_end, fit_units)
     mask = (
         (divergence.horizons >= start)
@@ -210,6 +358,72 @@ def estimate_largest_lyapunov_rosenstein(
             "interpretation_boundary": (
                 "positive exponent estimates local exponential divergence; "
                 "it is not standalone evidence of deterministic chaos"
+            ),
+        },
+    )
+
+
+def estimate_largest_lyapunov_kantz(
+    divergence: KantzDivergenceResult,
+    *,
+    fit_start: float | int,
+    fit_end: float | int,
+    fit_units: str = "samples",
+) -> LargestLyapunovResult:
+    """Fit the declared linear segment of a Kantz divergence curve."""
+
+    if not isinstance(divergence, KantzDivergenceResult):
+        raise TypeError(
+            "estimate_largest_lyapunov_kantz requires KantzDivergenceResult"
+        )
+    start, end = _fit_interval_samples(
+        divergence,
+        fit_start,
+        fit_end,
+        fit_units,
+    )
+    mask = (
+        (divergence.horizons >= start)
+        & (divergence.horizons <= end)
+        & np.isfinite(divergence.mean_log_divergence)
+        & (divergence.reference_counts > 0)
+    )
+    if int(np.sum(mask)) < 3:
+        raise ValueError(
+            "the declared fit interval contains fewer than three finite "
+            "Kantz divergence points"
+        )
+
+    raw_time = divergence.time_lags[mask]
+    normalized_unit = divergence.time_unit.lower()
+    if normalized_unit in _TIME_TO_SECONDS:
+        x = raw_time * _TIME_TO_SECONDS[normalized_unit]
+        exponent_unit = "1/s"
+    else:
+        x = raw_time
+        exponent_unit = f"1/{divergence.time_unit}"
+    y = divergence.mean_log_divergence[mask]
+    fit = stats.linregress(x, y)
+    return LargestLyapunovResult(
+        exponent=float(fit.slope),
+        exponent_unit=exponent_unit,
+        intercept=float(fit.intercept),
+        r_squared=float(fit.rvalue**2),
+        standard_error=float(fit.stderr),
+        fit_start=float(divergence.time_lags[start]),
+        fit_end=float(divergence.time_lags[end]),
+        n_fit_points=int(np.sum(mask)),
+        divergence=divergence,
+        provenance={
+            "operation": "estimate_largest_lyapunov_kantz",
+            "divergence_provenance": dict(divergence.provenance),
+            "fit_start_samples": start,
+            "fit_end_samples": end,
+            "fit_interval_selected_automatically": False,
+            "interpretation_boundary": (
+                "positive exponent estimates local exponential divergence "
+                "under the declared Kantz neighborhood contract; it is not "
+                "standalone evidence of deterministic chaos"
             ),
         },
     )
