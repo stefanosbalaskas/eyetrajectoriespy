@@ -513,3 +513,40 @@ When reporting windowed RQA as functional data, report:
 - downstream FDA scaling, component count/selection rule, and inferential sampling unit.
 
 Do not report the number of overlapping windows as the inferential sample size.
+
+
+## Functional RQA window/step sensitivity and mean inference
+
+When `windowed_rqa_sensitivity()` is used, report:
+
+- every predeclared window/step specification, not only the preferred-looking profile;
+- requested values and resolved sample counts;
+- window span and derived-profile grid spacing;
+- overlap samples/fraction;
+- analyzed-source coverage;
+- fraction of analyzed source samples reused in multiple windows;
+- mean and maximum window memberships;
+- functional support and explicit trailing-tail count;
+- selected RQA metrics and recurrence contract;
+- whether pairwise sensitivity comparisons had exact shared centers;
+- the number of exact shared centers used by each pairwise comparison;
+- RMSE/absolute-difference/correlation diagnostics where defined;
+- that no interpolation or automatic window/step selection was used.
+
+Do not describe profile-grid spacing, number of windows, or overlap-adjusted counts as an effective independent sample size.
+
+When `windowed_rqa_functional_mean_band()` is used, additionally report:
+
+- the single window/step specification receiving inference and how it was chosen;
+- curve versus participant inference unit;
+- participant identifier for repeated-trial designs;
+- number of independent curve/participant functions;
+- whether repeated trials were averaged within participant;
+- confidence level, multiplier count, and random seed;
+- simultaneous calibration over the observed window-center-by-metric grid;
+- that whole residual functions, not window rows, received multipliers;
+- that within-function temporal dependence was retained in each multiplier draw;
+- that the method is not a within-trajectory moving/block bootstrap;
+- that the band is conditional on the declared window/step and recurrence specification.
+
+If the primary specification was selected after examining the sensitivity results, state that explicitly and do not present the band as if window-selection uncertainty had been included.
