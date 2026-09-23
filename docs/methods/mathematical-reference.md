@@ -787,7 +787,7 @@ The fitted slope is the Rosenstein-style largest-Lyapunov estimate. A positive e
 
 For reconstructed state $i$, define a fixed-radius neighborhood after the declared Theiler exclusion,
 
-$
+$$
 \mathcal N_i(\varepsilon)
 =
 \left\{
@@ -795,11 +795,11 @@ j:
 \|\mathbf z_i-\mathbf z_j\|_2\le\varepsilon,
 \ |i-j|>w
 \right\}.
-$
+$$
 
 For horizon $k$, only neighbors whose forward states remain observed are retained. A reference contributes only when at least the declared minimum number of neighbors remains. Its mean forward separation is computed first, then logged, and the logs are averaged across contributing references:
 
-$
+$$
 S(\varepsilon,k)
 =
 \frac{1}{N_k}
@@ -810,15 +810,15 @@ S(\varepsilon,k)
 \sum_{j\in\mathcal N_i(k)}
 \|\mathbf z_{i+k}-\mathbf z_{j+k}\|_2
 \right].
-$
+$$
 
 Over an analyst-declared linear region,
 
-$
+$$
 S(\varepsilon,k)
 \approx
 a+\lambda_{\max}k\Delta t.
-$
+$$
 
 The radius and minimum-neighbor count are explicit inputs. The package does not expand the neighborhood automatically when a reference has too few neighbors. Reference counts, pair counts, zero-mean-neighborhood counts, and each reference state's initial neighbor count are retained for audit.
 
