@@ -523,6 +523,307 @@ def _validate_fit_intervals(
     return tuple(normalized)
 
 
+
+def kantz_parameter_sensitivity(
+    trajectories: TrajectorySet,
+    *,
+    curve: int | str,
+    dimensions: Sequence[str],
+    embedding_dimensions: Sequence[int],
+    delays: Sequence[float | int],
+    radii: Sequence[float],
+    min_neighbors: Sequence[int],
+    theiler_windows: Sequence[float | int],
+    fit_intervals: Sequence[tuple[float | int, float | int]],
+    max_horizon: float | int,
+    delay_units: str = "samples",
+    theiler_window_units: str = "samples",
+    fit_units: str = "samples",
+    max_horizon_units: str = "samples",
+) -> KantzParameterSensitivityResult:
+    """Evaluate a declared Kantz-LLE parameter multiverse without tuning.
+
+    Every Cartesian-product specification is evaluated. Divergence curves are
+    reused across fit intervals for the same resolved embedding, radius,
+    minimum-neighbor, and Theiler contract. Invalid specifications fail the
+    whole analysis and identify the offending combination.
+
+    Variation across specifications is descriptive sensitivity, not a sampling
+    distribution and not a probability of deterministic chaos.
+    """
+
+    dimension_names = _validate_dimensions(trajectories, dimensions)
+    curve_name = _curve_id(trajectories, curve)
+    embedding_grid = _positive_integer_grid(
+        embedding_dimensions,
+        name="embedding_dimensions",
+        minimum=2,
+    )
+    delay_grid = _finite_numeric_grid(
+        delays,
+        name="delays",
+        positive=True,
+    )
+    radius_grid = _finite_numeric_grid(
+        radii,
+        name="radii",
+        positive=True,
+    )
+    min_neighbor_grid = _positive_integer_grid(
+        min_neighbors,
+        name="min_neighbors",
+        minimum=1,
+    )
+    theiler_grid = _finite_numeric_grid(
+        theiler_windows,
+        name="theiler_windows",
+        positive=False,
+        allow_zero=True,
+    )
+    intervals = _validate_fit_intervals(fit_intervals)
+    if isinstance(max_horizon, (bool, np.bool_)) or not isinstance(
+        max_horizon,
+        (int, float, np.integer, np.floating),
+    ):
+        raise TypeError("max_horizon must be numeric")
+    if not np.isfinite(float(max_horizon)) or float(max_horizon) <= 0:
+        raise ValueError("max_horizon must be positive and finite")
+
+    rows: list[dict[str, Any]] = []
+    resolved_embedding_keys: set[tuple[int, int]] = set()
+    resolved_specification_keys: set[tuple[Any, ...]] = set()
+    exponent_unit: str | None = None
+
+    for embedding_dimension, delay in product(embedding_grid, delay_grid):
+        try:
+            embedding = delay_embed_trajectory(
+                trajectories,
+                embedding_dimension=embedding_dimension,
+                delay=delay,
+                delay_units=delay_units,
+                dimensions=dimension_names,
+            )
+        except (TypeError, ValueError, KeyError, IndexError) as exc:
+            raise ValueError(
+                "Kantz sensitivity embedding failed for "
+                f"embedding_dimension={embedding_dimension}, delay={delay!r} "
+                f"{delay_units}: {exc}"
+            ) from exc
+
+        embedding_key = (embedding_dimension, embedding.delay_samples)
+        if embedding_key in resolved_embedding_keys:
+            raise ValueError(
+                "two declared embedding specifications resolve to the same "
+                f"(embedding_dimension, delay_samples)={embedding_key}; "
+                "remove duplicate resolved specifications"
+            )
+        resolved_embedding_keys.add(embedding_key)
+
+        for radius, minimum_neighbors, theiler_window in product(
+            radius_grid,
+            min_neighbor_grid,
+            theiler_grid,
+        ):
+            try:
+                divergence = kantz_divergence_curve(
+                    embedding,
+                    curve=curve,
+                    radius=float(radius),
+                    min_neighbors=minimum_neighbors,
+                    theiler_window=theiler_window,
+                    theiler_window_units=theiler_window_units,
+                    max_horizon=max_horizon,
+                    max_horizon_units=max_horizon_units,
+                )
+            except (TypeError, ValueError, KeyError, IndexError) as exc:
+                raise ValueError(
+                    "Kantz sensitivity divergence failed for "
+                    f"embedding_dimension={embedding_dimension}, "
+                    f"delay_samples={embedding.delay_samples}, "
+                    f"radius={float(radius):.12g}, "
+                    f"min_neighbors={minimum_neighbors}, "
+                    f"theiler_window={theiler_window!r} "
+                    f"{theiler_window_units}: {exc}"
+                ) from exc
+
+            initial_supported_fraction = float(
+                np.mean(divergence.initial_neighbor_counts >= minimum_neighbors)
+            )
+
+            for fit_start, fit_end in intervals:
+                try:
+                    estimate = estimate_largest_lyapunov_kantz(
+                        divergence,
+                        fit_start=fit_start,
+                        fit_end=fit_end,
+                        fit_units=fit_units,
+                    )
+                except (TypeError, ValueError, KeyError, IndexError) as exc:
+                    raise ValueError(
+                        "Kantz sensitivity fit failed for "
+                        f"embedding_dimension={embedding_dimension}, "
+                        f"delay_samples={embedding.delay_samples}, "
+                        f"radius={float(radius):.12g}, "
+                        f"min_neighbors={minimum_neighbors}, "
+                        f"theiler_window_samples="
+                        f"{divergence.theiler_window_samples}, "
+                        f"fit_interval=({fit_start!r}, {fit_end!r}) "
+                        f"{fit_units}: {exc}"
+                    ) from exc
+
+                fit_start_samples = int(estimate.provenance["fit_start_samples"])
+                fit_end_samples = int(estimate.provenance["fit_end_samples"])
+                specification_key = (
+                    embedding_dimension,
+                    embedding.delay_samples,
+                    float(radius),
+                    int(minimum_neighbors),
+                    divergence.theiler_window_samples,
+                    fit_start_samples,
+                    fit_end_samples,
+                )
+                if specification_key in resolved_specification_keys:
+                    raise ValueError(
+                        "two declared Kantz specifications resolve to the same "
+                        "sample-level reconstruction/neighborhood/fit contract; "
+                        "remove duplicate resolved specifications"
+                    )
+                resolved_specification_keys.add(specification_key)
+
+                if exponent_unit is None:
+                    exponent_unit = estimate.exponent_unit
+                elif exponent_unit != estimate.exponent_unit:
+                    raise RuntimeError(
+                        "Kantz sensitivity produced inconsistent exponent units"
+                    )
+
+                fit_mask = (
+                    (divergence.horizons >= fit_start_samples)
+                    & (divergence.horizons <= fit_end_samples)
+                )
+                fit_reference_counts = divergence.reference_counts[fit_mask]
+                fit_pair_counts = divergence.pair_counts[fit_mask]
+                fit_zero_counts = divergence.zero_mean_neighborhood_counts[fit_mask]
+
+                rows.append(
+                    {
+                        "embedding_dimension": embedding_dimension,
+                        "requested_delay": float(delay),
+                        "delay_units": delay_units,
+                        "delay_samples": embedding.delay_samples,
+                        "delay_time": embedding.delay_time,
+                        "radius": float(radius),
+                        "min_neighbors": int(minimum_neighbors),
+                        "requested_theiler_window": float(theiler_window),
+                        "theiler_window_units": theiler_window_units,
+                        "theiler_window_samples": divergence.theiler_window_samples,
+                        "requested_fit_start": float(fit_start),
+                        "requested_fit_end": float(fit_end),
+                        "fit_units": fit_units,
+                        "fit_start_samples": fit_start_samples,
+                        "fit_end_samples": fit_end_samples,
+                        "resolved_fit_start_time": estimate.fit_start,
+                        "resolved_fit_end_time": estimate.fit_end,
+                        "requested_max_horizon": float(max_horizon),
+                        "max_horizon_units": max_horizon_units,
+                        "max_horizon_samples": divergence.max_horizon_samples,
+                        "exponent": estimate.exponent,
+                        "exponent_unit": estimate.exponent_unit,
+                        "r_squared": estimate.r_squared,
+                        "standard_error": estimate.standard_error,
+                        "intercept": estimate.intercept,
+                        "n_fit_points": estimate.n_fit_points,
+                        "initial_supported_reference_fraction": (
+                            initial_supported_fraction
+                        ),
+                        "minimum_reference_count_in_fit": (
+                            int(np.min(fit_reference_counts))
+                            if fit_reference_counts.size
+                            else 0
+                        ),
+                        "minimum_pair_count_in_fit": (
+                            int(np.min(fit_pair_counts))
+                            if fit_pair_counts.size
+                            else 0
+                        ),
+                        "total_zero_mean_neighborhood_count_in_fit": int(
+                            np.sum(fit_zero_counts)
+                        ),
+                    }
+                )
+
+    table = pd.DataFrame(rows)
+    table.insert(
+        0,
+        "specification_id",
+        [f"spec_{index + 1}" for index in range(len(table))],
+    )
+    parameter_columns = (
+        "embedding_dimension",
+        "requested_delay",
+        "delay_samples",
+        "radius",
+        "min_neighbors",
+        "requested_theiler_window",
+        "theiler_window_samples",
+        "requested_fit_start",
+        "requested_fit_end",
+        "fit_start_samples",
+        "fit_end_samples",
+    )
+    summary = _variation_summary(
+        table,
+        _KANTZ_LLE_SUMMARY_METRICS,
+        exponent_sign=True,
+    )
+    if exponent_unit is None:
+        raise RuntimeError(
+            "Kantz sensitivity unexpectedly produced no specifications"
+        )
+
+    return KantzParameterSensitivityResult(
+        table=table,
+        summary_table=summary,
+        parameter_columns=parameter_columns,
+        curve_id=curve_name,
+        exponent_unit=exponent_unit,
+        provenance={
+            "operation": "kantz_parameter_sensitivity",
+            "source_provenance": dict(trajectories.provenance),
+            "curve_id": curve_name,
+            "dimensions": dimension_names,
+            "delay_units": delay_units,
+            "theiler_window_units": theiler_window_units,
+            "fit_units": fit_units,
+            "max_horizon_units": max_horizon_units,
+            "cartesian_product_evaluated": True,
+            "n_specifications": len(table),
+            "automatic_parameter_selection": False,
+            "automatic_radius_selection": False,
+            "automatic_fit_interval_selection": False,
+            "failed_specification_policy": "raise_entire_analysis",
+            "divergence_reuse": (
+                "one Kantz divergence curve per resolved embedding/radius/"
+                "min-neighbors/Theiler specification, reused across declared "
+                "fit intervals"
+            ),
+            "positive_fraction_interpretation": (
+                "descriptive fraction of the analyst-declared sensitivity grid "
+                "with exponent > 0; not a probability of deterministic chaos"
+            ),
+            "support_fraction_interpretation": (
+                "fraction of reconstructed reference states satisfying the "
+                "declared minimum-neighbor rule at horizon zero; descriptive "
+                "support diagnostic, not an inferential weight"
+            ),
+            "summary_interpretation": (
+                "descriptive variation over the analyst-declared parameter "
+                "multiverse; not a sampling distribution"
+            ),
+        },
+    )
+
+
 def lyapunov_parameter_sensitivity(
     trajectories: TrajectorySet,
     *,
