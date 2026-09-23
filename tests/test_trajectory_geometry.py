@@ -64,7 +64,9 @@ def test_counterclockwise_unit_circle_has_positive_unit_curvature_and_turning_ra
         1.0,
         atol=2e-3,
     )
-    assert curvature.provenance["orientation_sign"] == "positive_counterclockwise"
+    assert curvature.provenance["orientation_sign"] == (
+        "positive_under_the_recorded_x_y_axis_orientation"
+    )
     assert turning.provenance["computed_from_wrapped_heading"] is False
 
 
@@ -131,6 +133,18 @@ def test_nonstandard_planar_dimensions_must_be_declared_explicitly():
         heading_function(source, dimensions=("gaze_x",))
     with pytest.raises(KeyError, match="Unknown trajectory dimensions"):
         heading_function(source, dimensions=("gaze_x", "missing"))
+
+
+def test_two_point_path_supports_tortuosity_but_not_differential_geometry():
+    time = np.array([0.0, 1.0])
+    xy = np.asarray([[0.0, 0.0], [1.0, 0.0]])
+    source = _trajectory(time, xy)
+
+    result = trajectory_tortuosity(source)
+    assert result.loc[0, "tortuosity"] == pytest.approx(1.0)
+
+    with pytest.raises(ValueError, match="at least three time samples"):
+        heading_function(source)
 
 
 def test_tortuosity_is_path_length_over_endpoint_displacement():
