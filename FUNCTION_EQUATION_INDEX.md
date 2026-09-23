@@ -46,23 +46,23 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## Continuous planar trajectory geometry
 
-**Functions:** \`heading_function()\`, \`signed_curvature_function()\`, \`turning_rate_function()\`, \`trajectory_tortuosity()\`
+**Functions:** `heading_function()`, `signed_curvature_function()`, `turning_rate_function()`, `trajectory_tortuosity()`
 
-$
+$$
 \theta(t)=\operatorname{atan2}\{y'(t),x'(t)\}
-$
+$$
 
-$
+$$
 \kappa(t)=\frac{x'(t)y''(t)-y'(t)x''(t)}{\{x'(t)^2+y'(t)^2\}^{3/2}}
-$
+$$
 
-$
+$$
 \omega(t)=\frac{x'(t)y''(t)-y'(t)x''(t)}{x'(t)^2+y'(t)^2}=\kappa(t)\|\mathbf G'(t)\|
-$
+$$
 
-$
+$$
 T=\frac{\sum_{m=1}^{M-1}\|\mathbf G(t_{m+1})-\mathbf G(t_m)\|_2}{\|\mathbf G(t_M)-\mathbf G(t_1)\|_2}
-$
+$$
 
 **Scope:** Complete declared planar coordinates with numerical derivatives computed without hidden smoothing; low-speed and zero-displacement undefinedness is explicit, and geometric interpretation remains conditional on source coordinate scaling and axis orientation.
 
