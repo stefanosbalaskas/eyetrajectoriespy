@@ -48,6 +48,7 @@ def main() -> None:
         "split_conformal_fpca_anomaly()",
         "delay_embed_trajectory()",
         "recurrence_matrix()",
+        "recurrence_radius_profile()",
         "rqa_parameter_sensitivity()",
         "windowed_rqa_trajectory_set()",
         "estimate_largest_lyapunov_rosenstein()",
@@ -95,7 +96,7 @@ def main() -> None:
         raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.26.0.dev0"):
+    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.27.0.dev0"):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
 
