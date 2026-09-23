@@ -56,6 +56,10 @@ from .nonlinear_dynamics import (
     local_divergence_curve,
     surrogate_nonlinearity_test,
 )
+from .functional_rqa import (
+    windowed_rqa_functional_mean_band,
+    windowed_rqa_sensitivity,
+)
 from .nonlinear_reporting import (
     largest_lyapunov_reporting_text,
     return_map_stability_reporting_text,
@@ -63,6 +67,8 @@ from .nonlinear_reporting import (
     surrogate_nonlinearity_reporting_text,
     windowed_rqa_reporting_text,
     windowed_rqa_functional_reporting_text,
+    windowed_rqa_mean_band_reporting_text,
+    windowed_rqa_sensitivity_reporting_text,
 )
 from .nonlinear_plotting import (
     plot_embedding_delay_diagnostics,
@@ -72,6 +78,7 @@ from .nonlinear_plotting import (
     plot_recurrence,
     plot_surrogate_nonlinearity,
     plot_windowed_rqa,
+    plot_windowed_rqa_sensitivity,
     plot_windowed_rqa_trajectories,
 )
 from .nonlinear_types import (
@@ -87,7 +94,9 @@ from .nonlinear_types import (
     ReturnMapStabilityResult,
     SurrogateNonlinearityResult,
     WindowedRQAFunctionalResult,
+    WindowedRQAMeanBandResult,
     WindowedRQAResult,
+    WindowedRQASensitivityResult,
 )
 from .recurrence import (
     cross_recurrence_matrix,
