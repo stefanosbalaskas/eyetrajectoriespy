@@ -649,3 +649,31 @@ No. It remains a fixed-covariance participant bootstrap: fixed coefficients are
 re-estimated while the complete fitted random intercept/slope covariance and
 residual variance remain fixed. Full covariance re-estimation is reserved for
 the planned 0.46 tranche.
+
+### Why must duplicate sampled participants get new bootstrap group IDs?
+
+A cluster bootstrap samples independent participant units with replacement. If
+the same source participant is drawn twice, those are two bootstrap copies and
+must be represented as two independent bootstrap groups. Reusing the original
+participant ID would cause `MixedLM` to merge both copies into one random-effect
+group and would change the intended bootstrap procedure.
+
+### What does "full refit" mean in version 0.46?
+
+It means the declared mixed model re-estimates fixed effects, random-effect
+covariance and residual variance in every participant resample. It does not
+rerun preprocessing, select a new basis size, change predictors, select a
+different random slope, change optimizer or alter the random-effect structure.
+
+### Why are failed full-refit bootstrap samples not redrawn?
+
+Redrawing until a fixed number of successful fits is obtained conditions the
+bootstrap distribution on successful optimization/model fitting. Version 0.46
+instead raises on the first failed replicate so instability of the declared
+model remains visible.
+
+### Does the variance bootstrap frame provide confidence intervals for variance components?
+
+No. It exposes empirical replicate-level covariance and residual-variance
+stability. Version 0.46 does not automatically claim calibrated
+variance-component confidence intervals.
