@@ -792,10 +792,10 @@ and condition numbers, boundary/singularity flags, residual variances, log
 likelihoods, convergence states, backend warnings, source participant IDs, and
 bootstrap participant IDs.
 
-**API:** \`bootstrap_functional_mixed_effects_full_refit()\`,
-\`functional_mixed_effects_full_refit_audit_frame()\`,
-\`functional_mixed_effects_variance_bootstrap_frame()\`,
-\`compare_functional_mixed_effects_bootstraps()\`.
+**API:** `bootstrap_functional_mixed_effects_full_refit()`,
+`functional_mixed_effects_full_refit_audit_frame()`,
+`functional_mixed_effects_variance_bootstrap_frame()`,
+`compare_functional_mixed_effects_bootstraps()`.
 
 ## Participant-cluster simultaneous mixed-effects coefficient bands { #functional-mixed-effects-simultaneous }
 
