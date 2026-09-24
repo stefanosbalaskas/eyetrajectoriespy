@@ -228,6 +228,30 @@ $$
 
 [Expanded mathematical reference](../methods/mathematical-reference.md#functional-mixed-effects)
 
+## Participant-cluster simultaneous mixed-effects coefficient bands
+
+**Functions:** `bootstrap_functional_mixed_effects_coefficients()`, `functional_mixed_effects_simultaneous_bands()`
+
+$
+\mathbf V_i=\mathbf Z_i\widehat{\boldsymbol\Psi}\mathbf Z_i^\top+\widehat\sigma^2\mathbf I
+$
+
+$
+\widehat{\boldsymbol\theta}^{*(b)}=\left[\sum_{r=1}^{n}\mathbf A_{I_r^{(b)}}\right]^{-1}\sum_{r=1}^{n}\mathbf s_{I_r^{(b)}},\quad \mathbf A_i=\mathbf X_i^\top\mathbf V_i^{-1}\mathbf X_i,\ \mathbf s_i=\mathbf X_i^\top\mathbf V_i^{-1}\mathbf y_i
+$
+
+$
+M_p^{*(b)}=\max_m\left|\frac{\widehat\beta_p^{*(b)}(t_m)-\overline{\widehat\beta_p^*}(t_m)}{\widehat{\mathrm{SE}}_p^*(t_m)}\right|
+$
+
+$
+\widehat\beta_p(t_m)\pm c_{p,1-\alpha}\widehat{\mathrm{SE}}_p^*(t_m)
+$
+
+**Scope:** Whole-participant case bootstrap for fixed coefficient functions. Each resample re-estimates the fixed B-spline coefficients by GLS while conditioning on the reference random-effect covariance, residual variance, and declared bases. Bands are simultaneous over the observed time grid with coefficient or full fixed-effect-family scope; variance-component, basis-selection, and between-grid uncertainty are not included.
+
+[Expanded mathematical reference](../methods/mathematical-reference.md#functional-mixed-effects-simultaneous)
+
 ## Function-on-scalar regression and simultaneous coefficient bands
 
 **Functions:** `fit_function_on_scalar_regression()`, `bootstrap_function_on_scalar_coefficients()`, `function_on_scalar_simultaneous_bands()`
