@@ -494,6 +494,8 @@ For local divergence/LLE, report the reconstructed state, Theiler window, maximu
 
 For IAAFT testing, report the exact statistic, surrogate algorithm, number of surrogates, seed/reproducibility policy, iteration/tolerance settings, final spectrum-mismatch diagnostics, alternative, Monte Carlo p-value rule, and interpretation of the surrogate null.
 
+For multivariate IAAFT, additionally report the selected channel set, analyst-declared reference dimension, exact marginal-rank constraint, maximum/summary per-channel spectrum mismatch, maximum/summary pairwise complex cross-spectrum mismatch, and that final spectral preservation is approximate after rank remapping. State explicitly that channels were not surrogate-generated independently.
+
 For empirical return maps, report the section, crossing direction, interpolated crossing count, returned state variables, reference state, neighborhood policy/value, selected transition count, local-fit (R^2), Jacobian eigenvalues, spectral radius, and stability tolerance. Label the method experimental and state explicitly that the eigenvalues are not classical Floquet multipliers.
 ## RQA-derived functional trajectories
 
