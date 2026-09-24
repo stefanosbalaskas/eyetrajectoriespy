@@ -59,6 +59,7 @@ def main() -> None:
         "discrete_frechet_distance()",
         "dynamic_time_warping_distance()",
         "multiplier_functional_mean_band()",
+        "fit_functional_mixed_effects_regression()",
         "fit_function_on_scalar_regression()",
         "function_on_scalar_simultaneous_bands()",
         "wild_bootstrap_fpca_projection()",
@@ -118,7 +119,7 @@ def main() -> None:
         raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.35.0.dev0"):
+    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.36.0.dev0"):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
 
