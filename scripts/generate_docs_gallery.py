@@ -28,6 +28,7 @@ from eyetrajectoriespy import (
     fpca_wild_bootstrap_family_test_monte_carlo_diagnostics,
     fpca_wild_bootstrap_projection_family_test,
     kantz_divergence_curve,
+    joint_recurrence_matrix,
     kantz_parameter_sensitivity,
     local_divergence_curve,
     multiplier_functional_mean_band,
@@ -40,6 +41,7 @@ from eyetrajectoriespy import (
     plot_function_on_scalar_coefficients,
     plot_functional_mixed_effects_coefficient,
     plot_functional_mean_band,
+    plot_joint_recurrence,
     plot_kantz_sensitivity,
     plot_local_divergence,
     plot_multivariate_iaaft_diagnostics,
@@ -411,6 +413,43 @@ def main() -> None:
     ax = plot_recurrence(recurrence)
     _save(ax, "recurrence-plot.svg")
 
+    joint_a = recurrence_matrix(
+        TrajectorySet(
+            time=nonlinear_time,
+            values=np.column_stack(
+                [nonlinear_x, np.roll(nonlinear_x, 1)]
+            )[None, :, :],
+            curve_ids=("joint-demo",),
+            dimension_names=("x", "x_lag_proxy"),
+            time_unit="s",
+            coordinate_system="arbitrary",
+        ),
+        curve=0,
+        target_recurrence_rate=0.08,
+        theiler_window=8,
+        dimensions=("x",),
+    )
+    joint_b = recurrence_matrix(
+        TrajectorySet(
+            time=nonlinear_time,
+            values=np.cos(2.0 * np.pi * 1.5 * nonlinear_time)[None, :, None],
+            curve_ids=("joint-demo",),
+            dimension_names=("signal_b",),
+            time_unit="s",
+            coordinate_system="arbitrary",
+        ),
+        curve=0,
+        target_recurrence_rate=0.10,
+        theiler_window=8,
+        dimensions=("signal_b",),
+    )
+    joint = joint_recurrence_matrix(
+        (joint_a, joint_b),
+        labels=("system_a", "system_b"),
+    )
+    ax = plot_joint_recurrence(joint)
+    _save(ax, "joint-recurrence.svg")
+
     radius_profile = recurrence_radius_profile(
         embedded,
         curve=0,
@@ -608,6 +647,7 @@ def main() -> None:
         "wild-bootstrap-family-test.svg",
         "monte-carlo-precision.svg",
         "recurrence-plot.svg",
+        "joint-recurrence.svg",
         "recurrence-radius-profile.svg",
         "rqa-population-bootstrap.svg",
         "windowed-rqa.svg",
