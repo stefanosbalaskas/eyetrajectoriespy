@@ -51,6 +51,12 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [2-D evidence inspection](../examples/evidence-inspection.md)
 
+-   **Compare ordered gaze trajectories elastically**
+
+    Contrast discrete Fréchet bottleneck separation with cumulative DTW alignment, inspect the path/coupling, and keep timing assumptions explicit.
+
+    [DTW worked example](../examples/dynamic-time-warping.md) · [Discrete Fréchet example](../examples/discrete-frechet.md)
+
 -   **Irregular sampling**
 
     Keep native sample times, audit gaps, then choose an explicit common-grid projection.
