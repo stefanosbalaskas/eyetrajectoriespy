@@ -654,6 +654,36 @@ recurrence state representation, metric, threshold policy, Theiler exclusion,
 and sampling design. No threshold tuning, community detection, edge weighting,
 or automatic dimension interpretation is performed.
 
+## Discrete transfer entropy and circular-shift surrogate testing
+
+For discrete source and target states, the implemented transfer entropy is
+
+$
+T_{X\to Y}(k,l,d)
+=
+I\!\left(X_{t-d}^{(l)};Y_t\mid Y_{t-1}^{(k)}\right),
+$
+
+estimated by empirical counts and base-2 logarithms. The target history length
+\(k\), source history length \(l\), and source lag \(d\) are all explicit
+sample-index settings. Continuous observations are not discretized
+automatically.
+
+For analyst-declared circular source shifts, the upper-tail Monte Carlo
+comparison uses
+
+$
+p_+
+=
+\frac{1+\sum_{b=1}^{B}I(T_b^*\ge T_{obs})}{B+1}.
+$
+
+Implemented by `discrete_transfer_entropy()` and
+`transfer_entropy_circular_shift_test()`. The estimator retains empirical
+history-support diagnostics; the surrogate test retains the complete declared
+shift set and attainable p-value resolution. Neither API performs automatic
+state construction, lag/history selection, or causal identification.
+
 ## Population mean bootstrap for curve-level RQA metrics
 
 For one fixed recurrence/RQA specification $\theta$,
