@@ -449,6 +449,32 @@ _CONTRACTS = (
         ),
     ),
     MathematicalContract(
+        key="multivariate-iaaft",
+        title="Cross-spectrum-aware multivariate IAAFT surrogates",
+        public_api=(
+            "generate_multivariate_iaaft_surrogates",
+            "multivariate_surrogate_nonlinearity_test",
+        ),
+        equations=(
+            r"F_k(\omega)=A_k(\omega)e^{i\phi_k(\omega)}",
+            r"\Delta\phi_{kr}(\omega)=\phi_k(\omega)-\phi_r(\omega)",
+            r"F_k^*(\omega)=A_k(\omega)"
+            r"e^{i[\psi_r^*(\omega)+\Delta\phi_{kr}(\omega)]}",
+            r"C_{k\ell}(\omega)=F_k(\omega)F_\ell(\omega)^*",
+            r"p=\frac{1+\sum_{b=1}^{B}\mathbb I"
+            r"(T_b^*\ge T_{\mathrm{obs}})}{B+1}",
+        ),
+        site_anchor="multivariate-iaaft",
+        scope=(
+            "Reference-anchored multivariate IAAFT with exact empirical "
+            "marginal rank distributions and iterative targeting of each "
+            "channel power spectrum plus original inter-channel Fourier "
+            "phase differences. Final power/cross-spectrum preservation is "
+            "approximate after rank remapping and retained diagnostically; "
+            "the reference dimension is analyst-declared."
+        ),
+    ),
+    MathematicalContract(
         key="surrogate-nonlinearity",
         title="IAAFT surrogate nonlinearity test",
         public_api=("surrogate_nonlinearity_test",),
