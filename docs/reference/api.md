@@ -14,6 +14,14 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.multivariate_iaaft_reporting_text
 ::: eyetrajectoriespy.multivariate_surrogate_nonlinearity_reporting_text
 
+## Recurrence networks
+::: eyetrajectoriespy.RecurrenceNetworkResult
+::: eyetrajectoriespy.recurrence_network
+::: eyetrajectoriespy.recurrence_network_node_frame
+::: eyetrajectoriespy.recurrence_network_summary_frame
+::: eyetrajectoriespy.plot_recurrence_network_degree
+::: eyetrajectoriespy.recurrence_network_reporting_text
+
 ## Joint recurrence analysis
 ::: eyetrajectoriespy.JointRecurrenceResult
 ::: eyetrajectoriespy.joint_recurrence_matrix
