@@ -458,6 +458,113 @@ $$
 
 **API:** `multiplier_functional_mean_band()`; `windowed_rqa_functional_mean_band()` reuses this calibration after constructing the declared RQA-derived functional trajectories.
 
+## Function-on-scalar regression { #function-on-scalar }
+
+Let \(Y_{id}(t_m)\) be functional response dimension \(d\) for independent inference unit \(i\), and let \(\mathbf x_i\) contain an intercept and the analyst-declared scalar predictors. At each observed time and selected response dimension,
+
+$
+Y_{id}(t_m)
+=
+\mathbf x_i^\top\boldsymbol\beta_d(t_m)
++
+\varepsilon_{id}(t_m).
+$
+
+Stacking inference units gives
+
+$
+\mathbf Y_d(t_m)
+=
+\mathbf X\boldsymbol\beta_d(t_m)
++
+\boldsymbol\varepsilon_d(t_m),
+$
+
+with full-rank observed-grid OLS estimator
+
+$
+\widehat{\boldsymbol\beta}_d(t_m)
+=
+(\mathbf X^\top\mathbf X)^{-1}
+\mathbf X^\top\mathbf Y_d(t_m).
+$
+
+The package does not smooth the coefficient functions or expand them in a basis in version 0.35. Each coefficient curve is therefore the sequence of observed-grid OLS estimates under one shared design matrix.
+
+### HC1 pointwise sandwich standard errors
+
+Let
+
+$
+\mathbf A
+=
+\mathbf X(\mathbf X^\top\mathbf X)^{-1},
+$
+
+and let \(\widehat\varepsilon_{id}(t_m)\) be the fitted residual. For coefficient \(j\), the diagonal HC1 variance estimate is
+
+$
+\widehat V_{j,d}(t_m)
+=
+\frac{n}{n-p}
+\sum_{i=1}^{n}
+\left[
+A_{ij}\widehat\varepsilon_{id}(t_m)
+\right]^2,
+$
+
+where \(p=\operatorname{rank}(\mathbf X)\). The reported pointwise standard error is \(\sqrt{\widehat V_{j,d}(t_m)}\).
+
+### Fixed-design wild bootstrap
+
+For bootstrap replicate \(b\), one multiplier is drawn per independent inference unit and the complete residual function is multiplied as a unit:
+
+$
+Y_{id}^{*(b)}(t_m)
+=
+\widehat Y_{id}(t_m)
++
+W_i^{(b)}\widehat\varepsilon_{id}(t_m).
+$
+
+Version 0.35 supports Rademacher or standard-normal multipliers. The design matrix is held fixed, so a declared full-rank design does not become rank deficient because of bootstrap row resampling.
+
+For coefficient-specific simultaneous calibration,
+
+$
+M_j^{*(b)}
+=
+\max_{m,d}
+\left|
+\frac{
+\widehat\beta_{j,d}^{*(b)}(t_m)
+-
+\widehat\beta_{j,d}(t_m)
+}{
+\widehat{\mathrm{SE}}\{\widehat\beta_{j,d}(t_m)\}
+}
+\right|.
+$
+
+If \(c_{j,1-\alpha}\) is the empirical \((1-\alpha)\)-quantile of these maxima, the observed-grid simultaneous band is
+
+$
+\widehat\beta_{j,d}(t_m)
+\pm
+c_{j,1-\alpha}
+\widehat{\mathrm{SE}}\{\widehat\beta_{j,d}(t_m)\}.
+$
+
+With `simultaneous_scope="family"`, one maximum is taken over coefficient, time, and selected functional dimensions, producing one shared critical value for the declared coefficient family.
+
+### Repeated-trial boundary
+
+With `unit="curve"`, source curves are explicitly treated as independent inference units. With `unit="participant"`, version 0.35 first averages the selected response trajectories within participant and requires every declared predictor to be constant within participant. The resulting estimand is an equal-weight participant-average functional response conditional on participant-level predictors.
+
+This is not a functional mixed-effects model. Within-participant condition effects, trial-varying covariates, random functional intercepts/slopes, and participant-by-time covariance are deferred to the repeated-measures functional-regression tranche rather than approximated by independent pointwise mixed models.
+
+**API:** `fit_function_on_scalar_regression()`, `bootstrap_function_on_scalar_coefficients()`, `function_on_scalar_simultaneous_bands()`, `function_on_scalar_coefficient_frame()`.
+
 ## Scalar-on-function regression through FPC scores { #fpcr }
 
 The Gaussian score-space approximation is
