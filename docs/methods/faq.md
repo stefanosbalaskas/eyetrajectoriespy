@@ -555,3 +555,17 @@ Path length and mean local distance remain audit summaries, not substitutes for 
 ## Should I use symmetric1 or symmetric2?
 
 Treat the choice as part of the analysis specification. symmetric1 preserves the 0.33 cumulative-cost contract but is not N+M-normalizable. symmetric2 changes the diagonal weighting and supports the path-independent N+M normalization commonly used for symmetric global DTW. Pre-specify the pattern when possible and report it explicitly; do not switch after inspecting which version produces the preferred condition contrast.
+
+### Can transfer entropy prove that one gaze signal causes another?
+
+No. The 0.41 API quantifies directed predictive information conditional on the
+declared target history and source representation. Common drivers, omitted
+history, discretization, finite-sample bias, nonstationarity, and an
+inappropriate surrogate null can all affect the estimate. The reporting helper
+therefore avoids causal language.
+
+### Why does the package refuse my continuous gaze values?
+
+Because discretization changes the estimand. Version 0.41 requires
+integer-coded discrete states rather than silently selecting bins or a
+continuous TE estimator. Construct and justify that representation upstream.
