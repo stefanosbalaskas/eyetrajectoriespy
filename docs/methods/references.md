@@ -386,3 +386,24 @@ narrower participant-cluster case bootstrap for the existing
 participant resample while the fitted covariance parameters and declared bases
 are held fixed. The package does not claim that this is identical to the full
 FMEM resampling procedures in those papers.
+
+## Random functional effects and slopes
+
+- Scheipl, F., Staicu, A.-M., & Greven, S. (2015). Functional Additive Mixed
+  Models. *Journal of Computational and Graphical Statistics, 24*(2), 477–501.
+  DOI: 10.1080/10618600.2014.901914.
+- Zhu, H., Chen, K., Luo, X., Yuan, Y., & Wang, J.-L. (2019). FMEM:
+  Functional Mixed-Effects Models for Longitudinal Functional Responses.
+  *Statistica Sinica, 29*(4), 2007–2033.
+  DOI: 10.5705/ss.202017.0505.
+
+Scheipl et al. provide a broad functional additive mixed-model framework for
+correlated functional responses with flexible functional random effects and
+scalar covariates whose effects may vary over the functional index. Zhu et al.
+provide a longitudinal functional mixed-effects framework with fixed and random
+effects plus whole-function inference.
+
+Version 0.45 is intentionally narrower: one Gaussian response dimension, one
+participant functional random intercept, at most one explicitly declared
+participant random functional slope, one shared random basis size, and a full
+unstructured intercept/slope covariance.
