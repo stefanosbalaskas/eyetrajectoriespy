@@ -8,6 +8,7 @@ from .functional_mixed_effects import _fixed_effect_design
 from .types import (
     FunctionalMixedEffectsBandResult,
     FunctionalMixedEffectsBootstrapResult,
+    FunctionalMixedEffectsFullRefitBootstrapResult,
     FunctionalMixedEffectsResult,
 )
 
@@ -323,7 +324,7 @@ def bootstrap_functional_mixed_effects_coefficients(
 
 
 def functional_mixed_effects_simultaneous_bands(
-    bootstrap: FunctionalMixedEffectsBootstrapResult,
+    bootstrap: FunctionalMixedEffectsBootstrapResult | FunctionalMixedEffectsFullRefitBootstrapResult,
     *,
     confidence_level: float = 0.95,
     simultaneous_scope: str = "coefficient",
@@ -332,10 +333,14 @@ def functional_mixed_effects_simultaneous_bands(
 
     if not isinstance(
         bootstrap,
-        FunctionalMixedEffectsBootstrapResult,
+        (
+            FunctionalMixedEffectsBootstrapResult,
+            FunctionalMixedEffectsFullRefitBootstrapResult,
+        ),
     ):
         raise TypeError(
-            "bootstrap must be a FunctionalMixedEffectsBootstrapResult"
+            "bootstrap must be a FunctionalMixedEffectsBootstrapResult "
+            "or FunctionalMixedEffectsFullRefitBootstrapResult"
         )
     if not 0 < confidence_level < 1:
         raise ValueError("confidence_level must lie in (0, 1)")
@@ -436,7 +441,18 @@ def functional_mixed_effects_simultaneous_bands(
                 "bias_correction": False,
                 "pointwise_scale": "participant_cluster_bootstrap_sd",
                 "continuous_between_grid_points": False,
-                "variance_components_refit": False,
+                "variance_components_refit": isinstance(
+                    bootstrap,
+                    FunctionalMixedEffectsFullRefitBootstrapResult,
+                ),
+                "bootstrap_type": (
+                    "full_refit"
+                    if isinstance(
+                        bootstrap,
+                        FunctionalMixedEffectsFullRefitBootstrapResult,
+                    )
+                    else "fixed_covariance"
+                ),
                 "failed_replicate_policy": "raise",
             },
         },
