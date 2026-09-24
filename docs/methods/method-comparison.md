@@ -14,11 +14,23 @@
 | Same shape, different timing | registration / elastic FDA | automatically “better preprocessing” |
 | AOI allocation over time | compositional FPCA | independent PCA of bounded proportions |
 | Condition-specific smooth mean | often GAMM | FPCA by itself |
+| Experimental predictors changing a functional response | function-on-scalar regression | treating every time point as an unrelated regression or treating repeated trials as independent |
 | Exact onset of divergence | specialized onset methods | FPCA loading inspection |
 | Predict scalar outcome | functional regression / score regression | causal mediation by default |
 | Predict an external scalar outcome while tuning retained FPC count | fold-local FPCA regression CV / nested CV | variance-explained or reconstruction selection |
 
 FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; GAMMs model conditional mean structure over time.
+
+
+## Function-on-scalar versus scalar-on-function
+
+| Question | Direction | Primary tool | Boundary |
+|---|---|---|---|
+| How does a continuous gaze response change with condition, expertise, age, or another scalar predictor? | scalar predictors → functional response | `fit_function_on_scalar_regression()` | 0.35 repeated trials require participant-constant predictors and aggregation |
+| How does a functional gaze trajectory predict a scalar outcome? | functional predictor → scalar response | `fit_scalar_on_function_regression()` / FPCR | inference depends on retained FPCA representation |
+| Do I need participant-specific random functional effects or within-participant trial predictors? | repeated-measures functional response | future functional mixed-effects layer | not approximated by curve independence in 0.35 |
+
+Function-on-scalar regression estimates coefficient functions over time. Scalar-on-function regression instead compresses or integrates information from a functional predictor to explain a scalar response. They answer opposite regression questions and should not be used interchangeably.
 
 
 ## Pointwise versus simultaneous FPC uncertainty
