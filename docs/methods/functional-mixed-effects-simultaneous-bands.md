@@ -1,13 +1,13 @@
 # Simultaneous inference for functional mixed-effects coefficients
 
 Version 0.44 adds observed-grid simultaneous confidence bands for the fixed
-coefficient functions from `fit_functional_mixed_effects_regression()`.
+coefficient functions from \`fit_functional_mixed_effects_regression()\`.
 
 The goal is to support a whole-function statement about, for example,
 
-[
-eta_{mathrm{condition}}(t),
-]
+$$
+\beta_{\mathrm{condition}}(t),
+$$
 
 rather than treating every time point as an unrelated inferential claim.
 
@@ -16,7 +16,7 @@ rather than treating every time point as an unrelated inferential claim.
 The resampling unit is the **participant**. Every selected participant
 contributes all of that participant's trials and all observed time points.
 
-```python
+\`\`\`python
 from eyetrajectoriespy import (
     bootstrap_functional_mixed_effects_coefficients,
     functional_mixed_effects_simultaneous_bands,
@@ -33,46 +33,46 @@ band = functional_mixed_effects_simultaneous_bands(
     confidence_level=0.95,
     simultaneous_scope="coefficient",
 )
-```
+\`\`\`
 
 Curves are never sampled independently. That would break the repeated-measures
 structure the mixed model was introduced to preserve.
 
 ## What is re-estimated
 
-For participant (i), let
+For participant \(i\), let
 
-[
-mathbf V_i
+$$
+\mathbf V_i
 =
-mathbf Z_iwidehat{oldsymbolPsi}mathbf Z_i^	op
+\mathbf Z_i\widehat{\boldsymbol\Psi}\mathbf Z_i^\top
 +
-widehatsigma^2mathbf I.
-]
+\widehat\sigma^2\mathbf I.
+$$
 
 The participant's fixed-effect information and score contributions are
 
-[
-mathbf A_i
+$$
+\mathbf A_i
 =
-mathbf X_i^	opmathbf V_i^{-1}mathbf X_i,
-qquad
-mathbf s_i
+\mathbf X_i^\top\mathbf V_i^{-1}\mathbf X_i,
+\qquad
+\mathbf s_i
 =
-mathbf X_i^	opmathbf V_i^{-1}mathbf y_i.
-]
+\mathbf X_i^\top\mathbf V_i^{-1}\mathbf y_i.
+$$
 
 For each bootstrap replicate, participants are sampled with replacement and
 the fixed B-spline coefficients are re-estimated by GLS:
 
-[
-widehat{oldsymbol	heta}^{*(b)}
+$$
+\widehat{\boldsymbol\theta}^{*(b)}
 =
-left[
-sum_{r=1}^{n}mathbf A_{I_r^{(b)}}
-ight]^{-1}
-sum_{r=1}^{n}mathbf s_{I_r^{(b)}}.
-]
+\left[
+\sum_{r=1}^{n}\mathbf A_{I_r^{(b)}}
+\right]^{-1}
+\sum_{r=1}^{n}\mathbf s_{I_r^{(b)}}.
+$$
 
 The fitted random-effect covariance, residual variance, fixed basis, random
 basis, spline degree, model specification, and preprocessing decisions are
@@ -84,33 +84,33 @@ not a variance-component bootstrap.
 
 ## Simultaneous calibration
 
-For coefficient (p), bootstrap pointwise standard deviations are calculated
+For coefficient \(p\), bootstrap pointwise standard deviations are calculated
 from the participant-resampled coefficient functions. The centered,
 studentized bootstrap process is summarized by
 
-[
+$$
 M_p^{*(b)}
 =
-max_m
-left|
-rac{
-widehateta_p^{*(b)}(t_m)
+\max_m
+\left|
+\frac{
+\widehat\beta_p^{*(b)}(t_m)
 -
-overline{widehateta_p^*}(t_m)
+\overline{\widehat\beta_p^*}(t_m)
 }{
-widehat{mathrm{SE}}_p^*(t_m)
+\widehat{\mathrm{SE}}_p^*(t_m)
 }
-ight|.
-]
+\right|.
+$$
 
-The empirical (1-alpha) quantile gives
+The empirical \(1-\alpha\) quantile gives
 
-[
-widehateta_p(t_m)
-pm
-c_{p,1-alpha}
-widehat{mathrm{SE}}_p^*(t_m).
-]
+$$
+\widehat\beta_p(t_m)
+\pm
+c_{p,1-\alpha}
+\widehat{\mathrm{SE}}_p^*(t_m).
+$$
 
 The bootstrap mean is used only to center the calibration process. The reported
 band remains centered on the reference mixed-model estimate; no automatic
@@ -118,10 +118,10 @@ bootstrap bias correction is applied.
 
 ## Coefficient versus family scope
 
-With `simultaneous_scope="coefficient"`, each fixed coefficient receives its
+With \`simultaneous_scope="coefficient"\`, each fixed coefficient receives its
 own maximum-statistic calibration over the observed time grid.
 
-With `simultaneous_scope="family"`, one maximum is taken jointly over every
+With \`simultaneous_scope="family"\`, one maximum is taken jointly over every
 fixed coefficient and every observed time point. This is more conservative but
 supports a single declared fixed-effect family.
 
@@ -146,7 +146,7 @@ A simultaneous band supports a statement about the complete **observed-grid
 coefficient function** under the declared model and bootstrap contract.
 
 For example, if a 95% coefficient-scope band for
-(eta_{mathrm{condition}}(t)) stays above zero at every observed grid point,
+\(\beta_{\mathrm{condition}}(t)\) stays above zero at every observed grid point,
 the estimated condition coefficient is positive over that entire observed
 grid under this model-based inference procedure.
 
@@ -164,12 +164,12 @@ It does **not** imply:
 
 Functional mixed-effects methodology has long treated simultaneous bands as a
 distinct inferential target from pointwise intervals. Zhu et al. (2019,
-DOI `10.5705/ss.202017.0505`) develop simultaneous bands for fixed-effect
+DOI \`10.5705/ss.202017.0505\`) develop simultaneous bands for fixed-effect
 functions in longitudinal functional mixed-effects models using a resampling
 approach that preserves within-subject dependence.
 
 More recently, Gunning et al. (2025, DOI
-`10.1007/s00180-024-01591-1`) use subject-level bootstrap resampling and
+\`10.1007/s00180-024-01591-1\`) use subject-level bootstrap resampling and
 simulation for simultaneous fixed-effect bands in a functional mixed-effects
 analysis of repeated kinematic data.
 
