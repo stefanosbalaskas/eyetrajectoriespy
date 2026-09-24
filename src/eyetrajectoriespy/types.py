@@ -826,6 +826,47 @@ class FunctionalMixedEffectsBootstrapResult:
 
 
 @dataclass(frozen=True)
+class FunctionalMixedEffectsFullRefitBootstrapResult:
+    """Whole-participant bootstrap with full mixed-model refitting."""
+
+    reference: FunctionalMixedEffectsResult
+    bootstrap_fixed_basis_coefficients: np.ndarray
+    bootstrap_coefficient_functions: np.ndarray
+    bootstrap_random_effect_covariances: np.ndarray
+    bootstrap_random_intercept_covariances: np.ndarray
+    bootstrap_random_slope_covariances: np.ndarray | None
+    bootstrap_intercept_slope_covariances: np.ndarray | None
+    bootstrap_covariance_eigenvalues: np.ndarray
+    bootstrap_covariance_condition_numbers: np.ndarray
+    bootstrap_residual_variances: np.ndarray
+    bootstrap_log_likelihoods: np.ndarray
+    bootstrap_boundary_fit: np.ndarray
+    bootstrap_random_effect_singular: np.ndarray
+    bootstrap_random_slope_boundary_fit: np.ndarray
+    bootstrap_converged: np.ndarray
+    bootstrap_backend_warnings: tuple[tuple[str, ...], ...]
+    sampled_participant_indices: np.ndarray
+    sampled_source_participant_ids: tuple[tuple[str, ...], ...]
+    bootstrap_participant_ids: tuple[tuple[str, ...], ...]
+    bootstrap_mean: np.ndarray
+    bootstrap_standard_errors: np.ndarray
+    random_state: int | None
+    failed_replicate_policy: str
+    refit_contract: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.bootstrap_coefficient_functions.shape[0]
+
+    @property
+    def n_participants(self) -> int:
+        return self.sampled_participant_indices.shape[1]
+
+
+
+
+@dataclass(frozen=True)
 class FunctionalMixedEffectsBandResult:
     """Observed-grid simultaneous bands for mixed-effects coefficient functions."""
 
@@ -837,7 +878,7 @@ class FunctionalMixedEffectsBandResult:
     max_statistics: np.ndarray
     confidence_level: float
     simultaneous_scope: str
-    bootstrap: FunctionalMixedEffectsBootstrapResult
+    bootstrap: FunctionalMixedEffectsBootstrapResult | FunctionalMixedEffectsFullRefitBootstrapResult
     provenance: Mapping[str, Any] = field(default_factory=dict)
 
     @property
