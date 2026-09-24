@@ -12,6 +12,7 @@ from .nonlinear_types import (
     MultivariateIAAFTResult,
     MultivariateSurrogateNonlinearityResult,
     LyapunovParameterSensitivityResult,
+    RecurrenceNetworkResult,
     RecurrenceRadiusProfileResult,
     RecurrenceResult,
     RQAMeanBootstrapResult,
@@ -79,6 +80,47 @@ def joint_recurrence_reporting_text(
         + " Joint recurrence was interpreted as coincident recurrence within "
         "the declared component systems, not as cross-recurrence between "
         "states or as evidence of causal coupling."
+    )
+
+
+def recurrence_network_reporting_text(
+    result: RecurrenceNetworkResult,
+) -> str:
+    """Return manuscript-ready wording for recurrence-network topology."""
+
+    if not isinstance(result, RecurrenceNetworkResult):
+        raise TypeError("result must be a RecurrenceNetworkResult")
+
+    transitivity = (
+        "undefined because the network contained no connected triples"
+        if not np.isfinite(result.transitivity)
+        else f"{result.transitivity:.4g}"
+    )
+    source = result.source_recurrence
+    policy = (
+        f"target RR={source.target_recurrence_rate:.4g}, "
+        f"achieved RR={source.achieved_recurrence_rate:.4g}"
+        if source.target_recurrence_rate is not None
+        else f"fixed radius={source.radius:.4g}, "
+        f"achieved RR={source.achieved_recurrence_rate:.4g}"
+    )
+
+    return (
+        f"A sparse undirected recurrence network was constructed from "
+        f"{result.n_nodes} recurrence-state nodes using the source "
+        f"{source.metric} recurrence relation ({policy}) and a Theiler "
+        f"window of {source.theiler_window_samples} samples. The network "
+        f"contained {result.edge_count} undirected edges, graph density "
+        f"{result.graph_density:.4g}, mean local clustering "
+        f"{result.mean_local_clustering:.4g}, and transitivity "
+        f"{transitivity}. It had {result.n_connected_components} connected "
+        f"component(s), with {100.0 * result.largest_component_fraction:.1f}% "
+        f"of nodes in the largest component and "
+        f"{100.0 * result.isolated_node_fraction:.1f}% isolated nodes. "
+        "Graph density used all unordered node pairs, whereas the source "
+        "recurrence rate used its declared eligible-pair denominator. "
+        "No threshold tuning, community optimization, edge weighting, or "
+        "automatic dimensionality interpretation was performed."
     )
 
 
