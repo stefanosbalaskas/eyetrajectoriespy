@@ -235,6 +235,7 @@ from .phase import (
 from .plotting import (
     plot_dynamic_time_warping_alignment,
     plot_function_on_scalar_coefficients,
+    plot_functional_mixed_effects_bootstrap_comparison,
     plot_functional_mixed_effects_coefficient,
     plot_functional_random_effects,
     plot_fpca_component,
@@ -443,6 +444,7 @@ __all__ = [
     "functional_mixed_effects_full_refit_audit_frame",
     "functional_mixed_effects_variance_bootstrap_frame",
     "compare_functional_mixed_effects_bootstraps",
+    "plot_functional_mixed_effects_bootstrap_comparison",
     "FunctionalMixedEffectsBootstrapResult",
     "FunctionalMixedEffectsBandResult",
     "bootstrap_functional_mixed_effects_coefficients",
