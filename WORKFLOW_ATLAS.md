@@ -207,3 +207,32 @@ predeclared discrete source/target states
       -> descriptive robustness summary
       -> no automatic winner / hidden averaging
 ```
+
+### Conditional transfer entropy
+
+```text
+explicit discrete source X
+explicit discrete target Y
+explicit discrete condition Z
+        |
+        +--> declare k: target history
+        +--> declare l: source history
+        +--> declare m: condition history
+        +--> declare d: source lag
+        +--> declare c: condition lag
+                    |
+                    v
+ conditional_transfer_entropy()
+        |           |
+        |           +--> exact local histories + support diagnostics
+        +--> incremental directed predictive information
+                    |
+                    +--> optional analyst-declared source-only shifts
+                    |       target Y fixed
+                    |       condition Z fixed
+                    v
+ conditional_transfer_entropy_circular_shift_test()
+                    |
+                    v
+      no causal-identification claim
+```

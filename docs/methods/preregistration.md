@@ -732,3 +732,17 @@ shift set for all specifications. State how formal multiplicity will be handled
 if individual multiverse p-values are used inferentially. Do not define the
 primary specification after inspecting which combination maximizes TE,
 surrogate-centered TE, or statistical significance.
+
+## Conditional transfer entropy
+
+Pre-register the scientific role of the conditioning process and all five
+history/lag settings: target history (k), source history (l), conditioning
+history (m), source lag (d), and conditioning lag (c). State the discrete
+state definitions and any analyst-defined empirical-support adequacy rule.
+
+If circular-shift inference is planned, pre-register the source-only shift rule
+or exact shift set and justify the wrap-around/stationarity assumption. State
+that target and conditioning series remain fixed under the null.
+
+Do not add or remove the conditioning process after inspecting which choice
+produces the most favorable CTE or p-value.

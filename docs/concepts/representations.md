@@ -125,3 +125,11 @@ only. The integer-coded source and target state sequences are held fixed across
 all rows. If alternative state definitions or discretizations are scientifically
 plausible, treat that as a separate representation sensitivity problem rather
 than allowing the history/lag multiverse to silently change states.
+
+### Conditional TE keeps all three state representations explicit
+
+Version 0.43 requires explicit integer-coded source, target, and conditioning
+series. The estimator varies none of those state definitions internally.
+Changing the conditioning-process discretization, source state definition, or
+target state definition changes the scientific estimand and should be treated
+as a separate representation decision rather than hidden inside the CTE call.

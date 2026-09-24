@@ -226,3 +226,15 @@ question determine which estimand is appropriate.
 The sensitivity layer answers whether the substantive TE result depends on
 defensible analysis choices. It does not replace a primary specification,
 cross-validation procedure, multiplicity plan, or causal-identification design.
+
+## Pairwise versus conditional transfer entropy
+
+| Method | Question | Conditioning | Interpretation boundary |
+|---|---|---|---|
+| Pairwise discrete TE | Does source history predict the next target beyond target history? | target history | directed predictive information |
+| Conditional discrete TE | Does source history add predictive information beyond target history and one declared process? | target history + explicit conditioning history | conditional directed predictive information, not causal proof |
+| Conditional TE + source-shift test | Is observed conditional TE large relative to declared source-only circular shifts? | same fixed conditioning process | surrogate evidence under the declared shift null |
+
+Use conditional TE when a scientifically specified process is part of the
+question. Do not add conditioning variables merely to search for a preferred
+result.

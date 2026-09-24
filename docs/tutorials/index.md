@@ -249,3 +249,9 @@ with the
 [transfer-entropy sensitivity guide](../methods/transfer-entropy-sensitivity.md)
 and
 [worked sensitivity example](../examples/transfer-entropy-sensitivity.md).
+
+For directed predictive information after adjusting for one explicitly supplied
+discrete process, continue with the
+[conditional transfer entropy guide](../methods/conditional-transfer-entropy.md)
+and
+[worked conditional-TE example](../examples/conditional-transfer-entropy.md).

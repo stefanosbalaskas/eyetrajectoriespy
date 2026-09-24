@@ -81,6 +81,16 @@ from .nonlinear_dynamics import (
     local_divergence_curve,
     surrogate_nonlinearity_test,
 )
+from .conditional_transfer_entropy import (
+    ConditionalTransferEntropyCircularShiftTestResult,
+    ConditionalTransferEntropyResult,
+    conditional_transfer_entropy,
+    conditional_transfer_entropy_circular_shift_reporting_text,
+    conditional_transfer_entropy_circular_shift_test,
+    conditional_transfer_entropy_local_frame,
+    conditional_transfer_entropy_reporting_text,
+    plot_conditional_transfer_entropy_circular_shift_test,
+)
 from .transfer_entropy import (
     DiscreteTransferEntropyResult,
     TransferEntropyCircularShiftTestResult,
@@ -410,9 +420,17 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.42.0.dev0"
+__version__ = "0.43.0.dev0"
 
 __all__ = [
+    "ConditionalTransferEntropyResult",
+    "ConditionalTransferEntropyCircularShiftTestResult",
+    "conditional_transfer_entropy",
+    "conditional_transfer_entropy_local_frame",
+    "conditional_transfer_entropy_circular_shift_test",
+    "plot_conditional_transfer_entropy_circular_shift_test",
+    "conditional_transfer_entropy_reporting_text",
+    "conditional_transfer_entropy_circular_shift_reporting_text",
     "TransferEntropySensitivityResult",
     "transfer_entropy_parameter_sensitivity",
     "plot_transfer_entropy_sensitivity",

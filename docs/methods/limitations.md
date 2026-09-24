@@ -896,3 +896,21 @@ universal minimum cell-count rule is encoded. Optional p-values across the
 multiverse are not multiplicity-adjusted automatically. The API also does not
 convert the most stable, largest, or smallest-p-value row into a selected model
 or causal conclusion.
+
+## Conditional transfer entropy limitations
+
+Version 0.43 conditions on one explicitly supplied discrete process. It does not
+guarantee removal of all confounding, identify a causal graph, or infer that the
+conditioning set is sufficient. An omitted common driver can still produce
+misleading directed predictive information.
+
+Conditional mutual information can decrease when conditioning removes
+redundant/common-driver information or increase when conditioning reveals
+synergy. A smaller CTE is therefore not a universal diagnostic of successful
+confounder adjustment.
+
+The plug-in estimator can be unstable under sparse high-dimensional histories.
+Support diagnostics are retained, but no automatic adequacy rule, shrinkage,
+bias correction, or state pooling is applied. Continuous/KSG conditional TE,
+multiple simultaneous conditioning processes, conditional-TE sensitivity
+grids, TE networks, and time-windowed TE remain outside 0.43.

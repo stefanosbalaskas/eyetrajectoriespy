@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.43.0.dev0
+
+- Add `conditional_transfer_entropy()` for empirical discrete conditional mutual information (I(X_{t-d}^{(l)};Y_t\mid Y_{t-1}^{(k)},Z_{t-c}^{(m)})) in bits.
+- Require explicit target/source/conditioning history lengths and explicit source/conditioning lags in sample-index units; no automatic discretization, history/lag selection, smoothing, interpolation, support filtering, or causal interpretation is introduced.
+- Retain every local conditional-TE contribution, effective sample index, original integer-coded source/target/conditioning series, exact reconstructed histories, observed target/conditioning/source+conditioning/full-joint support counts, singleton fraction, minimum/maximum/mean joint-history cell counts, and full provenance.
+- Add `conditional_transfer_entropy_circular_shift_test()` using only analyst-declared nonzero circular shifts of the source while holding target and conditioning processes fixed.
+- Retain the full surrogate conditional-TE distribution, surrogate mean, surrogate-centered conditional TE, plus-one upper-tail Monte Carlo p-value, attainable p-value resolution, exact shift set, shifted/fixed process metadata, and null provenance.
+- Add exact validation for constant-conditioning equivalence to ordinary TE, a constructed common-driver collapse, retained direct contribution under common drive, directionality, an exact manual contingency-count example, source-shift null behavior, and sparse-history support collapse.
+- Keep the interpretation boundary explicit: conditioning addresses the explicitly supplied process but does not establish causal influence or guarantee adjustment for unmeasured common drivers.
+- Add result objects, local-history frame, plotting/reporting helpers, mathematical contract, methodology guide, worked/executable example, and full API/site integration.
+- Deliberately stop short of conditional-TE specification sensitivity, TE networks, automatic causal discovery, and time-windowed TE; the next inferential priority returns to simultaneous inference for functional mixed-effects coefficient functions.
+
 ## 0.42.0.dev0
 
 - Add `transfer_entropy_parameter_sensitivity()` for a full Cartesian multiverse over analyst-declared target-history, source-history, and source-lag grids.

@@ -478,6 +478,23 @@ The package is designed around the principle that **the path to an FPC score is 
 
 For manuscript preparation, use the [reporting checklist](methods/reporting.md), [assumptions and diagnostics](methods/assumptions.md), and [limitations](methods/limitations.md).
 
+## New in 0.43: conditional transfer entropy
+
+The directed-information layer now supports
+`conditional_transfer_entropy()`: discrete transfer entropy from a declared
+source to a target after conditioning on both the target's own past and one
+explicitly supplied conditioning process. Source-only circular-shift testing,
+local contributions, full reconstructed histories, and empirical-support
+diagnostics are retained without causal-identification claims.
+
+[Method guide](methods/conditional-transfer-entropy.md) ·
+[Worked example](examples/conditional-transfer-entropy.md) ·
+[Mathematical contract](methods/mathematical-reference.md#conditional-transfer-entropy)
+
+The TE mini-series stops at 0.43; the next inferential priority returns to
+whole-function simultaneous inference for functional mixed-effects coefficient
+functions.
+
 ## New in 0.42: transfer-entropy specification sensitivity
 
 The directed-dependence layer now supports a full predeclared

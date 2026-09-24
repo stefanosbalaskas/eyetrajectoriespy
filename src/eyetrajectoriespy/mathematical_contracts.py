@@ -474,6 +474,35 @@ _CONTRACTS = (
         ),
     ),
     MathematicalContract(
+        key="conditional-transfer-entropy",
+        title="Conditional transfer entropy and source-shift surrogate testing",
+        public_api=(
+            "conditional_transfer_entropy",
+            "conditional_transfer_entropy_circular_shift_test",
+        ),
+        equations=(
+            r"T_{X\to Y\mid Z}(k,l,m,d,c)="
+            r"I\!\left(X_{t-d}^{(l)};Y_t\mid "
+            r"Y_{t-1}^{(k)},Z_{t-c}^{(m)}\right)",
+            r"T_{X\to Y\mid Z}=\sum "
+            r"p(y_t,\mathbf y,\mathbf x,\mathbf z)"
+            r"\log_2\frac{p(y_t\mid\mathbf y,\mathbf x,\mathbf z)}"
+            r"{p(y_t\mid\mathbf y,\mathbf z)}",
+            r"p_+=\frac{1+\sum_{b=1}^{B}"
+            r"I(T_{b}^{*,cond}\ge T_{obs}^{cond})}{B+1}",
+        ),
+        site_anchor="conditional-transfer-entropy",
+        scope=(
+            "Empirical plug-in conditional mutual information for analyst-supplied "
+            "integer-coded source, target, and conditioning states with explicit "
+            "target/source/conditioning histories and source/conditioning lags. "
+            "Surrogate inference shifts only the source and holds target and "
+            "conditioning processes fixed. Conditioning addresses only the explicitly "
+            "supplied process and does not establish causal influence or guarantee "
+            "adjustment for unmeasured common drivers."
+        ),
+    ),
+    MathematicalContract(
         key="transfer-entropy-sensitivity",
         title="Transfer-entropy specification sensitivity",
         public_api=("transfer_entropy_parameter_sensitivity",),

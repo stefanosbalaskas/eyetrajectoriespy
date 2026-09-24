@@ -294,3 +294,32 @@ explicit discrete state series
          explicit one-parameter slices
          no hidden averaging / no winner
 ```
+
+## Conditional transfer entropy
+
+```text
+X: explicit discrete source
+Y: explicit discrete target
+Z: explicit discrete conditioning process
+        |
+        +--> k, l, m histories
+        +--> d, c lags
+                    |
+                    v
+ conditional_transfer_entropy()
+        |           |
+        |           +--> local contributions
+        |           +--> effective indices
+        |           +--> exact histories
+        |           +--> empirical support diagnostics
+        |
+        +--> optional source-only circular shifts
+                    |
+                    v
+ conditional_transfer_entropy_circular_shift_test()
+        target and condition remain fixed
+                    |
+                    v
+ incremental predictive information
+ not proof of causal influence
+```

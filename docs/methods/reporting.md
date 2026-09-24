@@ -844,3 +844,20 @@ non-plotted parameter. When a common circular-shift null is used, report the
 shift set/rule, number of shifts, surrogate-centered TE range, unadjusted
 plus-one p-value range, and any separate multiplicity correction. Do not report
 a multiverse maximum as though it were a prespecified single-analysis estimate.
+
+## Conditional transfer entropy
+
+Report the source, target, and conditioning state definitions; target/source/
+conditioning history lengths; source and conditioning lags; effective
+transition count; CTE in bits; and complete joint-history support diagnostics
+including singleton fraction and minimum/mean/maximum cell counts.
+
+Explain why the conditioning process was scientifically relevant. Describe the
+result as incremental directed predictive information after conditioning on
+that declared process, not as proof of causal influence or complete confounder
+control.
+
+For source-shift surrogate testing, report the exact shift rule/set, number of
+shifts, surrogate mean, surrogate-centered CTE, plus-one upper-tail p-value,
+attainable p-value resolution, and that target and conditioning processes were
+held fixed.

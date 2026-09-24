@@ -583,3 +583,23 @@ Because longer histories expand the empirical state space while reducing
 observations per state. Two specifications can produce similar TE values with
 very different finite-sample support. Version 0.42 exposes that difference
 rather than hiding it behind one scalar estimate.
+
+### Does conditional TE prove that X causally influences Y?
+
+No. It measures whether the declared source history contributes predictive
+information about the target beyond the target's own history and the explicitly
+supplied conditioning history. It does not guarantee that all relevant common
+drivers were measured or conditioned on.
+
+### Should conditional TE always be smaller than pairwise TE?
+
+No. Conditioning can remove redundant/common-driver information, but
+conditional mutual information can also increase when the conditioning process
+reveals synergistic information.
+
+### What happens when histories are too deep for the available data?
+
+The estimator still exposes the empirical result if transitions remain, but the
+result object reports the collapse of support through effective counts,
+joint-history counts, singleton fraction, and minimum/mean/maximum cell counts.
+No sparse cells are deleted automatically.
