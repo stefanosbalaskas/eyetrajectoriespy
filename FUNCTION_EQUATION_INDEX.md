@@ -252,17 +252,17 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 **Functions:** `bootstrap_functional_mixed_effects_full_refit()`, `functional_mixed_effects_variance_bootstrap_frame()`, `compare_functional_mixed_effects_bootstraps()`
 
-$
+$$
 I_1^{*(b)},\ldots,I_n^{*(b)}\overset{iid}{\sim}\{1,\ldots,n\}
-$
+$$
 
-$
+$$
 \mathcal D^{*(b)}\longrightarrow \left\{\widehat{\boldsymbol\beta}^{*(b)}(t),\widehat{\boldsymbol\Psi}^{*(b)},\widehat\sigma^{2*(b)}\right\}
-$
+$$
 
-$
+$$
 R_p(t_m)=\frac{W_{p,\mathrm{full}}(t_m)}{W_{p,\mathrm{fixed}}(t_m)}
-$
+$$
 
 **Scope:** Whole-participant case bootstrap with replacement. Every sampled occurrence receives a distinct bootstrap group identity, including duplicate source participants. Fixed effects, random-effect covariance, and residual variance are refit in every replicate while basis sizes, knot construction, preprocessing, predictor specification, random-slope choice, random-effect structure, REML/ML choice, and optimizer remain fixed. Any failed replicate raises; none are silently discarded or redrawn. Variance-component bootstrap distributions are retained as stability diagnostics rather than automatic calibrated intervals.
 
