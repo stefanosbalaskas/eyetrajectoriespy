@@ -70,29 +70,29 @@ Implemented by `discrete_frechet_distance()` and `pairwise_discrete_frechet_dist
 
 For ordered point sequences \(P\) and \(Q\), use the optional weighted Euclidean local cost
 
-$
+$$
 d_w(\mathbf p_i,\mathbf q_j)
 =
 \left[
 \sum_r \omega_r(p_{ir}-q_{jr})^2
 \right]^{1/2}.
-$
+$$
 
 The cumulative dynamic-programming recurrence is
 
-$
+$$
 C_{i,j}
 =
 d_w(\mathbf p_i,\mathbf q_j)
 +
 \min(C_{i-1,j-1},C_{i-1,j},C_{i,j-1}),
-$
+$$
 
 with
 
-$
+$$
 d_{\mathrm{DTW}}(P,Q)=C_{m,n}.
-$
+$$
 
 Implemented by dynamic_time_warping_distance() and pairwise_dynamic_time_warping_distances(). The reported scalar is the unnormalized cumulative path cost. The optional Sakoe-Chiba radius constrains sample-index displacement, not physical elapsed time. No hidden interpolation, resampling, smoothing, coordinate normalization, path simplification, missing-value deletion, path-length normalization, or automatic window selection is introduced.
 
