@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.35.0.dev0
+
+- Add `fit_function_on_scalar_regression()` for observed-grid functional-response regression with an explicit scalar design matrix and one intercept.
+- Return `FunctionOnScalarResult` with coefficient functions, fitted/residual functions, the exact inference-unit responses, design matrix/rank, residual degrees of freedom, HC1 pointwise sandwich standard errors, time/dimension semantics, and provenance.
+- Require numeric finite predictors with no automatic dummy coding, centering, scaling, interaction construction, smoothing, basis expansion, regularization, or predictor selection.
+- Support genuinely independent curve-level inference or equal-weight participant aggregation when predictors are constant within participant; trial-varying predictors fail explicitly because 0.35 is not a functional mixed-effects model.
+- Add `bootstrap_function_on_scalar_coefficients()` using fixed-design whole-function wild bootstrap with Rademacher or normal multipliers and deterministic seeding.
+- Add `function_on_scalar_simultaneous_bands()` with coefficient-wise or declared-family observed-grid maximum calibration.
+- Add `function_on_scalar_coefficient_frame()`, `plot_function_on_scalar_coefficients()`, and `function_on_scalar_reporting_text()`.
+- Add synthetic truth, reproducibility, repeated-trial guardrail, rank/alignment/failure, plotting, reporting, and public-API tests.
+- Add mathematical contracts, guide, worked/executable example, references, reporting/preregistration/limitations guidance, site navigation, workflow integration, and visual documentation.
+
 ## 0.34.0.dev0
 
 - Harden dynamic time warping with an explicit `step_pattern` contract while preserving the 0.33 `symmetric1` raw-cost default.

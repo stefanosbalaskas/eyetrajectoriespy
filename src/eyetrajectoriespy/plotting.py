@@ -31,6 +31,8 @@ from .types import (
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
+    FunctionOnScalarBandResult,
+    FunctionOnScalarResult,
     IrregularTrajectorySet,
     ConformalFunctionalAnomalyResult,
     DynamicTimeWarpingResult,
@@ -123,6 +125,76 @@ def plot_dynamic_time_warping_alignment(
     )
     ax.set_title(
         f"DTW alignment: {result.step_pattern}, {window_label}, {distance_label}"
+    )
+    ax.legend()
+    return ax
+
+
+def plot_function_on_scalar_coefficients(
+    result: FunctionOnScalarResult | FunctionOnScalarBandResult,
+    *,
+    coefficient: str | int,
+    dimension: str | None = None,
+    ax=None,
+):
+    """Plot one function-on-scalar coefficient with an optional simultaneous band."""
+
+    if isinstance(result, FunctionOnScalarBandResult):
+        fit = result.reference
+        band = result
+    elif isinstance(result, FunctionOnScalarResult):
+        fit = result
+        band = None
+    else:
+        raise TypeError(
+            "result must be a FunctionOnScalarResult or FunctionOnScalarBandResult"
+        )
+
+    if isinstance(coefficient, str):
+        if coefficient not in fit.coefficient_names:
+            raise KeyError(f"Unknown coefficient {coefficient!r}")
+        coefficient_index = fit.coefficient_names.index(coefficient)
+    elif isinstance(coefficient, bool) or not isinstance(
+        coefficient, (int, np.integer)
+    ):
+        raise TypeError("coefficient must be a name or integer index")
+    else:
+        coefficient_index = int(coefficient)
+        if coefficient_index < 0 or coefficient_index >= fit.n_coefficients:
+            raise IndexError("coefficient index is out of range")
+
+    if dimension is None:
+        dimension = fit.dimension_names[0]
+    if dimension not in fit.dimension_names:
+        raise KeyError(f"Unknown dimension {dimension!r}")
+    dimension_index = fit.dimension_names.index(dimension)
+
+    if ax is None:
+        _, ax = plt.subplots()
+
+    if band is not None:
+        ax.fill_between(
+            fit.time,
+            band.lower[coefficient_index, :, dimension_index],
+            band.upper[coefficient_index, :, dimension_index],
+            alpha=0.2,
+            label=(
+                f"{100 * band.confidence_level:.1f}% simultaneous band "
+                f"({band.simultaneous_scope})"
+            ),
+        )
+
+    ax.plot(
+        fit.time,
+        fit.coefficients[coefficient_index, :, dimension_index],
+        label=fit.coefficient_names[coefficient_index],
+    )
+    ax.axhline(0.0, linestyle="--")
+    ax.set_xlabel(f"Time ({fit.time_unit})")
+    ax.set_ylabel(f"Coefficient: {dimension}")
+    ax.set_title(
+        f"Function-on-scalar coefficient: "
+        f"{fit.coefficient_names[coefficient_index]}"
     )
     ax.legend()
     return ax

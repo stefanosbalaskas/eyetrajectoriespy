@@ -1,5 +1,23 @@
 # Functional regression and clustering
 
+## Function-on-scalar regression
+
+When the response is itself a trajectory and the predictors are scalar experimental variables, use the dedicated function-on-scalar workflow:
+
+```python
+fit = fit_function_on_scalar_regression(
+    trajectories,
+    design,
+    predictors=("condition",),
+)
+```
+
+This is the reverse direction from scalar-on-function FPCR. The coefficient `beta_condition(t)` describes how the expected functional response changes with the condition over the observed grid.
+
+Use `bootstrap_function_on_scalar_coefficients()` followed by `function_on_scalar_simultaneous_bands()` for fixed-design wild-bootstrap simultaneous coefficient bands. Repeated trials are participant-aggregated only when all declared predictors are participant-constant; trial-varying predictors require the planned repeated-measures functional regression layer.
+
+See [Function-on-scalar regression](function-on-scalar.md).
+
 ## FPCA-score regression
 
 ```python

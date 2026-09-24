@@ -29,6 +29,24 @@ FPCs are empirical modes of variation. Replication or stability analysis may be 
 The first release uses a two-level decomposition followed by separate FPCAs, not a full Bayesian or likelihood-based functional mixed model.
 
 
+## Function-on-scalar regression is not yet a repeated-measures functional model
+
+Version 0.35 supports independent curves or equal-weight participant-average responses when all declared predictors are constant within participant. It does not estimate random functional intercepts/slopes, trial-level repeated-measures effects, or participant-specific covariance.
+
+A within-participant experimental condition that changes across trials is therefore rejected in participant mode rather than averaged or analyzed as independent curves. Such data require the planned functional mixed-effects/repeated-measures regression layer.
+
+## Observed-grid coefficient functions are unsmoothed
+
+The coefficient curves are pointwise OLS estimates on the supplied common grid. This avoids hidden regularization but means the displayed coefficient function can be visually rough. Version 0.35 does not choose a spline basis or smoothing penalty automatically.
+
+## Simultaneous bands cover the declared grid, not all continuous time
+
+The wild-bootstrap maximum is taken over observed time points and selected functional dimensions. It does not establish simultaneous coverage between grid points and should not be used to claim a continuously defined onset/offset without additional methodology.
+
+## Function-on-scalar design coding is the analyst's responsibility
+
+Automatic dummy coding, interaction generation, predictor scaling, and model selection are intentionally absent. A poorly encoded or scientifically inappropriate design remains a poor model even when the numerical fit succeeds.
+
 ## Bootstrap stability is not inferential certainty
 
 A high matched-component similarity shows that a component shape is reproducible under the chosen resampling scheme. It does not establish construct validity, causality, or generalization to another task/stimulus population.
@@ -460,7 +478,7 @@ The eigenvalues of that fitted Jacobian are **not Floquet multipliers**. Classic
 
 ### Classical continuation is not implemented
 
-Version 0.23 does not expose `detect_bifurcation(gaze)`, numerical continuation, a monodromy matrix, or `floquet_multipliers(gaze)`. Those would require an identified dynamical system (dot{mathbf x}=f(mathbf x,	heta)) and dedicated model-validation contracts. Raw gaze observations are not silently treated as a known ODE.
+Version 0.23 does not expose `detect_bifurcation(gaze)`, numerical continuation, a monodromy matrix, or `floquet_multipliers(gaze)`. Those would require an identified dynamical system dx/dt = f(x, θ) and dedicated model-validation contracts. Raw gaze observations are not silently treated as a known ODE.
 ## RQA-derived functional trajectories
 
 Sliding-window RQA creates a derived functional process; it does not create new independent experimental units.

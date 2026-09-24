@@ -77,7 +77,45 @@ plot_fpca_component(fit, component=0, dimension="y")
     Do not call an FPC “attention,” “verification,” or another psychological construct solely because its geometry looks plausible. Interpret against the experimental design and, when possible, validate against external behavior.
 
 
-## 5. Select dimension without leakage
+## 5. Model a functional response with experimental predictors
+
+When the outcome itself is a trajectory, use function-on-scalar regression rather than collapsing it to a scalar summary:
+
+```python
+import pandas as pd
+from eyetrajectoriespy import (
+    fit_function_on_scalar_regression,
+    bootstrap_function_on_scalar_coefficients,
+    function_on_scalar_simultaneous_bands,
+)
+
+design = pd.DataFrame({
+    "curve_id": gaze.curve_ids,
+    "condition": gaze.metadata["condition"].to_numpy(),
+})
+
+fosr = fit_function_on_scalar_regression(
+    gaze,
+    design,
+    predictors=("condition",),
+    dimensions=("x",),
+)
+
+fosr_boot = bootstrap_function_on_scalar_coefficients(
+    fosr,
+    n_bootstrap=1000,
+    random_state=2026,
+)
+
+fosr_band = function_on_scalar_simultaneous_bands(
+    fosr_boot,
+    simultaneous_scope="coefficient",
+)
+```
+
+Use `unit="participant"` only for participant-level predictors that are constant across that participant's repeated trials. Trial-varying predictors are intentionally rejected in 0.35 because they require a repeated-measures functional model.
+
+## 6. Select dimension without leakage
 
 For repeated trials, keep each participant in one held-out fold:
 
@@ -94,7 +132,7 @@ For repeated trials, keep each participant in one held-out fold:
 
 The FPCA basis is re-estimated inside each training fold. The one-SE rule is a parsimony heuristic rather than a significance test.
 
-## 6. Tune FPC count for an external outcome
+## 7. Tune FPC count for an external outcome
 
 When prediction is the goal, tune the ordinary FPC regression inside folds rather than reusing the reconstruction-selected count:
 
@@ -114,7 +152,7 @@ When prediction is the goal, tune the ordinary FPC regression inside folds rathe
 
 Use nested_cross_validate_fpca_regression() when predictive performance itself will be reported.
 
-## 7. Validate before labeling components
+## 8. Validate before labeling components
 
 For repeated trials, use participant-level bootstrap:
 
@@ -137,7 +175,7 @@ Use the stability result to qualify component interpretation rather than to crea
 Do not force them through <code>from_long_dataframe()</code>. Start with <code>from_irregular_long_dataframe_native()</code>, inspect the native sampling, and only then choose the common-grid projection.
 
 
-## 8. Diagnose near-tied component blocks
+## 9. Diagnose near-tied component blocks
 
 If adjacent FPCs swap or rotate across resamples:
 
@@ -337,11 +375,9 @@ When the question is whether a **new** functional trajectory is unusual relative
 
 The FPCA/MFPCA basis is fitted only on <code>proper_training</code>. Calibration and target curves are scored without refitting that basis.
 
-For a target score (s^*), the marginal conformal p-value is
+For a target score `s*`, the marginal conformal p-value is
 
-[
-hat p = rac{1 + #{s_i^{calib} ge s^*}}{n_{calib}+1}.
-]
+`p_hat = [1 + #{s_i^calib >= s*}] / (n_calib + 1)`.
 
 The greater-than-or-equal rule is intentionally conservative under ties.
 

@@ -199,6 +199,37 @@ _CONTRACTS = (
         scope="Simultaneous calibration over the observed time-by-dimension grid, with curve or equal-weight participant inference units.",
     ),
     MathematicalContract(
+        key="function-on-scalar",
+        title="Function-on-scalar regression and simultaneous coefficient bands",
+        public_api=(
+            "fit_function_on_scalar_regression",
+            "bootstrap_function_on_scalar_coefficients",
+            "function_on_scalar_simultaneous_bands",
+        ),
+        equations=(
+            r"\mathbf Y(t)=\mathbf X\boldsymbol\beta(t)+\boldsymbol\varepsilon(t)",
+            r"\widehat{\boldsymbol\beta}(t)="
+            r"(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Y(t)",
+            r"Y_i^{*(b)}(t)=\widehat Y_i(t)+W_i^{(b)}\widehat\varepsilon_i(t)",
+            r"M_j^{*(b)}=\max_{m,d}\left|"
+            r"\frac{\widehat\beta_{j,d}^{*(b)}(t_m)-"
+            r"\widehat\beta_{j,d}(t_m)}"
+            r"{\widehat{\mathrm{SE}}\{\widehat\beta_{j,d}(t_m)\}}"
+            r"\right|",
+            r"\widehat\beta_{j,d}(t_m)\pm "
+            r"c_{j,1-\alpha}\widehat{\mathrm{SE}}"
+            r"\{\widehat\beta_{j,d}(t_m)\}",
+        ),
+        site_anchor="function-on-scalar",
+        scope=(
+            "Observed-grid OLS for functional responses with explicit scalar "
+            "design, HC1 pointwise sandwich standard errors, and fixed-design "
+            "wild-bootstrap maxima. Repeated trials are supported only through "
+            "equal-weight participant aggregation when all predictors are "
+            "constant within participant; this is not a functional mixed model."
+        ),
+    ),
+    MathematicalContract(
         key="fpcr",
         title="Scalar-on-function regression through FPC scores",
         public_api=("fit_scalar_on_function_regression",),

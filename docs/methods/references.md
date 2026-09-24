@@ -22,6 +22,16 @@ Ramsay JO, Silverman BW. *Functional Data Analysis*. 2nd ed. Springer; 2005.
 
 Wang J-L, Chiou J-M, Müller H-G. Functional Data Analysis. *Annual Review of Statistics and Its Application*. 2016;3:257–295.
 
+## Functional regression and simultaneous coefficient inference
+
+Morris JS. Functional Regression. *Annual Review of Statistics and Its Application*. 2015;2:321–359. doi:10.1146/annurev-statistics-010814-020413.
+
+Chang C, Lin X, Ogden RT. Simultaneous confidence bands for functional regression models. *Journal of Statistical Planning and Inference*. 2017;188:67–86. doi:10.1016/j.jspi.2017.03.002.
+
+Morris (2015) organizes functional regression into scalar-on-function, function-on-scalar, and function-on-function configurations and reviews the role of replication and regularization. Chang, Lin, and Ogden study general function-on-scalar models with multiple covariates and heteroscedastic functional responses and develop wild-bootstrap simultaneous confidence bands for coefficient functions.
+
+eyetrajectoriespy 0.35 uses these sources to motivate the model class and wild-bootstrap simultaneous-coefficient layer. It does not claim that observed-grid OLS or wild-bootstrap function-on-scalar regression is methodologically novel.
+
 ## FPCA dimension selection and uncertainty
 
 Hall P, Hosseini-Nasab M. *On Properties of Functional Principal Components Analysis*. Journal of the Royal Statistical Society: Series B. 2006;68(1):109–126. doi:10.1111/j.1467-9868.2005.00535.x.

@@ -17,6 +17,16 @@ For symmetric1, normalized_distance and normalization_denominator remain undefin
 
 The stored path is an audit object, not a claim of unique correspondence: multiple optimal DTW paths can exist. Recorded timestamps are not used by the recurrence, and the object records that distinction explicitly.
 
+## Function-on-scalar result objects
+
+`FunctionOnScalarResult` stores the observed-grid coefficient functions, HC1 pointwise sandwich standard errors, fitted and residual functions, the exact functional responses used as inference units, the full scalar design matrix, rank and residual degrees of freedom, coefficient/predictor names, inference-unit IDs, curves-per-unit counts, time/dimension semantics, source curve IDs, and provenance.
+
+`FunctionOnScalarBootstrapResult` stores every wild-bootstrap coefficient replicate and every multiplier draw together with the fixed reference fit. The design matrix is held fixed across bootstrap replicates.
+
+`FunctionOnScalarBandResult` stores simultaneous lower/upper coefficient bands, coefficient-specific or familywise critical values, retained maximum statistics, confidence level, scope, the full bootstrap object, and provenance. The band is simultaneous over the declared observed grid, not between unsampled times.
+
+Participant mode in version 0.35 means equal-weight participant-average functional responses with predictors required to be constant within participant. These objects do not represent a functional mixed-effects model.
+
 ## Nonlinear-dynamics result objects
 
 `DelayEmbeddingResult` preserves reconstructed state vectors, endpoint times, selected source dimensions, explicit delay in samples/time, and whether a constant physical delay exists.

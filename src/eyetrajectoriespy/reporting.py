@@ -29,6 +29,8 @@ from .types import (
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
+    FunctionOnScalarBandResult,
+    FunctionOnScalarResult,
     ConformalFunctionalAnomalyResult,
     DynamicTimeWarpingResult,
     FunctionalOutlierResult,
@@ -101,6 +103,61 @@ def dynamic_time_warping_reporting_text(
         f"{result.path_length} matched index pairs; recorded timestamps were "
         "not used by the recurrence, and no step pattern, window, "
         "preprocessing, or normalization rule was selected automatically."
+    )
+
+
+def function_on_scalar_reporting_text(
+    result: FunctionOnScalarResult,
+    *,
+    band: FunctionOnScalarBandResult | None = None,
+) -> str:
+    """Generate manuscript-oriented function-on-scalar model wording."""
+
+    if not isinstance(result, FunctionOnScalarResult):
+        raise TypeError("result must be a FunctionOnScalarResult")
+    if band is not None:
+        if not isinstance(band, FunctionOnScalarBandResult):
+            raise TypeError("band must be a FunctionOnScalarBandResult or None")
+        if band.reference is not result:
+            raise ValueError("band.reference must be the supplied result object")
+
+    predictor_text = ", ".join(result.predictor_names)
+    dimension_text = ", ".join(result.dimension_names)
+    if result.unit == "participant":
+        unit_text = (
+            f"{result.n_units} participant-average functional responses "
+            f"from {len(result.source_curve_ids)} source curves; declared "
+            "predictors were required to be constant within participant"
+        )
+    else:
+        unit_text = (
+            f"{result.n_units} curve-level functional responses treated as "
+            "independent inference units"
+        )
+
+    band_text = ""
+    if band is not None:
+        band_text = (
+            f" Wild-bootstrap {100 * band.confidence_level:.1f}% simultaneous "
+            f"coefficient bands were calibrated with "
+            f"{band.bootstrap.n_bootstrap} "
+            f"{band.bootstrap.multiplier} multiplier replicates using "
+            f"{band.simultaneous_scope}-scope maxima over the observed grid."
+        )
+
+    return (
+        "Function-on-scalar regression was fitted by ordinary least squares "
+        "independently at each observed time-by-dimension grid point with a "
+        f"shared design matrix (predictors: {predictor_text}; functional "
+        f"dimensions: {dimension_text}). Inference used {unit_text}. "
+        "Pointwise standard errors used the HC1 sandwich estimator. No "
+        "functional smoothing, basis regularization, automatic categorical "
+        "encoding, predictor scaling, interaction construction, or model "
+        "selection was performed."
+        + band_text
+        + " The model is not a functional mixed-effects model, and any "
+        "simultaneous-band claim applies to the observed grid rather than "
+        "unsampled times."
     )
 
 

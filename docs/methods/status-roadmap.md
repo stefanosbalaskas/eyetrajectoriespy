@@ -12,6 +12,8 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Native curve-specific time grids | implemented | `IrregularTrajectorySet` |
 | Sparse univariate covariance FPCA + PACE scores | implemented (optional FDApy backend) | `fit_sparse_fpca_fdapy()` |
 | Simultaneous functional mean band | implemented | `multiplier_functional_mean_band()` |
+| Function-on-scalar regression | implemented; observed-grid OLS with explicit design and HC1 standard errors | `fit_function_on_scalar_regression()` |
+| Function-on-scalar simultaneous coefficient bands | implemented; fixed-design wild bootstrap with coefficient/family scope | `function_on_scalar_simultaneous_bands()` |
 | Explicit irregular → common-grid projection | implemented | `resample_irregular_to_grid()` |
 | Univariate FPCA | implemented | `fit_fpca()` |
 | Joint multivariate FPCA | implemented | `fit_mfpca()` |
@@ -118,6 +120,9 @@ Still not provided are full uncertainty procedures that jointly include target m
 
 Future tranches may evaluate:
 
+- repeated-measures function-on-scalar / functional mixed-effects regression for trial-varying predictors and participant-specific functional random effects;
+- multivariate cross-structure-preserving surrogate generation for planar gaze;
+- trajectory-similarity robustness across L2, Fréchet, and DTW before adding further distance metrics;
 - richer multilevel functional mixed-effects backends;
 - explicit system-identification models for gaze dynamics;
 - model-based continuation / Floquet analysis only after a validated dynamical-system contract exists.
@@ -128,4 +133,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.34.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.35.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

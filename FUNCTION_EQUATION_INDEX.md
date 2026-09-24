@@ -176,6 +176,34 @@ $$
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#mean-band
 
+## Function-on-scalar regression and simultaneous coefficient bands
+
+**Functions:** `fit_function_on_scalar_regression()`, `bootstrap_function_on_scalar_coefficients()`, `function_on_scalar_simultaneous_bands()`
+
+$$
+\mathbf Y(t)=\mathbf X\boldsymbol\beta(t)+\boldsymbol\varepsilon(t)
+$$
+
+$$
+\widehat{\boldsymbol\beta}(t)=(\mathbf X^\top\mathbf X)^{-1}\mathbf X^\top\mathbf Y(t)
+$$
+
+$$
+Y_i^{*(b)}(t)=\widehat Y_i(t)+W_i^{(b)}\widehat\varepsilon_i(t)
+$$
+
+$$
+M_j^{*(b)}=\max_{m,d}\left|\frac{\widehat\beta_{j,d}^{*(b)}(t_m)-\widehat\beta_{j,d}(t_m)}{\widehat{\mathrm{SE}}\{\widehat\beta_{j,d}(t_m)\}}\right|
+$$
+
+$$
+\widehat\beta_{j,d}(t_m)\pm c_{j,1-\alpha}\widehat{\mathrm{SE}}\{\widehat\beta_{j,d}(t_m)\}
+$$
+
+**Scope:** Observed-grid OLS for functional responses with explicit scalar design, HC1 pointwise sandwich standard errors, and fixed-design wild-bootstrap maxima. Repeated trials are supported only through equal-weight participant aggregation when all predictors are constant within participant; this is not a functional mixed model.
+
+Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#function-on-scalar
+
 ## Scalar-on-function regression through FPC scores
 
 **Functions:** `fit_scalar_on_function_regression()`

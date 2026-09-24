@@ -117,6 +117,12 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [Functional regression](../examples/regression.md)
 
+-   **Experimental predictors to continuous gaze response**
+
+    Estimate coefficient functions for condition or participant variables and calibrate observed-grid simultaneous bands without silently treating repeated trials as independent.
+
+    [Function-on-scalar regression](../examples/function-on-scalar.md)
+
 -   **Basis representation**
 
     Project a selected functional dimension to B-spline or Fourier coordinates through scikit-fda.

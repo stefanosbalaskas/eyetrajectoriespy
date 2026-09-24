@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.34.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.35.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -52,6 +52,8 @@ Registration is especially explicit because latency can itself be psychologicall
 - finite-bootstrap Monte Carlo precision diagnostics with exceedance counts, MCSEs, exact binomial intervals, and decision-stability flags without changing the underlying test decisions;
 - stabilized-volatility scans and target-specific selection of the wild-bootstrap inference truncation `h` with shared multipliers and analyst-declared stability thresholds;
 - simultaneous functional-mean bands with curve- or equal-weight participant-level inference;
+- function-on-scalar regression for experimental predictors with observed-grid coefficient functions, HC1 pointwise standard errors, fixed-design wild-bootstrap coefficient replicates, and coefficient-wise or familywise simultaneous bands;
+- fail-closed repeated-trial handling for function-on-scalar regression: participant aggregation is allowed only for participant-constant predictors, while trial-varying predictors are deferred to a true repeated-measures functional model;
 - FPCA reconstruction/robust score-space review diagnostics and leave-one-group-out influence analysis;
 - split-conformal marginal anomaly p-values for new common-grid trajectories using explicit proper-training and calibration partitions;
 - participant → trial → time multilevel FPCA;
@@ -161,6 +163,7 @@ print(summarise_fpca(fit))
 | New-trajectory conformal anomaly review | split-conformal FPCA nonconformity | `split_conformal_fpca_anomaly()` |
 | Group influence | leave-one-group-out matched FPCs | `leave_one_group_out_fpca_influence()` |
 | Scalar outcome predicted by gaze | FPCA-score approximation | `fit_scalar_on_function_regression()` |
+| Functional gaze predicted by experimental variables | observed-grid function-on-scalar OLS + wild-bootstrap simultaneous bands | `fit_function_on_scalar_regression()` / `function_on_scalar_simultaneous_bands()` |
 | Recurrent gaze-state structure | sparse recurrence / RQA | `recurrence_matrix()` / `rqa_metrics()` |
 | Recurrence-threshold diagnostics | exact RR(radius) curve and pair-distance shell profile | `recurrence_radius_profile()` |
 | RQA robustness across analysis choices | declared reconstruction/threshold/Theiler/line-length multiverse | `rqa_parameter_sensitivity()` |
@@ -169,7 +172,7 @@ print(summarise_fpca(fit))
 | RQA dynamics as functional outcomes | window-center RQA metric trajectories with retained overlap/radius provenance | `windowed_rqa_trajectory_set()` |
 | Functional RQA parameter sensitivity | declared window/step grid with overlap/reuse and exact-center profile diagnostics | `windowed_rqa_sensitivity()` |
 | Functional RQA mean uncertainty | whole-function curve/participant multiplier band | `windowed_rqa_functional_mean_band()` |
-| Reconstructed nonlinear state | delay coordinates with explicit (m,	au) | `delay_embed_trajectory()` |
+| Reconstructed nonlinear state | delay coordinates with explicit (m, τ) | `delay_embed_trajectory()` |
 | Local state-space divergence | Rosenstein nearest-neighbor divergence | `local_divergence_curve()` / `estimate_largest_lyapunov_rosenstein()` |
 | Neighborhood-based maximal Lyapunov estimate | Kantz fixed-radius local-neighborhood divergence | `kantz_divergence_curve()` / `estimate_largest_lyapunov_kantz()` |
 | Kantz LLE robustness multiverse | Declared radius/min-neighbor/reconstruction/Theiler/fit sensitivity, no optimizer | `kantz_parameter_sensitivity()` / `plot_kantz_sensitivity()` |
@@ -189,7 +192,7 @@ It includes a tutorial gallery, representation selection, nonlinear state-space 
 
 ## Scope boundary
 
-`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Versions 0.31–0.34 add provenance-aware continuous planar geometry plus two distinct ordered-trajectory similarity contracts: discrete Fréchet bottleneck distance and cumulative dynamic time warping. DTW now exposes symmetric1 versus normalizable symmetric2 weighting explicitly while preserving the 0.33 raw-cost default; it still warps sample indices rather than recorded physical time, and neither elastic metric silently preprocesses the trajectory. The nonlinear/RQA layers from 0.23–0.30 remain intact. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
+`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Versions 0.31–0.34 add provenance-aware continuous planar geometry plus two distinct ordered-trajectory similarity contracts: discrete Fréchet bottleneck distance and cumulative dynamic time warping. Version 0.35 shifts the development line from adding more trajectory metrics toward functional inference for experimental predictors through function-on-scalar regression and simultaneous coefficient bands. The nonlinear/RQA layers from 0.23–0.30 remain intact. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
 
 ## Validation
 

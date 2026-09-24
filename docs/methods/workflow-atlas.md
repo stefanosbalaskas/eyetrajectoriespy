@@ -26,6 +26,30 @@ flowchart LR
     F -->|Timing deformation| L[Registration + phase]
 ```
 
+## Functional response regression
+
+```mermaid
+flowchart TD
+    A[Common-grid functional response Y(t)] --> B{Independent sampling unit}
+    B -->|Independent curves| C[unit=curve]
+    B -->|Repeated trials, participant-level predictors| D[Average response within participant]
+    D --> E{Predictors constant within participant?}
+    E -->|No| F[Stop: repeated-measures functional model required]
+    E -->|Yes| G[Equal-weight participant design]
+    C --> H[Explicit numeric scalar design]
+    G --> H
+    H --> I[Observed-grid OLS beta(t)]
+    I --> J[HC1 pointwise SE]
+    I --> K[Whole-function fixed-design wild bootstrap]
+    K --> L{Simultaneous scope}
+    L -->|Coefficient| M[Max over time x dimension per coefficient]
+    L -->|Family| N[Max over coefficient x time x dimension]
+    M --> O[Observed-grid simultaneous band]
+    N --> O
+```
+
+Version 0.35 does not infer categorical coding, interactions, smoothing, basis regularization, or participant random effects. Trial-varying within-participant predictors stop at the explicit repeated-measures boundary rather than being approximated by independent pointwise models.
+
 ## Ordered trajectory similarity
 
 ```mermaid
