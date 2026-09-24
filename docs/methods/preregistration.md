@@ -765,3 +765,22 @@ family, or alter basis sizes after seeing which choice yields a preferred band.
 
 A rank-deficient participant resample should be treated as a bootstrap-design
 failure requiring review, not silently replaced with another draw.
+
+## One participant random functional slope
+
+Pre-register:
+
+- the exact random-slope predictor;
+- why within-participant heterogeneity in that predictor is scientifically
+  expected;
+- fixed and random basis sizes and spline degree;
+- ML versus REML and optimizer;
+- the participant-count/covariance-complexity requirement;
+- how covariance eigenvalues, condition number, boundary/singularity
+  diagnostics, and participant BLUP slope functions will be inspected;
+- whether fixed-effect simultaneous bands will use the existing
+  fixed-covariance participant bootstrap.
+
+Do not inspect several candidate predictors and retain only the random slope
+that produces the most interesting heterogeneity. Version 0.45 intentionally
+provides no automatic random-slope selection.
