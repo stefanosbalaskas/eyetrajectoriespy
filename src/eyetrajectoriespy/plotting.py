@@ -247,6 +247,74 @@ def plot_functional_mixed_effects_coefficient(
     return ax
 
 
+def plot_functional_random_effects(
+    result: FunctionalMixedEffectsResult,
+    *,
+    effect: str = "intercept",
+    max_participants: int | None = None,
+    alpha: float = 0.35,
+    ax=None,
+):
+    """Plot participant BLUP random-intercept or random-slope functions."""
+
+    if not isinstance(result, FunctionalMixedEffectsResult):
+        raise TypeError("result must be a FunctionalMixedEffectsResult")
+    if effect not in {"intercept", "slope"}:
+        raise ValueError("effect must be 'intercept' or 'slope'")
+    if max_participants is not None:
+        if isinstance(max_participants, bool) or not isinstance(
+            max_participants,
+            (int, np.integer),
+        ):
+            raise TypeError("max_participants must be an integer or None")
+        if max_participants < 1:
+            raise ValueError("max_participants must be positive")
+    if not 0 < alpha <= 1:
+        raise ValueError("alpha must lie in (0, 1]")
+
+    if effect == "intercept":
+        functions = result.random_intercept_functions
+        title = "Participant functional random intercepts"
+    else:
+        if result.random_slope_functions is None:
+            raise ValueError(
+                "result does not contain a participant random functional slope"
+            )
+        functions = result.random_slope_functions
+        title = (
+            "Participant functional random slopes: "
+            f"{result.random_slope_predictor}"
+        )
+
+    n_participants = result.n_participants
+    n_plot = (
+        n_participants
+        if max_participants is None
+        else min(n_participants, int(max_participants))
+    )
+    if ax is None:
+        _, ax = plt.subplots()
+
+    for participant_index in range(n_plot):
+        ax.plot(
+            result.time,
+            functions[participant_index],
+            alpha=alpha,
+            label=(
+                result.participant_ids[participant_index]
+                if n_plot <= 12
+                else None
+            ),
+        )
+    ax.axhline(0.0, linestyle="--")
+    ax.set_xlabel(f"Time ({result.time_unit})")
+    ax.set_ylabel(f"Random {effect}: {result.dimension_name}")
+    ax.set_title(title)
+    if n_plot <= 12:
+        ax.legend()
+    return ax
+
+
 def plot_function_on_scalar_coefficients(
     result: FunctionOnScalarResult | FunctionOnScalarBandResult,
     *,
