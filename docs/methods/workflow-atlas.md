@@ -43,11 +43,21 @@ flowchart TD
     I --> J[Fixed coefficient functions beta(t)]
     I --> K[Participant random functions b_i(t)]
     I --> L[Residual variance + convergence/boundary diagnostics]
+    J --> M{Whole-function inference?}
+    M -->|Yes| N[Whole-participant bootstrap]
+    N --> O[Fixed-covariance GLS coefficient refits]
+    O --> P[Coefficient/family supremum calibration]
+    P --> Q[Observed-grid simultaneous band]
 ```
 
 The 0.36 path is one joint mixed model over all curve-by-time observations.
 It does not run independent mixed models at each time point and does not
 silently average trial-varying predictors.
+
+Version 0.44 resamples complete participant trial bundles for simultaneous
+fixed-coefficient inference. The reference random-effect covariance, residual
+variance, and declared bases remain fixed, so the band is conditional on that
+covariance/basis contract and simultaneous over the observed grid only.
 
 ## Functional response regression
 
