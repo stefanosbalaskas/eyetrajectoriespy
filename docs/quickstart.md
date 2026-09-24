@@ -115,7 +115,32 @@ fosr_band = function_on_scalar_simultaneous_bands(
 
 Use `unit="participant"` only for participant-level predictors that are constant across that participant's repeated trials. Trial-varying predictors are intentionally rejected in 0.35 because they require a repeated-measures functional model.
 
-## 6. Select dimension without leakage
+## 6. Keep trial-varying predictors in repeated-measures functional data
+
+When multiple curves belong to the same participant and the experimental
+predictor changes across trials, use the joint functional mixed-effects model:
+
+```python
+from eyetrajectoriespy import fit_functional_mixed_effects_regression
+
+mixed = fit_functional_mixed_effects_regression(
+    gaze,
+    design,
+    predictors=("condition",),
+    participant_column="participant_id",
+    dimension="x",
+    fixed_basis_size=6,
+    random_basis_size=4,
+    spline_degree=3,
+)
+```
+
+This keeps all trial-level predictors and represents participant clustering
+through a functional random intercept. The first 0.36 model is Gaussian and
+uses conditionally iid grid residuals, so read the model boundary before using
+it as a confirmatory repeated-measures analysis.
+
+## 7. Select dimension without leakage
 
 For repeated trials, keep each participant in one held-out fold:
 
@@ -132,7 +157,7 @@ For repeated trials, keep each participant in one held-out fold:
 
 The FPCA basis is re-estimated inside each training fold. The one-SE rule is a parsimony heuristic rather than a significance test.
 
-## 7. Tune FPC count for an external outcome
+## 8. Tune FPC count for an external outcome
 
 When prediction is the goal, tune the ordinary FPC regression inside folds rather than reusing the reconstruction-selected count:
 
@@ -152,7 +177,7 @@ When prediction is the goal, tune the ordinary FPC regression inside folds rathe
 
 Use nested_cross_validate_fpca_regression() when predictive performance itself will be reported.
 
-## 8. Validate before labeling components
+## 9. Validate before labeling components
 
 For repeated trials, use participant-level bootstrap:
 
@@ -175,7 +200,7 @@ Use the stability result to qualify component interpretation rather than to crea
 Do not force them through <code>from_long_dataframe()</code>. Start with <code>from_irregular_long_dataframe_native()</code>, inspect the native sampling, and only then choose the common-grid projection.
 
 
-## 9. Diagnose near-tied component blocks
+## 10. Diagnose near-tied component blocks
 
 If adjacent FPCs swap or rotate across resamples:
 
