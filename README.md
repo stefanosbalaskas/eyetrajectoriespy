@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.45.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.46.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -173,6 +173,7 @@ print(summarise_fpca(fit))
 | Functional gaze predicted by experimental variables | observed-grid function-on-scalar OLS + wild-bootstrap simultaneous bands | `fit_function_on_scalar_regression()` / `function_on_scalar_simultaneous_bands()` |
 | Repeated-trial functional response with trial-varying predictors | joint B-spline functional mixed-effects regression with participant functional random intercept and optional one explicitly declared random functional slope | `fit_functional_mixed_effects_regression()` |
 | Whole-function inference for repeated-trial coefficient functions | whole-participant cluster bootstrap + observed-grid simultaneous coefficient/family bands conditional on fitted covariance | `bootstrap_functional_mixed_effects_coefficients()` / `functional_mixed_effects_simultaneous_bands()` |
+| Variance-component-sensitive mixed-effects inference | whole-participant full MixedLM refit + retained covariance/residual distributions + direct band-width sensitivity comparison | `bootstrap_functional_mixed_effects_full_refit()` / `compare_functional_mixed_effects_bootstraps()` |
 | Participant-specific random condition-response functions | one guarded random functional slope with full covariance diagnostics and BLUP inspection | `functional_random_effect_frame()` / `plot_functional_random_effects()` |
 | Planar/multichannel surrogate null | multivariate IAAFT with retained inter-channel phase differences and spectral diagnostics | `generate_multivariate_iaaft_surrogates()` / `multivariate_surrogate_nonlinearity_test()` |
 | Recurrent gaze-state structure | sparse recurrence / RQA | `recurrence_matrix()` / `rqa_metrics()` |
