@@ -1,8 +1,9 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.42.0.dev0"
+    assert et.__version__=="0.43.0.dev0"
     required={
+        "ConditionalTransferEntropyResult","ConditionalTransferEntropyCircularShiftTestResult","conditional_transfer_entropy","conditional_transfer_entropy_local_frame","conditional_transfer_entropy_circular_shift_test","plot_conditional_transfer_entropy_circular_shift_test","conditional_transfer_entropy_reporting_text","conditional_transfer_entropy_circular_shift_reporting_text",
         "TransferEntropySensitivityResult","transfer_entropy_parameter_sensitivity","plot_transfer_entropy_sensitivity","transfer_entropy_parameter_sensitivity_reporting_text",
         "DiscreteTransferEntropyResult","TransferEntropyCircularShiftTestResult","discrete_transfer_entropy","transfer_entropy_local_frame","transfer_entropy_circular_shift_test","plot_transfer_entropy_circular_shift_test","transfer_entropy_reporting_text","transfer_entropy_circular_shift_reporting_text",
         "MathematicalContract","get_mathematical_contract","list_mathematical_contracts","mathematical_contract_frame",
