@@ -434,3 +434,11 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ## Random functional slope inspection
 ::: eyetrajectoriespy.functional_random_effect_frame
 ::: eyetrajectoriespy.plot_functional_random_effects
+
+## Functional mixed-effects full-refit bootstrap
+::: eyetrajectoriespy.FunctionalMixedEffectsFullRefitBootstrapResult
+::: eyetrajectoriespy.bootstrap_functional_mixed_effects_full_refit
+::: eyetrajectoriespy.functional_mixed_effects_full_refit_audit_frame
+::: eyetrajectoriespy.functional_mixed_effects_variance_bootstrap_frame
+::: eyetrajectoriespy.compare_functional_mixed_effects_bootstraps
+::: eyetrajectoriespy.plot_functional_mixed_effects_bootstrap_comparison
