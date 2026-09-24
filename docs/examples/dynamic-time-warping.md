@@ -1,6 +1,6 @@
 # Dynamic time warping trajectory comparison
 
-This example shows why an elastic index alignment can be useful and why it can also remove a timing difference that matters scientifically.
+This example contrasts the backward-compatible symmetric1 raw-cost contract with the normalizable symmetric2 variant.
 
 ## A one-sample shift
 
@@ -20,19 +20,43 @@ b = np.array([
     [1.0],
 ])
 
-audit = dynamic_time_warping_distance(
+legacy = dynamic_time_warping_distance(
     a,
     b,
+    step_pattern="symmetric1",
     return_path=True,
 )
 
-print(audit.distance)
-print(audit.path)
+normalizable = dynamic_time_warping_distance(
+    a,
+    b,
+    step_pattern="symmetric2",
+    normalize=True,
+    return_path=True,
+)
+
+print(legacy.raw_distance)
+print(normalizable.raw_distance)
+print(normalizable.normalized_distance)
 ~~~
 
-Unconstrained DTW can align the repeated zeros and repeated ones so the cumulative cost is 0.0. This is exactly why DTW can be useful when local timing differences are nuisance variation.
+Both alignments can remove this one-sample shift. That can be useful when local progression rate is nuisance variation and problematic when the shift is the psychological effect itself.
 
-It is also exactly why DTW should not be the only analysis when the onset shift is itself the psychological effect.
+## Inspect the weighted path audit
+
+~~~python
+print(normalizable.path)
+print(normalizable.local_distances)
+print(normalizable.step_weights)
+print(normalizable.weighted_local_costs)
+
+assert np.isclose(
+    normalizable.raw_distance,
+    normalizable.weighted_local_costs.sum(),
+)
+~~~
+
+For symmetric2, diagonal advances receive weight two and horizontal/vertical advances weight one. The initial matched pair also has weight two. The normalized distance divides the raw cumulative cost by n_a + n_b.
 
 ## Constrain the index warp
 
@@ -40,26 +64,25 @@ It is also exactly why DTW should not be the only analysis when the onset shift 
 diagonal_only = dynamic_time_warping_distance(
     a,
     b,
+    step_pattern="symmetric2",
+    normalize=True,
     window_radius=0,
 )
 
 print(diagonal_only)
 ~~~
 
-A zero-radius band forces same-index matching. The distance is then 1.0.
+A zero-radius band forces same-index alignment. Window radius is therefore part of the estimand and should not be tuned after inspecting group differences.
 
-The comparison demonstrates that window_radius is part of the estimand. Do not choose it after looking for the most favorable group separation.
-
-## Auditable cumulative cost
+## Plot the alignment
 
 ~~~python
-print(audit.local_distances)
-print(audit.path_length)
-print(audit.mean_local_distance)
-print(audit.provenance)
+from eyetrajectoriespy import plot_dynamic_time_warping_alignment
+
+ax = plot_dynamic_time_warping_alignment(normalizable)
 ~~~
 
-The public distance is the **sum** of local costs on the selected path. mean_local_distance is retained as an audit summary, but the package does not substitute it for the defined DTW distance.
+The same-index diagonal is shown as a reference. Departures from it make the amount and location of index warping visible.
 
 ## Pairwise planar gaze trajectories
 
@@ -88,25 +111,24 @@ gaze = TrajectorySet(
 matrix = pairwise_dynamic_time_warping_distances(
     gaze,
     dimensions=("x", "y"),
+    step_pattern="symmetric2",
+    normalize=True,
     window_radius=1,
 )
 
 print(matrix)
 ~~~
 
-The stored time grid establishes the source trajectory object, but the DTW recurrence itself uses sequence indices, not the numeric time values.
+The TrajectorySet time grid describes the source representation, but numeric timestamps are not used by DTW.
 
-## What to report
+## Manuscript-oriented text
 
-For this workflow report:
+~~~python
+from eyetrajectoriespy import dynamic_time_warping_reporting_text
 
-- the coordinate representation and units;
-- the selected dimensions and any explicit dimension weights;
-- each sequence length;
-- the symmetric diagonal/up/left step pattern;
-- the Sakoe-Chiba sample-index radius or that alignment was unconstrained;
-- that the public distance is an unnormalized cumulative local-cost sum;
-- all upstream interpolation, resampling, smoothing, or normalization;
-- whether a time-preserving sensitivity analysis was also used.
+print(dynamic_time_warping_reporting_text(normalizable))
+~~~
+
+Report the step pattern, normalization rule, window, coordinate representation, dimensions/units, sequence lengths, upstream preprocessing, and whether latency was analyzed separately.
 
 The executable counterpart is examples/dynamic_time_warping.py.

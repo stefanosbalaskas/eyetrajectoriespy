@@ -107,8 +107,8 @@ def main() -> None:
 
     gallery = (DOCS / "methods" / "visual-gallery.md").read_text(encoding="utf-8")
     asset_refs = sorted(set(re.findall(r"\.\./assets/gallery/([^)\s]+\.svg)", gallery)))
-    if len(asset_refs) < 18:
-        raise RuntimeError("visual gallery must reference at least eighteen SVG figures")
+    if len(asset_refs) < 19:
+        raise RuntimeError("visual gallery must reference at least nineteen SVG figures")
     missing_assets = sorted(
         name for name in asset_refs if not (DOCS / "assets" / "gallery" / name).exists()
     )
@@ -116,7 +116,7 @@ def main() -> None:
         raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.33.0.dev0"):
+    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.34.0.dev0"):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
 

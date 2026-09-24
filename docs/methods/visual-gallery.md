@@ -99,6 +99,16 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked example](../examples/trajectory-geometry.md) · [Method guide](trajectory-geometry.md) · [Mathematics](mathematical-reference.md#trajectory-geometry)
 
+-   **Audited dynamic time warping alignment**
+
+    ![Dynamic time warping alignment path](../assets/gallery/dtw-alignment.svg)
+
+    A normalizable symmetric2 alignment with an explicit Sakoe-Chiba sample-index band, shown against the same-index diagonal.
+
+    **API:** `dynamic_time_warping_distance()`, `plot_dynamic_time_warping_alignment()`
+
+    [Worked example](../examples/dynamic-time-warping.md) · [Method guide](dynamic-time-warping.md) · [Mathematics](mathematical-reference.md#dynamic-time-warping)
+
 -   **Sparse recurrence structure**
 
     ![Sparse recurrence plot](../assets/gallery/recurrence-plot.svg)
@@ -231,6 +241,10 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
     c_{0,1-\alpha}\widehat{\mathrm{SE}}_0.
     $$
 
+=== "DTW alignment"
+
+    `plot_dynamic_time_warping_alignment()` visualizes the selected monotone index path. For symmetric2, the raw path cost uses step weights 2 for diagonal moves and 1 for horizontal/vertical moves; the optional normalized distance divides the complete global cost by \(N+M\).
+
 === "Recurrence"
 
     `plot_recurrence()` visualizes sparse entries satisfying
@@ -268,4 +282,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates all eighteen assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates all nineteen assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.

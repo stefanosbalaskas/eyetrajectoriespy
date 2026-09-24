@@ -73,14 +73,18 @@ d_w(\mathbf p_i,\mathbf q_j)=\left[\sum_r\omega_r(p_{ir}-q_{jr})^2\right]^{1/2}
 $$
 
 $$
-C_{i,j}=d_w(\mathbf p_i,\mathbf q_j)+\min(C_{i-1,j-1},C_{i-1,j},C_{i,j-1})
+C^{(s1)}_{i,j}=d_w(\mathbf p_i,\mathbf q_j)+\min(C_{i-1,j-1},C_{i-1,j},C_{i,j-1})
 $$
 
 $$
-d_{DTW}(P,Q)=C_{m,n}
+C^{(s2)}_{i,j}=\min\{C_{i-1,j-1}+2d_w,C_{i-1,j}+d_w,C_{i,j-1}+d_w\}
 $$
 
-**Scope:** Complete ordered point sequences with monotone index warping and optional Sakoe-Chiba sample-index constraint; recorded elapsed time is not used, the returned distance is an unnormalized sum, and no hidden preprocessing is introduced.
+$$
+d^{(s2)}_{\mathrm{norm}}(P,Q)=\frac{C^{(s2)}_{m,n}}{m+n}
+$$
+
+**Scope:** Complete ordered point sequences with explicit symmetric1 or normalizable symmetric2 step weighting and optional Sakoe-Chiba sample-index constraint; the 0.33 symmetric1 raw-cost default is preserved, elapsed time is not used, and no hidden preprocessing or automatic specification selection is introduced.
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#dynamic-time-warping
 

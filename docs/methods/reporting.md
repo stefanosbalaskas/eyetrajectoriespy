@@ -703,12 +703,15 @@ Report:
 - trajectory representation, coordinate dimensions, and units;
 - sequence lengths and relevant sampling representation;
 - weighted-Euclidean local metric and any dimension weights;
-- the symmetric diagonal/vertical/horizontal step pattern;
+- the exact step pattern: symmetric1 or symmetric2;
+- raw cumulative DTW cost;
+- for symmetric2, the N+M-normalized distance and normalization denominator when normalization is reported;
 - whether alignment was unconstrained or windowed;
 - the Sakoe-Chiba radius in sample indices when used;
-- the raw cumulative DTW cost and, when useful, path length/mean local distance as audit summaries;
+- path length and mean local distance when used as audit summaries;
 - all upstream interpolation, resampling, smoothing, coordinate normalization, or simplification;
 - whether an alignment path was inspected and that multiple optimal paths may exist;
 - explicitly that recorded timestamps were not used by the recurrence.
 
-If latency or physical traversal timing is scientifically meaningful, report the complementary time-preserving analysis rather than implying that DTW preserves trial-time correspondence. Do not describe the stored mean local distance as the package's DTW distance; the public 0.33 estimand is the unnormalized cumulative cost.
+If latency or physical traversal timing is scientifically meaningful, report the complementary time-preserving analysis rather than implying that DTW preserves trial-time correspondence. Do not describe mean local distance as the DTW distance, and do not describe symmetric2 normalization as a post hoc normalization of the symmetric1 estimand.
+

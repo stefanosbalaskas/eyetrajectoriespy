@@ -332,10 +332,12 @@ For mathematical definitions of the main estimands, transformations, studentizat
 
 ## Plotting and reporting
 ::: eyetrajectoriespy.plot_planar_trajectories
+::: eyetrajectoriespy.plot_dynamic_time_warping_alignment
 ::: eyetrajectoriespy.plot_fpca_component
 ::: eyetrajectoriespy.plot_warping_functions
 ::: eyetrajectoriespy.plot_fpca_stability
 ::: eyetrajectoriespy.plot_reconstruction_curve
+::: eyetrajectoriespy.dynamic_time_warping_reporting_text
 ::: eyetrajectoriespy.fpca_stability_reporting_text
 ::: eyetrajectoriespy.registration_sensitivity_reporting_text
 ::: eyetrajectoriespy.summarise_fpca

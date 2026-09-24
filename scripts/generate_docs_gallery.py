@@ -16,6 +16,7 @@ from eyetrajectoriespy import (
     TrajectorySet,
     bootstrap_rqa_metric_means,
     delay_embed_trajectory,
+    dynamic_time_warping_distance,
     estimate_largest_lyapunov_kantz,
     estimate_largest_lyapunov_rosenstein,
     fit_local_return_map,
@@ -26,6 +27,7 @@ from eyetrajectoriespy import (
     kantz_parameter_sensitivity,
     local_divergence_curve,
     multiplier_functional_mean_band,
+    plot_dynamic_time_warping_alignment,
     plot_fpca_component,
     plot_fpca_variance,
     plot_fpca_wild_bootstrap_family_test,
@@ -120,6 +122,19 @@ def main() -> None:
         alpha=1.0,
     )
     _save(ax, "trajectory-curvature.svg")
+
+    dtw_a = np.array([[0.0], [0.0], [1.0], [1.5], [2.0]])
+    dtw_b = np.array([[0.0], [0.5], [1.0], [2.0]])
+    dtw_audit = dynamic_time_warping_distance(
+        dtw_a,
+        dtw_b,
+        step_pattern="symmetric2",
+        normalize=True,
+        window_radius=2,
+        return_path=True,
+    )
+    ax = plot_dynamic_time_warping_alignment(dtw_audit)
+    _save(ax, "dtw-alignment.svg")
 
     landmark_rng = np.random.default_rng(2107)
     observed_landmarks = np.column_stack(

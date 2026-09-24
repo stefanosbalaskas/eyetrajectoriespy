@@ -30,6 +30,7 @@ from .types import (
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
     ConformalFunctionalAnomalyResult,
+    DynamicTimeWarpingResult,
     FunctionalOutlierResult,
     MultilevelFPCAResult,
     RegistrationSensitivityResult,
@@ -52,6 +53,55 @@ def summarise_trajectory_set(trajectories: TrajectorySet) -> pd.DataFrame:
         "missing_fraction": float(missing.mean()),
         "dimensions": ", ".join(trajectories.dimension_names),
     }])
+
+
+def dynamic_time_warping_reporting_text(
+    result: DynamicTimeWarpingResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate compact reporting text for one audited DTW alignment."""
+
+    if not isinstance(result, DynamicTimeWarpingResult):
+        raise TypeError("result must be a DynamicTimeWarpingResult")
+    if isinstance(digits, bool) or not isinstance(digits, (int, np.integer)):
+        raise TypeError("digits must be an integer")
+    if digits < 0:
+        raise ValueError("digits must be non-negative")
+
+    window = (
+        "unconstrained"
+        if result.window_radius is None
+        else f"Sakoe-Chiba radius={result.window_radius} sample indices"
+    )
+    raw_distance = (
+        float(result.distance)
+        if result.raw_distance is None
+        else float(result.raw_distance)
+    )
+    if result.normalized_distance is None:
+        distance_text = (
+            f"raw cumulative distance={raw_distance:.{digits}f}; "
+            "no path-independent normalization is defined for symmetric1"
+        )
+    else:
+        distance_text = (
+            f"raw cumulative distance={raw_distance:.{digits}f}, "
+            f"N+M-normalized distance={result.normalized_distance:.{digits}f}"
+        )
+    returned = (
+        "normalized"
+        if result.provenance.get("normalization_requested", False)
+        else "raw cumulative"
+    )
+    return (
+        f"Dynamic time warping used the {result.step_pattern} step pattern "
+        f"with {window}. {distance_text}. The reported scalar was the "
+        f"{returned} value. The optimal monotone path contained "
+        f"{result.path_length} matched index pairs; recorded timestamps were "
+        "not used by the recurrence, and no step pattern, window, "
+        "preprocessing, or normalization rule was selected automatically."
+    )
 
 
 def summarise_fpca(result: FPCAResult) -> pd.DataFrame:

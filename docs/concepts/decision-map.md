@@ -12,7 +12,7 @@ Use the **research question and data structure** to choose the representation.
 | How does allocation among AOIs evolve? | compositional FPCA | probabilities must remain on the simplex |
 | Do people traverse similar paths at different times? | registration + phase FPCA | do not erase meaningful latency |
 | Do I need a bottleneck measure of ordered path separation without elapsed-time matching? | discrete Fréchet | declare dimensions/units; one local excursion can dominate |
-| Do I need cumulative elastic matching of ordered path samples? | dynamic time warping | declare the sample-index window; DTW can align away meaningful latency |
+| Do I need cumulative elastic matching of ordered path samples? | dynamic time warping | pre-specify symmetric1 vs symmetric2, normalization, and sample-index window; DTW can align away meaningful latency |
 | Do I need uncertainty for the mean trajectory? | simultaneous multiplier mean band | choose the independent inference unit before calibration |
 | How many FPCs should be retained for reconstruction? | held-out reconstruction CV | refit FPCA inside folds; group repeated participants |
 | How many FPCs should predict an external scalar outcome? | predictive FPCA regression CV / nested CV | fit FPCA and regression inside folds; keep outer test data out of selection |

@@ -159,6 +159,7 @@ from .phase import (
     registration_sensitivity_frame,
 )
 from .plotting import (
+    plot_dynamic_time_warping_alignment,
     plot_fpca_component,
     plot_fpca_component_band,
     plot_fpca_component_envelope,
@@ -216,6 +217,7 @@ from .preprocessing import (
 from .registration import phase_summary, register_to_landmarks, warping_displacement
 from .reporting import (
     conformal_fpca_anomaly_reporting_text,
+    dynamic_time_warping_reporting_text,
     fpca_reporting_text,
     fpca_score_uncertainty_reporting_text,
     fpca_spectrum_uncertainty_reporting_text,
@@ -339,7 +341,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.33.0.dev0"
+__version__ = "0.34.0.dev0"
 
 __all__ = [
     "recurrence_radius_profile_reporting_text",
@@ -491,6 +493,8 @@ __all__ = [
     "pairwise_discrete_frechet_distances",
     "dynamic_time_warping_distance",
     "pairwise_dynamic_time_warping_distances",
+    "plot_dynamic_time_warping_alignment",
+    "dynamic_time_warping_reporting_text",
     "pairwise_functional_distances",
     "nearest_trajectory_indices",
     "score_distance_matrix",

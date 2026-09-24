@@ -180,6 +180,12 @@ class DynamicTimeWarpingResult:
     n_dimensions: int
     window_radius: int | None
     provenance: Mapping[str, Any] = field(default_factory=dict)
+    raw_distance: float | None = None
+    normalized_distance: float | None = None
+    step_pattern: str = "symmetric1"
+    normalization_denominator: float | None = None
+    step_weights: np.ndarray | None = None
+    weighted_local_costs: np.ndarray | None = None
 
 
 @dataclass(frozen=True)

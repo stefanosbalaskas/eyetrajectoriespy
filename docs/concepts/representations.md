@@ -13,9 +13,9 @@ The most important choice is the **functional object**, not the PCA backend.
 
 ## Ordered point-sequence similarity
 
-Discrete Fréchet and DTW operate on the supplied ordered points rather than on recorded elapsed timestamps. Fréchet minimizes the worst coupled separation; DTW minimizes a cumulative local alignment cost. DTW additionally exposes an optional Sakoe-Chiba sample-index band.
+Discrete Fréchet and DTW operate on the supplied ordered points rather than on recorded elapsed timestamps. Fréchet minimizes the worst coupled separation; DTW minimizes a cumulative local alignment cost. DTW exposes the step-weighting rule explicitly: the backward-compatible symmetric1 raw-cost contract and the normalizable symmetric2 rule with optional N+M normalization. An optional Sakoe-Chiba band constrains sample-index displacement.
 
-These are similarity representations, not substitutes for registration/phase analysis when timing deformation itself is a scientific outcome. Coordinate scaling, selected dimensions, upstream resampling, and the DTW band remain explicit analysis decisions.
+These are similarity representations, not substitutes for registration/phase analysis when timing deformation itself is a scientific outcome. Coordinate scaling, selected dimensions, upstream resampling, DTW step pattern, normalization choice, and the DTW band remain explicit analysis decisions.
 
 ## Absolute screen coordinates
 

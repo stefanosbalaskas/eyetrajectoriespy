@@ -451,4 +451,10 @@ DTW does not use the numeric TrajectorySet timestamps, and an unconstrained path
 
 ## Should I normalize DTW by path length?
 
-Version 0.33 does not choose a normalization automatically. The public DTW distance is the raw cumulative local-cost sum, while path length and mean local distance are retained in the audit result. If a study requires a normalized variant, define that estimand explicitly rather than silently replacing the package contract.
+Do not divide the legacy symmetric1 cost by path length and call it the package's normalized DTW. Version 0.34 keeps symmetric1 as the backward-compatible raw-cost default and adds the normalizable symmetric2 step pattern. With step_pattern="symmetric2", normalize=True returns the defined complete-alignment N+M normalization.
+
+Path length and mean local distance remain audit summaries, not substitutes for the declared DTW estimand.
+
+## Should I use symmetric1 or symmetric2?
+
+Treat the choice as part of the analysis specification. symmetric1 preserves the 0.33 cumulative-cost contract but is not N+M-normalizable. symmetric2 changes the diagonal weighting and supports the path-independent N+M normalization commonly used for symmetric global DTW. Pre-specify the pattern when possible and report it explicitly; do not switch after inspecting which version produces the preferred condition contrast.
