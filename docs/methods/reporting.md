@@ -486,7 +486,7 @@ Example:
 
 ## Nonlinear trajectory dynamics
 
-For delay reconstruction and RQA, report the source sampling grid/rate, analyzed dimensions, preprocessing, (m), (	au), recurrence metric, radius policy and resulting radius, Theiler window, line thresholds, and whether the state was observed or reconstructed. If a target recurrence rate was used, report both the target and achieved rate.
+For delay reconstruction and RQA, report the source sampling grid/rate, analyzed dimensions, preprocessing, (m), (τ), recurrence metric, radius policy and resulting radius, Theiler window, line thresholds, and whether the state was observed or reconstructed. If a target recurrence rate was used, report both the target and achieved rate.
 
 For windowed RQA, also report the window and step, whether windows overlap, number of windows, and `dropped_tail_samples`.
 
