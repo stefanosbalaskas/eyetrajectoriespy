@@ -53,6 +53,24 @@ flowchart LR
     J --> K[Coefficient/family simultaneous bands]
 ```
 
+## Trajectory-distance robustness
+
+```mermaid
+flowchart LR
+    A[Same complete trajectories] --> B[Declared L2]
+    A --> C[Declared Fréchet]
+    A --> D[Declared DTW specification]
+    B --> E[Native-scale distance matrices]
+    C --> E
+    D --> E
+    E --> F[Pair-rank agreement]
+    E --> G[Top-k neighbor agreement]
+    F --> H[Robustness interpretation]
+    G --> H
+```
+
+No consensus metric, p-value, or preferred distance is constructed automatically.
+
 ## Ordered trajectory comparison
 
 ```mermaid
