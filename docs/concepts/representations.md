@@ -7,6 +7,7 @@ The most important choice is the **functional object**, not the PCA backend.
 | Screen-space gaze | $G_i(t)=[x_i(t),y_i(t)]^\\top$ | `fit_mfpca()` |
 | One continuous derived variable | $X_i(t)$ | `fit_fpca()` |
 | Functional response explained by scalar predictors | $Y_i(t)=x_i^\top\beta(t)+\epsilon_i(t)$ | `fit_function_on_scalar_regression()` |
+| Repeated functional response with trial-level predictors | $Y_{ij}(t)=x_{ij}^\top\beta(t)+b_i(t)+\epsilon_{ij}(t)$ | `fit_functional_mixed_effects_regression()` |
 | Repeated trials per participant | $G_{ij}(t)$ | `fit_multilevel_fpca()` |
 | AOI probability vector | $P_i(t)$, $\\sum_k p_{ik}(t)=1$ | `fit_compositional_fpca()` |
 | Same path at different rates | amplitude + phase | `register_to_landmarks()` / elastic analysis |
