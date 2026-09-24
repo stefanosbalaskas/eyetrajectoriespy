@@ -699,6 +699,75 @@ class FunctionalMeanBandResult:
 
 
 @dataclass(frozen=True)
+class FunctionOnScalarResult:
+    """Observed-grid function-on-scalar regression fit."""
+
+    coefficients: np.ndarray
+    standard_errors: np.ndarray
+    fitted_functions: np.ndarray
+    residual_functions: np.ndarray
+    observed_functions: np.ndarray
+    design_matrix: np.ndarray
+    coefficient_names: tuple[str, ...]
+    predictor_names: tuple[str, ...]
+    design_rank: int
+    residual_degrees_of_freedom: int
+    unit: str
+    unit_ids: tuple[str, ...]
+    curves_per_unit: tuple[int, ...]
+    participant_column: str | None
+    time: np.ndarray
+    dimension_names: tuple[str, ...]
+    coordinate_system: str
+    time_unit: str
+    source_curve_ids: tuple[str, ...]
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_coefficients(self) -> int:
+        return len(self.coefficient_names)
+
+    @property
+    def n_units(self) -> int:
+        return len(self.unit_ids)
+
+
+@dataclass(frozen=True)
+class FunctionOnScalarBootstrapResult:
+    """Wild-bootstrap coefficient replicates for function-on-scalar regression."""
+
+    reference: FunctionOnScalarResult
+    bootstrap_coefficients: np.ndarray
+    multipliers: np.ndarray
+    multiplier: str
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.bootstrap_coefficients.shape[0]
+
+
+@dataclass(frozen=True)
+class FunctionOnScalarBandResult:
+    """Observed-grid simultaneous bands for function-on-scalar coefficients."""
+
+    reference: FunctionOnScalarResult
+    lower: np.ndarray
+    upper: np.ndarray
+    critical_values: np.ndarray
+    max_statistics: np.ndarray
+    confidence_level: float
+    simultaneous_scope: str
+    bootstrap: FunctionOnScalarBootstrapResult
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_coefficients(self) -> int:
+        return self.lower.shape[0]
+
+
+@dataclass(frozen=True)
 class FPCARegressionUncertaintyResult:
     """Paired-bootstrap uncertainty for Gaussian FPCA scalar regression."""
 
