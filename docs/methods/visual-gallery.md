@@ -78,6 +78,16 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked example](../examples/functional-mixed-effects.md) · [Guide](../guides/functional-mixed-effects.md) · [Mathematics](mathematical-reference.md#functional-mixed-effects)
 
+-   **Multivariate IAAFT preservation diagnostics**
+
+    ![Per-surrogate power-spectrum and cross-spectrum mismatch diagnostics](../assets/gallery/multivariate-iaaft-diagnostics.svg)
+
+    Cross-spectrum-aware x/y surrogate generation with exact marginal rank restoration and explicit retained Fourier mismatch diagnostics.
+
+    **API:** `generate_multivariate_iaaft_surrogates()`, `plot_multivariate_iaaft_diagnostics()`
+
+    [Worked example](../examples/multivariate-surrogates.md) · [Method guide](multivariate-surrogates.md) · [Mathematics](mathematical-reference.md#multivariate-iaaft)
+
 -   **Heteroscedastic FPCR target intervals**
 
     ![Wild bootstrap fixed target intervals](../assets/gallery/wild-bootstrap-projections.svg)
@@ -306,4 +316,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates all twenty assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates all twenty-two assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
