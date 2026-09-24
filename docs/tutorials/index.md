@@ -249,6 +249,18 @@ eigenvalues, condition number, and participant BLUP slope functions.
 See also the
 [random-functional-slope method guide](../methods/functional-mixed-effects-random-slope.md).
 
+### Full-refit participant bootstrap
+
+Use the
+[worked full-refit bootstrap example](../examples/functional-mixed-effects-full-refit-bootstrap.md)
+when the uncertainty analysis should re-estimate the declared mixed-model
+variance components in each whole-participant resample. The example audits
+source versus bootstrap participant identities, covariance stability, and
+full-refit versus fixed-covariance band widths.
+
+See also the
+[full-refit method guide](../methods/functional-mixed-effects-full-refit-bootstrap.md).
+
 ### Simultaneous functional mixed-effects coefficient bands
 
 Use the
