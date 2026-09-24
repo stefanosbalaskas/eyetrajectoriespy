@@ -33,19 +33,23 @@ flowchart TD
     A[Complete ordered trajectory points] --> B{What difference matters?}
     B -->|Worst coupled spatial excursion| C[Discrete Fréchet]
     B -->|Cumulative mismatch after elastic index alignment| D[DTW]
-    D --> E{Constrain warping?}
-    E -->|No| F[Unconstrained monotone DTW]
-    E -->|Yes| G[Declare Sakoe-Chiba sample-index radius]
-    C --> H[Audit deterministic coupling]
-    F --> I[Audit deterministic path]
-    G --> I
-    H --> J{Is elapsed timing part of the estimand?}
-    I --> J
-    J -->|Yes| K[Add time-preserving functional comparison]
-    J -->|No / nuisance timing| L[Interpret elastic similarity]
+    D --> E{Step pattern}
+    E -->|symmetric1| F[Raw cumulative cost]
+    E -->|symmetric2| G{Normalize by N+M?}
+    F --> H{Constrain warping?}
+    G --> H
+    H -->|No| I[Unconstrained monotone DTW]
+    H -->|Yes| J[Declare Sakoe-Chiba sample-index radius]
+    C --> K[Audit deterministic coupling]
+    I --> L[Audit deterministic path]
+    J --> L
+    K --> M{Is elapsed timing part of the estimand?}
+    L --> M
+    M -->|Yes| N[Add time-preserving functional comparison]
+    M -->|No / nuisance timing| O[Interpret elastic similarity]
 ```
 
-Fréchet and DTW use sequence order, not the numeric TrajectorySet time grid. Fréchet reports a bottleneck maximum; DTW reports an unnormalized cumulative path cost. Neither contract silently resamples, smooths, normalizes, or chooses a warping rule.
+Fréchet and DTW use sequence order, not the numeric TrajectorySet time grid. Fréchet reports a bottleneck maximum. DTW requires an explicit step pattern: symmetric1 preserves the raw cumulative 0.33 contract, while symmetric2 supports the defined N+M normalization. Neither contract silently resamples, smooths, chooses a step pattern, normalizes, or chooses a warping window.
 
 ## FPCA validation before interpretation
 
