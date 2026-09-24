@@ -458,6 +458,110 @@ $$
 
 **API:** `multiplier_functional_mean_band()`; `windowed_rqa_functional_mean_band()` reuses this calibration after constructing the declared RQA-derived functional trajectories.
 
+## Functional mixed-effects regression { #functional-mixed-effects }
+
+Version 0.36 introduces a deliberately narrow functional mixed-effects model
+for repeated common-grid trajectories. For participant \(i\), trial \(j\), and
+one selected response dimension,
+
+$
+Y_{ij}(t)
+=
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t)
++
+b_i(t)
++
+\varepsilon_{ij}(t),
+$
+
+where the participant-specific functional random intercept is
+
+$
+b_i(t)
+=
+\mathbf B_r(t)^{\top}\mathbf u_i.
+$
+
+Each fixed coefficient function is represented in a declared clamped B-spline
+basis,
+
+$
+\beta_p(t)
+=
+\mathbf B_f(t)^{\top}\boldsymbol\theta_p.
+$
+
+The random basis coefficients follow
+
+$
+\mathbf u_i
+\sim
+N(\mathbf 0,\boldsymbol\Psi),
+$
+
+with one unstructured covariance matrix \(\boldsymbol\Psi\) shared across
+participants. Conditional residual errors are
+
+$
+\varepsilon_{ij}(t_m)
+\sim
+N(0,\sigma^2),
+$
+
+independently over the stacked grid once the fixed and participant random
+effects are conditioned upon.
+
+For the stacked observations of participant \(i\), the marginal covariance
+under the implemented model is
+
+$
+\operatorname{Cov}(\mathbf Y_i\mid\mathbf X_i)
+=
+\mathbf Z_i\boldsymbol\Psi\mathbf Z_i^\top
++
+\sigma^2\mathbf I.
+$
+
+The fixed-effect design is formed by tensoring each scalar design column with
+the fixed B-spline basis. The participant random-effect design uses the random
+B-spline basis for every curve belonging to the participant. All
+curve-by-time observations are then fitted in **one** Gaussian linear mixed
+model using `statsmodels.MixedLM`; there is no separate mixed-model fit at
+each time point.
+
+### Trial-varying predictors
+
+Unlike the 0.35 participant-aggregation route, trial-varying scalar predictors
+are allowed because all trials remain in the stacked likelihood and
+participant clustering is represented by \(b_i(t)\). Thus a within-participant
+condition can enter \(\mathbf x_{ij}\) directly.
+
+### Basis and covariance boundary
+
+Version 0.36 does not choose the number of fixed or random basis functions.
+The analyst supplies `fixed_basis_size`, `random_basis_size`, and
+`spline_degree`. No smoothing penalty is estimated automatically.
+
+The participant random-basis covariance is unstructured. Fits with an
+estimated covariance eigenvalue at or near the numerical boundary are retained
+but flagged in the result rather than silently interpreted as regular fits.
+
+### Inferential boundary
+
+Pointwise standard errors for fixed coefficient functions are propagated from
+the fitted fixed-parameter covariance matrix through the declared basis.
+The helper table and plot use 95% pointwise Wald intervals. Version 0.36 does
+**not** claim simultaneous whole-function coverage, variance-component
+uncertainty, serially correlated residual errors, a trial-level functional
+random effect, random functional slopes, generalized/non-Gaussian responses,
+or joint cross-dimension covariance.
+
+A non-converged optimizer result raises rather than being returned as a valid
+scientific fit.
+
+**API:** `fit_functional_mixed_effects_regression()`,
+`functional_mixed_effects_coefficient_frame()`.
+
 ## Function-on-scalar regression { #function-on-scalar }
 
 Let \(Y_{id}(t_m)\) be functional response dimension \(d\) for independent inference unit \(i\), and let \(\mathbf x_i\) contain an intercept and the analyst-declared scalar predictors. At each observed time and selected response dimension,
