@@ -44,6 +44,7 @@ from eyetrajectoriespy import (
     plot_local_divergence,
     plot_multivariate_iaaft_diagnostics,
     plot_planar_trajectories,
+    plot_trajectory_distance_rank_correlations,
     plot_trajectory_overlay,
     plot_poincare_return_map,
     plot_recurrence,
@@ -58,6 +59,7 @@ from eyetrajectoriespy import (
     function_on_scalar_simultaneous_bands,
     register_to_landmarks,
     signed_curvature_function,
+    trajectory_distance_sensitivity,
     simulate_planar_trajectories,
     wild_bootstrap_fpca_projection,
     windowed_rqa,
@@ -309,6 +311,26 @@ def main() -> None:
     )
     ax = plot_multivariate_iaaft_diagnostics(miaaft_result)
     _save(ax, "multivariate-iaaft-diagnostics.svg")
+
+    distance_source = gaze.subset(list(range(8)))
+    distance_sensitivity = trajectory_distance_sensitivity(
+        distance_source,
+        specifications=(
+            {"name": "L2", "method": "functional_l2"},
+            {"name": "Frechet", "method": "discrete_frechet"},
+            {
+                "name": "DTW",
+                "method": "dtw",
+                "step_pattern": "symmetric2",
+                "normalize": True,
+                "window_radius": None,
+            },
+        ),
+        dimensions=distance_source.dimension_names[:2],
+        neighbor_k=2,
+    )
+    ax = plot_trajectory_distance_rank_correlations(distance_sensitivity)
+    _save(ax, "trajectory-distance-sensitivity.svg")
 
     rng = np.random.default_rng(2103)
     score1 = fpca.scores[:, 0]
@@ -581,6 +603,7 @@ def main() -> None:
         "registration-warping.svg",
         "functional-mean-band.svg",
         "multivariate-iaaft-diagnostics.svg",
+        "trajectory-distance-sensitivity.svg",
         "wild-bootstrap-projections.svg",
         "wild-bootstrap-family-test.svg",
         "monte-carlo-precision.svg",
