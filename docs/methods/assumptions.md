@@ -430,3 +430,17 @@ Coordinate units and explicit dimension weights define the local geometry. All p
 - Increasing history depth can make empirical probability support sparse. The table therefore retains effective counts and joint-history support diagnostics instead of imposing a hidden adequacy threshold.
 - If circular-shift inference is requested, the identical declared shift set is used for every specification and the wrap-around/stationarity assumptions of that null apply to all rows.
 - Descriptive variation across specifications is not a sampling distribution, posterior distribution, or causal probability.
+
+## Conditional transfer entropy assumptions
+
+- Source, target, and conditioning series use analyst-declared discrete state
+  definitions that are meaningful for the scientific question.
+- Target, source, and conditioning history lengths and both lags are fixed by
+  the analysis specification rather than optimized against the observed CTE.
+- The supplied conditioning process is the process the analyst intends to
+  adjust for; unmeasured common drivers are not assumed away.
+- Empirical support is adequate enough for the analyst's intended
+  interpretation. The package exposes support diagnostics but does not encode a
+  universal cell-count threshold.
+- If circular-shift inference is requested, source wrap-around shifts are
+  scientifically defensible while target and conditioning series remain fixed.
