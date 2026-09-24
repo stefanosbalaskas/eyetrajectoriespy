@@ -14,6 +14,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Simultaneous functional mean band | implemented | `multiplier_functional_mean_band()` |
 | Function-on-scalar regression | implemented; observed-grid OLS with explicit design and HC1 standard errors | `fit_function_on_scalar_regression()` |
 | Function-on-scalar simultaneous coefficient bands | implemented; fixed-design wild bootstrap with coefficient/family scope | `function_on_scalar_simultaneous_bands()` |
+| Functional mixed-effects regression | implemented; one Gaussian response dimension, B-spline fixed effects, participant functional random intercept, joint MixedLM fit | `fit_functional_mixed_effects_regression()` |
 | Explicit irregular → common-grid projection | implemented | `resample_irregular_to_grid()` |
 | Univariate FPCA | implemented | `fit_fpca()` |
 | Joint multivariate FPCA | implemented | `fit_mfpca()` |
@@ -120,7 +121,7 @@ Still not provided are full uncertainty procedures that jointly include target m
 
 Future tranches may evaluate:
 
-- repeated-measures function-on-scalar / functional mixed-effects regression for trial-varying predictors and participant-specific functional random effects;
+- richer functional mixed-effects structures: trial-level functional random effects, random functional slopes, residual serial correlation, simultaneous coefficient inference, and generalized responses;
 - multivariate cross-structure-preserving surrogate generation for planar gaze;
 - trajectory-similarity robustness across L2, Fréchet, and DTW before adding further distance metrics;
 - richer multilevel functional mixed-effects backends;
@@ -133,4 +134,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.35.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.36.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

@@ -589,6 +589,28 @@ If discrete Fréchet will be used, pre-specify the trajectory representation, in
 Do not choose coordinate scaling, dimensions, or preprocessing after inspecting which version produces the preferred group separation. State whether elapsed timing is intentionally ignored by the comparison.
 
 
+## Functional mixed-effects regression
+
+If repeated functional responses will be modeled with the 0.36 mixed-effects
+model, pre-specify:
+
+- the selected functional response dimension and common-grid time domain;
+- participant identifier and expected repeated-trial structure;
+- scalar predictors and exact numeric coding, including interactions;
+- fixed B-spline basis size and degree;
+- participant random B-spline basis size and degree;
+- ML versus REML estimation;
+- optimizer and maximum iterations;
+- the conditionally iid Gaussian residual assumption;
+- how a near-boundary random-effect covariance will be reported;
+- any planned basis-size sensitivity analysis;
+- whether pointwise Wald uncertainty is descriptive/supporting rather than a
+  simultaneous whole-function inferential claim.
+
+Do not choose the basis size, response dimension, predictor coding, optimizer,
+or time window after inspecting which specification yields the preferred
+functional effect.
+
 ## Function-on-scalar regression
 
 If a functional response will be modeled using scalar predictors, pre-specify:

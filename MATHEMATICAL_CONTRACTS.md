@@ -217,6 +217,57 @@ $$
 
 Implemented by `multiplier_functional_mean_band()`.
 
+## Functional mixed-effects regression
+
+For repeated functional responses from participant \(i\), trial \(j\), and
+observed grid location \(t_m\),
+
+$
+Y_{ij}(t)
+=
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t)
++
+\mathbf B_r(t)^{\top}\mathbf u_i
++
+\varepsilon_{ij}(t).
+$
+
+Each fixed coefficient function is represented as
+
+$
+\beta_p(t)
+=
+\mathbf B_f(t)^{\top}\boldsymbol\theta_p,
+$
+
+while participant random-basis coefficients satisfy
+
+$
+\mathbf u_i
+\sim
+N(\mathbf 0,\boldsymbol\Psi),
+\qquad
+\varepsilon_{ij}(t_m)
+\sim
+N(0,\sigma^2).
+$
+
+For all stacked observations from participant \(i\),
+
+$
+\operatorname{Cov}(\mathbf Y_i\mid\mathbf X_i)
+=
+\mathbf Z_i\boldsymbol\Psi\mathbf Z_i^\top
++
+\sigma^2\mathbf I.
+$
+
+Implemented by `fit_functional_mixed_effects_regression()`. Version 0.36
+fits one selected response dimension jointly across all curve-by-time samples.
+It uses explicitly sized B-spline bases, an unstructured participant
+random-basis covariance, and conditionally iid grid-level residual errors.
+It is not a collection of independent pointwise mixed models.
+
 ## Function-on-scalar regression
 
 For functional response vector \(\mathbf Y(t)\) and scalar design matrix \(\mathbf X\),

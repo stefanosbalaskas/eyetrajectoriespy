@@ -199,6 +199,31 @@ _CONTRACTS = (
         scope="Simultaneous calibration over the observed time-by-dimension grid, with curve or equal-weight participant inference units.",
     ),
     MathematicalContract(
+        key="functional-mixed-effects",
+        title="Joint functional mixed-effects regression",
+        public_api=("fit_functional_mixed_effects_regression",),
+        equations=(
+            r"Y_{ij}(t)=\mathbf x_{ij}^{\top}\boldsymbol\beta(t)"
+            r"+\mathbf B_r(t)^{\top}\mathbf u_i+\varepsilon_{ij}(t)",
+            r"\beta_p(t)=\mathbf B_f(t)^{\top}\boldsymbol\theta_p",
+            r"\mathbf u_i\sim N(\mathbf 0,\boldsymbol\Psi),\qquad "
+            r"\varepsilon_{ij}(t_m)\sim N(0,\sigma^2)",
+            r"\operatorname{Cov}(\mathbf Y_i\mid\mathbf X_i)="
+            r"\mathbf Z_i\boldsymbol\Psi\mathbf Z_i^\top+\sigma^2\mathbf I",
+        ),
+        site_anchor="functional-mixed-effects",
+        scope=(
+            "One selected Gaussian functional response dimension, common "
+            "grid, B-spline fixed coefficient functions, one participant "
+            "functional random intercept with unstructured basis-coefficient "
+            "covariance, and conditionally iid grid residuals. Trial-varying "
+            "predictors are allowed. No pointwise mixed-model decomposition, "
+            "automatic basis selection, residual serial correlation model, "
+            "curve-level functional random effect, or multivariate "
+            "cross-dimension covariance is claimed."
+        ),
+    ),
+    MathematicalContract(
         key="function-on-scalar",
         title="Function-on-scalar regression and simultaneous coefficient bands",
         public_api=(

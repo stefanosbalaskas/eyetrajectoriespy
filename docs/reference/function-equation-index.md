@@ -180,6 +180,30 @@ $$
 
 [Expanded mathematical reference](../methods/mathematical-reference.md#mean-band)
 
+## Joint functional mixed-effects regression
+
+**Functions:** `fit_functional_mixed_effects_regression()`
+
+$$
+Y_{ij}(t)=\mathbf x_{ij}^{\top}\boldsymbol\beta(t)+\mathbf B_r(t)^{\top}\mathbf u_i+\varepsilon_{ij}(t)
+$$
+
+$$
+\beta_p(t)=\mathbf B_f(t)^{\top}\boldsymbol\theta_p
+$$
+
+$$
+\mathbf u_i\sim N(\mathbf 0,\boldsymbol\Psi),\qquad \varepsilon_{ij}(t_m)\sim N(0,\sigma^2)
+$$
+
+$$
+\operatorname{Cov}(\mathbf Y_i\mid\mathbf X_i)=\mathbf Z_i\boldsymbol\Psi\mathbf Z_i^\top+\sigma^2\mathbf I
+$$
+
+**Scope:** One selected Gaussian functional response dimension, common grid, B-spline fixed coefficient functions, one participant functional random intercept with unstructured basis-coefficient covariance, and conditionally iid grid residuals. Trial-varying predictors are allowed. No pointwise mixed-model decomposition, automatic basis selection, residual serial correlation model, curve-level functional random effect, or multivariate cross-dimension covariance is claimed.
+
+[Expanded mathematical reference](../methods/mathematical-reference.md#functional-mixed-effects)
+
 ## Function-on-scalar regression and simultaneous coefficient bands
 
 **Functions:** `fit_function_on_scalar_regression()`, `bootstrap_function_on_scalar_coefficients()`, `function_on_scalar_simultaneous_bands()`

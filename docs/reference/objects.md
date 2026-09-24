@@ -17,6 +17,22 @@ For symmetric1, normalized_distance and normalization_denominator remain undefin
 
 The stored path is an audit object, not a claim of unique correspondence: multiple optimal DTW paths can exist. Recorded timestamps are not used by the recurrence, and the object records that distinction explicitly.
 
+## FunctionalMixedEffectsResult
+
+Stores the fixed-effect coefficient functions and pointwise standard errors,
+fixed and random B-spline bases and knots, fixed basis coefficients and their
+covariance, participant random-effect coefficients/functions and covariance,
+residual variance, fitted/residual/observed functional responses, the scalar
+design matrix and rank diagnostics, participant/curve membership, optimization
+settings, convergence and boundary-fit flags, backend warnings, likelihood,
+time/dimension semantics, provenance, and the fitted statsmodels result.
+
+The object represents one selected Gaussian response dimension with one
+participant-level functional random intercept. It does not imply serially
+correlated residuals, trial-level functional random effects, random functional
+slopes, multivariate response covariance, or simultaneous coefficient
+coverage.
+
 ## Function-on-scalar result objects
 
 `FunctionOnScalarResult` stores the observed-grid coefficient functions, HC1 pointwise sandwich standard errors, fitted and residual functions, the exact functional responses used as inference units, the full scalar design matrix, rank and residual degrees of freedom, coefficient/predictor names, inference-unit IDs, curves-per-unit counts, time/dimension semantics, source curve IDs, and provenance.

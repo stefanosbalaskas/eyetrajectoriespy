@@ -696,6 +696,30 @@ Report the trajectory representation, coordinate dimensions and units, sequence 
 State explicitly that the method preserved point order but did not use elapsed-time correspondence. If latency is scientifically meaningful, report the complementary time-preserving analysis rather than implying Fréchet captured timing.
 
 
+## Functional mixed-effects regression
+
+Report:
+
+- response dimension, coordinate units, common time grid, and number of grid
+  points;
+- number of source curves, participants, and trials per participant;
+- scalar predictors, exact coding, and any interactions;
+- fixed B-spline basis size and degree;
+- participant random B-spline basis size and degree;
+- that the participant random-basis covariance was unstructured;
+- ML or REML estimation, optimizer, iteration limit, and convergence;
+- boundary-fit status and retained backend warnings;
+- residual variance and the conditionally iid grid-residual assumption;
+- that the model was fitted jointly across all curve-by-time observations,
+  rather than with separate pointwise mixed models;
+- whether predictors varied within participant;
+- that 95% coefficient intervals are pointwise Wald intervals unless another
+  explicitly calibrated inferential procedure was used.
+
+Do not describe the 0.36 model as a fully general functional additive mixed
+model. State the omitted covariance/random-effect structures that matter for
+the study design.
+
 ## Function-on-scalar regression
 
 Report:

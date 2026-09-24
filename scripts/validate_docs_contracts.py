@@ -59,6 +59,7 @@ def main() -> None:
         "discrete_frechet_distance()",
         "dynamic_time_warping_distance()",
         "multiplier_functional_mean_band()",
+        "fit_functional_mixed_effects_regression()",
         "fit_function_on_scalar_regression()",
         "function_on_scalar_simultaneous_bands()",
         "wild_bootstrap_fpca_projection()",
@@ -109,8 +110,8 @@ def main() -> None:
 
     gallery = (DOCS / "methods" / "visual-gallery.md").read_text(encoding="utf-8")
     asset_refs = sorted(set(re.findall(r"\.\./assets/gallery/([^)\s]+\.svg)", gallery)))
-    if len(asset_refs) < 20:
-        raise RuntimeError("visual gallery must reference at least twenty SVG figures")
+    if len(asset_refs) < 21:
+        raise RuntimeError("visual gallery must reference at least twenty-one SVG figures")
     missing_assets = sorted(
         name for name in asset_refs if not (DOCS / "assets" / "gallery" / name).exists()
     )
@@ -118,7 +119,7 @@ def main() -> None:
         raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.35.0.dev0"):
+    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.36.0.dev0"):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
 

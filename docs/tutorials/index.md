@@ -123,6 +123,12 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [Function-on-scalar regression](../examples/function-on-scalar.md)
 
+-   **Repeated trials with trial-varying predictors**
+
+    Fit one joint Gaussian functional mixed model with a participant-specific functional random intercept instead of averaging trials or running separate pointwise models.
+
+    [Functional mixed-effects regression](../examples/functional-mixed-effects.md)
+
 -   **Basis representation**
 
     Project a selected functional dimension to B-spline or Fourier coordinates through scikit-fda.

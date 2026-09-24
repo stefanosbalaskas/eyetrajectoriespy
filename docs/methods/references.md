@@ -22,6 +22,30 @@ Ramsay JO, Silverman BW. *Functional Data Analysis*. 2nd ed. Springer; 2005.
 
 Wang J-L, Chiou J-M, Müller H-G. Functional Data Analysis. *Annual Review of Statistics and Its Application*. 2016;3:257–295.
 
+## Functional mixed-effects models
+
+Morris JS, Carroll RJ. Wavelet-based functional mixed models. *Journal of the
+Royal Statistical Society: Series B*. 2006;68(2):179–199.
+doi:10.1111/j.1467-9868.2006.00539.x.
+
+Scheipl F, Staicu A-M, Greven S. Functional Additive Mixed Models.
+*Journal of Computational and Graphical Statistics*. 2015;24(2):477–501.
+doi:10.1080/10618600.2014.901914.
+
+Greven S, Scheipl F. A general framework for functional regression modelling.
+*Statistical Modelling*. 2017;17(1–2):1–35.
+doi:10.1177/1471082X16681317.
+
+The 0.36 implementation follows the general principle of representing
+functional fixed/random effects through basis expansions and fitting the
+resulting correlated response jointly. It is intentionally narrower than the
+full FAMM/WFMM frameworks.
+
+statsmodels `MixedLM` provides the Gaussian linear mixed-model backend. Its
+documented model assumes iid Gaussian residual errors conditional on the
+group-level random effects; that limitation is preserved explicitly in the
+eyetrajectoriespy contract.
+
 ## Functional regression and simultaneous coefficient inference
 
 Morris JS. Functional Regression. *Annual Review of Statistics and Its Application*. 2015;2:321–359. doi:10.1146/annurev-statistics-010814-020413.

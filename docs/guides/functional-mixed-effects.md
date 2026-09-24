@@ -1,0 +1,212 @@
+# Functional mixed-effects regression
+
+Version 0.36 adds a repeated-measures functional regression model for designs
+where several trajectories come from the same participant and scalar predictors
+may vary from trial to trial.
+
+The implemented model is
+
+$$
+Y_{ij}(t)
+=
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t)
++
+b_i(t)
++
+\varepsilon_{ij}(t),
+$$
+
+with participant-specific functional random intercept
+
+$$
+b_i(t)=\mathbf B_r(t)^\top\mathbf u_i.
+$$
+
+This is the repeated-measures counterpart to the 0.35 function-on-scalar
+model. It keeps trial-level predictors instead of averaging them away.
+
+## When to use it
+
+Use this model when:
+
+- the response is one common-grid continuous trajectory;
+- multiple trials belong to the same participant;
+- one or more scalar predictors may vary across those trials;
+- participant-specific functional baseline deviations are scientifically
+  plausible;
+- a Gaussian response model and conditionally iid grid residual structure are
+  acceptable for the first model.
+
+Examples include condition effects on speed(t), curvature(t), horizontal
+gaze(t), or a windowed RQA metric trajectory.
+
+## Core fit
+
+~~~python
+from eyetrajectoriespy import fit_functional_mixed_effects_regression
+
+fit = fit_functional_mixed_effects_regression(
+    trajectories,
+    design,
+    predictors=("condition", "difficulty"),
+    participant_column="participant_id",
+    dimension="metric",
+    fixed_basis_size=6,
+    random_basis_size=4,
+    spline_degree=3,
+    reml=True,
+    method="lbfgs",
+)
+~~~
+
+The scalar design must contain exactly one row per source curve. A
+`curve_id` column is recommended and, when present, must match the
+trajectory IDs exactly and in order.
+
+Categorical variables and interactions must be encoded explicitly before
+fitting.
+
+## What is fitted jointly
+
+Every curve-by-time sample enters one stacked Gaussian linear mixed model.
+The fixed-effect design contains predictor-by-B-spline interactions, while the
+participant random-effect design contains the declared random B-spline basis.
+
+The package does **not** run one unrelated mixed model at every time point.
+
+This matters because the participant functional random intercept induces a
+single covariance structure across the entire observed curve.
+
+## Trial-varying predictors
+
+Trial-varying predictors are allowed.
+
+For example, if each participant experiences both control and treatment trials,
+
+$$
+Y_{ij}(t)
+=
+\beta_0(t)
++
+\beta_1(t)\mathrm{Treatment}_{ij}
++
+b_i(t)
++
+\varepsilon_{ij}(t),
+$$
+
+the treatment indicator can vary across \(j\) within participant \(i\).
+
+That is precisely the design that the 0.35 participant-aggregation function
+rejects.
+
+## Basis choices are explicit
+
+Version 0.36 uses clamped B-spline bases for both:
+
+- fixed coefficient functions;
+- participant functional random intercepts.
+
+The analyst chooses:
+
+- `fixed_basis_size`;
+- `random_basis_size`;
+- `spline_degree`.
+
+There is no automatic basis-count selection, no smoothing-parameter search,
+and no hidden penalization.
+
+A larger basis is more flexible but also increases the number of fixed
+parameters and, for the random function, the number of covariance parameters.
+Sensitivity analysis across defensible basis sizes is therefore preferable to
+treating one arbitrary basis as uniquely correct.
+
+## Random-effect covariance
+
+The random basis coefficients have an unstructured covariance matrix
+
+$$
+\mathbf u_i\sim N(\mathbf 0,\boldsymbol\Psi).
+$$
+
+This allows random functional intercept shapes to vary across basis
+directions.
+
+If an estimated covariance eigenvalue is at or very near the numerical
+boundary, the result is flagged with `boundary_fit=True`. The fit is not
+silently relabeled as regular.
+
+## Convergence
+
+A non-converged optimizer result raises an error.
+
+The package does not automatically switch optimizers until one converges,
+because that would silently add an analyst decision. If convergence fails,
+simplify or revise the declared model/basis or choose a different optimizer
+explicitly and report that change.
+
+## Coefficient table and plot
+
+~~~python
+from eyetrajectoriespy import (
+    functional_mixed_effects_coefficient_frame,
+    plot_functional_mixed_effects_coefficient,
+)
+
+table = functional_mixed_effects_coefficient_frame(fit)
+
+ax = plot_functional_mixed_effects_coefficient(
+    fit,
+    coefficient="condition",
+)
+~~~
+
+The table and plot use pointwise standard errors propagated from the fitted
+fixed-parameter covariance matrix. The plotted 95% intervals are **pointwise
+Wald intervals**, not simultaneous bands.
+
+## Important current limitations
+
+Version 0.36 does not yet estimate:
+
+- residual serial correlation beyond the participant functional random effect;
+- a trial-level functional random effect;
+- participant-specific random functional slopes;
+- generalized/non-Gaussian functional responses;
+- multivariate cross-dimension covariance;
+- simultaneous coefficient bands;
+- variance-component uncertainty;
+- automatic basis-selection uncertainty.
+
+Those omissions are explicit rather than hidden.
+
+## Relationship to the existing multilevel FPCA
+
+`fit_multilevel_fpca()` remains useful for decomposing variation into
+participant-level and trial-level functional components:
+
+$$
+G_{ij}(t)=\mu(t)+U_i(t)+V_{ij}(t).
+$$
+
+It is descriptive/decompositional rather than a regression model for
+trial-varying experimental predictors.
+
+`fit_functional_mixed_effects_regression()` instead models the conditional
+mean with scalar predictors and a participant functional random intercept.
+
+## Evidence basis
+
+Scheipl, Staicu, and Greven (2015) developed functional additive mixed models
+for correlated functional responses, including nested/crossed functional
+random effects and scalar predictors whose effects vary over the functional
+index. Greven and Scheipl (2017) describe the broader functional-regression
+framework and the strategy of expressing functional regression through
+corresponding scalar mixed/additive models. Morris and Carroll (2006)
+established an earlier general functional mixed-model formulation with
+functional fixed and random effects.
+
+The 0.36 implementation is intentionally narrower than those frameworks.
+Its scientific contract is a single Gaussian response dimension, explicit
+B-spline bases, one participant functional random intercept, and a single
+joint mixed-model fit using statsmodels.

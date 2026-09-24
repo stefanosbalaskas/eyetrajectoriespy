@@ -699,6 +699,65 @@ class FunctionalMeanBandResult:
 
 
 @dataclass(frozen=True)
+class FunctionalMixedEffectsResult:
+    """Joint Gaussian functional mixed-effects regression fit."""
+
+    coefficient_functions: np.ndarray
+    coefficient_standard_errors: np.ndarray
+    fixed_basis_coefficients: np.ndarray
+    fixed_parameter_covariance: np.ndarray
+    fixed_basis: np.ndarray
+    fixed_basis_knots: np.ndarray
+    random_basis: np.ndarray
+    random_basis_knots: np.ndarray
+    random_effect_coefficients: np.ndarray
+    random_effect_functions: np.ndarray
+    random_effect_covariance: np.ndarray
+    residual_variance: float
+    fitted_functions: np.ndarray
+    residual_functions: np.ndarray
+    observed_functions: np.ndarray
+    scalar_design_matrix: np.ndarray
+    coefficient_names: tuple[str, ...]
+    predictor_names: tuple[str, ...]
+    scalar_design_rank: int
+    expanded_design_rank: int
+    participant_column: str
+    participant_ids: tuple[str, ...]
+    curve_participant_ids: tuple[str, ...]
+    curves_per_participant: tuple[int, ...]
+    source_curve_ids: tuple[str, ...]
+    time: np.ndarray
+    dimension_name: str
+    coordinate_system: str
+    time_unit: str
+    fixed_basis_size: int
+    random_basis_size: int
+    spline_degree: int
+    reml: bool
+    method: str
+    maxiter: int
+    converged: bool
+    boundary_fit: bool
+    backend_warnings: tuple[str, ...]
+    log_likelihood: float
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+    model: Any | None = None
+
+    @property
+    def n_coefficients(self) -> int:
+        return len(self.coefficient_names)
+
+    @property
+    def n_participants(self) -> int:
+        return len(self.participant_ids)
+
+    @property
+    def n_curves(self) -> int:
+        return len(self.source_curve_ids)
+
+
+@dataclass(frozen=True)
 class FunctionOnScalarResult:
     """Observed-grid function-on-scalar regression fit."""
 

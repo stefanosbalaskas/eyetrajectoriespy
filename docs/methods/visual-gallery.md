@@ -68,6 +68,16 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked example](../examples/function-on-scalar.md) · [Guide](../guides/function-on-scalar.md) · [Mathematics](mathematical-reference.md#function-on-scalar)
 
+-   **Repeated-measures condition coefficient**
+
+    ![Functional mixed-effects condition coefficient](../assets/gallery/functional-mixed-effects-coefficient.svg)
+
+    One joint repeated-measures Gaussian functional mixed model with a participant functional random intercept and pointwise Wald uncertainty.
+
+    **API:** `fit_functional_mixed_effects_regression()`, `plot_functional_mixed_effects_coefficient()`
+
+    [Worked example](../examples/functional-mixed-effects.md) · [Guide](../guides/functional-mixed-effects.md) · [Mathematics](mathematical-reference.md#functional-mixed-effects)
+
 -   **Heteroscedastic FPCR target intervals**
 
     ![Wild bootstrap fixed target intervals](../assets/gallery/wild-bootstrap-projections.svg)
