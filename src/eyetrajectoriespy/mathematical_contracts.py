@@ -118,6 +118,30 @@ _CONTRACTS = (
         ),
     ),
     MathematicalContract(
+        key="trajectory-distance-sensitivity",
+        title="Trajectory-distance specification sensitivity",
+        public_api=("trajectory_distance_sensitivity",),
+        equations=(
+            r"\mathbf v^{(s)}=\{D_{ij}^{(s)}:1\le i<j\le n\}",
+            r"\rho_S(s,r)=\operatorname{corr}\left("
+            r"\operatorname{rank}\mathbf v^{(s)},"
+            r"\operatorname{rank}\mathbf v^{(r)}\right)",
+            r"J_k^{(s,r)}(i)="
+            r"\frac{|\mathcal N_k^{(s)}(i)\cap\mathcal N_k^{(r)}(i)|}"
+            r"{|\mathcal N_k^{(s)}(i)\cup\mathcal N_k^{(r)}(i)|}",
+            r"A_1^{(s,r)}=\frac{1}{n}\sum_{i=1}^{n}"
+            r"\mathbb I\{\mathcal N_1^{(s)}(i)=\mathcal N_1^{(r)}(i)\}",
+        ),
+        site_anchor="trajectory-distance-sensitivity",
+        scope=(
+            "Descriptive comparison of at least two analyst-declared L2, "
+            "discrete-Frechet, and/or DTW specifications on the same complete "
+            "trajectories. Raw distance matrices remain on native scales; "
+            "no standardization, consensus metric, p-value, or preferred "
+            "distance is constructed automatically."
+        ),
+    ),
+    MathematicalContract(
         key="trajectory-geometry",
         title="Continuous planar trajectory geometry",
         public_api=(
