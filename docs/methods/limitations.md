@@ -29,6 +29,26 @@ FPCs are empirical modes of variation. Replication or stability analysis may be 
 The first release uses a two-level decomposition followed by separate FPCAs, not a full Bayesian or likelihood-based functional mixed model.
 
 
+## Functional mixed-effects regression has a deliberately narrow covariance model
+
+Version 0.36 closes the basic repeated-measures regression gap but does not
+implement the full class of functional additive mixed models. It fits one
+selected Gaussian response dimension with a participant functional random
+intercept and conditionally iid grid residuals.
+
+There is currently no trial-level functional random effect, residual
+autocorrelation model, participant-specific random functional slope,
+crossed/nested second grouping factor, generalized functional response, or
+joint multivariate response covariance.
+
+The fixed and random B-spline basis sizes are user-declared model choices.
+They are not selected automatically, and uncertainty from choosing them is not
+included in the reported pointwise coefficient standard errors.
+
+A near-singular random-effect covariance can represent a boundary estimate or
+an over-rich random basis. The result is flagged rather than silently treated
+as regular.
+
 ## Function-on-scalar regression is not yet a repeated-measures functional model
 
 Version 0.35 supports independent curves or equal-weight participant-average responses when all declared predictors are constant within participant. It does not estimate random functional intercepts/slopes, trial-level repeated-measures effects, or participant-specific covariance.
