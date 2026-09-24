@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.33.0.dev0
+
+- Add `dynamic_time_warping_distance()` for exact dynamic-programming DTW between complete ordered point sequences, including unequal sequence lengths.
+- Add `DynamicTimeWarpingResult` with one deterministic optimal monotone path, aligned local distances, path length, mean local distance, window settings, and provenance.
+- Add `pairwise_dynamic_time_warping_distances()` for complete `TrajectorySet` collections with explicit dimension selection.
+- Use weighted Euclidean local costs and the symmetric diagonal/up/left recurrence; the public scalar is the unnormalized cumulative path cost rather than a silently path-length-normalized variant.
+- Add an optional explicit Sakoe-Chiba `window_radius` in sample-index units and fail when the declared band cannot connect unequal-length endpoints.
+- Preserve sequence order while deliberately excluding recorded timestamps from the recurrence; no interpolation, resampling, smoothing, coordinate normalization, simplification, missing-value deletion, or automatic band selection is introduced.
+- Document deterministic tie handling for non-unique optimal paths and retain the boundary that DTW may align away latency/index-shift differences that are scientifically meaningful.
+- Add hand-computable, shift-versus-window, symmetry, weighting, pairwise-dimension, path-monotonicity, and fail-closed input tests.
+- Add mathematical contracts, method/worked/executable examples, assumptions, limitations, preregistration/reporting guidance, evidence references, API/object docs, site navigation, and examples CI.
+
 ## 0.32.0.dev0
 
 - Add `discrete_frechet_distance()` for exact dynamic-programming discrete Fréchet distance between complete ordered point sequences, including unequal sequence lengths.
