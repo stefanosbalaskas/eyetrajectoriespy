@@ -1,5 +1,7 @@
 from dataclasses import replace
 
+from scipy.sparse import triu
+
 import matplotlib
 
 matplotlib.use("Agg")
@@ -88,11 +90,7 @@ def test_joint_recurrence_is_exact_sparse_intersection():
     difference = result.matrix != expected
     assert difference.nnz == 0
 
-    upper_pairs = int(
-        result.matrix.multiply(
-            np.triu(np.ones(result.shape, dtype=bool), k=1)
-        ).nnz
-    )
+    upper_pairs = int(triu(result.matrix, k=1).nnz)
     assert result.n_joint_recurrent_pairs == upper_pairs
     assert result.joint_recurrence_rate == pytest.approx(
         upper_pairs / result.eligible_pair_count
@@ -205,8 +203,15 @@ def test_joint_recurrence_rejects_cross_recurrence_and_misalignment():
     with pytest.raises(ValueError, match="exact same time grid"):
         joint_recurrence_matrix((position_rec, shifted))
 
+    filtered = physiology_rec.matrix.tolil(copy=True)
+    for index in range(physiology_rec.matrix.shape[0] - 3):
+        filtered[index, index + 3] = False
+        filtered[index + 3, index] = False
+    filtered = filtered.tocsr()
+    filtered.eliminate_zeros()
     different_theiler = replace(
         physiology_rec,
+        matrix=filtered,
         theiler_window_samples=3,
     )
     with pytest.raises(ValueError, match="same Theiler window"):
