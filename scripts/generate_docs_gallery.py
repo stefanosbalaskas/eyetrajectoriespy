@@ -21,6 +21,7 @@ from eyetrajectoriespy import (
     estimate_largest_lyapunov_kantz,
     estimate_largest_lyapunov_rosenstein,
     fit_function_on_scalar_regression,
+    generate_multivariate_iaaft_surrogates,
     fit_functional_mixed_effects_regression,
     fit_local_return_map,
     fit_mfpca,
@@ -41,6 +42,7 @@ from eyetrajectoriespy import (
     plot_functional_mean_band,
     plot_kantz_sensitivity,
     plot_local_divergence,
+    plot_multivariate_iaaft_diagnostics,
     plot_planar_trajectories,
     plot_trajectory_overlay,
     plot_poincare_return_map,
@@ -270,6 +272,43 @@ def main() -> None:
         coefficient="condition",
     )
     _save(ax, "functional-mixed-effects-coefficient.svg")
+
+    miaaft_rng = np.random.default_rng(2111)
+    miaaft_n = 180
+    miaaft_x = np.empty(miaaft_n, dtype=float)
+    miaaft_y = np.empty(miaaft_n, dtype=float)
+    miaaft_x[0] = miaaft_rng.normal()
+    miaaft_y[0] = miaaft_rng.normal()
+    for index in range(1, miaaft_n):
+        miaaft_x[index] = (
+            0.82 * miaaft_x[index - 1]
+            + miaaft_rng.normal(0.0, 0.55)
+        )
+        miaaft_y[index] = (
+            0.55 * miaaft_y[index - 1]
+            + 0.65 * miaaft_x[index - 1]
+            + miaaft_rng.normal(0.0, 0.35)
+        )
+    miaaft_source = TrajectorySet(
+        time=np.arange(miaaft_n, dtype=float) * 0.01,
+        values=np.column_stack([miaaft_x, miaaft_y])[None, :, :],
+        curve_ids=("miaaft-demo",),
+        dimension_names=("x", "y"),
+        time_unit="s",
+        coordinate_system="unknown",
+    )
+    miaaft_result = generate_multivariate_iaaft_surrogates(
+        miaaft_source,
+        curve=0,
+        dimensions=("x", "y"),
+        reference_dimension="x",
+        n_surrogates=3,
+        max_iterations=500,
+        tolerance=1e-6,
+        random_state=2111,
+    )
+    ax = plot_multivariate_iaaft_diagnostics(miaaft_result)
+    _save(ax, "multivariate-iaaft-diagnostics.svg")
 
     rng = np.random.default_rng(2103)
     score1 = fpca.scores[:, 0]
@@ -541,6 +580,7 @@ def main() -> None:
         "trajectory-curvature.svg",
         "registration-warping.svg",
         "functional-mean-band.svg",
+        "multivariate-iaaft-diagnostics.svg",
         "wild-bootstrap-projections.svg",
         "wild-bootstrap-family-test.svg",
         "monte-carlo-precision.svg",
