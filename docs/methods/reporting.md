@@ -861,3 +861,19 @@ For source-shift surrogate testing, report the exact shift rule/set, number of
 shifts, surrogate mean, surrogate-centered CTE, plus-one upper-tail p-value,
 attainable p-value resolution, and that target and conditioning processes were
 held fixed.
+
+### Simultaneous functional mixed-effects coefficient bands
+
+In addition to the base mixed-model specification, report the participant
+bootstrap replicate count, random seed, coefficient-wise or familywise scope,
+confidence level, and observed-grid interpretation.
+
+State that whole participant trial bundles were sampled with replacement and
+that fixed B-spline coefficients were re-estimated by GLS for every resample.
+Also state explicitly that the fitted random-effect covariance, residual
+variance, and declared bases were held fixed.
+
+Report the simultaneous critical value and participant-bootstrap pointwise
+standard errors for the coefficient(s) of interest. Do not describe the band as
+including variance-component, basis-selection, preprocessing, or between-grid
+uncertainty.
