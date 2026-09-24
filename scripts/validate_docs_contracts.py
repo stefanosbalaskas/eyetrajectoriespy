@@ -72,6 +72,8 @@ def main() -> None:
         "joint_recurrence_matrix()",
         "joint_rqa_metrics()",
         "recurrence_network()",
+        "discrete_transfer_entropy()",
+        "transfer_entropy_circular_shift_test()",
         "recurrence_radius_profile()",
         "rqa_parameter_sensitivity()",
         "bootstrap_rqa_metric_means()",
@@ -125,7 +127,7 @@ def main() -> None:
         raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.40.0.dev0"):
+    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.41.0.dev0"):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
 
