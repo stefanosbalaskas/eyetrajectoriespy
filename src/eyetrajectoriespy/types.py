@@ -167,6 +167,22 @@ class DiscreteFrechetResult:
 
 
 @dataclass(frozen=True)
+class DynamicTimeWarpingResult:
+    """DTW cost plus one deterministic optimal monotone alignment path."""
+
+    distance: float
+    path: np.ndarray
+    local_distances: np.ndarray
+    path_length: int
+    mean_local_distance: float
+    n_points_a: int
+    n_points_b: int
+    n_dimensions: int
+    window_radius: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
 class FPCAResult:
     """Result from grid-based functional principal component analysis."""
 
