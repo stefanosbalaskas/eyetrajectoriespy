@@ -75,6 +75,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | IAAFT surrogate nonlinearity test | implemented | `surrogate_nonlinearity_test()` |
 | Multivariate IAAFT surrogate generation/testing | implemented; explicit phase reference, exact marginals, retained power/cross-spectrum errors | `generate_multivariate_iaaft_surrogates()` / `multivariate_surrogate_nonlinearity_test()` |
 | Discrete transfer entropy | experimental; integer-coded states, explicit histories/lag, explicit circular-shift null, no causal claim | `discrete_transfer_entropy()` / `transfer_entropy_circular_shift_test()` |
+| Transfer-entropy specification sensitivity | implemented; full declared history/lag Cartesian grid, support diagnostics, optional identical circular-shift null, no automatic winner | `transfer_entropy_parameter_sensitivity()` |
 | Empirical Poincare return-map stability | experimental | `poincare_crossings()` / `fit_local_return_map()` / `return_map_stability()` |
 
 ## Documentation and mathematical contracts
@@ -137,4 +138,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.41.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.42.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
