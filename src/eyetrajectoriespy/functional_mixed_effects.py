@@ -769,3 +769,43 @@ def functional_mixed_effects_coefficient_frame(
                 )
             rows.append(row)
     return pd.DataFrame(rows)
+
+def functional_random_effect_frame(
+    result: FunctionalMixedEffectsResult,
+    *,
+    effect: str = "intercept",
+) -> pd.DataFrame:
+    """Return participant BLUP functional random effects in long form."""
+
+    if not isinstance(result, FunctionalMixedEffectsResult):
+        raise TypeError("result must be a FunctionalMixedEffectsResult")
+    if effect not in {"intercept", "slope"}:
+        raise ValueError("effect must be 'intercept' or 'slope'")
+
+    if effect == "intercept":
+        functions = result.random_intercept_functions
+        predictor = None
+    else:
+        if result.random_slope_functions is None:
+            raise ValueError(
+                "result does not contain a participant random functional slope"
+            )
+        functions = result.random_slope_functions
+        predictor = result.random_slope_predictor
+
+    rows: list[dict[str, float | str | None]] = []
+    for participant_index, participant_id in enumerate(result.participant_ids):
+        for time_index, time_value in enumerate(result.time):
+            rows.append(
+                {
+                    "participant_id": participant_id,
+                    "time": float(time_value),
+                    "dimension": result.dimension_name,
+                    "effect": effect,
+                    "random_slope_predictor": predictor,
+                    "estimate": float(
+                        functions[participant_index, time_index]
+                    ),
+                }
+            )
+    return pd.DataFrame(rows)
