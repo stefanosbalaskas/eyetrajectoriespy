@@ -563,6 +563,51 @@ $$
 
 Implemented by `recurrence_matrix()`, `recurrence_radius_profile()`, `rqa_metrics()`, `rqa_parameter_sensitivity()`, `windowed_rqa()`, `cross_recurrence_matrix()`, and `cross_rqa_metrics()`.
 
+## Synchronized joint recurrence and JRQA
+
+For synchronized subsystem recurrence matrices \(R^{(s)}\), joint recurrence
+requires recurrence in **every** declared subsystem at the same pair of time
+indices:
+
+$
+JR_{ij}
+=
+\prod_{s=1}^{S}R_{ij}^{(s)}.
+$
+
+With one common Theiler exclusion and \(N_{\mathrm{eligible}}\) unique
+off-diagonal pairs,
+
+$
+\mathrm{JRR}
+=
+\frac{\sum_{i<j}JR_{ij}}{N_{\mathrm{eligible}}}.
+$
+
+Joint determinism and laminarity use the same line-counting conventions as
+ordinary auto-RQA, but on the joint recurrence matrix:
+
+$
+\mathrm{JDET}
+=
+\frac{\sum_{\ell\ge\ell_{\min}}\ell P_{d,J}(\ell)}
+{\sum_{\ell\ge1}\ell P_{d,J}(\ell)},
+$
+
+$
+\mathrm{JLAM}
+=
+\frac{\sum_{v\ge v_{\min}}v P_{v,J}(v)}
+{\sum_{v\ge1}v P_{v,J}(v)}.
+$
+
+Implemented by `joint_recurrence_matrix()` and `joint_rqa_metrics()`.
+Every component remains an independently declared auto-recurrence contract;
+different state dimensions, metrics, and radii are allowed. The component
+matrices must already share the exact time grid and Theiler exclusion.
+Joint recurrence is not cross-recurrence and is not interpreted as causal
+coupling.
+
 ## Population mean bootstrap for curve-level RQA metrics
 
 For one fixed recurrence/RQA specification $\theta$,
