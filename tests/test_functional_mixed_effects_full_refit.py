@@ -14,6 +14,7 @@ from eyetrajectoriespy import (
     functional_mixed_effects_bootstrap_identity_frame,
     functional_mixed_effects_simultaneous_bands,
     functional_mixed_effects_variance_bootstrap_frame,
+    plot_functional_mixed_effects_bootstrap_comparison,
 )
 
 
@@ -346,6 +347,15 @@ def test_full_refit_bootstrap_comparison_and_band_contract(monkeypatch):
     assert np.all(comparison["full_refit_band_width"] > 0)
     assert np.all(
         np.isfinite(comparison["full_to_fixed_width_ratio"])
+    )
+
+    ax = plot_functional_mixed_effects_bootstrap_comparison(
+        comparison,
+        coefficient="condition",
+    )
+    assert "condition" in ax.get_title()
+    assert ax.get_ylabel() == (
+        "Full-refit / fixed-covariance band width"
     )
 
 
