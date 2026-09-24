@@ -23,6 +23,19 @@ flowchart LR
     F --> K[Registration / phase]
 ```
 
+## Repeated-measures functional regression
+
+```mermaid
+flowchart LR
+    A[Repeated Y_ij(t)] --> B[Trial-level scalar design]
+    A --> C[Participant groups]
+    B --> D[Declared B-spline fixed effects]
+    C --> E[Declared participant functional random intercept]
+    D --> F[One joint Gaussian MixedLM]
+    E --> F
+    F --> G[beta(t) + participant random functions]
+```
+
 ## Functional response regression
 
 ```mermaid
