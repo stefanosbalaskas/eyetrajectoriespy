@@ -252,6 +252,23 @@ def test_multivariate_surrogate_contracts_fail_closed():
             n_surrogates=1,
         )
 
+    irregular = TrajectorySet(
+        time=np.cumsum(np.r_[0.0, np.linspace(0.009, 0.011, data.n_time - 1)]),
+        values=data.values.copy(),
+        curve_ids=data.curve_ids,
+        dimension_names=data.dimension_names,
+        coordinate_system="unknown",
+        time_unit="s",
+    )
+    with pytest.raises(ValueError, match="regular"):
+        generate_multivariate_iaaft_surrogates(
+            irregular,
+            curve=0,
+            dimensions=("x", "y"),
+            reference_dimension="x",
+            n_surrogates=1,
+        )
+
     with pytest.raises(ValueError, match="largest_lyapunov"):
         multivariate_surrogate_nonlinearity_test(
             data,
