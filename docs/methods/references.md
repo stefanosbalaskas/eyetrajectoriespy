@@ -258,6 +258,7 @@ Ludwig and Gilchrist show that saccade curvature is not one uniquely defined qua
 The 0.31 geometry layer does not claim novelty for eye-movement curvature itself and does not reproduce those event-level saccade metrics. It implements provenance-aware continuous planar heading, signed curvature, turning rate, and path-length/displacement tortuosity as functional or trajectory-level outcomes. Their interpretation remains conditional on coordinate scaling, recorded axis orientation, preprocessing, and the declared low-speed rule.
 
 ## Nonlinear dynamics, recurrence, and surrogate testing
+- Romano, M. C., Thiel, M., Kurths, J., & von Bloh, W. (2004). Multivariate recurrence plots. *Physics Letters A*, 330(3–4), 214–223. https://doi.org/10.1016/j.physleta.2004.07.066
 
 - Schinkel, S., Marwan, N., Dimigen, O., & Kurths, J. (2009). Confidence bounds of recurrence-based complexity measures. *Physics Letters A*, 373(26), 2245–2250. https://doi.org/10.1016/j.physleta.2009.04.045
 
