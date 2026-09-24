@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.32.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.33.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -63,6 +63,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - continuous wrapped heading, signed curvature, turning-rate functions, and explicit path-length/displacement tortuosity with low-speed undefinedness retained;
 - integrated functional L2 distances;
 - discrete Fréchet trajectory distance and pairwise matrices with auditable monotone couplings and no elapsed-time matching;
+- dynamic time warping (DTW) distance and pairwise matrices with auditable monotone index alignments, optional explicit Sakoe-Chiba sample-index bands, and no hidden timing/preprocessing claims;
 - deterministic FPCA-score clustering;
 - scalar-on-function regression through FPCA scores;
 - explicit delay-coordinate reconstruction with AMI/autocorrelation and false-nearest-neighbor diagnostics;
@@ -133,6 +134,7 @@ print(summarise_fpca(fit))
 | Continuous gaze location | `[x(t), y(t)]` | `fit_mfpca()` |
 | Continuous planar geometry | `heading(t)`, signed curvature, turning rate, tortuosity | `heading_function()` / `signed_curvature_function()` / `turning_rate_function()` / `trajectory_tortuosity()` |
 | Ordered trajectory similarity | discrete Fréchet bottleneck distance | `discrete_frechet_distance()` / `pairwise_discrete_frechet_distances()` |
+| Elastic sequence-index similarity | cumulative DTW alignment cost | `dynamic_time_warping_distance()` / `pairwise_dynamic_time_warping_distances()` |
 | Native irregular gaze | curve-specific time grids | `from_irregular_long_dataframe_native()` |
 | Genuinely sparse univariate gaze | covariance UFPCA + PACE scores | `fit_sparse_fpca_fdapy()` |
 | One derived continuous outcome | `X(t)` | `fit_fpca()` |
@@ -187,7 +189,7 @@ It includes a tutorial gallery, representation selection, nonlinear state-space 
 
 ## Scope boundary
 
-`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Version 0.31 adds provenance-aware continuous planar geometry—heading, signed curvature, turning rate, and tortuosity—with no hidden smoothing, coordinate rescaling, denominator stabilization, or low-speed imputation. The nonlinear/RQA layers from 0.23–0.30 remain intact. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
+`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Versions 0.31–0.33 add provenance-aware continuous planar geometry plus two distinct ordered-trajectory similarity contracts: discrete Fréchet bottleneck distance and cumulative dynamic time warping. DTW warps sample indices rather than recorded physical time, and neither elastic metric silently preprocesses the trajectory. The nonlinear/RQA layers from 0.23–0.30 remain intact. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
 
 ## Validation
 
