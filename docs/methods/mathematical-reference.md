@@ -652,6 +652,82 @@ for whole-function observed-grid inference see
 `bootstrap_functional_mixed_effects_coefficients()` and
 `functional_mixed_effects_simultaneous_bands()`.
 
+## One participant random functional slope { #functional-mixed-effects-random-slope }
+
+Version 0.45 adds exactly one analyst-declared participant random functional
+slope to the existing random functional intercept model:
+
+$
+Y_{ij}(t)
+=
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t)
++
+b_{0i}(t)
++
+X_{ij,q}b_{1i}(t)
++
+\varepsilon_{ij}(t).
+$
+
+The random intercept and random slope are represented as
+
+$
+b_{0i}(t)
+=
+\mathbf B_r(t)^{\top}\mathbf u_{0i},
+\qquad
+b_{1i}(t)
+=
+\mathbf B_r(t)^{\top}\mathbf u_{1i}.
+$
+
+Version 0.45 deliberately uses the same declared `random_basis_size=q` for
+both functions. The stacked random coefficient vector satisfies
+
+$
+\begin{bmatrix}
+\mathbf u_{0i}\\
+\mathbf u_{1i}
+\end{bmatrix}
+\sim
+N\!\left(
+\mathbf 0,
+\boldsymbol\Psi_{2q}
+\right),
+$
+
+with one full unstructured covariance. Therefore,
+
+$
+p_{\Psi}
+=
+\frac{(2q)(2q+1)}{2}.
+$
+
+For the default (q=4), the random-effect dimension is 8 and the covariance
+contains 36 free parameters. The guarded 0.45 implementation requires
+(n_{participants}>p_{\Psi}), so that default slope specification requires
+at least 37 participants.
+
+The slope predictor must be one of the declared fixed predictors and must vary
+within every participant. No automatic random-slope choice or fallback to an
+intercept-only model occurs.
+
+The result retains the full random-effect design matrix, full covariance,
+intercept/intercept block, slope/slope block, intercept/slope cross-covariance,
+eigenvalues, covariance condition number, covariance parameter count,
+boundary/singularity diagnostics, participant BLUP coefficient matrices, and
+the reconstructed participant random-intercept and random-slope functions.
+
+The 0.44 simultaneous-band bootstrap remains available. With a random slope,
+it conditions on the fitted full intercept/slope covariance exactly as it
+conditions on the random-intercept covariance in the simpler model; it does not
+refit variance components.
+
+**API:** `fit_functional_mixed_effects_regression()`,
+`functional_random_effect_frame()`,
+`plot_functional_random_effects()`.
+
 ## Participant-cluster simultaneous mixed-effects coefficient bands { #functional-mixed-effects-simultaneous }
 
 Version 0.44 adds whole-function observed-grid inference for the fixed
