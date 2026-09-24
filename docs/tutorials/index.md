@@ -154,7 +154,7 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
 -   **Repeated trials with trial-varying predictors**
 
-    Fit one joint Gaussian functional mixed model with a participant-specific functional random intercept instead of averaging trials or running separate pointwise models.
+    Fit one joint Gaussian functional mixed model with a participant-specific functional random intercept, and optionally one explicitly declared random functional slope, instead of averaging trials or running separate pointwise models.
 
     [Functional mixed-effects regression](../examples/functional-mixed-effects.md)
 
@@ -236,6 +236,18 @@ Use [Wild-bootstrap Monte Carlo precision](../examples/fpcr-wild-bootstrap-monte
 ### Stabilized-volatility FPCR wild-bootstrap selection
 
 Use [Stabilized-volatility wild-bootstrap selection](../examples/fpcr-wild-bootstrap-selection.md) when k=g is fixed but the target-inference truncation h needs a declared data-driven tuning rule. The example scans consecutive h values with shared multipliers, plots target-specific interval stability, applies explicit rho_w/rho_c/r criteria, and demonstrates the no-silent-fallback failure contract.
+
+### One participant random functional slope
+
+Use the
+[worked random-slope example](../examples/functional-mixed-effects-random-slope.md)
+when the scientific question is whether participants differ over trial time in
+the effect of one predeclared within-participant predictor. The example audits
+the 2q-dimensional covariance, participant-count guard, covariance blocks,
+eigenvalues, condition number, and participant BLUP slope functions.
+
+See also the
+[random-functional-slope method guide](../methods/functional-mixed-effects-random-slope.md).
 
 ### Simultaneous functional mixed-effects coefficient bands
 

@@ -170,3 +170,30 @@ variance components were conditioned on rather than refitted.
 
 The executable counterpart is
 `examples/functional_mixed_effects_regression.py`.
+
+## Participant-specific random condition effects
+
+If the scientific question is not only the population condition coefficient
+but whether participants differ in that time-varying condition response, use
+the guarded 0.45 random-slope extension rather than manually fitting separate
+participant curves:
+
+~~~python
+fit_slope = fit_functional_mixed_effects_regression(
+    gaze_metric,
+    design,
+    predictors=("condition",),
+    participant_column="participant_id",
+    dimension="metric",
+    fixed_basis_size=2,
+    random_basis_size=2,
+    random_slope_predictor="condition",
+    spline_degree=1,
+)
+~~~
+
+The predictor must vary within every participant and the participant count must
+exceed the number of free unstructured random-effect covariance parameters.
+See the
+[random-functional-slope worked example](functional-mixed-effects-random-slope.md)
+for covariance diagnostics and participant BLUP slope inspection.

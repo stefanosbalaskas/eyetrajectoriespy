@@ -43,6 +43,10 @@ flowchart TD
     I --> J[Fixed coefficient functions beta(t)]
     I --> K[Participant random functions b_i(t)]
     I --> L[Residual variance + convergence/boundary diagnostics]
+    I --> R{One random functional slope?}
+    R -->|Yes| S[Named fixed predictor varies within every participant]
+    S --> T[2q random dimension + covariance complexity guard]
+    T --> U[Inspect covariance blocks / eigenvalues / BLUP slope functions]
     J --> M{Whole-function inference?}
     M -->|Yes| N[Whole-participant bootstrap]
     N --> O[Fixed-covariance GLS coefficient refits]
@@ -58,6 +62,11 @@ Version 0.44 resamples complete participant trial bundles for simultaneous
 fixed-coefficient inference. The reference random-effect covariance, residual
 variance, and declared bases remain fixed, so the band is conditional on that
 covariance/basis contract and simultaneous over the observed grid only.
+
+Version 0.45 adds exactly one participant random functional slope for a
+predeclared predictor. The predictor must vary within every participant, and
+the participant count must exceed the free unstructured covariance-parameter
+count before the slope model is fitted.
 
 ## Functional response regression
 

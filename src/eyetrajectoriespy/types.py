@@ -737,9 +737,27 @@ class FunctionalMixedEffectsResult:
     fixed_basis_knots: np.ndarray
     random_basis: np.ndarray
     random_basis_knots: np.ndarray
+    random_intercept_basis: np.ndarray
+    random_slope_basis: np.ndarray | None
+    random_effect_design_matrix: np.ndarray
     random_effect_coefficients: np.ndarray
     random_effect_functions: np.ndarray
+    random_intercept_coefficients: np.ndarray
+    random_slope_coefficients: np.ndarray | None
+    random_intercept_functions: np.ndarray
+    random_slope_functions: np.ndarray | None
     random_effect_covariance: np.ndarray
+    random_intercept_covariance: np.ndarray
+    random_slope_covariance: np.ndarray | None
+    random_intercept_slope_covariance: np.ndarray | None
+    random_effect_covariance_eigenvalues: np.ndarray
+    random_effect_covariance_condition_number: float
+    random_effect_dimension: int
+    random_effect_covariance_parameter_count: int
+    random_effect_complexity_warning: bool
+    random_effect_singular: bool
+    random_slope_boundary_fit: bool
+    random_slope_predictor: str | None
     residual_variance: float
     fitted_functions: np.ndarray
     residual_functions: np.ndarray

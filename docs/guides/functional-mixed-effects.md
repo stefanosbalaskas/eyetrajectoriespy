@@ -102,10 +102,11 @@ rejects.
 
 ## Basis choices are explicit
 
-Version 0.36 uses clamped B-spline bases for both:
+The mixed-effects layer uses clamped B-spline bases for:
 
 - fixed coefficient functions;
-- participant functional random intercepts.
+- participant functional random intercepts;
+- in 0.45, one optional explicitly declared participant random functional slope.
 
 The analyst chooses:
 
@@ -120,6 +121,43 @@ A larger basis is more flexible but also increases the number of fixed
 parameters and, for the random function, the number of covariance parameters.
 Sensitivity analysis across defensible basis sizes is therefore preferable to
 treating one arbitrary basis as uniquely correct.
+
+## One guarded participant random functional slope
+
+Version 0.45 can add one participant-specific functional slope for a declared
+fixed predictor:
+
+~~~python
+fit = fit_functional_mixed_effects_regression(
+    trajectories,
+    design,
+    predictors=("condition",),
+    participant_column="participant_id",
+    dimension="metric",
+    fixed_basis_size=6,
+    random_basis_size=4,
+    random_slope_predictor="condition",
+)
+~~~
+
+The slope predictor must vary within every participant. The package does not
+select a random slope automatically or silently fall back to an intercept-only
+model.
+
+If the shared random basis has size (q), the intercept+slope random vector has
+dimension (2q), giving
+
+$
+\frac{(2q)(2q+1)}{2}
+$
+
+free covariance parameters under the 0.45 unstructured covariance. The package
+requires the participant count to exceed that covariance-parameter count before
+fitting a random-slope model. For the default (q=4), this means more than 36
+participants.
+
+See the dedicated
+[random-functional-slope guide](../methods/functional-mixed-effects-random-slope.md).
 
 ## Random-effect covariance
 
@@ -211,7 +249,6 @@ The current mixed-effects layer does not yet estimate:
 
 - residual serial correlation beyond the participant functional random effect;
 - a trial-level functional random effect;
-- participant-specific random functional slopes;
 - generalized/non-Gaussian functional responses;
 - multivariate cross-dimension covariance;
 - variance-component uncertainty;
@@ -232,7 +269,8 @@ It is descriptive/decompositional rather than a regression model for
 trial-varying experimental predictors.
 
 `fit_functional_mixed_effects_regression()` instead models the conditional
-mean with scalar predictors and a participant functional random intercept.
+mean with scalar predictors, a participant functional random intercept, and
+optionally one explicitly declared participant random functional slope.
 
 ## Evidence basis
 
@@ -245,7 +283,7 @@ corresponding scalar mixed/additive models. Morris and Carroll (2006)
 established an earlier general functional mixed-model formulation with
 functional fixed and random effects.
 
-The 0.36 implementation is intentionally narrower than those frameworks.
-Its scientific contract is a single Gaussian response dimension, explicit
-B-spline bases, one participant functional random intercept, and a single
-joint mixed-model fit using statsmodels.
+The implementation remains intentionally narrower than those frameworks. Its
+scientific contract is a single Gaussian response dimension, explicit B-spline
+bases, one participant functional random intercept, at most one guarded random
+functional slope, and one joint mixed-model fit using statsmodels.

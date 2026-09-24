@@ -459,3 +459,21 @@ Coordinate units and explicit dimension weights define the local geometry. All p
   A rank-deficient replicate is an analysis failure, not a row to discard.
 - Simultaneous coverage refers to the observed time grid. Continuous-domain
   coverage between sampled points requires additional theory not claimed here.
+
+## Random functional slope assumptions
+
+- The random-slope predictor is explicitly named and is also included among the
+  declared fixed predictors.
+- The predictor varies within **every** participant under the guarded 0.45
+  contract.
+- The participant random intercept and the one random slope share the same
+  declared B-spline basis size.
+- Their stacked random-basis coefficient vector follows one multivariate
+  Gaussian distribution with a full unstructured covariance.
+- The participant count must exceed the number of free covariance parameters,
+  ((2q)(2q+1)/2), before fitting is attempted.
+- A converged optimizer does not by itself establish a stable covariance;
+  inspect eigenvalues, condition number, boundary/singularity flags, and the
+  recovered participant BLUP functions.
+- Grid-level residual errors remain conditionally iid Gaussian after fixed and
+  participant random effects are conditioned upon.

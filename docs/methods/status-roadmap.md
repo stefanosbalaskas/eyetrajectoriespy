@@ -14,8 +14,9 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Simultaneous functional mean band | implemented | `multiplier_functional_mean_band()` |
 | Function-on-scalar regression | implemented; observed-grid OLS with explicit design and HC1 standard errors | `fit_function_on_scalar_regression()` |
 | Function-on-scalar simultaneous coefficient bands | implemented; fixed-design wild bootstrap with coefficient/family scope | `function_on_scalar_simultaneous_bands()` |
-| Functional mixed-effects regression | implemented; one Gaussian response dimension, B-spline fixed effects, participant functional random intercept, joint MixedLM fit | `fit_functional_mixed_effects_regression()` |
+| Functional mixed-effects regression | implemented; one Gaussian response dimension, B-spline fixed effects, participant functional random intercept, optional one guarded participant random functional slope, joint MixedLM fit | `fit_functional_mixed_effects_regression()` |
 | Functional mixed-effects simultaneous coefficient bands | implemented; whole-participant case bootstrap, fixed-covariance GLS coefficient refits, coefficient/family observed-grid maxima | `bootstrap_functional_mixed_effects_coefficients()` / `functional_mixed_effects_simultaneous_bands()` |
+| Participant random functional slope | implemented; one declared predictor, shared random basis size, full unstructured intercept/slope covariance, strict within-participant variation and covariance-complexity guards | `fit_functional_mixed_effects_regression(..., random_slope_predictor=...)` |
 | Explicit irregular → common-grid projection | implemented | `resample_irregular_to_grid()` |
 | Univariate FPCA | implemented | `fit_fpca()` |
 | Joint multivariate FPCA | implemented | `fit_mfpca()` |
@@ -111,9 +112,9 @@ Optional backends are never imported until the corresponding feature is requeste
 
 The following are **not** replaced with convenient but scientifically weaker substitutes:
 
-### Full functional mixed models
+### Multilevel FPCA versus likelihood-based functional mixed-effects regression
 
-The multilevel implementation currently provides a transparent participant/trial functional decomposition followed by FPCA. It is not described as a full likelihood/Bayesian functional mixed-effects model.
+The multilevel FPCA implementation provides a transparent participant/trial functional decomposition followed by FPCA. It remains a decomposition rather than a likelihood/Bayesian mixed-effects regression model. Separately, the package now includes a likelihood-based Gaussian functional mixed-effects regression layer with participant functional random effects.
 
 ### Confirmatory functional outlier tests
 
@@ -129,7 +130,7 @@ Still not provided are full uncertainty procedures that jointly include target m
 
 Future tranches may evaluate:
 
-- richer functional mixed-effects structures: trial-level functional random effects, random functional slopes, residual serial correlation, simultaneous coefficient inference, and generalized responses;
+- richer functional mixed-effects structures: trial-level functional random effects, residual serial correlation, multiple random functional slopes, and generalized responses;
 - richer multilevel functional mixed-effects backends;
 - explicit system-identification models for gaze dynamics;
 - model-based continuation / Floquet analysis only after a validated dynamical-system contract exists.
@@ -140,20 +141,20 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.44.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.45.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
-### Next structural priority: participant random functional slopes
+### Next inferential priority: full-refit participant bootstrap
 
-Version 0.44 closes the planned whole-function simultaneous-inference gap for
-the existing participant-random-intercept model. The next functional
-mixed-effects extension is participant-specific random functional slopes for a
-predeclared scalar predictor, followed by richer participant-level covariance
-structures if those can preserve explicit estimands, convergence diagnostics,
-and backward compatibility.
+Version 0.45 implements exactly one participant random functional slope with
+explicit covariance-dimensionality and identifiability safeguards.
 
-The current simultaneous bands condition on the fitted random-effect covariance,
-residual variance, and declared bases. A future variance-component-refitting
-bootstrap may be considered separately; it is not silently implied by 0.44.
+The next tranche is **0.46 full-refit participant bootstrap sensitivity**:
+whole participants remain the resampling unit, but each bootstrap sample refits
+the mixed model and its variance components. The existing 0.44 fixed-covariance
+bootstrap remains the faster conditional-inference path rather than being
+silently replaced.
 
-TE networks, automatic causal discovery, and windowed TE remain deprioritized.
+After that, **0.47** should introduce explicit residual serial-correlation
+structures. Multiple random functional slopes, generalized responses, TE
+networks, and automatic causal discovery remain later candidates.

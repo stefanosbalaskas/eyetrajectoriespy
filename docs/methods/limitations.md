@@ -934,3 +934,30 @@ claim simultaneous coverage at unsampled times.
 Participant random functional slopes, trial-level random functions, serial
 residual covariance, generalized responses, and multivariate cross-dimension
 covariance also remain outside the current model.
+
+## One random functional slope is not an arbitrary random-effects engine
+
+Version 0.45 supports exactly one explicitly named random functional slope.
+It does not support an arbitrary list of random slopes, automatic slope
+selection, automatic covariance simplification, separate intercept/slope basis
+sizes, or post-hoc selection of the random-effect structure.
+
+The unstructured covariance grows quadratically: with random basis size (q),
+the intercept+slope vector has dimension (2q) and
+((2q)(2q+1)/2) free covariance parameters. The package's participant-count
+guard prevents the most obvious over-parameterization but does not guarantee
+good finite-sample variance-component estimation.
+
+Participant BLUP slope functions are shrunken model-based estimates, not
+independently observed participant effects.
+
+When the true random-slope variance is effectively zero, the fitted covariance
+is on the boundary. Depending on the optimizer/backend version, this may appear
+as a converged near-boundary fit or explicit optimizer non-convergence. The
+package retains the boundary diagnostic when a valid fit exists and otherwise
+raises; it does not fabricate slope heterogeneity or silently fall back to a
+different optimizer.
+
+The 0.44 simultaneous-band bootstrap remains conditional on the fitted full
+random-effect covariance and residual variance. Version 0.45 does not propagate
+variance-component estimation uncertainty through those bands.

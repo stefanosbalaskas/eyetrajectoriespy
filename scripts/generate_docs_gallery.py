@@ -41,6 +41,7 @@ from eyetrajectoriespy import (
     plot_fpca_wild_bootstrap_projection,
     plot_function_on_scalar_coefficients,
     plot_functional_mixed_effects_coefficient,
+    plot_functional_random_effects,
     plot_functional_mean_band,
     plot_joint_recurrence,
     plot_kantz_sensitivity,
@@ -221,31 +222,41 @@ def main() -> None:
 
     fmix_rng = np.random.default_rng(2110)
     fmix_time = np.linspace(0.0, 1.0, 9)
+    fmix_n_participants = 16
     fmix_participants = np.repeat(
-        [f"P{i:02d}" for i in range(10)],
+        [f"P{i:02d}" for i in range(fmix_n_participants)],
         3,
     )
-    fmix_condition = np.tile([0.0, 1.0, 0.5], 10)
+    fmix_condition = np.tile([0.0, 1.0, 0.5], fmix_n_participants)
     fmix_beta0 = 0.20 + 0.15 * fmix_time
     fmix_beta1 = 0.15 + 0.40 * fmix_time
     fmix_linear_basis = np.column_stack([1.0 - fmix_time, fmix_time])
     fmix_random = fmix_rng.multivariate_normal(
-        [0.0, 0.0],
-        [[0.030, 0.004], [0.004, 0.020]],
-        size=10,
+        np.zeros(4),
+        [
+            [0.030, 0.004, 0.009, 0.002],
+            [0.004, 0.020, 0.002, 0.007],
+            [0.009, 0.002, 0.018, 0.003],
+            [0.002, 0.007, 0.003, 0.014],
+        ],
+        size=fmix_n_participants,
     )
     fmix_values = []
     fmix_ids = []
-    for participant_index in range(10):
-        random_function = (
-            fmix_random[participant_index] @ fmix_linear_basis.T
+    for participant_index in range(fmix_n_participants):
+        random_intercept = (
+            fmix_random[participant_index, :2] @ fmix_linear_basis.T
+        )
+        random_slope = (
+            fmix_random[participant_index, 2:] @ fmix_linear_basis.T
         )
         for trial_index in range(3):
             row = participant_index * 3 + trial_index
             response = (
                 fmix_beta0
                 + fmix_condition[row] * fmix_beta1
-                + random_function
+                + random_intercept
+                + fmix_condition[row] * random_slope
                 + fmix_rng.normal(0.0, 0.04, size=fmix_time.size)
             )
             fmix_values.append(response[:, None])
@@ -273,6 +284,7 @@ def main() -> None:
         dimension="metric",
         fixed_basis_size=2,
         random_basis_size=2,
+        random_slope_predictor="condition",
         spline_degree=1,
     )
     fmix_boot = bootstrap_functional_mixed_effects_coefficients(
@@ -290,6 +302,12 @@ def main() -> None:
         coefficient="condition",
     )
     _save(ax, "functional-mixed-effects-coefficient.svg")
+    ax = plot_functional_random_effects(
+        fmix_fit,
+        effect="slope",
+        max_participants=12,
+    )
+    _save(ax, "functional-mixed-effects-random-slope.svg")
 
     miaaft_rng = np.random.default_rng(2111)
     miaaft_n = 180

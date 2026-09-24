@@ -78,6 +78,16 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked simultaneous example](../examples/functional-mixed-effects-simultaneous-bands.md) · [Guide](functional-mixed-effects-simultaneous-bands.md) · [Mathematics](mathematical-reference.md#functional-mixed-effects-simultaneous)
 
+-   **Participant-specific condition-response heterogeneity**
+
+    ![Participant random functional slope functions](../assets/gallery/functional-mixed-effects-random-slope.svg)
+
+    Participant BLUP random-slope functions from one guarded random functional slope for the declared condition predictor. The full intercept/slope covariance, eigenvalues, condition diagnostics, and covariance dimensionality remain part of the fitted result rather than being hidden behind the plot.
+
+    **API:** `fit_functional_mixed_effects_regression()`, `functional_random_effect_frame()`, `plot_functional_random_effects()`
+
+    [Worked example](../examples/functional-mixed-effects-random-slope.md) · [Method guide](functional-mixed-effects-random-slope.md) · [Mathematics](mathematical-reference.md#functional-mixed-effects-random-slope)
+
 -   **Multivariate IAAFT preservation diagnostics**
 
     ![Per-surrogate power-spectrum and cross-spectrum mismatch diagnostics](../assets/gallery/multivariate-iaaft-diagnostics.svg)

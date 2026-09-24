@@ -877,3 +877,25 @@ Report the simultaneous critical value and participant-bootstrap pointwise
 standard errors for the coefficient(s) of interest. Do not describe the band as
 including variance-component, basis-selection, preprocessing, or between-grid
 uncertainty.
+
+### Participant random functional slope
+
+Report the exact `random_slope_predictor`, participant count, trials per
+participant, fixed/random basis sizes, random-effect dimension, and number of
+free unstructured covariance parameters.
+
+Report that the random-slope predictor varied within every participant and that
+the participant count exceeded the package's covariance-parameter guard.
+
+Provide the full covariance-block interpretation: intercept covariance, slope
+covariance, and intercept/slope cross-covariance. Also report covariance
+eigenvalues or an appropriate summary, condition number, boundary/singularity
+status, optimizer/convergence state, and any retained backend warnings.
+
+Participant BLUP slope plots may be used descriptively to show how the
+predictor-response relationship varies over trial time. State that these are
+shrunken model-based random effects.
+
+If 0.44 simultaneous fixed-effect bands are reported from a random-slope fit,
+state explicitly that the fitted intercept/slope covariance and residual
+variance were held fixed during bootstrap refits.

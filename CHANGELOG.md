@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.45.0.dev0
+
+- Extend `fit_functional_mixed_effects_regression()` with exactly one explicitly declared `random_slope_predictor`; `None` preserves the existing random-functional-intercept model.
+- Represent the participant random intercept and the one random slope with the same declared B-spline basis size q and one unstructured covariance over the stacked 2q random-basis coefficient vector.
+- Make covariance dimensionality explicit: the one-slope model estimates `(2q)(2q+1)/2` free random-effect covariance parameters; with the default q=4 this is 36 parameters.
+- Add a conservative 0.45 guard requiring the participant count to exceed the number of free unstructured covariance parameters before a random-slope fit is attempted.
+- Require the named random-slope predictor to be one of the declared fixed predictors and to vary within every participant; no automatic slope selection or intercept-only fallback is allowed.
+- Retain the complete random-effect design matrix, full covariance, intercept/slope covariance blocks, eigenvalues, covariance condition number, covariance parameter count, boundary/singularity diagnostics, and exact slope-predictor provenance.
+- Retain participant BLUP intercept and slope basis coefficients and reconstructed functions separately; preserve the historical `random_effect_functions` alias as the random-intercept function for backward compatibility.
+- Add `functional_random_effect_frame()` and `plot_functional_random_effects()` for direct participant-level inspection of random-intercept or random-slope functions.
+- Keep the 0.44 participant-cluster simultaneous-band bootstrap available with random slopes while explicitly conditioning on the fitted full intercept/slope covariance and residual variance rather than refitting variance components.
+- Add demanding synthetic tests for known slope heterogeneity, correlated intercept/slope structure, zero-slope truth, within-participant identifiability failure, covariance-complexity failure, explicit-predictor validation, backward compatibility, and fixed-covariance bootstrap reuse.
+- Add mathematical contracts, methodology/worked/executable examples, plotting/gallery support, and full documentation/site integration.
+- Set the next inference tranche to full-refit participant bootstrap sensitivity (0.46), followed by explicit residual serial-correlation structures (0.47).
+
 ## 0.44.0.dev0
 
 - Add `bootstrap_functional_mixed_effects_coefficients()` using whole-participant case resampling so every selected participant contributes the complete repeated-trial/time bundle.
