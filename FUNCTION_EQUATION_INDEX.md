@@ -68,17 +68,17 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 **Functions:** `dynamic_time_warping_distance()`, `pairwise_dynamic_time_warping_distances()`
 
-$
+$$
 d_w(\mathbf p_i,\mathbf q_j)=\left[\sum_r\omega_r(p_{ir}-q_{jr})^2\right]^{1/2}
-$
+$$
 
-$
+$$
 C_{i,j}=d_w(\mathbf p_i,\mathbf q_j)+\min(C_{i-1,j-1},C_{i-1,j},C_{i,j-1})
-$
+$$
 
-$
+$$
 d_{DTW}(P,Q)=C_{m,n}
-$
+$$
 
 **Scope:** Complete ordered point sequences with monotone index warping and optional Sakoe-Chiba sample-index constraint; recorded elapsed time is not used, the returned distance is an unnormalized sum, and no hidden preprocessing is introduced.
 
