@@ -64,6 +64,11 @@ from .kinematics import (
     turning_rate_function,
 )
 from .multilevel import fit_multilevel_fpca
+from .joint_recurrence import (
+    joint_recurrence_component_frame,
+    joint_recurrence_matrix,
+    joint_rqa_metrics,
+)
 from .embedding import (
     delay_embed_trajectory,
     embedding_delay_diagnostics,
@@ -97,6 +102,7 @@ from .nonlinear_reporting import (
     lyapunov_parameter_sensitivity_reporting_text,
     multivariate_iaaft_reporting_text,
     multivariate_surrogate_nonlinearity_reporting_text,
+    joint_recurrence_reporting_text,
     return_map_stability_reporting_text,
     rqa_parameter_sensitivity_reporting_text,
     recurrence_radius_profile_reporting_text,
@@ -111,6 +117,7 @@ from .nonlinear_reporting import (
 from .nonlinear_plotting import (
     plot_embedding_delay_diagnostics,
     plot_embedding_dimension_diagnostics,
+    plot_joint_recurrence,
     plot_kantz_sensitivity,
     plot_local_divergence,
     plot_multivariate_iaaft_diagnostics,
@@ -130,6 +137,7 @@ from .nonlinear_types import (
     DelayEmbeddingResult,
     EmbeddingDelayDiagnosticResult,
     EmbeddingDimensionDiagnosticResult,
+    JointRecurrenceResult,
     KantzDivergenceResult,
     KantzParameterSensitivityResult,
     LargestLyapunovResult,
@@ -378,7 +386,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.38.0.dev0"
+__version__ = "0.39.0.dev0"
 
 __all__ = [
     "recurrence_radius_profile_reporting_text",
@@ -412,6 +420,7 @@ __all__ = [
     "EmbeddingDelayDiagnosticResult",
     "EmbeddingDimensionDiagnosticResult",
     "RecurrenceRadiusProfileResult",
+    "JointRecurrenceResult",
     "RecurrenceResult",
     "RQAResult",
     "RQAMeanBootstrapResult",
@@ -434,6 +443,11 @@ __all__ = [
     "delay_embed_trajectory",
     "embedding_delay_diagnostics",
     "embedding_dimension_diagnostics",
+    "joint_recurrence_matrix",
+    "joint_recurrence_component_frame",
+    "joint_rqa_metrics",
+    "plot_joint_recurrence",
+    "joint_recurrence_reporting_text",
     "recurrence_matrix",
     "recurrence_radius_profile",
     "rqa_metrics",
