@@ -29,6 +29,7 @@ from .types import (
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
+    FunctionalMixedEffectsResult,
     FunctionOnScalarBandResult,
     FunctionOnScalarResult,
     ConformalFunctionalAnomalyResult,
@@ -103,6 +104,51 @@ def dynamic_time_warping_reporting_text(
         f"{result.path_length} matched index pairs; recorded timestamps were "
         "not used by the recurrence, and no step pattern, window, "
         "preprocessing, or normalization rule was selected automatically."
+    )
+
+
+def functional_mixed_effects_reporting_text(
+    result: FunctionalMixedEffectsResult,
+) -> str:
+    """Generate manuscript-oriented wording for a functional mixed-effects fit."""
+
+    if not isinstance(result, FunctionalMixedEffectsResult):
+        raise TypeError("result must be a FunctionalMixedEffectsResult")
+
+    predictor_text = ", ".join(result.predictor_names)
+    warning_text = ""
+    if result.boundary_fit:
+        warning_text += (
+            " The participant random-effect covariance was estimated on or "
+            "near the numerical boundary and should be interpreted cautiously."
+        )
+    if result.backend_warnings:
+        warning_text += (
+            " Backend warnings were retained in the result provenance rather "
+            "than suppressed."
+        )
+
+    return (
+        "A Gaussian functional mixed-effects regression was fitted jointly "
+        "over all curve-by-time observations for dimension "
+        f"{result.dimension_name!r}. Fixed coefficient functions for "
+        f"{predictor_text} and the intercept used a clamped B-spline basis "
+        f"with {result.fixed_basis_size} functions (degree "
+        f"{result.spline_degree}); the participant-specific functional "
+        f"random intercept used {result.random_basis_size} B-spline basis "
+        f"functions with an unstructured basis-coefficient covariance. "
+        f"The model included {result.n_curves} curves from "
+        f"{result.n_participants} participants and was estimated by "
+        f"{'REML' if result.reml else 'ML'} using optimizer "
+        f"{result.method!r}. Trial-varying predictors were retained at the "
+        "curve level while participant clustering was represented directly. "
+        "Grid-level residuals were conditionally iid Gaussian. No automatic "
+        "categorical encoding, interaction construction, predictor scaling, "
+        "basis-size selection, smoothing-penalty selection, or optimizer "
+        "fallback was performed. Reported 95% coefficient intervals are "
+        "pointwise Wald intervals; simultaneous functional coverage and "
+        "variance-component uncertainty are not claimed."
+        + warning_text
     )
 
 
