@@ -250,10 +250,7 @@ _CONTRACTS = (
     MathematicalContract(
         key="functional-mixed-effects-random-slope",
         title="One participant random functional slope",
-        public_api=(
-            "fit_functional_mixed_effects_regression",
-            "functional_random_effect_frame",
-        ),
+        public_api=("functional_random_effect_frame",),
         equations=(
             r"Y_{ij}(t)=\mathbf x_{ij}^{\top}\boldsymbol\beta(t)"
             r"+b_{0i}(t)+X_{ij,q}b_{1i}(t)+\varepsilon_{ij}(t)",
