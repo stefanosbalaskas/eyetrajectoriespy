@@ -951,6 +951,13 @@ good finite-sample variance-component estimation.
 Participant BLUP slope functions are shrunken model-based estimates, not
 independently observed participant effects.
 
+When the true random-slope variance is effectively zero, the fitted covariance
+is on the boundary. Depending on the optimizer/backend version, this may appear
+as a converged near-boundary fit or explicit optimizer non-convergence. The
+package retains the boundary diagnostic when a valid fit exists and otherwise
+raises; it does not fabricate slope heterogeneity or silently fall back to a
+different optimizer.
+
 The 0.44 simultaneous-band bootstrap remains conditional on the fitted full
 random-effect covariance and residual variance. Version 0.45 does not propagate
 variance-component estimation uncertainty through those bands.
