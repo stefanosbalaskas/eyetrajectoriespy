@@ -868,3 +868,17 @@ Several monotone paths can have the same minimum cumulative cost. The audit resu
 
 An unconstrained path can match long portions of one sequence to repeated points in the other. A scientifically defended window can limit this behavior, but version 0.34 does not estimate or optimize a preferred radius, step pattern, or normalization rule from observed outcomes.
 
+## Transfer entropy limitations
+
+The 0.41 transfer-entropy layer is deliberately narrow. It uses an empirical
+discrete-state plug-in estimator and therefore inherits finite-count bias and
+support sparsity as state alphabets and history lengths grow. It does not
+automatically discretize continuous gaze, choose histories/lags, estimate
+conditional/multivariate TE, fit continuous k-nearest-neighbor estimators, or
+correct a lag scan for multiplicity.
+
+Circular source shifts are not a universal surrogate null. They preserve the
+source marginal and circular ordering but can be scientifically inappropriate
+for nonstationary records, strong trial boundaries, transients, or designs in
+which wrap-around has no meaningful interpretation. A small surrogate p-value
+does not establish causal influence.

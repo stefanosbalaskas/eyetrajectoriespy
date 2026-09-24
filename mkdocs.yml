@@ -54,6 +54,7 @@ nav:
       - Nonlinear trajectory dynamics: guides/nonlinear-dynamics.md
       - Joint recurrence analysis: methods/joint-recurrence.md
       - Recurrence networks: methods/recurrence-networks.md
+      - Discrete transfer entropy: methods/transfer-entropy.md
       - Multivariate surrogate testing: methods/multivariate-surrogates.md
       - Recurrence-threshold diagnostics: methods/recurrence-threshold-diagnostics.md
       - RQA population bootstrap: methods/rqa-population-bootstrap.md
@@ -98,6 +99,7 @@ nav:
       - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
       - Joint recurrence analysis: examples/joint-recurrence.md
       - Recurrence networks: examples/recurrence-networks.md
+      - Discrete transfer entropy: examples/transfer-entropy.md
       - Multivariate surrogate testing: examples/multivariate-surrogates.md
       - Recurrence-threshold diagnostics: examples/recurrence-threshold-diagnostics.md
       - RQA population bootstrap: examples/rqa-population-bootstrap.md

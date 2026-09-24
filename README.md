@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.40.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.41.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -74,6 +74,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - sparse continuous-state recurrence matrices, RQA, windowed RQA, and cross-recurrence analysis;
 - synchronized joint recurrence plots/JRQA as sparse logical intersections of independently declared subsystem auto-recurrence matrices, with exact-grid/shared-Theiler contracts and no hidden lag alignment or threshold harmonization;
 - sparse recurrence-network topology derived from one declared auto-recurrence matrix, including degree, local clustering, transitivity, connected-component summaries, and an explicit graph-density versus Theiler-conditioned recurrence-rate distinction;
+- experimental explicit discrete transfer entropy with analyst-declared target/source histories and source lag, local contributions/support diagnostics, and analyst-declared circular-shift surrogate testing;
 - exact recurrence-radius profiles exposing RR(radius) and pair-distance shell mass over analyst-declared thresholds without dense distance matrices or automatic radius selection;
 - percentile bootstrap uncertainty for population-average fixed-specification RQA metrics with curve- or equal-weight participant-level resampling and no trial pseudo-replication;
 - first-class RQA-derived functional trajectories for FDA of time-varying RR/DET/LAM and related metrics, with explicit overlap/dependence provenance;
@@ -175,6 +176,7 @@ print(summarise_fpca(fit))
 | Recurrent gaze-state structure | sparse recurrence / RQA | `recurrence_matrix()` / `rqa_metrics()` |
 | Simultaneous recurrence across synchronized subsystem state spaces | joint recurrence / JRQA from logical intersection of component auto-recurrence matrices | `joint_recurrence_matrix()` / `joint_rqa_metrics()` |
 | Recurrence geometry as a sparse graph | undirected recurrence network with degree/clustering/transitivity/component diagnostics | `recurrence_network()` |
+| Directed predictive information between discrete state series | empirical discrete transfer entropy + explicit circular-shift surrogate null | `discrete_transfer_entropy()` / `transfer_entropy_circular_shift_test()` |
 | Recurrence-threshold diagnostics | exact RR(radius) curve and pair-distance shell profile | `recurrence_radius_profile()` |
 | RQA robustness across analysis choices | declared reconstruction/threshold/Theiler/line-length multiverse | `rqa_parameter_sensitivity()` |
 | Population uncertainty for RQA summaries | percentile bootstrap over independent curves or equal-weight participant averages | `bootstrap_rqa_metric_means()` |
@@ -202,7 +204,7 @@ It includes a tutorial gallery, representation selection, nonlinear state-space 
 
 ## Scope boundary
 
-`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Versions 0.31–0.34 add provenance-aware continuous planar geometry plus two distinct ordered-trajectory similarity contracts: discrete Fréchet bottleneck distance and cumulative dynamic time warping. Version 0.35 shifts the development line from adding more trajectory metrics toward functional inference for experimental predictors through function-on-scalar regression and simultaneous coefficient bands. Version 0.38 adds a descriptive robustness layer across the already-implemented distance contracts rather than adding another metric. Version 0.39 adds synchronized joint recurrence/JRQA while keeping joint and cross recurrence explicitly distinct. Version 0.40 adds sparse recurrence-network topology without automatic threshold tuning, community optimization, or attractor-dimension claims. The nonlinear/RQA layers from 0.23–0.30 remain intact. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
+`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Versions 0.31–0.34 add provenance-aware continuous planar geometry plus two distinct ordered-trajectory similarity contracts: discrete Fréchet bottleneck distance and cumulative dynamic time warping. Version 0.35 shifts the development line from adding more trajectory metrics toward functional inference for experimental predictors through function-on-scalar regression and simultaneous coefficient bands. Version 0.38 adds a descriptive robustness layer across the already-implemented distance contracts rather than adding another metric. Version 0.39 adds synchronized joint recurrence/JRQA while keeping joint and cross recurrence explicitly distinct. Version 0.40 adds sparse recurrence-network topology without automatic threshold tuning, community optimization, or attractor-dimension claims. Version 0.41 adds experimental discrete transfer entropy with explicit histories/lags and analyst-declared circular-shift surrogates; it does not add hidden discretization, automatic tuning, or causal claims. The nonlinear/RQA layers from 0.23–0.30 remain intact. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
 
 ## Validation
 

@@ -105,3 +105,15 @@ substituted for cross-recurrence or a directional coupling model.
 This label distinguishes derived nonlinear summaries from screen-space coordinates. Per-metric units remain explicit in provenance because the dimensions are heterogeneous: proportions, state-step counts, nats, and percentages must not be silently treated as having common physical units.
 
 Overlapping windows remain within-curve dependent. Functionalization changes representation; it does not create new observational units.
+
+## Discrete states for transfer entropy
+
+Transfer entropy in 0.41 starts from an explicit sequence of integer-coded
+states. The codes may represent scientifically defined AOIs, behavioral states,
+quantized motion states, or another preregistered symbolic representation, but
+`eyetrajectoriespy` does not choose that representation.
+
+Raw continuous \([x(t),y(t)]\) gaze, pupil diameter, or head rotation should
+not be passed to the discrete TE API unless the analyst has explicitly
+constructed and justified the states upstream. Changing the state definition
+changes the empirical probability model and therefore the TE estimand.

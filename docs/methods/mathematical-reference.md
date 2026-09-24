@@ -1300,6 +1300,49 @@ itself evidence of low-dimensional deterministic chaos.
 **API:** `recurrence_network()`, `recurrence_network_node_frame()`,
 `recurrence_network_summary_frame()`.
 
+## Discrete transfer entropy and circular-shift surrogate testing { #discrete-transfer-entropy }
+
+For discrete source states \(X_t\) and target states \(Y_t\), version 0.41
+implements the empirical plug-in conditional mutual information
+
+$
+T_{X\to Y}(k,l,d)
+=
+I\!\left(X_{t-d}^{(l)};Y_t\mid Y_{t-1}^{(k)}\right).
+$
+
+Equivalently,
+
+$
+T_{X\to Y}
+=
+\sum p(y_t,\mathbf y,\mathbf x)
+\log_2
+\frac{p(y_t\mid\mathbf y,\mathbf x)}
+     {p(y_t\mid\mathbf y)}.
+$
+
+The state codes, target history \(k\), source history \(l\), and source lag
+\(d\) are analyst supplied. The implementation uses base-2 logarithms and
+returns local contributions plus observed-history support diagnostics. It does
+not bin continuous observations or select history/lag values.
+
+For a declared set of \(B\) circular source shifts, the package reports
+
+$
+p_+
+=
+\frac{1+\sum_{b=1}^{B}I(T_b^*\ge T_{obs})}{B+1}.
+$
+
+The circular-shift null preserves the source marginal and circular ordering but
+requires the analyst to defend wrap-around/stationarity. A positive TE estimate
+or a small surrogate p-value is not treated as standalone causal evidence.
+
+**API:** `discrete_transfer_entropy()`,
+`transfer_entropy_circular_shift_test()`,
+`transfer_entropy_local_frame()`.
+
 ## Population mean bootstrap for curve-level RQA metrics { #rqa-population-bootstrap }
 
 For source curve $i$ and selected RQA metric $q$, let

@@ -706,3 +706,16 @@ If DTW will be used, pre-specify:
 
 Do not tune the step pattern, normalization choice, warping radius, coordinate scaling, dimensions, or preprocessing after inspecting which specification maximizes a preferred condition difference. Do not reinterpret the sample-index band as a physical-time tolerance unless the upstream sampling design makes that equivalence explicit.
 
+## Discrete transfer entropy
+
+Pre-register the source and target state definitions, sampling/index unit,
+direction(s), target-history length, source-history length, source lag, and the
+scientific reason for those choices. If continuous signals are converted to
+states upstream, pre-register the complete discretization rule.
+
+For circular-shift inference, declare the shift-generation rule or complete
+shift set before analysis, the number of shifts, the tail, and why wrap-around
+is defensible. If several directions, lags, histories, channels, or windows
+will be examined, pre-register how multiplicity and specification sensitivity
+will be handled. Do not select the specification producing the largest TE and
+then report it as if it had been fixed in advance.

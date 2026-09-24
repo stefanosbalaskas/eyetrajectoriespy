@@ -398,3 +398,13 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.to_skfda_grid
 ::: eyetrajectoriespy.to_skfda_basis
 ::: eyetrajectoriespy.fit_elastic_fpca
+
+## Discrete transfer entropy
+::: eyetrajectoriespy.DiscreteTransferEntropyResult
+::: eyetrajectoriespy.TransferEntropyCircularShiftTestResult
+::: eyetrajectoriespy.discrete_transfer_entropy
+::: eyetrajectoriespy.transfer_entropy_local_frame
+::: eyetrajectoriespy.transfer_entropy_circular_shift_test
+::: eyetrajectoriespy.plot_transfer_entropy_circular_shift_test
+::: eyetrajectoriespy.transfer_entropy_reporting_text
+::: eyetrajectoriespy.transfer_entropy_circular_shift_reporting_text

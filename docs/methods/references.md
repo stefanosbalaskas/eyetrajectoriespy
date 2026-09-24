@@ -323,3 +323,12 @@ Eiter and Mannila provide the discrete Fréchet dynamic-programming definition. 
 Versions 0.32–0.34 therefore do not claim novelty for either metric. The package contribution is a transparent trajectory-analysis contract: explicit local geometry, deterministic audit paths/couplings, declared constraints, provenance, and no hidden preprocessing or elapsed-time claims.
 
 Version 0.38 reuses those established distance definitions in a descriptive sensitivity layer. It does not claim novelty for Spearman rank correlation, nearest-neighbor comparison, or Jaccard overlap. The purpose is methodological accountability: preserve each native distance contract, quantify whether pair ordering and local neighbor structure change across defensible specifications, and avoid post-hoc selection of a preferred metric.
+
+## Transfer entropy
+
+- Schreiber, T. (2000). Measuring information transfer. *Physical Review Letters, 85*(2), 461–464. DOI: 10.1103/PhysRevLett.85.461.
+- Zhang, R., Xu, Q., Wang, S., Parkinson, S., & Schoeffmann, K. (2024). Information Difference of Transfer Entropies between Head Motion and Eye Movement Indicates a Proxy of Driving. *Entropy, 26*(1), 3. DOI: 10.3390/e26010003.
+
+The Zhang et al. study is direct head/eye transfer-entropy precedent. Its
+application-specific interpretation does not define the package's more
+conservative causal-language boundary.

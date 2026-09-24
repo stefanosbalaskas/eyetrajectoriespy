@@ -444,6 +444,26 @@ $$
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#recurrence-network
 
+## Discrete transfer entropy and circular-shift surrogate testing
+
+**Functions:** `discrete_transfer_entropy()`, `transfer_entropy_circular_shift_test()`
+
+$$
+T_{X\to Y}(k,l,d)=I\!\left(X_{t-d}^{(l)};Y_t\mid Y_{t-1}^{(k)}\right)
+$$
+
+$$
+T_{X\to Y}=\sum p(y_t,\mathbf y,\mathbf x)\log_2\frac{p(y_t\mid\mathbf y,\mathbf x)}{p(y_t\mid\mathbf y)}
+$$
+
+$$
+p_+=\frac{1+\sum_{b=1}^{B}I(T_b^*\ge T_{obs})}{B+1}
+$$
+
+**Scope:** Empirical plug-in conditional mutual information for analyst-supplied integer-coded states with explicit target/source histories and source lag. Circular-shift inference uses only analyst-declared shifts. No automatic discretization, lag/history selection, shift generation, or causal interpretation is introduced.
+
+Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#discrete-transfer-entropy
+
 ## Population mean bootstrap for curve-level RQA metrics
 
 **Functions:** `bootstrap_rqa_metric_means()`

@@ -106,3 +106,16 @@ continuous trajectory
 ```
 
 Do not route raw gaze directly to classical Floquet or bifurcation-continuation claims. Those require a separately identified dynamical model.
+
+## Do you need directed predictive information between two discrete state series?
+
+Use `discrete_transfer_entropy()` only after the source and target states,
+target/source history lengths, and source lag are scientifically defined.
+Use `transfer_entropy_circular_shift_test()` only when the declared circular
+source shifts are a defensible null. If your inputs are continuous gaze
+coordinates or pupil signals and the state construction is not already
+specified, stop there rather than letting the package invent bins.
+
+If the question is synchronized recurrence rather than predictive direction,
+use joint recurrence; if it is all-pairs cross-system state similarity, use
+cross recurrence. These estimands are not interchangeable.

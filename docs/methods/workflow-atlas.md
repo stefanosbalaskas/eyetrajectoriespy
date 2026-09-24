@@ -245,3 +245,28 @@ flowchart LR
 - [Visual gallery](visual-gallery.md) shows representative public plotting outputs.
 - [Tutorial gallery](../tutorials/index.md) provides runnable scientific workflows.
 - [Assumptions](assumptions.md) and [limitations](limitations.md) define where each workflow stops.
+
+## Directed discrete-state dependence
+
+```text
+explicit discrete source/target states
+        |
+        +--> declare k, l, source lag d
+        |       |
+        |       +--> discrete_transfer_entropy()
+        |               |
+        |               +--> mean TE in bits
+        |               +--> local TE/history frame
+        |               +--> empirical support diagnostics
+        |
+        +--> declare defensible circular source shifts
+                |
+                +--> transfer_entropy_circular_shift_test()
+                        |
+                        +--> surrogate distribution / centered TE
+                        +--> plus-one upper-tail p-value
+```
+
+No branch in this workflow automatically bins continuous measurements, chooses
+history/lag settings, generates shifts, or promotes directed prediction to
+causal identification.
