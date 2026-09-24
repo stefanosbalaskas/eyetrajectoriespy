@@ -12,6 +12,7 @@ from eyetrajectoriespy import (
     compare_functional_mixed_effects_bootstraps,
     fit_functional_mixed_effects_regression,
     functional_mixed_effects_bootstrap_identity_frame,
+    functional_mixed_effects_full_refit_reporting_text,
     functional_mixed_effects_simultaneous_bands,
     functional_mixed_effects_variance_bootstrap_frame,
     plot_functional_mixed_effects_bootstrap_comparison,
@@ -220,6 +221,14 @@ def test_full_refit_bootstrap_retains_distinct_group_identities(monkeypatch):
     variance = functional_mixed_effects_variance_bootstrap_frame(
         bootstrap
     )
+    report = functional_mixed_effects_full_refit_reporting_text(
+        bootstrap
+    )
+    assert "whole-participant case bootstrap" in report
+    assert "distinct bootstrap group identity" in report
+    assert "stability diagnostics" in report
+    assert "discarded or redrawn" in report
+
     assert len(variance) == 100
     assert {
         "residual_variance",
