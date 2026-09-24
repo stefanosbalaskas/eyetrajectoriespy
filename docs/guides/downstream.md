@@ -39,6 +39,14 @@ Report the retained component count because the downstream model depends on that
 
 `pairwise_functional_distances()` works in function space; `score_distance_matrix()` works in retained FPCA score space. They answer different questions.
 
+When the scientific question supports more than one trajectory-distance
+contract, use `trajectory_distance_sensitivity()` to compare predeclared L2,
+discrete Fréchet, and DTW specifications. The comparison is descriptive:
+native distance scales are retained, pairwise rank and top-k neighbor agreement
+are reported, and no best metric is selected automatically.
+
+See [Trajectory-distance sensitivity](../methods/trajectory-distance-sensitivity.md).
+
 
 ## Select FPC count for prediction without leakage
 
