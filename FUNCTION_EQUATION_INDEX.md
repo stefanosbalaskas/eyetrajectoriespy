@@ -226,7 +226,7 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## One participant random functional slope
 
-**Functions:** `fit_functional_mixed_effects_regression()`, `functional_random_effect_frame()`
+**Functions:** `functional_random_effect_frame()`
 
 $$
 Y_{ij}(t)=\mathbf x_{ij}^{\top}\boldsymbol\beta(t)+b_{0i}(t)+X_{ij,q}b_{1i}(t)+\varepsilon_{ij}(t)
