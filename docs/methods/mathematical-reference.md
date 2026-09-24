@@ -169,19 +169,19 @@ When an audit result is requested, the package returns one deterministic optimal
 
 For complete ordered point sequences \(P=(p_1,\ldots,p_m)\) and \(Q=(q_1,\ldots,q_n)\), the implementation uses weighted Euclidean local cost
 
-$
+$$
 d_w(\mathbf p_i,\mathbf q_j)
 =
 \left[
 \sum_r \omega_r(p_{ir}-q_{jr})^2
 \right]^{1/2},
-$
+$$
 
 where all \(\omega_r\ge 0\) and at least one dimension weight is positive.
 
 The symmetric three-step recurrence is
 
-$
+$$
 C_{i,j}
 =
 d_w(\mathbf p_i,\mathbf q_j)
@@ -192,21 +192,21 @@ C_{i-1,j-1},
 C_{i-1,j},
 C_{i,j-1}
 \right),
-$
+$$
 
 with cumulative first-row/first-column boundaries and
 
-$
+$$
 d_{\mathrm{DTW}}(P,Q)=C_{m,n}.
-$
+$$
 
 The scalar API returns this raw cumulative cost. It is not divided by path length, sequence length, or another normalization factor.
 
 With an explicit non-negative Sakoe-Chiba radius \(w\), only cells satisfying
 
-$
+$$
 |i-j|\le w
-$
+$$
 
 are admissible. The band is expressed in sample indices. It is not a bound in milliseconds or seconds. A band that cannot connect the two sequence endpoints fails explicitly.
 
