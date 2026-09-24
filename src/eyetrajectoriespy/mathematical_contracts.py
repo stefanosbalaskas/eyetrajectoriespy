@@ -399,6 +399,34 @@ _CONTRACTS = (
         scope="Sparse observed-state or reconstructed-state recurrence with an explicit radius policy, metric, Theiler exclusion, and line-length thresholds.",
     ),
     MathematicalContract(
+        key="joint-recurrence",
+        title="Synchronized joint recurrence and JRQA",
+        public_api=(
+            "joint_recurrence_matrix",
+            "joint_rqa_metrics",
+        ),
+        equations=(
+            r"JR_{ij}=\prod_{s=1}^{S}R_{ij}^{(s)}",
+            r"\mathrm{JRR}="
+            r"\frac{\sum_{i<j}JR_{ij}}{N_{\mathrm{eligible}}}",
+            r"\mathrm{JDET}="
+            r"\frac{\sum_{\ell\ge\ell_{\min}}\ell P_{d,J}(\ell)}"
+            r"{\sum_{\ell\ge1}\ell P_{d,J}(\ell)}",
+            r"\mathrm{JLAM}="
+            r"\frac{\sum_{v\ge v_{\min}}v P_{v,J}(v)}"
+            r"{\sum_{v\ge1}v P_{v,J}(v)}",
+        ),
+        site_anchor="joint-recurrence",
+        scope=(
+            "Logical intersection of at least two synchronized auto-recurrence "
+            "matrices on an exact common grid with one shared Theiler "
+            "exclusion. Component state spaces, metrics, and thresholds may "
+            "differ and remain explicit. No lag alignment, resampling, "
+            "threshold harmonization, cross-recurrence interpretation, or "
+            "causal-coupling claim is introduced."
+        ),
+    ),
+    MathematicalContract(
         key="rqa-population-bootstrap",
         title="Population mean bootstrap for curve-level RQA metrics",
         public_api=("bootstrap_rqa_metric_means",),
