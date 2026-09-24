@@ -236,3 +236,10 @@ Use [Wild-bootstrap Monte Carlo precision](../examples/fpcr-wild-bootstrap-monte
 ### Stabilized-volatility FPCR wild-bootstrap selection
 
 Use [Stabilized-volatility wild-bootstrap selection](../examples/fpcr-wild-bootstrap-selection.md) when k=g is fixed but the target-inference truncation h needs a declared data-driven tuning rule. The example scans consecutive h values with shared multipliers, plots target-specific interval stability, applies explicit rho_w/rho_c/r criteria, and demonstrates the no-silent-fallback failure contract.
+
+## Directed dependence
+
+For already-discrete source/target state sequences, continue with the
+[transfer-entropy method guide](../methods/transfer-entropy.md) and
+[worked example](../examples/transfer-entropy.md). The workflow requires
+explicit histories, lag, and—when used—an explicit surrogate shift set.
