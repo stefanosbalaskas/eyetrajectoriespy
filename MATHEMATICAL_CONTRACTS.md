@@ -686,10 +686,10 @@ state construction, lag/history selection, or causal identification.
 
 ## Conditional transfer entropy and source-shift surrogate testing
 
-For source (X), target (Y), and an explicitly supplied conditioning process
-(Z),
+For source \(X\), target \(Y\), and an explicitly supplied conditioning process
+\(Z\),
 
-$
+$$
 T_{X\to Y\mid Z}(k,l,m,d,c)
 =
 I\!\left(
@@ -699,12 +699,12 @@ Y_t
 Y_{t-1}^{(k)},
 Z_{t-c}^{(m)}
 \right).
-$
+$$
 
-With (mathbf y=Y_{t-1}^{(k)}), (mathbf x=X_{t-d}^{(l)}), and
-(mathbf z=Z_{t-c}^{(m)}), the empirical plug-in quantity is
+With \(\mathbf y=Y_{t-1}^{(k)}\), \(\mathbf x=X_{t-d}^{(l)}\), and
+\(\mathbf z=Z_{t-c}^{(m)}\), the empirical plug-in quantity is
 
-$
+$$
 T_{X\to Y\mid Z}
 =
 \sum
@@ -715,11 +715,11 @@ p(y_t\mid\mathbf y,\mathbf x,\mathbf z)
 }{
 p(y_t\mid\mathbf y,\mathbf z)
 }.
-$
+$$
 
-For (B) analyst-declared source-only circular shifts,
+For \(B\) analyst-declared source-only circular shifts,
 
-$
+$$
 p_+
 =
 \frac{
@@ -729,7 +729,7 @@ I(T_{b}^{*,cond}\ge T_{obs}^{cond})
 }{
 B+1
 }.
-$
+$$
 
 Implemented by `conditional_transfer_entropy()` and
 `conditional_transfer_entropy_circular_shift_test()`. Target and conditioning
