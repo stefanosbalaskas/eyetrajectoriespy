@@ -9,6 +9,19 @@ Immutable metadata linking one scientific contract to a stable key, title, regis
 
 The registry is documentation metadata only. A contract lookup does not fit a model, select components, alter defaults, or execute an estimator.
 
+## `TrajectoryDistanceSensitivityResult`
+
+Stores all declared distance-specification names, complete native-scale
+distance matrices, specification metadata, every unique curve-pair distance
+and within-specification rank, pairwise global comparison diagnostics,
+per-curve local-neighborhood overlap diagnostics, deterministic neighbor
+orders, neighborhood cutoff-tie flags, selected dimensions, dimension
+weights, curve IDs, neighbor-k, and provenance.
+
+The object is descriptive. It does not contain a consensus distance, a
+preferred metric, or inferential p-values for the dependent upper-triangle
+distance entries.
+
 ## `DynamicTimeWarpingResult`
 
 Stores the returned DTW distance together with the raw cumulative cost, the N+M-normalized distance when symmetric2 makes that quantity defined, one deterministic optimal monotone alignment path, local distances, per-path step weights, weighted local contributions, path length, mean local distance, input sequence lengths/dimensionality, the optional Sakoe-Chiba sample-index radius, the declared step pattern, normalization denominator, and provenance.
