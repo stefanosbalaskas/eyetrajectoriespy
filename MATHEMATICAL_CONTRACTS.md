@@ -385,6 +385,70 @@ Implemented by `fit_functional_mixed_effects_regression(...,
 random_slope_predictor=...)`. Participant BLUP intercept and slope functions
 are exported by `functional_random_effect_frame()`.
 
+## Full-refit participant bootstrap for functional mixed-effects models
+
+For bootstrap replicate \(b\), sample participant indices independently with
+replacement,
+
+$
+I_1^{*(b)},\ldots,I_n^{*(b)}
+\overset{\mathrm{iid}}{\sim}
+\{1,\ldots,n\}.
+$
+
+Every occurrence of a sampled participant is assigned a distinct bootstrap
+mixed-model group identity. Thus a source draw such as
+
+$
+(3,7,7,12,\ldots)
+$
+
+creates two independent bootstrap groups corresponding to source participant 7.
+
+The complete declared mixed model is then refitted:
+
+$
+\mathcal D^{*(b)}
+\longrightarrow
+\left\{
+\widehat{\boldsymbol\beta}^{*(b)}(t),
+\widehat{\boldsymbol\Psi}^{*(b)},
+\widehat{\sigma}^{2*(b)}
+\right\}.
+$
+
+The model specification itself is held fixed: preprocessing, response
+dimension, fixed/random basis sizes, spline degree, predictor set,
+random-slope structure, REML/ML choice, optimizer, and iteration limit are not
+automatically reselected.
+
+For sensitivity comparison with the fixed-covariance bootstrap, define the
+observed-grid band-width ratio
+
+$
+R_p(t_m)
+=
+\frac{
+W_{p,\mathrm{full}}(t_m)
+}{
+W_{p,\mathrm{fixed}}(t_m)
+}.
+$
+
+The ratio is descriptive. It quantifies how much simultaneous fixed-effect band
+width changes when variance components are re-estimated in participant
+bootstrap samples; it is not a hypothesis test or automatic model-selection
+criterion.
+
+Implemented by \`bootstrap_functional_mixed_effects_full_refit()\`,
+\`functional_mixed_effects_variance_bootstrap_frame()\`,
+\`compare_functional_mixed_effects_bootstraps()\`, and the existing
+\`functional_mixed_effects_simultaneous_bands()\`.
+
+Failed replicates raise and are not silently replaced. The retained empirical
+variance-component distributions are not automatically labelled calibrated
+variance-component confidence intervals.
+
 ## Participant-cluster simultaneous mixed-effects coefficient bands
 
 For participant \(i\), let the marginal covariance implied by the fitted
