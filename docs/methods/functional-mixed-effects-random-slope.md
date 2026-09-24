@@ -64,9 +64,11 @@ count is **strictly greater** than the number of free covariance parameters.
 Thus the default $q=4$ random-slope specification requires at least 37
 participants.
 
-This is a conservative package safeguard against an obviously fragile
-covariance fit. It is not presented as a universal statistical theorem or an
-automatic basis-selection rule.
+This is a conservative **minimum complexity guard** against an obviously
+fragile covariance fit. It is not an adequacy guarantee, a universal
+statistical theorem, or an automatic basis-selection rule. Passing the guard
+does not make the covariance well estimated; eigenvalues, condition number,
+boundary and singularity diagnostics must still be inspected.
 
 ## Identifiability guard
 
@@ -76,10 +78,12 @@ The named random-slope predictor must:
 - contain finite numeric values;
 - vary within every participant.
 
-The last requirement is intentionally strict. If a participant has no
-within-participant variation in the requested random-slope predictor, the
-package refuses the 0.45 model rather than pretending that participant's
-intercept and slope functions are separately identified.
+The last requirement is intentionally stricter than mathematical identification
+requires in every possible unbalanced mixed-model design. It is the guarded
+0.45 contract: if any participant lacks within-participant variation, the
+package refuses the model rather than relying on cross-cluster information to
+rescue that participant's slope. A future unbalanced-design tranche could relax
+this only with dedicated validation.
 
 ## Retained covariance diagnostics
 
