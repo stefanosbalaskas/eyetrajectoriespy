@@ -490,7 +490,7 @@ def fit_functional_mixed_effects_regression(
         )
         random_slope_boundary_fit = bool(
             float(np.min(slope_eigenvalues))
-            <= 1e-4 * slope_boundary_reference
+            <= 1e-2 * slope_boundary_reference
         )
     else:
         random_slope_covariance = None
@@ -681,7 +681,7 @@ def fit_functional_mixed_effects_regression(
                 ),
                 "random_slope_boundary_rule": (
                     "min_slope_covariance_eigenvalue <= "
-                    "1e-4 * max_abs_full_covariance_eigenvalue"
+                    "1e-2 * max_abs_full_covariance_eigenvalue"
                     if has_random_slope
                     else None
                 ),
