@@ -3,6 +3,17 @@
 For mathematical definitions of the main estimands, transformations, studentization rules, and calibration statistics, see the [function → equation index](function-equation-index.md) and [implementation-matched mathematical reference](../methods/mathematical-reference.md). For decision flow, use the [workflow atlas](../methods/workflow-atlas.md); for representative rendered outputs, see the [visual gallery](../methods/visual-gallery.md).
 
 
+## Multivariate surrogate testing
+::: eyetrajectoriespy.MultivariateIAAFTResult
+::: eyetrajectoriespy.MultivariateSurrogateNonlinearityResult
+::: eyetrajectoriespy.generate_multivariate_iaaft_surrogates
+::: eyetrajectoriespy.multivariate_iaaft_diagnostics_frame
+::: eyetrajectoriespy.multivariate_surrogate_nonlinearity_test
+::: eyetrajectoriespy.plot_multivariate_iaaft_diagnostics
+::: eyetrajectoriespy.plot_multivariate_surrogate_nonlinearity
+::: eyetrajectoriespy.multivariate_iaaft_reporting_text
+::: eyetrajectoriespy.multivariate_surrogate_nonlinearity_reporting_text
+
 ## Nonlinear trajectory dynamics
 
 ### Delay reconstruction and embedding diagnostics
