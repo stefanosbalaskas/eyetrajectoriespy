@@ -412,6 +412,7 @@ def recurrence_matrix(
         theiler_window_samples=theiler,
         kind="auto",
         state_dimension=states.shape[1],
+        time_unit=time_unit,
         provenance={
             "operation": "recurrence_matrix",
             **source_info,
@@ -517,6 +518,7 @@ def cross_recurrence_matrix(
         theiler_window_samples=0,
         kind="cross",
         state_dimension=a.shape[1],
+        time_unit=unit_a,
         provenance={
             "operation": "cross_recurrence_matrix",
             "source_a": info_a,
