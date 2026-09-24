@@ -427,6 +427,31 @@ _CONTRACTS = (
         ),
     ),
     MathematicalContract(
+        key="recurrence-network",
+        title="Sparse recurrence-network topology",
+        public_api=(
+            "recurrence_network",
+            "recurrence_network_node_frame",
+            "recurrence_network_summary_frame",
+        ),
+        equations=(
+            r"A_{ij}=R_{ij},\quad i\ne j,\qquad A_{ii}=0",
+            r"k_i=\sum_j A_{ij}",
+            r"C_i=\frac{2T_i}{k_i(k_i-1)}",
+            r"\mathcal T=\frac{3N_{\triangle}}{N_{\mathrm{triples}}}",
+            r"\rho_G=\frac{2E}{N(N-1)}",
+        ),
+        site_anchor="recurrence-network",
+        scope=(
+            "Undirected unweighted network induced by one declared symmetric "
+            "auto-recurrence matrix. Network topology inherits the recurrence "
+            "state representation, metric, threshold policy, Theiler "
+            "exclusion, and sampling design. No threshold tuning, community "
+            "optimization, edge weighting, or automatic dynamical-dimension "
+            "interpretation is introduced."
+        ),
+    ),
+    MathematicalContract(
         key="rqa-population-bootstrap",
         title="Population mean bootstrap for curve-level RQA metrics",
         public_api=("bootstrap_rqa_metric_means",),

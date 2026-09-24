@@ -1,10 +1,10 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.39.0.dev0"
+    assert et.__version__=="0.40.0.dev0"
     required={
         "MathematicalContract","get_mathematical_contract","list_mathematical_contracts","mathematical_contract_frame",
-        "DelayEmbeddingResult","EmbeddingDelayDiagnosticResult","EmbeddingDimensionDiagnosticResult","JointRecurrenceResult","joint_recurrence_matrix","joint_recurrence_component_frame","joint_rqa_metrics","plot_joint_recurrence","joint_recurrence_reporting_text","RecurrenceResult","RecurrenceRadiusProfileResult","RQAResult","RQAMeanBootstrapResult","RQAParameterSensitivityResult","WindowedRQAResult","WindowedRQAFunctionalResult","WindowedRQASensitivityResult","WindowedRQAMeanBandResult",
+        "DelayEmbeddingResult","EmbeddingDelayDiagnosticResult","EmbeddingDimensionDiagnosticResult","RecurrenceNetworkResult","recurrence_network","recurrence_network_node_frame","recurrence_network_summary_frame","plot_recurrence_network_degree","recurrence_network_reporting_text","JointRecurrenceResult","joint_recurrence_matrix","joint_recurrence_component_frame","joint_rqa_metrics","plot_joint_recurrence","joint_recurrence_reporting_text","RecurrenceResult","RecurrenceRadiusProfileResult","RQAResult","RQAMeanBootstrapResult","RQAParameterSensitivityResult","WindowedRQAResult","WindowedRQAFunctionalResult","WindowedRQASensitivityResult","WindowedRQAMeanBandResult",
         "LocalDivergenceResult","KantzDivergenceResult","KantzParameterSensitivityResult","LargestLyapunovResult","LyapunovParameterSensitivityResult","MultivariateIAAFTResult","MultivariateSurrogateNonlinearityResult","generate_multivariate_iaaft_surrogates","multivariate_iaaft_diagnostics_frame","multivariate_surrogate_nonlinearity_test","plot_multivariate_iaaft_diagnostics","plot_multivariate_surrogate_nonlinearity","multivariate_iaaft_reporting_text","multivariate_surrogate_nonlinearity_reporting_text","SurrogateNonlinearityResult","PoincareCrossingResult","LocalReturnMapResult","ReturnMapStabilityResult",
         "delay_embed_trajectory","embedding_delay_diagnostics","embedding_dimension_diagnostics",
         "recurrence_matrix","recurrence_radius_profile","rqa_metrics","rqa_parameter_sensitivity","bootstrap_rqa_metric_means","windowed_rqa","windowed_rqa_trajectory_set","windowed_rqa_sensitivity","windowed_rqa_functional_mean_band","cross_recurrence_matrix","cross_rqa_metrics",

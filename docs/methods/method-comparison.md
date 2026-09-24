@@ -162,6 +162,19 @@ The 0.38 sensitivity layer compares rankings and local neighbors while retaining
 each distance matrix on its native scale. It is descriptive and does not attach
 ordinary correlation p-values to dependent pair distances.
 
+## RQA versus recurrence networks
+
+| Question | Use | Main dependency |
+|---|---|---|
+| What line structures occur in the recurrence plot? | RQA | radius policy, Theiler window, minimum line lengths |
+| What graph topology is induced by recurrence neighborhoods? | recurrence network | radius policy, Theiler window, graph convention |
+| How many recurrent neighbors does each state have? | recurrence-network degree | threshold and state-space geometry |
+| Are recurrent neighborhoods locally interconnected? | clustering / transitivity | threshold, state-space geometry, temporal exclusions |
+
+RQA and recurrence networks reuse the same recurrence relation but summarize
+different structures. Neither should be selected post hoc because it produces a
+more favorable result.
+
 ## Cross-recurrence versus joint recurrence
 
 | Question | Method | Interpretation |

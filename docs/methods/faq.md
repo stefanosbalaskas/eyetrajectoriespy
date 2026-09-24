@@ -464,6 +464,26 @@ Choose it from the representation/scientific contract or treat plausible
 references as a predeclared sensitivity analysis. Do not choose the reference
 after inspecting which one produces the smallest surrogate-test p-value.
 
+## What is a recurrence network?
+
+It is the graph obtained by treating recurrence-state indices as nodes and
+retained recurrence pairs as undirected edges. It describes topology induced
+by the declared recurrence neighborhood; it is not a social network or an AOI
+transition graph.
+
+## Why can graph density differ from recurrence rate?
+
+Graph density divides by all unordered node pairs. Auto-recurrence rate in this
+package can remove pairs inside a Theiler window from its denominator. The
+same retained edges can therefore produce different numerical ratios.
+
+## Does high transitivity mean the gaze trajectory is low-dimensional or chaotic?
+
+Not automatically. Recurrence-network transitivity can have geometric and
+dimension-related interpretations under additional theoretical conditions,
+but version 0.40 does not infer those conditions or convert transitivity into
+an attractor-dimension claim.
+
 ## What is the difference between joint recurrence and cross-recurrence?
 
 Cross-recurrence compares states from two systems directly and asks whether a

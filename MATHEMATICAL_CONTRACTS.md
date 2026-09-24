@@ -608,6 +608,52 @@ matrices must already share the exact time grid and Theiler exclusion.
 Joint recurrence is not cross-recurrence and is not interpreted as causal
 coupling.
 
+## Sparse recurrence-network topology
+
+A recurrence network treats each recurrence-state index as one node and each
+retained off-diagonal recurrence pair as one undirected edge:
+
+$
+A_{ij}=R_{ij},\quad i\ne j,\qquad A_{ii}=0.
+$
+
+Node degree is
+
+$
+k_i=\sum_j A_{ij}.
+$
+
+If \(T_i\) is the number of graph triangles incident to node \(i\), local
+clustering is
+
+$
+C_i=\frac{2T_i}{k_i(k_i-1)}.
+$
+
+The implementation uses \(C_i=0\) when \(k_i<2\). Global transitivity is
+
+$
+\mathcal T=\frac{3N_{\triangle}}{N_{\mathrm{triples}}},
+$
+
+and remains undefined when the graph contains no connected triples.
+
+Standard graph density uses **all** unordered node pairs,
+
+$
+\rho_G=\frac{2E}{N(N-1)},
+$
+
+which can differ from the source recurrence rate when a Theiler window removes
+eligible temporal neighbors.
+
+Implemented by `recurrence_network()`,
+`recurrence_network_node_frame()`, and
+`recurrence_network_summary_frame()`. The network inherits the source
+recurrence state representation, metric, threshold policy, Theiler exclusion,
+and sampling design. No threshold tuning, community detection, edge weighting,
+or automatic dimension interpretation is performed.
+
 ## Population mean bootstrap for curve-level RQA metrics
 
 For one fixed recurrence/RQA specification $\theta$,

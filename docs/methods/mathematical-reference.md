@@ -1233,6 +1233,73 @@ entropy, or evidence of causal coupling.
 **API:** `joint_recurrence_matrix()`,
 `joint_recurrence_component_frame()`, `joint_rqa_metrics()`.
 
+## Sparse recurrence-network topology { #recurrence-network }
+
+Recurrence networks reinterpret one symmetric auto-recurrence plot as an
+undirected simple graph. Every recurrence-state/time index is a node and every
+retained off-diagonal recurrence pair is an edge:
+
+$
+A_{ij}=R_{ij},\quad i\ne j,\qquad A_{ii}=0.
+$
+
+Node degree is
+
+$
+k_i=\sum_j A_{ij},
+$
+
+with normalized degree \(k_i/(N-1)\).
+
+If \(T_i\) denotes the number of graph triangles incident to node \(i\), local
+clustering is
+
+$
+C_i=\frac{2T_i}{k_i(k_i-1)}.
+$
+
+Version 0.40 uses the standard computational convention \(C_i=0\) for nodes
+with degree below two. Mean local clustering averages those node-wise values
+over all nodes.
+
+Global transitivity is
+
+$
+\mathcal T=\frac{3N_{\triangle}}{N_{\mathrm{triples}}},
+$
+
+where \(N_{\mathrm{triples}}=\sum_i {k_i\choose2}\). If there are no connected
+triples, transitivity remains explicit `NaN` rather than being silently set to
+zero.
+
+Standard graph density is
+
+$
+\rho_G=\frac{2E}{N(N-1)}.
+$
+
+This denominator includes all unordered node pairs. It is therefore distinct
+from the package recurrence-rate denominator when a Theiler exclusion removes
+temporally near pairs. Both quantities are retained rather than relabeled as
+the same estimand.
+
+Connected components are computed from the sparse adjacency matrix. The result
+reports the number of components, largest-component fraction, and isolated-node
+fraction. Version 0.40 deliberately does not compute dense all-pairs shortest
+paths, optimize communities, infer a fractal/transitivity dimension, or choose
+a recurrence threshold from the resulting graph topology.
+
+### Interpretation boundary
+
+Recurrence-network topology describes the geometry induced by the **declared**
+recurrence relation. Changing state variables, coordinate scaling, embedding,
+metric, recurrence radius/target-RR policy, Theiler window, or sampling design
+can change the graph. A high clustering coefficient or transitivity is not by
+itself evidence of low-dimensional deterministic chaos.
+
+**API:** `recurrence_network()`, `recurrence_network_node_frame()`,
+`recurrence_network_summary_frame()`.
+
 ## Population mean bootstrap for curve-level RQA metrics { #rqa-population-bootstrap }
 
 For source curve $i$ and selected RQA metric $q$, let

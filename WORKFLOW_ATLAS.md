@@ -106,6 +106,22 @@ flowchart LR
     G --> H[Monte Carlo precision]
 ```
 
+## Recurrence network
+
+```mermaid
+flowchart LR
+    A[Auto recurrence] --> B[Sparse undirected adjacency]
+    B --> C[Degree]
+    B --> D[Clustering / transitivity]
+    B --> E[Connected components]
+    C --> F[Topology under declared recurrence contract]
+    D --> F
+    E --> F
+```
+
+Graph topology remains threshold- and Theiler-dependent; no automatic
+dimension or chaos interpretation is made.
+
 ## Joint recurrence
 
 ```mermaid

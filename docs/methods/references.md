@@ -258,6 +258,10 @@ Ludwig and Gilchrist show that saccade curvature is not one uniquely defined qua
 The 0.31 geometry layer does not claim novelty for eye-movement curvature itself and does not reproduce those event-level saccade metrics. It implements provenance-aware continuous planar heading, signed curvature, turning rate, and path-length/displacement tortuosity as functional or trajectory-level outcomes. Their interpretation remains conditional on coordinate scaling, recorded axis orientation, preprocessing, and the declared low-speed rule.
 
 ## Nonlinear dynamics, recurrence, and surrogate testing
+- Marwan, N., Donges, J. F., Zou, Y., Donner, R. V., & Kurths, J. (2009). Complex network approach for recurrence analysis of time series. *Physics Letters A*, 373(46), 4246–4254. https://doi.org/10.1016/j.physleta.2009.09.042
+- Donner, R. V., Zou, Y., Donges, J. F., Marwan, N., & Kurths, J. (2010). Recurrence networks—A novel paradigm for nonlinear time series analysis. *New Journal of Physics*, 12(3), 033025. https://doi.org/10.1088/1367-2630/12/3/033025
+- Donner, R. V., Zou, Y., Donges, J. F., Marwan, N., & Kurths, J. (2010). Ambiguities in recurrence-based complex network representations of time series. *Physical Review E*, 81(1), 015101(R). https://doi.org/10.1103/PhysRevE.81.015101
+- Donner, R. V., Small, M., Donges, J. F., Marwan, N., Zou, Y., Xiang, R., & Kurths, J. (2011). Recurrence-based time series analysis by means of complex network methods. *International Journal of Bifurcation and Chaos*, 21(4), 1019–1046. https://doi.org/10.1142/S0218127411029021
 - Romano, M. C., Thiel, M., Kurths, J., & von Bloh, W. (2004). Multivariate recurrence plots. *Physics Letters A*, 330(3–4), 214–223. https://doi.org/10.1016/j.physleta.2004.07.066
 
 - Schinkel, S., Marwan, N., Dimigen, O., & Kurths, J. (2009). Confidence bounds of recurrence-based complexity measures. *Physics Letters A*, 373(26), 2245–2250. https://doi.org/10.1016/j.physleta.2009.04.045

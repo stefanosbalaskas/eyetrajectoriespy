@@ -64,6 +64,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Reconstructed-state RQA parameter sensitivity | implemented; descriptive multiverse, no automatic selector | `rqa_parameter_sensitivity()` |
 | Windowed and cross recurrence | implemented | `windowed_rqa()` / `cross_recurrence_matrix()` |
 | Synchronized joint recurrence / JRQA | implemented; exact common grid, shared Theiler, independently declared component thresholds, sparse logical intersection | `joint_recurrence_matrix()` / `joint_rqa_metrics()` |
+| Sparse recurrence-network topology | implemented; degree, clustering, transitivity, components, no automatic threshold/community/dimension selection | `recurrence_network()` |
 | RQA-derived functional trajectories | implemented; descriptive functional bridge | `windowed_rqa_trajectory_set()` |
 | Functional RQA window/step sensitivity | implemented; descriptive, no automatic selector | `windowed_rqa_sensitivity()` |
 | Functional RQA mean band | implemented; complete curve/participant functions are inference units | `windowed_rqa_functional_mean_band()` |
@@ -135,4 +136,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.39.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.40.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

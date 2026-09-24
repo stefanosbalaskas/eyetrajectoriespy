@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.40.0.dev0
+
+- Add `recurrence_network()` for sparse undirected, unweighted graph topology induced by one declared symmetric auto-recurrence matrix.
+- Retain node degree/normalized degree, local clustering, graph density, transitivity, connected-component labels and sizes, largest-component fraction, isolated-node fraction, source recurrence object, and full provenance.
+- Keep graph density (all unordered node pairs) explicitly distinct from Theiler-conditioned source recurrence rate.
+- Count triangles without materializing a dense adjacency or all-pairs shortest-path matrix.
+- Return transitivity as undefined when no connected triples exist rather than silently replacing it with zero; use an explicit local-clustering convention of zero for degree < 2.
+- Reject cross-recurrence, asymmetric adjacency, self-loops, and edges inside the declared Theiler exclusion.
+- Do not tune recurrence thresholds, optimize communities, add edge weights, infer graph layouts, or automatically interpret clustering/transitivity as dynamical dimension or chaos.
+- Add `RecurrenceNetworkResult`, node/global summary frames, degree plotting, reporting text, deterministic known-graph tests, mathematical contracts, methodology/worked examples, and full site integration.
+
 ## 0.39.0.dev0
 
 - Add `joint_recurrence_matrix()` for sparse synchronized joint recurrence as the elementwise logical intersection of at least two declared auto-recurrence matrices.

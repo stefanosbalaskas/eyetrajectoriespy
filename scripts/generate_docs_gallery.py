@@ -50,6 +50,7 @@ from eyetrajectoriespy import (
     plot_trajectory_overlay,
     plot_poincare_return_map,
     plot_recurrence,
+    plot_recurrence_network_degree,
     plot_recurrence_rate_curve,
     plot_rqa_metric_mean_bootstrap,
     plot_windowed_rqa,
@@ -57,6 +58,7 @@ from eyetrajectoriespy import (
     plot_warping_functions,
     poincare_crossings,
     recurrence_matrix,
+    recurrence_network,
     recurrence_radius_profile,
     function_on_scalar_simultaneous_bands,
     register_to_landmarks,
@@ -413,6 +415,10 @@ def main() -> None:
     ax = plot_recurrence(recurrence)
     _save(ax, "recurrence-plot.svg")
 
+    recurrence_graph = recurrence_network(recurrence)
+    ax = plot_recurrence_network_degree(recurrence_graph)
+    _save(ax, "recurrence-network-degree.svg")
+
     joint_a = recurrence_matrix(
         TrajectorySet(
             time=nonlinear_time,
@@ -647,6 +653,7 @@ def main() -> None:
         "wild-bootstrap-family-test.svg",
         "monte-carlo-precision.svg",
         "recurrence-plot.svg",
+        "recurrence-network-degree.svg",
         "joint-recurrence.svg",
         "recurrence-radius-profile.svg",
         "rqa-population-bootstrap.svg",

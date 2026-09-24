@@ -105,6 +105,7 @@ from .nonlinear_reporting import (
     joint_recurrence_reporting_text,
     return_map_stability_reporting_text,
     rqa_parameter_sensitivity_reporting_text,
+    recurrence_network_reporting_text,
     recurrence_radius_profile_reporting_text,
     rqa_metric_mean_bootstrap_reporting_text,
     rqa_reporting_text,
@@ -125,6 +126,7 @@ from .nonlinear_plotting import (
     plot_lyapunov_sensitivity,
     plot_poincare_return_map,
     plot_recurrence,
+    plot_recurrence_network_degree,
     plot_recurrence_rate_curve,
     plot_rqa_metric_mean_bootstrap,
     plot_rqa_sensitivity,
@@ -147,6 +149,7 @@ from .nonlinear_types import (
     MultivariateIAAFTResult,
     MultivariateSurrogateNonlinearityResult,
     PoincareCrossingResult,
+    RecurrenceNetworkResult,
     RecurrenceRadiusProfileResult,
     RecurrenceResult,
     RQAMeanBootstrapResult,
@@ -167,6 +170,11 @@ from .recurrence import (
     rqa_metrics,
     windowed_rqa,
     windowed_rqa_trajectory_set,
+)
+from .recurrence_networks import (
+    recurrence_network,
+    recurrence_network_node_frame,
+    recurrence_network_summary_frame,
 )
 from .return_maps import (
     fit_local_return_map,
@@ -386,7 +394,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.39.0.dev0"
+__version__ = "0.40.0.dev0"
 
 __all__ = [
     "recurrence_radius_profile_reporting_text",
@@ -419,6 +427,7 @@ __all__ = [
     "DelayEmbeddingResult",
     "EmbeddingDelayDiagnosticResult",
     "EmbeddingDimensionDiagnosticResult",
+    "RecurrenceNetworkResult",
     "RecurrenceRadiusProfileResult",
     "JointRecurrenceResult",
     "RecurrenceResult",
@@ -449,6 +458,11 @@ __all__ = [
     "plot_joint_recurrence",
     "joint_recurrence_reporting_text",
     "recurrence_matrix",
+    "recurrence_network",
+    "recurrence_network_node_frame",
+    "recurrence_network_summary_frame",
+    "plot_recurrence_network_degree",
+    "recurrence_network_reporting_text",
     "recurrence_radius_profile",
     "rqa_metrics",
     "rqa_parameter_sensitivity",

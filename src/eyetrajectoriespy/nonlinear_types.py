@@ -116,6 +116,31 @@ class JointRecurrenceResult:
 
 
 @dataclass(frozen=True)
+class RecurrenceNetworkResult:
+    """Sparse recurrence-network topology with explicit graph conventions."""
+
+    adjacency: csr_matrix
+    degree: np.ndarray
+    normalized_degree: np.ndarray
+    local_clustering: np.ndarray
+    component_labels: np.ndarray
+    component_sizes: np.ndarray
+    edge_count: int
+    graph_density: float
+    transitivity: float
+    mean_local_clustering: float
+    n_connected_components: int
+    largest_component_fraction: float
+    isolated_node_fraction: float
+    source_recurrence: "RecurrenceResult"
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_nodes(self) -> int:
+        return self.adjacency.shape[0]
+
+
+@dataclass(frozen=True)
 class RecurrenceRadiusProfileResult:
     """Exact recurrence-rate profile over an analyst-declared radius grid."""
 

@@ -416,6 +416,34 @@ $$
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#joint-recurrence
 
+## Sparse recurrence-network topology
+
+**Functions:** `recurrence_network()`, `recurrence_network_node_frame()`, `recurrence_network_summary_frame()`
+
+$$
+A_{ij}=R_{ij},\quad i\ne j,\qquad A_{ii}=0
+$$
+
+$$
+k_i=\sum_j A_{ij}
+$$
+
+$$
+C_i=\frac{2T_i}{k_i(k_i-1)}
+$$
+
+$$
+\mathcal T=\frac{3N_{\triangle}}{N_{\mathrm{triples}}}
+$$
+
+$$
+\rho_G=\frac{2E}{N(N-1)}
+$$
+
+**Scope:** Undirected unweighted network induced by one declared symmetric auto-recurrence matrix. Network topology inherits the recurrence state representation, metric, threshold policy, Theiler exclusion, and sampling design. No threshold tuning, community optimization, edge weighting, or automatic dynamical-dimension interpretation is introduced.
+
+Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#recurrence-network
+
 ## Population mean bootstrap for curve-level RQA metrics
 
 **Functions:** `bootstrap_rqa_metric_means()`

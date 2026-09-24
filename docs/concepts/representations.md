@@ -77,6 +77,16 @@ $$
 $$
 
 These representations answer different questions and are never silently substituted for one another. Channel scaling is also not introduced automatically; distances inherit the declared coordinate/state units.
+## Recurrence-network representation
+
+A recurrence network reinterprets one auto-recurrence matrix as an undirected
+graph. Nodes are state/time indices and edges are retained recurrence pairs.
+
+This representation is useful when the scientific object is the topology of
+recurrence neighborhoods rather than diagonal/vertical line structure. The
+graph remains conditional on the same recurrence state space, threshold, metric,
+Theiler exclusion, and sampling decisions as the underlying recurrence plot.
+
 ## Joint recurrence representation
 
 A joint recurrence plot is not a pooled multivariate state space. Each
