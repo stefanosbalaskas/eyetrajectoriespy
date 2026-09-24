@@ -73,6 +73,19 @@ The exact contract is asymmetric: marginal value distributions are exact after
 rank remapping, whereas final spectral/cross-spectral preservation is
 approximate and auditable through retained errors.
 
+## `RecurrenceNetworkResult`
+
+Stores the sparse undirected adjacency matrix induced by one auto-recurrence
+plot, node degree and normalized degree, local clustering, connected-component
+labels/sizes, edge count, all-pairs graph density, transitivity, mean local
+clustering, component/isolation summaries, the complete source
+`RecurrenceResult`, and provenance.
+
+Graph density uses all unordered node pairs and is kept distinct from the
+source recurrence rate when a Theiler window changes the eligible-pair
+denominator. No dense graph layout, community partition, shortest-path policy,
+or dynamical dimension is selected automatically.
+
 ## `JointRecurrenceResult`
 
 Stores the sparse logical intersection of synchronized auto-recurrence
