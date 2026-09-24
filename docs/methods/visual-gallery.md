@@ -58,6 +58,16 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked example](../examples/functional-mean-bands.md) · [Mathematics](mathematical-reference.md#mean-band)
 
+-   **Experimental condition coefficient over trial time**
+
+    ![Function-on-scalar condition coefficient with simultaneous band](../assets/gallery/function-on-scalar-coefficient.svg)
+
+    Observed-grid function-on-scalar condition coefficient with a fixed-design wild-bootstrap simultaneous band.
+
+    **API:** `fit_function_on_scalar_regression()`, `function_on_scalar_simultaneous_bands()`, `plot_function_on_scalar_coefficients()`
+
+    [Worked example](../examples/function-on-scalar.md) · [Guide](../guides/function-on-scalar.md) · [Mathematics](mathematical-reference.md#function-on-scalar)
+
 -   **Heteroscedastic FPCR target intervals**
 
     ![Wild bootstrap fixed target intervals](../assets/gallery/wild-bootstrap-projections.svg)
@@ -221,6 +231,10 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
     +a\sqrt{\widehat\lambda_k}\widehat{\boldsymbol\phi}_k(t).
     $$
 
+=== "Function-on-scalar"
+
+    `plot_function_on_scalar_coefficients()` visualizes an observed-grid coefficient function and, when a simultaneous-band result is supplied, the calibrated lower/upper band for the declared coefficient or coefficient family.
+
 === "Mean band"
 
     `plot_functional_mean_band()` visualizes
@@ -282,4 +296,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates all nineteen assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates all twenty assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
