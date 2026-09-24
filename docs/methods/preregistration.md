@@ -719,3 +719,16 @@ is defensible. If several directions, lags, histories, channels, or windows
 will be examined, pre-register how multiplicity and specification sensitivity
 will be handled. Do not select the specification producing the largest TE and
 then report it as if it had been fixed in advance.
+
+## Transfer-entropy specification sensitivity
+
+Pre-register the complete target-history, source-history, and source-lag grids
+or clearly label the multiverse exploratory. State why every grid value is
+scientifically defensible and whether one fixed specification remains the
+primary analysis.
+
+If circular-shift inference is included, pre-register one common shift rule or
+shift set for all specifications. State how formal multiplicity will be handled
+if individual multiverse p-values are used inferentially. Do not define the
+primary specification after inspecting which combination maximizes TE,
+surrogate-centered TE, or statistical significance.
