@@ -621,3 +621,31 @@ an explicit computational and inferential boundary, not an implicit shortcut.
 The package claims simultaneous calibration over the observed time grid only.
 The continuous B-spline representation does not by itself turn a finite-grid
 bootstrap maximum into a continuous-domain coverage guarantee.
+
+### Why does the random-slope model require so many participants?
+
+With basis size (q), one random functional intercept plus one random
+functional slope creates a (2q)-dimensional random coefficient vector. A full
+unstructured covariance therefore has ((2q)(2q+1)/2) free parameters. For the
+default (q=4), that is 36 covariance parameters. Version 0.45 requires more
+participants than covariance parameters before attempting the fit.
+
+### Can I ask the package to choose which predictor gets a random slope?
+
+No. The predictor is an explicit scientific/modeling decision. Version 0.45
+accepts exactly one named random-slope predictor and performs no automatic
+selection.
+
+### Why must the predictor vary within every participant?
+
+The guarded 0.45 contract prioritizes interpretable participant-specific slope
+functions. If a participant never changes on the requested predictor, that
+participant does not provide within-participant information separating the
+random intercept from the requested random slope.
+
+### Does the 0.44 simultaneous bootstrap now include random-slope covariance uncertainty?
+
+No. It remains a fixed-covariance participant bootstrap: fixed coefficients are
+re-estimated while the complete fitted random intercept/slope covariance and
+residual variance remain fixed. Full covariance re-estimation is reserved for
+the planned 0.46 tranche.
