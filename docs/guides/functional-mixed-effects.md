@@ -250,6 +250,43 @@ pointwise uncertainty.
 See the dedicated
 [simultaneous-inference method guide](../methods/functional-mixed-effects-simultaneous-bands.md).
 
+## Full-refit participant bootstrap
+
+Version 0.46 adds a second participant-bootstrap contract:
+
+~~~python
+from eyetrajectoriespy import (
+    bootstrap_functional_mixed_effects_full_refit,
+    functional_mixed_effects_simultaneous_bands,
+)
+
+full = bootstrap_functional_mixed_effects_full_refit(
+    fit,
+    n_bootstrap=1000,
+    random_state=2026,
+)
+
+full_band = functional_mixed_effects_simultaneous_bands(full)
+~~~
+
+Unlike the faster fixed-covariance bootstrap, every full-refit replicate
+re-estimates fixed effects, the complete declared random-effect covariance, and
+residual variance. Duplicate source participants receive distinct bootstrap
+group identities before fitting.
+
+The declared model specification remains fixed: preprocessing, predictors,
+random-slope choice, random-effect structure, basis sizes, REML/ML choice and
+optimizer are not re-selected inside bootstrap samples.
+
+Use
+`functional_mixed_effects_variance_bootstrap_frame()` for variance-component
+stability diagnostics and
+`compare_functional_mixed_effects_bootstraps()` to compare simultaneous-band
+widths from the fixed-covariance and full-refit procedures.
+
+See the
+[full-refit bootstrap guide](../methods/functional-mixed-effects-full-refit-bootstrap.md).
+
 ## Important current limitations
 
 The current mixed-effects layer does not yet estimate:
@@ -258,7 +295,7 @@ The current mixed-effects layer does not yet estimate:
 - a trial-level functional random effect;
 - generalized/non-Gaussian functional responses;
 - multivariate cross-dimension covariance;
-- variance-component uncertainty;
+- calibrated variance-component confidence intervals;
 - automatic basis-selection uncertainty.
 
 Those omissions are explicit rather than hidden.
