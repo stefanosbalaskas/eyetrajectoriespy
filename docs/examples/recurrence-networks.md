@@ -9,7 +9,7 @@ sparse undirected network.
 from eyetrajectoriespy import simulate_planar_trajectories
 
 gaze = simulate_planar_trajectories(
-    n_participants=1,
+    n_participants=2,
     trials_per_participant=1,
     n_time=120,
     random_state=41,
