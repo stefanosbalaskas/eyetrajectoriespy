@@ -6,10 +6,19 @@ The most important choice is the **functional object**, not the PCA backend.
 |---|---|---|
 | Screen-space gaze | $G_i(t)=[x_i(t),y_i(t)]^\\top$ | `fit_mfpca()` |
 | One continuous derived variable | $X_i(t)$ | `fit_fpca()` |
+| Functional response explained by scalar predictors | $Y_i(t)=x_i^\top\beta(t)+\epsilon_i(t)$ | `fit_function_on_scalar_regression()` |
 | Repeated trials per participant | $G_{ij}(t)$ | `fit_multilevel_fpca()` |
 | AOI probability vector | $P_i(t)$, $\\sum_k p_{ik}(t)=1$ | `fit_compositional_fpca()` |
 | Same path at different rates | amplitude + phase | `register_to_landmarks()` / elastic analysis |
 | Ordered point-sequence similarity | $P=(p_1,\ldots,p_m)$ | `discrete_frechet_distance()` / `dynamic_time_warping_distance()` |
+
+## Functional response regression
+
+Use function-on-scalar regression when the scientific object is a continuous response trajectory and the predictors are scalar experimental or participant variables. Examples include condition effects on x(t), speed(t), curvature(t), or RQA-derived DET(t).
+
+Version 0.35 fits the coefficient functions directly on the observed common grid. It does not smooth them or infer a spline basis automatically. The scalar design must therefore be encoded explicitly before fitting.
+
+Repeated-trial support is deliberately restricted: participant mode first averages response functions within participant and requires every declared predictor to be participant-constant. Within-participant trial-varying predictors belong to the planned repeated-measures functional regression layer.
 
 ## Ordered point-sequence similarity
 
