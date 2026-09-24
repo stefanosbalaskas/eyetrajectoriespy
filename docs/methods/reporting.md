@@ -694,3 +694,21 @@ Do not describe continuous signed curvature as interchangeable with event-level 
 Report the trajectory representation, coordinate dimensions and units, sequence lengths, any dimension weights, upstream interpolation/smoothing/resampling/path simplification, and whether the coupling was inspected.
 
 State explicitly that the method preserved point order but did not use elapsed-time correspondence. If latency is scientifically meaningful, report the complementary time-preserving analysis rather than implying Fréchet captured timing.
+
+
+## Dynamic time warping trajectory comparison
+
+Report:
+
+- trajectory representation, coordinate dimensions, and units;
+- sequence lengths and relevant sampling representation;
+- weighted-Euclidean local metric and any dimension weights;
+- the symmetric diagonal/vertical/horizontal step pattern;
+- whether alignment was unconstrained or windowed;
+- the Sakoe-Chiba radius in sample indices when used;
+- the raw cumulative DTW cost and, when useful, path length/mean local distance as audit summaries;
+- all upstream interpolation, resampling, smoothing, coordinate normalization, or simplification;
+- whether an alignment path was inspected and that multiple optimal paths may exist;
+- explicitly that recorded timestamps were not used by the recurrence.
+
+If latency or physical traversal timing is scientifically meaningful, report the complementary time-preserving analysis rather than implying that DTW preserves trial-time correspondence. Do not describe the stored mean local distance as the package's DTW distance; the public 0.33 estimand is the unnormalized cumulative cost.
