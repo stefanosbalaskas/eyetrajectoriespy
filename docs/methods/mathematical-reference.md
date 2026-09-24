@@ -630,19 +630,27 @@ but flagged in the result rather than silently interpreted as regular fits.
 
 ### Inferential boundary
 
-Pointwise standard errors for fixed coefficient functions are propagated from
-the fitted fixed-parameter covariance matrix through the declared basis.
-The helper table and plot use 95% pointwise Wald intervals. Version 0.36 does
-**not** claim simultaneous whole-function coverage, variance-component
-uncertainty, serially correlated residual errors, a trial-level functional
-random effect, random functional slopes, generalized/non-Gaussian responses,
-or joint cross-dimension covariance.
+The base 0.36 fit propagates the fitted fixed-parameter covariance through the
+declared basis and exposes 95% **pointwise Wald intervals**. Those pointwise
+intervals do not themselves provide whole-function coverage.
+
+Version 0.44 adds a separate participant-cluster bootstrap layer for
+observed-grid simultaneous fixed-coefficient bands. That layer re-estimates
+fixed coefficients under whole-participant resampling while conditioning on the
+reference random-effect covariance, residual variance, and declared bases.
+Therefore 0.44 does not claim variance-component uncertainty, basis-selection
+uncertainty, continuous-between-grid coverage, serially correlated residual
+errors, a trial-level functional random effect, random functional slopes,
+generalized/non-Gaussian responses, or joint cross-dimension covariance.
 
 A non-converged optimizer result raises rather than being returned as a valid
 scientific fit.
 
 **API:** `fit_functional_mixed_effects_regression()`,
-`functional_mixed_effects_coefficient_frame()`.
+`functional_mixed_effects_coefficient_frame()`;
+for whole-function observed-grid inference see
+`bootstrap_functional_mixed_effects_coefficients()` and
+`functional_mixed_effects_simultaneous_bands()`.
 
 ## Participant-cluster simultaneous mixed-effects coefficient bands { #functional-mixed-effects-simultaneous }
 
