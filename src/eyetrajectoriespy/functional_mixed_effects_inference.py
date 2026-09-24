@@ -297,10 +297,7 @@ def bootstrap_functional_mixed_effects_coefficients(
                 "curves_resampled_independently": False,
                 "participant_draws_with_replacement": True,
                 "fixed_effects_reestimated_each_replicate": True,
-                "variance_components_refit": isinstance(
-                    bootstrap,
-                    FunctionalMixedEffectsFullRefitBootstrapResult,
-                ),
+                "variance_components_refit": False,
                 "random_effect_covariance_conditioned_on_reference": True,
                 "residual_variance_conditioned_on_reference": True,
                 "fixed_basis_refit": False,
@@ -444,7 +441,10 @@ def functional_mixed_effects_simultaneous_bands(
                 "bias_correction": False,
                 "pointwise_scale": "participant_cluster_bootstrap_sd",
                 "continuous_between_grid_points": False,
-                "variance_components_refit": False,
+                "variance_components_refit": isinstance(
+                    bootstrap,
+                    FunctionalMixedEffectsFullRefitBootstrapResult,
+                ),
                 "failed_replicate_policy": "raise",
             },
         },
