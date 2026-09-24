@@ -140,6 +140,11 @@ If the slope covariance approaches zero, the dedicated slope-boundary
 diagnostic is retained rather than silently converting the model to an
 intercept-only fit.
 
+At an exact zero-variance boundary, the backend may instead fail to converge.
+That is also treated as an informative fail-closed outcome: the package raises
+the non-convergence error and does not return a nominal heterogeneous-slope fit
+or silently switch optimizers.
+
 ## Simultaneous fixed-effect inference
 
 The 0.44 participant-cluster bootstrap remains available:
