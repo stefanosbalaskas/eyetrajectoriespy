@@ -238,3 +238,18 @@ cross-validation procedure, multiplicity plan, or causal-identification design.
 Use conditional TE when a scientifically specified process is part of the
 question. Do not add conditioning variables merely to search for a preferred
 result.
+
+## Pointwise versus simultaneous mixed-effects coefficient inference
+
+| Output | Independent resampling unit | Scope | Key limitation |
+|---|---|---|---|
+| MixedLM pointwise Wald interval | none; model covariance only | one coefficient value at one observed time | no whole-function multiplicity calibration |
+| 0.44 coefficient-scope band | participant | one fixed coefficient over the complete observed time grid | covariance parameters and bases held fixed |
+| 0.44 family-scope band | participant | all declared fixed coefficients × observed time grid | more conservative; same fixed-covariance limitation |
+
+Use the base pointwise interval for explicitly pointwise questions. Use the
+0.44 participant-cluster band when the scientific claim concerns the complete
+observed coefficient trajectory or a predeclared family of coefficient
+trajectories. Neither band mode provides continuous-domain coverage between
+unsampled time points or propagates variance-component/basis-selection
+uncertainty.
