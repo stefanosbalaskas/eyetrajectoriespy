@@ -1,3 +1,5 @@
+from dataclasses import replace
+
 import matplotlib
 
 matplotlib.use("Agg")
@@ -210,6 +212,22 @@ def test_recurrence_network_rejects_invalid_source_contracts():
     theiler_source = _recurrence(theiler_matrix, theiler=2)
     with pytest.raises(ValueError, match="Theiler exclusion"):
         recurrence_network(theiler_source)
+
+
+    mismatched_time = replace(
+        source,
+        time_b=source.time_b + 0.001,
+    )
+    with pytest.raises(ValueError, match="identical time grids"):
+        recurrence_network(mismatched_time)
+
+    wrong_length = replace(
+        source,
+        time_a=source.time_a[:-1],
+        time_b=source.time_b[:-1],
+    )
+    with pytest.raises(ValueError, match="match adjacency dimensions"):
+        recurrence_network(wrong_length)
 
 
 def test_recurrence_network_helper_type_validation():
