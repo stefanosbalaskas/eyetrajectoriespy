@@ -324,7 +324,10 @@ def bootstrap_functional_mixed_effects_coefficients(
 
 
 def functional_mixed_effects_simultaneous_bands(
-    bootstrap: FunctionalMixedEffectsBootstrapResult | FunctionalMixedEffectsFullRefitBootstrapResult,
+    bootstrap: (
+        FunctionalMixedEffectsBootstrapResult
+        | FunctionalMixedEffectsFullRefitBootstrapResult
+    ),
     *,
     confidence_level: float = 0.95,
     simultaneous_scope: str = "coefficient",
