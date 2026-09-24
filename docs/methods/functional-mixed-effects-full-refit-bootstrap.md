@@ -5,26 +5,26 @@ functional mixed-effects layer.
 
 The existing 0.44/0.45 bootstrap is retained unchanged:
 
-\`\`\`python
+```python
 fixed_covariance_boot = bootstrap_functional_mixed_effects_coefficients(
     fit,
     n_bootstrap=1000,
     random_state=2026,
 )
-\`\`\`
+```
 
 It resamples participants but conditions on the fitted random-effect covariance
 and residual variance.
 
 Version 0.46 adds:
 
-\`\`\`python
+```python
 full_refit_boot = bootstrap_functional_mixed_effects_full_refit(
     fit,
     n_bootstrap=1000,
     random_state=2026,
 )
-\`\`\`
+```
 
 which refits the mixed model in every participant bootstrap sample.
 
@@ -55,7 +55,7 @@ the two copies of participant 7 receive distinct bootstrap group identities.
 The result retains both the original source participant ID and the bootstrap
 participant ID for every draw.
 
-This distinction is essential: otherwise \`MixedLM\` would merge duplicated
+This distinction is essential: otherwise `MixedLM` would merge duplicated
 copies into a single random-effect group and the procedure would no longer be
 the intended cluster bootstrap.
 
@@ -96,9 +96,9 @@ automatic repetition of the entire analysis-development workflow.
 
 The sole 0.46 inferential policy is
 
-\`\`\`text
+```text
 failed_replicate_policy = "raise"
-\`\`\`
+```
 
 If a bootstrap sample becomes rank deficient, reaches an invalid model state,
 or fails optimization, the complete bootstrap terminates.
@@ -112,7 +112,7 @@ mixed model is fragile for the available participant sample.
 
 ## Variance-component distributions
 
-\`FunctionalMixedEffectsFullRefitBootstrapResult\` retains the complete sequence
+`FunctionalMixedEffectsFullRefitBootstrapResult` retains the complete sequence
 
 $$
 \widehat{\boldsymbol\Psi}^{*(1)},
@@ -135,11 +135,11 @@ warnings, and the intercept/slope covariance blocks.
 
 Use
 
-\`\`\`python
+```python
 variance_frame = functional_mixed_effects_variance_bootstrap_frame(
     full_refit_boot
 )
-\`\`\`
+```
 
 for a replicate-level stability table.
 
@@ -151,13 +151,13 @@ variance-component confidence intervals.
 
 The existing simultaneous-band calibration accepts either bootstrap result:
 
-\`\`\`python
+```python
 full_refit_band = functional_mixed_effects_simultaneous_bands(
     full_refit_boot,
     confidence_level=0.95,
     simultaneous_scope="coefficient",
 )
-\`\`\`
+```
 
 With a full-refit bootstrap, the coefficient-function sampling distribution
 therefore includes random-effect covariance and residual-variance re-estimation
@@ -168,7 +168,7 @@ and still claims simultaneous coverage over the observed time grid only.
 
 ## Compare fixed-covariance and full-refit inference
 
-\`\`\`python
+```python
 comparison = compare_functional_mixed_effects_bootstraps(
     fixed_covariance_boot,
     full_refit_boot,
@@ -178,7 +178,7 @@ ax = plot_functional_mixed_effects_bootstrap_comparison(
     comparison,
     coefficient="condition",
 )
-\`\`\`
+```
 
 The comparison retains, at every observed time point,
 
@@ -211,12 +211,12 @@ bootstrap over all defensible analytical choices.
 ## Evidence basis
 
 Park, Staicu, Xiao, and Crainiceanu (2018, DOI
-\`10.1093/biostatistics/kxx026\`) describe fixed-effect inference for complex
+`10.1093/biostatistics/kxx026`) describe fixed-effect inference for complex
 functional models by bootstrapping independent units such as subjects. Version
 0.46 follows that independent-unit principle while refitting the package's
-declared \`MixedLM\` representation in every participant sample.
+declared `MixedLM` representation in every participant sample.
 
-The current \`statsmodels.MixedLM\` backend represents the within-group marginal
+The current `statsmodels.MixedLM` backend represents the within-group marginal
 covariance through the random-effect design/covariance plus scalar residual
 variance. Version 0.46 therefore refits those existing covariance parameters;
 it does not introduce serial residual covariance.
