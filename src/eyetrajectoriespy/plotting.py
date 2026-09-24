@@ -33,6 +33,7 @@ from .types import (
     FunctionalMeanBandResult,
     IrregularTrajectorySet,
     ConformalFunctionalAnomalyResult,
+    DynamicTimeWarpingResult,
     FunctionalOutlierResult,
     RegistrationResult,
     TrajectorySet,
@@ -84,6 +85,46 @@ def plot_planar_trajectories(
     ax.set_aspect("equal", adjustable="box")
     if invert_y:
         ax.invert_yaxis()
+    return ax
+
+
+def plot_dynamic_time_warping_alignment(
+    result: DynamicTimeWarpingResult,
+    *,
+    ax=None,
+):
+    """Plot one audited DTW alignment path in sample-index space."""
+
+    if not isinstance(result, DynamicTimeWarpingResult):
+        raise TypeError("result must be a DynamicTimeWarpingResult")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    path = np.asarray(result.path, dtype=int)
+    if path.ndim != 2 or path.shape[1] != 2 or path.shape[0] < 1:
+        raise ValueError("result.path must have shape (n_steps, 2)")
+
+    ax.plot(path[:, 1], path[:, 0], marker="o")
+    limit = max(result.n_points_a - 1, result.n_points_b - 1)
+    ax.plot([0, limit], [0, limit], linestyle="--", label="same index")
+    ax.set_xlim(-0.5, max(result.n_points_b - 0.5, 0.5))
+    ax.set_ylim(-0.5, max(result.n_points_a - 0.5, 0.5))
+    ax.set_xlabel("Sequence B sample index")
+    ax.set_ylabel("Sequence A sample index")
+    distance_label = (
+        f"normalized={result.distance:.4g}"
+        if result.provenance.get("normalization_requested", False)
+        else f"raw={result.distance:.4g}"
+    )
+    window_label = (
+        "unconstrained"
+        if result.window_radius is None
+        else f"window={result.window_radius}"
+    )
+    ax.set_title(
+        f"DTW alignment: {result.step_pattern}, {window_label}, {distance_label}"
+    )
+    ax.legend()
     return ax
 
 
