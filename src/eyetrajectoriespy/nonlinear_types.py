@@ -316,6 +316,51 @@ class LargestLyapunovResult:
 
 
 @dataclass(frozen=True)
+class MultivariateIAAFTResult:
+    """Cross-spectrum-aware multivariate IAAFT surrogate ensemble."""
+
+    surrogates: np.ndarray
+    source_values: np.ndarray
+    curve_id: str
+    dimension_names: tuple[str, ...]
+    reference_dimension: str
+    dimension_pairs: tuple[tuple[str, str], ...]
+    convergence_iterations: np.ndarray
+    spectral_errors: np.ndarray
+    cross_spectral_errors: np.ndarray
+    n_surrogates: int
+    max_iterations: int
+    tolerance: float
+    random_state: int | None
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_time(self) -> int:
+        return self.surrogates.shape[1]
+
+    @property
+    def n_dimensions(self) -> int:
+        return self.surrogates.shape[2]
+
+
+@dataclass(frozen=True)
+class MultivariateSurrogateNonlinearityResult:
+    """Monte Carlo nonlinear-statistic test using multivariate IAAFT surrogates."""
+
+    observed_statistic: float
+    surrogate_statistics: np.ndarray
+    p_value: float
+    alternative: str
+    statistic: str
+    surrogate_result: MultivariateIAAFTResult
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_surrogates(self) -> int:
+        return self.surrogate_result.n_surrogates
+
+
+@dataclass(frozen=True)
 class SurrogateNonlinearityResult:
     """Monte Carlo surrogate-data test for a declared nonlinear statistic."""
 
