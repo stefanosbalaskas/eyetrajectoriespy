@@ -83,7 +83,7 @@ def _validate_participants(
     trajectories: TrajectorySet,
     participant_column: str,
     *,
-    random_basis_size: int,
+    random_effect_dimension: int,
 ) -> tuple[np.ndarray, tuple[str, ...], tuple[int, ...]]:
     if not isinstance(participant_column, str):
         raise TypeError("participant_column must be a string")
@@ -97,16 +97,81 @@ def _validate_participants(
 
     participants = participant_series.astype(str).to_numpy()
     participant_ids = tuple(pd.unique(participants))
-    if len(participant_ids) < max(4, random_basis_size + 1):
+    minimum_participants = max(4, random_effect_dimension + 1)
+    if len(participant_ids) < minimum_participants:
         raise ValueError(
             "functional mixed-effects regression requires at least "
-            "max(4, random_basis_size + 1) participants"
+            "max(4, random_effect_dimension + 1) participants; "
+            f"got {len(participant_ids)} participants for random-effect "
+            f"dimension {random_effect_dimension}"
         )
     counts = tuple(
         int(np.count_nonzero(participants == participant_id))
         for participant_id in participant_ids
     )
     return participants, participant_ids, counts
+
+
+def _validate_random_slope(
+    *,
+    random_slope_predictor: str | None,
+    predictor_names: tuple[str, ...],
+    aligned_design: pd.DataFrame,
+    curve_participants: np.ndarray,
+    participant_ids: tuple[str, ...],
+) -> np.ndarray | None:
+    """Validate one explicitly declared random-slope predictor."""
+
+    if random_slope_predictor is None:
+        return None
+    if not isinstance(random_slope_predictor, str) or not random_slope_predictor:
+        raise TypeError(
+            "random_slope_predictor must be a non-empty string or None"
+        )
+    if random_slope_predictor not in predictor_names:
+        raise ValueError(
+            "random_slope_predictor must name one of the declared fixed "
+            "predictors"
+        )
+
+    slope_values = aligned_design[random_slope_predictor].to_numpy(dtype=float)
+    if not np.all(np.isfinite(slope_values)):
+        raise ValueError("random_slope_predictor contains non-finite values")
+
+    nonvarying: list[str] = []
+    for participant_id in participant_ids:
+        participant_values = slope_values[curve_participants == participant_id]
+        scale = max(1.0, float(np.max(np.abs(participant_values))))
+        if float(np.ptp(participant_values)) <= 1e-12 * scale:
+            nonvarying.append(participant_id)
+    if nonvarying:
+        preview = ", ".join(nonvarying[:5])
+        suffix = "" if len(nonvarying) <= 5 else ", ..."
+        raise ValueError(
+            "random_slope_predictor must vary within every participant under "
+            "the guarded 0.45 contract; no within-participant variation for "
+            f"{preview}{suffix}"
+        )
+    return slope_values
+
+
+def _random_effect_design(
+    random_basis: np.ndarray,
+    *,
+    n_curves: int,
+    slope_values: np.ndarray | None,
+) -> np.ndarray:
+    """Build participant random-intercept plus optional one-slope design."""
+
+    intercept_block = np.tile(random_basis, (n_curves, 1))
+    if slope_values is None:
+        return intercept_block
+    repeated_slope = np.repeat(
+        np.asarray(slope_values, dtype=float),
+        random_basis.shape[0],
+    )[:, None]
+    slope_block = repeated_slope * intercept_block
+    return np.column_stack([intercept_block, slope_block])
 
 
 def _fixed_effect_design(
