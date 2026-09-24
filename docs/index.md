@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.39 · synchronized joint recurrence</div>
+<div class="et-kicker">eyetrajectoriespy 0.40 · sparse recurrence networks</div>
 
 # Model the viewing process, not only its summaries
 
@@ -13,6 +13,14 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
 </div>
 
 <div class="grid cards" markdown>
+
+-   **Inspect recurrence geometry as a graph**
+
+    Reinterpret a declared sparse auto-recurrence plot as an undirected network
+    and quantify degree, clustering, transitivity, connectivity, and isolation
+    while preserving the source threshold and Theiler contract.
+
+    [:material-graph: Recurrence-network guide](methods/recurrence-networks.md)
 
 -   **Ask whether multiple synchronized systems recur at the same time pairs**
 
