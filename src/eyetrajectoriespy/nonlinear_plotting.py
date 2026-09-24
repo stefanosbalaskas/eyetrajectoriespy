@@ -12,6 +12,7 @@ from .nonlinear_types import (
     EmbeddingDimensionDiagnosticResult,
     KantzDivergenceResult,
     KantzParameterSensitivityResult,
+    JointRecurrenceResult,
     LargestLyapunovResult,
     LyapunovParameterSensitivityResult,
     LocalDivergenceResult,
@@ -78,6 +79,42 @@ def plot_embedding_dimension_diagnostics(
     ax.set_ylabel("False-nearest-neighbor fraction")
     ax.set_ylim(bottom=0)
     ax.set_title(f"FNN diagnostics: {result.curve_id} / {result.dimension}")
+    return ax
+
+
+def plot_joint_recurrence(
+    result: JointRecurrenceResult,
+    *,
+    max_points: int | None = 200_000,
+    ax=None,
+):
+    """Plot a sparse joint recurrence matrix without densifying it."""
+
+    if not isinstance(result, JointRecurrenceResult):
+        raise TypeError("result must be a JointRecurrenceResult")
+    if max_points is not None:
+        if isinstance(max_points, bool) or not isinstance(max_points, int):
+            raise TypeError("max_points must be an integer or None")
+        if max_points < 1:
+            raise ValueError("max_points must be positive or None")
+        if result.matrix.nnz > max_points:
+            raise ValueError(
+                "joint recurrence matrix exceeds max_points; increase "
+                "max_points explicitly rather than silently subsampling"
+            )
+    if ax is None:
+        _, ax = plt.subplots()
+    coo = result.matrix.tocoo()
+    ax.scatter(coo.col, coo.row, s=4, marker="s")
+    ax.set_xlabel("State index")
+    ax.set_ylabel("State index")
+    ax.invert_yaxis()
+    ax.set_aspect("equal", adjustable="box")
+    ax.set_title(
+        "Joint recurrence "
+        f"(JRR={result.joint_recurrence_rate:.3f}, "
+        f"components={result.n_components})"
+    )
     return ax
 
 
