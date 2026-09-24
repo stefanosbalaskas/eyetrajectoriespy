@@ -29,7 +29,7 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 |---|---|---|---|
 | How does a continuous gaze response change with condition, expertise, age, or another scalar predictor? | scalar predictors → functional response | `fit_function_on_scalar_regression()` | 0.35 repeated trials require participant-constant predictors and aggregation |
 | How does a functional gaze trajectory predict a scalar outcome? | functional predictor → scalar response | `fit_scalar_on_function_regression()` / FPCR | inference depends on retained FPCA representation |
-| Do I need participant-specific random functional effects or within-participant trial predictors? | repeated-measures functional response | future functional mixed-effects layer | not approximated by curve independence in 0.35 |
+| Do I need participant-specific random functional effects or within-participant trial predictors? | repeated-measures functional response | fit_functional_mixed_effects_regression() | joint Gaussian mixed model; declare bases/covariance assumptions explicitly |
 
 Function-on-scalar regression estimates coefficient functions over time. Scalar-on-function regression instead compresses or integrates information from a functional predictor to explain a scalar response. They answer opposite regression questions and should not be used interchangeably.
 
@@ -253,3 +253,16 @@ observed coefficient trajectory or a predeclared family of coefficient
 trajectories. Neither band mode provides continuous-domain coverage between
 unsampled time points or propagates variance-component/basis-selection
 uncertainty.
+
+## Random functional intercept versus one random functional slope
+
+| Model | Random-effect dimension | Free unstructured covariance parameters | Identification safeguard |
+|---|---:|---:|---|
+| Functional random intercept | (q) | (q(q+1)/2) | participant count at least max(4, q+1) |
+| Intercept + one random functional slope | (2q) | ((2q)(2q+1)/2) | named predictor varies within every participant and participant count exceeds covariance-parameter count |
+
+The 0.45 slope model is appropriate when the scientific question concerns
+participant heterogeneity in the time-varying effect of one predeclared
+predictor. It is not an automatic improvement over the simpler random-
+intercept model and the package does not compare or select the structures on
+the analyst's behalf.
