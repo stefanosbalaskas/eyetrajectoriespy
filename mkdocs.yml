@@ -56,6 +56,7 @@ nav:
       - Recurrence networks: methods/recurrence-networks.md
       - Discrete transfer entropy: methods/transfer-entropy.md
       - Transfer entropy sensitivity: methods/transfer-entropy-sensitivity.md
+      - Conditional transfer entropy: methods/conditional-transfer-entropy.md
       - Multivariate surrogate testing: methods/multivariate-surrogates.md
       - Recurrence-threshold diagnostics: methods/recurrence-threshold-diagnostics.md
       - RQA population bootstrap: methods/rqa-population-bootstrap.md
@@ -102,6 +103,7 @@ nav:
       - Recurrence networks: examples/recurrence-networks.md
       - Discrete transfer entropy: examples/transfer-entropy.md
       - Transfer entropy sensitivity: examples/transfer-entropy-sensitivity.md
+      - Conditional transfer entropy: examples/conditional-transfer-entropy.md
       - Multivariate surrogate testing: examples/multivariate-surrogates.md
       - Recurrence-threshold diagnostics: examples/recurrence-threshold-diagnostics.md
       - RQA population bootstrap: examples/rqa-population-bootstrap.md
