@@ -456,3 +456,26 @@ complete bootstrap object, and provenance.
 The band does not claim simultaneous coverage between unsampled time points and
 does not include variance-component, basis-selection, or preprocessing
 uncertainty.
+
+## FunctionalMixedEffectsFullRefitBootstrapResult
+
+Stores the reference `FunctionalMixedEffectsResult`, every full-refit fixed
+basis coefficient matrix and reconstructed coefficient function, every
+random-effect covariance matrix and intercept/slope covariance block, covariance
+eigenvalues and condition numbers, residual variances, log likelihoods,
+boundary/singularity flags, convergence states, backend warnings, exact sampled
+participant indices, source participant IDs, and distinct bootstrap participant
+IDs.
+
+Each occurrence of a sampled source participant receives a unique bootstrap
+group identity. This prevents duplicate source clusters from being merged by the
+mixed-model backend.
+
+The object represents a whole-participant case bootstrap with full refitting of
+the declared mixed model. It does not rerun preprocessing, basis-size
+selection, predictor/random-slope selection, model-structure selection,
+optimizer selection, or REML/ML choice.
+
+Failed replicates are not silently replaced. Empirical variance-component
+distributions are retained as stability diagnostics and are not automatically
+reported as calibrated variance-component confidence intervals.
