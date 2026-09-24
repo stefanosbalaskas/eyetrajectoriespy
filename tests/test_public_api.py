@@ -1,8 +1,9 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.40.0.dev0"
+    assert et.__version__=="0.41.0.dev0"
     required={
+        "DiscreteTransferEntropyResult","TransferEntropyCircularShiftTestResult","discrete_transfer_entropy","transfer_entropy_local_frame","transfer_entropy_circular_shift_test","plot_transfer_entropy_circular_shift_test","transfer_entropy_reporting_text","transfer_entropy_circular_shift_reporting_text",
         "MathematicalContract","get_mathematical_contract","list_mathematical_contracts","mathematical_contract_frame",
         "DelayEmbeddingResult","EmbeddingDelayDiagnosticResult","EmbeddingDimensionDiagnosticResult","RecurrenceNetworkResult","recurrence_network","recurrence_network_node_frame","recurrence_network_summary_frame","plot_recurrence_network_degree","recurrence_network_reporting_text","JointRecurrenceResult","joint_recurrence_matrix","joint_recurrence_component_frame","joint_rqa_metrics","plot_joint_recurrence","joint_recurrence_reporting_text","RecurrenceResult","RecurrenceRadiusProfileResult","RQAResult","RQAMeanBootstrapResult","RQAParameterSensitivityResult","WindowedRQAResult","WindowedRQAFunctionalResult","WindowedRQASensitivityResult","WindowedRQAMeanBandResult",
         "LocalDivergenceResult","KantzDivergenceResult","KantzParameterSensitivityResult","LargestLyapunovResult","LyapunovParameterSensitivityResult","MultivariateIAAFTResult","MultivariateSurrogateNonlinearityResult","generate_multivariate_iaaft_surrogates","multivariate_iaaft_diagnostics_frame","multivariate_surrogate_nonlinearity_test","plot_multivariate_iaaft_diagnostics","plot_multivariate_surrogate_nonlinearity","multivariate_iaaft_reporting_text","multivariate_surrogate_nonlinearity_reporting_text","SurrogateNonlinearityResult","PoincareCrossingResult","LocalReturnMapResult","ReturnMapStabilityResult",
