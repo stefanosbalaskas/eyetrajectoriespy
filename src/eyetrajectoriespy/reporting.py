@@ -30,6 +30,7 @@ from .types import (
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
     FunctionalMixedEffectsBandResult,
+    FunctionalMixedEffectsFullRefitBootstrapResult,
     FunctionalMixedEffectsResult,
     FunctionOnScalarBandResult,
     FunctionOnScalarResult,
@@ -230,19 +231,42 @@ def functional_mixed_effects_reporting_text(
         "are not claimed."
     )
     if band is not None:
-        inference_text = (
-            f" Participant-cluster bootstrap "
-            f"{100 * band.confidence_level:.1f}% simultaneous coefficient "
-            f"bands used {band.bootstrap.n_bootstrap} whole-participant "
-            f"resamples with {band.simultaneous_scope}-scope maxima over the "
-            "observed time grid. Fixed coefficient functions were re-estimated "
-            "by GLS in every resample while the fitted random-effect covariance "
-            "and residual variance were held fixed. Thus the bands target "
-            "participant-sampling variability conditional on the declared "
-            "basis and fitted covariance model; they do not include "
-            "variance-component or basis-selection uncertainty and do not "
-            "claim simultaneous coverage between unsampled grid points."
-        )
+        if isinstance(
+            band.bootstrap,
+            FunctionalMixedEffectsFullRefitBootstrapResult,
+        ):
+            inference_text = (
+                f" Full-refit participant bootstrap "
+                f"{100 * band.confidence_level:.1f}% simultaneous coefficient "
+                f"bands used {band.bootstrap.n_bootstrap} whole-participant "
+                f"resamples with {band.simultaneous_scope}-scope maxima over "
+                "the observed time grid. Every sampled participant occurrence "
+                "received a distinct bootstrap group identity, and each "
+                "replicate refitted fixed coefficients, the random-effect "
+                "covariance, and residual variance under the unchanged "
+                "declared model specification. Basis sizes, preprocessing, "
+                "predictors, random-slope structure, REML/ML choice, and "
+                "optimizer were not reselected. The bands therefore include "
+                "variance-component re-estimation across participant bootstrap "
+                "samples but not model-selection, preprocessing, or basis-"
+                "selection uncertainty, and they do not claim simultaneous "
+                "coverage between unsampled grid points."
+            )
+        else:
+            inference_text = (
+                f" Participant-cluster bootstrap "
+                f"{100 * band.confidence_level:.1f}% simultaneous coefficient "
+                f"bands used {band.bootstrap.n_bootstrap} whole-participant "
+                f"resamples with {band.simultaneous_scope}-scope maxima over "
+                "the observed time grid. Fixed coefficient functions were "
+                "re-estimated by GLS in every resample while the fitted random-"
+                "effect covariance and residual variance were held fixed. Thus "
+                "the bands target participant-sampling variability conditional "
+                "on the declared basis and fitted covariance model; they do not "
+                "include variance-component or basis-selection uncertainty and "
+                "do not claim simultaneous coverage between unsampled grid "
+                "points."
+            )
 
     return (
         "A Gaussian functional mixed-effects regression was fitted jointly "
