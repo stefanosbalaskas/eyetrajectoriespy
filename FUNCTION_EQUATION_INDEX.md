@@ -228,21 +228,21 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 **Functions:** `fit_functional_mixed_effects_regression()`, `functional_random_effect_frame()`
 
-$
+$$
 Y_{ij}(t)=\mathbf x_{ij}^{\top}\boldsymbol\beta(t)+b_{0i}(t)+X_{ij,q}b_{1i}(t)+\varepsilon_{ij}(t)
-$
+$$
 
-$
+$$
 b_{0i}(t)=\mathbf B_r(t)^{\top}\mathbf u_{0i},\qquad b_{1i}(t)=\mathbf B_r(t)^{\top}\mathbf u_{1i}
-$
+$$
 
-$
+$$
 \begin{bmatrix}\mathbf u_{0i}\\\mathbf u_{1i}\end{bmatrix}\sim N\!\left(\mathbf 0,\boldsymbol\Psi_{2q}\right)
-$
+$$
 
-$
+$$
 p_{\Psi}=\frac{(2q)(2q+1)}{2}
-$
+$$
 
 **Scope:** Exactly one analyst-declared random functional slope predictor using the same q-dimensional B-spline basis size as the participant functional random intercept. The stacked 2q random coefficient vector has one unstructured covariance. Version 0.45 requires the slope predictor to vary within every participant and requires the participant count to exceed the number of free covariance parameters. No automatic random-slope selection, multiple random slopes, residual serial-correlation model, or generalized response is introduced.
 
