@@ -407,3 +407,29 @@ Version 0.45 is intentionally narrower: one Gaussian response dimension, one
 participant functional random intercept, at most one explicitly declared
 participant random functional slope, one shared random basis size, and a full
 unstructured intercept/slope covariance.
+
+
+## Full-refit participant bootstrap
+
+- Park, S. Y., Staicu, A.-M., Xiao, L., & Crainiceanu, C. M. (2018).
+  Simple fixed-effects inference for complex functional models.
+  *Biostatistics, 19*(2), 137–152.
+  DOI: 10.1093/biostatistics/kxx026.
+
+Park et al. explicitly resample independent subject units with replacement and
+carry their complete within-subject functional observations together for
+fixed-effect inference under complex correlation. Version 0.46 adopts that
+independent-unit bootstrap principle but applies it to the package's declared
+likelihood-based mixed model: every participant bootstrap sample refits fixed
+effects, random-effect covariance, and residual variance.
+
+The package does not claim that its 0.46 procedure is identical to Park et al.'s
+working-independence estimator. The citation supports the subject-level
+resampling principle; the exact 0.46 refit contract is package-specific and
+fully documented.
+
+Current `statsmodels.MixedLM` documentation defines the remaining within-group
+error as iid Gaussian with scalar variance after conditioning on random effects.
+Accordingly, the package will diagnose residual/within-trial dependence before
+selecting a future serial-covariance extension rather than pretending AR(1) is
+already available in the current backend.
