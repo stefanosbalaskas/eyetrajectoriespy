@@ -82,6 +82,7 @@ continuous trajectory
     +-- local state divergence? ------> explicit delay embedding
     |                                  -> Rosenstein divergence / LLE
     |                                  -> IAAFT surrogate test
+    |                                  -> multivariate IAAFT when joint channels matter
     |
     +-- repeated approximate cycles? -> explicit Poincare section
                                        -> empirical local return map
