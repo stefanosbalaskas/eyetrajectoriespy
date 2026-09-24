@@ -266,3 +266,18 @@ participant heterogeneity in the time-varying effect of one predeclared
 predictor. It is not an automatic improvement over the simpler random-
 intercept model and the package does not compare or select the structures on
 the analyst's behalf.
+
+## Fixed-covariance versus full-refit participant bootstrap
+
+| Procedure | Participant resampling | Fixed effects refit | Random covariance refit | Residual variance refit | Main role |
+|---|---:|---:|---:|---:|---|
+| 0.44/0.45 fixed-covariance bootstrap | yes | yes | no | no | faster conditional fixed-effect inference |
+| 0.46 full-refit bootstrap | yes | yes | yes | yes | fixed-effect inference plus covariance-stability sensitivity |
+
+Neither procedure repeats preprocessing, basis selection, predictor/random-slope
+selection or optimizer selection.
+
+Use `compare_functional_mixed_effects_bootstraps()` when the scientific
+question is whether variance-component re-estimation materially changes the
+simultaneous fixed-effect uncertainty. The reported band-width ratio is
+descriptive rather than a probability or model-selection score.
