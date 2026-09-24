@@ -178,7 +178,7 @@ def main() -> None:
         curve_ids=gaze.curve_ids,
         dimension_names=("metric",),
         time_unit=gaze.time_unit,
-        coordinate_system="arbitrary",
+        coordinate_system="unknown",
     )
     fosr_design = pd.DataFrame(
         {
