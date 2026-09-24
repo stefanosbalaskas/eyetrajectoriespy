@@ -649,3 +649,25 @@ No. It remains a fixed-covariance participant bootstrap: fixed coefficients are
 re-estimated while the complete fitted random intercept/slope covariance and
 residual variance remain fixed. Full covariance re-estimation is reserved for
 the planned 0.46 tranche.
+
+### Why must duplicated participants receive new bootstrap group IDs?
+
+In a participant cluster bootstrap, two draws of the same source participant are
+two bootstrap clusters. If both copies kept the original participant ID,
+`MixedLM` would merge them into one random-effect group. Version 0.46 assigns a
+new bootstrap group ID to every participant draw and retains the original source
+ID separately.
+
+### What does “full refit” mean in version 0.46?
+
+Every bootstrap sample re-estimates fixed effects, the random-effect covariance,
+and residual variance. It does not reselect preprocessing, basis sizes,
+predictors, random-slope structure, REML/ML, or optimizer. The full refit is
+conditional on the declared model specification.
+
+### Why are failed full-refit bootstrap replicates not replaced?
+
+Redrawing until a requested number of successful fits is reached conditions the
+bootstrap distribution on fit success. Version 0.46 instead raises immediately,
+making bootstrap instability visible as evidence that the requested mixed model
+may be fragile for the available participant sample.
