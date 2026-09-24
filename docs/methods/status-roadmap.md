@@ -141,20 +141,28 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.45.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.46.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
-### Next inferential priority: full-refit participant bootstrap
+### Next methodological priority: residual / within-trial dependence diagnostics
 
-Version 0.45 implements exactly one participant random functional slope with
-explicit covariance-dimensionality and identifiability safeguards.
+Version 0.46 adds a full-refit participant bootstrap alongside the existing
+0.44 fixed-covariance participant bootstrap. Whole participants remain the
+independent resampling unit, but each replicate now refits fixed effects,
+random-effect covariance, and residual variance while preserving the declared
+model specification.
 
-The next tranche is **0.46 full-refit participant bootstrap sensitivity**:
-whole participants remain the resampling unit, but each bootstrap sample refits
-the mixed model and its variance components. The existing 0.44 fixed-covariance
-bootstrap remains the faster conditional-inference path rather than being
-silently replaced.
+The next tranche is **0.47 residual / within-trial dependence diagnostics**:
+residual ACF by trial, lag covariance, empirical within-trial variogram,
+correlation versus physical lag, and participant/trial stratification. It will
+not automatically select a covariance structure.
 
-After that, **0.47** should introduce explicit residual serial-correlation
-structures. Multiple random functional slopes, generalized responses, TE
-networks, and automatic causal discovery remain later candidates.
+Only after those diagnostics should the package choose whether the next
+structural extension is a trial-level functional random effect or an explicit
+serial residual covariance model. Standard `statsmodels.MixedLM` assumes iid
+Gaussian residual errors conditional on the random effects, so AR(1) will not
+be faked through extra random effects merely to stay within the current
+backend.
+
+Multiple random functional slopes, generalized responses, TE networks, and
+automatic causal discovery remain later candidates.
