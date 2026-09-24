@@ -14,11 +14,13 @@ import pandas as pd
 
 from eyetrajectoriespy import (
     TrajectorySet,
+    bootstrap_function_on_scalar_coefficients,
     bootstrap_rqa_metric_means,
     delay_embed_trajectory,
     dynamic_time_warping_distance,
     estimate_largest_lyapunov_kantz,
     estimate_largest_lyapunov_rosenstein,
+    fit_function_on_scalar_regression,
     fit_local_return_map,
     fit_mfpca,
     fpca_wild_bootstrap_family_test_monte_carlo_diagnostics,
@@ -33,6 +35,7 @@ from eyetrajectoriespy import (
     plot_fpca_wild_bootstrap_family_test,
     plot_fpca_wild_bootstrap_monte_carlo_diagnostics,
     plot_fpca_wild_bootstrap_projection,
+    plot_function_on_scalar_coefficients,
     plot_functional_mean_band,
     plot_kantz_sensitivity,
     plot_local_divergence,
@@ -48,6 +51,7 @@ from eyetrajectoriespy import (
     poincare_crossings,
     recurrence_matrix,
     recurrence_radius_profile,
+    function_on_scalar_simultaneous_bands,
     register_to_landmarks,
     signed_curvature_function,
     simulate_planar_trajectories,
@@ -159,6 +163,49 @@ def main() -> None:
         dimension=gaze.dimension_names[0],
     )
     _save(ax, "functional-mean-band.svg")
+
+    fosr_rng = np.random.default_rng(2109)
+    fosr_condition = np.repeat([0.0, 1.0], gaze.n_curves // 2)
+    fosr_beta = 0.28 * np.exp(-((gaze.time - 1.15) / 0.35) ** 2)
+    fosr_response = (
+        0.06 * np.sin(2.0 * np.pi * gaze.time / gaze.time[-1])[None, :]
+        + fosr_condition[:, None] * fosr_beta[None, :]
+        + fosr_rng.normal(0.0, 0.08, size=(gaze.n_curves, gaze.n_time))
+    )
+    fosr_source = TrajectorySet(
+        time=gaze.time.copy(),
+        values=fosr_response[:, :, None],
+        curve_ids=gaze.curve_ids,
+        dimension_names=("metric",),
+        time_unit=gaze.time_unit,
+        coordinate_system="arbitrary",
+    )
+    fosr_design = pd.DataFrame(
+        {
+            "curve_id": fosr_source.curve_ids,
+            "condition": fosr_condition,
+        }
+    )
+    fosr_fit = fit_function_on_scalar_regression(
+        fosr_source,
+        fosr_design,
+        predictors=("condition",),
+    )
+    fosr_boot = bootstrap_function_on_scalar_coefficients(
+        fosr_fit,
+        n_bootstrap=100,
+        random_state=2109,
+    )
+    fosr_band = function_on_scalar_simultaneous_bands(
+        fosr_boot,
+        confidence_level=0.95,
+    )
+    ax = plot_function_on_scalar_coefficients(
+        fosr_band,
+        coefficient="condition",
+        dimension="metric",
+    )
+    _save(ax, "function-on-scalar-coefficient.svg")
 
     rng = np.random.default_rng(2103)
     score1 = fpca.scores[:, 0]
