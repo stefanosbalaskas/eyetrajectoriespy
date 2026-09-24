@@ -30,15 +30,19 @@ flowchart LR
     A[Ordered trajectory points] --> B{Scientific target}
     B -->|Worst coupled separation| C[Discrete Fréchet]
     B -->|Cumulative elastic mismatch| D[DTW]
-    D --> E{Warp constraint}
-    E -->|Unconstrained| F[Full monotone path]
-    E -->|Declared index radius| G[Sakoe-Chiba band]
-    C --> H[No elapsed-time correspondence]
-    F --> H
+    D --> E{Step pattern}
+    E -->|symmetric1| F[Raw cumulative cost]
+    E -->|symmetric2| G[N+M normalization available]
+    F --> H{Warp constraint}
     G --> H
-    H --> I{Latency scientifically meaningful?}
-    I -->|Yes| J[Add time-preserving analysis]
-    I -->|No / nuisance timing| K[Interpret elastic similarity]
+    H -->|Unconstrained| I[Full monotone path]
+    H -->|Declared index radius| J[Sakoe-Chiba band]
+    C --> K[No elapsed-time correspondence]
+    I --> K
+    J --> K
+    K --> L{Latency scientifically meaningful?}
+    L -->|Yes| M[Add time-preserving analysis]
+    L -->|No / nuisance timing| N[Interpret elastic similarity]
 ```
 
 ## Inference
