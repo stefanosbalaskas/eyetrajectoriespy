@@ -1343,6 +1343,57 @@ or a small surrogate p-value is not treated as standalone causal evidence.
 `transfer_entropy_circular_shift_test()`,
 `transfer_entropy_local_frame()`.
 
+## Transfer-entropy specification sensitivity { #transfer-entropy-sensitivity }
+
+Let \(\mathcal K\), \(\mathcal L\), and \(\mathcal D\) be analyst-declared
+sets of target-history lengths, source-history lengths, and source lags. Version
+0.42 evaluates the complete Cartesian design
+
+$
+\Theta
+=
+\mathcal K\times\mathcal L\times\mathcal D.
+$
+
+For every \(\theta=(k,l,d)\in\Theta\),
+
+$
+T_{\theta}
+=
+I\!\left(
+X_{t-d}^{(l)};
+Y_t
+\mid
+Y_{t-1}^{(k)}
+\right)
+$
+
+is estimated with the same empirical discrete-state plug-in contract as the
+0.41 base estimator.
+
+If one common set of \(B\) circular source shifts is supplied, every
+specification additionally retains
+
+$
+\Delta T_{\theta}
+=
+T_{\theta,obs}
+-
+B^{-1}
+\sum_{b=1}^{B}
+T_{\theta,b}^{*}.
+$
+
+The table also retains finite empirical-support diagnostics for every
+specification. Invalid declared combinations abort the complete sensitivity
+analysis. The summaries are descriptive across \(\Theta\): no parameter
+ranking, winner selection, hidden averaging, posterior interpretation, or
+causal identification is introduced.
+
+**API:** `transfer_entropy_parameter_sensitivity()`,
+`plot_transfer_entropy_sensitivity()`,
+`transfer_entropy_parameter_sensitivity_reporting_text()`.
+
 ## Population mean bootstrap for curve-level RQA metrics { #rqa-population-bootstrap }
 
 For source curve $i$ and selected RQA metric $q$, let
