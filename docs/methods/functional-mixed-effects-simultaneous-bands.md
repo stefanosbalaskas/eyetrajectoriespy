@@ -1,7 +1,7 @@
 # Simultaneous inference for functional mixed-effects coefficients
 
 Version 0.44 adds observed-grid simultaneous confidence bands for the fixed
-coefficient functions from \`fit_functional_mixed_effects_regression()\`.
+coefficient functions from `fit_functional_mixed_effects_regression()`.
 
 The goal is to support a whole-function statement about, for example,
 
@@ -16,7 +16,7 @@ rather than treating every time point as an unrelated inferential claim.
 The resampling unit is the **participant**. Every selected participant
 contributes all of that participant's trials and all observed time points.
 
-\`\`\`python
+```python
 from eyetrajectoriespy import (
     bootstrap_functional_mixed_effects_coefficients,
     functional_mixed_effects_simultaneous_bands,
@@ -33,7 +33,7 @@ band = functional_mixed_effects_simultaneous_bands(
     confidence_level=0.95,
     simultaneous_scope="coefficient",
 )
-\`\`\`
+```
 
 Curves are never sampled independently. That would break the repeated-measures
 structure the mixed model was introduced to preserve.
@@ -118,10 +118,10 @@ bootstrap bias correction is applied.
 
 ## Coefficient versus family scope
 
-With \`simultaneous_scope="coefficient"\`, each fixed coefficient receives its
+With `simultaneous_scope="coefficient"`, each fixed coefficient receives its
 own maximum-statistic calibration over the observed time grid.
 
-With \`simultaneous_scope="family"\`, one maximum is taken jointly over every
+With `simultaneous_scope="family"`, one maximum is taken jointly over every
 fixed coefficient and every observed time point. This is more conservative but
 supports a single declared fixed-effect family.
 
@@ -164,12 +164,12 @@ It does **not** imply:
 
 Functional mixed-effects methodology has long treated simultaneous bands as a
 distinct inferential target from pointwise intervals. Zhu et al. (2019,
-DOI \`10.5705/ss.202017.0505\`) develop simultaneous bands for fixed-effect
+DOI `10.5705/ss.202017.0505`) develop simultaneous bands for fixed-effect
 functions in longitudinal functional mixed-effects models using a resampling
 approach that preserves within-subject dependence.
 
 More recently, Gunning et al. (2025, DOI
-\`10.1007/s00180-024-01591-1\`) use subject-level bootstrap resampling and
+`10.1007/s00180-024-01591-1`) use subject-level bootstrap resampling and
 simulation for simultaneous fixed-effect bands in a functional mixed-effects
 analysis of repeated kinematic data.
 
