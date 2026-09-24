@@ -21,6 +21,7 @@ from eyetrajectoriespy import (
     estimate_largest_lyapunov_kantz,
     estimate_largest_lyapunov_rosenstein,
     fit_function_on_scalar_regression,
+    fit_functional_mixed_effects_regression,
     fit_local_return_map,
     fit_mfpca,
     fpca_wild_bootstrap_family_test_monte_carlo_diagnostics,
@@ -36,6 +37,7 @@ from eyetrajectoriespy import (
     plot_fpca_wild_bootstrap_monte_carlo_diagnostics,
     plot_fpca_wild_bootstrap_projection,
     plot_function_on_scalar_coefficients,
+    plot_functional_mixed_effects_coefficient,
     plot_functional_mean_band,
     plot_kantz_sensitivity,
     plot_local_divergence,
@@ -206,6 +208,68 @@ def main() -> None:
         dimension="metric",
     )
     _save(ax, "function-on-scalar-coefficient.svg")
+
+    fmix_rng = np.random.default_rng(2110)
+    fmix_time = np.linspace(0.0, 1.0, 9)
+    fmix_participants = np.repeat(
+        [f"P{i:02d}" for i in range(10)],
+        3,
+    )
+    fmix_condition = np.tile([0.0, 1.0, 0.5], 10)
+    fmix_beta0 = 0.20 + 0.15 * fmix_time
+    fmix_beta1 = 0.15 + 0.40 * fmix_time
+    fmix_linear_basis = np.column_stack([1.0 - fmix_time, fmix_time])
+    fmix_random = fmix_rng.multivariate_normal(
+        [0.0, 0.0],
+        [[0.030, 0.004], [0.004, 0.020]],
+        size=10,
+    )
+    fmix_values = []
+    fmix_ids = []
+    for participant_index in range(10):
+        random_function = (
+            fmix_random[participant_index] @ fmix_linear_basis.T
+        )
+        for trial_index in range(3):
+            row = participant_index * 3 + trial_index
+            response = (
+                fmix_beta0
+                + fmix_condition[row] * fmix_beta1
+                + random_function
+                + fmix_rng.normal(0.0, 0.04, size=fmix_time.size)
+            )
+            fmix_values.append(response[:, None])
+            fmix_ids.append(f"M{row:03d}")
+    fmix_source = TrajectorySet(
+        time=fmix_time,
+        values=np.asarray(fmix_values),
+        curve_ids=tuple(fmix_ids),
+        dimension_names=("metric",),
+        metadata=pd.DataFrame({"participant_id": fmix_participants}),
+        time_unit="s",
+        coordinate_system="unknown",
+    )
+    fmix_design = pd.DataFrame(
+        {
+            "curve_id": fmix_source.curve_ids,
+            "condition": fmix_condition,
+        }
+    )
+    fmix_fit = fit_functional_mixed_effects_regression(
+        fmix_source,
+        fmix_design,
+        predictors=("condition",),
+        participant_column="participant_id",
+        dimension="metric",
+        fixed_basis_size=2,
+        random_basis_size=2,
+        spline_degree=1,
+    )
+    ax = plot_functional_mixed_effects_coefficient(
+        fmix_fit,
+        coefficient="condition",
+    )
+    _save(ax, "functional-mixed-effects-coefficient.svg")
 
     rng = np.random.default_rng(2103)
     score1 = fpca.scores[:, 0]
