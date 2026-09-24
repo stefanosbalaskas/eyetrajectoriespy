@@ -400,21 +400,21 @@ $$
 
 **Functions:** `joint_recurrence_matrix()`, `joint_rqa_metrics()`
 
-$
+$$
 JR_{ij}=\prod_{s=1}^{S}R_{ij}^{(s)}
-$
+$$
 
-$
+$$
 \mathrm{JRR}=\frac{\sum_{i<j}JR_{ij}}{N_{\mathrm{eligible}}}
-$
+$$
 
-$
+$$
 \mathrm{JDET}=\frac{\sum_{\ell\ge\ell_{\min}}\ell P_{d,J}(\ell)}{\sum_{\ell\ge1}\ell P_{d,J}(\ell)}
-$
+$$
 
-$
+$$
 \mathrm{JLAM}=\frac{\sum_{v\ge v_{\min}}v P_{v,J}(v)}{\sum_{v\ge1}v P_{v,J}(v)}
-$
+$$
 
 **Scope:** Logical intersection of at least two synchronized auto-recurrence matrices on an exact common grid with one shared Theiler exclusion. Component state spaces, metrics, and thresholds may differ and remain explicit. No lag alignment, resampling, threshold harmonization, cross-recurrence interpretation, or causal-coupling claim is introduced.
 
