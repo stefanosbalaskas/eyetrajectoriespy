@@ -961,3 +961,24 @@ different optimizer.
 The 0.44 simultaneous-band bootstrap remains conditional on the fitted full
 random-effect covariance and residual variance. Version 0.45 does not propagate
 variance-component estimation uncertainty through those bands.
+
+## Full-refit participant bootstrap limitations
+
+Version 0.46 propagates variance-component estimation variability only within
+the **declared mixed-model specification**. It does not repeat preprocessing,
+basis-size selection, predictor/random-slope selection, model-structure
+selection, optimizer selection, or REML/ML selection inside bootstrap samples.
+
+The procedure can fail more often than the fixed-covariance bootstrap because
+each replicate must refit the mixed model. This is deliberate. Failed samples
+are not redrawn, so a fragile random-effect structure may prevent completion of
+the requested bootstrap.
+
+The retained empirical distributions of covariance entries, eigenvalues,
+condition numbers and residual variance are descriptive stability diagnostics.
+The package does not automatically label empirical quantiles of those
+distributions as calibrated variance-component confidence intervals.
+
+Both the fixed-covariance and full-refit simultaneous bands remain observed-grid
+procedures; neither creates a continuous-domain coverage guarantee between
+sampled time points.
