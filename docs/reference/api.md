@@ -430,3 +430,7 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.FunctionalMixedEffectsBandResult
 ::: eyetrajectoriespy.bootstrap_functional_mixed_effects_coefficients
 ::: eyetrajectoriespy.functional_mixed_effects_simultaneous_bands
+
+## Random functional slope inspection
+::: eyetrajectoriespy.functional_random_effect_frame
+::: eyetrajectoriespy.plot_functional_random_effects
