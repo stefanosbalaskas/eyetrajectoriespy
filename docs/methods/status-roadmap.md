@@ -39,7 +39,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Compositional AOI FPCA | implemented | `fit_compositional_fpca()` |
 | Functional distances | implemented | `functional_l2_distance()` |
 | Discrete Fréchet trajectory distance | implemented; monotone order-preserving coupling, no elapsed-time correspondence | `discrete_frechet_distance()` / `pairwise_discrete_frechet_distances()` |
-| Dynamic time warping trajectory distance | implemented; cumulative monotone sample-index alignment with optional explicit Sakoe-Chiba band | `dynamic_time_warping_distance()` / `pairwise_dynamic_time_warping_distances()` |
+| Dynamic time warping trajectory distance | implemented; backward-compatible symmetric1 raw cost plus explicit normalizable symmetric2/N+M option and Sakoe-Chiba sample-index band | `dynamic_time_warping_distance()` / `pairwise_dynamic_time_warping_distances()` |
 | FPCA-score clustering | implemented | `cluster_fpca_scores()` |
 | Score-based scalar-on-function regression | implemented | `fit_scalar_on_function_regression()` |
 | Paired-bootstrap Gaussian FPCR uncertainty | implemented | `bootstrap_fpca_regression_uncertainty()` |
@@ -128,4 +128,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.33.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.34.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
