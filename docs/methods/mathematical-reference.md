@@ -730,6 +730,69 @@ refit variance components.
 `functional_random_effect_frame()`,
 `plot_functional_random_effects()`.
 
+## Full-refit participant bootstrap for functional mixed-effects models { #functional-mixed-effects-full-refit-bootstrap }
+
+Version 0.46 complements the faster fixed-covariance participant bootstrap with
+a whole-participant **full mixed-model refit**.
+
+For bootstrap replicate (b),
+
+$
+I_1^{*(b)},\ldots,I_n^{*(b)}
+\overset{iid}{\sim}
+\{1,\ldots,n\}.
+$
+
+If a source participant is sampled twice, the two occurrences receive distinct
+bootstrap group identities. Thus the backend receives two independent bootstrap
+clusters rather than merging the duplicate copies into one random-effect group.
+
+The declared mixed model is then refit:
+
+$
+\mathcal D^{*(b)}
+\longrightarrow
+\left\{
+\widehat{\boldsymbol\beta}^{*(b)}(t),
+\widehat{\boldsymbol\Psi}^{*(b)},
+\widehat\sigma^{2*(b)}
+\right\}.
+$
+
+"Full refit" is conditional on the declared analysis specification.
+Preprocessing, response dimension, predictors, random-slope choice,
+random-effect structure, basis sizes, deterministic knot construction, spline
+degree, REML/ML choice, optimizer, and `maxiter` remain fixed.
+
+The result retains every refitted covariance and covariance block, covariance
+eigenvalues and condition number, residual variance, log likelihood,
+boundary/singularity diagnostics, convergence state, backend warnings, sampled
+source participant IDs, and distinct bootstrap participant IDs.
+
+For sensitivity of the fixed-effect uncertainty contract,
+
+$
+R_p(t_m)
+=
+\frac{
+W_{p,\mathrm{full}}(t_m)
+}{
+W_{p,\mathrm{fixed}}(t_m)
+},
+$
+
+where (W) is the simultaneous-band width. This ratio is descriptive and is
+not a probability or model-selection score.
+
+Any failed replicate terminates the bootstrap. No failed draw is discarded or
+silently replaced.
+
+**API:** `bootstrap_functional_mixed_effects_full_refit()`,
+`functional_mixed_effects_variance_bootstrap_frame()`,
+`functional_mixed_effects_bootstrap_identity_frame()`,
+`compare_functional_mixed_effects_bootstraps()`,
+`functional_mixed_effects_simultaneous_bands()`.
+
 ## Participant-cluster simultaneous mixed-effects coefficient bands { #functional-mixed-effects-simultaneous }
 
 Version 0.44 adds whole-function observed-grid inference for the fixed
