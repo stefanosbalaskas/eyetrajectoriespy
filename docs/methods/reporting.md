@@ -819,3 +819,15 @@ Report:
 
 If latency or physical traversal timing is scientifically meaningful, report the complementary time-preserving analysis rather than implying that DTW preserves trial-time correspondence. Do not describe mean local distance as the DTW distance, and do not describe symmetric2 normalization as a post hoc normalization of the symmetric1 estimand.
 
+## Discrete transfer entropy
+
+Report the discrete source/target state definitions, sampling unit, direction,
+target history \(k\), source history \(l\), source lag \(d\), effective
+transition count, TE in bits, and empirical history-support diagnostics. State
+explicitly how any continuous signal was converted to states upstream.
+
+For `transfer_entropy_circular_shift_test()`, report the declared shifts or
+their pre-specified construction rule, number of surrogates, observed TE,
+surrogate mean, surrogate-centered TE, plus-one upper-tail p-value, and minimum
+attainable p-value resolution. Describe the result as directed predictive
+information under the declared model/null rather than as proof of causality.
