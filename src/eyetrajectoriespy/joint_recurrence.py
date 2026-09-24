@@ -81,6 +81,24 @@ def joint_recurrence_matrix(
             raise ValueError(
                 "joint recurrence requires square auto-recurrence matrices"
             )
+        matrix = recurrence.matrix.astype(bool).tocsr()
+        if (matrix != matrix.T).nnz:
+            raise ValueError(
+                "joint recurrence components must be symmetric auto-recurrence matrices"
+            )
+        if np.any(matrix.diagonal()):
+            raise ValueError(
+                "joint recurrence components must exclude the main diagonal"
+            )
+        coo = matrix.tocoo()
+        if np.any(
+            np.abs(coo.row - coo.col)
+            <= int(recurrence.theiler_window_samples)
+        ):
+            raise ValueError(
+                "joint recurrence component contains points inside its "
+                "declared Theiler exclusion"
+            )
         if recurrence.time_a.shape != recurrence.time_b.shape or not np.array_equal(
             recurrence.time_a,
             recurrence.time_b,
@@ -93,7 +111,12 @@ def joint_recurrence_matrix(
     first = components[0]
     n_states = first.matrix.shape[0]
     time = np.asarray(first.time_a, dtype=float)
+    time_unit = first.time_unit
     theiler = int(first.theiler_window_samples)
+    if time_unit is None:
+        raise ValueError(
+            "joint recurrence requires component time_unit metadata"
+        )
 
     if time.shape != (n_states,):
         raise ValueError(
@@ -118,6 +141,10 @@ def joint_recurrence_matrix(
         if recurrence.theiler_window_samples != theiler:
             raise ValueError(
                 "joint recurrence components must use the same Theiler window"
+            )
+        if recurrence.time_unit != time_unit:
+            raise ValueError(
+                "joint recurrence components must use the same time_unit"
             )
 
     eligible = _eligible_auto_pairs(n_states, theiler)
@@ -180,6 +207,7 @@ def joint_recurrence_matrix(
                 for recurrence in components
             ],
             "theiler_window_samples": theiler,
+            "time_unit": time_unit,
             "eligible_pair_count": int(eligible),
             "n_joint_recurrent_pairs": n_joint_pairs,
             "joint_recurrence_rate": joint_rate,
@@ -229,6 +257,7 @@ def joint_recurrence_component_frame(
                 "theiler_window_samples": int(
                     recurrence.theiler_window_samples
                 ),
+                "time_unit": recurrence.time_unit,
             }
         )
     return pd.DataFrame(rows)
@@ -252,6 +281,7 @@ def _as_recurrence_result(
             recurrence.state_dimension
             for recurrence in result.component_recurrences
         ),
+        time_unit=result.component_recurrences[0].time_unit,
         provenance={
             **dict(result.provenance),
             "operation": "joint_recurrence_adapter_for_rqa",
