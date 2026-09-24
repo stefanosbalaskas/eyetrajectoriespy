@@ -440,5 +440,6 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.bootstrap_functional_mixed_effects_full_refit
 ::: eyetrajectoriespy.functional_mixed_effects_variance_bootstrap_frame
 ::: eyetrajectoriespy.functional_mixed_effects_bootstrap_identity_frame
+::: eyetrajectoriespy.functional_mixed_effects_full_refit_reporting_text
 ::: eyetrajectoriespy.compare_functional_mixed_effects_bootstraps
 ::: eyetrajectoriespy.plot_functional_mixed_effects_bootstrap_comparison
