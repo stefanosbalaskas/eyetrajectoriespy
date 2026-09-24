@@ -503,11 +503,32 @@ A failed surrogate raises an error; no replacement replicate is silently drawn.
 
 Rejecting the surrogate null means the observed statistic is inconsistent with the declared linear-stochastic surrogate model at the chosen test level. It does not identify a unique nonlinear mechanism.
 
-### Multivariate gaze surrogates are deferred
+### Multivariate gaze surrogates
 
-The current IAAFT implementation is **scalar**. It does not independently surrogate `x` and `y` and then call the result a multivariate gaze surrogate.
+Version 0.37 adds a dedicated multivariate IAAFT path. It does not independently
+surrogate x and y.
 
-A future MIAAFT/multivariate-Fourier surrogate path must preserve the declared cross-channel linear structure as well as per-channel marginal/spectral constraints, expose convergence diagnostics, state the multivariate null explicitly, and validate against a primary/reference implementation. Until that contract is met, multivariate surrogate testing remains intentionally unavailable. See [RQA software conventions](../methods/rqa-software-conventions.md#multivariate-surrogate-contract-deferred-not-approximated).
+```python
+joint = generate_multivariate_iaaft_surrogates(
+    gaze,
+    curve=0,
+    dimensions=("x", "y"),
+    reference_dimension="x",
+    n_surrogates=199,
+    random_state=42,
+)
+```
+
+The observed inter-channel Fourier phase differences are imposed jointly
+during the Fourier adjustment, while each channel is rank-remapped to its
+exact empirical marginal value set. Because the final rank-remapping step
+perturbs the Fourier coefficients, final spectrum and cross-spectrum mismatch
+is retained explicitly for every surrogate.
+
+Use [Multivariate IAAFT surrogate testing](../methods/multivariate-surrogates.md)
+for the full null-model, reference-dimension, diagnostics, and reporting
+contract.
+
 
 
 ## 5. Experimental Poincare return-map stability
