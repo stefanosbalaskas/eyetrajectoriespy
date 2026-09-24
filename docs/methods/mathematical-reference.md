@@ -1343,6 +1343,69 @@ or a small surrogate p-value is not treated as standalone causal evidence.
 `transfer_entropy_circular_shift_test()`,
 `transfer_entropy_local_frame()`.
 
+## Conditional transfer entropy and source-shift surrogate testing { #conditional-transfer-entropy }
+
+For source (X), target (Y), and explicitly supplied conditioning process
+(Z), the 0.43 estimand is
+
+$
+T_{X\to Y\mid Z}(k,l,m,d,c)
+=
+I\!\left(
+X_{t-d}^{(l)};
+Y_t
+\mid
+Y_{t-1}^{(k)},
+Z_{t-c}^{(m)}
+\right).
+$
+
+For observed histories
+(mathbf y=Y_{t-1}^{(k)}),
+(mathbf x=X_{t-d}^{(l)}), and
+(mathbf z=Z_{t-c}^{(m)}),
+
+$
+T_{X\to Y\mid Z}
+=
+\sum
+p(y_t,\mathbf y,\mathbf x,\mathbf z)
+\log_2
+\frac{
+p(y_t\mid\mathbf y,\mathbf x,\mathbf z)
+}{
+p(y_t\mid\mathbf y,\mathbf z)
+}.
+$
+
+The empirical implementation uses observed contingency counts and reports the
+mean local log-ratio over the exact effective transitions implied by the five
+declared history/lag settings.
+
+For (B) analyst-declared circular shifts of the source only,
+
+$
+p_+
+=
+\frac{
+1+
+\sum_{b=1}^{B}
+I(T_{b}^{*,cond}\ge T_{obs}^{cond})
+}{
+B+1
+}.
+$
+
+The target and conditioning process remain fixed. The result therefore tests
+additional directed predictive information under the declared conditioning
+process and shift null. It does not establish causal influence or guarantee
+adjustment for unmeasured common drivers.
+
+**API:** `conditional_transfer_entropy()`,
+`conditional_transfer_entropy_local_frame()`,
+`conditional_transfer_entropy_circular_shift_test()`,
+`plot_conditional_transfer_entropy_circular_shift_test()`.
+
 ## Transfer-entropy specification sensitivity { #transfer-entropy-sensitivity }
 
 Let \(\mathcal K\), \(\mathcal L\), and \(\mathcal D\) be analyst-declared
