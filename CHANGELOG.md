@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.46.0.dev0
+
+- Add `bootstrap_functional_mixed_effects_full_refit()` as a second, deliberately distinct whole-participant bootstrap for the likelihood-based functional mixed-effects layer.
+- Resample participants with replacement while assigning a new bootstrap group identity to every sampled occurrence; duplicate source participants therefore remain independent bootstrap clusters instead of being merged by `MixedLM`.
+- Retain both `source_participant_id` and `bootstrap_participant_id` for every replicate/draw position through `functional_mixed_effects_bootstrap_identity_frame()`.
+- Refit fixed effects, the complete declared random-effect covariance, and residual variance in every replicate while keeping preprocessing, response dimension, predictor specification, random-slope choice, random-effect structure, basis sizes, deterministic knot construction, spline degree, REML/ML choice, optimizer, and iteration budget fixed.
+- Retain every refitted covariance matrix, intercept/slope covariance block, covariance eigenvalue, condition number, boundary/singularity flag, residual variance, log likelihood, convergence state, and backend warning.
+- Add `functional_mixed_effects_variance_bootstrap_frame()` for replicate-level variance-component stability diagnostics without automatically converting empirical distributions into calibrated variance-component confidence intervals.
+- Keep `failed_replicate_policy="raise"` as the only behavior: the first failed replicate terminates the bootstrap and is never silently discarded or redrawn.
+- Extend `functional_mixed_effects_simultaneous_bands()` so it accepts either the existing fixed-covariance bootstrap or the new full-refit bootstrap and records whether variance components were refit.
+- Add `compare_functional_mixed_effects_bootstraps()` and `plot_functional_mixed_effects_bootstrap_comparison()` for coefficient-specific full-refit / fixed-covariance simultaneous-band width sensitivity.
+- Clarify that the 0.45 participant-count rule is a minimum covariance-complexity guard rather than an adequacy guarantee, and that the every-participant within-cluster slope-variation rule is intentionally conservative.
+- Set 0.47 to residual / within-trial dependence diagnostics before choosing between a trial-level functional random effect and an explicit serial residual covariance model.
+
 ## 0.45.0.dev0
 
 - Extend `fit_functional_mixed_effects_regression()` with exactly one explicitly declared `random_slope_predictor`; `None` preserves the existing random-functional-intercept model.
