@@ -39,6 +39,12 @@ from .function_on_scalar import (
     function_on_scalar_coefficient_frame,
     function_on_scalar_simultaneous_bands,
 )
+from .functional_mixed_effects_full_refit import (
+    bootstrap_functional_mixed_effects_full_refit,
+    compare_functional_mixed_effects_bootstraps,
+    functional_mixed_effects_bootstrap_identity_frame,
+    functional_mixed_effects_variance_bootstrap_frame,
+)
 from .functional_mixed_effects_inference import (
     bootstrap_functional_mixed_effects_coefficients,
     functional_mixed_effects_simultaneous_bands,
@@ -386,6 +392,7 @@ from .types import (
     FunctionalMeanBandResult,
     FunctionalMixedEffectsBandResult,
     FunctionalMixedEffectsBootstrapResult,
+    FunctionalMixedEffectsFullRefitBootstrapResult,
     FunctionalMixedEffectsResult,
     FunctionOnScalarBandResult,
     FunctionOnScalarBootstrapResult,
@@ -428,9 +435,14 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.45.0.dev0"
+__version__ = "0.46.0.dev0"
 
 __all__ = [
+    "FunctionalMixedEffectsFullRefitBootstrapResult",
+    "bootstrap_functional_mixed_effects_full_refit",
+    "functional_mixed_effects_variance_bootstrap_frame",
+    "functional_mixed_effects_bootstrap_identity_frame",
+    "compare_functional_mixed_effects_bootstraps",
     "FunctionalMixedEffectsBootstrapResult",
     "FunctionalMixedEffectsBandResult",
     "bootstrap_functional_mixed_effects_coefficients",
