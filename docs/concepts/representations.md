@@ -117,3 +117,11 @@ Raw continuous \([x(t),y(t)]\) gaze, pupil diameter, or head rotation should
 not be passed to the discrete TE API unless the analyst has explicitly
 constructed and justified the states upstream. Changing the state definition
 changes the empirical probability model and therefore the TE estimand.
+
+### Sensitivity does not change the discrete state representation
+
+The 0.42 TE sensitivity multiverse varies declared history and lag settings
+only. The integer-coded source and target state sequences are held fixed across
+all rows. If alternative state definitions or discretizations are scientifically
+plausible, treat that as a separate representation sensitivity problem rather
+than allowing the history/lag multiverse to silently change states.

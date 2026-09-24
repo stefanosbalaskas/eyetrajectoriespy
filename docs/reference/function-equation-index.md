@@ -468,6 +468,26 @@ $$
 
 [Expanded mathematical reference](../methods/mathematical-reference.md#discrete-transfer-entropy)
 
+## Transfer-entropy specification sensitivity
+
+**Functions:** `transfer_entropy_parameter_sensitivity()`
+
+$$
+\Theta=\mathcal K\times\mathcal L\times\mathcal D
+$$
+
+$$
+T_{\theta}=I\!\left(X_{t-d}^{(l)};Y_t\mid Y_{t-1}^{(k)}\right),\quad \theta=(k,l,d)\in\Theta
+$$
+
+$$
+\Delta T_{\theta}=T_{\theta,obs}-B^{-1}\sum_{b=1}^{B}T_{\theta,b}^{*}
+$$
+
+**Scope:** Descriptive robustness analysis over the full analyst-declared Cartesian grid of target histories, source histories, and source lags. Optional surrogate-centered TE uses the identical declared circular-shift set for every specification. No failed row is discarded and no specification is ranked or selected automatically.
+
+[Expanded mathematical reference](../methods/mathematical-reference.md#transfer-entropy-sensitivity)
+
 ## Population mean bootstrap for curve-level RQA metrics
 
 **Functions:** `bootstrap_rqa_metric_means()`

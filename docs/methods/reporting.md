@@ -831,3 +831,16 @@ their pre-specified construction rule, number of surrogates, observed TE,
 surrogate mean, surrogate-centered TE, plus-one upper-tail p-value, and minimum
 attainable p-value resolution. Describe the result as directed predictive
 information under the declared model/null rather than as proof of causality.
+
+## Transfer-entropy specification sensitivity
+
+Report the complete history/lag grids, total Cartesian-product specification
+count, whether the multiverse was preregistered or exploratory, and the TE
+range and median. Report support deterioration across the grid, including
+effective-transition counts and singleton/minimum joint-history diagnostics.
+
+For plotted sensitivity slices, report the exact fixed values of every
+non-plotted parameter. When a common circular-shift null is used, report the
+shift set/rule, number of shifts, surrogate-centered TE range, unadjusted
+plus-one p-value range, and any separate multiplicity correction. Do not report
+a multiverse maximum as though it were a prespecified single-analysis estimate.

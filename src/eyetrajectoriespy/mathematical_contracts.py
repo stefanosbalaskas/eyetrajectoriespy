@@ -474,6 +474,26 @@ _CONTRACTS = (
         ),
     ),
     MathematicalContract(
+        key="transfer-entropy-sensitivity",
+        title="Transfer-entropy specification sensitivity",
+        public_api=("transfer_entropy_parameter_sensitivity",),
+        equations=(
+            r"\Theta=\mathcal K\times\mathcal L\times\mathcal D",
+            r"T_{\theta}=I\!\left(X_{t-d}^{(l)};Y_t\mid Y_{t-1}^{(k)}\right),"
+            r"\quad \theta=(k,l,d)\in\Theta",
+            r"\Delta T_{\theta}=T_{\theta,obs}-"
+            r"B^{-1}\sum_{b=1}^{B}T_{\theta,b}^{*}",
+        ),
+        site_anchor="transfer-entropy-sensitivity",
+        scope=(
+            "Descriptive robustness analysis over the full analyst-declared "
+            "Cartesian grid of target histories, source histories, and source "
+            "lags. Optional surrogate-centered TE uses the identical declared "
+            "circular-shift set for every specification. No failed row is "
+            "discarded and no specification is ranked or selected automatically."
+        ),
+    ),
+    MathematicalContract(
         key="rqa-population-bootstrap",
         title="Population mean bootstrap for curve-level RQA metrics",
         public_api=("bootstrap_rqa_metric_means",),

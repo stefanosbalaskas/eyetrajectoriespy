@@ -377,3 +377,17 @@ circular source shifts, every surrogate transfer-entropy estimate, surrogate
 mean, surrogate-centered transfer entropy, plus-one upper-tail Monte Carlo
 p-value, attainable p-value resolution, and null-model provenance. The object
 does not claim causal identification and does not generate or optimize shifts.
+
+## TransferEntropySensitivityResult
+
+Stores the complete transfer-entropy specification table, descriptive variation
+summary, declared target/source history and source-lag grids, original
+integer-coded source/target states, optional common circular-shift set, and full
+provenance. Every Cartesian-product specification is retained unless the
+analysis fails closed on an invalid declared combination.
+
+The object does not contain a preferred specification, optimization score,
+winner flag, or automatic selection result. When circular shifts are supplied,
+the same shift set is applied to every specification; resulting p-values remain
+unadjusted across the sensitivity multiverse unless the analyst supplies a
+separate multiplicity procedure.

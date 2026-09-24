@@ -91,6 +91,12 @@ from .transfer_entropy import (
     transfer_entropy_local_frame,
     transfer_entropy_reporting_text,
 )
+from .transfer_entropy_sensitivity import (
+    TransferEntropySensitivityResult,
+    plot_transfer_entropy_sensitivity,
+    transfer_entropy_parameter_sensitivity,
+    transfer_entropy_parameter_sensitivity_reporting_text,
+)
 from .multivariate_surrogates import (
     generate_multivariate_iaaft_surrogates,
     multivariate_iaaft_diagnostics_frame,
@@ -404,9 +410,13 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.41.0.dev0"
+__version__ = "0.42.0.dev0"
 
 __all__ = [
+    "TransferEntropySensitivityResult",
+    "transfer_entropy_parameter_sensitivity",
+    "plot_transfer_entropy_sensitivity",
+    "transfer_entropy_parameter_sensitivity_reporting_text",
     "DiscreteTransferEntropyResult",
     "TransferEntropyCircularShiftTestResult",
     "discrete_transfer_entropy",

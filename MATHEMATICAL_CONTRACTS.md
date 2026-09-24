@@ -684,6 +684,49 @@ history-support diagnostics; the surrogate test retains the complete declared
 shift set and attainable p-value resolution. Neither API performs automatic
 state construction, lag/history selection, or causal identification.
 
+## Transfer-entropy specification sensitivity
+
+For declared target-history grid \(\mathcal K\), source-history grid
+\(\mathcal L\), and source-lag grid \(\mathcal D\), the sensitivity
+design is
+
+$
+\Theta
+=
+\mathcal K\times\mathcal L\times\mathcal D.
+$
+
+Each specification \(\theta=(k,l,d)\) evaluates the same discrete
+transfer-entropy estimand,
+
+$
+T_{\theta}
+=
+I\!\left(
+X_{t-d}^{(l)};
+Y_t
+\mid
+Y_{t-1}^{(k)}
+\right).
+$
+
+When one analyst-declared circular-shift set is supplied, the retained
+surrogate-centered quantity is
+
+$
+\Delta T_{\theta}
+=
+T_{\theta,obs}
+-
+B^{-1}
+\sum_{b=1}^{B}
+T_{\theta,b}^{*}.
+$
+
+Implemented by `transfer_entropy_parameter_sensitivity()`. The full Cartesian
+grid is retained, invalid specifications fail closed, and no history/lag
+combination is ranked or selected automatically.
+
 ## Population mean bootstrap for curve-level RQA metrics
 
 For one fixed recurrence/RQA specification $\theta$,

@@ -569,3 +569,17 @@ therefore avoids causal language.
 Because discretization changes the estimand. Version 0.41 requires
 integer-coded discrete states rather than silently selecting bins or a
 continuous TE estimator. Construct and justify that representation upstream.
+
+### Does the sensitivity function choose the best TE lag?
+
+No. It evaluates every declared history/lag combination and returns all rows.
+A larger TE or smaller p-value is not automatically a better specification.
+The function is designed for robustness reporting, not data-driven winner
+selection.
+
+### Why retain singleton-history and minimum-cell diagnostics?
+
+Because longer histories expand the empirical state space while reducing
+observations per state. Two specifications can produce similar TE values with
+very different finite-sample support. Version 0.42 exposes that difference
+rather than hiding it behind one scalar estimate.

@@ -422,3 +422,11 @@ Coordinate units and explicit dimension weights define the local geometry. All p
 - Empirical count support must be adequate for the joint histories actually used. The result exposes singleton-history and minimum/maximum support diagnostics instead of applying a hidden cutoff.
 - The circular-shift test assumes the declared wrap-around shifts provide a defensible no-alignment null for the scientific series. Strong trial boundaries or nonstationarity can invalidate that null.
 - Pairwise TE can remain nonzero under common drivers or omitted history. It is a directed predictive-information diagnostic, not automatic causal identification.
+
+## Transfer-entropy sensitivity assumptions
+
+- Every value in the target-history, source-history, and source-lag grids is scientifically defensible before outcome inspection; the multiverse is not a search over arbitrary values.
+- The same discrete source/target state representation is used for every specification.
+- Increasing history depth can make empirical probability support sparse. The table therefore retains effective counts and joint-history support diagnostics instead of imposing a hidden adequacy threshold.
+- If circular-shift inference is requested, the identical declared shift set is used for every specification and the wrap-around/stationarity assumptions of that null apply to all rows.
+- Descriptive variation across specifications is not a sampling distribution, posterior distribution, or causal probability.

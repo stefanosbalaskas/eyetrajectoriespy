@@ -243,3 +243,9 @@ For already-discrete source/target state sequences, continue with the
 [transfer-entropy method guide](../methods/transfer-entropy.md) and
 [worked example](../examples/transfer-entropy.md). The workflow requires
 explicit histories, lag, and—when used—an explicit surrogate shift set.
+
+For robustness across several defensible discrete-TE histories or lags, continue
+with the
+[transfer-entropy sensitivity guide](../methods/transfer-entropy-sensitivity.md)
+and
+[worked sensitivity example](../examples/transfer-entropy-sensitivity.md).

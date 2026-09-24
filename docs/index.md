@@ -478,6 +478,18 @@ The package is designed around the principle that **the path to an FPC score is 
 
 For manuscript preparation, use the [reporting checklist](methods/reporting.md), [assumptions and diagnostics](methods/assumptions.md), and [limitations](methods/limitations.md).
 
+## New in 0.42: transfer-entropy specification sensitivity
+
+The directed-dependence layer now supports a full predeclared
+target-history × source-history × source-lag multiverse through
+`transfer_entropy_parameter_sensitivity()`. Every specification is retained
+with finite-support diagnostics, optional common circular-shift inference, and
+no automatic winner.
+
+[Method guide](methods/transfer-entropy-sensitivity.md) ·
+[Worked example](examples/transfer-entropy-sensitivity.md) ·
+[Mathematical contract](methods/mathematical-reference.md#transfer-entropy-sensitivity)
+
 ## New in 0.41: explicit discrete transfer entropy
 
 The experimental directed-dependence layer now includes

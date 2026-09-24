@@ -882,3 +882,17 @@ source marginal and circular ordering but can be scientifically inappropriate
 for nonstationary records, strong trial boundaries, transients, or designs in
 which wrap-around has no meaningful interpretation. A small surrogate p-value
 does not establish causal influence.
+
+## Transfer-entropy sensitivity limitations
+
+The 0.42 multiverse varies only target-history length, source-history length,
+and source lag for the existing discrete plug-in TE estimator. It does not vary
+or choose the upstream state representation, estimator family, sampling rate,
+trial segmentation, stationarity treatment, or conditional-variable set.
+
+Sparse empirical support can make longer-history rows unstable even when the
+function returns a finite value; support diagnostics are descriptive and no
+universal minimum cell-count rule is encoded. Optional p-values across the
+multiverse are not multiplicity-adjusted automatically. The API also does not
+convert the most stable, largest, or smallest-p-value row into a selected model
+or causal conclusion.

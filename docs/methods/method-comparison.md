@@ -214,3 +214,15 @@ RQA and FPCA are complementary rather than substitutes. FPCA summarizes dominant
 Transfer entropy is not a replacement for cross/JRQA, and none of these methods
 is automatically a causal estimator. The representation and scientific
 question determine which estimand is appropriate.
+
+## Fixed TE versus TE specification sensitivity
+
+| Method | Primary purpose | Output | Selection behavior |
+|---|---|---|---|
+| Fixed discrete TE | Estimate directed predictive information under one declared history/lag contract | one TE estimate plus support diagnostics | none |
+| Fixed TE + circular-shift test | Compare one declared TE estimate with one declared circular-shift null | observed TE, surrogate distribution, plus-one p-value | none |
+| TE specification sensitivity | Describe robustness across a declared history/lag Cartesian grid | complete specification table + descriptive summaries | never selects a winner |
+
+The sensitivity layer answers whether the substantive TE result depends on
+defensible analysis choices. It does not replace a primary specification,
+cross-validation procedure, multiplicity plan, or causal-identification design.

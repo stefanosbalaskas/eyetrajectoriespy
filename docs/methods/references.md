@@ -332,3 +332,12 @@ Version 0.38 reuses those established distance definitions in a descriptive sens
 The Zhang et al. study is direct head/eye transfer-entropy precedent. Its
 application-specific interpretation does not define the package's more
 conservative causal-language boundary.
+
+### Transfer-entropy parameter sensitivity
+
+- Vicente, R., Wibral, M., Lindner, M., & Pipa, G. (2011). Transfer entropy—a model-free measure of effective connectivity for the neurosciences. *Journal of Computational Neuroscience, 30*, 45–67. DOI: 10.1007/s10827-010-0262-3.
+- Lindner, M., Vicente, R., Priesemann, V., & Wibral, M. (2011). TRENTOOL: A Matlab open source toolbox to analyse information flow in time series data with transfer entropy. *BMC Neuroscience, 12*, 119. DOI: 10.1186/1471-2202-12-119.
+
+These sources document the practical importance of delay/history or embedding
+choices and parameter scanning in TE workflows. Version 0.42 uses them to
+motivate transparent sensitivity reporting, not automatic optimization.

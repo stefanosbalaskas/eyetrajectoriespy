@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.42.0.dev0
+
+- Add `transfer_entropy_parameter_sensitivity()` for a full Cartesian multiverse over analyst-declared target-history, source-history, and source-lag grids.
+- Retain one auditable row per specification with empirical TE, effective-transition support, observed target/joint-history counts, singleton-history fraction, and minimum/maximum/mean joint-history cell counts.
+- Optionally reuse one identical analyst-declared circular-shift set for every specification and retain surrogate mean, surrogate-centered TE, plus-one upper-tail p-value, attainable p-value resolution, and shift count per row.
+- Fail the complete sensitivity analysis when any declared specification is invalid; no failed row is silently removed or replaced.
+- Add descriptive variation summaries only; do not rank, optimize, or automatically select histories/lags and do not reinterpret the specification table as a sampling or posterior distribution.
+- Add `plot_transfer_entropy_sensitivity()`, which requires an explicit one-parameter slice and refuses hidden averaging over any other multi-valued sensitivity dimension.
+- Add `TransferEntropySensitivityResult`, manuscript-oriented reporting, deterministic directional-lag tests, direct agreement tests against the 0.41 base estimator/surrogate test, fail-closed grid/plot tests, mathematical contract, method guide, worked/executable example, and site integration.
+- Document Vicente et al. (2011) parameter sensitivity and Zhang et al. (2024) direct head-eye TE precedent while preserving the package's no-automatic-causal-interpretation boundary.
+
 ## 0.41.0.dev0
 
 - Add `discrete_transfer_entropy()` as empirical plug-in conditional mutual information for analyst-supplied integer-coded state sequences, reported in bits.

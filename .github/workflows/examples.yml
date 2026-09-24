@@ -61,6 +61,7 @@ jobs:
           python examples/joint_recurrence.py
           python examples/recurrence_networks.py
           python examples/transfer_entropy.py
+          python examples/transfer_entropy_sensitivity.py
           python examples/multivariate_iaaft_surrogates.py
           python examples/recurrence_threshold_diagnostics.py
           python examples/rqa_population_bootstrap.py
