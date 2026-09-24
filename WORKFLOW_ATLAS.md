@@ -34,7 +34,16 @@ flowchart LR
     D --> F[One joint Gaussian MixedLM]
     E --> F
     F --> G[beta(t) + participant random functions]
+    F --> H{Whole-function fixed-effect inference?}
+    H -->|Yes| I[Resample whole participants]
+    I --> J[Fixed-covariance GLS coefficient refits]
+    J --> K[Coefficient/family observed-grid maxima]
+    K --> L[Simultaneous bands]
 ```
+
+Whole participants remain the resampling unit for 0.44 simultaneous
+mixed-effects inference. The fitted random-effect covariance, residual
+variance, and declared bases are conditioned on rather than silently refitted.
 
 ## Functional response regression
 
