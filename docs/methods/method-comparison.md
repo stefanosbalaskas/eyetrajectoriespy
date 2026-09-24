@@ -149,6 +149,19 @@ The 0.18 familywise helper is a post-calibration of one already generated target
 | is the complete family of supplied nulls compatible with the joint root approximation? | `fpca_wild_bootstrap_projection_family_test()` global output | maximum observed statistic versus bootstrap maxima | global union-intersection style test |
 | what if I need closed/step-down strong FWER under arbitrary subset nulls? | specialist multiple-testing procedure | intersection/subset-aware calibration | not implemented by 0.19 |
 
+## Trajectory similarity and robustness
+
+| Question | Primary method | What it is not |
+|---|---|---|
+| Same-time integrated functional separation | functional L2 | elastic sequence alignment |
+| Worst separation along an order-preserving coupling | discrete Fréchet | cumulative alignment cost |
+| Cumulative mismatch after elastic sequence-index alignment | DTW | direct elapsed-time correspondence |
+| Does the similarity conclusion depend on the declared distance contract? | `trajectory_distance_sensitivity()` | an automatic selector of the "best" metric |
+
+The 0.38 sensitivity layer compares rankings and local neighbors while retaining
+each distance matrix on its native scale. It is descriptive and does not attach
+ordinary correlation p-values to dependent pair distances.
+
 ## Nonlinear trajectory dynamics
 
 | Scientific question | Preferred 0.23 tool | What it does not establish |
