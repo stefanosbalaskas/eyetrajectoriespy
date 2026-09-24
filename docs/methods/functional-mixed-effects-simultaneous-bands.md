@@ -179,9 +179,13 @@ fixed-covariance GLS bootstrap matched to the package's existing 0.36 model.
 
 ## Next methodological boundary
 
-Version 0.44 closes the most important inferential gap in the current
-functional mixed-effects layer. The next natural extension is participant
-**random functional slopes**, not another transfer-entropy method.
+Version 0.45 now adds one guarded participant random functional slope. The
+simultaneous-band procedure on this page remains conditional on the complete
+fitted random intercept/slope covariance.
+
+The next inferential extension is **0.46 full-refit participant bootstrap
+sensitivity**, where each participant bootstrap sample refits the mixed model
+and variance components rather than freezing them.
 
 See the
 [worked example](../examples/functional-mixed-effects-simultaneous-bands.md),
