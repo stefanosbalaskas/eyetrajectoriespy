@@ -266,3 +266,19 @@ participant heterogeneity in the time-varying effect of one predeclared
 predictor. It is not an automatic improvement over the simpler random-
 intercept model and the package does not compare or select the structures on
 the analyst's behalf.
+
+## Fixed-covariance versus full-refit participant bootstrap
+
+| Bootstrap | Participant resampling | Fixed effects refit | Random-effect covariance refit | Residual variance refit | Model specification reselected |
+|---|---|---|---|---|---|
+| Fixed-covariance (0.44) | yes | yes, GLS | no | no | no |
+| Full-refit (0.46) | yes | yes, MixedLM | yes | yes | no |
+
+Both methods resample whole participants. The full-refit version additionally
+propagates variance-component re-estimation through the fixed-effect bootstrap
+distribution.
+
+Use `compare_functional_mixed_effects_bootstraps()` to inspect how much this
+changes simultaneous-band width over the observed time grid. The width ratio is
+a descriptive sensitivity measure, not a criterion for choosing a preferred
+model.
