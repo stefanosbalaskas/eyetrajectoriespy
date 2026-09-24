@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.35.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.36.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -53,7 +53,8 @@ Registration is especially explicit because latency can itself be psychologicall
 - stabilized-volatility scans and target-specific selection of the wild-bootstrap inference truncation `h` with shared multipliers and analyst-declared stability thresholds;
 - simultaneous functional-mean bands with curve- or equal-weight participant-level inference;
 - function-on-scalar regression for experimental predictors with observed-grid coefficient functions, HC1 pointwise standard errors, fixed-design wild-bootstrap coefficient replicates, and coefficient-wise or familywise simultaneous bands;
-- fail-closed repeated-trial handling for function-on-scalar regression: participant aggregation is allowed only for participant-constant predictors, while trial-varying predictors are deferred to a true repeated-measures functional model;
+- fail-closed repeated-trial handling for function-on-scalar regression: participant aggregation is allowed only for participant-constant predictors;
+- joint Gaussian functional mixed-effects regression for trial-varying predictors, using explicit B-spline fixed coefficient functions and a participant functional random intercept fitted in one stacked MixedLM rather than separate pointwise models;
 - FPCA reconstruction/robust score-space review diagnostics and leave-one-group-out influence analysis;
 - split-conformal marginal anomaly p-values for new common-grid trajectories using explicit proper-training and calibration partitions;
 - participant → trial → time multilevel FPCA;
@@ -164,6 +165,7 @@ print(summarise_fpca(fit))
 | Group influence | leave-one-group-out matched FPCs | `leave_one_group_out_fpca_influence()` |
 | Scalar outcome predicted by gaze | FPCA-score approximation | `fit_scalar_on_function_regression()` |
 | Functional gaze predicted by experimental variables | observed-grid function-on-scalar OLS + wild-bootstrap simultaneous bands | `fit_function_on_scalar_regression()` / `function_on_scalar_simultaneous_bands()` |
+| Repeated-trial functional response with trial-varying predictors | joint B-spline functional mixed-effects regression with participant functional random intercept | `fit_functional_mixed_effects_regression()` |
 | Recurrent gaze-state structure | sparse recurrence / RQA | `recurrence_matrix()` / `rqa_metrics()` |
 | Recurrence-threshold diagnostics | exact RR(radius) curve and pair-distance shell profile | `recurrence_radius_profile()` |
 | RQA robustness across analysis choices | declared reconstruction/threshold/Theiler/line-length multiverse | `rqa_parameter_sensitivity()` |
