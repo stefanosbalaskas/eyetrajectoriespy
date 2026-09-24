@@ -531,6 +531,33 @@ contract.
 
 
 
+## Recurrence networks
+
+Version 0.40 can reinterpret one already-declared auto-recurrence plot as a
+sparse undirected graph:
+
+```python
+rec = recurrence_matrix(
+    embedded,
+    curve=0,
+    target_recurrence_rate=0.05,
+    theiler_window=10,
+)
+net = recurrence_network(rec)
+```
+
+Use this when the scientific object is the topology induced by recurrence
+neighborhoods: degree, local clustering, transitivity, connected components,
+and isolated states. The network does not choose or retune the recurrence
+threshold.
+
+Graph density uses all unordered node pairs. It is therefore kept distinct
+from the source recurrence rate whenever a Theiler window changes the
+eligible-pair denominator.
+
+See [Recurrence networks](../methods/recurrence-networks.md) for the full
+contract and interpretation limits.
+
 ## 5. Experimental Poincare return-map stability
 
 For genuinely repeated gaze cycles, a section can be defined by one state variable:
