@@ -313,3 +313,14 @@ Discrete Fréchet assumes that the ordered point sequence itself is the relevant
 The coupling preserves order but not elapsed-time correspondence. It is therefore suitable for order-preserving geometric comparison, not for analyses where latency or physical traversal speed is itself the estimand.
 
 All points must be finite. The package does not silently delete missing samples or repair incomplete paths before comparison.
+
+
+## Dynamic time warping trajectory distance
+
+DTW assumes that monotone sample-index warping is scientifically admissible. It is appropriate when local progression-rate differences may be nuisance variation, but it can align away latency or dwell-pattern differences that are substantive effects.
+
+The optional `window_radius` is measured in sample indices, not milliseconds or seconds. Comparability of a fixed radius therefore depends on the sampling representation supplied to the function.
+
+The public DTW scalar is an unnormalized cumulative local-cost sum. Sequence length and path length can affect its magnitude, so comparisons across materially different sampling densities or observation lengths require an explicit design decision rather than silent normalization.
+
+Coordinate units and explicit dimension weights define the local geometry. All points must be finite; the package does not silently delete missing samples or repair incomplete paths.
