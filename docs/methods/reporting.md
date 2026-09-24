@@ -497,6 +497,26 @@ For IAAFT testing, report the exact statistic, surrogate algorithm, number of su
 For multivariate IAAFT, additionally report the selected channel set, analyst-declared reference dimension, exact marginal-rank constraint, maximum/summary per-channel spectrum mismatch, maximum/summary pairwise complex cross-spectrum mismatch, and that final spectral preservation is approximate after rank remapping. State explicitly that channels were not surrogate-generated independently.
 
 For empirical return maps, report the section, crossing direction, interpolated crossing count, returned state variables, reference state, neighborhood policy/value, selected transition count, local-fit (R^2), Jacobian eigenvalues, spectral radius, and stability tolerance. Label the method experimental and state explicitly that the eigenvalues are not classical Floquet multipliers.
+## Joint recurrence / JRQA
+
+When reporting joint recurrence, state:
+
+- every subsystem/state definition and selected dimensions;
+- each subsystem's distance metric and radius policy;
+- requested and achieved recurrence rates when target-RR mode is used;
+- the exact shared time grid, time unit, and sampling interval;
+- the shared Theiler window;
+- the number of eligible unordered time pairs;
+- JRR and the number of joint recurrent pairs;
+- JRQA minimum line lengths and any reported JDET/JLAM/line/entropy/trapping
+  statistics;
+- that the JRP was the logical intersection of the component auto-recurrence
+  matrices;
+- that no interpolation, resampling, lag shifting, synchronization repair, or
+  threshold harmonization was performed;
+- that joint recurrence is distinct from cross-recurrence and does not by
+  itself establish direction or causal coupling.
+
 ## RQA-derived functional trajectories
 
 When reporting windowed RQA as functional data, report:

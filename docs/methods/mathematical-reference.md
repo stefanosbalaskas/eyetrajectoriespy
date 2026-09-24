@@ -1162,6 +1162,77 @@ The matrix is stored sparsely. Exactly one radius policy is allowed: a fixed \(\
 
 **API:** `recurrence_matrix()`, `recurrence_radius_profile()`, `rqa_metrics()`, `rqa_parameter_sensitivity()`, `windowed_rqa()`, `cross_recurrence_matrix()`, `cross_rqa_metrics()`. The radius-profile API evaluates the same RR equation over a declared radius grid, while the sensitivity API evaluates the broader recurrence/RQA contract over a predeclared parameter grid without automatic selection.
 
+## Synchronized joint recurrence and JRQA { #joint-recurrence }
+
+Joint recurrence addresses a different question from cross-recurrence. A
+cross-recurrence plot asks whether a state of system A resembles a state of
+system B. A joint recurrence plot instead asks whether all declared systems
+**individually recur at the same pair of time indices**.
+
+For binary auto-recurrence matrices \(R^{(s)}\),
+
+$
+JR_{ij}
+=
+\prod_{s=1}^{S}R_{ij}^{(s)},
+$
+
+which is equivalent to an elementwise logical AND. Each subsystem may have its
+own state representation, dimension, metric, and threshold/radius policy.
+
+Version 0.39 requires all component recurrence matrices to have:
+
+- the same square shape;
+- the exact same time grid on both axes;
+- the same Theiler exclusion;
+- auto-recurrence semantics.
+
+No lag shifting, synchronization, interpolation, resampling, or threshold
+harmonization is performed inside the joint-recurrence function.
+
+With \(N_{\mathrm{eligible}}\) unique off-diagonal time pairs outside the
+shared Theiler window,
+
+$
+\mathrm{JRR}
+=
+\frac{\sum_{i<j}JR_{ij}}{N_{\mathrm{eligible}}}.
+$
+
+Line-based JRQA then applies the existing auto-RQA conventions to the joint
+matrix:
+
+$
+\mathrm{JDET}
+=
+\frac{\sum_{\ell\ge\ell_{\min}}\ell P_{d,J}(\ell)}
+{\sum_{\ell\ge1}\ell P_{d,J}(\ell)},
+$
+
+and
+
+$
+\mathrm{JLAM}
+=
+\frac{\sum_{v\ge v_{\min}}v P_{v,J}(v)}
+{\sum_{v\ge1}v P_{v,J}(v)}.
+$
+
+Because line statistics rely on comparable index increments, the same
+approximately regular-grid requirement used by `rqa_metrics()` applies to
+`joint_rqa_metrics()`. Spatial joint recurrence itself can still be
+constructed before that line-metric check.
+
+### Interpretation boundary
+
+A high JRR means that the declared component systems often return
+simultaneously to their own previously visited neighborhoods. It is not a
+cross-system state distance, a direction-of-influence statistic, transfer
+entropy, or evidence of causal coupling.
+
+**API:** `joint_recurrence_matrix()`,
+`joint_recurrence_component_frame()`, `joint_rqa_metrics()`.
+
 ## Population mean bootstrap for curve-level RQA metrics { #rqa-population-bootstrap }
 
 For source curve $i$ and selected RQA metric $q$, let

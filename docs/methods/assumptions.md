@@ -290,6 +290,25 @@ IAAFT testing assumes the surrogate null is scientifically meaningful: a process
 Multivariate IAAFT additionally assumes that the selected dimensions are simultaneously observed on the same regular grid and that preserving their linear cross-spectral structure is part of the intended null. The reference dimension is an explicit finite-sample algorithm choice. Final cross-spectrum preservation is approximate after marginal rank remapping and must be judged using the retained diagnostics rather than assumed from the method name.
 
 Empirical return-map stability additionally assumes that the declared section identifies repeated comparable cycles and that a local affine map is meaningful in the selected neighborhood. The fitted Jacobian is a data-driven local regression object, not a model-derived variational flow.
+## Joint recurrence
+
+Joint recurrence assumes that the component recurrence plots refer to
+synchronized observations on the exact same time grid. Each component's
+state-space definition, metric, radius policy, and achieved recurrence rate
+must already be scientifically defensible on its own.
+
+The component plots must use one shared Theiler exclusion because JRR uses one
+shared eligible-pair denominator. Version 0.39 does not reconcile different
+Theiler windows automatically.
+
+The JRP is the logical intersection of auto-recurrence events. It therefore
+assumes that simultaneous within-system recurrence is the quantity of
+interest. It does not assume that subsystem state vectors are directly
+comparable across systems.
+
+Line-based JRQA inherits the approximately regular-grid assumption of the base
+RQA implementation.
+
 ## Functionalized windowed RQA
 
 `windowed_rqa_trajectory_set()` assumes that all source curves share the common grid represented by the input `TrajectorySet` and that the same recurrence contract is scientifically meaningful across those curves.

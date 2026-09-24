@@ -52,6 +52,7 @@ nav:
       - Dynamic time warping: methods/dynamic-time-warping.md
       - Trajectory-distance sensitivity: methods/trajectory-distance-sensitivity.md
       - Nonlinear trajectory dynamics: guides/nonlinear-dynamics.md
+      - Joint recurrence analysis: methods/joint-recurrence.md
       - Multivariate surrogate testing: methods/multivariate-surrogates.md
       - Recurrence-threshold diagnostics: methods/recurrence-threshold-diagnostics.md
       - RQA population bootstrap: methods/rqa-population-bootstrap.md
@@ -94,6 +95,7 @@ nav:
       - Trajectory-distance sensitivity: examples/trajectory-distance-sensitivity.md
       - Function → equation registry: examples/function-equation-registry.md
       - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
+      - Joint recurrence analysis: examples/joint-recurrence.md
       - Multivariate surrogate testing: examples/multivariate-surrogates.md
       - Recurrence-threshold diagnostics: examples/recurrence-threshold-diagnostics.md
       - RQA population bootstrap: examples/rqa-population-bootstrap.md

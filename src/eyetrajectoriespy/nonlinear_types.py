@@ -85,10 +85,34 @@ class RecurrenceResult:
     kind: str
     state_dimension: int
     provenance: Mapping[str, Any] = field(default_factory=dict)
+    time_unit: str | None = None
 
     @property
     def shape(self) -> tuple[int, int]:
         return self.matrix.shape
+
+
+@dataclass(frozen=True)
+class JointRecurrenceResult:
+    """Sparse intersection of synchronized auto-recurrence matrices."""
+
+    matrix: csr_matrix
+    time: np.ndarray
+    component_recurrences: tuple["RecurrenceResult", ...]
+    component_labels: tuple[str, ...]
+    joint_recurrence_rate: float
+    n_joint_recurrent_pairs: int
+    eligible_pair_count: int
+    theiler_window_samples: int
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def shape(self) -> tuple[int, int]:
+        return self.matrix.shape
+
+    @property
+    def n_components(self) -> int:
+        return len(self.component_recurrences)
 
 
 @dataclass(frozen=True)

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.39.0.dev0
+
+- Add `joint_recurrence_matrix()` for sparse synchronized joint recurrence as the elementwise logical intersection of at least two declared auto-recurrence matrices.
+- Preserve each component's own state dimension, distance metric, radius/target-RR policy, achieved recurrence rate, source provenance, and label rather than pooling subsystems into one hidden state space.
+- Require identical square matrix shape, exact common time grid, and one shared Theiler exclusion; no interpolation, resampling, lag shifting, synchronization repair, threshold harmonization, or recurrence re-estimation is performed automatically.
+- Define JRR over the same eligible unordered-pair denominator used by the synchronized component auto-recurrences.
+- Add `joint_rqa_metrics()`, reusing the package's existing line-counting conventions on the joint matrix while retaining the regular-grid requirement for line-based RQA.
+- Add `JointRecurrenceResult`, component-contract frame, sparse plotting, manuscript-oriented reporting, mathematical contracts, deterministic tests, worked/executable examples, and complete documentation/site integration.
+- Keep the interpretation boundary explicit: joint recurrence measures coincident within-system recurrence and is not cross-recurrence, transfer entropy, directionality, or evidence of causal coupling.
+
 ## 0.38.0.dev0
 
 - Add `trajectory_distance_sensitivity()` for descriptive robustness analysis across at least two explicitly declared integrated-L2, discrete-Fréchet, and/or DTW specifications.

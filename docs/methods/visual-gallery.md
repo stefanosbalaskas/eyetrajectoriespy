@@ -159,6 +159,16 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked example](../examples/nonlinear-dynamics.md) · [Mathematics](mathematical-reference.md#recurrence)
 
+-   **Synchronized joint recurrence**
+
+    ![Joint recurrence plot for two synchronized component systems](../assets/gallery/joint-recurrence.svg)
+
+    Sparse logical intersection of separately declared auto-recurrence matrices on one exact time grid and shared Theiler exclusion.
+
+    **API:** `joint_recurrence_matrix()`, `joint_rqa_metrics()`, `plot_joint_recurrence()`
+
+    [Worked example](../examples/joint-recurrence.md) · [Method guide](joint-recurrence.md) · [Mathematics](mathematical-reference.md#joint-recurrence)
+
 -   **Recurrence threshold profile**
 
     ![Recurrence rate over an analyst-declared radius grid](../assets/gallery/recurrence-radius-profile.svg)
@@ -326,4 +336,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates all twenty-three assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates all twenty-four assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.

@@ -7,6 +7,7 @@ import numpy as np
 from .nonlinear_types import (
     KantzDivergenceResult,
     KantzParameterSensitivityResult,
+    JointRecurrenceResult,
     LargestLyapunovResult,
     MultivariateIAAFTResult,
     MultivariateSurrogateNonlinearityResult,
@@ -24,6 +25,61 @@ from .nonlinear_types import (
     WindowedRQAResult,
     WindowedRQASensitivityResult,
 )
+
+
+def joint_recurrence_reporting_text(
+    result: JointRecurrenceResult,
+    metrics: RQAResult | None = None,
+) -> str:
+    """Return manuscript-ready wording for synchronized joint recurrence."""
+
+    if not isinstance(result, JointRecurrenceResult):
+        raise TypeError("result must be a JointRecurrenceResult")
+    if metrics is not None and not isinstance(metrics, RQAResult):
+        raise TypeError("metrics must be an RQAResult or None")
+
+    components = []
+    for label, recurrence in zip(
+        result.component_labels,
+        result.component_recurrences,
+        strict=True,
+    ):
+        policy = (
+            f"target RR={recurrence.target_recurrence_rate:.4g}"
+            if recurrence.target_recurrence_rate is not None
+            else f"fixed radius={recurrence.radius:.4g}"
+        )
+        components.append(
+            f"{label}: {recurrence.metric}, {policy}, "
+            f"achieved RR={recurrence.achieved_recurrence_rate:.4g}, "
+            f"state dimension={recurrence.state_dimension}"
+        )
+
+    metric_text = ""
+    if metrics is not None:
+        metric_text = (
+            f" Joint-RQA used minimum diagonal/vertical line lengths "
+            f"{metrics.min_diagonal_length}/{metrics.min_vertical_length}; "
+            f"DET={metrics.determinism:.4g}, "
+            f"LAM={metrics.laminarity:.4g}, "
+            f"trapping time={metrics.trapping_time:.4g}."
+        )
+
+    return (
+        f"Joint recurrence was computed as the logical intersection of "
+        f"{result.n_components} synchronized auto-recurrence matrices on the "
+        f"same time grid with a shared Theiler window of "
+        f"{result.theiler_window_samples} samples. Component contracts were "
+        f"{'; '.join(components)}. The joint recurrence rate was "
+        f"{result.joint_recurrence_rate:.4g} "
+        f"({result.n_joint_recurrent_pairs}/{result.eligible_pair_count} "
+        f"eligible unordered pairs). No resampling, lag shifting, threshold "
+        f"harmonization, or automatic threshold selection was performed."
+        + metric_text
+        + " Joint recurrence was interpreted as coincident recurrence within "
+        "the declared component systems, not as cross-recurrence between "
+        "states or as evidence of causal coupling."
+    )
 
 
 def recurrence_radius_profile_reporting_text(

@@ -73,6 +73,18 @@ The exact contract is asymmetric: marginal value distributions are exact after
 rank remapping, whereas final spectral/cross-spectral preservation is
 approximate and auditable through retained errors.
 
+## `JointRecurrenceResult`
+
+Stores the sparse logical intersection of synchronized auto-recurrence
+matrices, the exact common time grid, every component recurrence object and
+label, joint recurrence rate, unique joint recurrent-pair count, shared
+eligible-pair denominator, Theiler window, and provenance.
+
+The nested component objects preserve their own state dimensions, metrics,
+radii, target/achieved recurrence rates, and source provenance. The result does
+not imply cross-recurrence, lag alignment, threshold harmonization, or causal
+coupling.
+
 ## Nonlinear-dynamics result objects
 
 `DelayEmbeddingResult` preserves reconstructed state vectors, endpoint times, selected source dimensions, explicit delay in samples/time, and whether a constant physical delay exists.

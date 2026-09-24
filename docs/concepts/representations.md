@@ -77,6 +77,17 @@ $$
 $$
 
 These representations answer different questions and are never silently substituted for one another. Channel scaling is also not introduced automatically; distances inherit the declared coordinate/state units.
+## Joint recurrence representation
+
+A joint recurrence plot is not a pooled multivariate state space. Each
+subsystem first defines its own auto-recurrence matrix, potentially with a
+different state dimension, metric, and threshold. The joint plot then records
+where all component recurrence matrices are simultaneously true.
+
+This preserves modality-specific geometry while requiring a common synchronized
+time index. It answers a simultaneity-of-recurrence question and should not be
+substituted for cross-recurrence or a directional coupling model.
+
 ## RQA-metric functional trajectories
 
 `windowed_rqa_trajectory_set()` creates a derived `TrajectorySet` with `coordinate_system="rqa_metrics"`. Its dimensions are explicitly selected recurrence summaries such as RR, DET, LAM, line lengths, entropy, or CORM, and its time grid is the sequence of complete-window centers.

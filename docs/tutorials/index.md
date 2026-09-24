@@ -35,6 +35,15 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [Nonlinear trajectory dynamics](../examples/nonlinear-dynamics.md)
 
+-   **Joint recurrence across synchronized systems**
+
+    Keep gaze, pupil, physiology, or other synchronized subsystem state spaces
+    separate, build their recurrence plots under explicit contracts, then
+    inspect their logical intersection and JRQA summaries.
+
+    [Joint recurrence worked example](../examples/joint-recurrence.md)
+
+
 -   **Preserve planar linear structure in surrogate testing**
 
     Generate joint x/y MIAAFT surrogates, inspect retained power/cross-spectrum mismatch, and evaluate a multichannel nonlinear statistic without independently randomizing gaze dimensions.
