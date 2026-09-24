@@ -684,6 +684,59 @@ history-support diagnostics; the surrogate test retains the complete declared
 shift set and attainable p-value resolution. Neither API performs automatic
 state construction, lag/history selection, or causal identification.
 
+## Conditional transfer entropy and source-shift surrogate testing
+
+For source (X), target (Y), and an explicitly supplied conditioning process
+(Z),
+
+$
+T_{X\to Y\mid Z}(k,l,m,d,c)
+=
+I\!\left(
+X_{t-d}^{(l)};
+Y_t
+\mid
+Y_{t-1}^{(k)},
+Z_{t-c}^{(m)}
+\right).
+$
+
+With (mathbf y=Y_{t-1}^{(k)}), (mathbf x=X_{t-d}^{(l)}), and
+(mathbf z=Z_{t-c}^{(m)}), the empirical plug-in quantity is
+
+$
+T_{X\to Y\mid Z}
+=
+\sum
+p(y_t,\mathbf y,\mathbf x,\mathbf z)
+\log_2
+\frac{
+p(y_t\mid\mathbf y,\mathbf x,\mathbf z)
+}{
+p(y_t\mid\mathbf y,\mathbf z)
+}.
+$
+
+For (B) analyst-declared source-only circular shifts,
+
+$
+p_+
+=
+\frac{
+1+
+\sum_{b=1}^{B}
+I(T_{b}^{*,cond}\ge T_{obs}^{cond})
+}{
+B+1
+}.
+$
+
+Implemented by `conditional_transfer_entropy()` and
+`conditional_transfer_entropy_circular_shift_test()`. Target and conditioning
+processes stay fixed under the surrogate null. Conditioning is limited to the
+explicitly supplied process and is not presented as causal identification or
+complete adjustment for unmeasured common drivers.
+
 ## Transfer-entropy specification sensitivity
 
 For declared target-history grid \(\mathcal K\), source-history grid
