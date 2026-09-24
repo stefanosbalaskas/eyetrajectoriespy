@@ -444,6 +444,26 @@ No. Version 0.23 fits an empirical local affine map between observed section cro
 ## Can eyetrajectoriespy detect a bifurcation directly from gaze?
 
 Not as a classical bifurcation calculation. Classical continuation requires a specified dynamical model `dx/dt=f(x, theta)`. For observed behavior, version 0.23 offers recurrence, windowed recurrence, divergence, surrogate, and empirical return-map diagnostics without pretending the raw gaze coordinates define that model.
+## Why not run scalar IAAFT separately on x and y?
+
+Because independent phase randomization destroys the observed linear
+cross-channel structure. For planar gaze, that changes the null model itself.
+Use `generate_multivariate_iaaft_surrogates()` when the joint x/y structure
+must be preserved approximately.
+
+## Does multivariate IAAFT preserve the cross-spectrum exactly?
+
+Not after the final rank-remapping step. The Fourier adjustment targets the
+original channel amplitudes and inter-channel phase differences, but rank
+remapping perturbs the Fourier coefficients. Version 0.37 therefore stores and
+plots the final relative cross-spectrum mismatch for every surrogate.
+
+## How should I choose the MIAAFT reference dimension?
+
+Choose it from the representation/scientific contract or treat plausible
+references as a predeclared sensitivity analysis. Do not choose the reference
+after inspecting which one produces the smallest surrogate-test p-value.
+
 ## Do more sliding RQA windows increase my sample size?
 
 No. Windows are time points of a derived functional trajectory, not new participants or independent trials. Overlap makes the reuse of source samples explicit, and serial dependence can remain even without overlap. Use the original curve/participant design to define the inferential unit.
