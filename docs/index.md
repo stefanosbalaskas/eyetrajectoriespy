@@ -477,3 +477,16 @@ The package is designed around the principle that **the path to an FPC score is 
 - expanded tutorial, pre-registration, and failure-case guidance.
 
 For manuscript preparation, use the [reporting checklist](methods/reporting.md), [assumptions and diagnostics](methods/assumptions.md), and [limitations](methods/limitations.md).
+
+## New in 0.41: explicit discrete transfer entropy
+
+The experimental directed-dependence layer now includes
+`discrete_transfer_entropy()` and `transfer_entropy_circular_shift_test()`.
+The state representation, source/target histories, lag, and circular-shift null
+remain analyst-declared. Continuous gaze is never silently binned and positive
+TE is not described as proof of causal influence.
+
+[Method guide](methods/transfer-entropy.md) ·
+[Worked example](examples/transfer-entropy.md) ·
+[Mathematical contract](methods/mathematical-reference.md#discrete-transfer-entropy)
+
