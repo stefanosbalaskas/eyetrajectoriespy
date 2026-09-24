@@ -96,21 +96,21 @@ $$
 
 **Functions:** `trajectory_distance_sensitivity()`
 
-$
+$$
 \mathbf v^{(s)}=\{D_{ij}^{(s)}:1\le i<j\le n\}
-$
+$$
 
-$
+$$
 \rho_S(s,r)=\operatorname{corr}\left(\operatorname{rank}\mathbf v^{(s)},\operatorname{rank}\mathbf v^{(r)}\right)
-$
+$$
 
-$
+$$
 J_k^{(s,r)}(i)=\frac{|\mathcal N_k^{(s)}(i)\cap\mathcal N_k^{(r)}(i)|}{|\mathcal N_k^{(s)}(i)\cup\mathcal N_k^{(r)}(i)|}
-$
+$$
 
-$
+$$
 A_1^{(s,r)}=\frac{1}{n}\sum_{i=1}^{n}\mathbb I\{\mathcal N_1^{(s)}(i)=\mathcal N_1^{(r)}(i)\}
-$
+$$
 
 **Scope:** Descriptive comparison of at least two analyst-declared L2, discrete-Frechet, and/or DTW specifications on the same complete trajectories. Raw distance matrices remain on native scales; no standardization, consensus metric, p-value, or preferred distance is constructed automatically.
 
