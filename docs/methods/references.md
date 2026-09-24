@@ -407,3 +407,20 @@ Version 0.45 is intentionally narrower: one Gaussian response dimension, one
 participant functional random intercept, at most one explicitly declared
 participant random functional slope, one shared random basis size, and a full
 unstructured intercept/slope covariance.
+
+## Full-refit participant bootstrap
+
+- Park, S. Y., Staicu, A.-M., Xiao, L., & Crainiceanu, C. M. (2018).
+  Simple fixed-effects inference for complex functional models.
+  *Biostatistics, 19*(2), 137–152.
+  DOI: 10.1093/biostatistics/kxx026.
+
+Park et al. estimate fixed effects in complex functional mixed models and
+bootstrap independent units such as subjects for inference. Version 0.46 uses
+the same independent-unit principle but refits the package's declared Gaussian
+`statsmodels.MixedLM` model in every participant bootstrap sample.
+
+The package makes a narrower implementation claim than the general functional
+inference literature: basis sizes, preprocessing, model structure, random-slope
+choice, REML/ML choice, and optimizer remain fixed at the analyst-declared
+specification. Only the mixed-model parameters themselves are re-estimated.
