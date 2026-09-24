@@ -243,6 +243,33 @@ pointwise uncertainty.
 See the dedicated
 [simultaneous-inference method guide](../methods/functional-mixed-effects-simultaneous-bands.md).
 
+## Full-refit participant bootstrap
+
+Version 0.46 adds a second participant-level uncertainty path:
+
+~~~python
+from eyetrajectoriespy import (
+    bootstrap_functional_mixed_effects_full_refit,
+)
+
+full_boot = bootstrap_functional_mixed_effects_full_refit(
+    fit,
+    n_bootstrap=1000,
+    random_state=2026,
+)
+~~~
+
+Unlike the faster 0.44 fixed-covariance bootstrap, each replicate refits fixed
+coefficients, the complete random-effect covariance, and residual variance.
+
+Duplicate source participants receive distinct bootstrap group identities.
+Model specification, basis sizes, preprocessing, REML/ML choice, and optimizer
+remain fixed.
+
+Use the
+[full-refit bootstrap guide](../methods/functional-mixed-effects-full-refit-bootstrap.md)
+for the exact inferential and failure contract.
+
 ## Important current limitations
 
 The current mixed-effects layer does not yet estimate:
