@@ -649,20 +649,20 @@ scientific fit.
 Version 0.44 adds whole-function observed-grid inference for the fixed
 coefficient functions from the 0.36 joint functional mixed-effects model.
 
-For participant (i), the fitted marginal covariance is
+For participant \(i\), the fitted marginal covariance is
 
-$
+$$
 \mathbf V_i
 =
 \mathbf Z_i\widehat{\boldsymbol\Psi}\mathbf Z_i^\top
 +
 \widehat\sigma^2\mathbf I.
-$
+$$
 
-With participant-level fixed-effect design (mathbf X_i) and stacked
-functional response (mathbf y_i), define
+With participant-level fixed-effect design \(\mathbf X_i\) and stacked
+functional response \(\mathbf y_i\), define
 
-$
+$$
 \mathbf A_i
 =
 \mathbf X_i^\top\mathbf V_i^{-1}\mathbf X_i,
@@ -670,14 +670,14 @@ $
 \mathbf s_i
 =
 \mathbf X_i^\top\mathbf V_i^{-1}\mathbf y_i.
-$
+$$
 
-A bootstrap replicate samples (n) participant indices with replacement,
-(I_1^{(b)},\ldots,I_n^{(b)}). Every selected participant contributes the
+A bootstrap replicate samples \(n\) participant indices with replacement,
+\(I_1^{(b)},\ldots,I_n^{(b)}\). Every selected participant contributes the
 complete set of that participant's trial-by-time observations. The fixed basis
 coefficients are then re-estimated conditionally on the fitted covariance model:
 
-$
+$$
 \widehat{\boldsymbol\theta}^{*(b)}
 =
 \left[
@@ -686,12 +686,12 @@ $
 \right]^{-1}
 \sum_{r=1}^{n}
 \mathbf s_{I_r^{(b)}}.
-$
+$$
 
-For coefficient (p), the bootstrap pointwise standard deviation is used to
+For coefficient \(p\), the bootstrap pointwise standard deviation is used to
 studentize the centered bootstrap coefficient process,
 
-$
+$$
 M_p^{*(b)}
 =
 \max_m
@@ -704,29 +704,29 @@ M_p^{*(b)}
 \widehat{\mathrm{SE}}_p^*(t_m)
 }
 \right|.
-$
+$$
 
-The empirical (1-\alpha) quantile (c_{p,1-\alpha}) gives
+The empirical \(1-\alpha\) quantile \(c_{p,1-\alpha}\) gives
 
-$
+$$
 \widehat\beta_p(t_m)
 \pm
 c_{p,1-\alpha}
 \widehat{\mathrm{SE}}_p^*(t_m).
-$
+$$
 
-With `simultaneous_scope="family"`, the maximum is instead taken jointly over
+With \`simultaneous_scope="family"\`, the maximum is instead taken jointly over
 all fixed coefficients and observed time points before calibration.
 
 This is a **participant-cluster case bootstrap conditional on the fitted
 covariance model and declared bases**. It does not refit
-(widehat{\boldsymbol\Psi}), (widehat\sigma^2), basis sizes, spline
+\(\widehat{\boldsymbol\Psi}\), \(\widehat\sigma^2\), basis sizes, spline
 degree, preprocessing, or model specification inside resamples. The coverage
 claim is simultaneous over the observed time grid only, not every point of the
 continuous B-spline domain.
 
-**API:** `bootstrap_functional_mixed_effects_coefficients()`,
-`functional_mixed_effects_simultaneous_bands()`.
+**API:** \`bootstrap_functional_mixed_effects_coefficients()\`,
+\`functional_mixed_effects_simultaneous_bands()\`.
 
 ## Function-on-scalar regression { #function-on-scalar }
 
