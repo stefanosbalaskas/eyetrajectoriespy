@@ -123,3 +123,14 @@ rather than choosing the combination that produces the largest TE. The
 sensitivity API evaluates the complete declared Cartesian grid, retains
 finite-support diagnostics for every row, and never selects a winner
 automatically.
+
+## Conditioning on an explicit third process
+
+When a scientifically specified process may explain part of the apparent
+pairwise source-to-target information transfer, use the
+[0.43 conditional transfer-entropy layer](conditional-transfer-entropy.md).
+
+Conditional TE asks whether source history adds predictive information beyond
+both target history and the declared conditioning-process history. It does not
+prove that the source causally influences the target or that all unmeasured
+common drivers have been controlled.
