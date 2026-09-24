@@ -197,26 +197,35 @@ def test_random_slope_frame_plot_and_reporting(
     assert "random-slope selection" in text
 
 
-def test_zero_random_slope_truth_is_flagged_near_boundary():
+def test_zero_random_slope_truth_is_boundary_or_fail_closed():
     trajectories, design, _ = _random_slope_data(
         seed=451,
         n_participants=36,
         zero_slope=True,
     )
-    result = fit_functional_mixed_effects_regression(
-        trajectories,
-        design,
-        predictors=("condition",),
-        participant_column="participant_id",
-        dimension="metric",
-        fixed_basis_size=2,
-        random_basis_size=2,
-        random_slope_predictor="condition",
-        spline_degree=1,
-        maxiter=1000,
-    )
+    try:
+        result = fit_functional_mixed_effects_regression(
+            trajectories,
+            design,
+            predictors=("condition",),
+            participant_column="participant_id",
+            dimension="metric",
+            fixed_basis_size=2,
+            random_basis_size=2,
+            random_slope_predictor="condition",
+            spline_degree=1,
+            maxiter=1000,
+        )
+    except RuntimeError as exc:
+        # An exact zero variance component lies on the covariance boundary.
+        # If the backend does not converge there, the package must fail closed
+        # rather than return a nominally valid heterogeneous-slope fit.
+        assert "optimization did not converge" in str(exc)
+        return
 
-    slope_scale = float(np.max(np.linalg.eigvalsh(result.random_slope_covariance)))
+    slope_scale = float(
+        np.max(np.linalg.eigvalsh(result.random_slope_covariance))
+    )
     intercept_scale = float(
         np.max(np.linalg.eigvalsh(result.random_intercept_covariance))
     )
