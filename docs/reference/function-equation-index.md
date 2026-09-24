@@ -472,17 +472,17 @@ $$
 
 **Functions:** `conditional_transfer_entropy()`, `conditional_transfer_entropy_circular_shift_test()`
 
-$
+$$
 T_{X\to Y\mid Z}(k,l,m,d,c)=I\!\left(X_{t-d}^{(l)};Y_t\mid Y_{t-1}^{(k)},Z_{t-c}^{(m)}\right)
-$
+$$
 
-$
+$$
 T_{X\to Y\mid Z}=\sum p(y_t,\mathbf y,\mathbf x,\mathbf z)\log_2\frac{p(y_t\mid\mathbf y,\mathbf x,\mathbf z)}{p(y_t\mid\mathbf y,\mathbf z)}
-$
+$$
 
-$
+$$
 p_+=\frac{1+\sum_{b=1}^{B}I(T_{b}^{*,cond}\ge T_{obs}^{cond})}{B+1}
-$
+$$
 
 **Scope:** Empirical plug-in conditional mutual information for analyst-supplied integer-coded source, target, and conditioning states with explicit target/source/conditioning histories and source/conditioning lags. Surrogate inference shifts only the source and holds target and conditioning processes fixed. Conditioning addresses only the explicitly supplied process and does not establish causal influence or guarantee adjustment for unmeasured common drivers.
 
