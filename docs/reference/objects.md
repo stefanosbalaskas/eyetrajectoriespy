@@ -391,3 +391,26 @@ winner flag, or automatic selection result. When circular shifts are supplied,
 the same shift set is applied to every specification; resulting p-values remain
 unadjusted across the sensitivity multiverse unless the analyst supplies a
 separate multiplicity procedure.
+
+## ConditionalTransferEntropyResult
+
+Stores empirical conditional transfer entropy in bits, every local conditional
+TE contribution, effective sample indices, complete integer-coded
+source/target/conditioning series, and the exact reconstructed
+target/source/conditioning histories used at every effective transition.
+
+The result also retains state counts, target-history count,
+conditioning-history count, target+conditioning and source+conditioning support,
+complete joint-history support, singleton fraction, minimum/maximum/mean
+complete-joint-history cell counts, all five history/lag settings, and full
+provenance. No empirical-support threshold is applied automatically.
+
+## ConditionalTransferEntropyCircularShiftTestResult
+
+Stores the observed `ConditionalTransferEntropyResult`, exact analyst-declared
+source-only circular shifts, every surrogate conditional-TE estimate, surrogate
+mean, surrogate-centered conditional TE, plus-one upper-tail Monte Carlo
+p-value, attainable p-value resolution, and null provenance identifying the
+source as shifted while target and conditioning processes remain fixed.
+
+Neither object claims causal identification or complete confounder adjustment.
