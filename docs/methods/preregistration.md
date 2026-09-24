@@ -784,3 +784,25 @@ Pre-register:
 Do not inspect several candidate predictors and retain only the random slope
 that produces the most interesting heterogeneity. Version 0.45 intentionally
 provides no automatic random-slope selection.
+
+## Full-refit participant bootstrap
+
+Pre-register:
+
+- participant as the bootstrap unit;
+- bootstrap replicate count and random seed;
+- fixed-covariance versus full-refit bootstrap as distinct planned analyses;
+- the fixed/random basis sizes and spline degree;
+- predictor set and any single random-slope predictor;
+- REML versus ML;
+- optimizer and iteration limit;
+- coefficient-wise versus familywise simultaneous scope;
+- `failed_replicate_policy="raise"`.
+
+State that duplicate source-participant draws receive distinct bootstrap group
+identities and that model/basis/preprocessing choices remain fixed across
+replicates.
+
+If both bootstrap methods are planned, specify whether the full-refit/fixed-
+covariance band-width ratio is a descriptive sensitivity diagnostic rather than
+a model-selection rule.

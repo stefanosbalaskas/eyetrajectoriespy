@@ -248,6 +248,26 @@ $$
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#functional-mixed-effects-random-slope
 
+## Full-refit participant bootstrap for functional mixed-effects models
+
+**Functions:** `bootstrap_functional_mixed_effects_full_refit()`, `compare_functional_mixed_effects_bootstraps()`
+
+$$
+I_1^{*(b)},\ldots,I_n^{*(b)}\overset{\mathrm{iid}}{\sim}\{1,\ldots,n\}
+$$
+
+$$
+\mathcal D^{*(b)}\longrightarrow\left\{\widehat{\boldsymbol\beta}^{*(b)}(t),\widehat{\boldsymbol\Psi}^{*(b)},\widehat\sigma^{2*(b)}\right\}
+$$
+
+$$
+R_p(t_m)=\frac{W_{p,\mathrm{full}}(t_m)}{W_{p,\mathrm{fixed}}(t_m)}
+$$
+
+**Scope:** Whole-participant case bootstrap with a complete MixedLM parameter refit in every replicate. Duplicate source-participant draws receive distinct bootstrap group identities. Fixed effects, the complete random-effect covariance, and residual variance are re-estimated; basis sizes, spline degree, preprocessing, predictor specification, random-slope structure, REML/ML choice, and optimizer remain fixed. Failed replicates raise and are not silently redrawn.
+
+Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#functional-mixed-effects-full-refit-bootstrap
+
 ## Participant-cluster simultaneous mixed-effects coefficient bands
 
 **Functions:** `bootstrap_functional_mixed_effects_coefficients()`, `functional_mixed_effects_simultaneous_bands()`

@@ -39,6 +39,12 @@ from .function_on_scalar import (
     function_on_scalar_coefficient_frame,
     function_on_scalar_simultaneous_bands,
 )
+from .functional_mixed_effects_full_refit import (
+    bootstrap_functional_mixed_effects_full_refit,
+    compare_functional_mixed_effects_bootstraps,
+    functional_mixed_effects_full_refit_audit_frame,
+    functional_mixed_effects_variance_bootstrap_frame,
+)
 from .functional_mixed_effects_inference import (
     bootstrap_functional_mixed_effects_coefficients,
     functional_mixed_effects_simultaneous_bands,
@@ -229,6 +235,7 @@ from .phase import (
 from .plotting import (
     plot_dynamic_time_warping_alignment,
     plot_function_on_scalar_coefficients,
+    plot_functional_mixed_effects_bootstrap_comparison,
     plot_functional_mixed_effects_coefficient,
     plot_functional_random_effects,
     plot_fpca_component,
@@ -386,6 +393,7 @@ from .types import (
     FunctionalMeanBandResult,
     FunctionalMixedEffectsBandResult,
     FunctionalMixedEffectsBootstrapResult,
+    FunctionalMixedEffectsFullRefitBootstrapResult,
     FunctionalMixedEffectsResult,
     FunctionOnScalarBandResult,
     FunctionOnScalarBootstrapResult,
@@ -428,9 +436,15 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.45.0.dev0"
+__version__ = "0.46.0.dev0"
 
 __all__ = [
+    "FunctionalMixedEffectsFullRefitBootstrapResult",
+    "bootstrap_functional_mixed_effects_full_refit",
+    "functional_mixed_effects_full_refit_audit_frame",
+    "functional_mixed_effects_variance_bootstrap_frame",
+    "compare_functional_mixed_effects_bootstraps",
+    "plot_functional_mixed_effects_bootstrap_comparison",
     "FunctionalMixedEffectsBootstrapResult",
     "FunctionalMixedEffectsBandResult",
     "bootstrap_functional_mixed_effects_coefficients",

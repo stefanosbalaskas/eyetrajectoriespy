@@ -81,6 +81,8 @@ within-participant variation in the requested random-slope predictor, the
 package refuses the 0.45 model rather than pretending that participant's
 intercept and slope functions are separately identified.
 
+The requirement that the slope predictor vary within every participant is deliberately stricter than mathematical identification in every possible unbalanced mixed-model design. Version 0.45 keeps this conservative contract because it makes the participant-specific slope estimand directly inspectable and avoids silently relying on sparse cross-cluster identification. Any future relaxation should require dedicated unbalanced-design validation.
+
 ## Retained covariance diagnostics
 
 The result retains:

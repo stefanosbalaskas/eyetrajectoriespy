@@ -274,6 +274,34 @@ _CONTRACTS = (
         ),
     ),
     MathematicalContract(
+        key="functional-mixed-effects-full-refit-bootstrap",
+        title="Full-refit participant bootstrap for functional mixed-effects models",
+        public_api=(
+            "bootstrap_functional_mixed_effects_full_refit",
+            "compare_functional_mixed_effects_bootstraps",
+        ),
+        equations=(
+            r"I_1^{*(b)},\ldots,I_n^{*(b)}"
+            r"\overset{\mathrm{iid}}{\sim}\{1,\ldots,n\}",
+            r"\mathcal D^{*(b)}\longrightarrow"
+            r"\left\{\widehat{\boldsymbol\beta}^{*(b)}(t),"
+            r"\widehat{\boldsymbol\Psi}^{*(b)},"
+            r"\widehat\sigma^{2*(b)}\right\}",
+            r"R_p(t_m)=\frac{W_{p,\mathrm{full}}(t_m)}"
+            r"{W_{p,\mathrm{fixed}}(t_m)}",
+        ),
+        site_anchor="functional-mixed-effects-full-refit-bootstrap",
+        scope=(
+            "Whole-participant case bootstrap with a complete MixedLM parameter "
+            "refit in every replicate. Duplicate source-participant draws receive "
+            "distinct bootstrap group identities. Fixed effects, the complete "
+            "random-effect covariance, and residual variance are re-estimated; "
+            "basis sizes, spline degree, preprocessing, predictor specification, "
+            "random-slope structure, REML/ML choice, and optimizer remain fixed. "
+            "Failed replicates raise and are not silently redrawn."
+        ),
+    ),
+    MathematicalContract(
         key="functional-mixed-effects-simultaneous",
         title="Participant-cluster simultaneous mixed-effects coefficient bands",
         public_api=(

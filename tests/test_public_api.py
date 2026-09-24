@@ -1,8 +1,9 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.45.0.dev0"
+    assert et.__version__=="0.46.0.dev0"
     required={
+        "FunctionalMixedEffectsFullRefitBootstrapResult","bootstrap_functional_mixed_effects_full_refit","functional_mixed_effects_full_refit_audit_frame","functional_mixed_effects_variance_bootstrap_frame","compare_functional_mixed_effects_bootstraps","plot_functional_mixed_effects_bootstrap_comparison",
         "FunctionalMixedEffectsBootstrapResult","FunctionalMixedEffectsBandResult","bootstrap_functional_mixed_effects_coefficients","functional_mixed_effects_simultaneous_bands",
         "ConditionalTransferEntropyResult","ConditionalTransferEntropyCircularShiftTestResult","conditional_transfer_entropy","conditional_transfer_entropy_local_frame","conditional_transfer_entropy_circular_shift_test","plot_conditional_transfer_entropy_circular_shift_test","conditional_transfer_entropy_reporting_text","conditional_transfer_entropy_circular_shift_reporting_text",
         "TransferEntropySensitivityResult","transfer_entropy_parameter_sensitivity","plot_transfer_entropy_sensitivity","transfer_entropy_parameter_sensitivity_reporting_text",

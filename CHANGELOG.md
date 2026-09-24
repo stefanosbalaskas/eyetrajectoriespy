@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.46.0.dev0
+
+- Add `bootstrap_functional_mixed_effects_full_refit()` as a second, explicitly distinct whole-participant bootstrap for the likelihood-based functional mixed-effects layer.
+- Assign every sampled participant occurrence a unique bootstrap group identity, even when the same source participant is drawn multiple times, and retain both source and bootstrap participant IDs for every replicate/draw.
+- Refit fixed coefficient functions, the complete random-effect covariance, random-intercept/slope covariance blocks, and residual variance in every bootstrap replicate under the unchanged declared model specification.
+- Keep basis sizes, spline degree, common-grid knot construction, preprocessing, response dimension, predictors, random-slope structure, REML/ML choice, optimizer, and iteration limit fixed; “full refit” does not mean automatic model reselection.
+- Retain complete bootstrap distributions for random-effect covariance matrices, eigenvalues, condition numbers, boundary/singularity flags, residual variance, log likelihood, convergence state, backend warnings, and slope-specific covariance diagnostics.
+- Add `functional_mixed_effects_full_refit_audit_frame()` and `functional_mixed_effects_variance_bootstrap_frame()` for participant-identity and variance-component stability auditing.
+- Allow `functional_mixed_effects_simultaneous_bands()` to calibrate either the original fixed-covariance bootstrap or the new full-refit bootstrap while preserving the distinction in provenance/reporting.
+- Add `compare_functional_mixed_effects_bootstraps()` and `plot_functional_mixed_effects_bootstrap_comparison()` to compare coefficient/time-specific full-refit versus fixed-covariance simultaneous-band widths.
+- Keep `failed_replicate_policy="raise"`; failed bootstrap fits are not silently discarded or redrawn.
+- Clarify that the 0.45 participant-count rule is a minimum covariance-complexity guard, not an adequacy guarantee, and retain the stricter requirement that the random-slope predictor vary within every participant.
+- Revise the roadmap so 0.47 is residual/within-trial dependence diagnostics before choosing trial-level functional random effects versus explicit serial residual covariance.
+
 ## 0.45.0.dev0
 
 - Extend `fit_functional_mixed_effects_regression()` with exactly one explicitly declared `random_slope_predictor`; `None` preserves the existing random-functional-intercept model.

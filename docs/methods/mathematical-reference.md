@@ -730,6 +730,73 @@ refit variance components.
 `functional_random_effect_frame()`,
 `plot_functional_random_effects()`.
 
+## Full-refit participant bootstrap for functional mixed-effects models { #functional-mixed-effects-full-refit-bootstrap }
+
+Version 0.46 adds whole-participant resampling with complete parameter refitting
+under the already-declared mixed-effects specification.
+
+For bootstrap replicate \(b\),
+
+$
+I_1^{*(b)},\ldots,I_n^{*(b)}
+\overset{\mathrm{iid}}{\sim}
+\{1,\ldots,n\}.
+$
+
+Each occurrence of a sampled source participant receives a distinct bootstrap
+group identity. This prevents repeated draws of one participant from being
+merged into one random-effect group by the mixed-model backend.
+
+The bootstrap sample is refitted to obtain
+
+$
+\mathcal D^{*(b)}
+\longrightarrow
+\left\{
+\widehat{\boldsymbol\beta}^{*(b)}(t),
+\widehat{\boldsymbol\Psi}^{*(b)},
+\widehat{\sigma}^{2*(b)}
+\right\}.
+$
+
+Thus, unlike the 0.44 fixed-covariance participant bootstrap, 0.46 re-estimates
+the complete random-effect covariance and residual variance in every replicate.
+
+The declared model specification remains fixed: preprocessing, response
+dimension, predictor set, fixed/random basis sizes, spline degree,
+random-slope structure, REML/ML choice, optimizer, and optimizer iteration
+limit are not reselected.
+
+For direct sensitivity comparison,
+
+$
+R_p(t_m)
+=
+\frac{
+W_{p,\mathrm{full}}(t_m)
+}{
+W_{p,\mathrm{fixed}}(t_m)
+},
+$
+
+where \(W_{p,\mathrm{full}}(t_m)\) and
+\(W_{p,\mathrm{fixed}}(t_m)\) are simultaneous-band widths at coefficient
+\(p\) and observed time \(t_m\).
+
+Values substantially different from one indicate that variance-component
+re-estimation changes fixed-effect uncertainty under the declared model. The
+ratio is descriptive rather than a formal model-comparison statistic.
+
+The full-refit result retains every covariance matrix, covariance eigenvalues
+and condition numbers, boundary/singularity flags, residual variances, log
+likelihoods, convergence states, backend warnings, source participant IDs, and
+bootstrap participant IDs.
+
+**API:** `bootstrap_functional_mixed_effects_full_refit()`,
+`functional_mixed_effects_full_refit_audit_frame()`,
+`functional_mixed_effects_variance_bootstrap_frame()`,
+`compare_functional_mixed_effects_bootstraps()`.
+
 ## Participant-cluster simultaneous mixed-effects coefficient bands { #functional-mixed-effects-simultaneous }
 
 Version 0.44 adds whole-function observed-grid inference for the fixed

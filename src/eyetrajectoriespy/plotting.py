@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 from .fpca import component_trajectories
 from .registration import warping_displacement
@@ -312,6 +313,57 @@ def plot_functional_random_effects(
     ax.set_title(title)
     if n_plot <= 12:
         ax.legend()
+    return ax
+
+
+def plot_functional_mixed_effects_bootstrap_comparison(
+    comparison: pd.DataFrame,
+    *,
+    coefficient: str,
+    ax=None,
+):
+    """Plot full-refit/fixed-covariance simultaneous-band width ratios."""
+
+    if not isinstance(comparison, pd.DataFrame):
+        raise TypeError("comparison must be a pandas DataFrame")
+    required = {
+        "coefficient",
+        "time",
+        "full_refit_to_fixed_covariance_width_ratio",
+    }
+    missing = sorted(required.difference(comparison.columns))
+    if missing:
+        raise ValueError(
+            "comparison is missing required columns: "
+            + ", ".join(missing)
+        )
+    if not isinstance(coefficient, str) or not coefficient:
+        raise TypeError("coefficient must be a non-empty string")
+    selected = comparison.loc[
+        comparison["coefficient"] == coefficient
+    ].sort_values("time")
+    if selected.empty:
+        raise KeyError(f"Unknown coefficient {coefficient!r}")
+    ratio = selected[
+        "full_refit_to_fixed_covariance_width_ratio"
+    ].to_numpy(dtype=float)
+    if not np.all(np.isfinite(ratio)):
+        raise ValueError(
+            "comparison contains non-finite band-width ratios"
+        )
+    if ax is None:
+        _, ax = plt.subplots()
+    ax.plot(
+        selected["time"].to_numpy(dtype=float),
+        ratio,
+    )
+    ax.axhline(1.0, linestyle="--")
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Full-refit / fixed-covariance band width")
+    ax.set_title(
+        "Mixed-effects bootstrap sensitivity: "
+        f"{coefficient}"
+    )
     return ax
 
 

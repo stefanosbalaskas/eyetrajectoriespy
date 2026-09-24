@@ -16,6 +16,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Function-on-scalar simultaneous coefficient bands | implemented; fixed-design wild bootstrap with coefficient/family scope | `function_on_scalar_simultaneous_bands()` |
 | Functional mixed-effects regression | implemented; one Gaussian response dimension, B-spline fixed effects, participant functional random intercept, optional one guarded participant random functional slope, joint MixedLM fit | `fit_functional_mixed_effects_regression()` |
 | Functional mixed-effects simultaneous coefficient bands | implemented; whole-participant case bootstrap, fixed-covariance GLS coefficient refits, coefficient/family observed-grid maxima | `bootstrap_functional_mixed_effects_coefficients()` / `functional_mixed_effects_simultaneous_bands()` |
+| Full-refit participant bootstrap | implemented; unique bootstrap group IDs for duplicate participant draws, complete MixedLM refit under fixed declared specification, retained variance-component distributions | `bootstrap_functional_mixed_effects_full_refit()` |
 | Participant random functional slope | implemented; one declared predictor, shared random basis size, full unstructured intercept/slope covariance, strict within-participant variation and covariance-complexity guards | `fit_functional_mixed_effects_regression(..., random_slope_predictor=...)` |
 | Explicit irregular → common-grid projection | implemented | `resample_irregular_to_grid()` |
 | Univariate FPCA | implemented | `fit_fpca()` |
@@ -141,20 +142,24 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.45.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.46.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
-### Next inferential priority: full-refit participant bootstrap
+### Next methodological priority: residual / within-trial dependence diagnostics
 
-Version 0.45 implements exactly one participant random functional slope with
-explicit covariance-dimensionality and identifiability safeguards.
+Version 0.46 closes the planned variance-component re-estimation gap while
+preserving the faster 0.44 fixed-covariance bootstrap as a separate conditional
+inference path.
 
-The next tranche is **0.46 full-refit participant bootstrap sensitivity**:
-whole participants remain the resampling unit, but each bootstrap sample refits
-the mixed model and its variance components. The existing 0.44 fixed-covariance
-bootstrap remains the faster conditional-inference path rather than being
-silently replaced.
+Version **0.47** should diagnose dependence left in the curve-level residuals
+before any new covariance model is selected. Candidate diagnostics include
+trial-wise residual ACF, lag covariance, empirical variograms, physical-lag
+correlation, participant/trial stratification, and before/after random-slope
+comparisons.
 
-After that, **0.47** should introduce explicit residual serial-correlation
-structures. Multiple random functional slopes, generalized responses, TE
-networks, and automatic causal discovery remain later candidates.
+The diagnostics must not automatically choose AR(1), a trial-level functional
+random effect, or another covariance structure. The next structural tranche
+should be chosen only after those residual patterns are explicit.
+
+Multiple random functional slopes, generalized responses, TE networks, and
+automatic causal discovery remain later candidates.

@@ -479,6 +479,26 @@ The package is designed around the principle that **the path to an FPC score is 
 
 For manuscript preparation, use the [reporting checklist](methods/reporting.md), [assumptions and diagnostics](methods/assumptions.md), and [limitations](methods/limitations.md).
 
+## New in 0.46: full-refit participant bootstrap
+
+The mixed-effects inference layer now offers two deliberately different
+participant bootstraps. The original path re-estimates fixed coefficients while
+conditioning on the fitted covariance. The new
+`bootstrap_functional_mixed_effects_full_refit()` refits fixed coefficients,
+the full random-effect covariance, and residual variance in every
+whole-participant bootstrap sample.
+
+Duplicate source participants receive distinct bootstrap group identities, and
+the complete variance-component bootstrap distributions are retained for
+stability diagnostics.
+
+[Method guide](methods/functional-mixed-effects-full-refit-bootstrap.md) ·
+[Worked example](examples/functional-mixed-effects-full-refit-bootstrap.md)
+
+Version 0.47 will diagnose residual/within-trial dependence before selecting
+between trial-level functional random effects and an explicit serial residual
+covariance model.
+
 ## New in 0.45: one guarded participant random functional slope
 
 The likelihood-based mixed-effects layer now supports exactly one explicitly

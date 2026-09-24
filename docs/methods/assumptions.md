@@ -477,3 +477,19 @@ Coordinate units and explicit dimension weights define the local geometry. All p
   recovered participant BLUP functions.
 - Grid-level residual errors remain conditionally iid Gaussian after fixed and
   participant random effects are conditioned upon.
+
+## Full-refit mixed-effects bootstrap assumptions
+
+- Participants are the independent bootstrap units.
+- All repeated trials/time points from a sampled participant are copied
+  together.
+- Each occurrence of a duplicated source participant is assigned a distinct
+  bootstrap mixed-model group identity.
+- The declared model specification remains fixed across bootstrap samples:
+  response dimension, predictors, random-slope structure, basis sizes, spline
+  degree, REML/ML choice, optimizer, and preprocessing are not reselected.
+- The bootstrap sample must produce a valid converged fit under that same model.
+  Failed fits terminate the bootstrap rather than being replaced.
+- The resulting coefficient-function distribution includes variance-component
+  re-estimation but does not represent uncertainty over alternative model
+  specifications.
