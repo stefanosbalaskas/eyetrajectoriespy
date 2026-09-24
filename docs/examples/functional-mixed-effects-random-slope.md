@@ -95,7 +95,7 @@ fit = fit_functional_mixed_effects_regression(
 )
 ~~~
 
-With (q=2), the stacked random-effect vector has dimension four and its
+With $q=2$, the stacked random-effect vector has dimension four and its
 unstructured covariance has ten free parameters. The 20-participant example
 therefore passes the 0.45 covariance-complexity guard.
 
@@ -131,7 +131,7 @@ ax = plot_functional_random_effects(
 ~~~
 
 Each plotted curve is a participant BLUP
-(widehat b_{1i}(t)). Positive values indicate a participant-specific
+$\widehat b_{1i}(t)$. Positive values indicate a participant-specific
 condition response above the population fixed condition coefficient at that
 time; negative values indicate a response below it.
 
