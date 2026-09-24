@@ -201,6 +201,7 @@ def fit_functional_mixed_effects_regression(
     dimension: str,
     fixed_basis_size: int = 6,
     random_basis_size: int = 4,
+    random_slope_predictor: str | None = None,
     spline_degree: int = 3,
     reml: bool = True,
     method: str = "lbfgs",
@@ -208,17 +209,19 @@ def fit_functional_mixed_effects_regression(
 ) -> FunctionalMixedEffectsResult:
     """Fit one joint Gaussian functional mixed-effects model.
 
-    Model:
-        Y_ij(t) = x_ij^T beta(t) + b_i(t) + epsilon_ij(t).
+    The base model contains a participant functional random intercept. When
+    random_slope_predictor explicitly names one declared fixed predictor, the
+    model adds exactly one participant random functional slope for that
+    predictor.
 
-    Fixed coefficient functions and the participant functional random
-    intercept are represented by explicitly sized clamped B-spline bases.
-    All curve-by-time observations are fitted jointly in one statsmodels
-    MixedLM, rather than as independent pointwise mixed models.
+    Fixed coefficient functions, the participant functional random intercept,
+    and the optional random functional slope use explicitly sized clamped
+    B-spline bases. Version 0.45 uses one common random basis size for the
+    intercept and the single slope, with one unstructured covariance over the
+    stacked random-basis coefficient vector.
 
-    Version 0.36 supports one response dimension per fit, Gaussian responses,
-    one participant-level functional random intercept, and conditionally iid
-    grid-level residual errors. Trial-varying predictors are supported.
+    No random-slope predictor, covariance structure, basis size, interaction,
+    or optimizer fallback is selected automatically.
     """
 
     validate_trajectory_set(trajectories, require_complete=True)
@@ -240,6 +243,13 @@ def fit_functional_mixed_effects_regression(
         raise TypeError("maxiter must be an integer")
     if maxiter < 1:
         raise ValueError("maxiter must be positive")
+    if random_slope_predictor is not None and (
+        not isinstance(random_slope_predictor, str)
+        or not random_slope_predictor
+    ):
+        raise TypeError(
+            "random_slope_predictor must be a non-empty string or None"
+        )
 
     aligned_design, predictor_names = _validate_design_alignment(
         trajectories,
@@ -262,6 +272,8 @@ def fit_functional_mixed_effects_regression(
         degree=spline_degree,
     )
 
+    has_random_slope = random_slope_predictor is not None
+    random_effect_dimension = random_basis_size * (2 if has_random_slope else 1)
     (
         curve_participants,
         participant_ids,
@@ -269,7 +281,15 @@ def fit_functional_mixed_effects_regression(
     ) = _validate_participants(
         trajectories,
         participant_column,
-        random_basis_size=random_basis_size,
+        random_effect_dimension=random_effect_dimension,
+    )
+
+    slope_values = _validate_random_slope(
+        random_slope_predictor=random_slope_predictor,
+        predictor_names=predictor_names,
+        aligned_design=aligned_design,
+        curve_participants=curve_participants,
+        participant_ids=participant_ids,
     )
 
     predictor_matrix = aligned_design.loc[
@@ -296,7 +316,23 @@ def fit_functional_mixed_effects_regression(
     n_time = trajectories.n_time
     y = trajectories.values[:, :, dimension_index].reshape(-1)
     groups = np.repeat(curve_participants, n_time)
-    random_exog = np.tile(random_basis, (trajectories.n_curves, 1))
+    random_exog = _random_effect_design(
+        random_basis,
+        n_curves=trajectories.n_curves,
+        slope_values=slope_values,
+    )
+    random_design_rank = int(np.linalg.matrix_rank(random_exog))
+    if random_design_rank != random_exog.shape[1]:
+        raise ValueError(
+            "expanded functional random-effect design is rank deficient"
+        )
+
+    covariance_parameter_count = (
+        random_effect_dimension * (random_effect_dimension + 1) // 2
+    )
+    covariance_complexity_warning = bool(
+        len(participant_ids) <= covariance_parameter_count
+    )
 
     model = MixedLM(
         endog=y,
@@ -350,9 +386,12 @@ def fit_functional_mixed_effects_regression(
         dtype=float,
     )
     for coefficient_index in range(n_coefficients):
-        start = coefficient_index * fixed_basis_size
-        stop = start + fixed_basis_size
-        block = fixed_parameter_covariance[start:stop, start:stop]
+        block_start = coefficient_index * fixed_basis_size
+        block_stop = block_start + fixed_basis_size
+        block = fixed_parameter_covariance[
+            block_start:block_stop,
+            block_start:block_stop,
+        ]
         variance = np.einsum(
             "ti,ij,tj->t",
             fixed_basis,
@@ -368,17 +407,86 @@ def fit_functional_mixed_effects_regression(
         fitted_model.cov_re,
         dtype=float,
     )
+    expected_covariance_shape = (
+        random_effect_dimension,
+        random_effect_dimension,
+    )
+    if random_effect_covariance.shape != expected_covariance_shape:
+        raise RuntimeError(
+            "backend returned an unexpected random-effect covariance shape"
+        )
+    if not np.all(np.isfinite(random_effect_covariance)):
+        raise RuntimeError(
+            "backend returned non-finite random-effect covariance values"
+        )
+    if not np.allclose(
+        random_effect_covariance,
+        random_effect_covariance.T,
+        rtol=1e-10,
+        atol=1e-12,
+    ):
+        raise RuntimeError(
+            "backend returned a non-symmetric random-effect covariance"
+        )
+
     covariance_eigenvalues = np.linalg.eigvalsh(random_effect_covariance)
     covariance_scale = max(
         1.0,
         float(np.max(np.abs(random_effect_covariance))),
     )
+    negative_tolerance = 1e-10 * covariance_scale
+    if float(np.min(covariance_eigenvalues)) < -negative_tolerance:
+        raise RuntimeError(
+            "fitted random-effect covariance is not positive semidefinite"
+        )
+
     boundary_fit = bool(
-        np.min(covariance_eigenvalues) <= 1e-8 * covariance_scale
+        float(np.min(covariance_eigenvalues))
+        <= 1e-8 * covariance_scale
     )
+    largest_covariance_eigenvalue = float(
+        np.max(np.abs(covariance_eigenvalues))
+    )
+    singular_tolerance = max(
+        np.finfo(float).eps * max(1.0, largest_covariance_eigenvalue),
+        1e-14,
+    )
+    random_effect_singular = bool(
+        float(np.min(covariance_eigenvalues)) <= singular_tolerance
+    )
+    if float(np.min(covariance_eigenvalues)) <= 0.0:
+        covariance_condition_number = float("inf")
+    else:
+        covariance_condition_number = float(
+            np.max(covariance_eigenvalues)
+            / np.min(covariance_eigenvalues)
+        )
+
+    random_intercept_covariance = random_effect_covariance[
+        :random_basis_size,
+        :random_basis_size,
+    ].copy()
+    if has_random_slope:
+        random_slope_covariance = random_effect_covariance[
+            random_basis_size:,
+            random_basis_size:,
+        ].copy()
+        random_intercept_slope_covariance = random_effect_covariance[
+            :random_basis_size,
+            random_basis_size:,
+        ].copy()
+        slope_eigenvalues = np.linalg.eigvalsh(random_slope_covariance)
+        random_slope_boundary_fit = bool(
+            float(np.min(slope_eigenvalues))
+            <= 1e-8 * covariance_scale
+        )
+    else:
+        random_slope_covariance = None
+        random_intercept_slope_covariance = None
+        random_slope_boundary_fit = False
 
     random_effect_coefficients = np.empty(
-        (len(participant_ids), random_basis_size),
+        (len(participant_ids), random_effect_dimension),
         dtype=float,
     )
     for participant_index, participant_id in enumerate(participant_ids):
@@ -391,14 +499,30 @@ def fit_functional_mixed_effects_regression(
             raise RuntimeError(
                 "backend could not recover participant random effects"
             ) from exc
-        if random_values.size != random_basis_size:
+        if random_values.size != random_effect_dimension:
             raise RuntimeError(
                 "backend returned an unexpected participant random-effect "
                 "dimension"
             )
         random_effect_coefficients[participant_index] = random_values
 
-    random_effect_functions = random_effect_coefficients @ random_basis.T
+    random_intercept_coefficients = random_effect_coefficients[
+        :, :random_basis_size
+    ].copy()
+    random_intercept_functions = (
+        random_intercept_coefficients @ random_basis.T
+    )
+    if has_random_slope:
+        random_slope_coefficients = random_effect_coefficients[
+            :, random_basis_size:
+        ].copy()
+        random_slope_functions = random_slope_coefficients @ random_basis.T
+    else:
+        random_slope_coefficients = None
+        random_slope_functions = None
+
+    random_effect_functions = random_intercept_functions.copy()
+
     participant_lookup = {
         participant_id: index
         for index, participant_id in enumerate(participant_ids)
@@ -410,9 +534,16 @@ def fit_functional_mixed_effects_regression(
         dtype=float,
     )
     for curve_index, participant_id in enumerate(curve_participants):
+        participant_index = participant_lookup[participant_id]
+        random_contribution = random_intercept_functions[participant_index]
+        if random_slope_functions is not None and slope_values is not None:
+            random_contribution = (
+                random_contribution
+                + slope_values[curve_index]
+                * random_slope_functions[participant_index]
+            )
         fitted_functions[curve_index] = (
-            fixed_fitted[curve_index]
-            + random_effect_functions[participant_lookup[participant_id]]
+            fixed_fitted[curve_index] + random_contribution
         )
     observed_functions = trajectories.values[:, :, dimension_index].copy()
     residual_functions = observed_functions - fitted_functions
@@ -426,9 +557,29 @@ def fit_functional_mixed_effects_regression(
         fixed_basis_knots=fixed_knots,
         random_basis=random_basis,
         random_basis_knots=random_knots,
+        random_intercept_basis=random_basis.copy(),
+        random_slope_basis=(
+            None if not has_random_slope else random_basis.copy()
+        ),
+        random_effect_design_matrix=random_exog.copy(),
         random_effect_coefficients=random_effect_coefficients,
         random_effect_functions=random_effect_functions,
+        random_intercept_coefficients=random_intercept_coefficients,
+        random_slope_coefficients=random_slope_coefficients,
+        random_intercept_functions=random_intercept_functions,
+        random_slope_functions=random_slope_functions,
         random_effect_covariance=random_effect_covariance,
+        random_intercept_covariance=random_intercept_covariance,
+        random_slope_covariance=random_slope_covariance,
+        random_intercept_slope_covariance=random_intercept_slope_covariance,
+        random_effect_covariance_eigenvalues=covariance_eigenvalues.copy(),
+        random_effect_covariance_condition_number=covariance_condition_number,
+        random_effect_dimension=random_effect_dimension,
+        random_effect_covariance_parameter_count=covariance_parameter_count,
+        random_effect_complexity_warning=covariance_complexity_warning,
+        random_effect_singular=random_effect_singular,
+        random_slope_boundary_fit=random_slope_boundary_fit,
+        random_slope_predictor=random_slope_predictor,
         residual_variance=float(fitted_model.scale),
         fitted_functions=fitted_functions,
         residual_functions=residual_functions,
@@ -476,7 +627,10 @@ def fit_functional_mixed_effects_regression(
                 ],
                 "fixed_basis": "clamped_bspline",
                 "fixed_basis_size": fixed_basis_size,
-                "random_basis": "clamped_bspline",
+                "random_intercept_basis": "clamped_bspline",
+                "random_slope_basis": (
+                    None if not has_random_slope else "clamped_bspline"
+                ),
                 "random_basis_size": random_basis_size,
                 "spline_degree": spline_degree,
                 "basis_size_selected_automatically": False,
@@ -486,13 +640,47 @@ def fit_functional_mixed_effects_regression(
                 "predictor_scaling": False,
                 "interaction_construction": False,
                 "automatic_model_selection": False,
-                "random_effect": "participant_functional_intercept",
+                "automatic_random_slope_selection": False,
+                "random_effect": (
+                    "participant_functional_intercept"
+                    if not has_random_slope
+                    else "participant_functional_intercept_plus_one_slope"
+                ),
+                "random_slope_predictor": random_slope_predictor,
+                "random_effect_dimension": random_effect_dimension,
+                "random_effect_design_rank": random_design_rank,
                 "random_basis_covariance": "unstructured",
+                "random_effect_covariance_parameter_count": (
+                    covariance_parameter_count
+                ),
+                "participants_per_covariance_parameter": float(
+                    len(participant_ids) / covariance_parameter_count
+                ),
+                "covariance_complexity_warning": (
+                    covariance_complexity_warning
+                ),
+                "covariance_complexity_warning_rule": (
+                    "n_participants <= random_effect_covariance_parameter_count"
+                ),
+                "random_effect_covariance_eigenvalues": (
+                    covariance_eigenvalues.tolist()
+                ),
+                "random_effect_covariance_condition_number": (
+                    covariance_condition_number
+                ),
+                "random_effect_singular": random_effect_singular,
+                "random_slope_boundary_fit": random_slope_boundary_fit,
+                "random_effect_functions_legacy_alias": (
+                    "random_intercept_functions"
+                ),
                 "curve_level_functional_random_effect": False,
                 "residual_structure": (
                     "conditionally_iid_gaussian_grid_errors"
                 ),
                 "trial_varying_predictors_supported": True,
+                "random_slope_requires_within_participant_variation": (
+                    has_random_slope
+                ),
                 "joint_fit_over_all_time_points": True,
                 "pointwise_mixed_models": False,
                 "multivariate_cross_dimension_covariance": False,
