@@ -440,10 +440,10 @@ width changes when variance components are re-estimated in participant
 bootstrap samples; it is not a hypothesis test or automatic model-selection
 criterion.
 
-Implemented by \`bootstrap_functional_mixed_effects_full_refit()\`,
-\`functional_mixed_effects_variance_bootstrap_frame()\`,
-\`compare_functional_mixed_effects_bootstraps()\`, and the existing
-\`functional_mixed_effects_simultaneous_bands()\`.
+Implemented by `bootstrap_functional_mixed_effects_full_refit()`,
+`functional_mixed_effects_variance_bootstrap_frame()`,
+`compare_functional_mixed_effects_bootstraps()`, and the existing
+`functional_mixed_effects_simultaneous_bands()`.
 
 Failed replicates raise and are not silently replaced. The retained empirical
 variance-component distributions are not automatically labelled calibrated
