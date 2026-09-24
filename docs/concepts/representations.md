@@ -27,6 +27,8 @@ Discrete Fréchet and DTW operate on the supplied ordered points rather than on 
 
 These are similarity representations, not substitutes for registration/phase analysis when timing deformation itself is a scientific outcome. Coordinate scaling, selected dimensions, upstream resampling, DTW step pattern, normalization choice, and the DTW band remain explicit analysis decisions.
 
+When more than one similarity representation is defensible, version 0.38 can retain all declared L2, Fréchet, and DTW distance matrices and compare pair-order plus local-neighbor structure. This sensitivity layer does not collapse different representations into a common metric or erase their different scientific meanings.
+
 ## Absolute screen coordinates
 
 Use when absolute position is meaningful and stimuli share the same layout.
