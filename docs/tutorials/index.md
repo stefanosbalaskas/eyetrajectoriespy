@@ -35,6 +35,14 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [Nonlinear trajectory dynamics](../examples/nonlinear-dynamics.md)
 
+-   **Inspect recurrence geometry as a sparse network**
+
+    Convert one declared auto-recurrence plot to an undirected sparse graph and
+    inspect degree, clustering, transitivity, and connected components without
+    retuning the recurrence threshold.
+
+    [Recurrence-network worked example](../examples/recurrence-networks.md)
+
 -   **Joint recurrence across synchronized systems**
 
     Keep gaze, pupil, physiology, or other synchronized subsystem state spaces
