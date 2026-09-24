@@ -20,6 +20,7 @@ from .nonlinear_types import (
     MultivariateSurrogateNonlinearityResult,
     LocalReturnMapResult,
     PoincareCrossingResult,
+    RecurrenceNetworkResult,
     RecurrenceRadiusProfileResult,
     RecurrenceResult,
     RQAMeanBootstrapResult,
@@ -118,6 +119,36 @@ def plot_joint_recurrence(
         "Joint recurrence "
         f"(JRR={result.joint_recurrence_rate:.3f}, "
         f"components={result.n_components})"
+    )
+    return ax
+
+
+def plot_recurrence_network_degree(
+    result: RecurrenceNetworkResult,
+    *,
+    normalized: bool = True,
+    ax=None,
+):
+    """Plot recurrence-network degree across source state indices."""
+
+    if not isinstance(result, RecurrenceNetworkResult):
+        raise TypeError("result must be a RecurrenceNetworkResult")
+    if not isinstance(normalized, (bool, np.bool_)):
+        raise TypeError("normalized must be boolean")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    values = (
+        result.normalized_degree
+        if normalized
+        else result.degree.astype(float)
+    )
+    ax.plot(np.arange(result.n_nodes), values)
+    ax.set_xlabel("State index")
+    ax.set_ylabel("Normalized degree" if normalized else "Degree")
+    ax.set_title(
+        "Recurrence-network degree "
+        f"(density={result.graph_density:.3f})"
     )
     return ax
 
