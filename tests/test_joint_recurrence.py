@@ -213,6 +213,22 @@ def test_joint_recurrence_rejects_cross_recurrence_and_misalignment():
         joint_recurrence_matrix((position_rec, different_theiler))
 
 
+    different_unit = replace(
+        physiology_rec,
+        time_unit="ms",
+    )
+    with pytest.raises(ValueError, match="same time_unit"):
+        joint_recurrence_matrix((position_rec, different_unit))
+
+    bad_diagonal = replace(
+        physiology_rec,
+        matrix=physiology_rec.matrix.copy(),
+    )
+    bad_diagonal.matrix[0, 0] = True
+    with pytest.raises(ValueError, match="exclude the main diagonal"):
+        joint_recurrence_matrix((position_rec, bad_diagonal))
+
+
 def test_joint_recurrence_label_and_type_contracts_fail_closed():
     position_rec, physiology_rec = _synchronized_recurrences()
 
