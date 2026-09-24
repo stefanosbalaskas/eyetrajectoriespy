@@ -33,7 +33,13 @@ flowchart LR
     C --> E[Declared participant functional random intercept]
     D --> F[One joint Gaussian MixedLM]
     E --> F
-    F --> G[beta(t) + participant random functions]
+    F --> R{Random slope requested?}
+    R -->|No| G[beta(t) + participant random intercept]
+    R -->|Yes| S[Check within-participant predictor variation]
+    S --> T[Check covariance parameter count vs participants]
+    T --> U[Fit intercept + one random functional slope]
+    U --> V[Inspect covariance blocks + BLUP slope functions]
+    F --> G
     F --> H{Whole-function fixed-effect inference?}
     H -->|Yes| I[Resample whole participants]
     I --> J[Fixed-covariance GLS coefficient refits]
