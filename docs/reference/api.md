@@ -320,6 +320,13 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.turning_rate_function
 ::: eyetrajectoriespy.trajectory_tortuosity
 
+## Functional mixed-effects regression
+::: eyetrajectoriespy.FunctionalMixedEffectsResult
+::: eyetrajectoriespy.fit_functional_mixed_effects_regression
+::: eyetrajectoriespy.functional_mixed_effects_coefficient_frame
+::: eyetrajectoriespy.plot_functional_mixed_effects_coefficient
+::: eyetrajectoriespy.functional_mixed_effects_reporting_text
+
 ## Function-on-scalar regression
 ::: eyetrajectoriespy.FunctionOnScalarResult
 ::: eyetrajectoriespy.FunctionOnScalarBootstrapResult
