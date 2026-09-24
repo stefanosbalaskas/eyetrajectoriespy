@@ -497,6 +497,25 @@ For IAAFT testing, report the exact statistic, surrogate algorithm, number of su
 For multivariate IAAFT, additionally report the selected channel set, analyst-declared reference dimension, exact marginal-rank constraint, maximum/summary per-channel spectrum mismatch, maximum/summary pairwise complex cross-spectrum mismatch, and that final spectral preservation is approximate after rank remapping. State explicitly that channels were not surrogate-generated independently.
 
 For empirical return maps, report the section, crossing direction, interpolated crossing count, returned state variables, reference state, neighborhood policy/value, selected transition count, local-fit (R^2), Jacobian eigenvalues, spectral radius, and stability tolerance. Label the method experimental and state explicitly that the eigenvalues are not classical Floquet multipliers.
+## Recurrence networks
+
+Report:
+
+- source state representation, dimensions, coordinate/state units, and
+  preprocessing;
+- recurrence metric and threshold policy;
+- fixed radius or requested/achieved target recurrence rate;
+- Theiler window;
+- node definition and number of nodes;
+- edge count and graph density;
+- whether graph density differs from the source recurrence-rate denominator;
+- mean/local clustering and transitivity conventions;
+- component count, largest-component fraction, and isolated-node fraction when
+  used;
+- that the graph is undirected/unweighted;
+- that no threshold tuning, community optimization, dense shortest-path
+  analysis, or automatic dimension interpretation was performed.
+
 ## Joint recurrence / JRQA
 
 When reporting joint recurrence, state:
