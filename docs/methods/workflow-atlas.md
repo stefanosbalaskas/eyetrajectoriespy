@@ -270,3 +270,27 @@ explicit discrete source/target states
 No branch in this workflow automatically bins continuous measurements, chooses
 history/lag settings, generates shifts, or promotes directed prediction to
 causal identification.
+
+## Transfer-entropy robustness multiverse
+
+```text
+explicit discrete state series
+        |
+        +--> declare K: target histories
+        +--> declare L: source histories
+        +--> declare D: source lags
+                    |
+                    v
+        full Cartesian K × L × D
+                    |
+                    v
+ transfer_entropy_parameter_sensitivity()
+        |           |             |
+        |           |             +--> support diagnostics
+        |           +--> optional common circular-shift null
+        +--> complete TE table
+                    |
+                    v
+         explicit one-parameter slices
+         no hidden averaging / no winner
+```
