@@ -693,3 +693,60 @@ def compare_functional_mixed_effects_bootstraps(
                 }
             )
     return pd.DataFrame(rows)
+
+
+def functional_mixed_effects_full_refit_reporting_text(
+    bootstrap: FunctionalMixedEffectsFullRefitBootstrapResult,
+) -> str:
+    """Return compact reporting text for the full-refit participant bootstrap."""
+
+    if not isinstance(
+        bootstrap,
+        FunctionalMixedEffectsFullRefitBootstrapResult,
+    ):
+        raise TypeError(
+            "bootstrap must be a "
+            "FunctionalMixedEffectsFullRefitBootstrapResult"
+        )
+
+    boundary_fraction = float(
+        np.mean(bootstrap.bootstrap_boundary_fit)
+    )
+    singular_fraction = float(
+        np.mean(bootstrap.bootstrap_random_effect_singular)
+    )
+    warning_fraction = float(
+        np.mean(
+            np.asarray(
+                [
+                    len(messages) > 0
+                    for messages in bootstrap.bootstrap_backend_warnings
+                ],
+                dtype=float,
+            )
+        )
+    )
+    residual = np.asarray(
+        bootstrap.bootstrap_residual_variances,
+        dtype=float,
+    )
+    return (
+        "A whole-participant case bootstrap with full mixed-model refitting "
+        f"used {bootstrap.n_bootstrap} replicates. Every sampled participant "
+        "occurrence received a distinct bootstrap group identity, including "
+        "duplicate source participants. Fixed effects, the complete declared "
+        "random-effect covariance, and residual variance were re-estimated in "
+        "every replicate, while preprocessing, predictors, random-slope "
+        "choice, random-effect structure, basis specification, REML/ML choice, "
+        "and optimizer were held fixed. "
+        f"The fitted random-effect covariance was boundary-flagged in "
+        f"{boundary_fraction:.3f} of replicates and singular-flagged in "
+        f"{singular_fraction:.3f}; backend warnings occurred in "
+        f"{warning_fraction:.3f}. Residual variance across replicates had "
+        f"median {np.median(residual):.6g} and range "
+        f"[{np.min(residual):.6g}, {np.max(residual):.6g}]. "
+        "These empirical variance-component distributions are stability "
+        "diagnostics rather than automatically calibrated confidence "
+        "intervals. Any failed replicate would terminate the bootstrap rather "
+        "than being discarded or redrawn."
+    )
