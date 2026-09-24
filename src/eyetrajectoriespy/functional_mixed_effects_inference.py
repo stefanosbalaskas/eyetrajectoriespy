@@ -23,8 +23,8 @@ def _validate_reference(
         raise ValueError("reference residual_variance must be finite and positive")
     covariance = np.asarray(result.random_effect_covariance, dtype=float)
     if covariance.shape != (
-        result.random_basis_size,
-        result.random_basis_size,
+        result.random_effect_dimension,
+        result.random_effect_dimension,
     ):
         raise ValueError(
             "reference random_effect_covariance has an unexpected shape"
@@ -81,9 +81,14 @@ def _participant_gls_contributions(
             result.fixed_basis,
         )
         response = result.observed_functions[curve_indices].reshape(-1)
-        random_exog = np.tile(
-            result.random_basis,
-            (curve_indices.size, 1),
+        n_time = result.time.size
+        row_indices = (
+            curve_indices[:, None] * n_time
+            + np.arange(n_time, dtype=int)[None, :]
+        ).reshape(-1)
+        random_exog = np.asarray(
+            result.random_effect_design_matrix[row_indices],
+            dtype=float,
         )
         marginal_covariance = (
             random_exog
@@ -298,6 +303,15 @@ def bootstrap_functional_mixed_effects_coefficients(
                 "random_basis_refit": False,
                 "basis_selection_repeated": False,
                 "reference_boundary_fit": bool(result.boundary_fit),
+                "reference_random_slope_predictor": (
+                    result.random_slope_predictor
+                ),
+                "reference_random_effect_dimension": (
+                    result.random_effect_dimension
+                ),
+                "random_intercept_slope_covariance_conditioned_on_reference": (
+                    result.random_slope_predictor is not None
+                ),
                 "reference_gls_max_abs_difference": float(
                     reconstruction_difference[0]
                 ),
