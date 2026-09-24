@@ -258,8 +258,8 @@ uncertainty.
 
 | Model | Random-effect dimension | Free unstructured covariance parameters | Identification safeguard |
 |---|---:|---:|---|
-| Functional random intercept | (q) | (q(q+1)/2) | participant count at least max(4, q+1) |
-| Intercept + one random functional slope | (2q) | ((2q)(2q+1)/2) | named predictor varies within every participant and participant count exceeds covariance-parameter count |
+| Functional random intercept | $q$ | $q(q+1)/2$ | participant count at least max(4, q+1) |
+| Intercept + one random functional slope | $2q$ | $(2q)(2q+1)/2$ | named predictor varies within every participant and participant count exceeds covariance-parameter count |
 
 The 0.45 slope model is appropriate when the scientific question concerns
 participant heterogeneity in the time-varying effect of one predeclared
