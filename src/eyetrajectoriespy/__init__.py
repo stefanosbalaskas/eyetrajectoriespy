@@ -382,6 +382,8 @@ from .types import (
     FPCASubspaceComparisonResult,
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
+    FunctionalMixedEffectsBandResult,
+    FunctionalMixedEffectsBootstrapResult,
     FunctionalMixedEffectsResult,
     FunctionOnScalarBandResult,
     FunctionOnScalarBootstrapResult,
