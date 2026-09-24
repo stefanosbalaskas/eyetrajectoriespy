@@ -43,6 +43,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Functional distances | implemented | `functional_l2_distance()` |
 | Discrete Fréchet trajectory distance | implemented; monotone order-preserving coupling, no elapsed-time correspondence | `discrete_frechet_distance()` / `pairwise_discrete_frechet_distances()` |
 | Dynamic time warping trajectory distance | implemented; backward-compatible symmetric1 raw cost plus explicit normalizable symmetric2/N+M option and Sakoe-Chiba sample-index band | `dynamic_time_warping_distance()` / `pairwise_dynamic_time_warping_distances()` |
+| Trajectory-distance sensitivity | implemented; native-scale L2/Fréchet/DTW matrices, descriptive rank/neighbor agreement, cutoff-tie diagnostics, no automatic winner | `trajectory_distance_sensitivity()` |
 | FPCA-score clustering | implemented | `cluster_fpca_scores()` |
 | Score-based scalar-on-function regression | implemented | `fit_scalar_on_function_regression()` |
 | Paired-bootstrap Gaussian FPCR uncertainty | implemented | `bootstrap_fpca_regression_uncertainty()` |
@@ -123,7 +124,6 @@ Still not provided are full uncertainty procedures that jointly include target m
 Future tranches may evaluate:
 
 - richer functional mixed-effects structures: trial-level functional random effects, random functional slopes, residual serial correlation, simultaneous coefficient inference, and generalized responses;
-- trajectory-similarity robustness across L2, Fréchet, and DTW before adding further distance metrics;
 - richer multilevel functional mixed-effects backends;
 - explicit system-identification models for gaze dynamics;
 - model-based continuation / Floquet analysis only after a validated dynamical-system contract exists.
@@ -134,4 +134,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.37.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.38.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
