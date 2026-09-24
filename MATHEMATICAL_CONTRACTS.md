@@ -326,9 +326,9 @@ It is not a collection of independent pointwise mixed models.
 ## One participant random functional slope
 
 Version 0.45 extends the participant functional random-intercept model with one
-explicitly declared random functional slope predictor (X_{ij,q}):
+explicitly declared random functional slope predictor $X_{ij,q}$:
 
-$
+$$
 Y_{ij}(t)
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t)
@@ -338,12 +338,12 @@ b_{0i}(t)
 X_{ij,q}b_{1i}(t)
 +
 \varepsilon_{ij}(t).
-$
+$$
 
 The participant random intercept and random slope use the same declared
-(q)-dimensional B-spline basis in 0.45:
+$q$-dimensional B-spline basis in 0.45:
 
-$
+$$
 b_{0i}(t)
 =
 \mathbf B_r(t)^{\top}\mathbf u_{0i},
@@ -351,11 +351,11 @@ b_{0i}(t)
 b_{1i}(t)
 =
 \mathbf B_r(t)^{\top}\mathbf u_{1i}.
-$
+$$
 
 The stacked random-basis coefficient vector is
 
-$
+$$
 \begin{bmatrix}
 \mathbf u_{0i}\\
 \mathbf u_{1i}
@@ -365,18 +365,18 @@ N\!\left(
 \mathbf 0,
 \boldsymbol\Psi_{2q}
 \right),
-$
+$$
 
 where the full unstructured covariance has
 
-$
+$$
 p_{\Psi}
 =
 \frac{(2q)(2q+1)}{2}
-$
+$$
 
 free covariance parameters. The 0.45 package guard requires the participant
-count to exceed (p_{\Psi}) before fitting the random-slope model. The named
+count to exceed $p_{\Psi}$ before fitting the random-slope model. The named
 slope predictor must also vary within every participant. These are explicit
 package safeguards against an over-parameterized or unidentified random-slope
 fit; they are not automatic model-selection rules.
