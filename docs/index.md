@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.38 · trajectory-similarity robustness</div>
+<div class="et-kicker">eyetrajectoriespy 0.39 · synchronized joint recurrence</div>
 
 # Model the viewing process, not only its summaries
 
@@ -13,6 +13,15 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
 </div>
 
 <div class="grid cards" markdown>
+
+-   **Ask whether multiple synchronized systems recur at the same time pairs**
+
+    Build each subsystem's auto-recurrence plot under its own explicit state,
+    metric, and threshold contract, then intersect them as a joint recurrence
+    plot. Exact time-grid and shared-Theiler requirements prevent silent
+    synchronization repair.
+
+    [:material-grid-large: Joint recurrence guide](methods/joint-recurrence.md)
 
 -   **Test planar nonlinear structure without destroying x/y linear dependence**
 
@@ -258,6 +267,7 @@ The package is designed around the principle that **the path to an FPC score is 
 
 - explicit multivariate delay-coordinate reconstruction with diagnostic-only AMI/autocorrelation and false-nearest-neighbor curves;
 - sparse recurrence/RQA, full-window time-varying RQA, and cross-recurrence analysis with fixed-radius or target-recurrence-rate contracts;
+- synchronized joint recurrence/JRQA across separately declared subsystem recurrence plots, with exact-grid/shared-Theiler validation and no hidden lag or threshold harmonization;
 - Rosenstein nearest-neighbor local divergence and largest-Lyapunov estimation with an analyst-declared fit interval and retained fit diagnostics;
 - deterministic IAAFT surrogate nonlinearity testing with plus-one Monte Carlo p-values and no silent failed-surrogate replacement;
 - experimental Poincare-section / local return-map stability with an explicit warning that empirical Jacobian eigenvalues are not classical Floquet multipliers;
