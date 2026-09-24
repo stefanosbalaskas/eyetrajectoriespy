@@ -7,6 +7,7 @@ import numpy as np
 import pytest
 
 from eyetrajectoriespy import (
+    DynamicTimeWarpingResult,
     dynamic_time_warping_distance,
     dynamic_time_warping_reporting_text,
     plot_dynamic_time_warping_alignment,
@@ -34,6 +35,25 @@ def test_dtw_reporting_text_states_step_pattern_window_and_timing_boundary():
     assert "normalized distance" in text
     assert "recorded timestamps were not used" in text
     assert "selected automatically" in text
+
+
+def test_dtw_reporting_text_accepts_legacy_033_audit_shape():
+    legacy = DynamicTimeWarpingResult(
+        distance=1.25,
+        path=np.array([[0, 0], [1, 1]], dtype=int),
+        local_distances=np.array([0.5, 0.75]),
+        path_length=2,
+        mean_local_distance=0.625,
+        n_points_a=2,
+        n_points_b=2,
+        n_dimensions=1,
+        window_radius=None,
+        provenance={"normalization_requested": False},
+    )
+
+    text = dynamic_time_warping_reporting_text(legacy, digits=2)
+    assert "raw cumulative distance=1.25" in text
+    assert "symmetric1" in text
 
 
 def test_dtw_reporting_text_validates_inputs():
