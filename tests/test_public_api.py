@@ -1,8 +1,9 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.41.0.dev0"
+    assert et.__version__=="0.42.0.dev0"
     required={
+        "TransferEntropySensitivityResult","transfer_entropy_parameter_sensitivity","plot_transfer_entropy_sensitivity","transfer_entropy_parameter_sensitivity_reporting_text",
         "DiscreteTransferEntropyResult","TransferEntropyCircularShiftTestResult","discrete_transfer_entropy","transfer_entropy_local_frame","transfer_entropy_circular_shift_test","plot_transfer_entropy_circular_shift_test","transfer_entropy_reporting_text","transfer_entropy_circular_shift_reporting_text",
         "MathematicalContract","get_mathematical_contract","list_mathematical_contracts","mathematical_contract_frame",
         "DelayEmbeddingResult","EmbeddingDelayDiagnosticResult","EmbeddingDimensionDiagnosticResult","RecurrenceNetworkResult","recurrence_network","recurrence_network_node_frame","recurrence_network_summary_frame","plot_recurrence_network_degree","recurrence_network_reporting_text","JointRecurrenceResult","joint_recurrence_matrix","joint_recurrence_component_frame","joint_rqa_metrics","plot_joint_recurrence","joint_recurrence_reporting_text","RecurrenceResult","RecurrenceRadiusProfileResult","RQAResult","RQAMeanBootstrapResult","RQAParameterSensitivityResult","WindowedRQAResult","WindowedRQAFunctionalResult","WindowedRQASensitivityResult","WindowedRQAMeanBandResult",
