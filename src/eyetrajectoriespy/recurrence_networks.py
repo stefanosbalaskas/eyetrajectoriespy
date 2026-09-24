@@ -29,6 +29,19 @@ def _validate_recurrence_network_source(
         raise ValueError(
             "recurrence network requires at least two state nodes"
         )
+    n_nodes = adjacency.shape[0]
+    time_a = np.asarray(recurrence.time_a, dtype=float)
+    time_b = np.asarray(recurrence.time_b, dtype=float)
+    if time_a.shape != (n_nodes,) or time_b.shape != (n_nodes,):
+        raise ValueError(
+            "recurrence network time grids must match adjacency dimensions"
+        )
+    if not np.array_equal(time_a, time_b):
+        raise ValueError(
+            "auto-recurrence network requires identical time grids on both axes"
+        )
+    if recurrence.theiler_window_samples < 0:
+        raise ValueError("theiler_window_samples must be non-negative")
     if (adjacency != adjacency.T).nnz:
         raise ValueError(
             "recurrence network source must be symmetric"
