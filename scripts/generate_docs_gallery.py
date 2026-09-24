@@ -222,7 +222,7 @@ def main() -> None:
 
     fmix_rng = np.random.default_rng(2110)
     fmix_time = np.linspace(0.0, 1.0, 9)
-    fmix_n_participants = 12
+    fmix_n_participants = 16
     fmix_participants = np.repeat(
         [f"P{i:02d}" for i in range(fmix_n_participants)],
         3,
