@@ -14,6 +14,14 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.multivariate_iaaft_reporting_text
 ::: eyetrajectoriespy.multivariate_surrogate_nonlinearity_reporting_text
 
+## Joint recurrence analysis
+::: eyetrajectoriespy.JointRecurrenceResult
+::: eyetrajectoriespy.joint_recurrence_matrix
+::: eyetrajectoriespy.joint_recurrence_component_frame
+::: eyetrajectoriespy.joint_rqa_metrics
+::: eyetrajectoriespy.plot_joint_recurrence
+::: eyetrajectoriespy.joint_recurrence_reporting_text
+
 ## Nonlinear trajectory dynamics
 
 ### Delay reconstruction and embedding diagnostics
