@@ -26,6 +26,29 @@ flowchart LR
     F -->|Timing deformation| L[Registration + phase]
 ```
 
+## Repeated-measures functional regression
+
+```mermaid
+flowchart TD
+    A[Common-grid functional response Y_ij(t)] --> B[Curve-level scalar design X_ij]
+    A --> C[Participant grouping]
+    B --> D{Predictor varies within participant?}
+    D -->|No and participant-average estimand desired| E[0.35 participant aggregation is available]
+    D -->|Yes or all trials should remain| F[0.36 functional mixed-effects regression]
+    C --> F
+    F --> G[Declare fixed B-spline basis]
+    F --> H[Declare participant random B-spline basis]
+    G --> I[One stacked Gaussian MixedLM]
+    H --> I
+    I --> J[Fixed coefficient functions beta(t)]
+    I --> K[Participant random functions b_i(t)]
+    I --> L[Residual variance + convergence/boundary diagnostics]
+```
+
+The 0.36 path is one joint mixed model over all curve-by-time observations.
+It does not run independent mixed models at each time point and does not
+silently average trial-varying predictors.
+
 ## Functional response regression
 
 ```mermaid
