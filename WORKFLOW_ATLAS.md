@@ -191,3 +191,19 @@ predeclared discrete source/target states
 
 See `docs/methods/transfer-entropy.md` and the
 `discrete-transfer-entropy` mathematical contract.
+
+### Transfer-entropy robustness multiverse
+
+```text
+predeclared discrete source/target states
+  -> declare target-history grid K
+  -> declare source-history grid L
+  -> declare source-lag grid D
+  -> full Cartesian K x L x D
+  -> transfer_entropy_parameter_sensitivity()
+      -> one row per declared specification
+      -> TE + empirical support diagnostics
+      -> optional identical circular-shift null per row
+      -> descriptive robustness summary
+      -> no automatic winner / hidden averaging
+```
