@@ -878,7 +878,10 @@ class FunctionalMixedEffectsBandResult:
     max_statistics: np.ndarray
     confidence_level: float
     simultaneous_scope: str
-    bootstrap: FunctionalMixedEffectsBootstrapResult | FunctionalMixedEffectsFullRefitBootstrapResult
+    bootstrap: (
+        FunctionalMixedEffectsBootstrapResult
+        | FunctionalMixedEffectsFullRefitBootstrapResult
+    )
     provenance: Mapping[str, Any] = field(default_factory=dict)
 
     @property
