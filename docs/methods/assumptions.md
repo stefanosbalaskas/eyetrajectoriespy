@@ -354,6 +354,22 @@ The coupling preserves order but not elapsed-time correspondence. It is therefor
 All points must be finite. The package does not silently delete missing samples or repair incomplete paths before comparison.
 
 
+## Trajectory-distance sensitivity
+
+The sensitivity layer assumes that every declared distance specification is
+scientifically defensible for the same selected trajectories and dimensions.
+It does not make conceptually different estimands interchangeable merely by
+placing their matrices in one result.
+
+Global Spearman agreement is descriptive agreement of pair-distance orderings.
+The condensed upper-triangle distances are dependent because each trajectory
+appears in multiple pairs; ordinary correlation-test p-values are therefore
+not attached.
+
+Top-k neighbor agreement assumes that local neighborhood structure is a useful
+scientific diagnostic. When the kth and (k+1)th distances tie, the selected
+neighbor set is not uniquely identified; the result flags that cutoff tie.
+
 ## Dynamic time warping trajectory distance
 
 DTW assumes that monotone sample-index warping is scientifically admissible. It is appropriate when local progression-rate differences may be nuisance variation, but it can align away latency or dwell-pattern differences that are substantive effects.
