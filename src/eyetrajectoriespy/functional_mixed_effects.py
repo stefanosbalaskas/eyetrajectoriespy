@@ -335,12 +335,7 @@ def fit_functional_mixed_effects_regression(
         for index, participant_id in enumerate(participant_ids)
     }
 
-    fixed_fitted = np.einsum(
-        "cp,ct->pt",
-        scalar_design,
-        coefficient_functions,
-        optimize=True,
-    )
+    fixed_fitted = scalar_design @ coefficient_functions
     fitted_functions = np.empty(
         (trajectories.n_curves, n_time),
         dtype=float,
