@@ -45,9 +45,9 @@ Participants are sampled with replacement.
 
 If a draw is
 
-[
-(3,7,7,12,ldots),
-]
+$
+(3,7,7,12,\ldots),
+$
 
 the two copies of source participant 7 receive **different bootstrap group
 identities** before fitting. For example,
