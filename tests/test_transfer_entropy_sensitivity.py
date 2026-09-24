@@ -103,10 +103,10 @@ def test_surrogate_sensitivity_reuses_exact_same_shift_set_for_every_specificati
     assert result.has_surrogate_inference is True
     np.testing.assert_array_equal(result.shifts, shifts)
     assert (result.table["n_shifts"] == len(shifts)).all()
-    assert (
-        result.table["p_value_resolution"]
-        == pytest.approx(1 / (len(shifts) + 1))
-    ).all()
+    np.testing.assert_allclose(
+        result.table["p_value_resolution"].to_numpy(dtype=float),
+        1 / (len(shifts) + 1),
+    )
     assert "surrogate_centered_transfer_entropy_bits" in result.metric_columns
     assert "upper_tail_p_value" in result.metric_columns
 
