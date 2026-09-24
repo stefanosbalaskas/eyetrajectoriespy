@@ -8,6 +8,8 @@ from .nonlinear_types import (
     KantzDivergenceResult,
     KantzParameterSensitivityResult,
     LargestLyapunovResult,
+    MultivariateIAAFTResult,
+    MultivariateSurrogateNonlinearityResult,
     LyapunovParameterSensitivityResult,
     RecurrenceRadiusProfileResult,
     RecurrenceResult,
@@ -301,6 +303,63 @@ def largest_lyapunov_reporting_text(result: LargestLyapunovResult) -> str:
         f"(R^2={result.r_squared:.3f}, slope SE={result.standard_error:.4g}). "
         "This quantity was interpreted as a conditional local-divergence "
         "estimate and not as standalone evidence of deterministic chaos."
+    )
+
+
+def multivariate_iaaft_reporting_text(
+    result: MultivariateIAAFTResult,
+) -> str:
+    """Return manuscript-ready wording for multivariate IAAFT generation."""
+
+    if not isinstance(result, MultivariateIAAFTResult):
+        raise TypeError("result must be a MultivariateIAAFTResult")
+    return (
+        f"{result.n_surrogates} multivariate IAAFT surrogates were generated "
+        f"for dimensions {', '.join(result.dimension_names)} using "
+        f"{result.reference_dimension!r} as the explicitly declared "
+        "phase-reference dimension. Empirical marginal distributions were "
+        "restored exactly by rank remapping after each Fourier adjustment, "
+        "while per-dimension Fourier amplitudes and inter-dimension phase "
+        "differences were targeted jointly. Final spectral preservation was "
+        "therefore approximate after rank remapping and was retained "
+        f"diagnostically (maximum relative power-spectrum mismatch="
+        f"{np.max(result.spectral_errors):.4g}; maximum relative "
+        f"cross-spectrum mismatch={np.max(result.cross_spectral_errors):.4g}). "
+        "No dimension scaling, smoothing, interpolation, or automatic "
+        "reference-dimension selection was performed."
+    )
+
+
+def multivariate_surrogate_nonlinearity_reporting_text(
+    result: MultivariateSurrogateNonlinearityResult,
+) -> str:
+    """Return manuscript-ready wording for multivariate surrogate testing."""
+
+    if not isinstance(result, MultivariateSurrogateNonlinearityResult):
+        raise TypeError(
+            "result must be a MultivariateSurrogateNonlinearityResult"
+        )
+    finite = np.isfinite(result.surrogate_statistics)
+    if not np.all(finite):
+        raise ValueError(
+            "surrogate statistics must all be finite for reporting"
+        )
+    surrogate = result.surrogate_result
+    return (
+        "Multivariate nonlinearity was assessed with "
+        f"{surrogate.n_surrogates} cross-spectrum-aware MIAAFT surrogates "
+        f"for dimensions {', '.join(surrogate.dimension_names)} using "
+        f"{surrogate.reference_dimension!r} as the declared phase reference. "
+        f"The statistic was {result.statistic.replace('_', ' ')} with a "
+        f"{result.alternative} alternative and a plus-one Monte Carlo "
+        f"p-value (p={result.p_value:.4g}; random_state="
+        f"{surrogate.random_state}). The maximum retained final relative "
+        f"power-spectrum mismatch was {np.max(surrogate.spectral_errors):.4g} "
+        "and the maximum retained relative cross-spectrum mismatch was "
+        f"{np.max(surrogate.cross_spectral_errors):.4g}. Rejection was "
+        "interpreted as evidence against the declared multivariate "
+        "linear-stochastic surrogate null, not as proof of deterministic "
+        "chaos or a unique nonlinear mechanism."
     )
 
 
