@@ -756,6 +756,7 @@ class FunctionalMixedEffectsResult:
     random_effect_covariance_parameter_count: int
     random_effect_complexity_warning: bool
     random_effect_singular: bool
+    random_slope_boundary_fit: bool
     random_slope_predictor: str | None
     residual_variance: float
     fitted_functions: np.ndarray
