@@ -961,3 +961,28 @@ different optimizer.
 The 0.44 simultaneous-band bootstrap remains conditional on the fitted full
 random-effect covariance and residual variance. Version 0.45 does not propagate
 variance-component estimation uncertainty through those bands.
+
+## Full-refit bootstrap is not full workflow uncertainty
+
+Version 0.46 refits the mixed-model parameters in every participant sample,
+including the complete random-effect covariance and residual variance. It does
+not rerun preprocessing, basis-size selection, spline-degree selection,
+predictor selection, random-slope selection, model-structure selection, or
+optimizer selection.
+
+Accordingly, “full refit” means a full parameter refit **conditional on the
+declared model specification**, not uncertainty over every defensible
+analytical workflow.
+
+The retained empirical variance-component distributions are stability
+diagnostics and bootstrap samples. Version 0.46 does not automatically label
+their quantiles as calibrated variance-component confidence intervals.
+
+A high frequency of bootstrap fit failure is scientifically informative about
+model fragility. The implementation intentionally does not redraw until a
+target number of successful replicates is reached.
+
+The current backend still uses conditionally iid grid-level residual errors
+after the random effects. Version 0.47 therefore prioritizes residual/
+within-trial dependence diagnostics before selecting any serial covariance or
+trial-level random-function extension.
