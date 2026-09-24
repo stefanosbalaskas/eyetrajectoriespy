@@ -67,6 +67,14 @@ A visually appealing FPC is not automatically a reproducible viewing strategy.
 
 Use the [pre-registration checklist](../methods/preregistration.md) for a manuscript-ready version.
 
+## If recurrence itself should become a graph
+
+| Question | Use | Key caution |
+|---|---|---|
+| Which recurrent states have many recurrence neighbors? | recurrence-network degree | threshold and Theiler policy define the edges |
+| How locally interconnected are recurrence neighborhoods? | clustering / transitivity | do not infer chaos/dimension automatically |
+| Is the recurrence graph fragmented? | component summaries | graph density and connectivity are threshold-dependent |
+
 ## If you have multiple synchronized dynamical systems
 
 | Question | Use | Key caution |
