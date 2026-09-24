@@ -113,3 +113,13 @@ resolution.
 
 See the [mathematical reference](mathematical-reference.md#discrete-transfer-entropy)
 and [worked example](../examples/transfer-entropy.md).
+
+## History/lag robustness
+
+When more than one target-history length, source-history length, or source lag
+is scientifically defensible, use the
+[0.42 transfer-entropy sensitivity layer](transfer-entropy-sensitivity.md)
+rather than choosing the combination that produces the largest TE. The
+sensitivity API evaluates the complete declared Cartesian grid, retains
+finite-support diagnostics for every row, and never selects a winner
+automatically.
