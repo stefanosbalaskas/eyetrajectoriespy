@@ -33,6 +33,12 @@ from .fpca import (
 )
 from .component_inference import bootstrap_fpca_component_bands, fpca_component_band_frame
 from .inference import functional_mean_band_frame, multiplier_functional_mean_band
+from .function_on_scalar import (
+    bootstrap_function_on_scalar_coefficients,
+    fit_function_on_scalar_regression,
+    function_on_scalar_coefficient_frame,
+    function_on_scalar_simultaneous_bands,
+)
 from .io import from_irregular_long_dataframe, from_long_dataframe
 from .irregular import (
     common_overlap_interval,
@@ -160,6 +166,7 @@ from .phase import (
 )
 from .plotting import (
     plot_dynamic_time_warping_alignment,
+    plot_function_on_scalar_coefficients,
     plot_fpca_component,
     plot_fpca_component_band,
     plot_fpca_component_envelope,
@@ -218,6 +225,7 @@ from .registration import phase_summary, register_to_landmarks, warping_displace
 from .reporting import (
     conformal_fpca_anomaly_reporting_text,
     dynamic_time_warping_reporting_text,
+    function_on_scalar_reporting_text,
     fpca_reporting_text,
     fpca_score_uncertainty_reporting_text,
     fpca_spectrum_uncertainty_reporting_text,
@@ -304,6 +312,9 @@ from .types import (
     FPCASubspaceComparisonResult,
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
+    FunctionOnScalarBandResult,
+    FunctionOnScalarBootstrapResult,
+    FunctionOnScalarResult,
     ConformalFunctionalAnomalyResult,
     FunctionalOutlierResult,
     FunctionalRegressionResult,
@@ -341,7 +352,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.34.0.dev0"
+__version__ = "0.35.0.dev0"
 
 __all__ = [
     "recurrence_radius_profile_reporting_text",
@@ -423,6 +434,9 @@ __all__ = [
     "TrajectorySet",
     "DiscreteFrechetResult",
     "DynamicTimeWarpingResult",
+    "FunctionOnScalarResult",
+    "FunctionOnScalarBootstrapResult",
+    "FunctionOnScalarBandResult",
     "IrregularTrajectorySet",
     "FPCAResult",
     "FPCAScoreUncertaintyResult",
@@ -495,6 +509,12 @@ __all__ = [
     "pairwise_dynamic_time_warping_distances",
     "plot_dynamic_time_warping_alignment",
     "dynamic_time_warping_reporting_text",
+    "fit_function_on_scalar_regression",
+    "bootstrap_function_on_scalar_coefficients",
+    "function_on_scalar_simultaneous_bands",
+    "function_on_scalar_coefficient_frame",
+    "plot_function_on_scalar_coefficients",
+    "function_on_scalar_reporting_text",
     "pairwise_functional_distances",
     "nearest_trajectory_indices",
     "score_distance_matrix",
