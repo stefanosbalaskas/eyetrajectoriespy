@@ -452,25 +452,25 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 **Functions:** `generate_multivariate_iaaft_surrogates()`, `multivariate_surrogate_nonlinearity_test()`
 
-$
+$$
 F_k(\omega)=A_k(\omega)e^{i\phi_k(\omega)}
-$
+$$
 
-$
+$$
 \Delta\phi_{kr}(\omega)=\phi_k(\omega)-\phi_r(\omega)
-$
+$$
 
-$
+$$
 F_k^*(\omega)=A_k(\omega)e^{i[\psi_r^*(\omega)+\Delta\phi_{kr}(\omega)]}
-$
+$$
 
-$
+$$
 C_{k\ell}(\omega)=F_k(\omega)F_\ell(\omega)^*
-$
+$$
 
-$
+$$
 p=\frac{1+\sum_{b=1}^{B}\mathbb I(T_b^*\ge T_{\mathrm{obs}})}{B+1}
-$
+$$
 
 **Scope:** Reference-anchored multivariate IAAFT with exact empirical marginal rank distributions and iterative targeting of each channel power spectrum plus original inter-channel Fourier phase differences. Final power/cross-spectrum preservation is approximate after rank remapping and retained diagnostically; the reference dimension is analyst-declared.
 
