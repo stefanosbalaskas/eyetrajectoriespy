@@ -375,11 +375,9 @@ When the question is whether a **new** functional trajectory is unusual relative
 
 The FPCA/MFPCA basis is fitted only on <code>proper_training</code>. Calibration and target curves are scored without refitting that basis.
 
-For a target score (s^*), the marginal conformal p-value is
+For a target score `s*`, the marginal conformal p-value is
 
-[
-hat p = rac{1 + #{s_i^{calib} ge s^*}}{n_{calib}+1}.
-]
+`p_hat = [1 + #{s_i^calib >= s*}] / (n_calib + 1)`.
 
 The greater-than-or-equal rule is intentionally conservative under ties.
 
