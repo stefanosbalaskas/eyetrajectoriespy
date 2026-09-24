@@ -391,8 +391,8 @@ c_{p,1-\alpha}
 \widehat{\mathrm{SE}}_p^*(t_m).
 $$
 
-Implemented by \`bootstrap_functional_mixed_effects_coefficients()\` and
-\`functional_mixed_effects_simultaneous_bands()\`. Whole participant trial
+Implemented by `bootstrap_functional_mixed_effects_coefficients()` and
+`functional_mixed_effects_simultaneous_bands()`. Whole participant trial
 bundles are resampled. The random-effect covariance, residual variance, and
 declared bases are held fixed at the reference fit; variance-component,
 basis-selection, and between-grid uncertainty are not included.
