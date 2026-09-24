@@ -1243,6 +1243,78 @@ The fitted slope is a Kantz-style maximal-Lyapunov estimate. It is a conditional
 
 **API:** `kantz_divergence_curve()`, `estimate_largest_lyapunov_kantz()`, and `kantz_parameter_sensitivity()`. The sensitivity API reuses the same neighborhood-divergence and linear-fit equations across the complete analyst-declared reconstruction, radius, minimum-neighbor, Theiler, and fit-interval grid without selecting a preferred specification.
 
+## Multivariate IAAFT surrogates { #multivariate-iaaft }
+
+For simultaneously observed dimensions \(k=1,\ldots,K\),
+
+$
+F_k(\omega)=A_k(\omega)e^{i\phi_k(\omega)}.
+$
+
+A multivariate surrogate should retain between-channel linear dependence rather
+than generate each channel independently. Relative to an explicitly declared
+reference dimension \(r\),
+
+$
+\Delta\phi_{kr}(\omega)=\phi_k(\omega)-\phi_r(\omega).
+$
+
+During one Fourier-adjustment step, the current surrogate reference phase
+\(\psi_r^*(\omega)\) is combined with the original phase offset,
+
+$
+F_k^*(\omega)
+=
+A_k(\omega)e^{i[\psi_r^*(\omega)+\Delta\phi_{kr}(\omega)]}.
+$
+
+This jointly targets each channel's original Fourier amplitude and the original
+complex cross-spectrum
+
+$
+C_{k\ell}(\omega)=F_k(\omega)F_\ell(\omega)^*.
+$
+
+The inverse transform is rank-remapped channel by channel to the exact observed
+empirical marginal distribution. The Fourier and rank constraints are iterated
+until the declared convergence tolerance is met or the rank ordering becomes
+stable.
+
+### Exact versus approximate preservation
+
+The returned surrogate has the exact observed marginal value set in each
+dimension. The final power spectrum and cross-spectrum are not claimed to be
+exact because the final rank-remapping step perturbs Fourier coefficients.
+Version 0.37 therefore retains relative per-channel spectrum errors and
+per-pair complex cross-spectrum errors for every surrogate.
+
+### Reference-dimension boundary
+
+The update is reference-anchored. The reference dimension is a finite-sample
+algorithm choice and is required explicitly through `reference_dimension`.
+It is never selected by the package.
+
+### Nonlinearity testing
+
+The same multichannel embedding and nonlinear statistic settings are used for
+the observed trajectory and all surrogates. For a greater-than alternative,
+
+$
+p
+=
+\frac{1+\sum_{b=1}^{B}\mathbb I(T_b^*\ge T_{\mathrm{obs}})}{B+1}.
+$
+
+The current public statistic is multichannel Rosenstein
+largest-Lyapunov estimation. Rejection is evidence against the declared
+multivariate linear-stochastic surrogate null under the retained marginal and
+spectral constraints. It is not proof of deterministic chaos or a unique
+nonlinear mechanism.
+
+**API:** `generate_multivariate_iaaft_surrogates()`,
+`multivariate_iaaft_diagnostics_frame()`,
+`multivariate_surrogate_nonlinearity_test()`.
+
 ## IAAFT surrogate nonlinearity test { #surrogate-nonlinearity }
 
 Version 0.23 uses iterative amplitude-adjusted Fourier transform surrogates for the explicitly supported largest-Lyapunov statistic. Every surrogate is analyzed with exactly the same embedding, Theiler window, divergence horizon, and fit interval as the observed signal.
