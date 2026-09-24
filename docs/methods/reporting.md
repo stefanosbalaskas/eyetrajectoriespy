@@ -899,3 +899,25 @@ shrunken model-based random effects.
 If 0.44 simultaneous fixed-effect bands are reported from a random-slope fit,
 state explicitly that the fitted intercept/slope covariance and residual
 variance were held fixed during bootstrap refits.
+
+### Full-refit participant bootstrap
+
+Report the number of whole-participant bootstrap replicates, random seed,
+declared mixed-model specification, REML/ML choice, optimizer, and the
+fail-on-first-failed-replicate policy.
+
+State that every sampled participant occurrence received a distinct bootstrap
+group identity, including duplicate source participants. State explicitly that
+fixed effects, the complete random-effect covariance and residual variance were
+refit in every replicate, while preprocessing, predictors, random-slope choice,
+random-effect structure and basis specification were held fixed.
+
+For variance-component stability, report descriptive summaries of residual
+variance, covariance eigenvalues/condition numbers and boundary/singularity
+frequencies. Do not describe these empirical distributions as calibrated
+variance-component confidence intervals unless a separate procedure justifies
+that interpretation.
+
+If fixed-covariance and full-refit bands are compared, describe the
+full-refit/fixed-covariance width ratio as a sensitivity diagnostic rather than
+a formal model-selection statistic.
