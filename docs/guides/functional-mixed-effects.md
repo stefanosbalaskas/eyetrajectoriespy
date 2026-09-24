@@ -140,9 +140,11 @@ fit = fit_functional_mixed_effects_regression(
 )
 ~~~
 
-The slope predictor must vary within every participant. The package does not
-select a random slope automatically or silently fall back to an intercept-only
-model.
+The slope predictor must vary within every participant. This is an intentionally
+strict 0.45 identification contract rather than a claim that mixed models can
+never be identified in unbalanced designs with some nonvarying clusters. The
+package does not select a random slope automatically or silently fall back to an
+intercept-only model.
 
 If the shared random basis has size (q), the intercept+slope random vector has
 dimension (2q), giving
@@ -155,6 +157,11 @@ free covariance parameters under the 0.45 unstructured covariance. The package
 requires the participant count to exceed that covariance-parameter count before
 fitting a random-slope model. For the default (q=4), this means more than 36
 participants.
+
+This participant-count rule is a **minimum complexity guard**, not an adequacy
+guarantee. A model with 37 participants and 36 covariance parameters may still
+be highly unstable; the retained covariance eigenvalues, condition number,
+boundary and singularity diagnostics remain essential.
 
 See the dedicated
 [random-functional-slope guide](../methods/functional-mixed-effects-random-slope.md).
