@@ -737,11 +737,11 @@ a whole-participant **full mixed-model refit**.
 
 For bootstrap replicate \(b\),
 
-$
+$$
 I_1^{*(b)},\ldots,I_n^{*(b)}
 \overset{iid}{\sim}
 \{1,\ldots,n\}.
-$
+$$
 
 If a source participant is sampled twice, the two occurrences receive distinct
 bootstrap group identities. Thus the backend receives two independent bootstrap
@@ -749,7 +749,7 @@ clusters rather than merging the duplicate copies into one random-effect group.
 
 The declared mixed model is then refit:
 
-$
+$$
 \mathcal D^{*(b)}
 \longrightarrow
 \left\{
@@ -757,7 +757,7 @@ $
 \widehat{\boldsymbol\Psi}^{*(b)},
 \widehat\sigma^{2*(b)}
 \right\}.
-$
+$$
 
 "Full refit" is conditional on the declared analysis specification.
 Preprocessing, response dimension, predictors, random-slope choice,
@@ -771,7 +771,7 @@ source participant IDs, and distinct bootstrap participant IDs.
 
 For sensitivity of the fixed-effect uncertainty contract,
 
-$
+$$
 R_p(t_m)
 =
 \frac{
@@ -779,7 +779,7 @@ W_{p,\mathrm{full}}(t_m)
 }{
 W_{p,\mathrm{fixed}}(t_m)
 },
-$
+$$
 
 where \(W\) is the simultaneous-band width. This ratio is descriptive and is
 not a probability or model-selection score.
