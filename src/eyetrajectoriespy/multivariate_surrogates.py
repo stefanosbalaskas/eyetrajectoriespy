@@ -7,7 +7,7 @@ from collections.abc import Sequence
 import numpy as np
 import pandas as pd
 
-from .embedding import _curve_index, _require_finite
+from .embedding import _curve_index, _regular_step, _require_finite
 from .nonlinear_dynamics import _lle_statistic
 from .nonlinear_types import (
     MultivariateIAAFTResult,
@@ -206,6 +206,7 @@ def generate_multivariate_iaaft_surrogates(
     """
 
     validate_trajectory_set(trajectories, require_complete=True)
+    regular_step = _regular_step(trajectories.time)
     dimension_names, dimension_indices = _validate_dimensions(
         trajectories,
         dimensions,
@@ -344,6 +345,9 @@ def generate_multivariate_iaaft_surrogates(
                 "approximate_after_final_rank_remapping_with_error_retained"
             ),
             "reference_dimension_selected_automatically": False,
+            "sampling_grid": "regular_common_grid",
+            "sampling_step": float(regular_step),
+            "time_unit": trajectories.time_unit,
             "dimension_scaling": False,
             "smoothing": False,
             "interpolation": False,
