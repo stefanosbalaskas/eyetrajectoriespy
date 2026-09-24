@@ -39,6 +39,10 @@ from .function_on_scalar import (
     function_on_scalar_coefficient_frame,
     function_on_scalar_simultaneous_bands,
 )
+from .functional_mixed_effects import (
+    fit_functional_mixed_effects_regression,
+    functional_mixed_effects_coefficient_frame,
+)
 from .io import from_irregular_long_dataframe, from_long_dataframe
 from .irregular import (
     common_overlap_interval,
@@ -167,6 +171,7 @@ from .phase import (
 from .plotting import (
     plot_dynamic_time_warping_alignment,
     plot_function_on_scalar_coefficients,
+    plot_functional_mixed_effects_coefficient,
     plot_fpca_component,
     plot_fpca_component_band,
     plot_fpca_component_envelope,
@@ -226,6 +231,7 @@ from .reporting import (
     conformal_fpca_anomaly_reporting_text,
     dynamic_time_warping_reporting_text,
     function_on_scalar_reporting_text,
+    functional_mixed_effects_reporting_text,
     fpca_reporting_text,
     fpca_score_uncertainty_reporting_text,
     fpca_spectrum_uncertainty_reporting_text,
@@ -312,6 +318,7 @@ from .types import (
     FPCASubspaceComparisonResult,
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
+    FunctionalMixedEffectsResult,
     FunctionOnScalarBandResult,
     FunctionOnScalarBootstrapResult,
     FunctionOnScalarResult,
@@ -352,7 +359,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.35.0.dev0"
+__version__ = "0.36.0.dev0"
 
 __all__ = [
     "recurrence_radius_profile_reporting_text",
@@ -434,6 +441,7 @@ __all__ = [
     "TrajectorySet",
     "DiscreteFrechetResult",
     "DynamicTimeWarpingResult",
+    "FunctionalMixedEffectsResult",
     "FunctionOnScalarResult",
     "FunctionOnScalarBootstrapResult",
     "FunctionOnScalarBandResult",
@@ -509,6 +517,10 @@ __all__ = [
     "pairwise_dynamic_time_warping_distances",
     "plot_dynamic_time_warping_alignment",
     "dynamic_time_warping_reporting_text",
+    "fit_functional_mixed_effects_regression",
+    "functional_mixed_effects_coefficient_frame",
+    "plot_functional_mixed_effects_coefficient",
+    "functional_mixed_effects_reporting_text",
     "fit_function_on_scalar_regression",
     "bootstrap_function_on_scalar_coefficients",
     "function_on_scalar_simultaneous_bands",
