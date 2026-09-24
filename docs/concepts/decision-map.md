@@ -129,3 +129,13 @@ complete grid and inspect every row together with finite-support diagnostics.
 Do not use the sensitivity function merely to search for the largest TE or the
 smallest p-value. If one specification is primary, keep it primary and use the
 multiverse to describe robustness around that decision.
+
+## Do you have a scientifically specified process that may explain pairwise TE?
+
+Use `conditional_transfer_entropy()` when the scientific question is whether
+source history contributes predictive information about the target beyond both
+the target's own past and one explicitly supplied conditioning process.
+
+Do not add conditioning processes post hoc merely because they reduce or
+increase TE. Conditioning is not automatic causal identification and does not
+guarantee that unmeasured common drivers have been controlled.
