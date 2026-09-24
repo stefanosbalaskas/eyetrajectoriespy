@@ -499,6 +499,23 @@ The eigenvalues of that fitted Jacobian are **not Floquet multipliers**. Classic
 ### Classical continuation is not implemented
 
 Version 0.23 does not expose `detect_bifurcation(gaze)`, numerical continuation, a monodromy matrix, or `floquet_multipliers(gaze)`. Those would require an identified dynamical system dx/dt = f(x, θ) and dedicated model-validation contracts. Raw gaze observations are not silently treated as a known ODE.
+## Recurrence-network limitations
+
+Recurrence networks do not create a threshold-free description of dynamics.
+All topology remains conditional on the recurrence state space, metric,
+threshold policy, Theiler window, and sampling design.
+
+Version 0.40 reports sparse degree, clustering, transitivity, and component
+summaries only. It does not implement shortest-path centralities, graph
+communities, weighted recurrence networks, recurrence-network dimension
+estimators, multiplex networks, or network-based causal direction.
+
+Graph density uses all unordered node pairs and is not numerically identical
+to Theiler-conditioned recurrence rate when temporal neighbors are excluded.
+
+High clustering or transitivity is not by itself evidence of deterministic
+chaos, a low-dimensional attractor, or a stable participant characteristic.
+
 ## Joint recurrence limitations
 
 A joint recurrence plot is conditional on every component recurrence contract.
