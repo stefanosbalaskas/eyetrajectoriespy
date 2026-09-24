@@ -408,3 +408,9 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.plot_transfer_entropy_circular_shift_test
 ::: eyetrajectoriespy.transfer_entropy_reporting_text
 ::: eyetrajectoriespy.transfer_entropy_circular_shift_reporting_text
+
+## Transfer entropy sensitivity
+::: eyetrajectoriespy.TransferEntropySensitivityResult
+::: eyetrajectoriespy.transfer_entropy_parameter_sensitivity
+::: eyetrajectoriespy.plot_transfer_entropy_sensitivity
+::: eyetrajectoriespy.transfer_entropy_parameter_sensitivity_reporting_text
