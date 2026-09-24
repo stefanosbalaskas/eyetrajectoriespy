@@ -1,7 +1,7 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.39.0.dev0"
+    assert et.__version__=="0.40.0.dev0"
     required={
         "MathematicalContract","get_mathematical_contract","list_mathematical_contracts","mathematical_contract_frame",
         "DelayEmbeddingResult","EmbeddingDelayDiagnosticResult","EmbeddingDimensionDiagnosticResult","JointRecurrenceResult","joint_recurrence_matrix","joint_recurrence_component_frame","joint_rqa_metrics","plot_joint_recurrence","joint_recurrence_reporting_text","RecurrenceResult","RecurrenceRadiusProfileResult","RQAResult","RQAMeanBootstrapResult","RQAParameterSensitivityResult","WindowedRQAResult","WindowedRQAFunctionalResult","WindowedRQASensitivityResult","WindowedRQAMeanBandResult",
