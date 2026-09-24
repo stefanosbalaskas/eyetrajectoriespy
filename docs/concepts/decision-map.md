@@ -119,3 +119,13 @@ specified, stop there rather than letting the package invent bins.
 If the question is synchronized recurrence rather than predictive direction,
 use joint recurrence; if it is all-pairs cross-system state similarity, use
 cross recurrence. These estimands are not interchangeable.
+
+## Do you need robustness across several defensible TE histories or lags?
+
+Use `transfer_entropy_parameter_sensitivity()` when more than one target
+history, source history, or source lag is scientifically defensible. Supply the
+complete grid and inspect every row together with finite-support diagnostics.
+
+Do not use the sensitivity function merely to search for the largest TE or the
+smallest p-value. If one specification is primary, keep it primary and use the
+multiverse to describe robustness around that decision.
