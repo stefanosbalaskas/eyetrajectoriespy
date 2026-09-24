@@ -23,6 +23,23 @@ flowchart LR
     F --> K[Registration / phase]
 ```
 
+## Functional response regression
+
+```mermaid
+flowchart LR
+    A[Functional response Y(t)] --> B{Inference unit}
+    B -->|Independent curves| C[Curve-level design]
+    B -->|Repeated trials + participant-level predictors| D[Participant-average response]
+    D --> E{Predictors constant within participant?}
+    E -->|No| F[Defer to functional mixed effects]
+    E -->|Yes| G[Participant-level design]
+    C --> H[Observed-grid function-on-scalar OLS]
+    G --> H
+    H --> I[HC1 pointwise SE]
+    H --> J[Whole-function wild bootstrap]
+    J --> K[Coefficient/family simultaneous bands]
+```
+
 ## Ordered trajectory comparison
 
 ```mermaid
