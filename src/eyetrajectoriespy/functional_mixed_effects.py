@@ -330,6 +330,14 @@ def fit_functional_mixed_effects_regression(
     covariance_parameter_count = (
         random_effect_dimension * (random_effect_dimension + 1) // 2
     )
+    if has_random_slope and len(participant_ids) <= covariance_parameter_count:
+        raise ValueError(
+            "guarded random-functional-slope model requires the participant "
+            "count to exceed the number of free unstructured random-effect "
+            "covariance parameters; "
+            f"got {len(participant_ids)} participants and "
+            f"{covariance_parameter_count} covariance parameters"
+        )
     covariance_complexity_warning = bool(
         len(participant_ids) <= covariance_parameter_count
     )
@@ -476,9 +484,13 @@ def fit_functional_mixed_effects_regression(
             random_basis_size:,
         ].copy()
         slope_eigenvalues = np.linalg.eigvalsh(random_slope_covariance)
+        slope_boundary_reference = max(
+            largest_covariance_eigenvalue,
+            np.finfo(float).eps,
+        )
         random_slope_boundary_fit = bool(
             float(np.min(slope_eigenvalues))
-            <= 1e-8 * covariance_scale
+            <= 1e-4 * slope_boundary_reference
         )
     else:
         random_slope_covariance = None
@@ -661,6 +673,17 @@ def fit_functional_mixed_effects_regression(
                 ),
                 "covariance_complexity_warning_rule": (
                     "n_participants <= random_effect_covariance_parameter_count"
+                ),
+                "random_slope_covariance_complexity_guard": (
+                    "require n_participants > covariance_parameter_count"
+                    if has_random_slope
+                    else None
+                ),
+                "random_slope_boundary_rule": (
+                    "min_slope_covariance_eigenvalue <= "
+                    "1e-4 * max_abs_full_covariance_eigenvalue"
+                    if has_random_slope
+                    else None
                 ),
                 "random_effect_covariance_eigenvalues": (
                     covariance_eigenvalues.tolist()
