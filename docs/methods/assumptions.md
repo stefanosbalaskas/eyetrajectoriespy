@@ -415,3 +415,10 @@ The optional `window_radius` is measured in sample indices, not milliseconds or 
 
 Coordinate units and explicit dimension weights define the local geometry. All points must be finite; the package does not silently delete missing samples or repair incomplete paths. Recorded timestamps do not enter either DTW recurrence.
 
+## Discrete transfer entropy assumptions
+
+- Source and target are already scientifically meaningful discrete state sequences; the package does not discretize continuous measurements.
+- `target_history`, `source_history`, and `source_lag` are part of the estimand and must be declared rather than tuned to maximize TE.
+- Empirical count support must be adequate for the joint histories actually used. The result exposes singleton-history and minimum/maximum support diagnostics instead of applying a hidden cutoff.
+- The circular-shift test assumes the declared wrap-around shifts provide a defensible no-alignment null for the scientific series. Strong trial boundaries or nonstationarity can invalidate that null.
+- Pairwise TE can remain nonzero under common drivers or omitted history. It is a directed predictive-information diagnostic, not automatic causal identification.
