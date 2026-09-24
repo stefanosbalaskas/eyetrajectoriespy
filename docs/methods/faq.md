@@ -477,6 +477,24 @@ Not as an independently varying functional outcome. Target-rate mode controls re
 No. It is a provenance-preserving representation bridge. It lets the existing FDA core describe between-curve variation in time-varying recurrence organization; inference still requires a design-appropriate sampling unit and assumptions.
 
 
+## How do I know whether my trajectory-similarity conclusion depends on the metric?
+
+Declare the defensible L2, Fréchet, and/or DTW contracts before inspecting
+their outcomes and use `trajectory_distance_sensitivity()`. It compares
+pair-distance rank order and local neighbor identities without choosing a
+winner.
+
+## Why doesn't the sensitivity function standardize all distance matrices?
+
+Because standardization is itself an analytical choice and can hide the native
+meaning of L2, Fréchet, and DTW values. Version 0.38 keeps raw matrices intact
+and compares rank order plus neighbor structure instead.
+
+## Why are there no p-values for the distance-matrix correlations?
+
+Because upper-triangle pair distances are dependent: the same trajectory
+contributes to many pairs. The 0.38 quantities are explicitly descriptive.
+
 ## Should I use functional L2, discrete Fréchet, DTW, or registration?
 
 Use functional L2 when same trial-time correspondence is part of the estimand. Use discrete Fréchet when you want an order-preserving bottleneck separation between point sequences. Use DTW when cumulative mismatch after monotone sample-index warping is the target and local progression-rate differences may be nuisance variation. Use registration/phase analysis when the timing deformation itself should be retained and analyzed rather than collapsed into a distance.
