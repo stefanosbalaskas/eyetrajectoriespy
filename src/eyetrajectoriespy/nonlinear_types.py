@@ -85,6 +85,7 @@ class RecurrenceResult:
     kind: str
     state_dimension: int
     provenance: Mapping[str, Any] = field(default_factory=dict)
+    time_unit: str | None = None
 
     @property
     def shape(self) -> tuple[int, int]:
