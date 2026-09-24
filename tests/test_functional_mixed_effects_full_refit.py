@@ -1,7 +1,8 @@
+from dataclasses import replace
+
 import numpy as np
 import pandas as pd
 import pytest
-from dataclasses import replace
 
 import eyetrajectoriespy.functional_mixed_effects_full_refit as full_refit_module
 from eyetrajectoriespy import (
