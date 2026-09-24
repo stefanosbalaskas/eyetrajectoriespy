@@ -69,6 +69,31 @@ Studentization assumes empirical pointwise variability is meaningful. Grid locat
 The current simultaneous target is finite: the observed time × functional-dimension grid. Smoothness assumptions needed to extend coverage to the entire continuous domain are not imposed by this API.
 
 
+## Functional mixed-effects regression
+
+The 0.36 model assumes a common finite observation grid and one Gaussian
+functional response dimension. Participant groups are treated as independent,
+while repeated curves within participant are linked through one participant
+functional random intercept.
+
+Fixed coefficient functions and random participant functions are represented
+in analyst-declared clamped B-spline bases. Basis size and degree therefore
+define the model space and should be justified or examined in sensitivity
+analysis.
+
+Conditional on the participant functional random effect, residual grid errors
+are iid Gaussian with one variance. The current model does not represent
+additional serial residual correlation or a trial-level functional random
+effect.
+
+The participant random-basis coefficient vector is multivariate Gaussian with
+an unstructured covariance. Enough independent participants are required to
+estimate that covariance; near-boundary covariance estimates are flagged.
+
+Pointwise fixed-effect standard errors condition on the fitted mixed-model
+variance structure. They do not provide simultaneous functional coverage or
+full variance-component uncertainty.
+
 ## Function-on-scalar regression
 
 The observed-grid function-on-scalar model assumes that the declared scalar design is scientifically meaningful and full rank. Categorical coding, interactions, centering, and scaling must be constructed explicitly before fitting; the package does not infer them from column names or data types.
