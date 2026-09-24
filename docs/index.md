@@ -3,13 +3,13 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.31 · continuous eye-tracking FDA</div>
+<div class="et-kicker">eyetrajectoriespy 0.33 · continuous eye-tracking FDA</div>
 
 # Model the viewing process, not only its summaries
 
 eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze paths, multivariate FPCA, native irregular trajectories, repeated-trial functional decomposition, phase analysis, compositional AOI trajectories, and explicit validation of component stability.
 
-<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">LaTeX contracts</span><span class="et-pill">reproducible plots</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">mean-band inference</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
+<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">Fréchet + DTW similarity</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">LaTeX contracts</span><span class="et-pill">reproducible plots</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">mean-band inference</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
 </div>
 
 <div class="grid cards" markdown>
@@ -120,6 +120,12 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
 
     [:octicons-arrow-right-24: Phase FPCA](guides/phase-fpca.md)
 
+-   **Compare ordered gaze paths without hiding the alignment rule**
+
+    Use discrete Fréchet for bottleneck separation or DTW for cumulative elastic index alignment, with explicit coordinate weights and no hidden time/preprocessing claims.
+
+    [:octicons-arrow-right-24: DTW guide](methods/dynamic-time-warping.md) · [Discrete Fréchet guide](methods/discrete-frechet.md)
+
 </div>
 
 ## A functional gaze workflow
@@ -151,6 +157,9 @@ The package is designed around the principle that **the path to an FPC score is 
 
 - **Do viewers follow similar spatial routes at different times?**  
   Compare unregistered, registered, and phase representations.
+
+- **Are two ordered paths geometrically similar after monotone index alignment?**  
+  Use discrete Fréchet for worst coupled separation or DTW for cumulative alignment cost; keep a time-preserving analysis when latency matters.
 
 - **How many components should I retain for reconstruction?**  
   Use leakage-safe reconstruction CV with the correct fold unit and an explicit selection rule.

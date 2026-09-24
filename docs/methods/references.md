@@ -270,9 +270,13 @@ For the 0.29 Kantz-LLE layer, Kantz (1994) is the primary neighborhood-divergenc
 For the 0.30 Kantz-sensitivity layer, Kantz (1994) makes the local neighborhood scale (ε) part of the maximal-Lyapunov construction, while Hegger, Kantz & Schreiber (1999) retain this neighborhood-based algorithm as a distinct TISEAN implementation. eyetrajectoriespy uses that evidence to justify exposing radius/minimum-neighbor dependence as an analyst-declared robustness grid. It does not infer a universal radius, optimize (ε), or convert grid stability into a probability that behavioral gaze is chaotic.
 
 
-## Trajectory similarity and discrete Fréchet
+## Trajectory similarity: discrete Fréchet and dynamic time warping
 
 - Eiter, T., & Mannila, H. (1994). Computing discrete Fréchet distance. Christian Doppler Laboratory for Expert Systems, Technical Report CD-TR 94/64, Technical University of Vienna.
+- Sakoe, H., & Chiba, S. (1978). Dynamic programming algorithm optimization for spoken word recognition. *IEEE Transactions on Acoustics, Speech, and Signal Processing*, 26(1), 43–49. https://doi.org/10.1109/TASSP.1978.1163055
+- Anderson, N. C., Anderson, F., Kingstone, A., & Bischof, W. F. (2015). A comparison of scanpath comparison methods. *Behavior Research Methods*, 47(4), 1377–1392. https://doi.org/10.3758/s13428-014-0550-3
 - Laborde, Q., Roques, A., Armougum, A., Vayatis, N., Bargiotas, I., & Oudre, L. (2026). Vision toolkit part 3. Scanpaths and derived representations for gaze behavior characterization: a review. *Frontiers in Physiology*, 16, 1721768. https://doi.org/10.3389/fphys.2025.1721768
 
-Eiter and Mannila provide the discrete Fréchet dynamic-programming definition. Laborde et al. classify discrete Fréchet among established elastic scanpath-comparison methods and emphasize method choice according to representation and scientific question. Version 0.32 therefore does not claim novelty for the metric itself; it exposes an explicit coupling/provenance contract inside the continuous-trajectory framework.
+Eiter and Mannila provide the discrete Fréchet dynamic-programming definition. Sakoe and Chiba provide the classic dynamic-programming time-normalization framework and path constraints underlying DTW. Anderson et al. show why scanpath comparison measures should be interpreted according to the specific behavior they quantify rather than treated as interchangeable similarity scores. Laborde et al. review DTW and discrete Fréchet as established elastic scanpath-comparison methods, describing DTW as a cumulative dynamic-programming alignment that can accommodate local acceleration/deceleration.
+
+Versions 0.32–0.33 therefore do not claim novelty for either metric. The package contribution is a transparent trajectory-analysis contract: explicit local geometry, deterministic audit paths/couplings, declared constraints, provenance, and no hidden preprocessing or elapsed-time claims.

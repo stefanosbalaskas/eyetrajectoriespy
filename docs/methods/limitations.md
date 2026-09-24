@@ -725,3 +725,30 @@ Anisotropic rescaling of dimensions changes the local Euclidean metric and there
 ### Couplings need not be unique
 
 Multiple optimal monotone couplings can attain the same distance. The audit result returns one deterministic optimum and must not be interpreted as a unique latent correspondence.
+
+
+## Dynamic time warping limits
+
+### Warping can erase scientifically meaningful timing
+
+DTW deliberately permits one sequence to pause its index while the other advances. A latency shift, prolonged dwell, or local timing difference can therefore receive little or no cost even when that difference is the experimental effect of interest. Use a time-preserving complementary analysis when elapsed trial time matters.
+
+### Cumulative cost depends on path length
+
+The 0.33 distance is the raw sum of local costs along the optimal path. Longer paths can accumulate more cost. The package retains path length and mean local distance for auditability but does not silently redefine the estimand by normalizing the public distance.
+
+### The window is an index constraint, not a clock-time constraint
+
+A Sakoe-Chiba `window_radius` limits (|i-j|) in sample indices. It does not mean the same number of milliseconds when trajectories use different physical sampling intervals or irregular timing.
+
+### Coordinate scaling changes the result
+
+Anisotropic rescaling of dimensions changes weighted Euclidean local costs and therefore the DTW optimum. No coordinate or weight normalization is applied automatically.
+
+### Optimal paths need not be unique
+
+Several monotone paths can have the same minimum cumulative cost. The audit result returns one deterministic path; it should not be interpreted as a uniquely identified latent correspondence.
+
+### Unconstrained warping can be overly permissive
+
+An unconstrained path can match long portions of one sequence to repeated points in the other. A scientifically defended window can limit this behavior, but version 0.33 does not estimate or optimize a preferred radius from the observed outcomes.

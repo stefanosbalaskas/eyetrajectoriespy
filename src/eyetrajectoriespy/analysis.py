@@ -12,6 +12,7 @@ from .fpca import functional_trapezoid_weights
 from .types import (
     ClusterResult,
     DiscreteFrechetResult,
+    DynamicTimeWarpingResult,
     FPCAResult,
     FunctionalRegressionResult,
     TrajectorySet,
@@ -197,6 +198,244 @@ def pairwise_discrete_frechet_distances(
         for j in range(i + 1, n):
             distance = discrete_frechet_distance(
                 values[i], values[j], dimension_weights=dimension_weights
+            )
+            result[i, j] = result[j, i] = float(distance)
+    return result
+
+
+def _validate_dynamic_time_warping_inputs(
+    a: np.ndarray,
+    b: np.ndarray,
+    *,
+    dimension_weights: np.ndarray | None,
+    window_radius: int | None,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, int | None]:
+    """Validate two complete point sequences for dynamic time warping."""
+
+    a_arr = np.asarray(a, dtype=float)
+    b_arr = np.asarray(b, dtype=float)
+    if a_arr.ndim != 2 or b_arr.ndim != 2:
+        raise ValueError("a and b must have shape (n_points, n_dimensions)")
+    if a_arr.shape[0] < 1 or b_arr.shape[0] < 1:
+        raise ValueError("a and b must each contain at least one point")
+    if a_arr.shape[1] != b_arr.shape[1]:
+        raise ValueError("a and b must have the same number of dimensions")
+    if a_arr.shape[1] < 1:
+        raise ValueError("a and b must contain at least one dimension")
+    if not np.all(np.isfinite(a_arr)) or not np.all(np.isfinite(b_arr)):
+        raise ValueError(
+            "dynamic time warping requires finite complete point sequences"
+        )
+
+    if dimension_weights is None:
+        weights = np.ones(a_arr.shape[1], dtype=float)
+    else:
+        weights = np.asarray(dimension_weights, dtype=float)
+        if weights.shape != (a_arr.shape[1],):
+            raise ValueError(
+                "dimension_weights must contain one value per dimension"
+            )
+        if not np.all(np.isfinite(weights)) or np.any(weights < 0):
+            raise ValueError(
+                "dimension_weights must contain finite non-negative values"
+            )
+        if not np.any(weights > 0):
+            raise ValueError(
+                "dimension_weights must contain at least one positive value"
+            )
+
+    if window_radius is not None:
+        if isinstance(window_radius, (bool, np.bool_)) or not isinstance(
+            window_radius, (int, np.integer)
+        ):
+            raise TypeError("window_radius must be an integer or None")
+        window_radius = int(window_radius)
+        if window_radius < 0:
+            raise ValueError("window_radius must be non-negative")
+        minimum = abs(a_arr.shape[0] - b_arr.shape[0])
+        if window_radius < minimum:
+            raise ValueError(
+                "window_radius is too small to connect the sequence endpoints"
+            )
+
+    return a_arr, b_arr, weights, window_radius
+
+
+def dynamic_time_warping_distance(
+    a: np.ndarray,
+    b: np.ndarray,
+    *,
+    dimension_weights: np.ndarray | None = None,
+    window_radius: int | None = None,
+    return_path: bool = False,
+) -> float | DynamicTimeWarpingResult:
+    """Compute symmetric DTW using weighted-Euclidean local costs.
+
+    The scalar distance is the unnormalized sum of local distances along the
+    minimum-cost monotone path. window_radius is an optional Sakoe-Chiba
+    sample-index band. Recorded timestamps are not used by this function.
+
+    No interpolation, resampling, smoothing, coordinate normalization, path
+    simplification, or missing-value deletion is performed.
+    """
+
+    if not isinstance(return_path, (bool, np.bool_)):
+        raise TypeError("return_path must be boolean")
+
+    a_arr, b_arr, weights, resolved_window = _validate_dynamic_time_warping_inputs(
+        a,
+        b,
+        dimension_weights=dimension_weights,
+        window_radius=window_radius,
+    )
+    n_a, n_b = a_arr.shape[0], b_arr.shape[0]
+    local = np.sqrt(
+        np.sum(
+            (a_arr[:, None, :] - b_arr[None, :, :]) ** 2
+            * weights[None, None, :],
+            axis=2,
+        )
+    )
+
+    cumulative = np.full((n_a, n_b), np.inf, dtype=float)
+    predecessor = np.full((n_a, n_b, 2), -1, dtype=int)
+
+    for i in range(n_a):
+        if resolved_window is None:
+            j_start, j_stop = 0, n_b
+        else:
+            j_start = max(0, i - resolved_window)
+            j_stop = min(n_b, i + resolved_window + 1)
+
+        for j in range(j_start, j_stop):
+            if i == 0 and j == 0:
+                cumulative[i, j] = local[i, j]
+                continue
+
+            candidates: list[tuple[float, int, int]] = []
+            if i > 0 and j > 0 and np.isfinite(cumulative[i - 1, j - 1]):
+                candidates.append((cumulative[i - 1, j - 1], i - 1, j - 1))
+            if i > 0 and np.isfinite(cumulative[i - 1, j]):
+                candidates.append((cumulative[i - 1, j], i - 1, j))
+            if j > 0 and np.isfinite(cumulative[i, j - 1]):
+                candidates.append((cumulative[i, j - 1], i, j - 1))
+            if not candidates:
+                continue
+
+            previous, prev_i, prev_j = min(candidates, key=lambda item: item[0])
+            cumulative[i, j] = local[i, j] + previous
+            predecessor[i, j] = (prev_i, prev_j)
+
+    distance = float(cumulative[-1, -1])
+    if not np.isfinite(distance):
+        raise ValueError(
+            "No admissible DTW path reaches the endpoint under window_radius"
+        )
+    if not return_path:
+        return distance
+
+    path: list[tuple[int, int]] = []
+    i, j = n_a - 1, n_b - 1
+    while True:
+        path.append((i, j))
+        if i == 0 and j == 0:
+            break
+        prev_i, prev_j = predecessor[i, j]
+        if prev_i < 0 or prev_j < 0:
+            raise RuntimeError("DTW predecessor chain is incomplete")
+        i, j = int(prev_i), int(prev_j)
+    path.reverse()
+
+    alignment_path = np.asarray(path, dtype=int)
+    aligned_local = local[alignment_path[:, 0], alignment_path[:, 1]]
+    return DynamicTimeWarpingResult(
+        distance=distance,
+        path=alignment_path,
+        local_distances=aligned_local,
+        path_length=len(path),
+        mean_local_distance=float(np.mean(aligned_local)),
+        n_points_a=n_a,
+        n_points_b=n_b,
+        n_dimensions=a_arr.shape[1],
+        window_radius=resolved_window,
+        provenance={
+            "operation": "dynamic_time_warping_distance",
+            "local_metric": "weighted_euclidean",
+            "dimension_weights": weights.tolist(),
+            "distance_aggregation": "sum",
+            "normalized_distance": False,
+            "recorded_time_used": False,
+            "sequence_index_warping": True,
+            "sample_order_preserved": True,
+            "backtracking_allowed": False,
+            "window_constraint": (
+                "unconstrained"
+                if resolved_window is None
+                else "sakoe_chiba_index_band"
+            ),
+            "window_radius": resolved_window,
+            "interpolation": False,
+            "resampling": False,
+            "smoothing": False,
+            "coordinate_normalization": False,
+            "path_simplification": False,
+            "missing_value_deletion": False,
+            "tie_break_order": ("diagonal", "advance_a", "advance_b"),
+            "optimal_path_not_necessarily_unique": True,
+        },
+    )
+
+
+def pairwise_dynamic_time_warping_distances(
+    trajectories: TrajectorySet,
+    *,
+    dimensions: tuple[str, ...] | list[str] | None = None,
+    dimension_weights: np.ndarray | None = None,
+    window_radius: int | None = None,
+) -> np.ndarray:
+    """Pairwise DTW distances for complete trajectories.
+
+    The TrajectorySet time grid is not passed into the recurrence.
+    window_radius therefore constrains sample-index displacement, not
+    elapsed physical time.
+    """
+
+    validate_trajectory_set(trajectories, require_complete=True)
+    if dimensions is None:
+        selected = trajectories.dimension_names
+    else:
+        if isinstance(dimensions, (str, bytes)):
+            raise TypeError("dimensions must be a non-string sequence")
+        selected = tuple(dimensions)
+        if not selected:
+            raise ValueError("dimensions must contain at least one dimension")
+        if len(set(selected)) != len(selected):
+            raise ValueError("dimensions must not contain duplicates")
+        missing = [
+            name for name in selected if name not in trajectories.dimension_names
+        ]
+        if missing:
+            raise KeyError(f"Unknown trajectory dimensions: {missing}")
+
+    indices = [trajectories.dimension_names.index(name) for name in selected]
+    values = trajectories.values[:, :, indices]
+    n = trajectories.n_curves
+    if n > 0:
+        _validate_dynamic_time_warping_inputs(
+            values[0],
+            values[0],
+            dimension_weights=dimension_weights,
+            window_radius=window_radius,
+        )
+
+    result = np.zeros((n, n), dtype=float)
+    for i in range(n):
+        for j in range(i + 1, n):
+            distance = dynamic_time_warping_distance(
+                values[i],
+                values[j],
+                dimension_weights=dimension_weights,
+                window_radius=window_radius,
             )
             result[i, j] = result[j, i] = float(distance)
     return result

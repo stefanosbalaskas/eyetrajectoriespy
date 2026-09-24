@@ -19,11 +19,33 @@ flowchart LR
     G --> F
     F -->|Planar x/y| H[MFPCA]
     F -->|Planar geometry| M[Heading / curvature / turning rate]
+    F -->|Ordered path similarity| N[Fréchet / DTW]
     F -->|One function| I[FPCA]
     F -->|Repeated trials| J[Multilevel FPCA]
     F -->|AOI probabilities| K[ALR + compositional FPCA]
     F -->|Timing deformation| L[Registration + phase]
 ```
+
+## Ordered trajectory similarity
+
+```mermaid
+flowchart TD
+    A[Complete ordered trajectory points] --> B{What difference matters?}
+    B -->|Worst coupled spatial excursion| C[Discrete Fréchet]
+    B -->|Cumulative mismatch after elastic index alignment| D[DTW]
+    D --> E{Constrain warping?}
+    E -->|No| F[Unconstrained monotone DTW]
+    E -->|Yes| G[Declare Sakoe-Chiba sample-index radius]
+    C --> H[Audit deterministic coupling]
+    F --> I[Audit deterministic path]
+    G --> I
+    H --> J{Is elapsed timing part of the estimand?}
+    I --> J
+    J -->|Yes| K[Add time-preserving functional comparison]
+    J -->|No / nuisance timing| L[Interpret elastic similarity]
+```
+
+Fréchet and DTW use sequence order, not the numeric TrajectorySet time grid. Fréchet reports a bottleneck maximum; DTW reports an unnormalized cumulative path cost. Neither contract silently resamples, smooths, normalizes, or chooses a warping rule.
 
 ## FPCA validation before interpretation
 

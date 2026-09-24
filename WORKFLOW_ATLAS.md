@@ -15,9 +15,30 @@ flowchart LR
     G --> F
     F --> H[FPCA / MFPCA]
     F --> L[Heading / curvature / turning rate]
+    F --> M[Ordered trajectory similarity]
+    M --> N[Discrete Fréchet bottleneck]
+    M --> O[DTW cumulative alignment]
     F --> I[Multilevel]
     F --> J[Compositional]
     F --> K[Registration / phase]
+```
+
+## Ordered trajectory comparison
+
+```mermaid
+flowchart LR
+    A[Ordered trajectory points] --> B{Scientific target}
+    B -->|Worst coupled separation| C[Discrete Fréchet]
+    B -->|Cumulative elastic mismatch| D[DTW]
+    D --> E{Warp constraint}
+    E -->|Unconstrained| F[Full monotone path]
+    E -->|Declared index radius| G[Sakoe-Chiba band]
+    C --> H[No elapsed-time correspondence]
+    F --> H
+    G --> H
+    H --> I{Latency scientifically meaningful?}
+    I -->|Yes| J[Add time-preserving analysis]
+    I -->|No / nuisance timing| K[Interpret elastic similarity]
 ```
 
 ## Inference

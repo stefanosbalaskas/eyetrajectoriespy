@@ -9,6 +9,13 @@ The most important choice is the **functional object**, not the PCA backend.
 | Repeated trials per participant | $G_{ij}(t)$ | `fit_multilevel_fpca()` |
 | AOI probability vector | $P_i(t)$, $\\sum_k p_{ik}(t)=1$ | `fit_compositional_fpca()` |
 | Same path at different rates | amplitude + phase | `register_to_landmarks()` / elastic analysis |
+| Ordered point-sequence similarity | $P=(p_1,\ldots,p_m)$ | `discrete_frechet_distance()` / `dynamic_time_warping_distance()` |
+
+## Ordered point-sequence similarity
+
+Discrete Fréchet and DTW operate on the supplied ordered points rather than on recorded elapsed timestamps. Fréchet minimizes the worst coupled separation; DTW minimizes a cumulative local alignment cost. DTW additionally exposes an optional Sakoe-Chiba sample-index band.
+
+These are similarity representations, not substitutes for registration/phase analysis when timing deformation itself is a scientific outcome. Coordinate scaling, selected dimensions, upstream resampling, and the DTW band remain explicit analysis decisions.
 
 ## Absolute screen coordinates
 
