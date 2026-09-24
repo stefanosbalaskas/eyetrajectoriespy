@@ -69,6 +69,18 @@ Studentization assumes empirical pointwise variability is meaningful. Grid locat
 The current simultaneous target is finite: the observed time × functional-dimension grid. Smoothness assumptions needed to extend coverage to the entire continuous domain are not imposed by this API.
 
 
+## Function-on-scalar regression
+
+The observed-grid function-on-scalar model assumes that the declared scalar design is scientifically meaningful and full rank. Categorical coding, interactions, centering, and scaling must be constructed explicitly before fitting; the package does not infer them from column names or data types.
+
+Curve-level mode assumes that each source trajectory is an independent inferential unit. Participant mode instead averages selected response functions within participant and assumes the declared predictors are constant within participant. This creates an equal-weight participant-level between-subject estimand; it does not identify within-participant trial effects.
+
+The coefficient functions are estimated separately at each observed grid point under one shared design matrix. Version 0.35 imposes no coefficient smoothing or basis regularization, so local roughness in the coefficient curves can reflect both signal and sampling noise.
+
+Pointwise uncertainty uses the HC1 sandwich variance. Simultaneous coefficient bands use a fixed-design wild bootstrap in which one multiplier is applied to the complete residual function for each independent inference unit. The calibrated claim is finite-dimensional over the observed time × selected-dimension grid.
+
+The procedure is not a functional mixed-effects model. Participant-specific random functional effects, within-participant covariance, and trial-varying predictors require a different repeated-measures model.
+
 ## Predictive FPCA regression
 
 Outcome-tuned component selection assumes that the chosen fold structure represents the intended prediction setting. FPCA centering, scaling, and eigenfunctions and the scalar regression must be estimated within each training fold.
