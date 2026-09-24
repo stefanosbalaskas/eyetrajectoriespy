@@ -81,6 +81,16 @@ from .nonlinear_dynamics import (
     local_divergence_curve,
     surrogate_nonlinearity_test,
 )
+from .transfer_entropy import (
+    DiscreteTransferEntropyResult,
+    TransferEntropyCircularShiftTestResult,
+    discrete_transfer_entropy,
+    plot_transfer_entropy_circular_shift_test,
+    transfer_entropy_circular_shift_reporting_text,
+    transfer_entropy_circular_shift_test,
+    transfer_entropy_local_frame,
+    transfer_entropy_reporting_text,
+)
 from .multivariate_surrogates import (
     generate_multivariate_iaaft_surrogates,
     multivariate_iaaft_diagnostics_frame,
@@ -394,9 +404,17 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.40.0.dev0"
+__version__ = "0.41.0.dev0"
 
 __all__ = [
+    "DiscreteTransferEntropyResult",
+    "TransferEntropyCircularShiftTestResult",
+    "discrete_transfer_entropy",
+    "transfer_entropy_local_frame",
+    "transfer_entropy_circular_shift_test",
+    "plot_transfer_entropy_circular_shift_test",
+    "transfer_entropy_reporting_text",
+    "transfer_entropy_circular_shift_reporting_text",
     "recurrence_radius_profile_reporting_text",
     "rqa_metric_mean_bootstrap_reporting_text",
     "rqa_reporting_text",
