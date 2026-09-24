@@ -271,7 +271,7 @@ The package is designed around the principle that **the path to an FPC score is 
 - Rosenstein nearest-neighbor local divergence and largest-Lyapunov estimation with an analyst-declared fit interval and retained fit diagnostics;
 - deterministic IAAFT surrogate nonlinearity testing with plus-one Monte Carlo p-values and no silent failed-surrogate replacement;
 - experimental Poincare-section / local return-map stability with an explicit warning that empirical Jacobian eigenvalues are not classical Floquet multipliers;
-- twelve-figure deterministic documentation gallery, nonlinear worked examples, equations, assumptions, limitations, reporting guidance, and public API reference.
+- deterministic documentation gallery, nonlinear worked examples, equations, assumptions, limitations, reporting guidance, and public API reference.
 
 ## New in 0.22 development
 
