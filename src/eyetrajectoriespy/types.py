@@ -699,6 +699,33 @@ class FunctionalMeanBandResult:
 
 
 @dataclass(frozen=True)
+class TrajectoryDistanceSensitivityResult:
+    """Descriptive robustness diagnostics across trajectory-distance contracts."""
+
+    specification_names: tuple[str, ...]
+    distance_matrices: np.ndarray
+    specification_table: pd.DataFrame
+    pairwise_distance_table: pd.DataFrame
+    comparison_table: pd.DataFrame
+    neighbor_overlap_table: pd.DataFrame
+    neighbor_orders: np.ndarray
+    neighbor_cutoff_ties: np.ndarray
+    curve_ids: tuple[str, ...]
+    dimensions: tuple[str, ...]
+    dimension_weights: np.ndarray
+    neighbor_k: int
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_specifications(self) -> int:
+        return len(self.specification_names)
+
+    @property
+    def n_curves(self) -> int:
+        return len(self.curve_ids)
+
+
+@dataclass(frozen=True)
 class FunctionalMixedEffectsResult:
     """Joint Gaussian functional mixed-effects regression fit."""
 

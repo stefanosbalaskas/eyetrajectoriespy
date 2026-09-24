@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.37.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.38.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -67,6 +67,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - integrated functional L2 distances;
 - discrete Fréchet trajectory distance and pairwise matrices with auditable monotone couplings and no elapsed-time matching;
 - dynamic time warping (DTW) with backward-compatible symmetric1 raw cost, explicit normalizable symmetric2 weighting, optional N+M normalization, auditable monotone index paths, and declared Sakoe-Chiba sample-index bands;
+- trajectory-distance sensitivity across declared L2, discrete Fréchet, and DTW contracts, retaining native-scale matrices, pair-distance rank agreement, nearest-neighbor overlap, and cutoff-tie diagnostics without selecting a preferred metric;
 - deterministic FPCA-score clustering;
 - scalar-on-function regression through FPCA scores;
 - explicit delay-coordinate reconstruction with AMI/autocorrelation and false-nearest-neighbor diagnostics;
@@ -139,6 +140,7 @@ print(summarise_fpca(fit))
 | Continuous planar geometry | `heading(t)`, signed curvature, turning rate, tortuosity | `heading_function()` / `signed_curvature_function()` / `turning_rate_function()` / `trajectory_tortuosity()` |
 | Ordered trajectory similarity | discrete Fréchet bottleneck distance | `discrete_frechet_distance()` / `pairwise_discrete_frechet_distances()` |
 | Elastic sequence-index similarity | explicit symmetric1 raw or symmetric2/N+M-normalized DTW alignment cost | `dynamic_time_warping_distance()` / `pairwise_dynamic_time_warping_distances()` |
+| Similarity robustness across defensible distance contracts | descriptive pair-rank and local-neighbor agreement across declared L2 / Fréchet / DTW specifications | `trajectory_distance_sensitivity()` |
 | Native irregular gaze | curve-specific time grids | `from_irregular_long_dataframe_native()` |
 | Genuinely sparse univariate gaze | covariance UFPCA + PACE scores | `fit_sparse_fpca_fdapy()` |
 | One derived continuous outcome | `X(t)` | `fit_fpca()` |
@@ -196,7 +198,7 @@ It includes a tutorial gallery, representation selection, nonlinear state-space 
 
 ## Scope boundary
 
-`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Versions 0.31–0.34 add provenance-aware continuous planar geometry plus two distinct ordered-trajectory similarity contracts: discrete Fréchet bottleneck distance and cumulative dynamic time warping. Version 0.35 shifts the development line from adding more trajectory metrics toward functional inference for experimental predictors through function-on-scalar regression and simultaneous coefficient bands. The nonlinear/RQA layers from 0.23–0.30 remain intact. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
+`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and sequence models belong upstream or in specialist packages. Versions 0.31–0.34 add provenance-aware continuous planar geometry plus two distinct ordered-trajectory similarity contracts: discrete Fréchet bottleneck distance and cumulative dynamic time warping. Version 0.35 shifts the development line from adding more trajectory metrics toward functional inference for experimental predictors through function-on-scalar regression and simultaneous coefficient bands. Version 0.38 adds a descriptive robustness layer across the already-implemented distance contracts rather than adding another metric. The nonlinear/RQA layers from 0.23–0.30 remain intact. Classical Floquet/monodromy analysis and numerical bifurcation continuation remain outside the raw-gaze API because they require an explicitly identified dynamical model.
 
 ## Validation
 

@@ -211,6 +211,7 @@ from .plotting import (
     plot_planar_trajectories,
     plot_reconstruction_curve,
     plot_registration,
+    plot_trajectory_distance_rank_correlations,
     plot_trajectory_overlay,
     plot_warping_functions,
 )
@@ -270,6 +271,12 @@ from .reporting import (
     registration_sensitivity_reporting_text,
     summarise_fpca,
     summarise_trajectory_set,
+    trajectory_distance_sensitivity_reporting_text,
+)
+from .similarity_sensitivity import (
+    trajectory_distance_comparison_frame,
+    trajectory_distance_neighbor_frame,
+    trajectory_distance_sensitivity,
 )
 from .score_uncertainty import bootstrap_fpca_score_uncertainty, fpca_score_uncertainty_frame
 from .spectrum_inference import bootstrap_fpca_spectrum_uncertainty, fpca_spectrum_uncertainty_frame
@@ -341,6 +348,7 @@ from .types import (
     RegistrationResult,
     RegistrationSensitivityResult,
     SparseFPCAResult,
+    TrajectoryDistanceSensitivityResult,
     TrajectorySet,
 )
 from .wild_testing import (
@@ -370,7 +378,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.37.0.dev0"
+__version__ = "0.38.0.dev0"
 
 __all__ = [
     "recurrence_radius_profile_reporting_text",
@@ -458,6 +466,7 @@ __all__ = [
     "get_mathematical_contract",
     "list_mathematical_contracts",
     "mathematical_contract_frame",
+    "TrajectoryDistanceSensitivityResult",
     "TrajectorySet",
     "DiscreteFrechetResult",
     "DynamicTimeWarpingResult",
@@ -548,6 +557,11 @@ __all__ = [
     "plot_function_on_scalar_coefficients",
     "function_on_scalar_reporting_text",
     "pairwise_functional_distances",
+    "trajectory_distance_sensitivity",
+    "trajectory_distance_comparison_frame",
+    "trajectory_distance_neighbor_frame",
+    "plot_trajectory_distance_rank_correlations",
+    "trajectory_distance_sensitivity_reporting_text",
     "nearest_trajectory_indices",
     "score_distance_matrix",
     "cluster_fpca_scores",

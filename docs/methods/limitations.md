@@ -778,6 +778,27 @@ Anisotropic rescaling of dimensions changes the local Euclidean metric and there
 Multiple optimal monotone couplings can attain the same distance. The audit result returns one deterministic optimum and must not be interpreted as a unique latent correspondence.
 
 
+## Trajectory-distance sensitivity is descriptive, not a metric-selection test
+
+Version 0.38 quantifies how pair-distance rankings and local neighbor identities
+change across declared distance contracts. It does not establish which metric
+is scientifically correct.
+
+Raw distance matrices remain on native scales. Pearson correlations between
+raw distances can therefore reflect scale and aggregation differences and are
+secondary to rank and neighborhood diagnostics.
+
+The upper-triangle distances reuse trajectories and are not treated as
+independent observations. No ordinary correlation p-values are reported.
+
+Nearest-neighbor sets can be non-unique at exact or numerical ties. Stable
+curve order makes results reproducible, while cutoff-tie flags preserve the
+ambiguity.
+
+The initial layer compares existing L2, discrete Fréchet, and DTW contracts. It
+does not add Hausdorff, EDR, LCSS, ERP, edit-distance, or learned
+representation metrics.
+
 ## Dynamic time warping limits
 
 ### Warping can erase scientifically meaningful timing

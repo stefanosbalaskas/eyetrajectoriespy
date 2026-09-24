@@ -50,6 +50,7 @@ nav:
       - Continuous trajectory geometry: methods/trajectory-geometry.md
       - Discrete Fréchet trajectory distance: methods/discrete-frechet.md
       - Dynamic time warping: methods/dynamic-time-warping.md
+      - Trajectory-distance sensitivity: methods/trajectory-distance-sensitivity.md
       - Nonlinear trajectory dynamics: guides/nonlinear-dynamics.md
       - Multivariate surrogate testing: methods/multivariate-surrogates.md
       - Recurrence-threshold diagnostics: methods/recurrence-threshold-diagnostics.md
@@ -90,6 +91,7 @@ nav:
       - Continuous trajectory geometry: examples/trajectory-geometry.md
       - Discrete Fréchet trajectory comparison: examples/discrete-frechet.md
       - Dynamic time warping comparison: examples/dynamic-time-warping.md
+      - Trajectory-distance sensitivity: examples/trajectory-distance-sensitivity.md
       - Function → equation registry: examples/function-equation-registry.md
       - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
       - Multivariate surrogate testing: examples/multivariate-surrogates.md

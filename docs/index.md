@@ -3,13 +3,13 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.37 · multichannel surrogate inference</div>
+<div class="et-kicker">eyetrajectoriespy 0.38 · trajectory-similarity robustness</div>
 
 # Model the viewing process, not only its summaries
 
 eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze paths, multivariate FPCA, native irregular trajectories, repeated-trial functional decomposition, phase analysis, compositional AOI trajectories, and explicit validation of component stability.
 
-<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">multivariate IAAFT</span><span class="et-pill">functional mixed effects</span><span class="et-pill">function-on-scalar inference</span><span class="et-pill">Fréchet + audited DTW</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">LaTeX contracts</span><span class="et-pill">reproducible plots</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">mean-band inference</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
+<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">multivariate IAAFT</span><span class="et-pill">functional mixed effects</span><span class="et-pill">function-on-scalar inference</span><span class="et-pill">Fréchet + audited DTW</span><span class="et-pill">distance sensitivity</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">LaTeX contracts</span><span class="et-pill">reproducible plots</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">mean-band inference</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
 </div>
 
 <div class="grid cards" markdown>
@@ -113,6 +113,12 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
     Inspect adjacent eigengaps and principal-angle stability when FPC labels swap or rotate across resamples.
 
     [:octicons-arrow-right-24: Near-tied FPC subspaces](guides/subspace-stability.md)
+
+-   **Check whether similarity conclusions survive the distance choice**
+
+    Compare predeclared functional L2, discrete Fréchet, and DTW contracts using pair-distance rank agreement and local top-k neighbor overlap. Native scales stay intact and no metric is declared the winner.
+
+    [:material-compare-horizontal: Trajectory-distance sensitivity](methods/trajectory-distance-sensitivity.md)
 
 -   **Infer the mean trajectory with the right sampling unit**
 

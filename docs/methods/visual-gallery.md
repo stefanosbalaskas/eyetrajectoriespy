@@ -139,6 +139,16 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked example](../examples/dynamic-time-warping.md) · [Method guide](dynamic-time-warping.md) · [Mathematics](mathematical-reference.md#dynamic-time-warping)
 
+-   **Trajectory-distance robustness**
+
+    ![Spearman rank agreement across L2, Frechet, and DTW specifications](../assets/gallery/trajectory-distance-sensitivity.svg)
+
+    Native-scale distance matrices are compared through pair-distance rank agreement without constructing a consensus metric or choosing a winner.
+
+    **API:** `trajectory_distance_sensitivity()`, `plot_trajectory_distance_rank_correlations()`
+
+    [Worked example](../examples/trajectory-distance-sensitivity.md) · [Method guide](trajectory-distance-sensitivity.md) · [Mathematics](mathematical-reference.md#trajectory-distance-sensitivity)
+
 -   **Sparse recurrence structure**
 
     ![Sparse recurrence plot](../assets/gallery/recurrence-plot.svg)
@@ -316,4 +326,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates all twenty-two assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates all twenty-three assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.

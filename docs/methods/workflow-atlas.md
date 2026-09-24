@@ -98,6 +98,20 @@ flowchart TD
 
 Fréchet and DTW use sequence order, not the numeric TrajectorySet time grid. Fréchet reports a bottleneck maximum. DTW requires an explicit step pattern: symmetric1 preserves the raw cumulative 0.33 contract, while symmetric2 supports the defined N+M normalization. Neither contract silently resamples, smooths, chooses a step pattern, normalizes, or chooses a warping window.
 
+If multiple distance contracts remain defensible, continue to:
+
+```mermaid
+flowchart LR
+    A[Declared L2 / Fréchet / DTW specifications] --> B[Retain native-scale pairwise matrices]
+    B --> C[Compare pair-distance ranks]
+    B --> D[Compare top-k neighbor sets]
+    C --> E[Spearman agreement + rank differences]
+    D --> F[Jaccard + exact-set + nearest-neighbor agreement]
+    E --> G[Interpret sensitivity; no automatic winner]
+    F --> G
+```
+
+
 ## FPCA validation before interpretation
 
 ```mermaid

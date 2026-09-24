@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.38.0.dev0
+
+- Add `trajectory_distance_sensitivity()` for descriptive robustness analysis across at least two explicitly declared integrated-L2, discrete-Fréchet, and/or DTW specifications.
+- Retain every native-scale pairwise distance matrix and every unique curve-pair distance/rank; do not z-score, range-normalize, average, or otherwise create a hidden consensus distance.
+- Quantify global pair-order agreement with descriptive Spearman rank correlation plus mean/median/maximum absolute rank differences.
+- Quantify local sensitivity with per-curve top-k neighbor Jaccard overlap, exact top-k set agreement, and nearest-neighbor identity agreement.
+- Use deterministic stable tie handling while explicitly flagging ties at the k/k+1 neighborhood cutoff.
+- Retain raw-scale Pearson distance correlation only as a secondary descriptive diagnostic.
+- Do not compute ordinary correlation p-values for dependent upper-triangle distance entries and do not identify a preferred or "best" trajectory metric.
+- Add `TrajectoryDistanceSensitivityResult`, comparison/neighbor frames, a rank-agreement heatmap, manuscript-oriented reporting text, mathematical contracts, tests, docs, and executable examples.
+
 ## 0.37.0.dev0
 
 - Add `generate_multivariate_iaaft_surrogates()` for cross-spectrum-aware multichannel surrogate generation.

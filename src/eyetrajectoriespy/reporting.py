@@ -38,8 +38,65 @@ from .types import (
     MultilevelFPCAResult,
     RegistrationSensitivityResult,
     SparseFPCAResult,
+    TrajectoryDistanceSensitivityResult,
     TrajectorySet,
 )
+
+
+def trajectory_distance_sensitivity_reporting_text(
+    result: TrajectoryDistanceSensitivityResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate manuscript-oriented wording for distance-contract sensitivity."""
+
+    if not isinstance(result, TrajectoryDistanceSensitivityResult):
+        raise TypeError(
+            "result must be a TrajectoryDistanceSensitivityResult"
+        )
+    if isinstance(digits, bool) or not isinstance(digits, (int, np.integer)):
+        raise TypeError("digits must be an integer")
+    if digits < 0:
+        raise ValueError("digits must be non-negative")
+
+    comparison = result.comparison_table
+    rho = comparison["spearman_rank_correlation"].to_numpy(dtype=float)
+    jaccard = comparison["mean_top_k_neighbor_jaccard"].to_numpy(dtype=float)
+    nearest = comparison[
+        "nearest_neighbor_identity_agreement_fraction"
+    ].to_numpy(dtype=float)
+    finite_rho = rho[np.isfinite(rho)]
+
+    rho_text = (
+        "undefined for at least one constant pair-distance vector"
+        if finite_rho.size == 0
+        else (
+            f"{np.min(finite_rho):.{digits}f} to "
+            f"{np.max(finite_rho):.{digits}f}"
+        )
+    )
+    tie_count = int(
+        np.sum(result.neighbor_cutoff_ties)
+    )
+    return (
+        f"Trajectory-similarity robustness was evaluated across "
+        f"{result.n_specifications} predeclared distance specifications "
+        f"({', '.join(result.specification_names)}) for "
+        f"{result.n_curves} curves using dimensions "
+        f"{', '.join(result.dimensions)}. Pairwise distance matrices were "
+        "retained on their native scales; no standardization, rescaling, "
+        "consensus distance, or preferred metric was constructed. "
+        f"Across specification pairs, descriptive Spearman rank agreement "
+        f"ranged from {rho_text}. Mean top-{result.neighbor_k} neighbor-set "
+        f"Jaccard agreement ranged from {np.min(jaccard):.{digits}f} to "
+        f"{np.max(jaccard):.{digits}f}, and nearest-neighbor identity "
+        f"agreement ranged from {np.min(nearest):.{digits}f} to "
+        f"{np.max(nearest):.{digits}f}. "
+        f"{tie_count} specification-by-curve neighborhood cutoff ties were "
+        "flagged. These quantities describe sensitivity to the declared "
+        "distance contract; they are not p-values and do not identify a "
+        "statistically or scientifically 'best' distance metric."
+    )
 
 
 def summarise_trajectory_set(trajectories: TrajectorySet) -> pd.DataFrame:

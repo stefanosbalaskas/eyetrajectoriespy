@@ -634,6 +634,23 @@ If a functional response will be modeled using scalar predictors, pre-specify:
 
 Do not choose predictor coding, interactions, inference unit, time window, simultaneous scope, or response transformation after inspecting which specification produces the preferred coefficient curve. Do not analyze trial-varying within-participant predictors with curve-level independence merely because participant aggregation would reject them.
 
+## Trajectory-distance sensitivity
+
+If similarity robustness is planned, pre-specify:
+
+- the complete set of distance specifications to compare;
+- selected trajectory dimensions and dimension weights;
+- every DTW step pattern, normalization rule, and window radius;
+- neighbor k for local agreement;
+- which pair-rank, rank-difference, neighbor-Jaccard, exact-set, and
+  nearest-neighbor identity diagnostics are primary or supporting;
+- how cutoff ties will be interpreted;
+- the scientific criterion that made each compared distance contract
+  defensible before results were inspected.
+
+Do not add or remove a distance specification after seeing which one produces
+the preferred trajectory grouping or nearest-neighbor pattern.
+
 ## Dynamic time warping trajectory comparison
 
 If DTW will be used, pre-specify:

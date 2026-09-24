@@ -39,8 +39,48 @@ from .types import (
     DynamicTimeWarpingResult,
     FunctionalOutlierResult,
     RegistrationResult,
+    TrajectoryDistanceSensitivityResult,
     TrajectorySet,
 )
+
+
+def plot_trajectory_distance_rank_correlations(
+    result: TrajectoryDistanceSensitivityResult,
+    *,
+    ax=None,
+):
+    """Plot descriptive Spearman agreement among distance specifications."""
+
+    if not isinstance(result, TrajectoryDistanceSensitivityResult):
+        raise TypeError(
+            "result must be a TrajectoryDistanceSensitivityResult"
+        )
+    n = result.n_specifications
+    matrix = np.eye(n, dtype=float)
+    lookup = {
+        name: index
+        for index, name in enumerate(result.specification_names)
+    }
+    for row in result.comparison_table.itertuples(index=False):
+        left = lookup[row.specification_a]
+        right = lookup[row.specification_b]
+        value = float(row.spearman_rank_correlation)
+        matrix[left, right] = value
+        matrix[right, left] = value
+
+    if ax is None:
+        _, ax = plt.subplots()
+    image = ax.imshow(matrix, vmin=-1.0, vmax=1.0)
+    ax.set_xticks(np.arange(n), labels=result.specification_names, rotation=45, ha="right")
+    ax.set_yticks(np.arange(n), labels=result.specification_names)
+    ax.set_title("Trajectory-distance rank agreement")
+    for row in range(n):
+        for column in range(n):
+            value = matrix[row, column]
+            text_value = "nan" if not np.isfinite(value) else f"{value:.2f}"
+            ax.text(column, row, text_value, ha="center", va="center")
+    ax.figure.colorbar(image, ax=ax, label="Spearman rank correlation")
+    return ax
 
 
 def plot_trajectory_overlay(

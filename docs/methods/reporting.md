@@ -742,6 +742,25 @@ Report:
 
 State explicitly when repeated trials were averaged within participant and that the 0.35 model is not a functional mixed-effects model. If a simultaneous band excludes zero over a grid region, report the region descriptively unless a separate onset/excursion-set procedure was predeclared and calibrated.
 
+## Trajectory-distance sensitivity
+
+Report:
+
+- all compared distance specifications by name and exact method;
+- selected dimensions and dimension weights;
+- DTW step pattern, normalization, and window radius for every DTW
+  specification;
+- number of curves and unique curve pairs;
+- neighbor k;
+- pairwise Spearman rank agreement and absolute rank-difference summaries;
+- top-k neighbor Jaccard agreement, exact-set agreement, and nearest-neighbor
+  identity agreement;
+- any cutoff ties;
+- that distance matrices remained on native scales;
+- that no consensus distance or preferred metric was selected automatically;
+- that correlation quantities are descriptive and no ordinary p-values were
+  computed from dependent pair distances.
+
 ## Dynamic time warping trajectory comparison
 
 Report:

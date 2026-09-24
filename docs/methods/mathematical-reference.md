@@ -242,6 +242,88 @@ Version 0.34 does not interpolate, resample, smooth, normalize coordinates, simp
 **API:** dynamic_time_warping_distance(), pairwise_dynamic_time_warping_distances().
 
 
+## Trajectory-distance specification sensitivity { #trajectory-distance-sensitivity }
+
+Version 0.38 compares the same trajectories under multiple **declared**
+distance contracts rather than adding another trajectory-distance metric.
+
+For specification \(s\), let \(D^{(s)}\) be the complete pairwise distance
+matrix and collect the unique unordered curve-pair distances as
+
+$
+\mathbf v^{(s)}
+=
+\{D_{ij}^{(s)}:1\le i<j\le n\}.
+$
+
+The first global diagnostic is the Spearman correlation of the pair-distance
+rankings,
+
+$
+\rho_S(s,r)
+=
+\operatorname{corr}
+\left(
+\operatorname{rank}\mathbf v^{(s)},
+\operatorname{rank}\mathbf v^{(r)}
+\right).
+$
+
+Average ranks are used for ties. The implementation also retains the mean,
+median, and maximum absolute difference between pair-distance ranks. Raw-scale
+Pearson correlation is reported only as a descriptive secondary quantity.
+
+### Local neighborhood agreement
+
+For curve \(i\), define its \(k\)-nearest-neighbor set under specification
+\(s\) as \(\mathcal N_k^{(s)}(i)\). The per-curve overlap is
+
+$
+J_k^{(s,r)}(i)
+=
+\frac{
+|\mathcal N_k^{(s)}(i)\cap\mathcal N_k^{(r)}(i)|
+}{
+|\mathcal N_k^{(s)}(i)\cup\mathcal N_k^{(r)}(i)|
+}.
+$
+
+The result stores both the per-curve Jaccard values and their specification-pair
+mean. It also reports the fraction of curves having exactly the same top-\(k\)
+neighbor set and the nearest-neighbor identity agreement
+
+$
+A_1^{(s,r)}
+=
+\frac{1}{n}
+\sum_{i=1}^{n}
+\mathbb I
+\{
+\mathcal N_1^{(s)}(i)=\mathcal N_1^{(r)}(i)
+\}.
+$
+
+Neighbor ordering uses a stable deterministic curve-order tie break for
+reproducibility. If the \(k\)th and \((k+1)\)th distances are tied at the
+selection boundary, that fact is flagged so a deterministic ordering is not
+mistaken for uniquely identified neighbors.
+
+### Scale and inference boundary
+
+L2, discrete Fréchet, raw DTW, and normalized DTW are not forced onto a common
+numeric scale. Version 0.38 therefore keeps every distance matrix on its native
+scale and emphasizes rank and neighbor agreement for cross-contract
+comparison.
+
+No p-value is attached to the correlation of upper-triangle distances because
+those pairwise entries reuse trajectories and are not treated as independent
+observations. No consensus distance, weighted average, "robustness score," or
+best-metric selection is produced.
+
+**API:** `trajectory_distance_sensitivity()`,
+`trajectory_distance_comparison_frame()`,
+`trajectory_distance_neighbor_frame()`.
+
 ## Continuous planar trajectory geometry { #trajectory-geometry }
 
 For a declared planar trajectory

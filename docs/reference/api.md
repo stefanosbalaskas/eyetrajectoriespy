@@ -367,6 +367,12 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.plot_fpca_stability
 ::: eyetrajectoriespy.plot_reconstruction_curve
 ::: eyetrajectoriespy.dynamic_time_warping_reporting_text
+::: eyetrajectoriespy.TrajectoryDistanceSensitivityResult
+::: eyetrajectoriespy.trajectory_distance_sensitivity
+::: eyetrajectoriespy.trajectory_distance_comparison_frame
+::: eyetrajectoriespy.trajectory_distance_neighbor_frame
+::: eyetrajectoriespy.plot_trajectory_distance_rank_correlations
+::: eyetrajectoriespy.trajectory_distance_sensitivity_reporting_text
 ::: eyetrajectoriespy.fpca_stability_reporting_text
 ::: eyetrajectoriespy.registration_sensitivity_reporting_text
 ::: eyetrajectoriespy.summarise_fpca

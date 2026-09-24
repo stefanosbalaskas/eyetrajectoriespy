@@ -111,6 +111,61 @@ $$
 Implemented by dynamic_time_warping_distance() and pairwise_dynamic_time_warping_distances(). The 0.33 symmetric1 raw cumulative-cost behavior remains the default for backward compatibility. symmetric2 can be requested explicitly, and normalize=True is accepted only for symmetric2. The optional Sakoe-Chiba radius is measured in sample indices, not physical elapsed time. No hidden interpolation, resampling, smoothing, coordinate normalization, path simplification, missing-value deletion, step-pattern selection, window selection, or normalization rule is introduced automatically.
 
 
+## Trajectory-distance specification sensitivity
+
+For distance specification \(s\), let \(D^{(s)}\) be the complete pairwise
+distance matrix over the same \(n\) trajectories. Its upper triangle is
+
+$
+\mathbf v^{(s)}
+=
+\{D_{ij}^{(s)}:1\le i<j\le n\}.
+$
+
+Global ordering agreement between two specifications \(s\) and \(r\) is
+described by the Spearman correlation of the pair-distance ranks,
+
+$
+\rho_S(s,r)
+=
+\operatorname{corr}
+\left(
+\operatorname{rank}\mathbf v^{(s)},
+\operatorname{rank}\mathbf v^{(r)}
+\right).
+$
+
+For curve \(i\), let \(\mathcal N_k^{(s)}(i)\) denote its \(k\) nearest
+neighbors under specification \(s\). Local agreement is described by
+
+$
+J_k^{(s,r)}(i)
+=
+\frac{
+|\mathcal N_k^{(s)}(i)\cap\mathcal N_k^{(r)}(i)|
+}{
+|\mathcal N_k^{(s)}(i)\cup\mathcal N_k^{(r)}(i)|
+}.
+$
+
+Nearest-neighbor identity agreement is
+
+$
+A_1^{(s,r)}
+=
+\frac{1}{n}
+\sum_{i=1}^{n}
+\mathbb I
+\{
+\mathcal N_1^{(s)}(i)=\mathcal N_1^{(r)}(i)
+\}.
+$
+
+Implemented by `trajectory_distance_sensitivity()`. Raw distance matrices
+remain on their native scales. The package does not standardize the matrices,
+average them into a consensus distance, compute p-values for dependent
+upper-triangle entries, or select a preferred metric.
+
 ## Continuous planar trajectory geometry
 
 For a declared planar path \(\mathbf G(t)=[x(t),y(t)]^\top\),
