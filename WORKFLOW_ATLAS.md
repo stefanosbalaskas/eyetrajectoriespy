@@ -106,6 +106,21 @@ flowchart LR
     G --> H[Monte Carlo precision]
 ```
 
+## Joint recurrence
+
+```mermaid
+flowchart LR
+    A[Subsystem A auto recurrence] --> C[Exact synchronized grid + shared Theiler]
+    B[Subsystem B auto recurrence] --> C
+    C --> D[Logical AND]
+    D --> E[JRR]
+    D --> F[JRQA]
+    E --> G[Coincident recurrence interpretation]
+    F --> G
+```
+
+No cross-state distance, lag optimization, or causal direction is implied.
+
 ## Nonlinear dynamics
 
 ```mermaid
