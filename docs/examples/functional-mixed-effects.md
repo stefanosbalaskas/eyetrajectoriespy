@@ -145,6 +145,31 @@ This band is simultaneous over the observed time grid for the declared
 coefficient. Whole participant trial bundles are resampled; the fitted
 random-effect covariance and residual variance are held fixed.
 
+## Refit variance components under participant resampling
+
+For sensitivity to covariance-estimation uncertainty, version 0.46 provides a
+separate full-refit bootstrap:
+
+~~~python
+from eyetrajectoriespy import (
+    bootstrap_functional_mixed_effects_full_refit,
+)
+
+full = bootstrap_functional_mixed_effects_full_refit(
+    fit,
+    n_bootstrap=500,
+    random_state=46,
+)
+
+full_band = functional_mixed_effects_simultaneous_bands(full)
+~~~
+
+Every selected participant occurrence receives a distinct bootstrap group ID;
+fixed effects, random-effect covariance and residual variance are refit in every
+replicate. See the
+[full-refit worked example](functional-mixed-effects-full-refit-bootstrap.md)
+for covariance-stability and fixed-versus-full uncertainty diagnostics.
+
 ## Export the coefficient table
 
 ~~~python
