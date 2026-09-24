@@ -33,18 +33,36 @@ The stored path is an audit object, not a claim of unique correspondence: multip
 ## FunctionalMixedEffectsResult
 
 Stores the fixed-effect coefficient functions and pointwise standard errors,
-fixed and random B-spline bases and knots, fixed basis coefficients and their
-covariance, participant random-effect coefficients/functions and covariance,
-residual variance, fitted/residual/observed functional responses, the scalar
-design matrix and rank diagnostics, participant/curve membership, optimization
-settings, convergence and boundary-fit flags, backend warnings, likelihood,
-time/dimension semantics, provenance, and the fitted statsmodels result.
+fixed B-spline basis/knots, the participant random basis, fixed basis
+coefficients and covariance, residual variance, fitted/residual/observed
+functional responses, scalar design/rank diagnostics, participant membership,
+optimization state, backend warnings, likelihood, time/dimension semantics,
+provenance, and the fitted statsmodels result.
 
-The object represents one selected Gaussian response dimension with one
-participant-level functional random intercept. It does not imply serially
-correlated residuals, trial-level functional random effects, random functional
-slopes, multivariate response covariance, or simultaneous coefficient
-coverage.
+For every fit it also retains the complete random-effect design matrix, full
+random-effect covariance, covariance eigenvalues, covariance condition number,
+random-effect dimension, free covariance parameter count, boundary/singularity
+diagnostics, and participant BLUP random-intercept coefficients/functions.
+
+When `random_slope_predictor` is supplied, the object additionally retains the
+exact predictor name, random-slope basis, participant BLUP slope coefficients
+and functions, slope covariance block, and intercept/slope cross-covariance
+block. Version 0.45 supports exactly one random functional slope and does not
+choose it automatically.
+
+The legacy `random_effect_functions` field remains the participant random-
+intercept function. This preserves the historical two-dimensional
+participant-by-time contract; random-slope functions are exposed separately
+because their contribution to a fitted curve is multiplied by the curve-level
+slope-predictor value.
+
+A random-slope fit is refused when the predictor lacks within-participant
+variation or when the participant count does not exceed the number of free
+unstructured random-effect covariance parameters. The object does not imply
+serially correlated residuals, trial-level functional random effects, multiple
+random slopes, multivariate response covariance, or variance-component-refit
+bootstrap uncertainty.
+
 
 ## Function-on-scalar result objects
 
