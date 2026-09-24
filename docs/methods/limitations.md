@@ -733,17 +733,21 @@ Multiple optimal monotone couplings can attain the same distance. The audit resu
 
 DTW deliberately permits one sequence to pause its index while the other advances. A latency shift, prolonged dwell, or local timing difference can therefore receive little or no cost even when that difference is the experimental effect of interest. Use a time-preserving complementary analysis when elapsed trial time matters.
 
-### Cumulative cost depends on path length
+### symmetric1 raw cost is not length-normalizable by N+M
 
-The 0.33 distance is the raw sum of local costs along the optimal path. Longer paths can accumulate more cost. The package retains path length and mean local distance for auditability but does not silently redefine the estimand by normalizing the public distance.
+The backward-compatible symmetric1 pattern gives every visited point one local-cost unit. Its cumulative cost depends on the selected path and does not have the path-independent N+M normalization available to symmetric2. Version 0.34 therefore rejects normalize=True for symmetric1.
+
+### symmetric2 is a different weighting rule, not a cosmetic rescaling
+
+symmetric2 gives diagonal advances twice the local-cost weight of horizontal or vertical advances. Its raw optimum can therefore differ from symmetric1 before any normalization is applied. The N+M-normalized value should not be described as merely dividing the legacy distance by sequence length.
 
 ### The window is an index constraint, not a clock-time constraint
 
-A Sakoe-Chiba `window_radius` limits (|i-j|) in sample indices. It does not mean the same number of milliseconds when trajectories use different physical sampling intervals or irregular timing.
+A Sakoe-Chiba `window_radius` limits \(|i-j|\) in sample indices. It does not mean the same number of milliseconds when trajectories use different physical sampling intervals or irregular timing.
 
 ### Coordinate scaling changes the result
 
-Anisotropic rescaling of dimensions changes weighted Euclidean local costs and therefore the DTW optimum. No coordinate or weight normalization is applied automatically.
+Anisotropic rescaling of dimensions changes weighted Euclidean local costs and therefore the DTW optimum. No coordinate or dimension-weight normalization is applied automatically.
 
 ### Optimal paths need not be unique
 
@@ -751,4 +755,5 @@ Several monotone paths can have the same minimum cumulative cost. The audit resu
 
 ### Unconstrained warping can be overly permissive
 
-An unconstrained path can match long portions of one sequence to repeated points in the other. A scientifically defended window can limit this behavior, but version 0.33 does not estimate or optimize a preferred radius from the observed outcomes.
+An unconstrained path can match long portions of one sequence to repeated points in the other. A scientifically defended window can limit this behavior, but version 0.34 does not estimate or optimize a preferred radius, step pattern, or normalization rule from observed outcomes.
+
