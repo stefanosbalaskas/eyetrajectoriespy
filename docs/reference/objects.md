@@ -11,7 +11,9 @@ The registry is documentation metadata only. A contract lookup does not fit a mo
 
 ## `DynamicTimeWarpingResult`
 
-Stores the unnormalized cumulative DTW cost together with one deterministic optimal monotone alignment path, the local distances on that path, path length, mean local distance, input sequence lengths/dimensionality, the optional Sakoe-Chiba sample-index radius, and provenance.
+Stores the returned DTW distance together with the raw cumulative cost, the N+M-normalized distance when symmetric2 makes that quantity defined, one deterministic optimal monotone alignment path, local distances, per-path step weights, weighted local contributions, path length, mean local distance, input sequence lengths/dimensionality, the optional Sakoe-Chiba sample-index radius, the declared step pattern, normalization denominator, and provenance.
+
+For symmetric1, normalized_distance and normalization_denominator remain undefined rather than being filled with an arbitrary length correction. For symmetric2, weighted_local_costs sum to raw_distance and normalized_distance is raw_distance divided by n_points_a + n_points_b.
 
 The stored path is an audit object, not a claim of unique correspondence: multiple optimal DTW paths can exist. Recorded timestamps are not used by the recurrence, and the object records that distinction explicitly.
 
