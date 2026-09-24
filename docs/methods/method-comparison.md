@@ -162,6 +162,19 @@ The 0.38 sensitivity layer compares rankings and local neighbors while retaining
 each distance matrix on its native scale. It is descriptive and does not attach
 ordinary correlation p-values to dependent pair distances.
 
+## Cross-recurrence versus joint recurrence
+
+| Question | Method | Interpretation |
+|---|---|---|
+| Is a state in system A close to a state in system B? | cross-recurrence | cross-system state similarity |
+| Do separately defined systems recur within their own state spaces at the same time pair? | joint recurrence | coincident within-system recurrence |
+| Is there directional information transfer? | neither by itself | requires a separate directional model such as transfer entropy or another justified coupling model |
+
+Joint recurrence permits different subsystem dimensions, variables, metrics,
+and thresholds, but version 0.39 requires an exact common time grid, common
+time unit, and shared Theiler exclusion. It does not search over lags or choose
+thresholds to maximize apparent coupling.
+
 ## Nonlinear trajectory dynamics
 
 | Scientific question | Preferred 0.23 tool | What it does not establish |
