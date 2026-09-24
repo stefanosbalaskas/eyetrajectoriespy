@@ -172,7 +172,7 @@ print(summarise_fpca(fit))
 | RQA dynamics as functional outcomes | window-center RQA metric trajectories with retained overlap/radius provenance | `windowed_rqa_trajectory_set()` |
 | Functional RQA parameter sensitivity | declared window/step grid with overlap/reuse and exact-center profile diagnostics | `windowed_rqa_sensitivity()` |
 | Functional RQA mean uncertainty | whole-function curve/participant multiplier band | `windowed_rqa_functional_mean_band()` |
-| Reconstructed nonlinear state | delay coordinates with explicit (m,	au) | `delay_embed_trajectory()` |
+| Reconstructed nonlinear state | delay coordinates with explicit (m, τ) | `delay_embed_trajectory()` |
 | Local state-space divergence | Rosenstein nearest-neighbor divergence | `local_divergence_curve()` / `estimate_largest_lyapunov_rosenstein()` |
 | Neighborhood-based maximal Lyapunov estimate | Kantz fixed-radius local-neighborhood divergence | `kantz_divergence_curve()` / `estimate_largest_lyapunov_kantz()` |
 | Kantz LLE robustness multiverse | Declared radius/min-neighbor/reconstruction/Theiler/fit sensitivity, no optimizer | `kantz_parameter_sensitivity()` / `plot_kantz_sensitivity()` |
