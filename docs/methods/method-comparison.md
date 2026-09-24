@@ -15,6 +15,7 @@
 | AOI allocation over time | compositional FPCA | independent PCA of bounded proportions |
 | Condition-specific smooth mean | often GAMM | FPCA by itself |
 | Experimental predictors changing a functional response | function-on-scalar regression | treating every time point as an unrelated regression or treating repeated trials as independent |
+| Trial-varying predictors with repeated participant curves | functional mixed-effects regression | participant averaging or independent pointwise mixed models |
 | Exact onset of divergence | specialized onset methods | FPCA loading inspection |
 | Predict scalar outcome | functional regression / score regression | causal mediation by default |
 | Predict an external scalar outcome while tuning retained FPC count | fold-local FPCA regression CV / nested CV | variance-explained or reconstruction selection |
