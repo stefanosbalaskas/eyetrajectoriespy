@@ -68,7 +68,7 @@ Implemented by `discrete_frechet_distance()` and `pairwise_discrete_frechet_dist
 
 ## Dynamic time warping trajectory distance
 
-For ordered point sequences \(P\) and \(Q\), use the optional weighted Euclidean local cost
+For ordered point sequences \(P\) and \(Q\), define the optional weighted Euclidean local cost
 
 $$
 d_w(\mathbf p_i,\mathbf q_j)
@@ -78,23 +78,38 @@ d_w(\mathbf p_i,\mathbf q_j)
 \right]^{1/2}.
 $$
 
-The cumulative dynamic-programming recurrence is
+The backward-compatible symmetric1 recursion is
 
 $$
-C_{i,j}
+C^{(s1)}_{i,j}
 =
 d_w(\mathbf p_i,\mathbf q_j)
 +
-\min(C_{i-1,j-1},C_{i-1,j},C_{i,j-1}),
+\min(C_{i-1,j-1},C_{i-1,j},C_{i,j-1}).
 $$
 
-with
+The normalizable symmetric2 recursion weights a diagonal advance by two local-cost units,
 
 $$
-d_{\mathrm{DTW}}(P,Q)=C_{m,n}.
+C^{(s2)}_{i,j}
+=
+\min\left\{
+C_{i-1,j-1}+2d_w,
+C_{i-1,j}+d_w,
+C_{i,j-1}+d_w
+\right\}.
 $$
 
-Implemented by dynamic_time_warping_distance() and pairwise_dynamic_time_warping_distances(). The reported scalar is the unnormalized cumulative path cost. The optional Sakoe-Chiba radius constrains sample-index displacement, not physical elapsed time. No hidden interpolation, resampling, smoothing, coordinate normalization, path simplification, missing-value deletion, path-length normalization, or automatic window selection is introduced.
+For global symmetric2 alignment,
+
+$$
+d^{(s2)}_{\mathrm{norm}}(P,Q)
+=
+\frac{C^{(s2)}_{m,n}}{m+n}.
+$$
+
+Implemented by dynamic_time_warping_distance() and pairwise_dynamic_time_warping_distances(). The 0.33 symmetric1 raw cumulative-cost behavior remains the default for backward compatibility. symmetric2 can be requested explicitly, and normalize=True is accepted only for symmetric2. The optional Sakoe-Chiba radius is measured in sample indices, not physical elapsed time. No hidden interpolation, resampling, smoothing, coordinate normalization, path simplification, missing-value deletion, step-pattern selection, window selection, or normalization rule is introduced automatically.
+
 
 ## Continuous planar trajectory geometry
 
