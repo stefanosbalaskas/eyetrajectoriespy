@@ -12,17 +12,24 @@ from eyetrajectoriespy import (
 )
 
 rng = np.random.default_rng(46)
-n_participants = 5
-trials_per_participant = 2
-time = np.linspace(0.0, 1.0, 4)
+n_participants = 20
+trials_per_participant = 3
+time = np.linspace(0.0, 1.0, 5)
 participants = np.repeat(
     [f"P{i:02d}" for i in range(n_participants)],
     trials_per_participant,
 )
-condition = np.tile([-0.5, 0.5], n_participants)
-beta0 = 0.2 + 0.1 * time
-beta1 = 0.15 + 0.2 * time
-random_intercepts = rng.normal(0.0, 0.08, size=n_participants)
+condition = np.tile([-0.75, 0.0, 0.75], n_participants)
+
+beta0 = 0.25 + 0.10 * time
+beta1 = 0.20 + 0.25 * time
+linear_basis = np.column_stack([1.0 - time, time])
+random_coefficients = rng.multivariate_normal(
+    [0.0, 0.0],
+    [[0.045, 0.008], [0.008, 0.035]],
+    size=n_participants,
+)
+random_functions = random_coefficients @ linear_basis.T
 
 values = []
 curve_ids = []
@@ -33,8 +40,8 @@ for participant_index in range(n_participants):
             (
                 beta0
                 + condition[row] * beta1
-                + random_intercepts[participant_index]
-                + rng.normal(0.0, 0.025, size=time.size)
+                + random_functions[participant_index]
+                + rng.normal(0.0, 0.035, size=time.size)
             )[:, None]
         )
         curve_ids.append(f"C{row:03d}")
@@ -61,12 +68,12 @@ fit = fit_functional_mixed_effects_regression(
     predictors=("condition",),
     participant_column="participant_id",
     dimension="metric",
-    fixed_basis_size=1,
-    random_basis_size=1,
-    spline_degree=0,
-    reml=False,
+    fixed_basis_size=2,
+    random_basis_size=2,
+    spline_degree=1,
+    reml=True,
     method="lbfgs",
-    maxiter=500,
+    maxiter=1000,
 )
 
 boot = bootstrap_functional_mixed_effects_full_refit(
@@ -88,6 +95,7 @@ assert (
     .eq(n_participants)
     .all()
 )
+assert np.all(variance["converged"])
 assert len(variance) == 100
 
 print(variance["residual_variance"].describe())
