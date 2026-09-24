@@ -189,10 +189,39 @@ def functional_mixed_effects_reporting_text(
             " The participant random-effect covariance was estimated on or "
             "near the numerical boundary and should be interpreted cautiously."
         )
+    if result.random_effect_singular:
+        warning_text += (
+            " The fitted random-effect covariance was numerically singular "
+            "under the retained diagnostic tolerance."
+        )
+    if result.random_effect_complexity_warning:
+        warning_text += (
+            " The number of participants did not exceed the number of free "
+            "unstructured random-effect covariance parameters; this "
+            "covariance-complexity warning should be reported."
+        )
     if result.backend_warnings:
         warning_text += (
             " Backend warnings were retained in the result provenance rather "
             "than suppressed."
+        )
+
+    if result.random_slope_predictor is None:
+        random_text = (
+            "the participant-specific functional random intercept used "
+            f"{result.random_basis_size} B-spline basis functions with an "
+            "unstructured basis-coefficient covariance"
+        )
+    else:
+        random_text = (
+            "the participant random-effect structure contained a functional "
+            "random intercept and exactly one functional random slope for "
+            f"{result.random_slope_predictor!r}, each using "
+            f"{result.random_basis_size} B-spline basis functions. Their "
+            f"stacked {result.random_effect_dimension}-dimensional random "
+            "coefficient vector used one unstructured covariance with "
+            f"{result.random_effect_covariance_parameter_count} free "
+            "covariance parameters"
         )
 
     inference_text = (
@@ -221,18 +250,20 @@ def functional_mixed_effects_reporting_text(
         f"{result.dimension_name!r}. Fixed coefficient functions for "
         f"{predictor_text} and the intercept used a clamped B-spline basis "
         f"with {result.fixed_basis_size} functions (degree "
-        f"{result.spline_degree}); the participant-specific functional "
-        f"random intercept used {result.random_basis_size} B-spline basis "
-        "functions with an unstructured basis-coefficient covariance. "
+        f"{result.spline_degree}); "
+        + random_text
+        + ". "
         f"The model included {result.n_curves} curves from "
         f"{result.n_participants} participants and was estimated by "
         f"{'REML' if result.reml else 'ML'} using optimizer "
-        f"{result.method!r}. Trial-varying predictors were retained at the "
-        "curve level while participant clustering was represented directly. "
-        "Grid-level residuals were conditionally iid Gaussian. No automatic "
-        "categorical encoding, interaction construction, predictor scaling, "
-        "basis-size selection, smoothing-penalty selection, or optimizer "
-        "fallback was performed."
+        f"{result.method!r}. The fitted random-effect covariance condition "
+        f"number was {result.random_effect_covariance_condition_number:.3g}. "
+        "Trial-varying predictors were retained at the curve level while "
+        "participant clustering was represented directly. Grid-level "
+        "residuals were conditionally iid Gaussian. No automatic categorical "
+        "encoding, interaction construction, predictor scaling, basis-size "
+        "selection, random-slope selection, smoothing-penalty selection, or "
+        "optimizer fallback was performed."
         + inference_text
         + warning_text
     )
