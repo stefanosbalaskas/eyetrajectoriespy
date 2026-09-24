@@ -261,6 +261,17 @@ explicit, and covariance parameters remain fixed at the reference fit.
 See also the
 [method guide](../methods/functional-mixed-effects-simultaneous-bands.md).
 
+### Full-refit mixed-effects bootstrap
+
+Use the
+[worked full-refit mixed-effects example](../examples/functional-mixed-effects-full-refit-bootstrap.md)
+when the question is how re-estimating the random-effect covariance and
+residual variance changes fixed-effect whole-function uncertainty relative to
+the 0.44 fixed-covariance bootstrap.
+
+The example also audits duplicate participant group identities and
+variance-component stability.
+
 ## Directed dependence
 
 For already-discrete source/target state sequences, continue with the
