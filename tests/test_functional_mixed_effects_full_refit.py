@@ -10,6 +10,7 @@ from eyetrajectoriespy import (
     compare_functional_mixed_effects_bootstraps,
     fit_functional_mixed_effects_regression,
     functional_mixed_effects_full_refit_audit_frame,
+    functional_mixed_effects_reporting_text,
     functional_mixed_effects_simultaneous_bands,
     functional_mixed_effects_variance_bootstrap_frame,
     plot_functional_mixed_effects_bootstrap_comparison,
@@ -314,3 +315,49 @@ def test_fixed_covariance_bootstrap_provenance_remains_unchanged(
     assert band.provenance[
         "functional_mixed_effects_simultaneous_bands"
     ]["variance_components_refit"] is False
+
+
+def test_full_refit_reporting_distinguishes_variance_component_refitting(
+    intercept_full_refit,
+):
+    fit, boot = intercept_full_refit
+    band = functional_mixed_effects_simultaneous_bands(boot)
+    text = functional_mixed_effects_reporting_text(
+        fit,
+        band=band,
+    )
+    assert "Full-refit participant bootstrap" in text
+    assert "random-effect covariance" in text
+    assert "residual variance" in text
+    assert "model specification" in text
+    assert "variance-component re-estimation" in text
+
+
+def test_failed_full_refit_replicate_is_not_redrawn(
+    intercept_full_refit,
+    monkeypatch,
+):
+    fit, _ = intercept_full_refit
+    import eyetrajectoriespy.functional_mixed_effects_full_refit as module
+
+    calls = {"n": 0}
+
+    def fail_fit(*args, **kwargs):
+        calls["n"] += 1
+        raise RuntimeError("synthetic fit failure")
+
+    monkeypatch.setattr(
+        module,
+        "fit_functional_mixed_effects_regression",
+        fail_fit,
+    )
+    with pytest.raises(
+        RuntimeError,
+        match="replicate 1 failed; no replicate was silently",
+    ):
+        module.bootstrap_functional_mixed_effects_full_refit(
+            fit,
+            n_bootstrap=20,
+            random_state=99,
+        )
+    assert calls["n"] == 1
