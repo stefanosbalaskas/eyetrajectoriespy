@@ -93,8 +93,12 @@ def plot_joint_recurrence(
     if not isinstance(result, JointRecurrenceResult):
         raise TypeError("result must be a JointRecurrenceResult")
     if max_points is not None:
-        if isinstance(max_points, bool) or not isinstance(max_points, int):
+        if isinstance(max_points, (bool, np.bool_)) or not isinstance(
+            max_points,
+            (int, np.integer),
+        ):
             raise TypeError("max_points must be an integer or None")
+        max_points = int(max_points)
         if max_points < 1:
             raise ValueError("max_points must be positive or None")
         if result.matrix.nnz > max_points:
