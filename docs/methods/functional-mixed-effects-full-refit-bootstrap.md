@@ -3,14 +3,14 @@
 Version 0.46 adds a second, deliberately distinct participant bootstrap for the
 likelihood-based functional mixed-effects layer.
 
-The existing \`bootstrap_functional_mixed_effects_coefficients()\` resamples
+The existing `bootstrap_functional_mixed_effects_coefficients()` resamples
 whole participants but holds the fitted random-effect covariance and residual
 variance fixed. It therefore provides conditional fixed-effect inference under
 the reference covariance model.
 
 Version 0.46 adds:
 
-\`\`\`python
+```python
 from eyetrajectoriespy import (
     bootstrap_functional_mixed_effects_full_refit,
 )
@@ -20,7 +20,7 @@ boot = bootstrap_functional_mixed_effects_full_refit(
     n_bootstrap=1000,
     random_state=2026,
 )
-\`\`\`
+```
 
 For bootstrap replicate \(b\),
 
@@ -47,19 +47,19 @@ $$
 the two copies of source participant 7 receive **different bootstrap group
 identities** before fitting, for example:
 
-\`\`\`text
+```text
 source_participant_id = 7
 bootstrap_participant_id = bootstrap_0002_group_0001
 
 source_participant_id = 7
 bootstrap_participant_id = bootstrap_0002_group_0002
-\`\`\`
+```
 
 This is essential. Reusing the original participant ID would cause
-\`MixedLM\` to merge both bootstrap copies into one random-effect group.
+`MixedLM` to merge both bootstrap copies into one random-effect group.
 
 Both identities remain auditable through
-\`functional_mixed_effects_bootstrap_identity_frame()\`.
+`functional_mixed_effects_bootstrap_identity_frame()`.
 
 ## What is refitted
 
@@ -79,7 +79,7 @@ therefore refit in every replicate.
 "Full refit" is conditional on the declared model specification. Version 0.46
 does not rerun or change preprocessing, response dimension, predictors,
 random-slope choice, random-effect structure, basis sizes, deterministic knot
-construction, spline degree, REML versus ML, optimizer, or \`maxiter\`.
+construction, spline degree, REML versus ML, optimizer, or `maxiter`.
 
 Thus 0.46 propagates variance-component estimation variability **within the
 declared model**; it does not rerun the entire analytical workflow.
@@ -88,9 +88,9 @@ declared model**; it does not rerun the entire analytical workflow.
 
 The only inferential behavior is
 
-\`\`\`text
+```text
 failed_replicate_policy = "raise"
-\`\`\`
+```
 
 If a bootstrap sample is rank deficient, fails optimization, or otherwise
 cannot produce the declared fit, the entire bootstrap raises immediately.
@@ -114,13 +114,13 @@ The result retains, for every replicate:
 
 Use:
 
-\`\`\`python
+```python
 from eyetrajectoriespy import (
     functional_mixed_effects_variance_bootstrap_frame,
 )
 
 variance = functional_mixed_effects_variance_bootstrap_frame(boot)
-\`\`\`
+```
 
 These empirical distributions are **stability diagnostics**. Version 0.46 does
 not automatically reinterpret them as calibrated variance-component confidence
@@ -130,7 +130,7 @@ intervals.
 
 The existing simultaneous-band calibrator accepts either bootstrap type:
 
-\`\`\`python
+```python
 from eyetrajectoriespy import (
     functional_mixed_effects_simultaneous_bands,
 )
@@ -140,14 +140,14 @@ band = functional_mixed_effects_simultaneous_bands(
     confidence_level=0.95,
     simultaneous_scope="coefficient",
 )
-\`\`\`
+```
 
-The returned provenance records \`bootstrap_type="full_refit"\` and
-\`variance_components_refit=True\`.
+The returned provenance records `bootstrap_type="full_refit"` and
+`variance_components_refit=True`.
 
 ## Compare fixed-covariance and full-refit inference
 
-\`\`\`python
+```python
 from eyetrajectoriespy import (
     bootstrap_functional_mixed_effects_coefficients,
     compare_functional_mixed_effects_bootstraps,
@@ -169,7 +169,7 @@ ax = plot_functional_mixed_effects_bootstrap_comparison(
     comparison,
     coefficient="condition",
 )
-\`\`\`
+```
 
 For coefficient \(p\) and observed time \(t_m\),
 
@@ -192,7 +192,7 @@ probability or model-selection statistic.
 
 Subject-level resampling is established for fixed-effect inference with
 correlated functional data. Park et al. (2018, DOI
-\`10.1093/biostatistics/kxx026\`) explicitly resample independent subjects and
+`10.1093/biostatistics/kxx026`) explicitly resample independent subjects and
 carry all within-subject observations together.
 
 Version 0.46 follows that independent-unit principle but applies it to the
