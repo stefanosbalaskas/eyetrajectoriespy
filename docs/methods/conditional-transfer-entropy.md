@@ -3,10 +3,10 @@
 Version 0.43 adds **discrete conditional transfer entropy (CTE)** as a narrow
 extension of the package's explicit 0.41 transfer-entropy contract.
 
-For source process (X), target process (Y), and an explicitly supplied
-conditioning process (Z), the estimand is
+For source process \(X\), target process \(Y\), and an explicitly supplied
+conditioning process \(Z\), the estimand is
 
-[
+$
 T_{X\rightarrow Y\mid Z}(k,l,m,d,c)
 =
 I\!\left(
@@ -16,7 +16,7 @@ Y_t
 Y_{t-1}^{(k)},
 Z_{t-c}^{(m)}
 \right).
-]
+$
 
 It asks how much predictive information the declared source history contributes
 about the next target state **beyond both the target's own past and the
@@ -52,15 +52,15 @@ History lengths and lags are mandatory positive integers in sample-index units.
 
 For observed histories
 
-[
+$
 \mathbf y=Y_{t-1}^{(k)},\qquad
 \mathbf x=X_{t-d}^{(l)},\qquad
 \mathbf z=Z_{t-c}^{(m)},
-]
+$
 
 the empirical plug-in local contribution is
 
-[
+$
 t_{X\rightarrow Y\mid Z}
 =
 \log_2
@@ -69,7 +69,7 @@ t_{X\rightarrow Y\mid Z}
 }{
 \widehat p(y_t\mid\mathbf y,\mathbf z)
 }.
-]
+$
 
 The reported CTE is the mean local contribution across the exact effective
 transitions retained by the declared history/lag contract.
@@ -112,8 +112,8 @@ Z_t -> X_t
 Z_(t-1) -> Y_t
 ```
 
-pairwise (T_{X\rightarrow Y}) is large because (X_{t-1}) reveals the same
-driver that determines (Y_t). Conditioning on (Z_{t-1}) removes that
+pairwise \(T_{X\rightarrow Y}\) is large because \(X_{t-1}\) reveals the same
+driver that determines \(Y_t\). Conditioning on \(Z_{t-1}\) removes that
 redundant predictive contribution.
 
 This behavior must not be generalized into the rule that conditional TE is
@@ -143,7 +143,7 @@ test = conditional_transfer_entropy_circular_shift_test(
 Only the source is circularly shifted. Target and conditioning process remain
 fixed. For the declared shift set, the package computes
 
-[
+$
 p_+
 =
 \frac{
@@ -152,7 +152,7 @@ p_+
 }{
 B+1
 }.
-]
+$
 
 The result retains the full surrogate CTE distribution, surrogate mean,
 surrogate-centered CTE, plus-one upper-tail p-value, attainable resolution,
