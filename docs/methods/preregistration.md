@@ -436,6 +436,24 @@ Do not switch from fixed radius to target recurrence rate after seeing which set
 Classical Floquet/monodromy and numerical-continuation claims remain outside the 0.25 observational-gaze contract.
 
 
+## Recurrence networks
+
+If recurrence-network topology is a planned analysis, pre-specify:
+
+- source state representation and selected dimensions;
+- coordinate/state scaling;
+- recurrence metric;
+- fixed-radius versus target-recurrence-rate policy;
+- radius or target recurrence rate;
+- Theiler window;
+- graph outcomes to be interpreted (degree, clustering, transitivity,
+  components, isolation);
+- whether node-level or global summaries are primary;
+- how target-RR density control will affect interpretation.
+
+Do not tune the recurrence threshold after inspecting which value maximizes
+clustering, transitivity, connectivity, or group separation.
+
 ## Joint recurrence / JRQA
 
 Before inspecting a joint recurrence analysis, pre-specify:
