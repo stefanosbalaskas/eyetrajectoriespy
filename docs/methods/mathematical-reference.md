@@ -179,10 +179,12 @@ $$
 
 where all \(\omega_r\ge 0\) and at least one dimension weight is positive.
 
-The symmetric three-step recurrence is
+### symmetric1: preserved 0.33 raw-cost contract
+
+The backward-compatible default is
 
 $$
-C_{i,j}
+C^{(s1)}_{i,j}
 =
 d_w(\mathbf p_i,\mathbf q_j)
 +
@@ -191,30 +193,54 @@ d_w(\mathbf p_i,\mathbf q_j)
 C_{i-1,j-1},
 C_{i-1,j},
 C_{i,j-1}
-\right),
+\right).
 $$
 
-with cumulative first-row/first-column boundaries and
+Every visited point contributes one local-distance unit. This pattern is retained so existing 0.33 calls keep the same numerical meaning. It does not have the path-independent \(m+n\) normalization used by symmetric2, so normalize=True is rejected rather than inventing a denominator.
+
+### symmetric2: normalizable symmetric weighting
+
+For symmetric2, a diagonal advance contributes two local-distance units and horizontal/vertical advances contribute one:
 
 $$
-d_{\mathrm{DTW}}(P,Q)=C_{m,n}.
+C^{(s2)}_{i,j}
+=
+\min
+\left\{
+C_{i-1,j-1}+2d_w(\mathbf p_i,\mathbf q_j),
+C_{i-1,j}+d_w(\mathbf p_i,\mathbf q_j),
+C_{i,j-1}+d_w(\mathbf p_i,\mathbf q_j)
+\right\}.
 $$
 
-The scalar API returns this raw cumulative cost. It is not divided by path length, sequence length, or another normalization factor.
+The initial point has weight two, so for a complete global alignment the total step weight has the path-independent denominator \(m+n\). The normalized distance is therefore
 
-With an explicit non-negative Sakoe-Chiba radius \(w\), only cells satisfying
+$$
+d^{(s2)}_{\mathrm{norm}}(P,Q)
+=
+\frac{C^{(s2)}_{m,n}}{m+n}.
+$$
+
+The audit result retains the raw cumulative distance, the normalized symmetric2 distance when defined, every path-local distance, every step weight, and every weighted local contribution. Their weighted sum must reproduce the raw dynamic-programming optimum.
+
+### Sakoe-Chiba sample-index constraint
+
+With an explicit non-negative radius \(w\), only cells satisfying
 
 $$
 |i-j|\le w
 $$
 
-are admissible. The band is expressed in sample indices. It is not a bound in milliseconds or seconds. A band that cannot connect the two sequence endpoints fails explicitly.
+are admissible. The band is expressed in sample indices. It is not a tolerance in milliseconds or seconds. A band that cannot connect unequal-length endpoints fails explicitly rather than being widened.
 
-An audit result returns one deterministic optimal path and the local costs on that path. The path begins at \((1,1)\), ends at \((m,n)\), never backtracks, and uses diagonal, vertical, or horizontal unit advances. Multiple optimal paths may exist; deterministic tie handling does not make the returned path uniquely identified.
+### Interpretation boundary
 
-Recorded timestamps do not appear in the recurrence. Version 0.33 does not interpolate, resample, smooth, normalize coordinates, simplify paths, delete missing observations, normalize cumulative cost, or tune the band automatically.
+Recorded timestamps do not appear in either recurrence. DTW can therefore align away latency, dwell, or local progression-rate differences that may be scientifically meaningful. Use a time-preserving complementary analysis when elapsed trial time is part of the estimand.
+
+Version 0.34 does not interpolate, resample, smooth, normalize coordinates, simplify paths, delete missing observations, choose a step pattern, tune a window, or choose normalization automatically.
 
 **API:** dynamic_time_warping_distance(), pairwise_dynamic_time_warping_distances().
+
 
 ## Continuous planar trajectory geometry { #trajectory-geometry }
 
