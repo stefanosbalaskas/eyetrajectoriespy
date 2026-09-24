@@ -587,3 +587,21 @@ Do not choose a low-speed threshold, coordinate rescaling, or heading unwrapping
 If discrete Fréchet will be used, pre-specify the trajectory representation, included dimensions, coordinate units/scaling, optional dimension weights, any upstream resampling or simplification, and whether the distance is primary or sensitivity analysis.
 
 Do not choose coordinate scaling, dimensions, or preprocessing after inspecting which version produces the preferred group separation. State whether elapsed timing is intentionally ignored by the comparison.
+
+
+## Dynamic time warping trajectory comparison
+
+If DTW will be used, pre-specify:
+
+- the trajectory representation and included dimensions;
+- coordinate units/scaling and any dimension weights;
+- whether sequence lengths/sampling densities are expected to differ;
+- the symmetric diagonal/vertical/horizontal step pattern;
+- whether alignment is unconstrained or uses a Sakoe-Chiba sample-index radius;
+- the exact `window_radius` when constrained;
+- that the primary distance is the unnormalized cumulative local-cost sum;
+- all upstream interpolation, resampling, smoothing, normalization, or path simplification;
+- whether the optimal path will be inspected descriptively;
+- whether a time-preserving comparison is primary or a planned sensitivity analysis when latency may matter.
+
+Do not tune the warping radius, coordinate scaling, dimensions, or preprocessing after inspecting which specification maximizes a preferred condition difference. Do not reinterpret the sample-index band as a physical-time tolerance unless the upstream sampling design makes that equivalence explicit.
