@@ -5,7 +5,7 @@ the existing Gaussian functional mixed-effects regression.
 
 ## Model
 
-For participant (i), trial (j), and observed time (t),
+For participant $i$, trial $j$, and observed time $t$,
 
 $$
 Y_{ij}(t)
@@ -47,8 +47,8 @@ intercept model.
 
 ## Why the covariance guard matters
 
-With random basis size (q), the intercept-only random vector has dimension
-(q). Adding one random functional slope gives dimension (2q). A fully
+With random basis size $q$, the intercept-only random vector has dimension
+$q$. Adding one random functional slope gives dimension $2q$. A fully
 unstructured covariance therefore has
 
 $$
@@ -57,11 +57,11 @@ $$
 
 free parameters.
 
-For the default (q=4), this is 36 covariance parameters.
+For the default $q=4$, this is 36 covariance parameters.
 
 Version 0.45 therefore refuses the random-slope model unless the participant
 count is **strictly greater** than the number of free covariance parameters.
-Thus the default (q=4) random-slope specification requires at least 37
+Thus the default $q=4$ random-slope specification requires at least 37
 participants.
 
 This is a conservative package safeguard against an obviously fragile
@@ -123,7 +123,72 @@ ax = plot_functional_random_effects(
 )
 ~~~
 
-The slope function (widehat b_{1i}(t)) describes how participant (i)'s
+The slope function $\widehat b_{1i}(t)$ describes how participant $i
+response to the declared predictor deviates from the population fixed
+coefficient function over trial time.
+
+It is a model-based BLUP, not an independently observed participant trajectory.
+
+## Covariance interpretation
+
+The intercept/slope cross-covariance block describes association between the
+random-basis coefficients underlying $b_{0i}(t)$ and $b_{1i}(t)$. It should
+not be reduced automatically to one scalar correlation unless that reduction is
+scientifically justified.
+
+If the slope covariance approaches zero, the dedicated slope-boundary
+diagnostic is retained rather than silently converting the model to an
+intercept-only fit.
+
+## Simultaneous fixed-effect inference
+
+The 0.44 participant-cluster bootstrap remains available:
+
+~~~python
+boot = bootstrap_functional_mixed_effects_coefficients(
+    fit,
+    n_bootstrap=1000,
+    random_state=2026,
+)
+~~~
+
+For a random-slope fit, the full fitted intercept/slope covariance and residual
+variance remain fixed during the bootstrap GLS refits. Therefore these bands
+remain **conditional fixed-effect inference under the fitted covariance
+structure**.
+
+Version 0.45 does not claim that the 0.44 bootstrap incorporates random-slope
+variance-component estimation uncertainty.
+
+## What 0.45 deliberately does not add
+
+Version 0.45 does not add:
+
+- more than one random functional slope;
+- automatic random-slope selection;
+- automatic covariance simplification;
+- separate slope/intercept basis sizes;
+- residual serial correlation;
+- trial-level functional random effects;
+- generalized/non-Gaussian responses;
+- full-refit participant bootstrap uncertainty.
+
+The planned next inference tranche is a full-refit participant bootstrap
+sensitivity layer so covariance parameters are re-estimated inside bootstrap
+samples.
+
+## Evidence basis
+
+Functional additive/mixed models support correlated functional responses with
+functional random effects and scalar covariates whose effects vary over the
+functional index. See Scheipl, Staicu, and Greven (2015), DOI
+`10.1080/10618600.2014.901914`.
+
+The underlying `statsmodels.MixedLM` backend represents correlated random
+coefficients through the supplied random-effects design matrix. Version 0.45
+uses that native contract while adding stricter functional-design,
+within-participant-variation, covariance-complexity, and provenance safeguards.
+s
 response to the declared predictor deviates from the population fixed
 coefficient function over trial time.
 
