@@ -478,7 +478,7 @@ The eigenvalues of that fitted Jacobian are **not Floquet multipliers**. Classic
 
 ### Classical continuation is not implemented
 
-Version 0.23 does not expose `detect_bifurcation(gaze)`, numerical continuation, a monodromy matrix, or `floquet_multipliers(gaze)`. Those would require an identified dynamical system (dot{mathbf x}=f(mathbf x,	heta)) and dedicated model-validation contracts. Raw gaze observations are not silently treated as a known ODE.
+Version 0.23 does not expose `detect_bifurcation(gaze)`, numerical continuation, a monodromy matrix, or `floquet_multipliers(gaze)`. Those would require an identified dynamical system dx/dt = f(x, θ) and dedicated model-validation contracts. Raw gaze observations are not silently treated as a known ODE.
 ## RQA-derived functional trajectories
 
 Sliding-window RQA creates a derived functional process; it does not create new independent experimental units.
