@@ -162,19 +162,58 @@ ax = plot_functional_mixed_effects_coefficient(
 ~~~
 
 The table and plot use pointwise standard errors propagated from the fitted
-fixed-parameter covariance matrix. The plotted 95% intervals are **pointwise
-Wald intervals**, not simultaneous bands.
+fixed-parameter covariance matrix when given the raw fit. Version 0.44 also
+supports participant-cluster bootstrap simultaneous bands.
+
+## Whole-function simultaneous coefficient inference
+
+Use whole-participant resampling when the inferential claim concerns an entire
+fixed coefficient function over the observed grid:
+
+~~~python
+from eyetrajectoriespy import (
+    bootstrap_functional_mixed_effects_coefficients,
+    functional_mixed_effects_simultaneous_bands,
+)
+
+boot = bootstrap_functional_mixed_effects_coefficients(
+    fit,
+    n_bootstrap=1000,
+    random_state=2026,
+)
+
+band = functional_mixed_effects_simultaneous_bands(
+    boot,
+    confidence_level=0.95,
+    simultaneous_scope="coefficient",
+)
+~~~
+
+Every bootstrap draw samples participants with replacement and carries all
+trials/time points for a selected participant together. The fixed coefficient
+basis is re-estimated by GLS for every draw.
+
+The fitted participant random-effect covariance and residual variance are held
+fixed. This makes the procedure computationally transparent and preserves the
+hierarchical resampling unit, but it does **not** propagate variance-component
+or basis-selection uncertainty.
+
+Pass the band object directly to
+`plot_functional_mixed_effects_coefficient()` for simultaneous rather than
+pointwise uncertainty.
+
+See the dedicated
+[simultaneous-inference method guide](../methods/functional-mixed-effects-simultaneous-bands.md).
 
 ## Important current limitations
 
-Version 0.36 does not yet estimate:
+The current mixed-effects layer does not yet estimate:
 
 - residual serial correlation beyond the participant functional random effect;
 - a trial-level functional random effect;
 - participant-specific random functional slopes;
 - generalized/non-Gaussian functional responses;
 - multivariate cross-dimension covariance;
-- simultaneous coefficient bands;
 - variance-component uncertainty;
 - automatic basis-selection uncertainty.
 
