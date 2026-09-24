@@ -111,9 +111,9 @@ Optional backends are never imported until the corresponding feature is requeste
 
 The following are **not** replaced with convenient but scientifically weaker substitutes:
 
-### Full functional mixed models
+### Multilevel FPCA versus likelihood-based functional mixed-effects regression
 
-The multilevel implementation currently provides a transparent participant/trial functional decomposition followed by FPCA. It is not described as a full likelihood/Bayesian functional mixed-effects model.
+The multilevel FPCA implementation provides a transparent participant/trial functional decomposition followed by FPCA. It remains a decomposition rather than a likelihood/Bayesian mixed-effects regression model. Separately, the package now includes a likelihood-based Gaussian functional mixed-effects regression layer with participant functional random effects.
 
 ### Confirmatory functional outlier tests
 
@@ -129,7 +129,7 @@ Still not provided are full uncertainty procedures that jointly include target m
 
 Future tranches may evaluate:
 
-- richer functional mixed-effects structures: trial-level functional random effects, random functional slopes, residual serial correlation, simultaneous coefficient inference, and generalized responses;
+- richer functional mixed-effects structures: trial-level functional random effects, residual serial correlation, multiple random functional slopes, and generalized responses;
 - richer multilevel functional mixed-effects backends;
 - explicit system-identification models for gaze dynamics;
 - model-based continuation / Floquet analysis only after a validated dynamical-system contract exists.
