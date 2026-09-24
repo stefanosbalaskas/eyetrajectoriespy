@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.36.0.dev0
+
+- Add `fit_functional_mixed_effects_regression()` for one selected Gaussian common-grid functional response with scalar fixed predictors and a participant-specific functional random intercept.
+- Fit all curve-by-time observations jointly in one `statsmodels.MixedLM`; do not approximate repeated-measures functional regression by unrelated pointwise mixed models.
+- Represent fixed coefficient functions and participant random functions with explicitly sized clamped B-spline bases; no automatic basis selection or smoothing penalty is introduced.
+- Allow trial-varying predictors while preserving participant clustering directly in the mixed-effects likelihood.
+- Estimate an unstructured covariance across participant random-basis coefficients and retain BLUP random-effect functions, residual variance, fixed-parameter covariance, basis matrices/knots, rank diagnostics, convergence status, backend warnings, and provenance.
+- Fail on non-convergence rather than interpreting an invalid fit; flag near-boundary random-effect covariance estimates.
+- Add pointwise fixed-effect standard errors, coefficient tables, plotting, and reporting helpers with an explicit no-simultaneous-coverage boundary.
+- Add synthetic truth/repeated-measures tests, rank/basis/participant failure contracts, executable example, methodology guide, mathematical contract, references, API/object documentation, and site integration.
+
 ## 0.35.0.dev0
 
 - Add `fit_function_on_scalar_regression()` for observed-grid functional-response regression with an explicit scalar design matrix and one intercept.
