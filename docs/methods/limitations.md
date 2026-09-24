@@ -499,6 +499,28 @@ The eigenvalues of that fitted Jacobian are **not Floquet multipliers**. Classic
 ### Classical continuation is not implemented
 
 Version 0.23 does not expose `detect_bifurcation(gaze)`, numerical continuation, a monodromy matrix, or `floquet_multipliers(gaze)`. Those would require an identified dynamical system dx/dt = f(x, θ) and dedicated model-validation contracts. Raw gaze observations are not silently treated as a known ODE.
+## Joint recurrence limitations
+
+A joint recurrence plot is conditional on every component recurrence contract.
+Changing any subsystem's state variables, embedding, metric, radius, target
+recurrence rate, or Theiler window can change the joint plot materially.
+
+Version 0.39 requires exact time-grid synchronization and a shared Theiler
+window. It does not estimate lagged joint recurrence, time-warped joint
+recurrence, asynchronous JRPs, or synchronization offsets.
+
+JRR can become small simply because it is the intersection of several
+recurrence sets. A low JRR is therefore not automatically evidence of weak
+physiological or behavioral coupling.
+
+Joint RQA is not cross-RQA, transfer entropy, Granger causality, phase
+synchronization, or a directionality estimator. Coincident recurrence alone
+does not establish causal influence.
+
+The current implementation accepts precomputed component auto-recurrence
+matrices. It does not search component thresholds to maximize JRR or tune
+thresholds jointly.
+
 ## RQA-derived functional trajectories
 
 Sliding-window RQA creates a derived functional process; it does not create new independent experimental units.
