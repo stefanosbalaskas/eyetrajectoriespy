@@ -43,8 +43,8 @@ print(pairwise.transfer_entropy_bits)
 print(conditioned.conditional_transfer_entropy_bits)
 ```
 
-Here (X_{t-1}) predicts (Y_t), but it does so because both expose the same
-declared (Z_{t-1}) driver. Pairwise TE is therefore large, whereas
+Here \(X_{t-1}\) predicts \(Y_t\), but it does so because both expose the same
+declared \(Z_{t-1}\) driver. Pairwise TE is therefore large, whereas
 conditional TE collapses in this constructed truth.
 
 That is a validation example, not a universal expectation: conditioning may
@@ -117,5 +117,5 @@ print(conditioned_direct.mean_joint_history_count)
 print(conditioned_direct.max_joint_history_count)
 ```
 
-These diagnostics should be inspected especially when (k), (l), or (m)
+These diagnostics should be inspected especially when \(k\), \(l\), or \(m\)
 are large relative to the available series length.
