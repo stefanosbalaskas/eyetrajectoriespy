@@ -30,7 +30,7 @@ trajectories = TrajectorySet(
     values=response[:, :, None],
     curve_ids=tuple(f"C{i:02d}" for i in range(n)),
     dimension_names=("metric",),
-    coordinate_system="arbitrary",
+    coordinate_system="unknown",
     time_unit="s",
 )
 
