@@ -32,6 +32,7 @@ jobs:
           python examples/functional_mixed_effects_regression.py
           python examples/functional_mixed_effects_simultaneous_bands.py
           python examples/functional_mixed_effects_random_slope.py
+          python examples/functional_mixed_effects_full_refit_bootstrap.py
           python examples/irregular_sampling.py
           python examples/derived_functions.py
           python examples/trajectory_geometry.py
