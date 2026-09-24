@@ -29,7 +29,10 @@ def _validate_design_alignment(
         )
     if isinstance(predictors, (str, bytes)):
         raise TypeError("predictors must be a non-string sequence")
-    predictor_names = tuple(str(name) for name in predictors)
+    raw_predictors = tuple(predictors)
+    if not all(isinstance(name, str) for name in raw_predictors):
+        raise TypeError("predictor names must be strings")
+    predictor_names = raw_predictors
     if not predictor_names:
         raise ValueError("predictors must contain at least one column name")
     if len(set(predictor_names)) != len(predictor_names):
@@ -87,7 +90,10 @@ def _select_dimensions(
     else:
         if isinstance(dimensions, (str, bytes)):
             raise TypeError("dimensions must be a non-string sequence")
-        names = tuple(str(name) for name in dimensions)
+        raw_names = tuple(dimensions)
+        if not all(isinstance(name, str) for name in raw_names):
+            raise TypeError("dimension names must be strings")
+        names = raw_names
         if not names:
             raise ValueError("dimensions must contain at least one name")
         if len(set(names)) != len(names):
