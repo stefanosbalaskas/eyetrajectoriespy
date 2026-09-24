@@ -387,7 +387,7 @@ are exported by `functional_random_effect_frame()`.
 
 ## Full-refit participant bootstrap for functional mixed-effects models
 
-For bootstrap replicate (b), sample (n) participant indices with replacement,
+For bootstrap replicate \(b\), sample \(n\) participant indices with replacement,
 
 $
 I_1^{*(b)},\ldots,I_n^{*(b)}
