@@ -8,6 +8,7 @@ from .functional_mixed_effects import _fixed_effect_design
 from .types import (
     FunctionalMixedEffectsBandResult,
     FunctionalMixedEffectsBootstrapResult,
+    FunctionalMixedEffectsFullRefitBootstrapResult,
     FunctionalMixedEffectsResult,
 )
 
@@ -296,7 +297,10 @@ def bootstrap_functional_mixed_effects_coefficients(
                 "curves_resampled_independently": False,
                 "participant_draws_with_replacement": True,
                 "fixed_effects_reestimated_each_replicate": True,
-                "variance_components_refit": False,
+                "variance_components_refit": isinstance(
+                    bootstrap,
+                    FunctionalMixedEffectsFullRefitBootstrapResult,
+                ),
                 "random_effect_covariance_conditioned_on_reference": True,
                 "residual_variance_conditioned_on_reference": True,
                 "fixed_basis_refit": False,
@@ -323,7 +327,7 @@ def bootstrap_functional_mixed_effects_coefficients(
 
 
 def functional_mixed_effects_simultaneous_bands(
-    bootstrap: FunctionalMixedEffectsBootstrapResult,
+    bootstrap: FunctionalMixedEffectsBootstrapResult | FunctionalMixedEffectsFullRefitBootstrapResult,
     *,
     confidence_level: float = 0.95,
     simultaneous_scope: str = "coefficient",
@@ -332,10 +336,14 @@ def functional_mixed_effects_simultaneous_bands(
 
     if not isinstance(
         bootstrap,
-        FunctionalMixedEffectsBootstrapResult,
+        (
+            FunctionalMixedEffectsBootstrapResult,
+            FunctionalMixedEffectsFullRefitBootstrapResult,
+        ),
     ):
         raise TypeError(
-            "bootstrap must be a FunctionalMixedEffectsBootstrapResult"
+            "bootstrap must be a FunctionalMixedEffectsBootstrapResult or "
+            "FunctionalMixedEffectsFullRefitBootstrapResult"
         )
     if not 0 < confidence_level < 1:
         raise ValueError("confidence_level must lie in (0, 1)")
