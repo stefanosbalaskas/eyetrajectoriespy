@@ -464,6 +464,31 @@ Choose it from the representation/scientific contract or treat plausible
 references as a predeclared sensitivity analysis. Do not choose the reference
 after inspecting which one produces the smallest surrogate-test p-value.
 
+## What is the difference between joint recurrence and cross-recurrence?
+
+Cross-recurrence compares states from two systems directly and asks whether a
+state in one system is close to a state in the other. Joint recurrence instead
+intersects each system's own auto-recurrence plot and asks whether the systems
+return to their respective neighborhoods at the same time pair.
+
+## Do the subsystem state spaces need the same dimension for joint recurrence?
+
+No. They may have different dimensions, variables, metrics, and recurrence
+thresholds. They do need the exact same time grid, the same time unit, and the
+same Theiler exclusion in version 0.39.
+
+## Can I shift one signal until joint recurrence is strongest?
+
+Not inside the 0.39 JRP API. That would change the question into a lagged
+coupling analysis and creates a tuning problem. Any lag search should be
+separately specified, validated, and reported.
+
+## Does high joint recurrence prove coupling or causality?
+
+No. It shows coincident recurrence under the declared component recurrence
+contracts. Direction, information transfer, synchronization, and causality
+require additional models and assumptions.
+
 ## Do more sliding RQA windows increase my sample size?
 
 No. Windows are time points of a derived functional trajectory, not new participants or independent trials. Overlap makes the reuse of source samples explicit, and serial dependence can remain even without overlap. Use the original curve/participant design to define the inferential unit.
