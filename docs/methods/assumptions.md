@@ -319,8 +319,9 @@ All points must be finite. The package does not silently delete missing samples 
 
 DTW assumes that monotone sample-index warping is scientifically admissible. It is appropriate when local progression-rate differences may be nuisance variation, but it can align away latency or dwell-pattern differences that are substantive effects.
 
+The 0.33 symmetric1 recurrence remains the default for backward compatibility. Its public distance is a raw cumulative cost and has no path-independent N+M normalization. The symmetric2 option changes the weighting of diagonal versus horizontal/vertical advances and, for global alignment, admits explicit N+M normalization. These are different estimands and should not be switched after outcome inspection.
+
 The optional `window_radius` is measured in sample indices, not milliseconds or seconds. Comparability of a fixed radius therefore depends on the sampling representation supplied to the function.
 
-The public DTW scalar is an unnormalized cumulative local-cost sum. Sequence length and path length can affect its magnitude, so comparisons across materially different sampling densities or observation lengths require an explicit design decision rather than silent normalization.
+Coordinate units and explicit dimension weights define the local geometry. All points must be finite; the package does not silently delete missing samples or repair incomplete paths. Recorded timestamps do not enter either DTW recurrence.
 
-Coordinate units and explicit dimension weights define the local geometry. All points must be finite; the package does not silently delete missing samples or repair incomplete paths.
