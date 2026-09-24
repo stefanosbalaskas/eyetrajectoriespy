@@ -436,6 +436,26 @@ Do not switch from fixed radius to target recurrence rate after seeing which set
 Classical Floquet/monodromy and numerical-continuation claims remain outside the 0.25 observational-gaze contract.
 
 
+## Joint recurrence / JRQA
+
+Before inspecting a joint recurrence analysis, pre-specify:
+
+- every subsystem/state representation;
+- the time grid and time unit required for synchronization;
+- the recurrence metric for every subsystem;
+- fixed-radius versus target-recurrence-rate policy for every subsystem;
+- all fixed radii or target recurrence rates;
+- the shared Theiler window;
+- component labels;
+- JRQA minimum diagonal and vertical line lengths;
+- whether JRR, JDET, JLAM, line lengths, entropy, trapping time, or CORM are
+  primary or supporting outcomes.
+
+Do not shift one subsystem in time, change thresholds, or change the subsystem
+set after inspecting which choice increases joint recurrence. If lagged
+coupling is the scientific question, specify a separate lagged analysis rather
+than silently aligning inputs inside the JRP.
+
 ## Functional RQA sensitivity and dependence-aware inference
 
 If sliding-window RQA functions are a primary or confirmatory analysis, pre-specify:
