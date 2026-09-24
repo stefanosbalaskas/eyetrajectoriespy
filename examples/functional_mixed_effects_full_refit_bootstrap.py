@@ -13,8 +13,8 @@ from eyetrajectoriespy import (
     functional_mixed_effects_variance_bootstrap_frame,
 )
 
-rng = np.random.default_rng(460)
-n_participants = 8
+rng = np.random.default_rng(461)
+n_participants = 12
 trials_per_participant = 3
 time = np.linspace(0.0, 1.0, 6)
 basis = np.column_stack([1.0 - time, time])
