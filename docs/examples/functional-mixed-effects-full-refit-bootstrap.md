@@ -125,6 +125,6 @@ or model-selection criterion.
 ## Reporting boundary
 
 State explicitly that the bootstrap refits fixed effects,
-(widehat{Psi}), and (widehat{sigma}^2) in every participant resample,
+\(\widehat{\Psi}\), and \(\widehat{\sigma}^2\) in every participant resample,
 while preprocessing, predictor specification, random-slope choice, random-effect
 structure, bases, optimizer and REML/ML choice remain fixed.
