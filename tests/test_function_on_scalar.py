@@ -31,7 +31,7 @@ def _independent_data(noise_scale=0.02):
         values=values,
         curve_ids=tuple(f"C{i:02d}" for i in range(n)),
         dimension_names=("signal", "double"),
-        coordinate_system="arbitrary",
+        coordinate_system="unknown",
         time_unit="s",
     )
     design = pd.DataFrame(
@@ -142,7 +142,7 @@ def test_participant_unit_aggregates_equal_weight_participant_means():
         curve_ids=tuple(f"T{i}" for i in range(len(values))),
         dimension_names=("metric",),
         metadata=pd.DataFrame({"participant_id": participants}),
-        coordinate_system="arbitrary",
+        coordinate_system="unknown",
         time_unit="s",
     )
     design = pd.DataFrame(
@@ -181,7 +181,7 @@ def test_participant_unit_rejects_trial_varying_predictors():
         metadata=pd.DataFrame(
             {"participant_id": ("P1", "P1", "P2", "P2")}
         ),
-        coordinate_system="arbitrary",
+        coordinate_system="unknown",
         time_unit="s",
     )
     design = pd.DataFrame(
