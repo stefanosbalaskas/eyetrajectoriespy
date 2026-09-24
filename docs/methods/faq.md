@@ -441,3 +441,14 @@ Not as an independently varying functional outcome. Target-rate mode controls re
 ## Does RQA-to-FPCA provide a new confidence theorem for overlapping windows?
 
 No. It is a provenance-preserving representation bridge. It lets the existing FDA core describe between-curve variation in time-varying recurrence organization; inference still requires a design-appropriate sampling unit and assumptions.
+
+
+## Should I use functional L2, discrete Fréchet, DTW, or registration?
+
+Use functional L2 when same trial-time correspondence is part of the estimand. Use discrete Fréchet when you want an order-preserving bottleneck separation between point sequences. Use DTW when cumulative mismatch after monotone sample-index warping is the target and local progression-rate differences may be nuisance variation. Use registration/phase analysis when the timing deformation itself should be retained and analyzed rather than collapsed into a distance.
+
+DTW does not use the numeric TrajectorySet timestamps, and an unconstrained path can align away latency differences. When latency or dwell timing is scientifically meaningful, keep a time-preserving analysis alongside the elastic comparison.
+
+## Should I normalize DTW by path length?
+
+Version 0.33 does not choose a normalization automatically. The public DTW distance is the raw cumulative local-cost sum, while path length and mean local distance are retained in the audit result. If a study requires a normalized variant, define that estimand explicitly rather than silently replacing the package contract.
