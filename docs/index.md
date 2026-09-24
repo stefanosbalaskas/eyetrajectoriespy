@@ -3,13 +3,13 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.44 · simultaneous functional mixed-effects inference</div>
+<div class="et-kicker">eyetrajectoriespy 0.45 · guarded participant random functional slopes</div>
 
 # Model the viewing process, not only its summaries
 
 eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze paths, multivariate FPCA, native irregular trajectories, repeated-trial functional decomposition, phase analysis, compositional AOI trajectories, and explicit validation of component stability.
 
-<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">multivariate IAAFT</span><span class="et-pill">functional mixed effects</span><span class="et-pill">mixed-effects simultaneous bands</span><span class="et-pill">function-on-scalar inference</span><span class="et-pill">Fréchet + audited DTW</span><span class="et-pill">distance sensitivity</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">LaTeX contracts</span><span class="et-pill">reproducible plots</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">mean-band inference</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
+<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">multivariate IAAFT</span><span class="et-pill">functional mixed effects</span><span class="et-pill">random functional slopes</span><span class="et-pill">mixed-effects simultaneous bands</span><span class="et-pill">function-on-scalar inference</span><span class="et-pill">Fréchet + audited DTW</span><span class="et-pill">distance sensitivity</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">LaTeX contracts</span><span class="et-pill">reproducible plots</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">mean-band inference</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
 </div>
 
 <div class="grid cards" markdown>
@@ -479,6 +479,25 @@ The package is designed around the principle that **the path to an FPC score is 
 
 For manuscript preparation, use the [reporting checklist](methods/reporting.md), [assumptions and diagnostics](methods/assumptions.md), and [limitations](methods/limitations.md).
 
+## New in 0.45: one guarded participant random functional slope
+
+The likelihood-based mixed-effects layer now supports exactly one explicitly
+declared participant random functional slope. The predictor must vary within
+every participant, and the participant count must exceed the number of free
+parameters in the full unstructured intercept/slope covariance before the fit
+is attempted.
+
+The result retains the full random-effect design, covariance blocks,
+eigenvalue/condition diagnostics, and participant BLUP slope functions for
+direct scientific inspection.
+
+[Method guide](methods/functional-mixed-effects-random-slope.md) ·
+[Worked example](examples/functional-mixed-effects-random-slope.md) ·
+[Mathematical contract](methods/mathematical-reference.md#functional-mixed-effects-random-slope)
+
+The next inferential priority is a full-refit participant bootstrap that
+re-estimates variance components.
+
 ## New in 0.44: simultaneous functional mixed-effects coefficient bands
 
 Repeated-trial functional regression now supports whole-function observed-grid
@@ -495,7 +514,7 @@ implemented uncertainty target.
 [Worked example](examples/functional-mixed-effects-simultaneous-bands.md) ·
 [Mathematical contract](methods/mathematical-reference.md#functional-mixed-effects-simultaneous)
 
-The next structural extension is participant random functional slopes.
+The next inferential extension is a full-refit participant bootstrap that re-estimates variance components.
 
 ## New in 0.43: conditional transfer entropy
 
