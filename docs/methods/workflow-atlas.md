@@ -145,6 +145,27 @@ flowchart TD
     J --> K[Monte Carlo precision audit]
 ```
 
+## Joint recurrence across synchronized systems
+
+```mermaid
+flowchart LR
+    A[Synchronized subsystem trajectories] --> B[Define state space A]
+    A --> C[Define state space B]
+    B --> D[Auto recurrence A]
+    C --> E[Auto recurrence B]
+    D --> F{Exact same grid and shared Theiler?}
+    E --> F
+    F -->|No| G[Stop: align upstream explicitly]
+    F -->|Yes| H[Logical intersection]
+    H --> I[Joint recurrence rate]
+    H --> J[JRQA line metrics]
+    I --> K[Interpret coincident recurrence]
+    J --> K
+```
+
+Joint recurrence does not perform lag search, resampling, synchronization
+repair, or threshold harmonization.
+
 ## Nonlinear trajectory dynamics
 
 ```mermaid
