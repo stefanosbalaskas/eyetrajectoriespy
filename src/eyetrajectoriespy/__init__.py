@@ -46,6 +46,7 @@ from .functional_mixed_effects_inference import (
 from .functional_mixed_effects import (
     fit_functional_mixed_effects_regression,
     functional_mixed_effects_coefficient_frame,
+    functional_random_effect_frame,
 )
 from .io import from_irregular_long_dataframe, from_long_dataframe
 from .irregular import (
@@ -229,6 +230,7 @@ from .plotting import (
     plot_dynamic_time_warping_alignment,
     plot_function_on_scalar_coefficients,
     plot_functional_mixed_effects_coefficient,
+    plot_functional_random_effects,
     plot_fpca_component,
     plot_fpca_component_band,
     plot_fpca_component_envelope,
@@ -426,13 +428,15 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.44.0.dev0"
+__version__ = "0.45.0.dev0"
 
 __all__ = [
     "FunctionalMixedEffectsBootstrapResult",
     "FunctionalMixedEffectsBandResult",
     "bootstrap_functional_mixed_effects_coefficients",
     "functional_mixed_effects_simultaneous_bands",
+    "functional_random_effect_frame",
+    "plot_functional_random_effects",
     "ConditionalTransferEntropyResult",
     "ConditionalTransferEntropyCircularShiftTestResult",
     "conditional_transfer_entropy",
