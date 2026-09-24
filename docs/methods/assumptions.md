@@ -444,3 +444,18 @@ Coordinate units and explicit dimension weights define the local geometry. All p
   universal cell-count threshold.
 - If circular-shift inference is requested, source wrap-around shifts are
   scientifically defensible while target and conditioning series remain fixed.
+
+## Functional mixed-effects simultaneous-band assumptions
+
+- Participants, not individual trials or time points, are the independent
+  resampling units.
+- Every participant bootstrap draw retains that participant's complete trial
+  bundle and observed time grid.
+- The fitted random-effect covariance and residual variance provide an adequate
+  conditional weighting model for the fixed-effect GLS refits.
+- The fixed/random bases, spline degree, scalar design coding, preprocessing,
+  and response representation are treated as fixed analysis decisions.
+- The participant-resampled fixed-effect information matrix remains full rank.
+  A rank-deficient replicate is an analysis failure, not a row to discard.
+- Simultaneous coverage refers to the observed time grid. Continuous-domain
+  coverage between sampled points requires additional theory not claimed here.
