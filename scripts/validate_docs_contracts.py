@@ -115,8 +115,8 @@ def main() -> None:
 
     gallery = (DOCS / "methods" / "visual-gallery.md").read_text(encoding="utf-8")
     asset_refs = sorted(set(re.findall(r"\.\./assets/gallery/([^)\s]+\.svg)", gallery)))
-    if len(asset_refs) < 23:
-        raise RuntimeError("visual gallery must reference at least twenty-three SVG figures")
+    if len(asset_refs) < 24:
+        raise RuntimeError("visual gallery must reference at least twenty-four SVG figures")
     missing_assets = sorted(
         name for name in asset_refs if not (DOCS / "assets" / "gallery" / name).exists()
     )
