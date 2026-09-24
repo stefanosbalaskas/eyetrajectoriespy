@@ -178,7 +178,7 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## Function-on-scalar regression and simultaneous coefficient bands
 
-**Functions:** \`fit_function_on_scalar_regression()\`, \`bootstrap_function_on_scalar_coefficients()\`, \`function_on_scalar_simultaneous_bands()\`
+**Functions:** `fit_function_on_scalar_regression()`, `bootstrap_function_on_scalar_coefficients()`, `function_on_scalar_simultaneous_bands()`
 
 $$
 \mathbf Y(t)=\mathbf X\boldsymbol\beta(t)+\boldsymbol\varepsilon(t)
