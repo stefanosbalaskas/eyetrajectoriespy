@@ -638,10 +638,12 @@ Version 0.44 adds a separate participant-cluster bootstrap layer for
 observed-grid simultaneous fixed-coefficient bands. That layer re-estimates
 fixed coefficients under whole-participant resampling while conditioning on the
 reference random-effect covariance, residual variance, and declared bases.
-Therefore 0.44 does not claim variance-component uncertainty, basis-selection
-uncertainty, continuous-between-grid coverage, serially correlated residual
-errors, a trial-level functional random effect, random functional slopes,
-generalized/non-Gaussian responses, or joint cross-dimension covariance.
+Therefore the current inference layer does not claim variance-component
+uncertainty, basis-selection uncertainty, continuous-between-grid coverage,
+serially correlated residual errors, a trial-level functional random effect,
+multiple random functional slopes, generalized/non-Gaussian responses, or
+joint cross-dimension covariance. Version 0.45 separately supports exactly one
+guarded participant random functional slope.
 
 A non-converged optimizer result raises rather than being returned as a valid
 scientific fit.
