@@ -76,6 +76,11 @@ from .nonlinear_dynamics import (
     local_divergence_curve,
     surrogate_nonlinearity_test,
 )
+from .multivariate_surrogates import (
+    generate_multivariate_iaaft_surrogates,
+    multivariate_iaaft_diagnostics_frame,
+    multivariate_surrogate_nonlinearity_test,
+)
 from .nonlinear_sensitivity import (
     kantz_parameter_sensitivity,
     lyapunov_parameter_sensitivity,
@@ -90,6 +95,8 @@ from .nonlinear_reporting import (
     kantz_parameter_sensitivity_reporting_text,
     largest_lyapunov_reporting_text,
     lyapunov_parameter_sensitivity_reporting_text,
+    multivariate_iaaft_reporting_text,
+    multivariate_surrogate_nonlinearity_reporting_text,
     return_map_stability_reporting_text,
     rqa_parameter_sensitivity_reporting_text,
     recurrence_radius_profile_reporting_text,
@@ -106,6 +113,8 @@ from .nonlinear_plotting import (
     plot_embedding_dimension_diagnostics,
     plot_kantz_sensitivity,
     plot_local_divergence,
+    plot_multivariate_iaaft_diagnostics,
+    plot_multivariate_surrogate_nonlinearity,
     plot_lyapunov_sensitivity,
     plot_poincare_return_map,
     plot_recurrence,
@@ -127,6 +136,8 @@ from .nonlinear_types import (
     LyapunovParameterSensitivityResult,
     LocalDivergenceResult,
     LocalReturnMapResult,
+    MultivariateIAAFTResult,
+    MultivariateSurrogateNonlinearityResult,
     PoincareCrossingResult,
     RecurrenceRadiusProfileResult,
     RecurrenceResult,
@@ -359,7 +370,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.36.0.dev0"
+__version__ = "0.37.0.dev0"
 
 __all__ = [
     "recurrence_radius_profile_reporting_text",
@@ -406,6 +417,8 @@ __all__ = [
     "KantzParameterSensitivityResult",
     "LargestLyapunovResult",
     "LyapunovParameterSensitivityResult",
+    "MultivariateIAAFTResult",
+    "MultivariateSurrogateNonlinearityResult",
     "SurrogateNonlinearityResult",
     "PoincareCrossingResult",
     "LocalReturnMapResult",
@@ -430,6 +443,13 @@ __all__ = [
     "estimate_largest_lyapunov_rosenstein",
     "estimate_largest_lyapunov_kantz",
     "lyapunov_parameter_sensitivity",
+    "generate_multivariate_iaaft_surrogates",
+    "multivariate_iaaft_diagnostics_frame",
+    "multivariate_surrogate_nonlinearity_test",
+    "plot_multivariate_iaaft_diagnostics",
+    "plot_multivariate_surrogate_nonlinearity",
+    "multivariate_iaaft_reporting_text",
+    "multivariate_surrogate_nonlinearity_reporting_text",
     "surrogate_nonlinearity_test",
     "poincare_crossings",
     "fit_local_return_map",
