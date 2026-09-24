@@ -784,3 +784,24 @@ Pre-register:
 Do not inspect several candidate predictors and retain only the random slope
 that produces the most interesting heterogeneity. Version 0.45 intentionally
 provides no automatic random-slope selection.
+
+## Full-refit participant bootstrap
+
+Pre-register whether the primary mixed-effects uncertainty procedure is the
+fixed-covariance participant bootstrap, the full-refit participant bootstrap, or
+a planned sensitivity comparison of both.
+
+For a full-refit bootstrap pre-register:
+
+- participant as the independent resampling unit;
+- bootstrap replicate count and random seed;
+- that duplicate source participants receive distinct bootstrap group IDs;
+- the fixed/random basis sizes and spline degree;
+- the declared random-effect structure and random-slope predictor, if any;
+- REML versus ML;
+- optimizer and iteration budget;
+- simultaneous coefficient/family scope if bands will be reported;
+- `failed_replicate_policy="raise"`.
+
+Do not switch to discarding or redrawing failed replicates after observing a
+high failure rate.
