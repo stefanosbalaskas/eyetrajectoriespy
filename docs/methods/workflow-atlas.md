@@ -145,6 +145,24 @@ flowchart TD
     J --> K[Monte Carlo precision audit]
 ```
 
+## Recurrence-network topology
+
+```mermaid
+flowchart LR
+    A[Declared auto-recurrence matrix] --> B[Validate symmetric sparse adjacency]
+    B --> C[Degree / normalized degree]
+    B --> D[Triangles / local clustering]
+    B --> E[Transitivity]
+    B --> F[Connected components]
+    C --> G[Interpret conditional on recurrence contract]
+    D --> G
+    E --> G
+    F --> G
+```
+
+The graph does not retune the recurrence radius, restore Theiler-excluded
+edges, optimize communities, or infer dynamical dimension automatically.
+
 ## Joint recurrence across synchronized systems
 
 ```mermaid
