@@ -176,3 +176,18 @@ flowchart LR
 ```
 
 Website: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/workflow-atlas/
+
+### Directed discrete-state dependence
+
+```text
+predeclared discrete source/target states
+  -> explicit target history k + source history l + source lag d
+  -> discrete_transfer_entropy()
+  -> local history/support diagnostics
+  -> optional analyst-declared circular shifts
+  -> transfer_entropy_circular_shift_test()
+  -> reporting with no automatic causal claim
+```
+
+See `docs/methods/transfer-entropy.md` and the
+`discrete-transfer-entropy` mathematical contract.
