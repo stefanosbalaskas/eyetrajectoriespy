@@ -796,6 +796,7 @@ def functional_mixed_effects_coefficient_frame(
             rows.append(row)
     return pd.DataFrame(rows)
 
+
 def functional_random_effect_frame(
     result: FunctionalMixedEffectsResult,
     *,
