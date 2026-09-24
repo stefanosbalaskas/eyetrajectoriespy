@@ -414,3 +414,13 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.transfer_entropy_parameter_sensitivity
 ::: eyetrajectoriespy.plot_transfer_entropy_sensitivity
 ::: eyetrajectoriespy.transfer_entropy_parameter_sensitivity_reporting_text
+
+## Conditional transfer entropy
+::: eyetrajectoriespy.ConditionalTransferEntropyResult
+::: eyetrajectoriespy.ConditionalTransferEntropyCircularShiftTestResult
+::: eyetrajectoriespy.conditional_transfer_entropy
+::: eyetrajectoriespy.conditional_transfer_entropy_local_frame
+::: eyetrajectoriespy.conditional_transfer_entropy_circular_shift_test
+::: eyetrajectoriespy.plot_conditional_transfer_entropy_circular_shift_test
+::: eyetrajectoriespy.conditional_transfer_entropy_reporting_text
+::: eyetrajectoriespy.conditional_transfer_entropy_circular_shift_reporting_text
