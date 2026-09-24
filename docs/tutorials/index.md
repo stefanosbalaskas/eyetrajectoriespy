@@ -237,6 +237,18 @@ Use [Wild-bootstrap Monte Carlo precision](../examples/fpcr-wild-bootstrap-monte
 
 Use [Stabilized-volatility wild-bootstrap selection](../examples/fpcr-wild-bootstrap-selection.md) when k=g is fixed but the target-inference truncation h needs a declared data-driven tuning rule. The example scans consecutive h values with shared multipliers, plots target-specific interval stability, applies explicit rho_w/rho_c/r criteria, and demonstrates the no-silent-fallback failure contract.
 
+### Simultaneous functional mixed-effects coefficient bands
+
+Use the
+[worked simultaneous mixed-effects example](../examples/functional-mixed-effects-simultaneous-bands.md)
+when repeated trials remain in the joint mixed model and the inferential target
+is an entire fixed coefficient trajectory rather than separate pointwise
+intervals. Whole participants are resampled, coefficient/family scope is
+explicit, and covariance parameters remain fixed at the reference fit.
+
+See also the
+[method guide](../methods/functional-mixed-effects-simultaneous-bands.md).
+
 ## Directed dependence
 
 For already-discrete source/target state sequences, continue with the

@@ -248,6 +248,39 @@ _CONTRACTS = (
         ),
     ),
     MathematicalContract(
+        key="functional-mixed-effects-simultaneous",
+        title="Participant-cluster simultaneous mixed-effects coefficient bands",
+        public_api=(
+            "bootstrap_functional_mixed_effects_coefficients",
+            "functional_mixed_effects_simultaneous_bands",
+        ),
+        equations=(
+            r"\mathbf V_i=\mathbf Z_i\widehat{\boldsymbol\Psi}\mathbf Z_i^\top+"
+            r"\widehat\sigma^2\mathbf I",
+            r"\widehat{\boldsymbol\theta}^{*(b)}="
+            r"\left[\sum_{r=1}^{n}\mathbf A_{I_r^{(b)}}\right]^{-1}"
+            r"\sum_{r=1}^{n}\mathbf s_{I_r^{(b)}},\quad "
+            r"\mathbf A_i=\mathbf X_i^\top\mathbf V_i^{-1}\mathbf X_i,\ "
+            r"\mathbf s_i=\mathbf X_i^\top\mathbf V_i^{-1}\mathbf y_i",
+            r"M_p^{*(b)}=\max_m\left|"
+            r"\frac{\widehat\beta_p^{*(b)}(t_m)-"
+            r"\overline{\widehat\beta_p^*}(t_m)}"
+            r"{\widehat{\mathrm{SE}}_p^*(t_m)}\right|",
+            r"\widehat\beta_p(t_m)\pm c_{p,1-\alpha}"
+            r"\widehat{\mathrm{SE}}_p^*(t_m)",
+        ),
+        site_anchor="functional-mixed-effects-simultaneous",
+        scope=(
+            "Whole-participant case bootstrap for fixed coefficient functions. "
+            "Each resample re-estimates the fixed B-spline coefficients by GLS "
+            "while conditioning on the reference random-effect covariance, "
+            "residual variance, and declared bases. Bands are simultaneous over "
+            "the observed time grid with coefficient or full fixed-effect-family "
+            "scope; variance-component, basis-selection, and between-grid "
+            "uncertainty are not included."
+        ),
+    ),
+    MathematicalContract(
         key="function-on-scalar",
         title="Function-on-scalar regression and simultaneous coefficient bands",
         public_api=(

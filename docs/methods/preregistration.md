@@ -746,3 +746,22 @@ that target and conditioning series remain fixed under the null.
 
 Do not add or remove the conditioning process after inspecting which choice
 produces the most favorable CTE or p-value.
+
+## Functional mixed-effects simultaneous bands
+
+If whole-function inference is planned, pre-register:
+
+- the coefficient or fixed-effect family to receive simultaneous coverage;
+- confidence level;
+- participant as the bootstrap resampling unit;
+- bootstrap replicate count and random seed;
+- coefficient-wise versus full-family simultaneous scope;
+- the fixed/random basis sizes and spline degree;
+- whether covariance parameters are treated as fixed at the reference fit;
+- the observed-grid coverage interpretation.
+
+Do not switch from coefficient scope to family scope, change the coefficient
+family, or alter basis sizes after seeing which choice yields a preferred band.
+
+A rank-deficient participant resample should be treated as a bootstrap-design
+failure requiring review, not silently replaced with another draw.

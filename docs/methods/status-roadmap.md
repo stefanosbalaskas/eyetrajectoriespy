@@ -15,6 +15,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Function-on-scalar regression | implemented; observed-grid OLS with explicit design and HC1 standard errors | `fit_function_on_scalar_regression()` |
 | Function-on-scalar simultaneous coefficient bands | implemented; fixed-design wild bootstrap with coefficient/family scope | `function_on_scalar_simultaneous_bands()` |
 | Functional mixed-effects regression | implemented; one Gaussian response dimension, B-spline fixed effects, participant functional random intercept, joint MixedLM fit | `fit_functional_mixed_effects_regression()` |
+| Functional mixed-effects simultaneous coefficient bands | implemented; whole-participant case bootstrap, fixed-covariance GLS coefficient refits, coefficient/family observed-grid maxima | `bootstrap_functional_mixed_effects_coefficients()` / `functional_mixed_effects_simultaneous_bands()` |
 | Explicit irregular → common-grid projection | implemented | `resample_irregular_to_grid()` |
 | Univariate FPCA | implemented | `fit_fpca()` |
 | Joint multivariate FPCA | implemented | `fit_mfpca()` |
@@ -139,17 +140,20 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.43.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.44.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
-### Next inferential priority: simultaneous functional mixed-effects coefficient inference
+### Next structural priority: participant random functional slopes
 
-The transfer-entropy mini-series is considered methodologically complete for
-the present development cycle after 0.43. The next package-level priority is
-whole-function simultaneous inference for coefficient functions from
-`fit_functional_mixed_effects_regression()`, followed only then by richer
-participant-level random functional slopes/covariance structures.
+Version 0.44 closes the planned whole-function simultaneous-inference gap for
+the existing participant-random-intercept model. The next functional
+mixed-effects extension is participant-specific random functional slopes for a
+predeclared scalar predictor, followed by richer participant-level covariance
+structures if those can preserve explicit estimands, convergence diagnostics,
+and backward compatibility.
 
-Conditional-TE specification sensitivity, TE networks, automatic causal
-discovery, and time-windowed TE are deliberately not prioritized ahead of this
-functional-inference gap.
+The current simultaneous bands condition on the fitted random-effect covariance,
+residual variance, and declared bases. A future variance-component-refitting
+bootstrap may be considered separately; it is not silently implied by 0.44.
+
+TE networks, automatic causal discovery, and windowed TE remain deprioritized.

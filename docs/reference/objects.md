@@ -414,3 +414,27 @@ p-value, attainable p-value resolution, and null provenance identifying the
 source as shifted while target and conditioning processes remain fixed.
 
 Neither object claims causal identification or complete confounder adjustment.
+
+## FunctionalMixedEffectsBootstrapResult
+
+Stores the reference `FunctionalMixedEffectsResult`, every participant-cluster
+bootstrap fixed-basis coefficient estimate, reconstructed coefficient
+functions, exact sampled participant-index matrix, bootstrap mean and pointwise
+standard deviations, random seed, covariance-conditioning label, and full
+provenance.
+
+Whole participant trial bundles are sampled with replacement. Fixed effects are
+re-estimated in every replicate, but the reference random-effect covariance,
+residual variance, fixed/random bases, spline degree, and preprocessing are held
+fixed. Rank-deficient or unsolvable resamples raise; none are silently replaced.
+
+## FunctionalMixedEffectsBandResult
+
+Stores observed-grid simultaneous lower/upper coefficient bands, participant-
+bootstrap pointwise standard errors, coefficient-specific or familywise critical
+values, retained maximum statistics, confidence level, simultaneous scope, the
+complete bootstrap object, and provenance.
+
+The band does not claim simultaneous coverage between unsampled time points and
+does not include variance-component, basis-selection, or preprocessing
+uncertainty.

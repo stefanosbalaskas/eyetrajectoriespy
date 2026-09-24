@@ -30,6 +30,7 @@ jobs:
           python examples/functional_regression.py
           python examples/function_on_scalar_regression.py
           python examples/functional_mixed_effects_regression.py
+          python examples/functional_mixed_effects_simultaneous_bands.py
           python examples/irregular_sampling.py
           python examples/derived_functions.py
           python examples/trajectory_geometry.py

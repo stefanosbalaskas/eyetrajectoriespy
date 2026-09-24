@@ -424,3 +424,9 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.plot_conditional_transfer_entropy_circular_shift_test
 ::: eyetrajectoriespy.conditional_transfer_entropy_reporting_text
 ::: eyetrajectoriespy.conditional_transfer_entropy_circular_shift_reporting_text
+
+## Functional mixed-effects simultaneous inference
+::: eyetrajectoriespy.FunctionalMixedEffectsBootstrapResult
+::: eyetrajectoriespy.FunctionalMixedEffectsBandResult
+::: eyetrajectoriespy.bootstrap_functional_mixed_effects_coefficients
+::: eyetrajectoriespy.functional_mixed_effects_simultaneous_bands

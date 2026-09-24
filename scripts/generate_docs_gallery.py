@@ -15,6 +15,7 @@ import pandas as pd
 from eyetrajectoriespy import (
     TrajectorySet,
     bootstrap_function_on_scalar_coefficients,
+    bootstrap_functional_mixed_effects_coefficients,
     bootstrap_rqa_metric_means,
     delay_embed_trajectory,
     dynamic_time_warping_distance,
@@ -61,6 +62,7 @@ from eyetrajectoriespy import (
     recurrence_network,
     recurrence_radius_profile,
     function_on_scalar_simultaneous_bands,
+    functional_mixed_effects_simultaneous_bands,
     register_to_landmarks,
     signed_curvature_function,
     trajectory_distance_sensitivity,
@@ -273,8 +275,18 @@ def main() -> None:
         random_basis_size=2,
         spline_degree=1,
     )
-    ax = plot_functional_mixed_effects_coefficient(
+    fmix_boot = bootstrap_functional_mixed_effects_coefficients(
         fmix_fit,
+        n_bootstrap=120,
+        random_state=2112,
+    )
+    fmix_band = functional_mixed_effects_simultaneous_bands(
+        fmix_boot,
+        confidence_level=0.95,
+        simultaneous_scope="coefficient",
+    )
+    ax = plot_functional_mixed_effects_coefficient(
+        fmix_band,
         coefficient="condition",
     )
     _save(ax, "functional-mixed-effects-coefficient.svg")

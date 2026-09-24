@@ -785,6 +785,53 @@ class FunctionalMixedEffectsResult:
 
 
 @dataclass(frozen=True)
+class FunctionalMixedEffectsBootstrapResult:
+    """Participant-cluster bootstrap for functional mixed-effects coefficients."""
+
+    reference: FunctionalMixedEffectsResult
+    bootstrap_fixed_basis_coefficients: np.ndarray
+    bootstrap_coefficient_functions: np.ndarray
+    sampled_participant_indices: np.ndarray
+    bootstrap_mean: np.ndarray
+    bootstrap_standard_errors: np.ndarray
+    random_state: int | None
+    covariance_conditioning: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.bootstrap_coefficient_functions.shape[0]
+
+    @property
+    def n_participants(self) -> int:
+        return self.sampled_participant_indices.shape[1]
+
+
+@dataclass(frozen=True)
+class FunctionalMixedEffectsBandResult:
+    """Observed-grid simultaneous bands for mixed-effects coefficient functions."""
+
+    reference: FunctionalMixedEffectsResult
+    lower: np.ndarray
+    upper: np.ndarray
+    pointwise_standard_errors: np.ndarray
+    critical_values: np.ndarray
+    max_statistics: np.ndarray
+    confidence_level: float
+    simultaneous_scope: str
+    bootstrap: FunctionalMixedEffectsBootstrapResult
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_coefficients(self) -> int:
+        return self.lower.shape[0]
+
+    @property
+    def n_time(self) -> int:
+        return self.lower.shape[1]
+
+
+@dataclass(frozen=True)
 class FunctionOnScalarResult:
     """Observed-grid function-on-scalar regression fit."""
 

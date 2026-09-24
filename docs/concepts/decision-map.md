@@ -17,6 +17,7 @@ Use the **research question and data structure** to choose the representation.
 | Do I need uncertainty for the mean trajectory? | simultaneous multiplier mean band | choose the independent inference unit before calibration |
 | How does an experimental condition or scalar predictor change a continuous gaze metric over time? | function-on-scalar regression | declare design coding and inference unit; repeated trials are participant-aggregated only when predictors are constant within participant |
 | How does a trial-varying predictor change a functional response when curves repeat within participant? | functional mixed-effects regression | fit all curve-by-time observations jointly; declare spline bases and residual covariance boundary |
+| Do I need a whole-function confidence statement for a repeated-trial mixed-effects coefficient? | participant-cluster simultaneous mixed-effects band | resample whole participants; predeclare coefficient/family scope; covariance parameters and bases remain fixed; observed-grid claim only |
 | How many FPCs should be retained for reconstruction? | held-out reconstruction CV | refit FPCA inside folds; group repeated participants |
 | How many FPCs should predict an external scalar outcome? | predictive FPCA regression CV / nested CV | fit FPCA and regression inside folds; keep outer test data out of selection |
 | Is component interpretation stable? | bootstrap FPC matching + pointwise envelopes | resample the correct unit; match and sign-align components |

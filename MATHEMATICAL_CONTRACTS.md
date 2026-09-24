@@ -323,6 +323,80 @@ It uses explicitly sized B-spline bases, an unstructured participant
 random-basis covariance, and conditionally iid grid-level residual errors.
 It is not a collection of independent pointwise mixed models.
 
+## Participant-cluster simultaneous mixed-effects coefficient bands
+
+For participant \(i\), let the marginal covariance implied by the fitted
+functional random intercept and residual model be
+
+$$
+\mathbf V_i
+=
+\mathbf Z_i\widehat{\boldsymbol\Psi}\mathbf Z_i^\top
++
+\widehat\sigma^2\mathbf I.
+$$
+
+Define the participant-level fixed-effect information and score contributions
+
+$$
+\mathbf A_i
+=
+\mathbf X_i^\top\mathbf V_i^{-1}\mathbf X_i,
+\qquad
+\mathbf s_i
+=
+\mathbf X_i^\top\mathbf V_i^{-1}\mathbf y_i.
+$$
+
+For bootstrap replicate \(b\), draw \(n\) participant indices
+\(I_1^{(b)},\ldots,I_n^{(b)}\) with replacement and re-estimate the fixed
+basis coefficients by
+
+$$
+\widehat{\boldsymbol\theta}^{*(b)}
+=
+\left[
+\sum_{r=1}^{n}
+\mathbf A_{I_r^{(b)}}
+\right]^{-1}
+\sum_{r=1}^{n}
+\mathbf s_{I_r^{(b)}}.
+$$
+
+The coefficient function replicate is reconstructed with the original fixed
+basis. With bootstrap pointwise scale
+\(\widehat{\mathrm{SE}}_p^*(t_m)\), coefficient-wise calibration uses
+
+$$
+M_p^{*(b)}
+=
+\max_m
+\left|
+\frac{
+\widehat\beta_p^{*(b)}(t_m)
+-
+\overline{\widehat\beta_p^*}(t_m)
+}{
+\widehat{\mathrm{SE}}_p^*(t_m)
+}
+\right|,
+$$
+
+and the observed-grid simultaneous band is
+
+$$
+\widehat\beta_p(t_m)
+\pm
+c_{p,1-\alpha}
+\widehat{\mathrm{SE}}_p^*(t_m).
+$$
+
+Implemented by `bootstrap_functional_mixed_effects_coefficients()` and
+`functional_mixed_effects_simultaneous_bands()`. Whole participant trial
+bundles are resampled. The random-effect covariance, residual variance, and
+declared bases are held fixed at the reference fit; variance-component,
+basis-selection, and between-grid uncertainty are not included.
+
 ## Function-on-scalar regression
 
 For functional response vector \(\mathbf Y(t)\) and scalar design matrix \(\mathbf X\),

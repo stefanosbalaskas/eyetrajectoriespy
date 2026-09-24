@@ -914,3 +914,23 @@ Support diagnostics are retained, but no automatic adequacy rule, shrinkage,
 bias correction, or state pooling is applied. Continuous/KSG conditional TE,
 multiple simultaneous conditioning processes, conditional-TE sensitivity
 grids, TE networks, and time-windowed TE remain outside 0.43.
+
+## Mixed-effects simultaneous bands condition on the fitted covariance model
+
+The 0.44 participant-cluster bootstrap re-estimates fixed coefficient basis
+parameters but does not refit the random-effect covariance, residual variance,
+basis sizes, spline degree, preprocessing, or model specification inside each
+bootstrap replicate.
+
+Consequently, the bands target participant-sampling variability of the fixed
+coefficient functions **conditional on those fitted/declared quantities**.
+They should not be reported as incorporating variance-component uncertainty,
+basis-selection uncertainty, or preprocessing uncertainty.
+
+The calibration maximum is taken over the observed grid only. Although the
+coefficient functions are represented by continuous B-splines, 0.44 does not
+claim simultaneous coverage at unsampled times.
+
+Participant random functional slopes, trial-level random functions, serial
+residual covariance, generalized responses, and multivariate cross-dimension
+covariance also remain outside the current model.

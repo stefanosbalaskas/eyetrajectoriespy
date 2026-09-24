@@ -29,6 +29,7 @@ from .types import (
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
+    FunctionalMixedEffectsBandResult,
     FunctionalMixedEffectsResult,
     FunctionOnScalarBandResult,
     FunctionOnScalarResult,
@@ -166,11 +167,20 @@ def dynamic_time_warping_reporting_text(
 
 def functional_mixed_effects_reporting_text(
     result: FunctionalMixedEffectsResult,
+    *,
+    band: FunctionalMixedEffectsBandResult | None = None,
 ) -> str:
     """Generate manuscript-oriented wording for a functional mixed-effects fit."""
 
     if not isinstance(result, FunctionalMixedEffectsResult):
         raise TypeError("result must be a FunctionalMixedEffectsResult")
+    if band is not None:
+        if not isinstance(band, FunctionalMixedEffectsBandResult):
+            raise TypeError(
+                "band must be a FunctionalMixedEffectsBandResult or None"
+            )
+        if band.reference is not result:
+            raise ValueError("band.reference must be the supplied result object")
 
     predictor_text = ", ".join(result.predictor_names)
     warning_text = ""
@@ -185,6 +195,26 @@ def functional_mixed_effects_reporting_text(
             "than suppressed."
         )
 
+    inference_text = (
+        " Reported 95% coefficient intervals are pointwise Wald intervals; "
+        "simultaneous functional coverage and variance-component uncertainty "
+        "are not claimed."
+    )
+    if band is not None:
+        inference_text = (
+            f" Participant-cluster bootstrap "
+            f"{100 * band.confidence_level:.1f}% simultaneous coefficient "
+            f"bands used {band.bootstrap.n_bootstrap} whole-participant "
+            f"resamples with {band.simultaneous_scope}-scope maxima over the "
+            "observed time grid. Fixed coefficient functions were re-estimated "
+            "by GLS in every resample while the fitted random-effect covariance "
+            "and residual variance were held fixed. Thus the bands target "
+            "participant-sampling variability conditional on the declared "
+            "basis and fitted covariance model; they do not include "
+            "variance-component or basis-selection uncertainty and do not "
+            "claim simultaneous coverage between unsampled grid points."
+        )
+
     return (
         "A Gaussian functional mixed-effects regression was fitted jointly "
         "over all curve-by-time observations for dimension "
@@ -193,7 +223,7 @@ def functional_mixed_effects_reporting_text(
         f"with {result.fixed_basis_size} functions (degree "
         f"{result.spline_degree}); the participant-specific functional "
         f"random intercept used {result.random_basis_size} B-spline basis "
-        f"functions with an unstructured basis-coefficient covariance. "
+        "functions with an unstructured basis-coefficient covariance. "
         f"The model included {result.n_curves} curves from "
         f"{result.n_participants} participants and was estimated by "
         f"{'REML' if result.reml else 'ML'} using optimizer "
@@ -202,9 +232,8 @@ def functional_mixed_effects_reporting_text(
         "Grid-level residuals were conditionally iid Gaussian. No automatic "
         "categorical encoding, interaction construction, predictor scaling, "
         "basis-size selection, smoothing-penalty selection, or optimizer "
-        "fallback was performed. Reported 95% coefficient intervals are "
-        "pointwise Wald intervals; simultaneous functional coverage and "
-        "variance-component uncertainty are not claimed."
+        "fallback was performed."
+        + inference_text
         + warning_text
     )
 

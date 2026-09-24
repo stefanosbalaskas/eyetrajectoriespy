@@ -39,6 +39,10 @@ from .function_on_scalar import (
     function_on_scalar_coefficient_frame,
     function_on_scalar_simultaneous_bands,
 )
+from .functional_mixed_effects_inference import (
+    bootstrap_functional_mixed_effects_coefficients,
+    functional_mixed_effects_simultaneous_bands,
+)
 from .functional_mixed_effects import (
     fit_functional_mixed_effects_regression,
     functional_mixed_effects_coefficient_frame,
@@ -378,6 +382,8 @@ from .types import (
     FPCASubspaceComparisonResult,
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
+    FunctionalMixedEffectsBandResult,
+    FunctionalMixedEffectsBootstrapResult,
     FunctionalMixedEffectsResult,
     FunctionOnScalarBandResult,
     FunctionOnScalarBootstrapResult,
@@ -420,9 +426,13 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.43.0.dev0"
+__version__ = "0.44.0.dev0"
 
 __all__ = [
+    "FunctionalMixedEffectsBootstrapResult",
+    "FunctionalMixedEffectsBandResult",
+    "bootstrap_functional_mixed_effects_coefficients",
+    "functional_mixed_effects_simultaneous_bands",
     "ConditionalTransferEntropyResult",
     "ConditionalTransferEntropyCircularShiftTestResult",
     "conditional_transfer_entropy",
