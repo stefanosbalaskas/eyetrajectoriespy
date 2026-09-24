@@ -202,3 +202,15 @@ thresholds to maximize apparent coupling.
 | How does a modeled attractor change with a control parameter? | not implemented in 0.23 | requires explicit system identification / continuation model |
 
 RQA and FPCA are complementary rather than substitutes. FPCA summarizes dominant between-curve functional variation; RQA summarizes within-trajectory recurrent temporal organization. Version 0.24 makes that bridge explicit with `windowed_rqa_trajectory_set()`, while preserving overlap, edge/tail, radius-policy, and source-unit provenance. The FDA step remains separately justified and does not turn overlapping windows into independent observations.
+
+## Directed dependence versus recurrence coupling
+
+| Method | Question | Time contract | Directionality |
+|---|---|---|---|
+| Cross recurrence | When are two declared state spaces close across all index pairs? | rectangular all-pairs; no implicit alignment | no |
+| Joint recurrence | When do synchronized subsystems recur simultaneously within themselves? | exact common grid | no |
+| Transfer entropy | Does declared source history add predictive information about the current target beyond declared target history? | explicit sample-index histories and source lag | yes, predictive direction only |
+
+Transfer entropy is not a replacement for cross/JRQA, and none of these methods
+is automatically a causal estimator. The representation and scientific
+question determine which estimand is appropriate.
