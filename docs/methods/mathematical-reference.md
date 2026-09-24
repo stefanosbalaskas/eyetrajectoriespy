@@ -735,7 +735,7 @@ refit variance components.
 Version 0.46 complements the faster fixed-covariance participant bootstrap with
 a whole-participant **full mixed-model refit**.
 
-For bootstrap replicate (b),
+For bootstrap replicate \(b\),
 
 $
 I_1^{*(b)},\ldots,I_n^{*(b)}
@@ -781,7 +781,7 @@ W_{p,\mathrm{fixed}}(t_m)
 },
 $
 
-where (W) is the simultaneous-band width. This ratio is descriptive and is
+where \(W\) is the simultaneous-band width. This ratio is descriptive and is
 not a probability or model-selection score.
 
 Any failed replicate terminates the bootstrap. No failed draw is discarded or
