@@ -603,3 +603,21 @@ The estimator still exposes the empirical result if transitions remain, but the
 result object reports the collapse of support through effective counts,
 joint-history counts, singleton fraction, and minimum/mean/maximum cell counts.
 No sparse cells are deleted automatically.
+
+### Why not bootstrap individual trials for mixed-effects coefficient bands?
+
+Because repeated trials from the same participant are not independent
+resampling units under the implemented model. Version 0.44 samples whole
+participants and carries every selected participant's trial bundle together.
+
+### Does the 0.44 band refit the entire mixed model in every bootstrap sample?
+
+No. It re-estimates the fixed B-spline coefficients by GLS while holding the
+reference random-effect covariance, residual variance, and bases fixed. This is
+an explicit computational and inferential boundary, not an implicit shortcut.
+
+### Is the simultaneous band valid between observed time points?
+
+The package claims simultaneous calibration over the observed time grid only.
+The continuous B-spline representation does not by itself turn a finite-grid
+bootstrap maximum into a continuous-domain coverage guarantee.
