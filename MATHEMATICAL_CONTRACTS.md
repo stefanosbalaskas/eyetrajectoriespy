@@ -389,17 +389,17 @@ are exported by `functional_random_effect_frame()`.
 
 For bootstrap replicate \(b\), sample \(n\) participant indices with replacement,
 
-$
+$$
 I_1^{*(b)},\ldots,I_n^{*(b)}
 \overset{iid}{\sim}
 \{1,\ldots,n\}.
-$
+$$
 
 Each sampled occurrence is assigned a distinct bootstrap group identity before
 the mixed model is refit, even when the same source participant appears more
 than once. The complete declared mixed model is then re-estimated:
 
-$
+$$
 \mathcal D^{*(b)}
 \longrightarrow
 \left\{
@@ -407,7 +407,7 @@ $
 \widehat{\boldsymbol\Psi}^{*(b)},
 \widehat\sigma^{2*(b)}
 \right\}.
-$
+$$
 
 The model specification itself remains fixed: preprocessing, response
 dimension, predictors, random-slope choice, random-effect structure, basis
@@ -417,7 +417,7 @@ optimizer, and iteration budget are not re-selected inside bootstrap samples.
 For a descriptive comparison between the full-refit and fixed-covariance
 simultaneous bands,
 
-$
+$$
 R_p(t_m)
 =
 \frac{
@@ -425,7 +425,7 @@ W_{p,\mathrm{full}}(t_m)
 }{
 W_{p,\mathrm{fixed}}(t_m)
 }.
-$
+$$
 
 Version 0.46 retains every refitted random-effect covariance, covariance block,
 covariance eigenvalue/condition diagnostic, residual variance, likelihood,
