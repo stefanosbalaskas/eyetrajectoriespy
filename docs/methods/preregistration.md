@@ -405,8 +405,8 @@ Before inspecting nonlinear-dynamics results, predeclare where applicable:
 - source trajectory dimensions and their physical/normalized units;
 - any interpolation, smoothing, filtering, registration, or coordinate transformation performed upstream;
 - whether recurrence uses observed state or a delay reconstruction;
-- delay (	au), embedding dimension (m), and the diagnostics used to justify them;
-- recurrence metric and exactly one radius policy: fixed (arepsilon) or target recurrence rate;
+- delay (τ), embedding dimension (m), and the diagnostics used to justify them;
+- recurrence metric and exactly one radius policy: fixed (ε) or target recurrence rate;
 - Theiler window;
 - minimum diagonal and vertical line lengths;
 - window size and step for windowed RQA;
