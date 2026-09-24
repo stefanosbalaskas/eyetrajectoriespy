@@ -589,6 +589,28 @@ If discrete Fréchet will be used, pre-specify the trajectory representation, in
 Do not choose coordinate scaling, dimensions, or preprocessing after inspecting which version produces the preferred group separation. State whether elapsed timing is intentionally ignored by the comparison.
 
 
+## Function-on-scalar regression
+
+If a functional response will be modeled using scalar predictors, pre-specify:
+
+- the functional response representation and selected dimensions;
+- the analysis time domain and common-grid construction;
+- the scalar predictors and exact numeric coding;
+- the intercept convention;
+- all planned interaction terms;
+- whether predictors are centered/scaled and how;
+- the independent inference unit: curve or participant;
+- for participant mode, the participant identifier and the requirement that predictors are constant within participant;
+- whether repeated trials are averaged within participant;
+- the wild-bootstrap multiplier distribution;
+- bootstrap replicate count and random seed;
+- coefficient-wise versus declared-family simultaneous scope;
+- the confidence level;
+- whether interpretation is limited to the observed grid;
+- any separately predeclared rule for interpreting zero-exclusion regions.
+
+Do not choose predictor coding, interactions, inference unit, time window, simultaneous scope, or response transformation after inspecting which specification produces the preferred coefficient curve. Do not analyze trial-varying within-participant predictors with curve-level independence merely because participant aggregation would reject them.
+
 ## Dynamic time warping trajectory comparison
 
 If DTW will be used, pre-specify:
