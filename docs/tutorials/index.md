@@ -63,6 +63,12 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [DTW worked example](../examples/dynamic-time-warping.md) · [Discrete Fréchet example](../examples/discrete-frechet.md)
 
+-   **Check whether trajectory similarity depends on the distance contract**
+
+    Compare predeclared L2, discrete Fréchet, and DTW specifications using pair-distance rank agreement and local top-k neighbor overlap without selecting a winner.
+
+    [Trajectory-distance sensitivity](../examples/trajectory-distance-sensitivity.md)
+
 -   **Irregular sampling**
 
     Keep native sample times, audit gaps, then choose an explicit common-grid projection.
