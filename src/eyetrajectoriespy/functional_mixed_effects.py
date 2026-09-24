@@ -11,7 +11,11 @@ from scipy.interpolate import BSpline
 from statsmodels.regression.mixed_linear_model import MixedLM
 
 from .function_on_scalar import _validate_design_alignment
-from .types import FunctionalMixedEffectsResult, TrajectorySet
+from .types import (
+    FunctionalMixedEffectsBandResult,
+    FunctionalMixedEffectsResult,
+    TrajectorySet,
+)
 from .validation import validate_trajectory_set
 
 
@@ -441,11 +445,20 @@ def fit_functional_mixed_effects_regression(
 
 def functional_mixed_effects_coefficient_frame(
     result: FunctionalMixedEffectsResult,
+    *,
+    band: FunctionalMixedEffectsBandResult | None = None,
 ) -> pd.DataFrame:
-    """Return fixed-effect coefficient functions in long form."""
+    """Return fixed-effect coefficient functions and optional simultaneous bands."""
 
     if not isinstance(result, FunctionalMixedEffectsResult):
         raise TypeError("result must be a FunctionalMixedEffectsResult")
+    if band is not None:
+        if not isinstance(band, FunctionalMixedEffectsBandResult):
+            raise TypeError(
+                "band must be a FunctionalMixedEffectsBandResult or None"
+            )
+        if band.reference is not result:
+            raise ValueError("band.reference must be the supplied result object")
 
     rows: list[dict[str, float | str]] = []
     z_value = 1.959963984540054
@@ -465,15 +478,41 @@ def functional_mixed_effects_coefficient_frame(
                     time_index,
                 ]
             )
-            rows.append(
-                {
-                    "coefficient": coefficient_name,
-                    "time": float(time_value),
-                    "dimension": result.dimension_name,
-                    "estimate": estimate,
-                    "standard_error": standard_error,
-                    "lower_95_wald": estimate - z_value * standard_error,
-                    "upper_95_wald": estimate + z_value * standard_error,
-                }
-            )
+            row: dict[str, float | str] = {
+                "coefficient": coefficient_name,
+                "time": float(time_value),
+                "dimension": result.dimension_name,
+                "estimate": estimate,
+                "standard_error": standard_error,
+                "lower_95_wald": estimate - z_value * standard_error,
+                "upper_95_wald": estimate + z_value * standard_error,
+            }
+            if band is not None:
+                row.update(
+                    {
+                        "bootstrap_standard_error": float(
+                            band.pointwise_standard_errors[
+                                coefficient_index,
+                                time_index,
+                            ]
+                        ),
+                        "lower_simultaneous": float(
+                            band.lower[
+                                coefficient_index,
+                                time_index,
+                            ]
+                        ),
+                        "upper_simultaneous": float(
+                            band.upper[
+                                coefficient_index,
+                                time_index,
+                            ]
+                        ),
+                        "simultaneous_critical_value": float(
+                            band.critical_values[coefficient_index]
+                        ),
+                        "simultaneous_scope": band.simultaneous_scope,
+                    }
+                )
+            rows.append(row)
     return pd.DataFrame(rows)
