@@ -57,6 +57,7 @@ jobs:
           python examples/mathematical_contracts.py
           python examples/function_equation_registry.py
           python examples/nonlinear_dynamics.py
+          python examples/multivariate_iaaft_surrogates.py
           python examples/recurrence_threshold_diagnostics.py
           python examples/rqa_population_bootstrap.py
           python examples/kantz_lle.py

@@ -287,6 +287,8 @@ Rosenstein-style local divergence assumes that nearby reconstructed states are m
 
 IAAFT testing assumes the surrogate null is scientifically meaningful: a process compatible with the observed marginal distribution and approximately the observed linear autocorrelation/power-spectrum structure. Rejection is relative to that null, not proof of a specific nonlinear generator.
 
+Multivariate IAAFT additionally assumes that the selected dimensions are simultaneously observed on the same regular grid and that preserving their linear cross-spectral structure is part of the intended null. The reference dimension is an explicit finite-sample algorithm choice. Final cross-spectrum preservation is approximate after marginal rank remapping and must be judged using the retained diagnostics rather than assumed from the method name.
+
 Empirical return-map stability additionally assumes that the declared section identifies repeated comparable cycles and that a local affine map is meaningful in the selected neighborhood. The fitted Jacobian is a data-driven local regression object, not a model-derived variational flow.
 ## Functionalized windowed RQA
 

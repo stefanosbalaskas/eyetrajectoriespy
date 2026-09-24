@@ -43,6 +43,23 @@ coverage.
 
 Participant mode in version 0.35 means equal-weight participant-average functional responses with predictors required to be constant within participant. These objects do not represent a functional mixed-effects model.
 
+## Multivariate surrogate result objects
+
+`MultivariateIAAFTResult` stores the complete surrogate ensemble, original
+selected multichannel values, curve/dimension semantics, analyst-declared
+reference dimension, channel-pair labels, convergence iterations, per-channel
+relative spectrum errors, per-pair relative complex cross-spectrum errors,
+algorithm tolerances, random seed, and provenance.
+
+`MultivariateSurrogateNonlinearityResult` stores the observed statistic,
+complete surrogate-statistic distribution, plus-one Monte Carlo p-value,
+alternative, nested multivariate-surrogate result, and interpretation
+provenance.
+
+The exact contract is asymmetric: marginal value distributions are exact after
+rank remapping, whereas final spectral/cross-spectral preservation is
+approximate and auditable through retained errors.
+
 ## Nonlinear-dynamics result objects
 
 `DelayEmbeddingResult` preserves reconstructed state vectors, endpoint times, selected source dimensions, explicit delay in samples/time, and whether a constant physical delay exists.

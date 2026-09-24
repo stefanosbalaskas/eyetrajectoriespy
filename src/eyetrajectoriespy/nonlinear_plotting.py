@@ -15,6 +15,8 @@ from .nonlinear_types import (
     LargestLyapunovResult,
     LyapunovParameterSensitivityResult,
     LocalDivergenceResult,
+    MultivariateIAAFTResult,
+    MultivariateSurrogateNonlinearityResult,
     LocalReturnMapResult,
     PoincareCrossingResult,
     RecurrenceRadiusProfileResult,
@@ -460,6 +462,73 @@ def plot_local_divergence(
     ax.legend()
     family = divergence.provenance.get("estimator_family", "local divergence")
     ax.set_title(f"{family}: {divergence.curve_id}")
+    return ax
+
+
+def plot_multivariate_iaaft_diagnostics(
+    result: MultivariateIAAFTResult,
+    *,
+    ax=None,
+):
+    """Plot per-surrogate power- and cross-spectrum preservation errors."""
+
+    if not isinstance(result, MultivariateIAAFTResult):
+        raise TypeError("result must be a MultivariateIAAFTResult")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    surrogate_index = np.arange(result.n_surrogates, dtype=int)
+    ax.plot(
+        surrogate_index,
+        np.max(result.spectral_errors, axis=1),
+        marker="o",
+        label="Max power-spectrum error",
+    )
+    ax.plot(
+        surrogate_index,
+        np.max(result.cross_spectral_errors, axis=1),
+        marker="o",
+        label="Max cross-spectrum error",
+    )
+    ax.set_xlabel("Surrogate index")
+    ax.set_ylabel("Relative mismatch")
+    ax.set_title(
+        "Multivariate IAAFT preservation diagnostics: "
+        f"{result.reference_dimension} reference"
+    )
+    ax.legend()
+    return ax
+
+
+def plot_multivariate_surrogate_nonlinearity(
+    result: MultivariateSurrogateNonlinearityResult,
+    *,
+    bins: int = 20,
+    ax=None,
+):
+    """Plot a multivariate-surrogate statistic distribution."""
+
+    if not isinstance(result, MultivariateSurrogateNonlinearityResult):
+        raise TypeError(
+            "result must be a MultivariateSurrogateNonlinearityResult"
+        )
+    if not isinstance(bins, int) or bins < 2:
+        raise ValueError("bins must be an integer >= 2")
+    if ax is None:
+        _, ax = plt.subplots()
+    ax.hist(result.surrogate_statistics, bins=bins, alpha=0.7)
+    ax.axvline(
+        result.observed_statistic,
+        linestyle="--",
+        label="Observed",
+    )
+    ax.set_xlabel(result.statistic)
+    ax.set_ylabel("Surrogate count")
+    ax.set_title(
+        "Multivariate IAAFT surrogate test "
+        f"(p={result.p_value:.3g})"
+    )
+    ax.legend()
     return ax
 
 

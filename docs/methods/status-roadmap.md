@@ -70,6 +70,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Kantz-LLE parameter sensitivity | implemented; descriptive Cartesian multiverse, no radius/fit optimization | `kantz_parameter_sensitivity()` |
 | Rosenstein-LLE parameter sensitivity | implemented; descriptive multiverse, no chaos-probability interpretation | `lyapunov_parameter_sensitivity()` |
 | IAAFT surrogate nonlinearity test | implemented | `surrogate_nonlinearity_test()` |
+| Multivariate IAAFT surrogate generation/testing | implemented; explicit phase reference, exact marginals, retained power/cross-spectrum errors | `generate_multivariate_iaaft_surrogates()` / `multivariate_surrogate_nonlinearity_test()` |
 | Empirical Poincare return-map stability | experimental | `poincare_crossings()` / `fit_local_return_map()` / `return_map_stability()` |
 
 ## Documentation and mathematical contracts
@@ -122,7 +123,6 @@ Still not provided are full uncertainty procedures that jointly include target m
 Future tranches may evaluate:
 
 - richer functional mixed-effects structures: trial-level functional random effects, random functional slopes, residual serial correlation, simultaneous coefficient inference, and generalized responses;
-- multivariate cross-structure-preserving surrogate generation for planar gaze;
 - trajectory-similarity robustness across L2, Fréchet, and DTW before adding further distance metrics;
 - richer multilevel functional mixed-effects backends;
 - explicit system-identification models for gaze dynamics;
@@ -134,4 +134,4 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.36.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.37.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.

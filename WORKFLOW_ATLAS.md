@@ -100,7 +100,9 @@ flowchart LR
     L --> M[FPCA / MFPCA / regression]
     C --> E[Local divergence]
     E --> F[Rosenstein LLE]
-    F --> G[IAAFT surrogate test]
+    F --> G{Surrogate null}
+    G -->|Scalar| H[IAAFT]
+    G -->|Joint channels| I[Multivariate IAAFT + retained cross-spectrum diagnostics]
     B --> H[Declared Poincare section]
     H --> I[Empirical local return map]
     I --> J[Experimental spectral-radius stability]

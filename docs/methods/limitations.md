@@ -528,11 +528,24 @@ Target-RR mode can miss the requested rate exactly when many distances are tied.
 
 See [RQA software conventions](rqa-software-conventions.md).
 
-### Multivariate gaze surrogates remain unimplemented
+### Multivariate IAAFT is reference-anchored and approximate
 
-Scalar IAAFT does not become a valid planar-gaze surrogate by running it independently on `x` and `y`. Independent channel randomization can alter the cross-channel structure that defines the trajectory.
+Version 0.37 implements multichannel IAAFT rather than independently applying
+scalar IAAFT to x and y. It restores each selected channel's empirical marginal
+values exactly while jointly targeting per-channel spectra and observed
+inter-channel Fourier phase differences.
 
-A future multivariate surrogate method must declare and diagnose preservation of the intended auto- and cross-channel linear structure, operate on a common regular grid, expose convergence, and state the exact null hypothesis. Version 0.24 therefore fails by omission rather than silently approximating MIAAFT.
+The final rank-remapping step perturbs Fourier coefficients, so final
+power-spectrum and cross-spectrum preservation is approximate. Relative
+mismatch is retained for every surrogate and should be reported.
+
+The algorithm requires an explicit reference dimension. Finite-sample
+approximation quality can depend on that choice. Version 0.37 does not average
+over references or choose the one producing the preferred inferential result.
+
+The public multivariate nonlinearity helper currently uses the Rosenstein
+largest-Lyapunov statistic. It does not silently substitute Kantz LLE, mutual
+information, transfer entropy, or another statistic.
 
 
 ## Functional RQA sensitivity and dependence limits

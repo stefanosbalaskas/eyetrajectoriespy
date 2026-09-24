@@ -51,6 +51,7 @@ nav:
       - Discrete Fréchet trajectory distance: methods/discrete-frechet.md
       - Dynamic time warping: methods/dynamic-time-warping.md
       - Nonlinear trajectory dynamics: guides/nonlinear-dynamics.md
+      - Multivariate surrogate testing: methods/multivariate-surrogates.md
       - Recurrence-threshold diagnostics: methods/recurrence-threshold-diagnostics.md
       - RQA population bootstrap: methods/rqa-population-bootstrap.md
       - Kantz largest-Lyapunov estimation: methods/kantz-lle.md
@@ -91,6 +92,7 @@ nav:
       - Dynamic time warping comparison: examples/dynamic-time-warping.md
       - Function → equation registry: examples/function-equation-registry.md
       - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
+      - Multivariate surrogate testing: examples/multivariate-surrogates.md
       - Recurrence-threshold diagnostics: examples/recurrence-threshold-diagnostics.md
       - RQA population bootstrap: examples/rqa-population-bootstrap.md
       - Rosenstein vs Kantz LLE: examples/kantz-lle.md

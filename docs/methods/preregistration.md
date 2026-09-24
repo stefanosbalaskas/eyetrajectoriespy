@@ -414,6 +414,7 @@ Before inspecting nonlinear-dynamics results, predeclare where applicable:
 - local-divergence maximum horizon;
 - LLE fit-start and fit-end interval;
 - IAAFT surrogate count, alternative, seed policy, maximum iterations, and convergence tolerance;
+- for multivariate IAAFT, selected dimensions, explicit reference dimension, planned acceptable spectrum/cross-spectrum diagnostic thresholds or review policy, and whether reference-dimension sensitivity will be examined;
 - Poincare section variable/value, crossing direction, returned state dimensions, reference-state rule, neighborhood policy, and stability tolerance;
 - planned sensitivity analyses for all scientifically consequential tuning parameters.
 

@@ -153,7 +153,10 @@ flowchart TD
     K --> L[Local divergence curve]
     L --> M[Declare fit interval]
     M --> N[Rosenstein LLE]
-    N --> O[IAAFT surrogate test]
+    N --> O{Surrogate null}
+    O -->|One signal dimension| P[Scalar IAAFT]
+    O -->|Joint planar or multichannel structure| Q[Declare MIAAFT reference dimension]
+    Q --> R[Multivariate IAAFT + cross-spectrum diagnostics]
     B -->|Repeated approximate cycle| P[Declare Poincare section]
     P --> Q[Interpolated crossings]
     Q --> R[Declare reference + neighborhood]

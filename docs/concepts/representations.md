@@ -54,6 +54,13 @@ This representation targets a latent smooth process estimated from pooled sparse
 
 Nonlinear analysis adds a second representation decision after the trajectory itself is scientifically interpretable.
 
+For surrogate testing, the representation determines the null. Scalar IAAFT
+targets one declared signal dimension. Multivariate IAAFT treats selected
+simultaneous dimensions jointly, restoring each empirical marginal while
+targeting their auto- and cross-spectral linear structure. Independent
+surrogate generation of x and y is therefore not equivalent to a planar-gaze
+multivariate surrogate null.
+
 Observed-state recurrence can use explicitly declared dimensions such as
 
 $$

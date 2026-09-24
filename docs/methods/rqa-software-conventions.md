@@ -86,24 +86,31 @@ Border truncation can bias line-length distributions and entropy. If a correctio
 
 Spatial recurrence can be constructed for irregular observations. Classical line-based RQA is only computed on an approximately regular grid, and cross-RQA additionally requires matching sampling steps. No interpolation is performed inside recurrence analysis.
 
-## Multivariate surrogate contract: deferred, not approximated
+## Multivariate surrogate contract
 
-Version 0.24 supports **scalar IAAFT only**.
+Version 0.37 implements a reference-anchored multivariate IAAFT path for
+jointly sampled channels.
 
-Classical IAAFT is a univariate surrogate construction preserving the marginal amplitude distribution exactly and approximating the original Fourier-amplitude spectrum. It must not be described as automatically multivariate.
+The contract is stronger than scalar IAAFT:
 
-A future MIAAFT/multivariate-Fourier surrogate implementation for planar gaze must satisfy a stronger contract:
+1. operate on the jointly sampled multichannel trajectory, never independently
+   surrogate x and y and relabel the result multivariate;
+2. restore each selected channel's empirical marginal value set exactly by
+   rank remapping;
+3. jointly target original per-channel Fourier amplitudes and inter-channel
+   Fourier phase differences;
+4. require a common regular grid under the current Fourier construction;
+5. require an explicit reference dimension;
+6. retain convergence iterations plus final per-channel spectrum and pairwise
+   cross-spectrum mismatch diagnostics;
+7. fail if the requested surrogate does not converge under the declared
+   tolerance;
+8. interpret rejection only relative to the declared multivariate
+   linear-stochastic surrogate null.
 
-1. operate on the jointly sampled multichannel trajectory, not independently surrogate `x` and `y`;
-2. preserve each channel's marginal distribution to the declared tolerance;
-3. preserve the declared linear auto- and cross-channel structure (for example cross-spectrum/cross-correlation) to reported tolerances;
-4. require a regular common grid unless a distinct irregular-time surrogate method is implemented;
-5. state the exact multivariate null hypothesis;
-6. return convergence diagnostics for both marginal/spectral and cross-channel constraints;
-7. fail if the requested constraints do not converge;
-8. be validated against a primary-method/reference implementation before public release.
+The final spectrum/cross-spectrum is approximate after rank remapping rather
+than claimed exact. See [Multivariate IAAFT surrogate testing](multivariate-surrogates.md).
 
-Until those conditions are met, independently applying scalar IAAFT to gaze axes is intentionally unsupported because it can destroy the cross-channel structure that defines the planar trajectory.
 
 ## Performance contract
 

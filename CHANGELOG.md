@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.37.0.dev0
+
+- Add `generate_multivariate_iaaft_surrogates()` for cross-spectrum-aware multichannel surrogate generation.
+- Preserve each selected channel's empirical marginal value set exactly through rank remapping while jointly targeting original per-channel Fourier amplitudes and inter-channel Fourier phase differences.
+- Require an explicit `reference_dimension`; never choose the MIAAFT phase reference automatically.
+- Retain per-surrogate convergence iterations, per-channel relative spectrum errors, and per-channel-pair relative complex cross-spectrum errors rather than claiming exact final spectral preservation after rank remapping.
+- Add `multivariate_surrogate_nonlinearity_test()` for multichannel largest-Lyapunov testing under the identical declared embedding/divergence/fit contract for observed and surrogate trajectories.
+- Use plus-one Monte Carlo p-values and fail if any requested surrogate or surrogate statistic fails under the declared contract.
+- Add `MultivariateIAAFTResult`, `MultivariateSurrogateNonlinearityResult`, diagnostics-frame, plotting, and reporting helpers.
+- Add deterministic marginal-preservation, spectral/cross-spectral diagnostic, reproducibility, failure-contract, plotting/reporting, and public-API tests.
+- Add mathematical contracts, methodology guide, worked/executable example, evidence references, assumptions/limitations/preregistration/reporting guidance, API/object docs, roadmap/site integration, and gallery diagnostics.
+
 ## 0.36.0.dev0
 
 - Add `fit_functional_mixed_effects_regression()` for one selected Gaussian common-grid functional response with scalar fixed predictors and a participant-specific functional random intercept.

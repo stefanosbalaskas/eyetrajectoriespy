@@ -35,6 +35,12 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [Nonlinear trajectory dynamics](../examples/nonlinear-dynamics.md)
 
+-   **Preserve planar linear structure in surrogate testing**
+
+    Generate joint x/y MIAAFT surrogates, inspect retained power/cross-spectrum mismatch, and evaluate a multichannel nonlinear statistic without independently randomizing gaze dimensions.
+
+    [Multivariate surrogate testing](../examples/multivariate-surrogates.md)
+
 -   **Study repeated-cycle return stability**
 
     Define an explicit Poincare section and fit an experimental local return map without calling the result classical Floquet stability.
