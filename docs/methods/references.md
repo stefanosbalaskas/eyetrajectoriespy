@@ -361,3 +361,28 @@ and the package's explicit separation between information transfer and causal
 effect. Version 0.43 implements only the narrow discrete single-conditioning
 process contract and does not reproduce the broader network-inference
 capabilities of specialist information-dynamics toolkits.
+
+## Functional mixed-effects simultaneous inference
+
+- Zhu, H., Chen, K., Luo, X., Yuan, Y., & Wang, J.-L. (2019). FMEM:
+  Functional Mixed Effects Models for Longitudinal Functional Responses.
+  *Statistica Sinica, 29*(4), 2007–2033.
+  DOI: 10.5705/ss.202017.0505.
+- Gunning, E., Golovkine, S., Simpkin, A. J., et al. (2025). Analysing
+  kinematic data from recreational runners using functional data analysis.
+  *Computational Statistics, 40*, 1825–1847.
+  DOI: 10.1007/s00180-024-01591-1.
+
+Zhu et al. develop simultaneous confidence bands as a distinct whole-function
+inferential target for longitudinal functional mixed-effects models and use
+resampling designed to preserve within-subject dependence. Gunning et al.
+provide a recent repeated-measures functional mixed-effects application using
+subject-level bootstrap resampling and simulation for simultaneous fixed-effect
+bands.
+
+Version 0.44 follows the hierarchical resampling principle but implements a
+narrower participant-cluster case bootstrap for the existing
+`statsmodels.MixedLM` representation. Fixed effects are re-estimated in every
+participant resample while the fitted covariance parameters and declared bases
+are held fixed. The package does not claim that this is identical to the full
+FMEM resampling procedures in those papers.
