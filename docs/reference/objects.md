@@ -9,6 +9,12 @@ Immutable metadata linking one scientific contract to a stable key, title, regis
 
 The registry is documentation metadata only. A contract lookup does not fit a model, select components, alter defaults, or execute an estimator.
 
+## `DynamicTimeWarpingResult`
+
+Stores the unnormalized cumulative DTW cost together with one deterministic optimal monotone alignment path, the local distances on that path, path length, mean local distance, input sequence lengths/dimensionality, the optional Sakoe-Chiba sample-index radius, and provenance.
+
+The stored path is an audit object, not a claim of unique correspondence: multiple optimal DTW paths can exist. Recorded timestamps are not used by the recurrence, and the object records that distinction explicitly.
+
 ## Nonlinear-dynamics result objects
 
 `DelayEmbeddingResult` preserves reconstructed state vectors, endpoint times, selected source dimensions, explicit delay in samples/time, and whether a constant physical delay exists.
