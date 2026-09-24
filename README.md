@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.36.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.37.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -81,6 +81,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - named Kantz fixed-radius neighborhood divergence / largest-Lyapunov estimation with explicit radius, minimum-neighbor, Theiler, and fit contracts;
 - declared Rosenstein-LLE sensitivity over reconstruction, Theiler, and fit-interval choices with descriptive sign/magnitude stability summaries;
 - seeded IAAFT surrogate nonlinearity tests using plus-one Monte Carlo p-values;
+- cross-spectrum-aware multivariate IAAFT surrogates for planar/multichannel gaze, with exact per-channel marginal rank preservation, analyst-declared phase reference, retained power/cross-spectrum mismatch diagnostics, and multichannel surrogate nonlinearity testing;
 - experimental empirical Poincare return maps and local cycle-to-cycle contraction/expansion diagnostics;
 - reproducible synthetic datasets and manuscript-oriented reporting helpers;
 - implementation-matched LaTeX mathematical contracts rendered in both GitHub and the methods site;
@@ -166,6 +167,7 @@ print(summarise_fpca(fit))
 | Scalar outcome predicted by gaze | FPCA-score approximation | `fit_scalar_on_function_regression()` |
 | Functional gaze predicted by experimental variables | observed-grid function-on-scalar OLS + wild-bootstrap simultaneous bands | `fit_function_on_scalar_regression()` / `function_on_scalar_simultaneous_bands()` |
 | Repeated-trial functional response with trial-varying predictors | joint B-spline functional mixed-effects regression with participant functional random intercept | `fit_functional_mixed_effects_regression()` |
+| Planar/multichannel surrogate null | multivariate IAAFT with retained inter-channel phase differences and spectral diagnostics | `generate_multivariate_iaaft_surrogates()` / `multivariate_surrogate_nonlinearity_test()` |
 | Recurrent gaze-state structure | sparse recurrence / RQA | `recurrence_matrix()` / `rqa_metrics()` |
 | Recurrence-threshold diagnostics | exact RR(radius) curve and pair-distance shell profile | `recurrence_radius_profile()` |
 | RQA robustness across analysis choices | declared reconstruction/threshold/Theiler/line-length multiverse | `rqa_parameter_sensitivity()` |
