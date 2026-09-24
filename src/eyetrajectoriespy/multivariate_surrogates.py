@@ -238,8 +238,7 @@ def generate_multivariate_iaaft_surrogates(
         raise ValueError("tolerance must be positive and finite")
 
     curve_index = _curve_index(trajectories, curve)
-    values = trajectories.values[
-        curve_index,
+    values = trajectories.values[curve_index][
         :,
         dimension_indices,
     ].astype(float, copy=False)
@@ -457,8 +456,7 @@ def multivariate_surrogate_nonlinearity_test(
         dimensions,
     )
     curve_index = _curve_index(trajectories, curve)
-    observed_values = trajectories.values[
-        curve_index,
+    observed_values = trajectories.values[curve_index][
         :,
         dimension_indices,
     ]
