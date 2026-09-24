@@ -696,6 +696,26 @@ Report the trajectory representation, coordinate dimensions and units, sequence 
 State explicitly that the method preserved point order but did not use elapsed-time correspondence. If latency is scientifically meaningful, report the complementary time-preserving analysis rather than implying Fréchet captured timing.
 
 
+## Function-on-scalar regression
+
+Report:
+
+- the functional response representation, dimensions, coordinate units, and time grid;
+- the scalar predictors and exact coding, including all interactions;
+- whether any centering/scaling was performed upstream;
+- the number of source curves and the number of independent inference units;
+- curve-level versus participant-level inference;
+- for participant mode, the participant identifier, curves-per-participant summary, and confirmation that declared predictors were participant-constant;
+- the observed-grid OLS estimator and full-rank design requirement;
+- HC1 pointwise sandwich standard errors;
+- wild-bootstrap multiplier distribution, number of replicates, and random seed;
+- coefficient-wise versus familywise simultaneous scope;
+- confidence level and observed-grid coverage boundary;
+- whether coefficient functions were smoothed or basis-regularized; in version 0.35 they are not;
+- all upstream construction choices for derived responses such as speed, curvature, or windowed RQA.
+
+State explicitly when repeated trials were averaged within participant and that the 0.35 model is not a functional mixed-effects model. If a simultaneous band excludes zero over a grid region, report the region descriptively unless a separate onset/excursion-set procedure was predeclared and calibrated.
+
 ## Dynamic time warping trajectory comparison
 
 Report:
