@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.34.0.dev0
+
+- Harden dynamic time warping with an explicit `step_pattern` contract while preserving the 0.33 `symmetric1` raw-cost default.
+- Add `symmetric2` weighting, where diagonal advances contribute two local-cost units and horizontal/vertical advances contribute one.
+- Add explicit `normalize=True` support only for `symmetric2`, using the path-independent `N+M` denominator; reject normalization for `symmetric1` rather than inventing a denominator.
+- Extend `DynamicTimeWarpingResult` with raw and normalized distances, step pattern, normalization denominator, per-path step weights, and weighted local costs that reproduce the raw optimum.
+- Propagate step-pattern and normalization choices through pairwise DTW matrices without changing existing default calls.
+- Add `plot_dynamic_time_warping_alignment()` and `dynamic_time_warping_reporting_text()` for auditable diagnostics and manuscript-oriented reporting.
+- Expand tests for backward compatibility, symmetric2 weighting, normalization, path-cost reconstruction, pairwise behavior, failure contracts, plotting, and reporting.
+- Refresh mathematical contracts, worked examples, visual documentation, assumptions, limitations, preregistration/reporting guidance, references, API/object docs, and site integration.
+
 ## 0.33.0.dev0
 
 - Add `dynamic_time_warping_distance()` for exact dynamic-programming DTW between complete ordered point sequences, including unequal sequence lengths.
