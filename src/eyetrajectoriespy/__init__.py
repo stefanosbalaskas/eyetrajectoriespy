@@ -43,6 +43,7 @@ from .functional_mixed_effects_full_refit import (
     bootstrap_functional_mixed_effects_full_refit,
     compare_functional_mixed_effects_bootstraps,
     functional_mixed_effects_bootstrap_identity_frame,
+    functional_mixed_effects_full_refit_reporting_text,
     functional_mixed_effects_variance_bootstrap_frame,
 )
 from .functional_mixed_effects_inference import (
@@ -443,6 +444,7 @@ __all__ = [
     "bootstrap_functional_mixed_effects_full_refit",
     "functional_mixed_effects_variance_bootstrap_frame",
     "functional_mixed_effects_bootstrap_identity_frame",
+    "functional_mixed_effects_full_refit_reporting_text",
     "compare_functional_mixed_effects_bootstraps",
     "plot_functional_mixed_effects_bootstrap_comparison",
     "FunctionalMixedEffectsBootstrapResult",
