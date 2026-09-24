@@ -92,6 +92,28 @@ _CONTRACTS = (
         ),
     ),
     MathematicalContract(
+        key="dynamic-time-warping",
+        title="Dynamic time warping trajectory distance",
+        public_api=(
+            "dynamic_time_warping_distance",
+            "pairwise_dynamic_time_warping_distances",
+        ),
+        equations=(
+            r"d_w(\mathbf p_i,\mathbf q_j)="
+            r"\left[\sum_r\omega_r(p_{ir}-q_{jr})^2\right]^{1/2}",
+            r"C_{i,j}=d_w(\mathbf p_i,\mathbf q_j)+"
+            r"\min(C_{i-1,j-1},C_{i-1,j},C_{i,j-1})",
+            r"d_{DTW}(P,Q)=C_{m,n}",
+        ),
+        site_anchor="dynamic-time-warping",
+        scope=(
+            "Complete ordered point sequences with monotone index warping and "
+            "optional Sakoe-Chiba sample-index constraint; recorded elapsed "
+            "time is not used, the returned distance is an unnormalized sum, "
+            "and no hidden preprocessing is introduced."
+        ),
+    ),
+    MathematicalContract(
         key="trajectory-geometry",
         title="Continuous planar trajectory geometry",
         public_api=(
