@@ -76,6 +76,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Multivariate IAAFT surrogate generation/testing | implemented; explicit phase reference, exact marginals, retained power/cross-spectrum errors | `generate_multivariate_iaaft_surrogates()` / `multivariate_surrogate_nonlinearity_test()` |
 | Discrete transfer entropy | experimental; integer-coded states, explicit histories/lag, explicit circular-shift null, no causal claim | `discrete_transfer_entropy()` / `transfer_entropy_circular_shift_test()` |
 | Transfer-entropy specification sensitivity | implemented; full declared history/lag Cartesian grid, support diagnostics, optional identical circular-shift null, no automatic winner | `transfer_entropy_parameter_sensitivity()` |
+| Conditional transfer entropy | implemented; one explicit conditioning process, explicit histories/lags, source-only circular-shift null, support diagnostics, no causal claim | `conditional_transfer_entropy()` / `conditional_transfer_entropy_circular_shift_test()` |
 | Empirical Poincare return-map stability | experimental | `poincare_crossings()` / `fit_local_return_map()` / `return_map_stability()` |
 
 ## Documentation and mathematical contracts
@@ -138,4 +139,17 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.42.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.43.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+
+
+### Next inferential priority: simultaneous functional mixed-effects coefficient inference
+
+The transfer-entropy mini-series is considered methodologically complete for
+the present development cycle after 0.43. The next package-level priority is
+whole-function simultaneous inference for coefficient functions from
+`fit_functional_mixed_effects_regression()`, followed only then by richer
+participant-level random functional slopes/covariance structures.
+
+Conditional-TE specification sensitivity, TE networks, automatic causal
+discovery, and time-windowed TE are deliberately not prioritized ahead of this
+functional-inference gap.
