@@ -341,3 +341,23 @@ conservative causal-language boundary.
 These sources document the practical importance of delay/history or embedding
 choices and parameter scanning in TE workflows. Version 0.42 uses them to
 motivate transparent sensitivity reporting, not automatic optimization.
+
+## Conditional transfer entropy
+
+- Lizier, J. T., Heinzle, J., Horstmann, A., Haynes, J.-D., & Prokopenko, M.
+  (2011). Multivariate information-theoretic measures reveal directed
+  information structure and task relevant changes in fMRI connectivity.
+  *Journal of Computational Neuroscience, 30*, 85–107.
+  DOI: 10.1007/s10827-010-0271-2.
+- Lizier, J. T. (2014). JIDT: An information-theoretic toolkit for studying the
+  dynamics of complex systems. *Frontiers in Robotics and AI, 1*, 11.
+  DOI: 10.3389/frobt.2014.00011.
+- Lizier, J. T., & Prokopenko, M. (2010). Differentiating information transfer
+  and causal effect. *European Physical Journal B, 73*(4), 605–615.
+  DOI: 10.1140/epjb/e2010-00034-5.
+
+These sources motivate conditional/multivariate information-transfer analysis
+and the package's explicit separation between information transfer and causal
+effect. Version 0.43 implements only the narrow discrete single-conditioning
+process contract and does not reproduce the broader network-inference
+capabilities of specialist information-dynamics toolkits.
