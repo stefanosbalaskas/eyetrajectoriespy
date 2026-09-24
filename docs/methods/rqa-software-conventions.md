@@ -112,6 +112,27 @@ The final spectrum/cross-spectrum is approximate after rank remapping rather
 than claimed exact. See [Multivariate IAAFT surrogate testing](multivariate-surrogates.md).
 
 
+## Recurrence-network transformation contract
+
+`recurrence_network()` consumes a completed auto-recurrence result rather
+than reconstructing recurrence from raw states.
+
+The graph contract is:
+
+1. every recurrence-state/time index becomes one node;
+2. every retained symmetric off-diagonal recurrence pair becomes one
+   undirected unweighted edge;
+3. the source Theiler exclusion remains absent from the graph;
+4. graph density uses all unordered node pairs and is not relabeled as the
+   Theiler-conditioned recurrence rate;
+5. local clustering is zero by convention for degree below two;
+6. transitivity remains undefined when no connected triples exist;
+7. no threshold tuning, community detection, edge weighting, shortest-path
+   component policy, or dynamical-dimension conversion is selected
+   automatically;
+8. sparse adjacency is retained and triangle counting does not require a dense
+   (N\times N) matrix.
+
 ## Performance contract
 
 Recurrence construction is potentially quadratic in the number of samples. Dense allocation is therefore not an implementation detail.
