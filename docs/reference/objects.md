@@ -361,3 +361,19 @@ Stores fold-level predictive losses, test-fold assignments, held-out predictions
 ## FPCANestedRegressionCVResult
 
 Stores outer-fold predictive losses, every inner candidate-loss summary, outer held-out predictions, selected component count for each outer fit, fold design, family/loss, and provenance. Outer test outcomes are not used during inner FPC-count selection.
+
+## DiscreteTransferEntropyResult
+
+Stores the empirical transfer-entropy estimate in bits, every local log-ratio
+contribution, effective sample indices, complete integer-coded source/target
+states, declared target/source history lengths and source lag, state/history
+support diagnostics, and provenance. Continuous observations are not silently
+discretized and history/lag settings are never selected automatically.
+
+## TransferEntropyCircularShiftTestResult
+
+Stores the observed `DiscreteTransferEntropyResult`, the exact analyst-declared
+circular source shifts, every surrogate transfer-entropy estimate, surrogate
+mean, surrogate-centered transfer entropy, plus-one upper-tail Monte Carlo
+p-value, attainable p-value resolution, and null-model provenance. The object
+does not claim causal identification and does not generate or optimize shifts.
