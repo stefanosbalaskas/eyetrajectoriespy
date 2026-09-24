@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.41.0.dev0
+
+- Add `discrete_transfer_entropy()` as empirical plug-in conditional mutual information for analyst-supplied integer-coded state sequences, reported in bits.
+- Require explicit target-history length, source-history length, and source lag in sample-index units; no automatic discretization, history selection, lag selection, smoothing, interpolation, or scaling is introduced.
+- Retain local transfer-entropy contributions, exact effective sample indices, source/target state arrays, state/history support diagnostics, and provenance.
+- Add `transfer_entropy_circular_shift_test()` using only analyst-declared nonzero circular source shifts with a conservative plus-one upper-tail Monte Carlo p-value.
+- Retain the surrogate TE distribution, surrogate mean, surrogate-centered TE, attainable p-value resolution, complete shift set, and null-model provenance.
+- Add result objects, local-history frame, null-distribution plotting, manuscript reporting helpers, deterministic reference-value and directional synthetic tests, failure-contract tests, a mathematical contract, method guide, worked/executable example, and full API/site integration.
+- Keep transfer entropy explicitly experimental: positive TE or a small surrogate p-value is directed predictive-information evidence under the declared representation/null, not standalone evidence of causal influence.
+
 ## 0.40.0.dev0
 
 - Add `recurrence_network()` for sparse undirected, unweighted graph topology induced by one declared symmetric auto-recurrence matrix.
