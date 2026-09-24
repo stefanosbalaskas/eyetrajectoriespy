@@ -31,6 +31,7 @@ from .types import (
     FPCAStabilityResult,
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
+    FunctionalMixedEffectsBandResult,
     FunctionalMixedEffectsResult,
     FunctionOnScalarBandResult,
     FunctionOnScalarResult,
@@ -172,19 +173,29 @@ def plot_dynamic_time_warping_alignment(
 
 
 def plot_functional_mixed_effects_coefficient(
-    result: FunctionalMixedEffectsResult,
+    result: FunctionalMixedEffectsResult | FunctionalMixedEffectsBandResult,
     *,
     coefficient: str | int,
     ax=None,
 ):
-    """Plot one functional mixed-effects fixed-effect coefficient function."""
+    """Plot one mixed-effects coefficient with pointwise or simultaneous uncertainty."""
 
-    if not isinstance(result, FunctionalMixedEffectsResult):
-        raise TypeError("result must be a FunctionalMixedEffectsResult")
+    if isinstance(result, FunctionalMixedEffectsBandResult):
+        fit = result.reference
+        band = result
+    elif isinstance(result, FunctionalMixedEffectsResult):
+        fit = result
+        band = None
+    else:
+        raise TypeError(
+            "result must be a FunctionalMixedEffectsResult or "
+            "FunctionalMixedEffectsBandResult"
+        )
+
     if isinstance(coefficient, str):
-        if coefficient not in result.coefficient_names:
+        if coefficient not in fit.coefficient_names:
             raise KeyError(f"Unknown coefficient {coefficient!r}")
-        coefficient_index = result.coefficient_names.index(coefficient)
+        coefficient_index = fit.coefficient_names.index(coefficient)
     elif isinstance(coefficient, bool) or not isinstance(
         coefficient,
         (int, np.integer),
@@ -192,33 +203,45 @@ def plot_functional_mixed_effects_coefficient(
         raise TypeError("coefficient must be a name or integer index")
     else:
         coefficient_index = int(coefficient)
-        if coefficient_index < 0 or coefficient_index >= result.n_coefficients:
+        if coefficient_index < 0 or coefficient_index >= fit.n_coefficients:
             raise IndexError("coefficient index is out of range")
 
     if ax is None:
         _, ax = plt.subplots()
 
-    estimate = result.coefficient_functions[coefficient_index]
-    standard_error = result.coefficient_standard_errors[coefficient_index]
-    z_value = 1.959963984540054
+    estimate = fit.coefficient_functions[coefficient_index]
+    if band is None:
+        standard_error = fit.coefficient_standard_errors[coefficient_index]
+        z_value = 1.959963984540054
+        lower = estimate - z_value * standard_error
+        upper = estimate + z_value * standard_error
+        label = "95% pointwise Wald interval"
+    else:
+        lower = band.lower[coefficient_index]
+        upper = band.upper[coefficient_index]
+        label = (
+            f"{100 * band.confidence_level:.1f}% simultaneous band "
+            f"({band.simultaneous_scope})"
+        )
+
     ax.fill_between(
-        result.time,
-        estimate - z_value * standard_error,
-        estimate + z_value * standard_error,
+        fit.time,
+        lower,
+        upper,
         alpha=0.2,
-        label="95% pointwise Wald interval",
+        label=label,
     )
     ax.plot(
-        result.time,
+        fit.time,
         estimate,
-        label=result.coefficient_names[coefficient_index],
+        label=fit.coefficient_names[coefficient_index],
     )
     ax.axhline(0.0, linestyle="--")
-    ax.set_xlabel(f"Time ({result.time_unit})")
-    ax.set_ylabel(f"Coefficient: {result.dimension_name}")
+    ax.set_xlabel(f"Time ({fit.time_unit})")
+    ax.set_ylabel(f"Coefficient: {fit.dimension_name}")
     ax.set_title(
         "Functional mixed-effects coefficient: "
-        f"{result.coefficient_names[coefficient_index]}"
+        f"{fit.coefficient_names[coefficient_index]}"
     )
     ax.legend()
     return ax
