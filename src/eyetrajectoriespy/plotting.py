@@ -172,6 +172,64 @@ def plot_dynamic_time_warping_alignment(
     return ax
 
 
+def plot_functional_mixed_effects_bootstrap_comparison(
+    comparison: pd.DataFrame,
+    *,
+    coefficient: str,
+    ax=None,
+):
+    """Plot full-refit / fixed-covariance simultaneous-band width ratio."""
+
+    required = {
+        "coefficient",
+        "time",
+        "full_to_fixed_width_ratio",
+        "confidence_level",
+        "simultaneous_scope",
+    }
+    if not isinstance(comparison, pd.DataFrame):
+        raise TypeError("comparison must be a pandas DataFrame")
+    missing = required.difference(comparison.columns)
+    if missing:
+        raise ValueError(
+            "comparison is missing required columns: "
+            f"{sorted(missing)}"
+        )
+    if not isinstance(coefficient, str) or not coefficient:
+        raise TypeError("coefficient must be a non-empty string")
+
+    selected = comparison.loc[
+        comparison["coefficient"] == coefficient
+    ].copy()
+    if selected.empty:
+        raise KeyError(f"Unknown coefficient {coefficient!r}")
+    selected = selected.sort_values("time")
+    ratio = selected["full_to_fixed_width_ratio"].to_numpy(
+        dtype=float
+    )
+    if not np.all(np.isfinite(ratio)):
+        raise ValueError(
+            "selected comparison contains non-finite width ratios"
+        )
+
+    if ax is None:
+        _, ax = plt.subplots()
+    ax.plot(
+        selected["time"].to_numpy(dtype=float),
+        ratio,
+        marker="o",
+    )
+    ax.axhline(1.0, linestyle="--")
+    ax.set_xlabel("Time")
+    ax.set_ylabel("Full-refit / fixed-covariance band width")
+    ax.set_title(
+        "Mixed-effects bootstrap uncertainty sensitivity: "
+        f"{coefficient}"
+    )
+    return ax
+
+
+
 def plot_functional_mixed_effects_coefficient(
     result: FunctionalMixedEffectsResult | FunctionalMixedEffectsBandResult,
     *,
