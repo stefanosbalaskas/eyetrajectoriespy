@@ -325,6 +325,8 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.pairwise_functional_distances
 ::: eyetrajectoriespy.discrete_frechet_distance
 ::: eyetrajectoriespy.pairwise_discrete_frechet_distances
+::: eyetrajectoriespy.dynamic_time_warping_distance
+::: eyetrajectoriespy.pairwise_dynamic_time_warping_distances
 ::: eyetrajectoriespy.cluster_fpca_scores
 ::: eyetrajectoriespy.fit_scalar_on_function_regression
 
