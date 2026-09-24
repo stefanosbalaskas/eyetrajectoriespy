@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.44.0.dev0
+
+- Add `bootstrap_functional_mixed_effects_coefficients()` using whole-participant case resampling so every selected participant contributes the complete repeated-trial/time bundle.
+- Re-estimate fixed B-spline coefficients in every bootstrap replicate through the participant-block GLS equations implied by the fitted mixed model while holding the reference random-effect covariance, residual variance, and declared bases fixed.
+- Verify before resampling that the fixed-covariance GLS reconstruction reproduces the stored MixedLM fixed coefficients; fail rather than bootstrap under an inconsistent covariance contract.
+- Fail the complete bootstrap if any resampled participant information matrix becomes rank deficient or unsolvable; no failed replicate is silently redrawn or discarded.
+- Add `functional_mixed_effects_simultaneous_bands()` with coefficient-wise or full fixed-effect-family studentized supremum calibration over the observed time grid.
+- Use participant-bootstrap pointwise standard deviations as the band scale and center calibration on the bootstrap mean while centering reported bands on the reference mixed-model estimate; no automatic bootstrap bias correction is applied.
+- Add `FunctionalMixedEffectsBootstrapResult` and `FunctionalMixedEffectsBandResult`, optional simultaneous columns in `functional_mixed_effects_coefficient_frame()`, simultaneous-band plotting, and manuscript-oriented reporting.
+- Add deterministic participant-resampling tests, coefficient/family scope tests, explicit failure contracts, mathematical metadata, a methodology guide, worked/executable example, and site/gallery integration.
+- Keep the inferential boundary explicit: simultaneous coverage is over the observed grid and conditional on the fitted covariance model and declared bases; variance-component, basis-selection, preprocessing, and between-grid uncertainty are not included.
+- Close the current simultaneous-inference gap before moving to participant random functional slopes / richer covariance structures.
+
 ## 0.43.0.dev0
 
 - Add `conditional_transfer_entropy()` for empirical discrete conditional mutual information (I(X_{t-d}^{(l)};Y_t\mid Y_{t-1}^{(k)},Z_{t-c}^{(m)})) in bits.
