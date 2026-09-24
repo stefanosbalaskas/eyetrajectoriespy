@@ -646,6 +646,51 @@ $$
 
 Implemented by `kantz_divergence_curve()`, `estimate_largest_lyapunov_kantz()`, and `kantz_parameter_sensitivity()`. Radius, minimum-neighbor count, Theiler exclusion, and fit interval remain explicit; the package does not enlarge neighborhoods or select a preferred sensitivity specification automatically.
 
+## Multivariate IAAFT surrogates
+
+For channel \(k\), write the discrete Fourier transform as
+
+$
+F_k(\omega)=A_k(\omega)e^{i\phi_k(\omega)}.
+$
+
+Relative to an explicitly declared reference channel \(r\), retain
+
+$
+\Delta\phi_{kr}(\omega)=\phi_k(\omega)-\phi_r(\omega).
+$
+
+At each Fourier-adjustment step,
+
+$
+F_k^*(\omega)
+=
+A_k(\omega)e^{i[\psi_r^*(\omega)+\Delta\phi_{kr}(\omega)]},
+$
+
+targeting the original cross-spectrum
+
+$
+C_{k\ell}(\omega)=F_k(\omega)F_\ell(\omega)^*.
+$
+
+Each inverse-transformed channel is then rank-remapped to its exact empirical
+marginal distribution. Because rank remapping perturbs Fourier coefficients,
+final power-spectrum and cross-spectrum preservation is approximate and the
+relative mismatch is retained for every surrogate.
+
+For a one-sided greater-than Monte Carlo test,
+
+$
+p
+=
+\frac{1+\sum_{b=1}^{B}\mathbb I(T_b^*\ge T_{\mathrm{obs}})}{B+1}.
+$
+
+Implemented by `generate_multivariate_iaaft_surrogates()` and
+`multivariate_surrogate_nonlinearity_test()`. The reference dimension is
+analyst-declared and never selected automatically.
+
 ## IAAFT surrogate testing
 
 For a one-sided greater-than alternative and \(B\) surrogate statistics,
