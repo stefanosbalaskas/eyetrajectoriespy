@@ -217,6 +217,63 @@ $$
 
 Implemented by `multiplier_functional_mean_band()`.
 
+## Function-on-scalar regression
+
+For functional response vector \(\mathbf Y(t)\) and scalar design matrix \(\mathbf X\),
+
+$
+\mathbf Y(t)
+=
+\mathbf X\boldsymbol\beta(t)
++
+\boldsymbol\varepsilon(t),
+$
+
+with observed-grid OLS coefficient function
+
+$
+\widehat{\boldsymbol\beta}(t)
+=
+(\mathbf X^\top\mathbf X)^{-1}
+\mathbf X^\top\mathbf Y(t).
+$
+
+Pointwise standard errors use the HC1 diagonal sandwich estimator. Wild-bootstrap pseudo-functions are
+
+$
+Y_i^{*(b)}(t)
+=
+\widehat Y_i(t)
++
+W_i^{(b)}\widehat\varepsilon_i(t).
+$
+
+For coefficient \(j\), the observed-grid studentized maximum is
+
+$
+M_j^{*(b)}
+=
+\max_{m,d}
+\left|
+\frac{
+\widehat\beta_{j,d}^{*(b)}(t_m)-\widehat\beta_{j,d}(t_m)
+}{
+\widehat{\mathrm{SE}}\{\widehat\beta_{j,d}(t_m)\}
+}
+\right|,
+$
+
+yielding the simultaneous band
+
+$
+\widehat\beta_{j,d}(t_m)
+\pm
+c_{j,1-\alpha}
+\widehat{\mathrm{SE}}\{\widehat\beta_{j,d}(t_m)\}.
+$
+
+Implemented by `fit_function_on_scalar_regression()`, `bootstrap_function_on_scalar_coefficients()`, and `function_on_scalar_simultaneous_bands()`. Repeated trials are supported in 0.35 only through equal-weight participant aggregation when declared predictors are constant within participant. Trial-varying predictors require a repeated-measures functional model and are rejected rather than treated as independent.
+
 ## Heteroscedastic FPCR wild bootstrap
 
 Pseudo-responses are
