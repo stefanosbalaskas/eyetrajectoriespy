@@ -723,7 +723,7 @@ c_{p,1-\alpha}
 \widehat{\mathrm{SE}}_p^*(t_m).
 $$
 
-With \`simultaneous_scope="family"\`, the maximum is instead taken jointly over
+With `simultaneous_scope="family"`, the maximum is instead taken jointly over
 all fixed coefficients and observed time points before calibration.
 
 This is a **participant-cluster case bootstrap conditional on the fitted
@@ -733,8 +733,8 @@ degree, preprocessing, or model specification inside resamples. The coverage
 claim is simultaneous over the observed time grid only, not every point of the
 continuous B-spline domain.
 
-**API:** \`bootstrap_functional_mixed_effects_coefficients()\`,
-\`functional_mixed_effects_simultaneous_bands()\`.
+**API:** `bootstrap_functional_mixed_effects_coefficients()`,
+`functional_mixed_effects_simultaneous_bands()`.
 
 ## Function-on-scalar regression { #function-on-scalar }
 
