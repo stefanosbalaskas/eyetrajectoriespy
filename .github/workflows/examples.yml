@@ -35,6 +35,7 @@ jobs:
           python examples/trajectory_geometry.py
           python examples/discrete_frechet.py
           python examples/dynamic_time_warping.py
+          python examples/trajectory_distance_sensitivity.py
           python examples/native_irregular.py
           python examples/fpca_stability.py
           python examples/phase_fpca.py
