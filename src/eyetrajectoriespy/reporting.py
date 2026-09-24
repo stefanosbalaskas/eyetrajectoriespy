@@ -74,14 +74,19 @@ def dynamic_time_warping_reporting_text(
         if result.window_radius is None
         else f"Sakoe-Chiba radius={result.window_radius} sample indices"
     )
+    raw_distance = (
+        float(result.distance)
+        if result.raw_distance is None
+        else float(result.raw_distance)
+    )
     if result.normalized_distance is None:
         distance_text = (
-            f"raw cumulative distance={result.raw_distance:.{digits}f}; "
+            f"raw cumulative distance={raw_distance:.{digits}f}; "
             "no path-independent normalization is defined for symmetric1"
         )
     else:
         distance_text = (
-            f"raw cumulative distance={result.raw_distance:.{digits}f}, "
+            f"raw cumulative distance={raw_distance:.{digits}f}, "
             f"N+M-normalized distance={result.normalized_distance:.{digits}f}"
         )
     returned = (
