@@ -28,6 +28,7 @@ jobs:
           python examples/compositional_aoi_fpca.py
           python examples/registration_phase_amplitude.py
           python examples/functional_regression.py
+          python examples/function_on_scalar_regression.py
           python examples/irregular_sampling.py
           python examples/derived_functions.py
           python examples/trajectory_geometry.py
