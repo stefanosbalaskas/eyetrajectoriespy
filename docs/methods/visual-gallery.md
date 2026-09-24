@@ -169,6 +169,16 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked example](../examples/joint-recurrence.md) · [Method guide](joint-recurrence.md) · [Mathematics](mathematical-reference.md#joint-recurrence)
 
+-   **Sparse recurrence-network degree**
+
+    ![Normalized recurrence-network degree across state indices](../assets/gallery/recurrence-network-degree.svg)
+
+    Node degree from the sparse auto-recurrence adjacency, retaining the declared recurrence threshold and Theiler exclusion.
+
+    **API:** `recurrence_network()`, `plot_recurrence_network_degree()`
+
+    [Worked example](../examples/recurrence-networks.md) · [Method guide](recurrence-networks.md) · [Mathematics](mathematical-reference.md#recurrence-network)
+
 -   **Recurrence threshold profile**
 
     ![Recurrence rate over an analyst-declared radius grid](../assets/gallery/recurrence-radius-profile.svg)
@@ -336,4 +346,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates all twenty-four assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates all twenty-five assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
