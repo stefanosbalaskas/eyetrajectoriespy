@@ -261,26 +261,60 @@ def _validate_dynamic_time_warping_inputs(
     return a_arr, b_arr, weights, window_radius
 
 
+def _validate_dynamic_time_warping_options(
+    *,
+    step_pattern: str,
+    normalize: bool,
+) -> tuple[str, bool]:
+    """Validate the declared DTW recursion and normalization contract."""
+
+    if not isinstance(step_pattern, str):
+        raise TypeError("step_pattern must be a string")
+    if step_pattern not in {"symmetric1", "symmetric2"}:
+        raise ValueError("step_pattern must be 'symmetric1' or 'symmetric2'")
+    if not isinstance(normalize, (bool, np.bool_)):
+        raise TypeError("normalize must be boolean")
+    normalize_bool = bool(normalize)
+    if normalize_bool and step_pattern != "symmetric2":
+        raise ValueError(
+            "normalize=True is available only for the normalizable "
+            "'symmetric2' step pattern"
+        )
+    return step_pattern, normalize_bool
+
+
 def dynamic_time_warping_distance(
     a: np.ndarray,
     b: np.ndarray,
     *,
     dimension_weights: np.ndarray | None = None,
     window_radius: int | None = None,
+    step_pattern: str = "symmetric1",
+    normalize: bool = False,
     return_path: bool = False,
 ) -> float | DynamicTimeWarpingResult:
-    """Compute symmetric DTW using weighted-Euclidean local costs.
+    """Compute DTW using explicit symmetric1 or symmetric2 step weighting.
 
-    The scalar distance is the unnormalized sum of local distances along the
-    minimum-cost monotone path. window_radius is an optional Sakoe-Chiba
-    sample-index band. Recorded timestamps are not used by this function.
+    symmetric1 preserves the 0.33 contract: every visited local distance
+    contributes once and the resulting cumulative cost is not normalizable by
+    a path-independent length denominator.
 
-    No interpolation, resampling, smoothing, coordinate normalization, path
-    simplification, or missing-value deletion is performed.
+    symmetric2 gives diagonal moves weight two and horizontal/vertical
+    moves weight one. Its cumulative cost can be normalized by n_a + n_b.
+    Set normalize=True to return that normalized value.
+
+    window_radius is an optional Sakoe-Chiba band in sample-index units.
+    Recorded timestamps are not used. No interpolation, resampling, smoothing,
+    coordinate normalization, path simplification, missing-value deletion, or
+    automatic step-pattern/window selection is performed.
     """
 
     if not isinstance(return_path, (bool, np.bool_)):
         raise TypeError("return_path must be boolean")
+    resolved_pattern, normalize_bool = _validate_dynamic_time_warping_options(
+        step_pattern=step_pattern,
+        normalize=normalize,
+    )
 
     a_arr, b_arr, weights, resolved_window = _validate_dynamic_time_warping_inputs(
         a,
@@ -299,6 +333,11 @@ def dynamic_time_warping_distance(
 
     cumulative = np.full((n_a, n_b), np.inf, dtype=float)
     predecessor = np.full((n_a, n_b, 2), -1, dtype=int)
+    transition_weight = np.full((n_a, n_b), np.nan, dtype=float)
+
+    initial_weight = 2.0 if resolved_pattern == "symmetric2" else 1.0
+    cumulative[0, 0] = initial_weight * local[0, 0]
+    transition_weight[0, 0] = initial_weight
 
     for i in range(n_a):
         if resolved_window is None:
@@ -309,35 +348,76 @@ def dynamic_time_warping_distance(
 
         for j in range(j_start, j_stop):
             if i == 0 and j == 0:
-                cumulative[i, j] = local[i, j]
                 continue
 
-            candidates: list[tuple[float, int, int]] = []
+            candidates: list[tuple[float, int, int, float]] = []
             if i > 0 and j > 0 and np.isfinite(cumulative[i - 1, j - 1]):
-                candidates.append((cumulative[i - 1, j - 1], i - 1, j - 1))
+                step_weight = 2.0 if resolved_pattern == "symmetric2" else 1.0
+                candidates.append(
+                    (
+                        cumulative[i - 1, j - 1] + step_weight * local[i, j],
+                        i - 1,
+                        j - 1,
+                        step_weight,
+                    )
+                )
             if i > 0 and np.isfinite(cumulative[i - 1, j]):
-                candidates.append((cumulative[i - 1, j], i - 1, j))
+                candidates.append(
+                    (
+                        cumulative[i - 1, j] + local[i, j],
+                        i - 1,
+                        j,
+                        1.0,
+                    )
+                )
             if j > 0 and np.isfinite(cumulative[i, j - 1]):
-                candidates.append((cumulative[i, j - 1], i, j - 1))
+                candidates.append(
+                    (
+                        cumulative[i, j - 1] + local[i, j],
+                        i,
+                        j - 1,
+                        1.0,
+                    )
+                )
             if not candidates:
                 continue
 
-            previous, prev_i, prev_j = min(candidates, key=lambda item: item[0])
-            cumulative[i, j] = local[i, j] + previous
+            total, prev_i, prev_j, step_weight = min(
+                candidates,
+                key=lambda item: item[0],
+            )
+            cumulative[i, j] = total
             predecessor[i, j] = (prev_i, prev_j)
+            transition_weight[i, j] = step_weight
 
-    distance = float(cumulative[-1, -1])
-    if not np.isfinite(distance):
+    raw_distance = float(cumulative[-1, -1])
+    if not np.isfinite(raw_distance):
         raise ValueError(
             "No admissible DTW path reaches the endpoint under window_radius"
         )
+
+    normalization_denominator = (
+        float(n_a + n_b) if resolved_pattern == "symmetric2" else None
+    )
+    normalized_distance = (
+        raw_distance / normalization_denominator
+        if normalization_denominator is not None
+        else None
+    )
+    distance = (
+        float(normalized_distance)
+        if normalize_bool and normalized_distance is not None
+        else raw_distance
+    )
     if not return_path:
         return distance
 
     path: list[tuple[int, int]] = []
+    path_weights: list[float] = []
     i, j = n_a - 1, n_b - 1
     while True:
         path.append((i, j))
+        path_weights.append(float(transition_weight[i, j]))
         if i == 0 and j == 0:
             break
         prev_i, prev_j = predecessor[i, j]
@@ -345,9 +425,15 @@ def dynamic_time_warping_distance(
             raise RuntimeError("DTW predecessor chain is incomplete")
         i, j = int(prev_i), int(prev_j)
     path.reverse()
+    path_weights.reverse()
 
     alignment_path = np.asarray(path, dtype=int)
+    step_weights = np.asarray(path_weights, dtype=float)
     aligned_local = local[alignment_path[:, 0], alignment_path[:, 1]]
+    weighted_local = aligned_local * step_weights
+    if not np.isclose(np.sum(weighted_local), raw_distance):
+        raise RuntimeError("DTW path audit does not reproduce the cumulative cost")
+
     return DynamicTimeWarpingResult(
         distance=distance,
         path=alignment_path,
@@ -358,12 +444,24 @@ def dynamic_time_warping_distance(
         n_points_b=n_b,
         n_dimensions=a_arr.shape[1],
         window_radius=resolved_window,
+        raw_distance=raw_distance,
+        normalized_distance=normalized_distance,
+        step_pattern=resolved_pattern,
+        normalization_denominator=normalization_denominator,
+        step_weights=step_weights,
+        weighted_local_costs=weighted_local,
         provenance={
             "operation": "dynamic_time_warping_distance",
             "local_metric": "weighted_euclidean",
             "dimension_weights": weights.tolist(),
-            "distance_aggregation": "sum",
-            "normalized_distance": False,
+            "distance_aggregation": "weighted_sum",
+            "step_pattern": resolved_pattern,
+            "normalizable": resolved_pattern == "symmetric2",
+            "normalization_requested": normalize_bool,
+            "normalization_denominator": normalization_denominator,
+            "distance_returned": (
+                "normalized" if normalize_bool else "raw_cumulative"
+            ),
             "recorded_time_used": False,
             "sequence_index_warping": True,
             "sample_order_preserved": True,
@@ -380,6 +478,8 @@ def dynamic_time_warping_distance(
             "coordinate_normalization": False,
             "path_simplification": False,
             "missing_value_deletion": False,
+            "automatic_step_pattern_selection": False,
+            "automatic_window_selection": False,
             "tie_break_order": ("diagonal", "advance_a", "advance_b"),
             "optimal_path_not_necessarily_unique": True,
         },
@@ -392,14 +492,20 @@ def pairwise_dynamic_time_warping_distances(
     dimensions: tuple[str, ...] | list[str] | None = None,
     dimension_weights: np.ndarray | None = None,
     window_radius: int | None = None,
+    step_pattern: str = "symmetric1",
+    normalize: bool = False,
 ) -> np.ndarray:
     """Pairwise DTW distances for complete trajectories.
 
     The TrajectorySet time grid is not passed into the recurrence.
-    window_radius therefore constrains sample-index displacement, not
-    elapsed physical time.
+    window_radius constrains sample-index displacement, not physical time.
+    The 0.33 symmetric1 raw-cost behavior remains the default.
     """
 
+    resolved_pattern, normalize_bool = _validate_dynamic_time_warping_options(
+        step_pattern=step_pattern,
+        normalize=normalize,
+    )
     validate_trajectory_set(trajectories, require_complete=True)
     if dimensions is None:
         selected = trajectories.dimension_names
@@ -436,6 +542,8 @@ def pairwise_dynamic_time_warping_distances(
                 values[j],
                 dimension_weights=dimension_weights,
                 window_radius=window_radius,
+                step_pattern=resolved_pattern,
+                normalize=normalize_bool,
             )
             result[i, j] = result[j, i] = float(distance)
     return result
