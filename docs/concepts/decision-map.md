@@ -13,6 +13,7 @@ Use the **research question and data structure** to choose the representation.
 | Do people traverse similar paths at different times? | registration + phase FPCA | do not erase meaningful latency |
 | Do I need a bottleneck measure of ordered path separation without elapsed-time matching? | discrete Fréchet | declare dimensions/units; one local excursion can dominate |
 | Do I need cumulative elastic matching of ordered path samples? | dynamic time warping | pre-specify symmetric1 vs symmetric2, normalization, and sample-index window; DTW can align away meaningful latency |
+| Are multiple trajectory-distance contracts scientifically defensible and I need to know whether conclusions depend on the choice? | trajectory-distance sensitivity | predeclare the specification set and neighbor k; descriptive robustness only, no automatic winner |
 | Do I need uncertainty for the mean trajectory? | simultaneous multiplier mean band | choose the independent inference unit before calibration |
 | How does an experimental condition or scalar predictor change a continuous gaze metric over time? | function-on-scalar regression | declare design coding and inference unit; repeated trials are participant-aggregated only when predictors are constant within participant |
 | How does a trial-varying predictor change a functional response when curves repeat within participant? | functional mixed-effects regression | fit all curve-by-time observations jointly; declare spline bases and residual covariance boundary |
