@@ -117,6 +117,20 @@ Pointwise intervals target each time/dimension location separately. If many loca
 
 Only if curves themselves are genuinely independent sampling units for the population claim. When multiple trials come from the same participant, use `unit="participant"` to average trials within participant and infer on participant-average functions.
 
+## Can I use function-on-scalar regression with repeated trials?
+
+Only under the deliberately restricted 0.35 participant-aggregation contract. If predictors are participant-level and constant across that participant's trials, use `unit="participant"` and provide the participant column. The response curves are averaged within participant before fitting.
+
+If a predictor changes across trials within participant, version 0.35 refuses the fit in participant mode. That design requires the planned repeated-measures functional regression / functional mixed-effects layer.
+
+## Why not just treat repeated trials as independent curves?
+
+Because that changes the inferential unit and can create pseudo-replication. Curve-level mode is available for genuinely independent curves, but it does not silently detect or correct repeated participants.
+
+## Are function-on-scalar coefficient bands pointwise p-value curves?
+
+No. They are simultaneous confidence bands over the declared observed grid. The package does not convert them into hundreds of separate p-values or automatically estimate an onset time.
+
 ## Is the 95% band simultaneous over continuous time?
 
 Not with the current API. It is simultaneous over the observed sampled grid across all included dimensions. Continuous-domain confidence bands require additional theory and assumptions.
