@@ -67,6 +67,13 @@ A visually appealing FPC is not automatically a reproducible viewing strategy.
 
 Use the [pre-registration checklist](../methods/preregistration.md) for a manuscript-ready version.
 
+## If you have multiple synchronized dynamical systems
+
+| Question | Use | Key caution |
+|---|---|---|
+| Are states from two systems similar to each other? | cross-recurrence | requires compatible state variables/dimensions and cross-system distance semantics |
+| Do multiple systems recur within their own state spaces at the same time pairs? | joint recurrence | exact common grid/time unit and shared Theiler; does not imply direction or causality |
+
 ## When the question is dynamical rather than variance-based
 
 Use the 0.23 nonlinear path when the scientific target is recurrence, state-space divergence, or repeated-cycle stability rather than dominant between-curve variation.
