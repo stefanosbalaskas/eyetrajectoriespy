@@ -90,12 +90,12 @@ covariance.
 
 ## Functional mixed-effects covariance-sensitivity objects
 
-\`FunctionalMixedEffectsCovarianceSpecification\` is a compact declaration of
+`FunctionalMixedEffectsCovarianceSpecification` is a compact declaration of
 one covariance structure: model name, optional participant random-slope
 predictor, optional trial functional random intercept, and residual-correlation
 family. It is a declaration/audit object; it does not fit a model.
 
-\`FunctionalMixedEffectsCovarianceSensitivityResult\` stores the ordered
+`FunctionalMixedEffectsCovarianceSensitivityResult` stores the ordered
 predeclared specifications, explicit reference label, successful fit mapping,
 retained failure mapping, model-level comparison table, complete
 coefficient-function comparison table, coefficient supremum/L2 summaries,
