@@ -63,7 +63,7 @@ Cholesky factors. Fixed B-spline coefficients are profiled by generalized
 least squares for every covariance-parameter evaluation.
 
 The historical participant-only model continues to use the established
-\`statsmodels.MixedLM\` backend. The nested backend is activated only when the
+`statsmodels.MixedLM` backend. The nested backend is activated only when the
 trial effect is explicitly requested.
 
 ## Explicit API
@@ -89,16 +89,16 @@ open to future trial structures without silently changing today's semantics.
 
 ## Trial identity
 
-Version 0.48 treats one trajectory as one observed trial. The \`trial_column\`
+Version 0.48 treats one trajectory as one observed trial. The `trial_column`
 therefore provides the scientific trial label attached to each curve.
 
 Trial labels need only be unique **within participant**. Reused labels such as
-\`T01\` across different participants are valid. Internally the nested identity
+`T01` across different participants are valid. Internally the nested identity
 is the participant/trial pair.
 
 The model fails closed when:
 
-- \`trial_column\` is absent or contains missing values;
+- `trial_column` is absent or contains missing values;
 - a participant/trial pair appears more than once;
 - any participant contributes fewer than two observed trials;
 - the trial basis is rank deficient on the observed grid;
@@ -114,7 +114,7 @@ that the covariance is estimated precisely.
 
 The result retains:
 
-- \`trial_random_effect_covariance\`;
+- `trial_random_effect_covariance`;
 - covariance eigenvalues;
 - condition number;
 - free covariance-parameter count;
