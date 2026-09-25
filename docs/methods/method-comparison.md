@@ -285,3 +285,21 @@ Use `compare_functional_mixed_effects_bootstraps()` to inspect how much this
 changes simultaneous-band width over the observed time grid. The width ratio is
 a descriptive sensitivity measure, not a criterion for choosing a preferred
 model.
+
+## Mixed-effects covariance hierarchy
+
+| Declared structure | Participant functional effect | Trial functional effect | Residual process | Diagnostic emphasis |
+|---|---|---|---|---|
+| participant + iid | yes | no | iid | raw residual ACF/variogram |
+| participant + trial + iid | yes | shared-Ψ trial intercept | iid | whether broad smooth residual structure remains |
+| participant + exponential | yes | no | physical-time exponential | whitened residual ACF/variogram |
+| participant + trial + exponential | yes | shared-Ψ trial intercept | physical-time exponential | whitening plus covariance-decomposition stability |
+| participant + AR(1) | yes | optional | signed index-step AR(1), regular grid only | whitened residual ACF/variogram |
+
+Version 0.49 fits only the analyst-declared row; it does not rank these
+structures or choose a winner. A long-range exponential process can compete
+with a smooth trial functional random effect, so trial-covariance conditioning,
+serial-parameter boundaries, bootstrap stability, and fixed-effect sensitivity
+must be interpreted together. Version 0.50 is planned to make that structural
+sensitivity explicit without turning it into automatic model selection.
+
