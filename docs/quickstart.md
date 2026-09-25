@@ -164,6 +164,31 @@ This estimates one shared unstructured trial-basis covariance. It does not
 select the trial effect or basis size automatically. Whole participants remain
 the bootstrap resampling unit.
 
+
+### Optional 0.49 within-trial residual covariance
+
+When the scientific residual process is serial, declare its family explicitly:
+
+~~~python
+serial = fit_functional_mixed_effects_regression(
+    trajectories,
+    design,
+    predictors=("condition",),
+    participant_column="participant_id",
+    trial_column="trial_id",
+    trial_random_effect="functional_intercept",
+    residual_correlation="exponential",
+    dimension="metric",
+)
+~~~
+
+Use exponential correlation when dependence should follow actual elapsed time;
+it supports an irregular common grid. Use `residual_correlation="ar1"` only on
+a verified regular grid when index-step AR(1) is the intended model.
+
+After a serial fit, diagnose both native and whitened residuals. The raw ACF is
+not expected to be flat merely because serial covariance has been modeled.
+
 For repeated trials, keep each participant in one held-out fold:
 
     cv = cross_validate_fpca_reconstruction(
