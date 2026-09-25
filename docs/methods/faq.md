@@ -695,7 +695,7 @@ may be fragile for the available participant sample.
 ## Why is the raw residual ACF still correlated after I fit exponential or AR(1) residual covariance?
 
 Because raw residual correlation is part of the fitted model. Under 0.49,
-(oldsymbolepsilon_{ij}\sim N(0,\sigma^2R_\theta)), so the raw residuals
+(\boldsymbol\epsilon_{ij}\sim N(0,\sigma^2R_\theta)), so the raw residuals
 need not have a flat ACF.
 
 Use
