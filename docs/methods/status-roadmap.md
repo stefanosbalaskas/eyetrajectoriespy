@@ -18,6 +18,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Functional mixed-effects simultaneous coefficient bands | implemented; whole-participant case bootstrap, fixed-covariance GLS coefficient refits, coefficient/family observed-grid maxima | `bootstrap_functional_mixed_effects_coefficients()` / `functional_mixed_effects_simultaneous_bands()` |
 | Full-refit participant bootstrap | implemented; unique bootstrap group IDs for duplicate participant draws, complete MixedLM refit under fixed declared specification, retained variance-component distributions | `bootstrap_functional_mixed_effects_full_refit()` |
 | Participant random functional slope | implemented; one declared predictor, shared random basis size, full unstructured intercept/slope covariance, strict within-participant variation and covariance-complexity guards | `fit_functional_mixed_effects_regression(..., random_slope_predictor=...)` |
+| Mixed-effects residual / within-trial dependence diagnostics | implemented; explicit trial ACF/autocovariance, empirical semivariance, exact physical-lag pair audit, participant/overall stratification, and descriptive fit-vs-fit comparison | `functional_mixed_effects_residual_diagnostics()` |
 | Explicit irregular → common-grid projection | implemented | `resample_irregular_to_grid()` |
 | Univariate FPCA | implemented | `fit_fpca()` |
 | Joint multivariate FPCA | implemented | `fit_mfpca()` |
@@ -142,24 +143,33 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.46.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.47.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
-### Next methodological priority: residual / within-trial dependence diagnostics
+### 0.47 residual / within-trial dependence diagnostics
 
-Version 0.46 closes the planned variance-component re-estimation gap while
-preserving the faster 0.44 fixed-covariance bootstrap as a separate conditional
-inference path.
-
-Version **0.47** should diagnose dependence left in the curve-level residuals
-before any new covariance model is selected. Candidate diagnostics include
-trial-wise residual ACF, lag covariance, empirical variograms, physical-lag
-correlation, participant/trial stratification, and before/after random-slope
+Version **0.47** implements the diagnostic tranche that follows the 0.46
+full-refit bootstrap. It reports conditional-residual autocovariance,
+autocorrelation, and empirical semivariance by trial over an explicitly declared
+maximum index lag; retains physical-lag mean/minimum/maximum separation on the
+observed common grid; exposes exact residual-pair contributions on demand; and
+provides participant/overall stratification plus descriptive fit-vs-fit
 comparisons.
 
-The diagnostics must not automatically choose AR(1), a trial-level functional
-random effect, or another covariance structure. The next structural tranche
-should be chosen only after those residual patterns are explicit.
+The diagnostic contract is deliberately non-selective. It does not automatically
+choose AR(1), a trial-level functional random effect, or another covariance
+structure, and it does not treat residual-diagnostic differences as a model
+selection test.
+
+### Next structural priority
+
+The next structural tranche should be chosen after residual patterns are
+explicit. Candidate 0.48 directions remain:
+
+- a trial-level functional random effect when smooth trial-specific departures
+  remain after participant effects;
+- an explicit serial residual covariance model when short-range residual
+  dependence is the dominant remaining structure.
 
 Multiple random functional slopes, generalized responses, TE networks, and
 automatic causal discovery remain later candidates.
