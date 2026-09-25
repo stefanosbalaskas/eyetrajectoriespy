@@ -790,6 +790,117 @@ for whole-function observed-grid inference see
 `bootstrap_functional_mixed_effects_coefficients()` and
 `functional_mixed_effects_simultaneous_bands()`.
 
+## Covariance-structure sensitivity { #functional-mixed-effects-covariance-sensitivity }
+
+Version 0.50 compares already fitted, predeclared covariance structures against
+one analyst-declared reference. It does not fit covariance combinations or
+select a preferred model.
+
+For model \(m\) relative to reference \(r\),
+
+\[
+\Delta\beta_m(t)
+=
+\widehat\beta_m(t)-\widehat\beta_r(t).
+\]
+
+The two retained coefficient-robustness summaries are
+
+\[
+D_{\infty,m}
+=
+\sup_t |\Delta\beta_m(t)|
+\]
+
+and
+
+\[
+D_{2,m}
+=
+\left[
+\int
+\{\Delta\beta_m(t)\}^2\,dt
+\right]^{1/2},
+\]
+
+with the latter evaluated by trapezoidal integration on the observed time grid.
+
+Covariance matrices are also mapped back to interpretable functional scales.
+For the participant random intercept and optional trial random intercept,
+
+\[
+v_{P0}(t)
+=
+\mathbf B_P(t)^\top
+\boldsymbol\Psi_{P0}
+\mathbf B_P(t),
+\qquad
+v_T(t)
+=
+\mathbf B_T(t)^\top
+\boldsymbol\Psi_T
+\mathbf B_T(t),
+\]
+
+while the pointwise residual marginal variance is
+
+\[
+v_\varepsilon(t)=\sigma^2.
+\]
+
+When a participant random slope is present, its variance function and the
+intercept/slope cross-covariance function are retained separately rather than
+collapsed into one percentage.
+
+Information criteria are descriptive. Under ML,
+
+\[
+k_{\mathrm{ML}}
+=
+k_{\mathrm{fixed}}+k_{\mathrm{covariance}},
+\]
+
+whereas under REML with identical fixed design/basis the recorded restricted
+likelihood convention uses
+
+\[
+k_{\mathrm{REML}}
+=
+k_{\mathrm{covariance}}.
+\]
+
+The reported criteria are
+
+\[
+\mathrm{AIC}_m=-2\ell_m+2k_m,
+\qquad
+\mathrm{BIC}_m=-2\ell_m+k_m\log n,
+\]
+
+with the explicit BIC convention
+
+\[
+n=n_{\mathrm{curves}}n_{\mathrm{time}}.
+\]
+
+That observation count is a transparent calculation convention rather than a
+claim about a unique effective sample size for clustered functional data.
+
+Successful models are compared only when observations, fixed design/basis,
+participant mapping/basis, response dimension, time grid/unit, spline degree,
+and ML/REML mode match. Matching trial identities/bases are also required when
+both models contain trial functional effects. Failed predeclared models remain
+visible with their failure reasons and NaN numerical comparisons.
+
+Raw and whitened residual diagnostics are retained side by side. Simultaneous
+band-width ratios are available only when supplied bands use the same
+confidence/scope/bootstrap contract and identical participant bootstrap draws.
+No model ranking, automatic covariance selection, or likelihood-ratio p-values
+are produced.
+
+**API:** \`functional_mixed_effects_covariance_sensitivity()\`,
+\`functional_mixed_effects_variance_decomposition()\`.
+
 ## One participant random functional slope { #functional-mixed-effects-random-slope }
 
 Version 0.45 adds exactly one analyst-declared participant random functional
