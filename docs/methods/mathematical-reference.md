@@ -898,8 +898,8 @@ confidence/scope/bootstrap contract and identical participant bootstrap draws.
 No model ranking, automatic covariance selection, or likelihood-ratio p-values
 are produced.
 
-**API:** \`functional_mixed_effects_covariance_sensitivity()\`,
-\`functional_mixed_effects_variance_decomposition()\`.
+**API:** `functional_mixed_effects_covariance_sensitivity()`,
+`functional_mixed_effects_variance_decomposition()`.
 
 ## One participant random functional slope { #functional-mixed-effects-random-slope }
 
