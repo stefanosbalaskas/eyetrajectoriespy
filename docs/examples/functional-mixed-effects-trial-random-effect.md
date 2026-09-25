@@ -5,7 +5,7 @@ functional mixed-effects model.
 
 ## Fit the hierarchy
 
-Assume \`trajectories.metadata\` contains \`participant_id\` and \`trial_id\`,
+Assume `trajectories.metadata` contains `participant_id` and `trial_id`,
 with one trajectory per participant/trial pair.
 
 ~~~python
