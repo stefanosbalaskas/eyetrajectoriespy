@@ -650,6 +650,12 @@ Do not choose the basis size, response dimension, predictor coding, optimizer,
 or time window after inspecting which specification yields the preferred
 functional effect.
 
+If residual-dependence diagnostics are planned, also pre-specify the maximum
+index lag, the primary diagnostic level (trial, participant summary, or
+overall summary), and any planned before/after mixed-model comparison. Do not
+expand the lag window or choose a residual covariance structure only because a
+post hoc diagnostic pattern gives the preferred inferential result.
+
 ## Function-on-scalar regression
 
 If a functional response will be modeled using scalar predictors, pre-specify:
