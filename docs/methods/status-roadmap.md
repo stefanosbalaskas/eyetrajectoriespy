@@ -20,6 +20,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Participant random functional slope | implemented; one declared predictor, shared random basis size, full unstructured intercept/slope covariance, strict within-participant variation and covariance-complexity guards | `fit_functional_mixed_effects_regression(..., random_slope_predictor=...)` |
 | Mixed-effects residual / within-trial dependence diagnostics | implemented; explicit trial ACF/autocovariance, empirical semivariance, exact physical-lag pair audit, participant/overall stratification, and descriptive fit-vs-fit comparison | `functional_mixed_effects_residual_diagnostics()` |
 | Trial-level functional random effect | implemented; explicit nested trial identifier, one shared unstructured trial-basis covariance, profiled Gaussian marginal likelihood, separate trial BLUPs/covariance diagnostics, participant-level bootstrap propagation | `fit_functional_mixed_effects_regression(..., trial_random_effect="functional_intercept")` / `functional_trial_random_effect_frame()` |
+| Explicit mixed-effects residual covariance + whitening | implemented; physical-time exponential correlation on irregular common grids, signed index-step AR(1) on verified regular grids, block-diagonal trial residual covariance, jointly estimated serial parameter, raw/whitened diagnostics and bootstrap propagation | `fit_functional_mixed_effects_regression(..., residual_correlation=...)` / `functional_mixed_effects_whitened_residuals()` |
 | Explicit irregular → common-grid projection | implemented | `resample_irregular_to_grid()` |
 | Univariate FPCA | implemented | `fit_fpca()` |
 | Joint multivariate FPCA | implemented | `fit_mfpca()` |
@@ -133,7 +134,7 @@ Still not provided are full uncertainty procedures that jointly include target m
 
 Future tranches may evaluate:
 
-- richer functional mixed-effects structures: explicit residual serial correlation, multiple random functional slopes, and generalized responses;
+- richer functional mixed-effects structures after 0.50: multiple random functional slopes and generalized responses;
 - richer multilevel functional mixed-effects backends;
 - explicit system-identification models for gaze dynamics;
 - model-based continuation / Floquet analysis only after a validated dynamical-system contract exists.
@@ -144,7 +145,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.48.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.49.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
@@ -180,27 +181,39 @@ requested.
 The 0.48 contract requires an explicit trial identifier, unique trial IDs within
 participant, at least two observed trials per participant, a declared trial
 basis size, and a minimum trial-count > free trial-covariance-parameter guard.
-It retains participant and trial BLUPs separately, exposes trial covariance
-eigenvalues/condition/boundary diagnostics, and keeps whole participants as the
-bootstrap resampling unit so all nested trials travel with the participant.
+That count rule is a **minimum complexity guard, not evidence that the trial
+covariance is adequately estimated**; eigenvalue, condition-number, boundary,
+and bootstrap diagnostics remain essential. The result retains participant and
+trial BLUPs separately and keeps whole participants as the bootstrap resampling
+unit so all nested trials travel with the participant.
 
-### Next structural priority: 0.49
+### 0.49 explicit residual covariance and whitening
 
-Version **0.49** should add explicit residual covariance only after the 0.48
-trial-level smooth structure has been accounted for. The preferred first-class
-physical-time contract is continuous-time exponential correlation,
+Version **0.49** adds analyst-declared within-trial residual covariance to the
+profiled Gaussian mixed-effects likelihood. Continuous-time exponential
+correlation uses actual physical-time separation and is valid on irregular
+common grids; signed AR(1) uses index-step lag and is accepted only on a
+verified regular grid. The serial parameter is estimated jointly, residual
+covariance remains block diagonal by trial, and optimizer-boundary diagnostics
+are retained.
 
-```math
-R_\phi(t,s)=\exp\{-|t-s|/\phi\},
-```
+The 0.47 residual diagnostics now support `residual_scale="whitened"`.
+Raw residual correlation is expected under a correlated-error model; the
+whitened ACF/variogram is the relevant diagnostic for remaining serial
+structure. Both fixed-covariance and full-refit participant bootstraps propagate
+the declared residual covariance without changing its family.
 
-with ordinary AR(1) retained only as an explicitly index-step model for genuinely
-regular grids. No residual structure should be selected automatically.
+The package explicitly documents possible competition between a long-range
+serial process and a smooth trial functional random effect. Large estimated
+range, trial-covariance ill-conditioning, or covariance shifts are diagnostics,
+not automatic model-selection rules.
 
-Version **0.50** should then provide covariance-structure
-sensitivity/comparison across predeclared participant/trial/residual covariance
-contracts without converting those comparisons into an automatic model
-selector.
+### Next structural priority: 0.50
+
+Version **0.50** should provide covariance-structure sensitivity/comparison
+across predeclared participant/trial/residual covariance contracts without
+converting AIC/BIC, residual diagnostics, coefficient changes, band-width
+changes, or variance-component shifts into an automatic winner.
 
 Multiple random functional slopes, generalized responses, TE networks, and
 automatic causal discovery remain later candidates.
