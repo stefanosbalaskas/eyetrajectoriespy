@@ -314,6 +314,6 @@ Version 0.49 fits only the analyst-declared row; it does not rank these
 structures or choose a winner. A long-range exponential process can compete
 with a smooth trial functional random effect, so trial-covariance conditioning,
 serial-parameter boundaries, bootstrap stability, and fixed-effect sensitivity
-must be interpreted together. Version 0.50 is planned to make that structural
-sensitivity explicit without turning it into automatic model selection.
+must be interpreted together. Version 0.50 makes that structural sensitivity
+explicit without turning it into automatic model selection.
 
