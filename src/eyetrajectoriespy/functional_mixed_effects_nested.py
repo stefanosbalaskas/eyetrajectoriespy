@@ -302,9 +302,11 @@ def _block_residual_covariance(
 def _residual_correlation_diagnostics(
     correlation: np.ndarray,
     *,
+    family: str,
     transformed_parameter: float | None,
     transformed_bounds: tuple[float, float] | None,
-) -> tuple[np.ndarray, float, bool]:
+    independence_tolerance: float = 0.05,
+) -> tuple[np.ndarray, float, bool, bool]:
     eigenvalues = np.linalg.eigvalsh(
         np.asarray(correlation, dtype=float)
     )
@@ -323,7 +325,13 @@ def _residual_correlation_diagnostics(
             transformed_parameter <= lower + tolerance
             or transformed_parameter >= upper - tolerance
         )
-    return eigenvalues, condition_number, boundary
+    off_diagonal = np.asarray(correlation, dtype=float).copy()
+    np.fill_diagonal(off_diagonal, 0.0)
+    independence_limit = bool(
+        family == "exponential"
+        and float(np.max(np.abs(off_diagonal))) <= independence_tolerance
+    )
+    return eigenvalues, condition_number, boundary, independence_limit
 
 
 def functional_mixed_effects_whitened_residuals(
@@ -1027,10 +1035,13 @@ def fit_nested_functional_mixed_effects_regression(
         residual_correlation_eigenvalues,
         residual_correlation_condition_number,
         residual_correlation_boundary,
+        residual_correlation_independence_limit,
     ) = _residual_correlation_diagnostics(
         residual_correlation_matrix,
+        family=residual_family,
         transformed_parameter=transformed_correlation,
         transformed_bounds=correlation_spec["transformed_bounds"],
+        independence_tolerance=0.05,
     )
 
     participant_coefficients = np.empty(
@@ -1393,6 +1404,10 @@ def fit_nested_functional_mixed_effects_regression(
                 "residual_correlation_boundary_fit": (
                     residual_correlation_boundary
                 ),
+                "residual_correlation_independence_limit_fit": (
+                    residual_correlation_independence_limit
+                ),
+                "residual_correlation_independence_tolerance": 0.05,
                 "residual_correlation_crosses_trial_boundaries": False,
                 "residual_correlation_parameter_estimated_jointly": (
                     residual_family != "iid"
@@ -1475,6 +1490,9 @@ def fit_nested_functional_mixed_effects_regression(
             residual_correlation_condition_number
         ),
         residual_correlation_boundary_fit=residual_correlation_boundary,
+        residual_correlation_independence_limit_fit=(
+            residual_correlation_independence_limit
+        ),
         residual_correlation_optimizer_bounds=parameter_bounds,
         residual_correlation_grid_regular=bool(
             correlation_spec["grid_regular"]
