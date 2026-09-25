@@ -761,6 +761,20 @@ Do not describe the 0.36 model as a fully general functional additive mixed
 model. State the omitted covariance/random-effect structures that matter for
 the study design.
 
+If version 0.47 residual diagnostics are used, additionally report:
+
+- that the diagnostics use conditional residual functions from the fitted
+  mixed-effects model;
+- the explicitly declared maximum index lag;
+- the time unit and whether index lags corresponded to one exact physical lag
+  or a range on a non-equally-spaced common grid;
+- trial-level ACF/autocovariance and empirical-semivariance definitions;
+- participant/overall aggregation level and the number of trials with defined
+  ACF values;
+- any before/after comparison of declared mixed-effects specifications;
+- that no AR(1), trial-level functional random effect, or other covariance
+  structure was selected automatically from the diagnostic output.
+
 ## Function-on-scalar regression
 
 Report:
