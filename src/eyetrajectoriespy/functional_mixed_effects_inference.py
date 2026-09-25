@@ -38,6 +38,42 @@ def _validate_reference(
         raise ValueError(
             "reference random_effect_covariance must be symmetric"
         )
+    if result.trial_random_effect is not None:
+        if result.trial_random_effect != "functional_intercept":
+            raise ValueError("unsupported reference trial_random_effect")
+        if (
+            result.trial_random_effect_covariance is None
+            or result.trial_random_basis is None
+            or result.trial_random_basis_size < 1
+        ):
+            raise ValueError(
+                "reference trial random-effect covariance contract is incomplete"
+            )
+        trial_covariance = np.asarray(
+            result.trial_random_effect_covariance,
+            dtype=float,
+        )
+        expected_trial_shape = (
+            result.trial_random_basis_size,
+            result.trial_random_basis_size,
+        )
+        if trial_covariance.shape != expected_trial_shape:
+            raise ValueError(
+                "reference trial_random_effect_covariance has an unexpected shape"
+            )
+        if not np.all(np.isfinite(trial_covariance)):
+            raise ValueError(
+                "reference trial_random_effect_covariance must contain finite values"
+            )
+        if not np.allclose(
+            trial_covariance,
+            trial_covariance.T,
+            rtol=1e-10,
+            atol=1e-12,
+        ):
+            raise ValueError(
+                "reference trial_random_effect_covariance must be symmetric"
+            )
 
 
 def _participant_gls_contributions(
@@ -98,6 +134,20 @@ def _participant_gls_contributions(
             + result.residual_variance
             * np.eye(random_exog.shape[0], dtype=float)
         )
+        if result.trial_random_effect == "functional_intercept":
+            trial_basis = np.asarray(
+                result.trial_random_basis,
+                dtype=float,
+            )
+            trial_covariance = np.asarray(
+                result.trial_random_effect_covariance,
+                dtype=float,
+            )
+            trial_block = trial_basis @ trial_covariance @ trial_basis.T
+            for local_curve_index in range(curve_indices.size):
+                start = local_curve_index * n_time
+                stop = start + n_time
+                marginal_covariance[start:stop, start:stop] += trial_block
         try:
             covariance_inverse_fixed = np.linalg.solve(
                 marginal_covariance,
@@ -146,7 +196,7 @@ def _participant_gls_contributions(
     ):
         raise RuntimeError(
             "fixed-covariance GLS reconstruction does not reproduce the "
-            "reference MixedLM fixed coefficients"
+            "reference mixed-effects fixed coefficients"
         )
     return information, scores, np.asarray([max_difference], dtype=float)
 
@@ -278,7 +328,10 @@ def bootstrap_functional_mixed_effects_coefficients(
             None if random_state is None else int(random_state)
         ),
         covariance_conditioning=(
-            "reference_random_effect_covariance_and_residual_variance_fixed"
+            "reference_participant_and_trial_random_effect_covariances_"
+            "and_residual_variance_fixed"
+            if result.trial_random_effect is not None
+            else "reference_random_effect_covariance_and_residual_variance_fixed"
         ),
         provenance={
             **dict(result.provenance),
@@ -299,6 +352,13 @@ def bootstrap_functional_mixed_effects_coefficients(
                 "fixed_effects_reestimated_each_replicate": True,
                 "variance_components_refit": False,
                 "random_effect_covariance_conditioned_on_reference": True,
+                "trial_random_effect_covariance_conditioned_on_reference": (
+                    result.trial_random_effect is not None
+                ),
+                "reference_trial_random_effect": result.trial_random_effect,
+                "reference_trial_random_basis_size": (
+                    result.trial_random_basis_size
+                ),
                 "residual_variance_conditioned_on_reference": True,
                 "fixed_basis_refit": False,
                 "random_basis_refit": False,
