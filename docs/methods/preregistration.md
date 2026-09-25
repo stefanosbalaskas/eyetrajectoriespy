@@ -852,3 +852,27 @@ fixed-effect conclusion. Version 0.50 is intended for transparent sensitivity
 across predeclared covariance structures rather than outcome-favorable
 selection.
 
+## Covariance-structure sensitivity
+
+If covariance robustness is planned, pre-register the finite set of covariance
+specifications before inspecting comparative results. For each structure,
+declare the participant random-slope predictor or its absence, trial functional
+random effect or its absence, residual-correlation family, basis dimensions,
+likelihood mode, optimizer contract, and convergence policy.
+
+Also pre-register:
+
+- the reference specification used for coefficient/band/IC differences;
+- the maximum residual-diagnostic lag;
+- whether simultaneous-band sensitivity will be reported and the common
+  confidence/scope/bootstrap design;
+- the fixed successful-fit comparability criteria;
+- how failed declared structures will be retained and reported;
+- the information-criterion convention, including the BIC observation count;
+- which coefficient-function changes and variance-decomposition quantities are
+  substantively important.
+
+Do not choose the reference, remove failed models, expand the specification set,
+or redefine a residual diagnostic after seeing which covariance structure gives
+the preferred substantive conclusion.
+
