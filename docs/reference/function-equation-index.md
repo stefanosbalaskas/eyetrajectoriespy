@@ -206,10 +206,10 @@ $$
 
 ## Joint functional mixed-effects regression
 
-**Functions:** `fit_functional_mixed_effects_regression()`
+**Functions:** `fit_functional_mixed_effects_regression()`, `functional_mixed_effects_whitened_residuals()`
 
 $$
-Y_{ij}(t)=\mathbf x_{ij}^{\top}\boldsymbol\beta(t)+\mathbf B_r(t)^{\top}\mathbf u_i+\varepsilon_{ij}(t)
+Y_{ij}(t)=\mathbf x_{ij}^{\top}\boldsymbol\beta(t)+\mathbf B_r(t)^{\top}\mathbf u_i+u_{ij}(t)+\varepsilon_{ij}(t)
 $$
 
 $$
@@ -217,24 +217,37 @@ $$
 $$
 
 $$
-\mathbf u_i\sim N(\mathbf 0,\boldsymbol\Psi_{p}),\qquad \varepsilon_{ij}(t_m)\sim N(0,\sigma^2)
+\mathbf u_i\sim N(\mathbf 0,\boldsymbol\Psi_P)
 $$
 
 $$
-\operatorname{Cov}(\mathbf Y_i\mid\mathbf X_i)=\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top+\sigma^2\mathbf I
+u_{ij}(t)=\mathbf B_u(t)^\top\mathbf v_{ij},\qquad \mathbf v_{ij}\sim N(\mathbf 0,\boldsymbol\Psi_T)
 $$
 
 $$
-u_{ij}(t)=\mathbf B_u(t)^\top\mathbf v_{ij},\qquad \mathbf v_{ij}\sim N(\mathbf 0,\boldsymbol\Psi_{trial})
+\operatorname{Cov}\{\boldsymbol\varepsilon_{ij}\}=\sigma^2\mathbf R_\theta
 $$
 
 $$
-\mathbf V_i=\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top+\sum_j\mathbf W_{ij}\boldsymbol\Psi_{trial}\mathbf W_{ij}^\top+\sigma^2\mathbf I
+R_\phi(t,s)=\exp\{-|t-s|/\phi\},\qquad \phi>0
 $$
 
-**Scope:** One selected Gaussian functional response dimension on a common grid with explicit B-spline fixed effects and participant functional random effects. Version 0.48 optionally adds one nested trial functional random intercept with its own shared unstructured basis-coefficient covariance. The trial extension is explicit, requires unique participant/trial pairs and at least two trials per participant, and retains conditionally iid grid residuals after the declared random effects. No automatic basis/covariance selection, residual serial-correlation model, multiple trial random effects, or multivariate cross-dimension covariance is claimed.
+$$
+R_{\rho,rs}=\rho^{|r-s|},\qquad -1<\rho<1
+$$
 
-[Expanded mathematical reference](../methods/mathematical-reference.md#functional-mixed-effects)
+$$
+\mathbf V_i=\mathbf Z_i\boldsymbol\Psi_P\mathbf Z_i^\top+\sum_j\mathbf W_{ij}\boldsymbol\Psi_T\mathbf W_{ij}^\top+\sigma^2\operatorname{blockdiag}_j\{\mathbf R_\theta\}
+$$
+
+$$
+\sigma^2\mathbf R_\theta=\mathbf L\mathbf L^\top,\qquad \mathbf e_{ij}^{(w)}=\mathbf L^{-1}\mathbf e_{ij}
+$$
+
+**Scope:** One selected Gaussian functional response dimension on a common grid with explicit B-spline fixed effects and participant functional random effects. Version 0.48 optionally adds one nested trial functional random intercept with a shared unstructured basis-coefficient covariance. Version 0.49 optionally adds analyst-declared within-trial residual covariance: continuous-time exponential correlation on physical time or signed index-step AR(1) on a verified regular grid. Residual covariance is block diagonal across trials; the serial parameter is estimated jointly; whitening uses the fitted residual covariance. No automatic basis, trial-effect, or residual-correlation-family selection, multiple trial random effects, or multivariate cross-dimension covariance is claimed.
+
+Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#functional-mixed-effects
+
 
 ## One participant random functional slope
 
