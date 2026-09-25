@@ -996,3 +996,25 @@ after the declared participant and optional trial functional random effects.
 Version 0.47 diagnostics remain applicable after the 0.48 extension; persistent
 short-range residual dependence is the motivation for the planned 0.49
 physical-time residual covariance layer, not an automatically selected model.
+
+## Residual covariance does not make the hierarchy uniquely identifiable
+
+Version 0.49 supports one declared within-trial exponential or regular-grid
+AR(1) residual process. This does not imply that a smooth trial functional
+random effect and a long-range residual process can always be separated
+precisely from finite data.
+
+A very large estimated exponential range, an ill-conditioned or boundary trial
+covariance, bootstrap instability, or major redistribution of covariance after
+adding serial correlation may indicate weak decomposition between
+(u_{ij}(t)) and (epsilon_{ij}(t)). The package retains those diagnostics
+and does not automatically remove either component.
+
+AR(1) is deliberately unavailable on irregular grids. Exponential correlation
+cannot represent negative AR(1) dependence. Neither family is automatically
+selected from residual plots or likelihood values.
+
+Whitened residual diagnostics are conditional on estimated parameters and
+random effects. Approximate whitening does not turn them into independent
+observations with known covariance.
+

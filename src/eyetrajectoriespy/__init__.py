@@ -56,6 +56,7 @@ from .functional_mixed_effects_diagnostics import (
     plot_functional_mixed_effects_residual_variogram,
 )
 from .functional_mixed_effects_nested import (
+    functional_mixed_effects_whitened_residuals,
     functional_trial_random_effect_frame,
     plot_functional_trial_random_effects,
 )
@@ -451,9 +452,10 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.48.0.dev0"
+__version__ = "0.49.0.dev0"
 
 __all__ = [
+    "functional_mixed_effects_whitened_residuals",
     "functional_trial_random_effect_frame",
     "plot_functional_trial_random_effects",
     "functional_mixed_effects_full_refit_trial_audit_frame",

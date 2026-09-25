@@ -671,6 +671,75 @@ no participant–trial cross-covariance is estimated. Trial covariance
 eigenvalues, condition number, boundary/singularity diagnostics, trial BLUP
 coefficients, and reconstructed trial functions are retained.
 
+### Version 0.49 explicit residual covariance
+
+Version 0.49 replaces the iid residual block only when an analyst explicitly
+declares a serial family. For each source curve/trial,
+
+\[
+\boldsymbol\varepsilon_{ij}
+\sim
+N(\mathbf 0,\sigma^2\mathbf R_\theta).
+\]
+
+The physical-time exponential family is
+
+\[
+R_\phi(t,s)
+=
+\exp\!\left(-\frac{|t-s|}{\phi}\right),
+\qquad \phi>0,
+\]
+
+with \(\phi=\exp(\eta_\phi)\). The parameter \(\phi\) is therefore in the same
+physical time unit as the trajectory grid and remains meaningful on an
+unequally spaced common grid.
+
+For a verified equally spaced common grid, AR(1) is
+
+\[
+R_{\rho,rs}
+=
+\rho^{|r-s|},
+\qquad
+-1<\rho<1,
+\]
+
+with \(\rho=\tanh(\eta_\rho)\). This is an index-step model. Negative
+\(\rho\) is supported; continuous-time exponential correlation is not treated
+as an equivalent parameterization when \(\rho<0\).
+
+The participant marginal covariance becomes
+
+\[
+\mathbf V_i
+=
+\mathbf Z_i\boldsymbol\Psi_P\mathbf Z_i^\top
++
+\sum_j
+\mathbf W_{ij}\boldsymbol\Psi_T\mathbf W_{ij}^\top
++
+\sigma^2\operatorname{blockdiag}_j\{\mathbf R_\theta\}.
+\]
+
+Residual correlation therefore never crosses source-curve/trial boundaries.
+The trial term is omitted when no trial functional random effect is declared,
+and \(\mathbf R_\theta=\mathbf I\) under the iid model.
+
+For diagnostic whitening,
+
+\[
+\sigma^2\mathbf R_\theta=\mathbf L\mathbf L^\top,
+\qquad
+\mathbf e_{ij}^{(w)}=\mathbf L^{-1}\mathbf e_{ij}.
+\]
+
+A serial model is not judged by requiring the raw residual ACF to vanish:
+correlation is expected in the raw residual scale under the fitted model.
+The whitened residual ACF/variogram instead diagnose remaining serial
+structure after applying the declared residual covariance. Numerical
+optimizer bounds and boundary proximity are retained rather than hidden.
+
 ### Trial-varying predictors
 
 Unlike the 0.35 participant-aggregation route, trial-varying scalar predictors
@@ -699,19 +768,24 @@ observed-grid simultaneous fixed-coefficient bands. That layer re-estimates
 fixed coefficients under whole-participant resampling while conditioning on the
 reference random-effect covariance, residual variance, and declared bases.
 The fixed-covariance bootstrap does not claim variance-component
-uncertainty, basis-selection uncertainty, continuous-between-grid coverage, or
-serially correlated residual errors. Version 0.45 separately supports exactly
-one guarded participant random functional slope, version 0.46 adds a full-refit
-participant bootstrap for declared covariance parameters, and version 0.48 adds
-one nested trial functional random intercept. Multiple participant/trial random
-effects, generalized/non-Gaussian responses, and joint cross-dimension
+uncertainty, basis-selection uncertainty, or continuous-between-grid coverage.
+When a serial residual model is declared, it conditions on that fitted residual
+covariance as well as the participant/trial covariance terms. Version 0.45
+supports exactly one guarded participant random functional slope, version 0.46
+adds a full-refit participant bootstrap, version 0.48 adds one nested trial
+functional random intercept, and version 0.49 adds explicit exponential/AR(1)
+within-trial residual covariance plus diagnostic whitening. The full-refit
+bootstrap re-estimates every declared covariance parameter, including phi/rho,
+without changing the predeclared covariance family. Multiple participant/trial
+random effects, generalized/non-Gaussian responses, and joint cross-dimension
 covariance remain outside the current model.
 
 A non-converged optimizer result raises rather than being returned as a valid
 scientific fit.
 
 **API:** `fit_functional_mixed_effects_regression()`,
-`functional_mixed_effects_coefficient_frame()`;
+`functional_mixed_effects_coefficient_frame()`,
+`functional_mixed_effects_whitened_residuals()`;
 for whole-function observed-grid inference see
 `bootstrap_functional_mixed_effects_coefficients()` and
 `functional_mixed_effects_simultaneous_bands()`.

@@ -86,6 +86,33 @@ plot_functional_mixed_effects_residual_variogram(
 `max_lag` is required. The package does not inspect the result and choose a lag
 window automatically.
 
+## Version 0.49: diagnose serial models on the whitened scale
+
+When a correlated residual covariance is fitted, raw residuals are **supposed**
+to retain the modeled correlation. Their ACF is therefore not a valid success
+criterion for whitening.
+
+Version 0.49 adds:
+
+~~~python
+white = functional_mixed_effects_residual_diagnostics(
+    fit,
+    max_lag=8,
+    residual_scale="whitened",
+)
+~~~
+
+If the fitted within-trial residual covariance is
+(σ^2R_\theta=LL^\top), the diagnostic residual vector is
+(e^{(w)}=L^{-1}e). The same ACF/autocovariance/semivariance summaries are then
+computed on that whitened residual function. The default remains
+`residual_scale="raw"` for backward compatibility.
+
+Whitening uses only the fitted residual covariance. It does not remove
+uncertainty in estimated fixed effects, random effects, variance components, or
+the serial parameter. A flat whitened ACF is therefore a diagnostic target, not
+proof that the complete stochastic model is correct.
+
 ## Physical lag is retained, not assumed
 
 The mixed-effects model uses a common grid, but that grid need not be equally
@@ -151,12 +178,14 @@ mechanism. Two scientifically distinct possibilities are:
 - a serial residual process (epsilon_{ij}(t)), representing shorter-range
   dependence after smooth participant/trial effects.
 
-Those structures are not interchangeable. Version 0.47 therefore diagnoses
-the residual pattern first and leaves the structural extension explicit.
+Those structures are not interchangeable. Version 0.47 diagnoses the raw
+residual pattern first; version 0.49 adds explicitly declared serial covariance
+and a whitened diagnostic scale while still leaving the structural choice
+explicit.
 
 ## Reporting
 
-Report the residual type (conditional residuals), declared maximum index lag,
+Report the residual type and scale (raw conditional or whitened conditional residuals), declared maximum index lag,
 time unit, whether the common grid was equally spaced, the trial/participant
 aggregation level, zero-variance trials, and whether diagnostics were compared
 before/after a declared model extension. State that no covariance structure was

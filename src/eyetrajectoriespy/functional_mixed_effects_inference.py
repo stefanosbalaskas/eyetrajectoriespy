@@ -38,6 +38,41 @@ def _validate_reference(
         raise ValueError(
             "reference random_effect_covariance must be symmetric"
         )
+    if result.residual_correlation not in {"iid", "exponential", "ar1"}:
+        raise ValueError("unsupported reference residual_correlation")
+    if result.residual_correlation_matrix is None:
+        raise ValueError(
+            "reference residual_correlation_matrix is required"
+        )
+    residual_correlation_matrix = np.asarray(
+        result.residual_correlation_matrix,
+        dtype=float,
+    )
+    if residual_correlation_matrix.shape != (
+        result.time.size,
+        result.time.size,
+    ):
+        raise ValueError(
+            "reference residual_correlation_matrix has an unexpected shape"
+        )
+    if not np.all(np.isfinite(residual_correlation_matrix)):
+        raise ValueError(
+            "reference residual_correlation_matrix must contain finite values"
+        )
+    if not np.allclose(
+        residual_correlation_matrix,
+        residual_correlation_matrix.T,
+        rtol=1e-10,
+        atol=1e-12,
+    ):
+        raise ValueError(
+            "reference residual_correlation_matrix must be symmetric"
+        )
+    if float(np.min(np.linalg.eigvalsh(residual_correlation_matrix))) <= 0:
+        raise ValueError(
+            "reference residual_correlation_matrix must be positive definite"
+        )
+
     if result.trial_random_effect is not None:
         if result.trial_random_effect != "functional_intercept":
             raise ValueError("unsupported reference trial_random_effect")
@@ -127,12 +162,18 @@ def _participant_gls_contributions(
             result.random_effect_design_matrix[row_indices],
             dtype=float,
         )
+        residual_block = (
+            result.residual_variance
+            * np.asarray(result.residual_correlation_matrix, dtype=float)
+        )
         marginal_covariance = (
             random_exog
             @ covariance
             @ random_exog.T
-            + result.residual_variance
-            * np.eye(random_exog.shape[0], dtype=float)
+            + np.kron(
+                np.eye(curve_indices.size, dtype=float),
+                residual_block,
+            )
         )
         if result.trial_random_effect == "functional_intercept":
             trial_basis = np.asarray(
@@ -328,10 +369,9 @@ def bootstrap_functional_mixed_effects_coefficients(
             None if random_state is None else int(random_state)
         ),
         covariance_conditioning=(
-            "reference_participant_and_trial_random_effect_covariances_"
-            "and_residual_variance_fixed"
+            "reference_participant_and_trial_random_effect_covariances_and_residual_covariance_fixed"
             if result.trial_random_effect is not None
-            else "reference_random_effect_covariance_and_residual_variance_fixed"
+            else "reference_participant_and_residual_covariance_fixed"
         ),
         provenance={
             **dict(result.provenance),
@@ -360,6 +400,16 @@ def bootstrap_functional_mixed_effects_coefficients(
                     result.trial_random_basis_size
                 ),
                 "residual_variance_conditioned_on_reference": True,
+                "residual_correlation_conditioned_on_reference": True,
+                "reference_residual_correlation": (
+                    result.residual_correlation
+                ),
+                "reference_residual_correlation_parameter": (
+                    result.residual_correlation_parameter
+                ),
+                "reference_residual_correlation_parameter_name": (
+                    result.residual_correlation_parameter_name
+                ),
                 "fixed_basis_refit": False,
                 "random_basis_refit": False,
                 "basis_selection_repeated": False,

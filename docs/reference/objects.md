@@ -70,9 +70,22 @@ free covariance-parameter count, and boundary/singularity diagnostics. The
 nested model requires unique participant/trial pairs and at least two trials
 per participant. Participant and trial covariance matrices remain distinct.
 
-The object does not imply serially correlated residuals, multiple trial random
-effects, multiple participant random slopes, multivariate response covariance,
-or variance-component-refit bootstrap uncertainty.
+Version 0.49 additionally retains the declared residual-correlation family,
+jointly estimated `phi` or `rho` when applicable, parameter name/unit and
+numerical bounds, within-trial residual correlation matrix, eigenvalues and
+condition number, regular-grid diagnostics, explicit numerical-bound and practical exponential-
+independence flags, and both raw and whitened conditional residual functions. Exponential
+correlation uses physical time; AR(1) uses index steps and is accepted only on
+an equally spaced common grid. Residual covariance is block diagonal by source
+curve/trial.
+
+The object does not imply that a serial covariance family was selected
+automatically, that raw residual ACF should be flat under a correlated-error
+model, that whitening removes fitted-parameter uncertainty, or that covariance
+components are uniquely identifiable when a smooth trial effect and a
+long-range residual process compete. It also does not represent multiple trial
+random effects, multiple participant random slopes, or multivariate response
+covariance.
 
 
 ## Function-on-scalar result objects
@@ -458,9 +471,12 @@ with zero.
 
 Participant and overall tables are pair-count-weighted summaries of the
 trial-level quantities and retain the total number of trials and the number
-with defined ACF values. The object records that no automatic lag selection,
-physical-lag binning, AR(1) selection, trial-level random-effect selection, or
-other covariance-structure selection occurred.
+with defined ACF values. Version 0.49 also records `residual_scale`: `"raw"`
+uses the native conditional residual functions, while `"whitened"` applies
+the fitted within-trial residual-covariance Cholesky factor before computing
+the same diagnostics. The object records that no automatic lag selection,
+physical-lag binning, AR(1)/exponential selection, trial-level random-effect
+selection, or other covariance-structure selection occurred.
 
 Exact physical-lag pair contributions are generated on demand by
 `functional_mixed_effects_residual_pair_frame()` rather than materialized
@@ -504,9 +520,12 @@ covariance, intercept covariance, optional slope covariance, optional
 intercept/slope cross-covariance, participant covariance eigenvalues and
 condition number, boundary and singularity flags, random-slope boundary flag,
 residual variance, log likelihood, convergence status, and backend warnings.
-For 0.48 nested fits it additionally retains the full trial covariance
+For 0.48+ nested fits it additionally retains the full trial covariance
 distribution, trial covariance eigenvalues/condition numbers, and
-trial-specific boundary/singularity flags.
+trial-specific boundary/singularity flags. For 0.49 serial fits it also retains
+the bootstrap distribution of the residual-correlation parameter together with
+its correlation-matrix condition number, numerical-bound flag, and practical
+exponential-independence flag in every replicate.
 
 Every occurrence of a sampled participant receives its own bootstrap
 participant identity. For a nested trial model, every trial inside that

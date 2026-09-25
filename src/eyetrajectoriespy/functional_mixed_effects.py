@@ -205,6 +205,7 @@ def fit_functional_mixed_effects_regression(
     trial_column: str | None = None,
     trial_random_effect: str | None = None,
     trial_random_basis_size: int = 3,
+    residual_correlation: str = "iid",
     spline_degree: int = 3,
     reml: bool = True,
     method: str = "lbfgs",
@@ -225,23 +226,31 @@ def fit_functional_mixed_effects_regression(
 
     Version 0.48 optionally adds one nested trial-level functional random
     intercept through an explicit profiled Gaussian marginal-likelihood backend.
-    This extension estimates a shared unstructured trial-basis covariance and
-    preserves the existing statsmodels MixedLM path when no trial random effect
-    is requested.
+    Version 0.49 extends that backend with explicit within-trial residual
+    correlation: physical-time exponential correlation on arbitrary strictly
+    increasing common grids, or index-step AR(1) on equally spaced grids.
+    Residual correlation is block diagonal by source curve/trial and is never
+    allowed to cross trial boundaries.
 
-    No random-slope predictor, trial random effect, covariance structure, basis
-    size, interaction, or optimizer fallback is selected automatically.
+    The historical statsmodels MixedLM path is preserved exactly for the
+    backward-compatible participant-only `residual_correlation="iid"` model.
+
+    No random-slope predictor, trial random effect, residual-correlation family,
+    basis size, interaction, or optimizer fallback is selected automatically.
     """
 
-    if trial_random_effect is not None:
+    if not isinstance(residual_correlation, str) or not residual_correlation:
+        raise TypeError("residual_correlation must be a non-empty string")
+    normalized_residual_correlation = residual_correlation.lower().strip()
+
+    if (
+        trial_random_effect is not None
+        or normalized_residual_correlation != "iid"
+    ):
         from .functional_mixed_effects_nested import (
             fit_nested_functional_mixed_effects_regression,
         )
 
-        if trial_column is None:
-            raise ValueError(
-                "trial_column is required when trial_random_effect is supplied"
-            )
         return fit_nested_functional_mixed_effects_regression(
             trajectories,
             design,
@@ -254,6 +263,7 @@ def fit_functional_mixed_effects_regression(
             random_slope_predictor=random_slope_predictor,
             trial_random_effect=trial_random_effect,
             trial_random_basis_size=trial_random_basis_size,
+            residual_correlation=normalized_residual_correlation,
             spline_degree=spline_degree,
             reml=reml,
             method=method,
@@ -602,6 +612,11 @@ def fit_functional_mixed_effects_regression(
         )
     observed_functions = trajectories.values[:, :, dimension_index].copy()
     residual_functions = observed_functions - fitted_functions
+    residual_variance = float(fitted_model.scale)
+    whitened_residual_functions = (
+        residual_functions / np.sqrt(residual_variance)
+    )
+    residual_correlation_matrix = np.eye(n_time, dtype=float)
 
     return FunctionalMixedEffectsResult(
         coefficient_functions=coefficient_functions,
@@ -635,7 +650,7 @@ def fit_functional_mixed_effects_regression(
         random_effect_singular=random_effect_singular,
         random_slope_boundary_fit=random_slope_boundary_fit,
         random_slope_predictor=random_slope_predictor,
-        residual_variance=float(fitted_model.scale),
+        residual_variance=residual_variance,
         fitted_functions=fitted_functions,
         residual_functions=residual_functions,
         observed_functions=observed_functions,
@@ -744,6 +759,9 @@ def fit_functional_mixed_effects_regression(
                 "residual_structure": (
                     "conditionally_iid_gaussian_grid_errors"
                 ),
+                "residual_correlation": "iid",
+                "automatic_residual_correlation_selection": False,
+                "residual_correlation_crosses_trial_boundaries": False,
                 "trial_varying_predictors_supported": True,
                 "random_slope_requires_within_participant_variation": (
                     has_random_slope
@@ -760,6 +778,41 @@ def fit_functional_mixed_effects_regression(
             },
         },
         model=fitted_model,
+        residual_correlation="iid",
+        residual_correlation_parameter=None,
+        residual_correlation_parameter_name=None,
+        residual_correlation_parameter_unit=None,
+        residual_correlation_matrix=residual_correlation_matrix,
+        residual_correlation_eigenvalues=np.ones(n_time, dtype=float),
+        residual_correlation_condition_number=1.0,
+        residual_correlation_boundary_fit=False,
+        residual_correlation_independence_limit_fit=True,
+        residual_correlation_optimizer_bounds=None,
+        residual_correlation_grid_regular=bool(
+            np.allclose(
+                np.diff(trajectories.time),
+                np.diff(trajectories.time)[0],
+                rtol=1e-8,
+                atol=max(
+                    1e-12,
+                    abs(float(np.diff(trajectories.time)[0])) * 1e-10,
+                ),
+            )
+        ),
+        residual_correlation_grid_interval=(
+            float(np.diff(trajectories.time)[0])
+            if np.allclose(
+                np.diff(trajectories.time),
+                np.diff(trajectories.time)[0],
+                rtol=1e-8,
+                atol=max(
+                    1e-12,
+                    abs(float(np.diff(trajectories.time)[0])) * 1e-10,
+                ),
+            )
+            else None
+        ),
+        whitened_residual_functions=whitened_residual_functions,
     )
 
 

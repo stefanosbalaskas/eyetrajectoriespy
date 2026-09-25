@@ -45,9 +45,12 @@ For participant \(i\), let
 $$
 \mathbf V_i
 =
-\mathbf Z_i\widehat{\boldsymbol\Psi}\mathbf Z_i^\top
+\mathbf Z_i\widehat{\boldsymbol\Psi}_P\mathbf Z_i^\top
 +
-\widehat\sigma^2\mathbf I.
+\sum_j\mathbf W_{ij}\widehat{\boldsymbol\Psi}_T\mathbf W_{ij}^\top
++
+\widehat\sigma^2
+\operatorname{blockdiag}_j\{\widehat{\mathbf R}_\theta\}.
 $$
 
 The participant's fixed-effect information and score contributions are
@@ -75,9 +78,9 @@ $$
 $$
 
 The fitted participant random-effect covariance, optional shared trial
-random-effect covariance, residual variance, fixed basis, participant/trial
-random bases, spline degree, model specification, and preprocessing decisions
-are held fixed.
+random-effect covariance, residual variance, any declared residual-correlation
+parameter/matrix, fixed basis, participant/trial random bases, spline degree,
+model specification, and preprocessing decisions are held fixed.
 
 This makes the procedure a **participant-cluster case bootstrap conditional on
 the fitted covariance model**, not a full mixed-model parametric bootstrap and
@@ -158,7 +161,7 @@ It does **not** imply:
 - coverage at arbitrary unsampled time points;
 - uncertainty propagation from basis-size selection;
 - uncertainty from estimating the participant/trial random-effect covariance
-  components or residual variance;
+  components, residual variance, or serial parameter;
 - robustness to a different covariance model;
 - causal interpretation of the fixed effect.
 
@@ -179,15 +182,14 @@ Version 0.44 follows the same hierarchical principle—resample participants,
 not individual repeated curves—but implements a deliberately narrower
 fixed-covariance GLS bootstrap matched to the package's existing 0.36 model.
 
-## Next methodological boundary
+## Current methodological boundary
 
-Version 0.45 now adds one guarded participant random functional slope. The
-simultaneous-band procedure on this page remains conditional on the complete
-fitted random intercept/slope covariance.
-
-The next inferential extension is **0.46 full-refit participant bootstrap
-sensitivity**, where each participant bootstrap sample refits the mixed model
-and variance components rather than freezing them.
+Through 0.49, this fixed-covariance bootstrap remains conditional on the
+complete fitted covariance hierarchy, including participant covariance,
+optional trial covariance, residual variance, and any declared exponential/AR(1)
+residual parameter. Use the full-refit participant bootstrap when
+variance-component and serial-parameter re-estimation should propagate into the
+coefficient-function sampling distribution.
 
 See the
 [worked example](../examples/functional-mixed-effects-simultaneous-bands.md),

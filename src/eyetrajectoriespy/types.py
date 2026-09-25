@@ -804,6 +804,19 @@ class FunctionalMixedEffectsResult:
     trial_random_effect_complexity_warning: bool = False
     trial_random_effect_boundary_fit: bool = False
     trial_random_effect_singular: bool = False
+    residual_correlation: str = "iid"
+    residual_correlation_parameter: float | None = None
+    residual_correlation_parameter_name: str | None = None
+    residual_correlation_parameter_unit: str | None = None
+    residual_correlation_matrix: np.ndarray | None = None
+    residual_correlation_eigenvalues: np.ndarray | None = None
+    residual_correlation_condition_number: float | None = None
+    residual_correlation_boundary_fit: bool = False
+    residual_correlation_independence_limit_fit: bool = False
+    residual_correlation_optimizer_bounds: tuple[float, float] | None = None
+    residual_correlation_grid_regular: bool = False
+    residual_correlation_grid_interval: float | None = None
+    whitened_residual_functions: np.ndarray | None = None
 
     @property
     def n_coefficients(self) -> int:
@@ -832,6 +845,7 @@ class FunctionalMixedEffectsResidualDiagnosticsResult:
     overall_diagnostics: pd.DataFrame
     max_lag: int
     provenance: Mapping[str, Any] = field(default_factory=dict)
+    residual_scale: str = "raw"
 
     @property
     def n_curves(self) -> int:
@@ -901,6 +915,10 @@ class FunctionalMixedEffectsFullRefitBootstrapResult:
         tuple[tuple[str, str, str, str], ...],
         ...,
     ] = ()
+    residual_correlation_parameters: np.ndarray | None = None
+    residual_correlation_boundary_flags: np.ndarray | None = None
+    residual_correlation_independence_flags: np.ndarray | None = None
+    residual_correlation_condition_numbers: np.ndarray | None = None
 
     @property
     def n_bootstrap(self) -> int:

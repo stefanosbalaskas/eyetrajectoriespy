@@ -14,8 +14,8 @@ fixed_covariance_boot = bootstrap_functional_mixed_effects_coefficients(
 ```
 
 It resamples participants but conditions on the fitted participant random-
-effect covariance, optional shared trial random-effect covariance, and residual
-variance.
+effect covariance, optional shared trial random-effect covariance, residual
+variance, and any declared residual-correlation parameter.
 
 Version 0.46 adds:
 
@@ -69,15 +69,18 @@ Each successful bootstrap sample refits
 $$
 \left\{
 \widehat{\boldsymbol\beta}^{*(b)}(t),
-\widehat{\boldsymbol\Psi}^{*(b)},
-\widehat{\sigma}^{2*(b)}
+\widehat{\boldsymbol\Psi}_{P}^{*(b)},
+\widehat{\boldsymbol\Psi}_{T}^{*(b)},
+\widehat{\sigma}^{2*(b)},
+\widehat{\theta}^{*(b)}
 \right\}.
 $$
 
 This includes all fixed B-spline coefficients, the complete declared
 participant random-effect covariance, random-intercept covariance,
 random-slope covariance and intercept/slope cross-covariance when present, the
-shared trial random-effect covariance when present, and residual variance.
+shared trial random-effect covariance when present, residual variance, and
+any declared exponential range or AR(1) parameter.
 
 The bootstrap does **not** rerun model specification. Held fixed are:
 
@@ -89,6 +92,7 @@ The bootstrap does **not** rerun model specification. Held fixed are:
 - fixed predictors;
 - random-slope choice;
 - trial-random-effect choice;
+- residual-correlation family;
 - random-effect structure;
 - REML versus ML choice;
 - optimizer;
@@ -138,7 +142,9 @@ condition number, boundary flag, singularity flag, random-slope boundary flag,
 residual variance, log likelihood, convergence state, optimizer/backend
 warnings, and the intercept/slope covariance blocks. For a nested 0.48 reference fit it
 also retains the full trial covariance distribution, trial covariance
-eigenvalues/condition numbers, and trial boundary/singularity flags.
+eigenvalues/condition numbers, and trial boundary/singularity flags. For a 0.49 serial reference it additionally
+retains the bootstrap serial-parameter distribution, residual-correlation
+condition numbers, and serial-parameter boundary flags.
 
 Use
 
@@ -168,8 +174,8 @@ full_refit_band = functional_mixed_effects_simultaneous_bands(
 
 With a full-refit bootstrap, the coefficient-function sampling distribution
 therefore includes re-estimation of the declared participant covariance,
-optional trial covariance, and residual variance across participant bootstrap
-samples.
+optional trial covariance, residual variance, and any declared residual-
+correlation parameter across participant bootstrap samples.
 
 The band still conditions on the declared model specification and basis choices,
 and still claims simultaneous coverage over the observed time grid only.
@@ -222,22 +228,17 @@ Park, Staicu, Xiao, and Crainiceanu (2018, DOI
 `10.1093/biostatistics/kxx026`) describe fixed-effect inference for complex
 functional models by bootstrapping independent units such as subjects. Version 0.46 follows that independent-unit principle while refitting the
 package's declared mixed-effects model in every participant sample.
-Participant-only fits use the established `statsmodels.MixedLM` backend;
-0.48 nested trial fits use the explicit profiled Gaussian backend and refit
-both participant and trial covariance matrices. Neither bootstrap contract
-introduces serial residual covariance.
+Participant-only iid fits use the established `statsmodels.MixedLM` backend.
+Nested and/or serial 0.48–0.49 fits use the explicit profiled Gaussian backend;
+the full-refit bootstrap re-estimates participant covariance, optional trial
+covariance, residual variance, and the declared phi/rho parameter. The fixed-
+covariance bootstrap instead conditions on those fitted covariance quantities.
 
 ## What comes next?
 
-Version 0.47 supplies residual / within-trial dependence diagnostics. Version
-0.48 adds the nested trial functional random intercept while preserving
-participant-level bootstrap resampling.
-
-The next structural tranche, 0.49, is explicit residual covariance for
-remaining short-range dependence, with physical-time exponential correlation
-as the preferred first-class contract and AR(1) restricted to explicitly
-regular index-step settings. Version 0.50 is planned for covariance-structure
-sensitivity/comparison rather than automatic selection.
+Version 0.49 now propagates explicitly declared residual covariance through
+both participant-bootstrap paths. Version 0.50 is planned for descriptive
+covariance-structure sensitivity/comparison rather than automatic selection.
 
 See also the
 [functional mixed-effects guide](../guides/functional-mixed-effects.md),

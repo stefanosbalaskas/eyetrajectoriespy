@@ -353,6 +353,7 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.functional_mixed_effects_coefficient_frame
 ::: eyetrajectoriespy.plot_functional_mixed_effects_coefficient
 ::: eyetrajectoriespy.functional_mixed_effects_reporting_text
+::: eyetrajectoriespy.functional_mixed_effects_whitened_residuals
 ::: eyetrajectoriespy.FunctionalMixedEffectsResidualDiagnosticsResult
 ::: eyetrajectoriespy.functional_mixed_effects_residual_diagnostics
 ::: eyetrajectoriespy.functional_mixed_effects_residual_diagnostic_frame

@@ -31,31 +31,34 @@ flowchart LR
     A --> C[Participant groups]
     B --> D[Declared B-spline fixed effects]
     C --> E[Declared participant functional random effects]
-    D --> F{Trial functional effect requested?}
+    D --> F{Trial functional effect?}
     E --> F
-    F -->|No| M[Historical joint Gaussian MixedLM]
-    F -->|Yes| N[Validate participant/trial hierarchy]
-    N --> O[Declared trial B-spline random intercept]
-    O --> P[Profiled Gaussian participant-block likelihood]
-    M --> R{Participant random slope requested?}
-    P --> R
-    R -->|Yes| S[Check within-participant predictor variation + covariance complexity]
-    R -->|No| G[Retain declared participant/trial covariance]
-    S --> G
-    G --> Q[Inspect participant/trial BLUPs + covariance diagnostics]
-    Q --> H{Whole-function fixed-effect inference?}
+    F -->|No| R{Residual family?}
+    F -->|Yes| N[Validate hierarchy + declare trial basis/Psi_T]
+    N --> R
+    R -->|iid + no trial effect| M[Historical joint Gaussian MixedLM]
+    R -->|exponential / AR1 or trial effect| P[Profiled participant-block Gaussian likelihood]
+    P --> S{Participant random slope?}
+    M --> S
+    S -->|Yes| T[Check within-participant variation + covariance complexity]
+    S -->|No| G[Retain covariance hierarchy]
+    T --> G
+    G --> Q[Inspect Psi_P / Psi_T / residual parameter + BLUP diagnostics]
+    Q --> X[Raw residual ACF / variogram]
+    Q --> Y[0.49 within-trial whitened residual diagnostics]
+    Q --> H{Whole-function inference?}
     H -->|Yes| I[Resample whole participants with all trials]
     I --> J[Fixed-covariance GLS or full declared-model refit]
-    J --> K[Coefficient/family observed-grid maxima]
-    K --> L[Simultaneous bands]
-    Q --> X[0.47 residual ACF / variogram diagnostics]
+    J --> K[Observed-grid simultaneous bands]
 ```
 
-Whole participants remain the resampling unit. Under 0.48, all nested trials
-travel with the sampled participant; duplicated participant occurrences receive
-distinct bootstrap participant identities and their nested trials receive
-distinct bootstrap trial identities. The fixed-covariance path conditions on
-both declared covariance matrices, while the full-refit path re-estimates them.
+Whole participants remain the resampling unit. Residual covariance is block
+diagonal by trial. Exponential correlation is defined on physical time; AR(1)
+uses index steps and requires a regular grid. The fixed-covariance bootstrap
+conditions on every fitted covariance term, while the full-refit bootstrap
+re-estimates participant covariance, optional trial covariance, residual
+variance, and phi/rho without reselecting the covariance family.
+
 
 ## Functional response regression
 

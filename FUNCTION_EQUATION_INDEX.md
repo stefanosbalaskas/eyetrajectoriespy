@@ -202,10 +202,10 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 ## Joint functional mixed-effects regression
 
-**Functions:** `fit_functional_mixed_effects_regression()`
+**Functions:** `fit_functional_mixed_effects_regression()`, `functional_mixed_effects_whitened_residuals()`
 
 $$
-Y_{ij}(t)=\mathbf x_{ij}^{\top}\boldsymbol\beta(t)+\mathbf B_r(t)^{\top}\mathbf u_i+\varepsilon_{ij}(t)
+Y_{ij}(t)=\mathbf x_{ij}^{\top}\boldsymbol\beta(t)+\mathbf B_r(t)^{\top}\mathbf u_i+u_{ij}(t)+\varepsilon_{ij}(t)
 $$
 
 $$
@@ -213,22 +213,34 @@ $$
 $$
 
 $$
-\mathbf u_i\sim N(\mathbf 0,\boldsymbol\Psi_{p}),\qquad \varepsilon_{ij}(t_m)\sim N(0,\sigma^2)
+\mathbf u_i\sim N(\mathbf 0,\boldsymbol\Psi_{P})
 $$
 
 $$
-\operatorname{Cov}(\mathbf Y_i\mid\mathbf X_i)=\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top+\sigma^2\mathbf I
+u_{ij}(t)=\mathbf B_u(t)^\top\mathbf v_{ij},\qquad \mathbf v_{ij}\sim N(\mathbf 0,\boldsymbol\Psi_{T})
 $$
 
 $$
-u_{ij}(t)=\mathbf B_u(t)^\top\mathbf v_{ij},\qquad \mathbf v_{ij}\sim N(\mathbf 0,\boldsymbol\Psi_{trial})
+\operatorname{Cov}\{\boldsymbol\varepsilon_{ij}\}=\sigma^2\mathbf R_\theta
 $$
 
 $$
-\mathbf V_i=\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top+\sum_j\mathbf W_{ij}\boldsymbol\Psi_{trial}\mathbf W_{ij}^\top+\sigma^2\mathbf I
+R_\phi(t,s)=\exp\{-|t-s|/\phi\},\qquad \phi>0
 $$
 
-**Scope:** One selected Gaussian functional response dimension on a common grid with explicit B-spline fixed effects and participant functional random effects. Version 0.48 optionally adds one nested trial functional random intercept with its own shared unstructured basis-coefficient covariance. The trial extension is explicit, requires unique participant/trial pairs and at least two trials per participant, and retains conditionally iid grid residuals after the declared random effects. No automatic basis/covariance selection, residual serial-correlation model, multiple trial random effects, or multivariate cross-dimension covariance is claimed.
+$$
+R_{\rho,rs}=\rho^{|r-s|},\qquad -1<\rho<1
+$$
+
+$$
+\mathbf V_i=\mathbf Z_i\boldsymbol\Psi_P\mathbf Z_i^\top+\sum_j\mathbf W_{ij}\boldsymbol\Psi_T\mathbf W_{ij}^\top+\sigma^2\operatorname{blockdiag}_j\{\mathbf R_\theta\}
+$$
+
+$$
+\sigma^2\mathbf R_\theta=\mathbf L\mathbf L^\top,\qquad \mathbf e_{ij}^{(w)}=\mathbf L^{-1}\mathbf e_{ij}
+$$
+
+**Scope:** One selected Gaussian functional response dimension on a common grid with explicit B-spline fixed effects and participant functional random effects. Version 0.48 optionally adds one nested trial functional random intercept with a shared unstructured basis-coefficient covariance. Version 0.49 optionally adds an analyst-declared within-trial residual covariance: physical-time exponential correlation on arbitrary strictly increasing common grids or signed index-step AR(1) on verified regular grids. Residual covariance is block diagonal across trials; phi/rho is estimated jointly and whitening uses the fitted residual covariance. No automatic basis, trial-effect, or residual-correlation-family selection, multiple trial random effects, or multivariate cross-dimension covariance is claimed.
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#functional-mixed-effects
 
@@ -252,7 +264,7 @@ $$
 p_{\Psi}=\frac{(2q)(2q+1)}{2}
 $$
 
-**Scope:** Exactly one analyst-declared random functional slope predictor using the same q-dimensional B-spline basis size as the participant functional random intercept. The stacked 2q random coefficient vector has one unstructured covariance. Version 0.45 requires the slope predictor to vary within every participant and requires the participant count to exceed the number of free covariance parameters. No automatic random-slope selection, multiple random slopes, residual serial-correlation model, or generalized response is introduced.
+**Scope:** Exactly one analyst-declared random functional slope predictor using the same q-dimensional B-spline basis size as the participant functional random intercept. The stacked 2q random coefficient vector has one unstructured covariance. Version 0.45 requires the slope predictor to vary within every participant and requires the participant count to exceed the number of free covariance parameters. No automatic random-slope selection or multiple random slopes is introduced. The slope may coexist with the separately declared 0.48 trial effect and 0.49 residual-correlation family.
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#functional-mixed-effects-random-slope
 
@@ -265,14 +277,14 @@ I_1^{*(b)},\ldots,I_n^{*(b)}\overset{\mathrm{iid}}{\sim}\{1,\ldots,n\}
 $$
 
 $$
-\mathcal D^{*(b)}\longrightarrow\left\{\widehat{\boldsymbol\beta}^{*(b)}(t),\widehat{\boldsymbol\Psi}^{*(b)},\widehat\sigma^{2*(b)}\right\}
+\mathcal D^{*(b)}\longrightarrow\left\{\widehat{\boldsymbol\beta}^{*(b)}(t),\widehat{\boldsymbol\Psi}_P^{*(b)},\widehat{\boldsymbol\Psi}_T^{*(b)},\widehat\sigma^{2*(b)},\widehat\theta^{*(b)}\right\}
 $$
 
 $$
 R_p(t_m)=\frac{W_{p,\mathrm{full}}(t_m)}{W_{p,\mathrm{fixed}}(t_m)}
 $$
 
-**Scope:** Whole-participant case bootstrap with a complete MixedLM parameter refit in every replicate. Duplicate source-participant draws receive distinct bootstrap group identities. Fixed effects, the complete random-effect covariance, and residual variance are re-estimated; basis sizes, spline degree, preprocessing, predictor specification, random-slope structure, REML/ML choice, and optimizer remain fixed. Failed replicates raise and are not silently redrawn.
+**Scope:** Whole-participant case bootstrap with a complete declared mixed-model parameter refit in every replicate. Duplicate source-participant draws receive distinct bootstrap group identities. Fixed effects, participant covariance, optional trial covariance, residual variance, and any declared residual-correlation parameter are re-estimated; basis sizes, spline degree, preprocessing, predictor specification, random-slope structure, REML/ML choice, and optimizer remain fixed. Failed replicates raise and are not silently redrawn.
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#functional-mixed-effects-full-refit-bootstrap
 
@@ -281,7 +293,7 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 **Functions:** `bootstrap_functional_mixed_effects_coefficients()`, `functional_mixed_effects_simultaneous_bands()`
 
 $$
-\mathbf V_i=\mathbf Z_i\widehat{\boldsymbol\Psi}\mathbf Z_i^\top+\widehat\sigma^2\mathbf I
+\mathbf V_i=\mathbf Z_i\widehat{\boldsymbol\Psi}_P\mathbf Z_i^\top+\sum_j\mathbf W_{ij}\widehat{\boldsymbol\Psi}_T\mathbf W_{ij}^\top+\widehat\sigma^2\operatorname{blockdiag}_j\{\widehat{\mathbf R}_\theta\}
 $$
 
 $$
@@ -296,7 +308,7 @@ $$
 \widehat\beta_p(t_m)\pm c_{p,1-\alpha}\widehat{\mathrm{SE}}_p^*(t_m)
 $$
 
-**Scope:** Whole-participant case bootstrap for fixed coefficient functions. Each resample re-estimates the fixed B-spline coefficients by GLS while conditioning on the reference random-effect covariance, residual variance, and declared bases. Bands are simultaneous over the observed time grid with coefficient or full fixed-effect-family scope; variance-component, basis-selection, and between-grid uncertainty are not included.
+**Scope:** Whole-participant case bootstrap for fixed coefficient functions. Each resample re-estimates the fixed B-spline coefficients by GLS while conditioning on the reference participant covariance, optional trial covariance, residual variance, residual-correlation parameter, and declared bases. Bands are simultaneous over the observed time grid with coefficient or full fixed-effect-family scope; variance-component, basis-selection, and between-grid uncertainty are not included.
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#functional-mixed-effects-simultaneous
 
