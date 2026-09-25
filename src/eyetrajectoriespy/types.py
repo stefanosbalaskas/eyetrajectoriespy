@@ -812,6 +812,7 @@ class FunctionalMixedEffectsResult:
     residual_correlation_eigenvalues: np.ndarray | None = None
     residual_correlation_condition_number: float | None = None
     residual_correlation_boundary_fit: bool = False
+    residual_correlation_independence_limit_fit: bool = False
     residual_correlation_optimizer_bounds: tuple[float, float] | None = None
     residual_correlation_grid_regular: bool = False
     residual_correlation_grid_interval: float | None = None
@@ -916,6 +917,7 @@ class FunctionalMixedEffectsFullRefitBootstrapResult:
     ] = ()
     residual_correlation_parameters: np.ndarray | None = None
     residual_correlation_boundary_flags: np.ndarray | None = None
+    residual_correlation_independence_flags: np.ndarray | None = None
     residual_correlation_condition_numbers: np.ndarray | None = None
 
     @property
