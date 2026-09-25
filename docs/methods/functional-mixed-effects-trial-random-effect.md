@@ -4,66 +4,66 @@ Version 0.48 extends the Gaussian functional mixed-effects layer from a
 participant-only covariance hierarchy to an explicitly nested
 participant → trial → time model.
 
-For participant (i), trial (j), and observed time (t),
+For participant \(i\), trial \(j\), and observed time \(t\),
 
-[
+\[
 Y_{ij}(t)
 =
-mathbf{x}_{ij}^{	op}oldsymbol{eta}(t)
+\mathbf{x}_{ij}^{\top}\boldsymbol{\beta}(t)
 +
 b_i(t)
 +
 u_{ij}(t)
 +
-epsilon_{ij}(t).
-]
+\epsilon_{ij}(t).
+\]
 
 The participant functional effect remains
 
-[
-b_i(t)=mathbf B_b(t)^	opmathbf a_i,
-qquad
-mathbf a_isim N(mathbf 0,oldsymbolPsi_{mathrm{participant}}).
-]
+\[
+b_i(t)=\mathbf B_b(t)^\top\mathbf a_i,
+\qquad
+\mathbf a_i\sim N(\mathbf 0,\boldsymbol\Psi_{\mathrm{participant}}).
+\]
 
 The new trial functional intercept is
 
-[
-u_{ij}(t)=mathbf B_u(t)^	opmathbf v_{ij},
-qquad
-mathbf v_{ij}sim N(mathbf 0,oldsymbolPsi_{mathrm{trial}}).
-]
+\[
+u_{ij}(t)=\mathbf B_u(t)^\top\mathbf v_{ij},
+\qquad
+\mathbf v_{ij}\sim N(\mathbf 0,\boldsymbol\Psi_{\mathrm{trial}}).
+\]
 
-(oldsymbolPsi_{mathrm{trial}}) is one shared unstructured covariance
+\(\boldsymbol\Psi_{\mathrm{trial}}\) is one shared unstructured covariance
 across trials. The implementation does **not** estimate one covariance per
 trial and does not replace the functional covariance with an independent
 scalar variance component.
 
 ## Marginal covariance
 
-For all observations from participant (i),
+For all observations from participant \(i\),
 
-[
-mathbf V_i
+\[
+\mathbf V_i
 =
-mathbf Z_i
-oldsymbolPsi_{mathrm{participant}}
-mathbf Z_i^	op
+\mathbf Z_i
+\boldsymbol\Psi_{\mathrm{participant}}
+\mathbf Z_i^\top
 +
-sum_j
-mathbf W_{ij}
-oldsymbolPsi_{mathrm{trial}}
-mathbf W_{ij}^	op
+\sum_j
+\mathbf W_{ij}
+\boldsymbol\Psi_{\mathrm{trial}}
+\mathbf W_{ij}^\top
 +
-sigma^2mathbf I.
-]
+\sigma^2\mathbf I.
+\]
 
 Participant and trial covariance matrices are parameterized through their
 Cholesky factors. Fixed B-spline coefficients are profiled by generalized
-least squares for every covariance parameter evaluation.
+least squares for every covariance-parameter evaluation.
 
 The historical participant-only model continues to use the established
-`statsmodels.MixedLM` backend. The nested backend is activated only when the
+\`statsmodels.MixedLM\` backend. The nested backend is activated only when the
 trial effect is explicitly requested.
 
 ## Explicit API
@@ -89,22 +89,22 @@ open to future trial structures without silently changing today's semantics.
 
 ## Trial identity
 
-Version 0.48 treats one trajectory as one observed trial. The `trial_column`
+Version 0.48 treats one trajectory as one observed trial. The \`trial_column\`
 therefore provides the scientific trial label attached to each curve.
 
 Trial labels need only be unique **within participant**. Reused labels such as
-`T01` across different participants are valid. Internally the nested identity
+\`T01\` across different participants are valid. Internally the nested identity
 is the participant/trial pair.
 
 The model fails closed when:
 
-- `trial_column` is absent or contains missing values;
+- \`trial_column\` is absent or contains missing values;
 - a participant/trial pair appears more than once;
 - any participant contributes fewer than two observed trials;
 - the trial basis is rank deficient on the observed grid;
 - the number of observed nested trials does not exceed
-  (q_u(q_u+1)/2), the number of free parameters in the unstructured
-  (q_u	imes q_u) trial covariance;
+  \(q_u(q_u+1)/2\), the number of free parameters in the unstructured
+  \(q_u\times q_u\) trial covariance;
 - optimization fails to converge.
 
 The trial-count rule is a **minimum covariance-complexity guard**, not a theorem
@@ -114,7 +114,7 @@ that the covariance is estimated precisely.
 
 The result retains:
 
-- `trial_random_effect_covariance`;
+- \`trial_random_effect_covariance\`;
 - covariance eigenvalues;
 - condition number;
 - free covariance-parameter count;
@@ -163,8 +163,8 @@ post_trial_diagnostics = functional_mixed_effects_residual_diagnostics(
 
 The relevant scientific question is whether smooth residual dependence that was
 present under the participant-only model is reduced after accounting for the
-trial-specific smooth process. A residual ACF is still diagnostic evidence, not
-an automatic covariance selector.
+trial-specific smooth process. A residual ACF or variogram is diagnostic
+evidence, not an automatic covariance selector.
 
 ## Bootstrap inference
 
@@ -173,9 +173,9 @@ Both existing participant-level bootstrap contracts remain participant-level.
 The fixed-covariance bootstrap resamples whole participants and carries all
 their trials. It re-estimates fixed coefficients by GLS while conditioning on:
 
-- (widehat{oldsymbolPsi}_{mathrm{participant}});
-- (widehat{oldsymbolPsi}_{mathrm{trial}});
-- (widehat{sigma}^2);
+- \(\widehat{\boldsymbol\Psi}_{\mathrm{participant}}\);
+- \(\widehat{\boldsymbol\Psi}_{\mathrm{trial}}\);
+- \(\widehat{\sigma}^2\);
 - the declared bases and model structure.
 
 The full-refit bootstrap also resamples whole participants. Every sampled
