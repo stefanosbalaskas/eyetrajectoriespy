@@ -788,6 +788,22 @@ class FunctionalMixedEffectsResult:
     log_likelihood: float
     provenance: Mapping[str, Any] = field(default_factory=dict)
     model: Any | None = None
+    trial_column: str | None = None
+    curve_trial_ids: tuple[str, ...] = ()
+    trial_ids: tuple[str, ...] = ()
+    trial_random_effect: str | None = None
+    trial_random_basis_size: int = 0
+    trial_random_basis: np.ndarray | None = None
+    trial_random_basis_knots: np.ndarray | None = None
+    trial_random_effect_coefficients: np.ndarray | None = None
+    trial_random_effect_functions: np.ndarray | None = None
+    trial_random_effect_covariance: np.ndarray | None = None
+    trial_random_effect_covariance_eigenvalues: np.ndarray | None = None
+    trial_random_effect_covariance_condition_number: float | None = None
+    trial_random_effect_covariance_parameter_count: int = 0
+    trial_random_effect_complexity_warning: bool = False
+    trial_random_effect_boundary_fit: bool = False
+    trial_random_effect_singular: bool = False
 
     @property
     def n_coefficients(self) -> int:
@@ -800,6 +816,10 @@ class FunctionalMixedEffectsResult:
     @property
     def n_curves(self) -> int:
         return len(self.source_curve_ids)
+
+    @property
+    def n_trials(self) -> int:
+        return len(self.trial_ids)
 
 
 @dataclass(frozen=True)
@@ -872,6 +892,15 @@ class FunctionalMixedEffectsFullRefitBootstrapResult:
     backend_warnings: tuple[tuple[str, ...], ...]
     random_state: int | None
     provenance: Mapping[str, Any] = field(default_factory=dict)
+    trial_random_effect_covariances: np.ndarray | None = None
+    trial_random_effect_covariance_eigenvalues: np.ndarray | None = None
+    trial_random_effect_covariance_condition_numbers: np.ndarray | None = None
+    trial_random_effect_boundary_flags: np.ndarray | None = None
+    trial_random_effect_singular_flags: np.ndarray | None = None
+    bootstrap_trial_audit: tuple[
+        tuple[tuple[str, str, str, str], ...],
+        ...,
+    ] = ()
 
     @property
     def n_bootstrap(self) -> int:
