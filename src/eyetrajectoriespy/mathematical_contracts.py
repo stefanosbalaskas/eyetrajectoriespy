@@ -264,6 +264,35 @@ _CONTRACTS = (
         ),
     ),
     MathematicalContract(
+        key="functional-mixed-effects-covariance-sensitivity",
+        title="Predeclared functional mixed-effects covariance sensitivity",
+        public_api=(
+            "functional_mixed_effects_covariance_sensitivity",
+            "functional_mixed_effects_variance_decomposition",
+        ),
+        equations=(
+            r"\Delta\beta_m(t)=\widehat\beta_m(t)-\widehat\beta_r(t)",
+            r"D_{\infty,m}=\sup_t|\Delta\beta_m(t)|",
+            r"D_{2,m}=\left[\int\{\Delta\beta_m(t)\}^2dt\right]^{1/2}",
+            r"v_{P0}(t)=\mathbf B_P(t)^\top\boldsymbol\Psi_{P0}\mathbf B_P(t)",
+            r"v_T(t)=\mathbf B_T(t)^\top\boldsymbol\Psi_T\mathbf B_T(t)",
+            r"v_\varepsilon(t)=\sigma^2",
+            r"\mathrm{AIC}_m=-2\ell_m+2k_m,\qquad "
+            r"\mathrm{BIC}_m=-2\ell_m+k_m\log n",
+        ),
+        site_anchor="functional-mixed-effects-covariance-sensitivity",
+        scope=(
+            "Descriptive comparison of already fitted, predeclared covariance "
+            "structures against one analyst-declared reference. Successful fits "
+            "must share observations, fixed design/basis, participant mapping, "
+            "time grid, response dimension, and ML/REML mode. Failed declared "
+            "structures remain visible. Coefficient changes, paired band-width "
+            "changes, variance decomposition, raw/whitened residual diagnostics, "
+            "and information criteria are reported without ranking, automatic "
+            "selection, or likelihood-ratio p-values."
+        ),
+    ),
+    MathematicalContract(
         key="functional-mixed-effects-random-slope",
         title="One participant random functional slope",
         public_api=("functional_random_effect_frame",),
