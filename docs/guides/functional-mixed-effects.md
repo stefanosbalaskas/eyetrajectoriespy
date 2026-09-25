@@ -106,12 +106,14 @@ The mixed-effects layer uses clamped B-spline bases for:
 
 - fixed coefficient functions;
 - participant functional random intercepts;
-- in 0.45, one optional explicitly declared participant random functional slope.
+- in 0.45, one optional explicitly declared participant random functional slope;
+- in 0.48, one optional explicitly declared nested trial functional random intercept.
 
 The analyst chooses:
 
 - `fixed_basis_size`;
 - `random_basis_size`;
+- `trial_random_basis_size` when a 0.48 trial functional effect is declared;
 - `spline_degree`.
 
 There is no automatic basis-count selection, no smoothing-parameter search,
@@ -174,6 +176,41 @@ If an estimated covariance eigenvalue is at or very near the numerical
 boundary, the result is flagged with `boundary_fit=True`. The fit is not
 silently relabeled as regular.
 
+## Nested trial functional random intercept
+
+Version 0.48 can add one smooth trial-specific deviation:
+
+~~~python
+fit = fit_functional_mixed_effects_regression(
+    trajectories,
+    design,
+    predictors=("condition",),
+    participant_column="participant_id",
+    trial_column="trial_id",
+    trial_random_effect="functional_intercept",
+    dimension="metric",
+    fixed_basis_size=6,
+    random_basis_size=4,
+    trial_random_basis_size=3,
+)
+~~~
+
+The trial effect uses one shared unstructured covariance across all nested
+trials. It is not an independent scalar variance-component approximation.
+Participant and trial covariance matrices are estimated separately.
+
+The 0.48 nested fit uses the package's profiled Gaussian marginal-likelihood
+backend. The historical `statsmodels.MixedLM` route remains unchanged when no
+trial effect is requested.
+
+Trial IDs must be unique within participant, every participant must contribute
+at least two trials, and the total trial count must exceed the number of free
+trial-covariance parameters. No trial effect or trial basis size is selected
+automatically.
+
+See the dedicated
+[trial-functional-random-effect guide](../methods/functional-mixed-effects-trial-random-effect.md).
+
 ## Convergence
 
 A non-converged optimizer result raises an error.
@@ -231,8 +268,8 @@ Every bootstrap draw samples participants with replacement and carries all
 trials/time points for a selected participant together. The fixed coefficient
 basis is re-estimated by GLS for every draw.
 
-The fitted participant random-effect covariance and residual variance are held
-fixed. This makes the procedure computationally transparent and preserves the
+The fitted participant random-effect covariance, optional shared trial
+random-effect covariance, and residual variance are held fixed. This makes the procedure computationally transparent and preserves the
 hierarchical resampling unit, but it does **not** propagate variance-component
 or basis-selection uncertainty.
 
@@ -260,9 +297,12 @@ full_boot = bootstrap_functional_mixed_effects_full_refit(
 ~~~
 
 Unlike the faster 0.44 fixed-covariance bootstrap, each replicate refits fixed
-coefficients, the complete random-effect covariance, and residual variance.
+coefficients, the complete declared participant covariance, the shared trial
+covariance when present, and residual variance.
 
-Duplicate source participants receive distinct bootstrap group identities.
+Duplicate source participants receive distinct bootstrap participant identities.
+For a 0.48 nested model, their trials also receive distinct bootstrap trial
+identities while retaining source participant/trial IDs for auditability.
 Model specification, basis sizes, preprocessing, REML/ML choice, and optimizer
 remain fixed.
 
@@ -294,12 +334,16 @@ trial-level functional random effect, or another covariance structure. See
 
 The current mixed-effects layer does not yet estimate:
 
-- residual serial correlation beyond the participant functional random effect;
-- a trial-level functional random effect;
+- explicit residual serial correlation after the declared participant/trial
+  functional effects;
+- multiple trial random-effect terms;
 - generalized/non-Gaussian functional responses;
 - multivariate cross-dimension covariance;
-- variance-component uncertainty;
 - automatic basis-selection uncertainty.
+
+Variance-component uncertainty is available through the 0.46 full-refit
+participant bootstrap; it remains distinct from model-selection or
+basis-selection uncertainty.
 
 Those omissions are explicit rather than hidden.
 
@@ -316,8 +360,10 @@ It is descriptive/decompositional rather than a regression model for
 trial-varying experimental predictors.
 
 `fit_functional_mixed_effects_regression()` instead models the conditional
-mean with scalar predictors, a participant functional random intercept, and
-optionally one explicitly declared participant random functional slope.
+mean with scalar predictors, a participant functional random intercept,
+optionally one explicitly declared participant random functional slope, and
+from 0.48 an optional nested trial functional random intercept with its own
+shared covariance.
 
 ## Evidence basis
 
@@ -332,5 +378,8 @@ functional fixed and random effects.
 
 The implementation remains intentionally narrower than those frameworks. Its
 scientific contract is a single Gaussian response dimension, explicit B-spline
-bases, one participant functional random intercept, at most one guarded random
-functional slope, and one joint mixed-model fit using statsmodels.
+bases, one participant functional random intercept, at most one guarded
+participant random functional slope, and optionally one nested trial
+functional random intercept. Participant-only fits retain the historical
+statsmodels backend; the 0.48 nested covariance extension uses an explicit
+profiled Gaussian marginal likelihood.
