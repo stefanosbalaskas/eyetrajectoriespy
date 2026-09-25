@@ -3,13 +3,13 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.45 · guarded participant random functional slopes</div>
+<div class="et-kicker">eyetrajectoriespy 0.49 · explicit residual covariance + whitening</div>
 
 # Model the viewing process, not only its summaries
 
 eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze paths, multivariate FPCA, native irregular trajectories, repeated-trial functional decomposition, phase analysis, compositional AOI trajectories, and explicit validation of component stability.
 
-<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">multivariate IAAFT</span><span class="et-pill">functional mixed effects</span><span class="et-pill">trial functional random effects</span><span class="et-pill">random functional slopes</span><span class="et-pill">mixed-effects simultaneous bands</span><span class="et-pill">function-on-scalar inference</span><span class="et-pill">Fréchet + audited DTW</span><span class="et-pill">distance sensitivity</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">LaTeX contracts</span><span class="et-pill">reproducible plots</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">mean-band inference</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
+<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">physical-time residual covariance</span><span class="et-pill">whitened residual diagnostics</span><span class="et-pill">multivariate IAAFT</span><span class="et-pill">functional mixed effects</span><span class="et-pill">trial functional random effects</span><span class="et-pill">random functional slopes</span><span class="et-pill">mixed-effects simultaneous bands</span><span class="et-pill">function-on-scalar inference</span><span class="et-pill">Fréchet + audited DTW</span><span class="et-pill">distance sensitivity</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">LaTeX contracts</span><span class="et-pill">reproducible plots</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">mean-band inference</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
 </div>
 
 <div class="grid cards" markdown>
@@ -44,6 +44,7 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
     [:material-chart-timeline-variant: Mixed-effects guide](guides/functional-mixed-effects.md) ·
     [:material-chart-bell-curve: Simultaneous bands](methods/functional-mixed-effects-simultaneous-bands.md)
     · [:material-family-tree: Trial random effects](methods/functional-mixed-effects-trial-random-effect.md)
+    · [:material-waveform: Residual covariance](methods/functional-mixed-effects-residual-correlation.md)
 
 -   **Estimate when experimental predictors change a functional gaze response**
 
@@ -496,9 +497,9 @@ stability diagnostics.
 [Method guide](methods/functional-mixed-effects-full-refit-bootstrap.md) ·
 [Worked example](examples/functional-mixed-effects-full-refit-bootstrap.md)
 
-Version 0.47 will diagnose residual/within-trial dependence before selecting
-between trial-level functional random effects and an explicit serial residual
-covariance model.
+Version 0.47 introduced residual/within-trial diagnostics; 0.48 added the
+nested trial functional effect and 0.49 adds explicit serial residual covariance
+plus whitening. Version 0.50 is reserved for covariance-structure sensitivity.
 
 ## New in 0.45: one guarded participant random functional slope
 
@@ -518,6 +519,23 @@ direct scientific inspection.
 
 The next inferential priority is a full-refit participant bootstrap that
 re-estimates variance components.
+
+## New in 0.49: explicit residual covariance and whitening
+
+The functional mixed-effects likelihood now supports explicitly declared
+within-trial continuous-time exponential residual correlation on physical time
+and signed index-step AR(1) on verified regular grids. Residual covariance is
+block diagonal across trials, phi/rho is estimated jointly, and the fitted
+correlation family is never selected automatically.
+
+Raw residual correlation is expected under a correlated-error model. Version
+0.49 therefore adds within-trial whitening and a `residual_scale="whitened"`
+diagnostic path for ACF/variogram checks. Both participant-bootstrap paths
+propagate the declared residual covariance; the full-refit bootstrap re-estimates
+the serial parameter.
+
+[Method guide](methods/functional-mixed-effects-residual-correlation.md) ·
+[Worked example](examples/functional-mixed-effects-residual-correlation.md)
 
 ## New in 0.48: nested trial functional random effects
 
