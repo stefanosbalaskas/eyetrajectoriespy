@@ -231,7 +231,7 @@ result = functional_mixed_effects_covariance_sensitivity(
 )
 ~~~
 
-M5 remains in \`model_summary\` with status \`failed\`. Its numerical fields
+M5 remains in `model_summary` with status `failed`. Its numerical fields
 are NaN; it is not silently removed.
 
 ## Add paired simultaneous-band sensitivity
