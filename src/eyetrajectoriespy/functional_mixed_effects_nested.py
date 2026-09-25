@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
-from scipy.linalg import cho_factor, cho_solve
+from scipy.linalg import cho_factor, cho_solve, solve_triangular
 from scipy.optimize import minimize
 
 from .function_on_scalar import _validate_design_alignment
@@ -154,6 +154,231 @@ def _covariance_diagnostics(
             np.max(eigenvalues) / np.min(eigenvalues)
         )
     return eigenvalues, condition_number, boundary, singular, scale
+
+
+def _regular_grid_summary(
+    time: np.ndarray,
+) -> tuple[bool, float | None]:
+    time = np.asarray(time, dtype=float)
+    delta = np.diff(time)
+    if delta.size == 0 or np.any(delta <= 0):
+        return False, None
+    reference = float(delta[0])
+    regular = bool(
+        np.allclose(
+            delta,
+            reference,
+            rtol=1e-8,
+            atol=max(1e-12, abs(reference) * 1e-10),
+        )
+    )
+    return regular, reference if regular else None
+
+
+def _residual_correlation_spec(
+    residual_correlation: str,
+    time: np.ndarray,
+) -> dict[str, object]:
+    if not isinstance(residual_correlation, str) or not residual_correlation:
+        raise TypeError("residual_correlation must be a non-empty string")
+    family = residual_correlation.lower().strip()
+    if family not in {"iid", "exponential", "ar1"}:
+        raise ValueError(
+            "residual_correlation must be 'iid', 'exponential', or 'ar1'"
+        )
+
+    time = np.asarray(time, dtype=float)
+    regular, interval = _regular_grid_summary(time)
+    if family == "ar1" and not regular:
+        raise ValueError(
+            "residual_correlation='ar1' requires an equally spaced common "
+            "time grid because AR(1) lag is defined in index steps; use "
+            "'exponential' for physical-time correlation on irregular grids"
+        )
+
+    positive_delta = np.diff(time)
+    positive_delta = positive_delta[positive_delta > 0]
+    if positive_delta.size == 0:
+        raise ValueError(
+            "residual correlation requires at least two strictly increasing "
+            "time points"
+        )
+    min_delta = float(np.min(positive_delta))
+    span = float(time[-1] - time[0])
+
+    if family == "exponential":
+        lower = max(min_delta * 1e-4, np.finfo(float).tiny)
+        upper = max(span * 1e4, lower * 10.0)
+        return {
+            "family": family,
+            "parameter_name": "phi",
+            "parameter_unit": None,
+            "parameter_bounds": (lower, upper),
+            "transformed_bounds": (float(np.log(lower)), float(np.log(upper))),
+            "grid_regular": regular,
+            "grid_interval": interval,
+        }
+    if family == "ar1":
+        transformed_bounds = (-7.0, 7.0)
+        return {
+            "family": family,
+            "parameter_name": "rho",
+            "parameter_unit": "dimensionless",
+            "parameter_bounds": (
+                float(np.tanh(transformed_bounds[0])),
+                float(np.tanh(transformed_bounds[1])),
+            ),
+            "transformed_bounds": transformed_bounds,
+            "grid_regular": regular,
+            "grid_interval": interval,
+        }
+    return {
+        "family": family,
+        "parameter_name": None,
+        "parameter_unit": None,
+        "parameter_bounds": None,
+        "transformed_bounds": None,
+        "grid_regular": regular,
+        "grid_interval": interval,
+    }
+
+
+def _residual_correlation_matrix(
+    *,
+    family: str,
+    time: np.ndarray,
+    transformed_parameter: float | None,
+) -> tuple[np.ndarray, float | None]:
+    n_time = int(np.asarray(time).size)
+    if family == "iid":
+        return np.eye(n_time, dtype=float), None
+    if transformed_parameter is None:
+        raise ValueError("serial residual correlation requires a parameter")
+
+    if family == "exponential":
+        phi = float(np.exp(transformed_parameter))
+        distance = np.abs(
+            np.subtract.outer(
+                np.asarray(time, dtype=float),
+                np.asarray(time, dtype=float),
+            )
+        )
+        correlation = np.exp(-distance / phi)
+        return correlation, phi
+
+    if family == "ar1":
+        rho = float(np.tanh(transformed_parameter))
+        order = np.abs(
+            np.subtract.outer(
+                np.arange(n_time, dtype=int),
+                np.arange(n_time, dtype=int),
+            )
+        )
+        correlation = np.power(rho, order)
+        return correlation, rho
+
+    raise ValueError(f"unsupported residual correlation family {family!r}")
+
+
+def _block_residual_covariance(
+    *,
+    n_curves: int,
+    residual_variance: float,
+    correlation: np.ndarray,
+) -> np.ndarray:
+    n_time = correlation.shape[0]
+    covariance = np.zeros(
+        (n_curves * n_time, n_curves * n_time),
+        dtype=float,
+    )
+    block = residual_variance * correlation
+    for curve_index in range(n_curves):
+        start = curve_index * n_time
+        stop = start + n_time
+        covariance[start:stop, start:stop] = block
+    return covariance
+
+
+def _residual_correlation_diagnostics(
+    correlation: np.ndarray,
+    *,
+    transformed_parameter: float | None,
+    transformed_bounds: tuple[float, float] | None,
+) -> tuple[np.ndarray, float, bool]:
+    eigenvalues = np.linalg.eigvalsh(
+        np.asarray(correlation, dtype=float)
+    )
+    if float(np.min(eigenvalues)) <= 0.0:
+        condition_number = float("inf")
+    else:
+        condition_number = float(
+            np.max(eigenvalues) / np.min(eigenvalues)
+        )
+    if transformed_parameter is None or transformed_bounds is None:
+        boundary = False
+    else:
+        lower, upper = transformed_bounds
+        tolerance = max(1e-3, 1e-4 * (upper - lower))
+        boundary = bool(
+            transformed_parameter <= lower + tolerance
+            or transformed_parameter >= upper - tolerance
+        )
+    return eigenvalues, condition_number, boundary
+
+
+def functional_mixed_effects_whitened_residuals(
+    result: FunctionalMixedEffectsResult,
+) -> np.ndarray:
+    """Return conditional residual functions whitened within each trial.
+
+    Whitening uses the fitted residual covariance only. Random effects remain
+    conditioned on their fitted BLUPs, so these are model-scale diagnostic
+    residuals rather than independent observations with parameter uncertainty
+    removed.
+    """
+
+    if not isinstance(result, FunctionalMixedEffectsResult):
+        raise TypeError("result must be a FunctionalMixedEffectsResult")
+    residuals = np.asarray(result.residual_functions, dtype=float)
+    if residuals.shape != (result.n_curves, result.time.size):
+        raise ValueError(
+            "residual_functions must have shape (n_curves, n_time)"
+        )
+    if not np.all(np.isfinite(residuals)):
+        raise ValueError("residual_functions must be finite")
+    if result.residual_variance <= 0 or not np.isfinite(
+        result.residual_variance
+    ):
+        raise ValueError("residual_variance must be finite and positive")
+
+    if result.residual_correlation_matrix is None:
+        correlation = np.eye(result.time.size, dtype=float)
+    else:
+        correlation = np.asarray(
+            result.residual_correlation_matrix,
+            dtype=float,
+        )
+    if correlation.shape != (result.time.size, result.time.size):
+        raise ValueError(
+            "residual_correlation_matrix has an unexpected shape"
+        )
+    covariance = result.residual_variance * correlation
+    try:
+        chol = np.linalg.cholesky(covariance)
+    except np.linalg.LinAlgError as exc:
+        raise RuntimeError(
+            "fitted residual covariance is not positive definite"
+        ) from exc
+
+    whitened = np.empty_like(residuals, dtype=float)
+    for curve_index, residual in enumerate(residuals):
+        whitened[curve_index] = solve_triangular(
+            chol,
+            residual,
+            lower=True,
+            check_finite=False,
+        )
+    return whitened
 
 
 def _participant_blocks(
