@@ -443,6 +443,10 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.functional_random_effect_frame
 ::: eyetrajectoriespy.plot_functional_random_effects
 
+## Trial functional random-effect inspection
+::: eyetrajectoriespy.functional_trial_random_effect_frame
+::: eyetrajectoriespy.plot_functional_trial_random_effects
+
 ## Functional mixed-effects full-refit bootstrap
 ::: eyetrajectoriespy.FunctionalMixedEffectsFullRefitBootstrapResult
 ::: eyetrajectoriespy.bootstrap_functional_mixed_effects_full_refit
