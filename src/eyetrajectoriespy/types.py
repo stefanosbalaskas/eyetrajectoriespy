@@ -961,6 +961,46 @@ class FunctionalMixedEffectsBandResult:
 
 
 @dataclass(frozen=True)
+class FunctionalMixedEffectsCovarianceSpecification:
+    """Declared covariance structure for sensitivity analysis."""
+
+    name: str
+    random_slope_predictor: str | None = None
+    trial_random_effect: str | None = None
+    residual_correlation: str = "iid"
+
+
+@dataclass(frozen=True)
+class FunctionalMixedEffectsCovarianceSensitivityResult:
+    """Descriptive comparison across predeclared mixed-effects covariances."""
+
+    specifications: tuple[FunctionalMixedEffectsCovarianceSpecification, ...]
+    reference_label: str
+    fits: Mapping[str, FunctionalMixedEffectsResult]
+    failures: Mapping[str, str]
+    model_summary: pd.DataFrame
+    coefficient_frame: pd.DataFrame
+    coefficient_summary: pd.DataFrame
+    band_width_frame: pd.DataFrame
+    variance_decomposition: pd.DataFrame
+    residual_diagnostics: pd.DataFrame
+    max_lag: int
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_models(self) -> int:
+        return len(self.specifications)
+
+    @property
+    def n_successful(self) -> int:
+        return len(self.fits)
+
+    @property
+    def n_failed(self) -> int:
+        return len(self.failures)
+
+
+@dataclass(frozen=True)
 class FunctionOnScalarResult:
     """Observed-grid function-on-scalar regression fit."""
 
