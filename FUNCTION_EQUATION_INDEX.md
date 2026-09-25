@@ -279,6 +279,7 @@ $$
 **Scope:** Descriptive comparison of already fitted, predeclared covariance structures against one analyst-declared reference. Successful fits must share observations, fixed design/basis, participant mapping, time grid, response dimension, and ML/REML mode. Failed declared structures remain visible. Coefficient changes, paired band-width changes, variance decomposition, raw/whitened residual diagnostics, and information criteria are reported without ranking, automatic selection, or likelihood-ratio p-values.
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#functional-mixed-effects-covariance-sensitivity
+
 ## One participant random functional slope
 
 **Functions:** `functional_random_effect_frame()`
