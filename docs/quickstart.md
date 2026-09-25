@@ -189,6 +189,47 @@ a verified regular grid when index-step AR(1) is the intended model.
 After a serial fit, diagnose both native and whitened residuals. The raw ACF is
 not expected to be flat merely because serial covariance has been modeled.
 
+### Optional 0.50 covariance sensitivity
+
+When several covariance structures were predeclared and fitted independently,
+compare their scientific conclusions rather than asking the package to pick a
+winner:
+
+~~~python
+from eyetrajectoriespy import (
+    FunctionalMixedEffectsCovarianceSpecification,
+    functional_mixed_effects_covariance_sensitivity,
+)
+
+specifications = (
+    FunctionalMixedEffectsCovarianceSpecification(
+        "M1",
+        residual_correlation="iid",
+    ),
+    FunctionalMixedEffectsCovarianceSpecification(
+        "M2",
+        trial_random_effect="functional_intercept",
+        residual_correlation="iid",
+    ),
+    FunctionalMixedEffectsCovarianceSpecification(
+        "M3",
+        residual_correlation="exponential",
+    ),
+)
+
+sensitivity = functional_mixed_effects_covariance_sensitivity(
+    {"M1": fit_m1, "M2": fit_m2, "M3": fit_m3},
+    specifications=specifications,
+    reference="M1",
+    max_lag=3,
+)
+~~~
+
+Inspect coefficient-function changes, functional variance attribution, raw and
+whitened residual summaries, and auditable information criteria. The returned
+model table preserves declaration order and does not contain a package-selected
+best model.
+
 For repeated trials, keep each participant in one held-out fold:
 
     cv = cross_validate_fpca_reconstruction(
