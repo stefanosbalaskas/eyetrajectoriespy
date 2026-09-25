@@ -39,10 +39,10 @@ Function-on-scalar regression estimates coefficient functions over time. Scalar-
 
 | Goal | Tool | Interpretation boundary |
 |---|---|---|
-| Fit one declared covariance structure | \`fit_functional_mixed_effects_regression()\` | no automatic covariance-family selection |
-| Diagnose residual structure within one fit | \`functional_mixed_effects_residual_diagnostics()\` | descriptive raw/whitened ACF and variogram |
-| Compare predeclared already fitted structures | \`functional_mixed_effects_covariance_sensitivity()\` | explicit reference; no ranking/winner/LRT |
-| Interpret where variability is attributed over time | \`functional_mixed_effects_variance_decomposition()\` | participant intercept/slope/cross-covariance, trial and residual terms remain separate |
+| Fit one declared covariance structure | `fit_functional_mixed_effects_regression()` | no automatic covariance-family selection |
+| Diagnose residual structure within one fit | `functional_mixed_effects_residual_diagnostics()` | descriptive raw/whitened ACF and variogram |
+| Compare predeclared already fitted structures | `functional_mixed_effects_covariance_sensitivity()` | explicit reference; no ranking/winner/LRT |
+| Interpret where variability is attributed over time | `functional_mixed_effects_variance_decomposition()` | participant intercept/slope/cross-covariance, trial and residual terms remain separate |
 
 Version 0.50 requires successful comparison fits to use identical observations,
 fixed design/basis, participant mapping/basis, time grid, response dimension and
