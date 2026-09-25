@@ -4,7 +4,7 @@ Functional PCA finds dominant modes of variation in curves rather than isolated 
 
 ## Multivariate planar gaze
 
-For (G_i(t)=[x_i(t),y_i(t)]^	op):
+For \(G_i(t)=[x_i(t),y_i(t)]^\top\):
 
 ```python
 fit = fit_mfpca(gaze, n_components=0.95, scaling="dimension_sd")
