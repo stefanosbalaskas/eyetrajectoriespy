@@ -189,13 +189,13 @@ The covariance estimator must be chosen explicitly as <code>"empirical"</code> o
 
 ### Marginal conformal p-values
 
-For each target score (s(X^*)),
+For each target score \(s(X^*)\),
 
-[
-hat p(X^*) =
-rac{1 + |{i in I_{calib}: s(X_i) ge s(X^*)}|}
-{n_{calib}+1}.
-]
+\[
+\hat p(X^*) =
+\frac{1 + |\{i \in I_{\mathrm{calib}}: s(X_i) \ge s(X^*)\}|}
+{n_{\mathrm{calib}}+1}.
+\]
 
 The minimum attainable p-value is therefore (1/(n_{calib}+1)).
 

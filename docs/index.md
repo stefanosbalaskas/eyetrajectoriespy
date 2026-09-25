@@ -9,7 +9,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 
 eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze paths, multivariate FPCA, native irregular trajectories, repeated-trial functional decomposition, phase analysis, compositional AOI trajectories, and explicit validation of component stability.
 
-<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">multivariate IAAFT</span><span class="et-pill">functional mixed effects</span><span class="et-pill">random functional slopes</span><span class="et-pill">mixed-effects simultaneous bands</span><span class="et-pill">function-on-scalar inference</span><span class="et-pill">Fréchet + audited DTW</span><span class="et-pill">distance sensitivity</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">LaTeX contracts</span><span class="et-pill">reproducible plots</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">mean-band inference</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
+<span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">multivariate IAAFT</span><span class="et-pill">functional mixed effects</span><span class="et-pill">trial functional random effects</span><span class="et-pill">random functional slopes</span><span class="et-pill">mixed-effects simultaneous bands</span><span class="et-pill">function-on-scalar inference</span><span class="et-pill">Fréchet + audited DTW</span><span class="et-pill">distance sensitivity</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">LaTeX contracts</span><span class="et-pill">reproducible plots</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">mean-band inference</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
 </div>
 
 <div class="grid cards" markdown>
@@ -43,6 +43,7 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
 
     [:material-chart-timeline-variant: Mixed-effects guide](guides/functional-mixed-effects.md) ·
     [:material-chart-bell-curve: Simultaneous bands](methods/functional-mixed-effects-simultaneous-bands.md)
+    · [:material-family-tree: Trial random effects](methods/functional-mixed-effects-trial-random-effect.md)
 
 -   **Estimate when experimental predictors change a functional gaze response**
 
@@ -517,6 +518,22 @@ direct scientific inspection.
 
 The next inferential priority is a full-refit participant bootstrap that
 re-estimates variance components.
+
+## New in 0.48: nested trial functional random effects
+
+Repeated-trial regression can now add one explicitly declared smooth
+trial-specific functional intercept in addition to the participant covariance.
+The trial-basis covariance is shared and unstructured, participant and trial
+BLUPs remain separate, and the 0.47 residual diagnostics can be rerun after the
+extension.
+
+Participant-only fits preserve the established MixedLM backend. The nested
+participant→trial covariance uses an explicit profiled Gaussian likelihood
+rather than approximating the trial process with independent variance
+components.
+
+[Method guide](methods/functional-mixed-effects-trial-random-effect.md) ·
+[Worked example](examples/functional-mixed-effects-trial-random-effect.md)
 
 ## New in 0.44: simultaneous functional mixed-effects coefficient bands
 

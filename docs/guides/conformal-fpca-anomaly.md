@@ -38,12 +38,12 @@ eyetrajectoriespy therefore makes the partition a visible study-design decision 
 
 ## Marginal p-value
 
-For a calibration nonconformity sample (s_1,dots,s_n) and target score (s^*),
+For a calibration nonconformity sample \(s_1,\dots,s_n\) and target score \(s^*\),
 
-[
-hat p =
-rac{1 + sum_{i=1}^n I(s_i ge s^*)}{n+1}.
-]
+\[
+\hat p =
+\frac{1 + \sum_{i=1}^n I(s_i \ge s^*)}{n+1}.
+\]
 
 The implementation uses the greater-than-or-equal rule.
 
@@ -53,9 +53,9 @@ That conservative tie handling is part of the public contract.
 
 The smallest possible p-value is
 
-[
-p_{min} = rac{1}{n_{calib}+1}.
-]
+\[
+p_{\min} = \frac{1}{n_{\mathrm{calib}}+1}.
+\]
 
 With only 9 calibration curves, for example, the smallest possible p-value is 0.10.
 

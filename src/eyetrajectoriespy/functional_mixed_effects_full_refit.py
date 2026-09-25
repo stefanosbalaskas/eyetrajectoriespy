@@ -39,6 +39,16 @@ def _validate_full_refit_reference(
         raise ValueError(
             "reference scalar_design_matrix has an unexpected shape"
         )
+    if result.trial_random_effect is not None:
+        if (
+            result.trial_random_effect != "functional_intercept"
+            or result.trial_column is None
+            or len(result.curve_trial_ids) != result.n_curves
+            or result.trial_random_effect_covariance is None
+        ):
+            raise ValueError(
+                "reference trial functional random-effect contract is incomplete"
+            )
 
 
 def _validate_bootstrap_controls(
@@ -95,6 +105,7 @@ def _bootstrap_dataset(
     pd.DataFrame,
     tuple[str, ...],
     tuple[str, ...],
+    tuple[tuple[str, str, str, str], ...],
 ]:
     participant_labels = np.asarray(
         result.curve_participant_ids,
@@ -106,6 +117,9 @@ def _bootstrap_dataset(
     curve_ids: list[str] = []
     bootstrap_groups: list[str] = []
     source_groups: list[str] = []
+    bootstrap_trial_labels: list[str] = []
+    source_trial_labels: list[str] = []
+    trial_audit: list[tuple[str, str, str, str]] = []
     design_rows: list[pd.Series] = []
 
     sampled_source_ids: list[str] = []
@@ -145,16 +159,41 @@ def _bootstrap_dataset(
             bootstrap_groups.append(bootstrap_participant_id)
             source_groups.append(source_participant_id)
 
+            if result.trial_random_effect is not None:
+                source_trial_id = str(
+                    result.curve_trial_ids[int(curve_index)]
+                )
+                bootstrap_trial_id = (
+                    f"{bootstrap_participant_id}_trial_"
+                    f"{within_draw_index:04d}"
+                )
+                source_trial_labels.append(source_trial_id)
+                bootstrap_trial_labels.append(bootstrap_trial_id)
+                trial_audit.append(
+                    (
+                        source_participant_id,
+                        bootstrap_participant_id,
+                        source_trial_id,
+                        bootstrap_trial_id,
+                    )
+                )
+
             row = reference_design.iloc[int(curve_index)].copy()
             row["curve_id"] = curve_id
             design_rows.append(row)
 
-    metadata = pd.DataFrame(
-        {
-            result.participant_column: bootstrap_groups,
-            "source_participant_id": source_groups,
-        }
-    )
+    metadata_columns: dict[str, list[str]] = {
+        result.participant_column: bootstrap_groups,
+        "source_participant_id": source_groups,
+    }
+    if result.trial_random_effect is not None:
+        if result.trial_column is None:
+            raise RuntimeError(
+                "trial random-effect reference lost its trial_column"
+            )
+        metadata_columns[result.trial_column] = bootstrap_trial_labels
+        metadata_columns["source_trial_id"] = source_trial_labels
+    metadata = pd.DataFrame(metadata_columns)
     trajectories = TrajectorySet(
         time=result.time.copy(),
         values=np.asarray(values, dtype=float),
@@ -170,6 +209,12 @@ def _bootstrap_dataset(
                 "source_participant_ids": sampled_source_ids,
                 "bootstrap_participant_ids": sampled_bootstrap_ids,
                 "duplicate_source_draws_receive_distinct_group_ids": True,
+                "nested_trial_random_effect": (
+                    result.trial_random_effect is not None
+                ),
+                "duplicate_source_trials_receive_distinct_bootstrap_trial_ids": (
+                    result.trial_random_effect is not None
+                ),
             },
         },
     )
@@ -179,6 +224,7 @@ def _bootstrap_dataset(
         design,
         tuple(sampled_source_ids),
         tuple(sampled_bootstrap_ids),
+        tuple(trial_audit),
     )
 
 
@@ -266,6 +312,31 @@ def bootstrap_functional_mixed_effects_full_refit(
     warning_records: list[tuple[str, ...]] = []
     sampled_source_ids: list[tuple[str, ...]] = []
     sampled_bootstrap_ids: list[tuple[str, ...]] = []
+    bootstrap_trial_audit: list[
+        tuple[tuple[str, str, str, str], ...]
+    ] = []
+    if result.trial_random_effect is None:
+        trial_covariances = None
+        trial_covariance_eigenvalues = None
+        trial_covariance_condition_numbers = None
+        trial_boundary_flags = None
+        trial_singular_flags = None
+    else:
+        trial_dimension = result.trial_random_basis_size
+        trial_covariances = np.empty(
+            (n_bootstrap, trial_dimension, trial_dimension),
+            dtype=float,
+        )
+        trial_covariance_eigenvalues = np.empty(
+            (n_bootstrap, trial_dimension),
+            dtype=float,
+        )
+        trial_covariance_condition_numbers = np.empty(
+            n_bootstrap,
+            dtype=float,
+        )
+        trial_boundary_flags = np.empty(n_bootstrap, dtype=bool)
+        trial_singular_flags = np.empty(n_bootstrap, dtype=bool)
 
     for bootstrap_index, participant_sample in enumerate(
         sampled_participant_indices
@@ -275,6 +346,7 @@ def bootstrap_functional_mixed_effects_full_refit(
             design_star,
             source_ids,
             bootstrap_ids,
+            trial_audit,
         ) = _bootstrap_dataset(
             result,
             participant_sample=participant_sample,
@@ -282,6 +354,7 @@ def bootstrap_functional_mixed_effects_full_refit(
         )
         sampled_source_ids.append(source_ids)
         sampled_bootstrap_ids.append(bootstrap_ids)
+        bootstrap_trial_audit.append(trial_audit)
 
         try:
             fit_star = fit_functional_mixed_effects_regression(
@@ -293,6 +366,9 @@ def bootstrap_functional_mixed_effects_full_refit(
                 fixed_basis_size=result.fixed_basis_size,
                 random_basis_size=result.random_basis_size,
                 random_slope_predictor=result.random_slope_predictor,
+                trial_column=result.trial_column,
+                trial_random_effect=result.trial_random_effect,
+                trial_random_basis_size=result.trial_random_basis_size,
                 spline_degree=result.spline_degree,
                 reml=result.reml,
                 method=result.method,
@@ -331,6 +407,33 @@ def bootstrap_functional_mixed_effects_full_refit(
             )
             cross_covariances[bootstrap_index] = (
                 fit_star.random_intercept_slope_covariance
+            )
+
+        if trial_covariances is not None:
+            if (
+                fit_star.trial_random_effect_covariance is None
+                or fit_star.trial_random_effect_covariance_eigenvalues is None
+                or fit_star.trial_random_effect_covariance_condition_number
+                is None
+            ):
+                raise RuntimeError(
+                    "full-refit bootstrap lost the declared trial random-"
+                    "effect covariance structure"
+                )
+            trial_covariances[bootstrap_index] = (
+                fit_star.trial_random_effect_covariance
+            )
+            trial_covariance_eigenvalues[bootstrap_index] = (
+                fit_star.trial_random_effect_covariance_eigenvalues
+            )
+            trial_covariance_condition_numbers[bootstrap_index] = (
+                fit_star.trial_random_effect_covariance_condition_number
+            )
+            trial_boundary_flags[bootstrap_index] = (
+                fit_star.trial_random_effect_boundary_fit
+            )
+            trial_singular_flags[bootstrap_index] = (
+                fit_star.trial_random_effect_singular
             )
 
         covariance_eigenvalues[bootstrap_index] = (
@@ -381,10 +484,20 @@ def bootstrap_functional_mixed_effects_full_refit(
         convergence_flags=convergence_flags,
         backend_warnings=tuple(warning_records),
         random_state=random_state,
+        trial_random_effect_covariances=trial_covariances,
+        trial_random_effect_covariance_eigenvalues=(
+            trial_covariance_eigenvalues
+        ),
+        trial_random_effect_covariance_condition_numbers=(
+            trial_covariance_condition_numbers
+        ),
+        trial_random_effect_boundary_flags=trial_boundary_flags,
+        trial_random_effect_singular_flags=trial_singular_flags,
+        bootstrap_trial_audit=tuple(bootstrap_trial_audit),
         provenance={
             **dict(result.provenance),
             "functional_mixed_effects_full_refit_bootstrap": {
-                "method": "whole_participant_case_bootstrap_full_mixedlm_refit",
+                "method": "whole_participant_case_bootstrap_full_declared_mixed_model_refit",
                 "n_bootstrap": n_bootstrap,
                 "random_state": random_state,
                 "resampling_unit": "participant",
@@ -395,6 +508,19 @@ def bootstrap_functional_mixed_effects_full_refit(
                 "bootstrap_participant_id_retained": True,
                 "fixed_effects_refit": True,
                 "random_effect_covariance_refit": True,
+                "trial_random_effect_covariance_refit": (
+                    result.trial_random_effect is not None
+                ),
+                "trial_random_effect_structure_reselected": False,
+                "source_trial_id_retained": (
+                    result.trial_random_effect is not None
+                ),
+                "bootstrap_trial_id_retained": (
+                    result.trial_random_effect is not None
+                ),
+                "duplicate_source_trials_receive_distinct_bootstrap_trial_ids": (
+                    result.trial_random_effect is not None
+                ),
                 "residual_variance_refit": True,
                 "variance_components_refit": True,
                 "fixed_basis_size_reselected": False,
@@ -448,6 +574,51 @@ def functional_mixed_effects_full_refit_audit_frame(
                             bootstrap_index
                         ][draw_index]
                     ),
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def functional_mixed_effects_full_refit_trial_audit_frame(
+    bootstrap: FunctionalMixedEffectsFullRefitBootstrapResult,
+) -> pd.DataFrame:
+    """Return source/bootstrap participant and trial identities for every draw."""
+
+    if not isinstance(
+        bootstrap,
+        FunctionalMixedEffectsFullRefitBootstrapResult,
+    ):
+        raise TypeError(
+            "bootstrap must be a FunctionalMixedEffectsFullRefitBootstrapResult"
+        )
+    if not bootstrap.bootstrap_trial_audit:
+        return pd.DataFrame(
+            columns=[
+                "bootstrap_replicate",
+                "source_participant_id",
+                "bootstrap_participant_id",
+                "source_trial_id",
+                "bootstrap_trial_id",
+            ]
+        )
+
+    rows: list[dict[str, int | str]] = []
+    for bootstrap_index, records in enumerate(
+        bootstrap.bootstrap_trial_audit
+    ):
+        for (
+            source_participant_id,
+            bootstrap_participant_id,
+            source_trial_id,
+            bootstrap_trial_id,
+        ) in records:
+            rows.append(
+                {
+                    "bootstrap_replicate": bootstrap_index,
+                    "source_participant_id": source_participant_id,
+                    "bootstrap_participant_id": bootstrap_participant_id,
+                    "source_trial_id": source_trial_id,
+                    "bootstrap_trial_id": bootstrap_trial_id,
                 }
             )
     return pd.DataFrame(rows)
@@ -522,6 +693,40 @@ def functional_mixed_effects_variance_bootstrap_frame(
                 )
             ),
         }
+        if bootstrap.trial_random_effect_covariances is not None:
+            trial_eigenvalues = (
+                bootstrap.trial_random_effect_covariance_eigenvalues[
+                    bootstrap_index
+                ]
+            )
+            row["trial_covariance_trace"] = float(
+                np.trace(
+                    bootstrap.trial_random_effect_covariances[
+                        bootstrap_index
+                    ]
+                )
+            )
+            row["trial_covariance_min_eigenvalue"] = float(
+                np.min(trial_eigenvalues)
+            )
+            row["trial_covariance_max_eigenvalue"] = float(
+                np.max(trial_eigenvalues)
+            )
+            row["trial_covariance_condition_number"] = float(
+                bootstrap.trial_random_effect_covariance_condition_numbers[
+                    bootstrap_index
+                ]
+            )
+            row["trial_boundary_fit"] = bool(
+                bootstrap.trial_random_effect_boundary_flags[
+                    bootstrap_index
+                ]
+            )
+            row["trial_singular_fit"] = bool(
+                bootstrap.trial_random_effect_singular_flags[
+                    bootstrap_index
+                ]
+            )
         if bootstrap.random_slope_covariances is not None:
             row["random_slope_covariance_trace"] = float(
                 np.trace(

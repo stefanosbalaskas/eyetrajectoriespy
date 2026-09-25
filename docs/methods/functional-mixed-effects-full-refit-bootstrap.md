@@ -13,8 +13,9 @@ fixed_covariance_boot = bootstrap_functional_mixed_effects_coefficients(
 )
 ```
 
-It resamples participants but conditions on the fitted random-effect covariance
-and residual variance.
+It resamples participants but conditions on the fitted participant random-
+effect covariance, optional shared trial random-effect covariance, and residual
+variance.
 
 Version 0.46 adds:
 
@@ -55,9 +56,11 @@ the two copies of participant 7 receive distinct bootstrap group identities.
 The result retains both the original source participant ID and the bootstrap
 participant ID for every draw.
 
-This distinction is essential: otherwise `MixedLM` would merge duplicated
-copies into a single random-effect group and the procedure would no longer be
-the intended cluster bootstrap.
+This distinction is essential: otherwise a mixed-effects backend could merge
+duplicated source copies into one random-effect realization and the procedure
+would no longer be the intended cluster bootstrap. For a 0.48 nested model,
+every trial inside each sampled participant occurrence also receives a distinct
+bootstrap trial identity.
 
 ## What is refitted?
 
@@ -71,9 +74,10 @@ $$
 \right\}.
 $$
 
-This includes all fixed B-spline coefficients, the complete random-effect
-covariance matrix, random-intercept covariance, random-slope covariance when
-present, intercept/slope cross-covariance when present, and residual variance.
+This includes all fixed B-spline coefficients, the complete declared
+participant random-effect covariance, random-intercept covariance,
+random-slope covariance and intercept/slope cross-covariance when present, the
+shared trial random-effect covariance when present, and residual variance.
 
 The bootstrap does **not** rerun model specification. Held fixed are:
 
@@ -84,6 +88,7 @@ The bootstrap does **not** rerun model specification. Held fixed are:
 - response dimension;
 - fixed predictors;
 - random-slope choice;
+- trial-random-effect choice;
 - random-effect structure;
 - REML versus ML choice;
 - optimizer;
@@ -131,7 +136,9 @@ $$
 It also retains, for every replicate, covariance eigenvalues, covariance
 condition number, boundary flag, singularity flag, random-slope boundary flag,
 residual variance, log likelihood, convergence state, optimizer/backend
-warnings, and the intercept/slope covariance blocks.
+warnings, and the intercept/slope covariance blocks. For a nested 0.48 reference fit it
+also retains the full trial covariance distribution, trial covariance
+eigenvalues/condition numbers, and trial boundary/singularity flags.
 
 Use
 
@@ -160,8 +167,9 @@ full_refit_band = functional_mixed_effects_simultaneous_bands(
 ```
 
 With a full-refit bootstrap, the coefficient-function sampling distribution
-therefore includes random-effect covariance and residual-variance re-estimation
-across participant bootstrap samples.
+therefore includes re-estimation of the declared participant covariance,
+optional trial covariance, and residual variance across participant bootstrap
+samples.
 
 The band still conditions on the declared model specification and basis choices,
 and still claims simultaneous coverage over the observed time grid only.
@@ -212,24 +220,24 @@ bootstrap over all defensible analytical choices.
 
 Park, Staicu, Xiao, and Crainiceanu (2018, DOI
 `10.1093/biostatistics/kxx026`) describe fixed-effect inference for complex
-functional models by bootstrapping independent units such as subjects. Version
-0.46 follows that independent-unit principle while refitting the package's
-declared `MixedLM` representation in every participant sample.
-
-The current `statsmodels.MixedLM` backend represents the within-group marginal
-covariance through the random-effect design/covariance plus scalar residual
-variance. Version 0.46 therefore refits those existing covariance parameters;
-it does not introduce serial residual covariance.
+functional models by bootstrapping independent units such as subjects. Version 0.46 follows that independent-unit principle while refitting the
+package's declared mixed-effects model in every participant sample.
+Participant-only fits use the established `statsmodels.MixedLM` backend;
+0.48 nested trial fits use the explicit profiled Gaussian backend and refit
+both participant and trial covariance matrices. Neither bootstrap contract
+introduces serial residual covariance.
 
 ## What comes next?
 
-Version 0.47 is **residual / within-trial dependence diagnostics**, not an
-automatic AR(1) implementation.
+Version 0.47 supplies residual / within-trial dependence diagnostics. Version
+0.48 adds the nested trial functional random intercept while preserving
+participant-level bootstrap resampling.
 
-The diagnostic tranche should inspect residual ACF, lag covariance, empirical
-variograms, and physical-lag correlation before deciding whether the next
-structural model should be a trial-level functional random effect or an
-explicit serial residual covariance model.
+The next structural tranche, 0.49, is explicit residual covariance for
+remaining short-range dependence, with physical-time exponential correlation
+as the preferred first-class contract and AR(1) restricted to explicitly
+regular index-step settings. Version 0.50 is planned for covariance-structure
+sensitivity/comparison rather than automatic selection.
 
 See also the
 [functional mixed-effects guide](../guides/functional-mixed-effects.md),

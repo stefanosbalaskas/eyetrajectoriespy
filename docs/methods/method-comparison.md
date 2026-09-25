@@ -16,6 +16,7 @@
 | Condition-specific smooth mean | often GAMM | FPCA by itself |
 | Experimental predictors changing a functional response | function-on-scalar regression | treating every time point as an unrelated regression or treating repeated trials as independent |
 | Trial-varying predictors with repeated participant curves | functional mixed-effects regression | participant averaging or independent pointwise mixed models |
+| Smooth trial-specific heterogeneity after participant effects | nested trial functional random intercept (0.48) | forcing smooth trial variation into iid or short-range residual error |
 | Exact onset of divergence | specialized onset methods | FPCA loading inspection |
 | Predict scalar outcome | functional regression / score regression | causal mediation by default |
 | Predict an external scalar outcome while tuning retained FPC count | fold-local FPCA regression CV / nested CV | variance-explained or reconstruction selection |
@@ -29,7 +30,8 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 |---|---|---|---|
 | How does a continuous gaze response change with condition, expertise, age, or another scalar predictor? | scalar predictors → functional response | `fit_function_on_scalar_regression()` | 0.35 repeated trials require participant-constant predictors and aggregation |
 | How does a functional gaze trajectory predict a scalar outcome? | functional predictor → scalar response | `fit_scalar_on_function_regression()` / FPCR | inference depends on retained FPCA representation |
-| Do I need participant-specific random functional effects or within-participant trial predictors? | repeated-measures functional response | fit_functional_mixed_effects_regression() | joint Gaussian mixed model; declare bases/covariance assumptions explicitly |
+| Do I need participant-specific random functional effects or within-participant trial predictors? | repeated-measures functional response | `fit_functional_mixed_effects_regression()` | joint Gaussian mixed model; declare bases/covariance assumptions explicitly |
+| Do residuals show smooth trial-specific shape beyond participant effects? | participant → trial → time covariance | `fit_functional_mixed_effects_regression(..., trial_random_effect="functional_intercept")` | shared unstructured trial-basis covariance; no automatic covariance selection |
 
 Function-on-scalar regression estimates coefficient functions over time. Scalar-on-function regression instead compresses or integrates information from a functional predictor to explain a scalar response. They answer opposite regression questions and should not be used interchangeably.
 
@@ -260,6 +262,7 @@ uncertainty.
 |---|---:|---:|---|
 | Functional random intercept | $q$ | $q(q+1)/2$ | participant count at least max(4, q+1) |
 | Intercept + one random functional slope | $2q$ | $(2q)(2q+1)/2$ | named predictor varies within every participant and participant count exceeds covariance-parameter count |
+| Nested trial functional intercept | $q_u$ per trial | $q_u(q_u+1)/2$ shared across trials | unique participant/trial pairs, at least two trials per participant, total nested trials exceed covariance-parameter count |
 
 The 0.45 slope model is appropriate when the scientific question concerns
 participant heterogeneity in the time-varying effect of one predeclared
@@ -272,7 +275,7 @@ the analyst's behalf.
 | Bootstrap | Participant resampling | Fixed effects refit | Random-effect covariance refit | Residual variance refit | Model specification reselected |
 |---|---|---|---|---|---|
 | Fixed-covariance (0.44) | yes | yes, GLS | no | no | no |
-| Full-refit (0.46) | yes | yes, MixedLM | yes | yes | no |
+| Full-refit (0.46+) | yes | yes, declared backend | yes; participant and, when present, trial covariance | yes | no |
 
 Both methods resample whole participants. The full-refit version additionally
 propagates variance-component re-estimation through the fixed-effect bootstrap

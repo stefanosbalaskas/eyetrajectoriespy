@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.48.0.dev0
+
+- Add an explicit nested trial-level functional random intercept to `fit_functional_mixed_effects_regression()` through `trial_column`, `trial_random_effect="functional_intercept"`, and analyst-declared `trial_random_basis_size`.
+- Preserve the historical `statsmodels.MixedLM` backend unchanged when no trial functional random effect is requested; 0.48 uses a separate profiled Gaussian marginal-likelihood backend only for the nested participant→trial→time covariance model.
+- Estimate one shared unstructured trial-basis covariance `Psi_trial` across trials rather than one covariance per trial or an independent scalar variance-component approximation.
+- Use the participant-block marginal covariance `V_i = Z_i Psi_participant Z_i' + sum_j W_ij Psi_trial W_ij' + sigma^2 I`, with Cholesky-parameterized participant/trial covariance matrices and GLS-profiled fixed effects.
+- Require an explicit trial identifier, uniqueness of trial IDs within participant, at least two observed trials per participant, fixed declared trial basis size, and a minimum trial-count > free trial-covariance-parameter guard.
+- Retain trial covariance eigenvalues, condition number, covariance-parameter count, boundary/singularity diagnostics, trial BLUP coefficients/functions, and exact curve→participant→source-trial mappings.
+- Add `functional_trial_random_effect_frame()` and `plot_functional_trial_random_effects()` for direct inspection of estimated trial-specific smooth departures.
+- Extend the 0.47 residual ACF/variogram workflow to the 0.48 fitted residuals so analysts can diagnose whether smooth trial-specific dependence was actually removed.
+- Extend the fixed-covariance participant bootstrap so both participant and trial covariance components are held fixed in the participant-block GLS reconstruction.
+- Extend the full-refit participant bootstrap so whole participants remain the resampling unit, all nested trials travel with the sampled participant, duplicate participant draws receive distinct bootstrap participant IDs, duplicate source trials receive distinct bootstrap trial IDs, and both participant/trial covariance matrices plus residual variance are re-estimated.
+- Add `functional_mixed_effects_full_refit_trial_audit_frame()` and trial covariance diagnostics to the variance-bootstrap frame.
+- Add synthetic validation for fixed-effect recovery, trial-BLUP recovery, residual-dependence reduction, zero-trial-variance boundary behavior, participant/trial identifiability, fixed-covariance bootstrap propagation, and full-refit hierarchical resampling identity.
+- Keep residual serial covariance out of 0.48. The next planned tranche is 0.49 explicit physical-time residual covariance, followed by 0.50 covariance-structure sensitivity/comparison.
+
 ## 0.47.0.dev0
 
 - Add `functional_mixed_effects_residual_diagnostics()` for explicit within-trial residual autocovariance, autocorrelation, and empirical semivariance through an analyst-declared maximum index lag.

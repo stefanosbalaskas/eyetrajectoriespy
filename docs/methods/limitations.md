@@ -36,11 +36,13 @@ implement the full class of functional additive mixed models. It fits one
 selected Gaussian response dimension with a participant functional random
 intercept and conditionally iid grid residuals.
 
-There is currently no trial-level functional random effect, explicit residual
-autocorrelation model, crossed/nested second grouping factor, generalized
-functional response, or joint multivariate response covariance. Version 0.45
-does support exactly one guarded participant-specific random functional slope;
-multiple random slopes remain out of scope.
+Version 0.48 supports one nested trial-level functional random intercept with
+one shared unstructured trial-basis covariance. It does not yet support an
+explicit residual autocorrelation model, arbitrary crossed/nested second
+grouping factors, multiple trial random-effect terms, generalized functional
+responses, or joint multivariate response covariance. Version 0.45 supports
+exactly one guarded participant-specific random functional slope; multiple
+participant random slopes remain out of scope.
 
 The fixed and random B-spline basis sizes are user-declared model choices.
 They are not selected automatically, and uncertainty from choosing them is not
@@ -938,9 +940,9 @@ The calibration maximum is taken over the observed grid only. Although the
 coefficient functions are represented by continuous B-splines, 0.44 does not
 claim simultaneous coverage at unsampled times.
 
-Participant random functional slopes, trial-level random functions, serial
-residual covariance, generalized responses, and multivariate cross-dimension
-covariance also remain outside the current model.
+Multiple participant random functional slopes, multiple trial-level random
+functions, serial residual covariance, generalized responses, and multivariate
+cross-dimension covariance remain outside the current model.
 
 ## One random functional slope is not an arbitrary random-effects engine
 
@@ -989,7 +991,8 @@ A high frequency of bootstrap fit failure is scientifically informative about
 model fragility. The implementation intentionally does not redraw until a
 target number of successful replicates is reached.
 
-The current backend still uses conditionally iid grid-level residual errors
-after the random effects. Version 0.47 therefore prioritizes residual/
-within-trial dependence diagnostics before selecting any serial covariance or
-trial-level random-function extension.
+The current backends still use conditionally iid grid-level residual errors
+after the declared participant and optional trial functional random effects.
+Version 0.47 diagnostics remain applicable after the 0.48 extension; persistent
+short-range residual dependence is the motivation for the planned 0.49
+physical-time residual covariance layer, not an automatically selected model.

@@ -656,6 +656,21 @@ overall summary), and any planned before/after mixed-model comparison. Do not
 expand the lag window or choose a residual covariance structure only because a
 post hoc diagnostic pattern gives the preferred inferential result.
 
+If a nested trial functional random effect is planned, also pre-specify:
+
+- the trial identifier;
+- `trial_random_effect="functional_intercept"`;
+- the trial B-spline basis size;
+- the requirement for unique participant/trial pairs and at least two trials
+  per participant;
+- the minimum trial-count/covariance-parameter guard;
+- how trial covariance eigenvalues, condition number, boundary/singularity
+  diagnostics, and trial BLUP functions will be inspected;
+- whether residual diagnostics will be repeated after adding the trial effect.
+
+Do not add the trial functional effect, change its basis size, or remove it at a
+boundary estimate only because doing so yields a preferred fixed-effect result.
+
 ## Function-on-scalar regression
 
 If a functional response will be modeled using scalar predictors, pre-specify:
@@ -798,16 +813,18 @@ Pre-register:
 - participant as the bootstrap unit;
 - bootstrap replicate count and random seed;
 - fixed-covariance versus full-refit bootstrap as distinct planned analyses;
-- the fixed/random basis sizes and spline degree;
-- predictor set and any single random-slope predictor;
+- the fixed/participant-random/trial-random basis sizes and spline degree;
+- predictor set, any single participant random-slope predictor, and whether a
+  trial functional random intercept is declared;
 - REML versus ML;
 - optimizer and iteration limit;
 - coefficient-wise versus familywise simultaneous scope;
 - `failed_replicate_policy="raise"`.
 
-State that duplicate source-participant draws receive distinct bootstrap group
-identities and that model/basis/preprocessing choices remain fixed across
-replicates.
+State that duplicate source-participant draws receive distinct bootstrap
+participant identities. For a nested trial model, state that each trial inside
+each sampled participant occurrence receives a distinct bootstrap trial
+identity. Model/basis/preprocessing choices remain fixed across replicates.
 
 If both bootstrap methods are planned, specify whether the full-refit/fixed-
 covariance band-width ratio is a descriptive sensitivity diagnostic rather than

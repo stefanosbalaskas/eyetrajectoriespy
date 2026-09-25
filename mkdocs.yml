@@ -40,6 +40,7 @@ nav:
       - Functional mixed-effects regression: guides/functional-mixed-effects.md
       - Mixed-effects simultaneous bands: methods/functional-mixed-effects-simultaneous-bands.md
       - Random functional slope: methods/functional-mixed-effects-random-slope.md
+      - Trial functional random effect: methods/functional-mixed-effects-trial-random-effect.md
       - Mixed-effects full-refit bootstrap: methods/functional-mixed-effects-full-refit-bootstrap.md
       - Mixed-effects residual diagnostics: methods/functional-mixed-effects-residual-diagnostics.md
       - Gaussian FPCR bootstrap uncertainty: guides/fpcr-bootstrap-inference.md
@@ -90,6 +91,7 @@ nav:
       - Functional mixed-effects regression: examples/functional-mixed-effects.md
       - Mixed-effects simultaneous bands: examples/functional-mixed-effects-simultaneous-bands.md
       - Random functional slope: examples/functional-mixed-effects-random-slope.md
+      - Trial functional random effect: examples/functional-mixed-effects-trial-random-effect.md
       - Mixed-effects full-refit bootstrap: examples/functional-mixed-effects-full-refit-bootstrap.md
       - Mixed-effects residual diagnostics: examples/functional-mixed-effects-residual-diagnostics.md
       - Gaussian FPCR bootstrap uncertainty: examples/fpcr-bootstrap-inference.md

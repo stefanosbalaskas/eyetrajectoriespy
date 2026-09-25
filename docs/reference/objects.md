@@ -37,7 +37,9 @@ fixed B-spline basis/knots, the participant random basis, fixed basis
 coefficients and covariance, residual variance, fitted/residual/observed
 functional responses, scalar design/rank diagnostics, participant membership,
 optimization state, backend warnings, likelihood, time/dimension semantics,
-provenance, and the fitted statsmodels result.
+provenance, and the fitted backend object. Participant-only fits retain the
+historical statsmodels result; explicit 0.48 participant→trial fits retain the
+profiled nested-backend optimizer state instead.
 
 For every fit it also retains the complete random-effect design matrix, full
 random-effect covariance, covariance eigenvalues, covariance condition number,
@@ -58,10 +60,19 @@ slope-predictor value.
 
 A random-slope fit is refused when the predictor lacks within-participant
 variation or when the participant count does not exceed the number of free
-unstructured random-effect covariance parameters. The object does not imply
-serially correlated residuals, trial-level functional random effects, multiple
-random slopes, multivariate response covariance, or variance-component-refit
-bootstrap uncertainty.
+unstructured random-effect covariance parameters.
+
+When `trial_random_effect="functional_intercept"` is explicitly requested,
+the object additionally retains the trial column, source/composite trial IDs,
+trial basis and knots, trial BLUP coefficients/functions, one shared
+unstructured trial-basis covariance, its eigenvalues and condition number,
+free covariance-parameter count, and boundary/singularity diagnostics. The
+nested model requires unique participant/trial pairs and at least two trials
+per participant. Participant and trial covariance matrices remain distinct.
+
+The object does not imply serially correlated residuals, multiple trial random
+effects, multiple participant random slopes, multivariate response covariance,
+or variance-component-refit bootstrap uncertainty.
 
 
 ## Function-on-scalar result objects
@@ -464,9 +475,10 @@ standard deviations, random seed, covariance-conditioning label, and full
 provenance.
 
 Whole participant trial bundles are sampled with replacement. Fixed effects are
-re-estimated in every replicate, but the reference random-effect covariance,
-residual variance, fixed/random bases, spline degree, and preprocessing are held
-fixed. Rank-deficient or unsolvable resamples raise; none are silently replaced.
+re-estimated in every replicate, but the reference participant covariance,
+optional shared trial covariance, residual variance, fixed/random bases, spline
+degree, and preprocessing are held fixed. Rank-deficient or unsolvable
+resamples raise; none are silently replaced.
 
 ## FunctionalMixedEffectsBandResult
 
@@ -487,16 +499,20 @@ source participant IDs, distinct bootstrap participant IDs, bootstrap means and
 pointwise standard deviations, and the complete refitted variance-component
 distributions.
 
-For every bootstrap replicate it retains the full random-effect covariance,
-intercept covariance, optional slope covariance, optional intercept/slope
-cross-covariance, covariance eigenvalues and condition number, boundary and
-singularity flags, random-slope boundary flag, residual variance, log
-likelihood, convergence status, and backend warnings.
+For every bootstrap replicate it retains the full participant random-effect
+covariance, intercept covariance, optional slope covariance, optional
+intercept/slope cross-covariance, participant covariance eigenvalues and
+condition number, boundary and singularity flags, random-slope boundary flag,
+residual variance, log likelihood, convergence status, and backend warnings.
+For 0.48 nested fits it additionally retains the full trial covariance
+distribution, trial covariance eigenvalues/condition numbers, and
+trial-specific boundary/singularity flags.
 
-Every occurrence of a sampled participant receives its own bootstrap group
-identity. Thus drawing the same source participant twice creates two
-independent bootstrap clusters rather than merging both copies into one
-`MixedLM` group.
+Every occurrence of a sampled participant receives its own bootstrap
+participant identity. For a nested trial model, every trial inside that
+occurrence also receives a distinct bootstrap trial identity while preserving
+the source participant/trial IDs in the audit record. Thus duplicate source
+draws cannot be merged into one participant or trial random-effect realization.
 
 The object records `failed_replicate_policy="raise"`. Failed replicates are
 not silently discarded or replaced. Basis sizes, spline degree, preprocessing,

@@ -43,6 +43,7 @@ from .functional_mixed_effects_full_refit import (
     bootstrap_functional_mixed_effects_full_refit,
     compare_functional_mixed_effects_bootstraps,
     functional_mixed_effects_full_refit_audit_frame,
+    functional_mixed_effects_full_refit_trial_audit_frame,
     functional_mixed_effects_variance_bootstrap_frame,
 )
 from .functional_mixed_effects_diagnostics import (
@@ -53,6 +54,10 @@ from .functional_mixed_effects_diagnostics import (
     functional_mixed_effects_residual_reporting_text,
     plot_functional_mixed_effects_residual_acf,
     plot_functional_mixed_effects_residual_variogram,
+)
+from .functional_mixed_effects_nested import (
+    functional_trial_random_effect_frame,
+    plot_functional_trial_random_effects,
 )
 from .functional_mixed_effects_inference import (
     bootstrap_functional_mixed_effects_coefficients,
@@ -446,9 +451,12 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.47.0.dev0"
+__version__ = "0.48.0.dev0"
 
 __all__ = [
+    "functional_trial_random_effect_frame",
+    "plot_functional_trial_random_effects",
+    "functional_mixed_effects_full_refit_trial_audit_frame",
     "FunctionalMixedEffectsResidualDiagnosticsResult",
     "functional_mixed_effects_residual_diagnostics",
     "functional_mixed_effects_residual_diagnostic_frame",

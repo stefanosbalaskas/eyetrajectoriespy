@@ -653,10 +653,30 @@ the planned 0.46 tranche.
 ### Why must duplicated participants receive new bootstrap group IDs?
 
 In a participant cluster bootstrap, two draws of the same source participant are
-two bootstrap clusters. If both copies kept the original participant ID,
-`MixedLM` would merge them into one random-effect group. Version 0.46 assigns a
-new bootstrap group ID to every participant draw and retains the original source
-ID separately.
+two bootstrap clusters. If both copies kept the original participant ID, the
+mixed-effects backend could merge them into one random-effect realization.
+Version 0.46 assigns a new bootstrap participant ID to every participant draw
+and retains the original source ID separately. In a 0.48 nested trial model,
+every trial inside each duplicated participant occurrence also receives a new
+bootstrap trial ID, while the source participant/trial IDs remain available in
+the trial audit frame.
+
+### Why is the 0.48 trial random effect not implemented as a MixedLM variance component?
+
+The 0.48 estimand requires a q-dimensional trial-basis coefficient vector with
+one shared **unstructured** covariance matrix across trials. A scalar or
+independent variance-component approximation would change that covariance
+contract. The package therefore uses an explicit profiled Gaussian
+participant-block likelihood for the nested model while leaving the historical
+participant-only MixedLM path unchanged.
+
+### Why require at least two trials per participant?
+
+With one observed trial per participant, a participant functional intercept and
+a nested trial functional intercept are not cleanly separable as distinct
+hierarchical covariance sources. Version 0.48 therefore uses the conservative
+requirement of at least two observed trials for every participant instead of
+silently relying on a weaker cross-cluster identification argument.
 
 ### What does “full refit” mean in version 0.46?
 

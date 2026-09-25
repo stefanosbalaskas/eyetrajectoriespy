@@ -761,6 +761,25 @@ Do not describe the 0.36 model as a fully general functional additive mixed
 model. State the omitted covariance/random-effect structures that matter for
 the study design.
 
+If a 0.48 nested trial functional random intercept is used, additionally
+report:
+
+- the exact `trial_column` and confirmation that participant/trial pairs were
+  unique;
+- the number of nested trials and trials per participant;
+- `trial_random_effect="functional_intercept"`;
+- the declared trial B-spline basis size;
+- that one shared unstructured trial-basis covariance was estimated separately
+  from the participant covariance;
+- trial covariance eigenvalues/condition number and boundary/singularity
+  status;
+- that participant and trial random coefficients were modeled without a
+  cross-covariance;
+- that the profiled Gaussian nested backend was used, while participant-only
+  fits retain the historical MixedLM backend;
+- that grid residuals remain conditionally iid after the participant/trial
+  smooth random effects.
+
 If version 0.47 residual diagnostics are used, additionally report:
 
 - that the diagnostics use conditional residual functions from the fitted
@@ -884,8 +903,9 @@ confidence level, and observed-grid interpretation.
 
 State that whole participant trial bundles were sampled with replacement and
 that fixed B-spline coefficients were re-estimated by GLS for every resample.
-Also state explicitly that the fitted random-effect covariance, residual
-variance, and declared bases were held fixed.
+Also state explicitly that the fitted participant random-effect covariance,
+optional shared trial random-effect covariance, residual variance, and declared
+bases were held fixed.
 
 Report the simultaneous critical value and participant-bootstrap pointwise
 standard errors for the coefficient(s) of interest. Do not describe the band as
@@ -921,12 +941,15 @@ choice, optimizer, fixed/random basis sizes, random-effect structure, and
 simultaneous-band scope.
 
 State explicitly that whole participants were sampled with replacement and that
-duplicate participant draws received distinct bootstrap group identities.
+duplicate participant draws received distinct bootstrap participant identities.
+For a 0.48 nested model, also state that every nested trial in each sampled
+occurrence received a distinct bootstrap trial identity while source
+participant/trial IDs were retained.
 
 Report that each replicate re-estimated fixed coefficients, the complete
-random-effect covariance, and residual variance, while preprocessing, basis
-sizes, predictor specification, random-slope structure, and optimizer choice
-remained fixed.
+declared participant covariance, the shared trial covariance when present, and
+residual variance, while preprocessing, basis sizes, predictor specification,
+random-effect structure, and optimizer choice remained fixed.
 
 Summarize the stability of residual variance, covariance eigenvalues/condition
 numbers, boundary/singularity frequency, and optimizer warnings where relevant.

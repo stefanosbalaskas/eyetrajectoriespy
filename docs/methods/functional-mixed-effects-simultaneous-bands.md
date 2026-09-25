@@ -74,9 +74,10 @@ $$
 \sum_{r=1}^{n}\mathbf s_{I_r^{(b)}}.
 $$
 
-The fitted random-effect covariance, residual variance, fixed basis, random
-basis, spline degree, model specification, and preprocessing decisions are
-held fixed.
+The fitted participant random-effect covariance, optional shared trial
+random-effect covariance, residual variance, fixed basis, participant/trial
+random bases, spline degree, model specification, and preprocessing decisions
+are held fixed.
 
 This makes the procedure a **participant-cluster case bootstrap conditional on
 the fitted covariance model**, not a full mixed-model parametric bootstrap and
@@ -136,9 +137,10 @@ rank deficient or cannot be solved. The package does not redraw another sample
 until the requested number of successful replicates is reached.
 
 The reference fit is also reconstructed through the same fixed-covariance GLS
-equations before resampling. If that reconstruction does not reproduce the
-stored MixedLM fixed coefficients within numerical tolerance, the bootstrap
-raises rather than proceeding under an inconsistent covariance contract.
+equations before resampling. If that reconstruction does not reproduce the stored reference mixed-effects
+fixed coefficients within numerical tolerance, the bootstrap raises rather
+than proceeding under an inconsistent covariance contract. This applies to
+both the historical participant-only MixedLM fit and the 0.48 nested backend.
 
 ## Interpretation
 
@@ -155,8 +157,8 @@ It does **not** imply:
 - 95% pointwise coverage at each location independently;
 - coverage at arbitrary unsampled time points;
 - uncertainty propagation from basis-size selection;
-- uncertainty from estimating the random-effect covariance or residual
-  variance;
+- uncertainty from estimating the participant/trial random-effect covariance
+  components or residual variance;
 - robustness to a different covariance model;
 - causal interpretation of the fixed effect.
 

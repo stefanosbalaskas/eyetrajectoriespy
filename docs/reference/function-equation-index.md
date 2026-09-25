@@ -217,14 +217,22 @@ $$
 $$
 
 $$
-\mathbf u_i\sim N(\mathbf 0,\boldsymbol\Psi),\qquad \varepsilon_{ij}(t_m)\sim N(0,\sigma^2)
+\mathbf u_i\sim N(\mathbf 0,\boldsymbol\Psi_{p}),\qquad \varepsilon_{ij}(t_m)\sim N(0,\sigma^2)
 $$
 
 $$
-\operatorname{Cov}(\mathbf Y_i\mid\mathbf X_i)=\mathbf Z_i\boldsymbol\Psi\mathbf Z_i^\top+\sigma^2\mathbf I
+\operatorname{Cov}(\mathbf Y_i\mid\mathbf X_i)=\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top+\sigma^2\mathbf I
 $$
 
-**Scope:** One selected Gaussian functional response dimension, common grid, B-spline fixed coefficient functions, one participant functional random intercept with unstructured basis-coefficient covariance, and conditionally iid grid residuals. Trial-varying predictors are allowed. No pointwise mixed-model decomposition, automatic basis selection, residual serial correlation model, curve-level functional random effect, or multivariate cross-dimension covariance is claimed.
+$$
+u_{ij}(t)=\mathbf B_u(t)^\top\mathbf v_{ij},\qquad \mathbf v_{ij}\sim N(\mathbf 0,\boldsymbol\Psi_{trial})
+$$
+
+$$
+\mathbf V_i=\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top+\sum_j\mathbf W_{ij}\boldsymbol\Psi_{trial}\mathbf W_{ij}^\top+\sigma^2\mathbf I
+$$
+
+**Scope:** One selected Gaussian functional response dimension on a common grid with explicit B-spline fixed effects and participant functional random effects. Version 0.48 optionally adds one nested trial functional random intercept with its own shared unstructured basis-coefficient covariance. The trial extension is explicit, requires unique participant/trial pairs and at least two trials per participant, and retains conditionally iid grid residuals after the declared random effects. No automatic basis/covariance selection, residual serial-correlation model, multiple trial random effects, or multivariate cross-dimension covariance is claimed.
 
 [Expanded mathematical reference](../methods/mathematical-reference.md#functional-mixed-effects)
 

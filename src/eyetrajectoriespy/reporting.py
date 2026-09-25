@@ -186,14 +186,26 @@ def functional_mixed_effects_reporting_text(
     predictor_text = ", ".join(result.predictor_names)
     warning_text = ""
     if result.boundary_fit:
-        warning_text += (
-            " The participant random-effect covariance was estimated on or "
-            "near the numerical boundary and should be interpreted cautiously."
-        )
+        if result.trial_random_effect is None:
+            warning_text += (
+                " The participant random-effect covariance was estimated on or "
+                "near the numerical boundary and should be interpreted cautiously."
+            )
+        else:
+            warning_text += (
+                " At least one fitted participant/trial random-effect covariance "
+                "component was estimated on or near the numerical boundary and "
+                "should be interpreted cautiously."
+            )
     if result.random_effect_singular:
         warning_text += (
-            " The fitted random-effect covariance was numerically singular "
-            "under the retained diagnostic tolerance."
+            " The fitted participant random-effect covariance was numerically "
+            "singular under the retained diagnostic tolerance."
+        )
+    if result.trial_random_effect_singular:
+        warning_text += (
+            " The fitted trial random-effect covariance was numerically "
+            "singular under the retained diagnostic tolerance."
         )
     if result.random_effect_complexity_warning:
         warning_text += (
@@ -225,6 +237,20 @@ def functional_mixed_effects_reporting_text(
             "covariance parameters"
         )
 
+    if result.trial_random_effect == "functional_intercept":
+        trial_text = (
+            " A nested trial-specific functional random intercept was also "
+            f"estimated for {result.n_trials} trials using "
+            f"{result.trial_random_basis_size} B-spline basis functions and "
+            "one shared unstructured trial-basis covariance with "
+            f"{result.trial_random_effect_covariance_parameter_count} free "
+            "covariance parameters. Trial identifiers were required to be "
+            "unique within participant, and every participant contributed at "
+            "least two trials"
+        )
+    else:
+        trial_text = ""
+
     inference_text = (
         " Reported 95% coefficient intervals are pointwise Wald intervals; "
         "simultaneous functional coverage and variance-component uncertainty "
@@ -242,8 +268,14 @@ def functional_mixed_effects_reporting_text(
                 f"resamples with {band.simultaneous_scope}-scope maxima over "
                 "the observed time grid. Every sampled participant occurrence "
                 "received a distinct bootstrap group identity, and each "
-                "replicate refitted fixed coefficients, the random-effect "
-                "covariance, and residual variance under the unchanged "
+                "replicate refitted fixed coefficients, the participant "
+                "random-effect covariance"
+                + (
+                    ", the shared trial random-effect covariance"
+                    if result.trial_random_effect is not None
+                    else ""
+                )
+                + ", and residual variance under the unchanged "
                 "declared model specification. Basis sizes, preprocessing, "
                 "predictors, random-slope structure, REML/ML choice, and "
                 "optimizer were not reselected. The bands therefore include "
@@ -259,8 +291,14 @@ def functional_mixed_effects_reporting_text(
                 f"bands used {band.bootstrap.n_bootstrap} whole-participant "
                 f"resamples with {band.simultaneous_scope}-scope maxima over "
                 "the observed time grid. Fixed coefficient functions were "
-                "re-estimated by GLS in every resample while the fitted random-"
-                "effect covariance and residual variance were held fixed. Thus "
+                "re-estimated by GLS in every resample while the fitted "
+                "participant random-effect covariance"
+                + (
+                    ", shared trial random-effect covariance"
+                    if result.trial_random_effect is not None
+                    else ""
+                )
+                + ", and residual variance were held fixed. Thus "
                 "the bands target participant-sampling variability conditional "
                 "on the declared basis and fitted covariance model; they do not "
                 "include variance-component or basis-selection uncertainty and "
@@ -276,7 +314,9 @@ def functional_mixed_effects_reporting_text(
         f"with {result.fixed_basis_size} functions (degree "
         f"{result.spline_degree}); "
         + random_text
-        + ". "
+        + "."
+        + trial_text
+        + " "
         f"The model included {result.n_curves} curves from "
         f"{result.n_participants} participants and was estimated by "
         f"{'REML' if result.reml else 'ML'} using optimizer "
@@ -284,10 +324,16 @@ def functional_mixed_effects_reporting_text(
         f"number was {result.random_effect_covariance_condition_number:.3g}. "
         "Trial-varying predictors were retained at the curve level while "
         "participant clustering was represented directly. Grid-level "
-        "residuals were conditionally iid Gaussian. No automatic categorical "
+        + (
+            "residuals were conditionally iid Gaussian after participant and "
+            "trial functional random effects. "
+            if result.trial_random_effect is not None
+            else "residuals were conditionally iid Gaussian. "
+        )
+        + "No automatic categorical "
         "encoding, interaction construction, predictor scaling, basis-size "
-        "selection, random-slope selection, smoothing-penalty selection, or "
-        "optimizer fallback was performed."
+        "selection, random-slope selection, trial-random-effect selection, "
+        "smoothing-penalty selection, or optimizer fallback was performed."
         + inference_text
         + warning_text
     )

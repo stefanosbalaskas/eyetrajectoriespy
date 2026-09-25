@@ -43,6 +43,30 @@ def main() -> None:
             f"or fenced-code rendering: {sorted(escaped_backticks)}"
         )
 
+    invalid_controls = []
+    for markdown_path in ROOT.rglob("*.md"):
+        raw = markdown_path.read_bytes()
+        bad_codes = sorted(
+            {
+                byte
+                for byte in raw
+                if byte < 32 and byte != 10
+            }
+        )
+        if bad_codes:
+            invalid_controls.append(
+                (
+                    str(markdown_path.relative_to(ROOT)),
+                    bad_codes,
+                )
+            )
+    if invalid_controls:
+        raise RuntimeError(
+            "Markdown files contain non-newline ASCII control characters; "
+            "these commonly indicate escaped LaTeX corruption: "
+            f"{invalid_controls}"
+        )
+
     math_page = (DOCS / "methods" / "mathematical-reference.md").read_text(
         encoding="utf-8"
     )
@@ -136,7 +160,7 @@ def main() -> None:
         raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.47.0.dev0"):
+    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.48.0.dev0"):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
 

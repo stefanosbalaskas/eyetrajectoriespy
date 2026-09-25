@@ -307,21 +307,48 @@ N(\mathbf 0,\boldsymbol\Psi),
 N(0,\sigma^2).
 $
 
-For all stacked observations from participant \(i\),
+For all stacked observations from participant \(i\), the historical
+participant-only model has
 
 $
 \operatorname{Cov}(\mathbf Y_i\mid\mathbf X_i)
 =
-\mathbf Z_i\boldsymbol\Psi\mathbf Z_i^\top
+\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top
 +
 \sigma^2\mathbf I.
 $
 
-Implemented by `fit_functional_mixed_effects_regression()`. Version 0.36
-fits one selected response dimension jointly across all curve-by-time samples.
-It uses explicitly sized B-spline bases, an unstructured participant
-random-basis covariance, and conditionally iid grid-level residual errors.
-It is not a collection of independent pointwise mixed models.
+Version 0.48 optionally adds a nested trial functional random intercept,
+
+$
+u_{ij}(t)
+=
+\mathbf B_u(t)^\top\mathbf v_{ij},
+\qquad
+\mathbf v_{ij}\sim N(\mathbf 0,\boldsymbol\Psi_{trial}),
+$
+
+with one shared unstructured trial-basis covariance. The participant-block
+marginal covariance then becomes
+
+$
+\mathbf V_i
+=
+\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top
++
+\sum_j
+\mathbf W_{ij}\boldsymbol\Psi_{trial}\mathbf W_{ij}^\top
++
+\sigma^2\mathbf I.
+$
+
+Implemented by `fit_functional_mixed_effects_regression()`. Participant-only
+fits retain the established `statsmodels.MixedLM` backend. The explicit 0.48
+participant→trial extension uses a profiled Gaussian marginal likelihood with
+separate Cholesky-parameterized participant and trial covariance matrices.
+Both routes use explicitly sized B-spline bases and conditionally iid
+grid-level residual errors after the declared random effects. Neither is a
+collection of independent pointwise mixed models.
 
 ## One participant random functional slope
 

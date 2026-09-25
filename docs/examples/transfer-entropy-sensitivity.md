@@ -38,7 +38,7 @@ print(
 )
 ```
 
-The result contains (2	imes2	imes4=16) rows. The row with lag one should
+The result contains \(2\times2\times4=16\) rows. The row with lag one should
 recover substantially more directed information in this synthetic mechanism,
 but the package does not label that row "best" or automatically select it.
 

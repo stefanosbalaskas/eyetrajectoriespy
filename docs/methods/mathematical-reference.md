@@ -606,10 +606,70 @@ $
 
 The fixed-effect design is formed by tensoring each scalar design column with
 the fixed B-spline basis. The participant random-effect design uses the random
-B-spline basis for every curve belonging to the participant. All
-curve-by-time observations are then fitted in **one** Gaussian linear mixed
-model using `statsmodels.MixedLM`; there is no separate mixed-model fit at
-each time point.
+B-spline basis for every curve belonging to the participant. For the historical
+participant-only model, all curve-by-time observations are fitted in **one**
+Gaussian linear mixed model using `statsmodels.MixedLM`; there is no separate
+mixed-model fit at each time point.
+
+### Version 0.48 nested trial functional random intercept
+
+When explicitly requested, version 0.48 extends the conditional mean to
+
+$
+Y_{ij}(t)
+=
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t)
++
+b_i(t)
++
+u_{ij}(t)
++
+\varepsilon_{ij}(t),
+$
+
+where
+
+$
+u_{ij}(t)=\mathbf B_u(t)^\top\mathbf v_{ij},
+\qquad
+\mathbf v_{ij}\sim
+N(\mathbf 0,\boldsymbol\Psi_{trial}).
+$
+
+One unstructured \(\boldsymbol\Psi_{trial}\) is shared across nested trials.
+It is distinct from the participant covariance and is not replaced by an
+independent scalar variance-component approximation.
+
+For participant \(i\), the marginal covariance is
+
+$
+\mathbf V_i
+=
+\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top
++
+\sum_j
+\mathbf W_{ij}\boldsymbol\Psi_{trial}\mathbf W_{ij}^\top
++
+\sigma^2\mathbf I.
+$
+
+The participant and trial covariance matrices are parameterized through
+Cholesky factors. For every covariance-parameter evaluation, the fixed B-spline
+coefficients are profiled by generalized least squares. This explicit nested
+backend is used only when
+`trial_random_effect="functional_intercept"`; participant-only fits preserve
+the established MixedLM implementation.
+
+Version 0.48 requires an explicit trial identifier, unique participant/trial
+pairs, at least two observed trials per participant, an analyst-declared trial
+basis size, and more nested trials than free parameters in the unstructured
+trial covariance. Those requirements are conservative identifiability/
+complexity guards rather than guarantees of precise covariance estimation.
+
+Participant and trial random coefficients are independent in the 0.48 model:
+no participant–trial cross-covariance is estimated. Trial covariance
+eigenvalues, condition number, boundary/singularity diagnostics, trial BLUP
+coefficients, and reconstructed trial functions are retained.
 
 ### Trial-varying predictors
 
@@ -638,12 +698,14 @@ Version 0.44 adds a separate participant-cluster bootstrap layer for
 observed-grid simultaneous fixed-coefficient bands. That layer re-estimates
 fixed coefficients under whole-participant resampling while conditioning on the
 reference random-effect covariance, residual variance, and declared bases.
-Therefore the current inference layer does not claim variance-component
-uncertainty, basis-selection uncertainty, continuous-between-grid coverage,
-serially correlated residual errors, a trial-level functional random effect,
-multiple random functional slopes, generalized/non-Gaussian responses, or
-joint cross-dimension covariance. Version 0.45 separately supports exactly one
-guarded participant random functional slope.
+The fixed-covariance bootstrap does not claim variance-component
+uncertainty, basis-selection uncertainty, continuous-between-grid coverage, or
+serially correlated residual errors. Version 0.45 separately supports exactly
+one guarded participant random functional slope, version 0.46 adds a full-refit
+participant bootstrap for declared covariance parameters, and version 0.48 adds
+one nested trial functional random intercept. Multiple participant/trial random
+effects, generalized/non-Gaussian responses, and joint cross-dimension
+covariance remain outside the current model.
 
 A non-converged optimizer result raises rather than being returned as a valid
 scientific fit.
