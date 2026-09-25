@@ -277,78 +277,101 @@ Implemented by `multiplier_functional_mean_band()`.
 For repeated functional responses from participant \(i\), trial \(j\), and
 observed grid location \(t_m\),
 
-$
+\[
 Y_{ij}(t)
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t)
 +
 \mathbf B_r(t)^{\top}\mathbf u_i
 +
+u_{ij}(t)
++
 \varepsilon_{ij}(t).
-$
+\]
 
 Each fixed coefficient function is represented as
 
-$
-\beta_p(t)
-=
-\mathbf B_f(t)^{\top}\boldsymbol\theta_p,
-$
+\[
+\beta_p(t)=\mathbf B_f(t)^{\top}\boldsymbol\theta_p,
+\]
 
 while participant random-basis coefficients satisfy
 
-$
-\mathbf u_i
-\sim
-N(\mathbf 0,\boldsymbol\Psi),
-\qquad
-\varepsilon_{ij}(t_m)
-\sim
-N(0,\sigma^2).
-$
-
-For all stacked observations from participant \(i\), the historical
-participant-only model has
-
-$
-\operatorname{Cov}(\mathbf Y_i\mid\mathbf X_i)
-=
-\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top
-+
-\sigma^2\mathbf I.
-$
+\[
+\mathbf u_i\sim N(\mathbf 0,\boldsymbol\Psi_P).
+\]
 
 Version 0.48 optionally adds a nested trial functional random intercept,
 
-$
+\[
 u_{ij}(t)
 =
 \mathbf B_u(t)^\top\mathbf v_{ij},
 \qquad
-\mathbf v_{ij}\sim N(\mathbf 0,\boldsymbol\Psi_{trial}),
-$
+\mathbf v_{ij}\sim N(\mathbf 0,\boldsymbol\Psi_T),
+\]
 
-with one shared unstructured trial-basis covariance. The participant-block
-marginal covariance then becomes
+with one shared unstructured trial-basis covariance.
 
-$
+Version 0.49 optionally declares a within-trial residual covariance,
+
+\[
+\operatorname{Cov}\{\boldsymbol\varepsilon_{ij}\}
+=
+\sigma^2\mathbf R_\theta.
+\]
+
+For continuous-time exponential correlation,
+
+\[
+R_\phi(t,s)=\exp\{-|t-s|/\phi\},
+\qquad
+\phi>0,
+\]
+
+whereas regular-grid AR(1) uses
+
+\[
+R_{\rho,rs}=\rho^{|r-s|},
+\qquad
+-1<\rho<1.
+\]
+
+The participant-block marginal covariance is
+
+\[
 \mathbf V_i
 =
-\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top
+\mathbf Z_i\boldsymbol\Psi_P\mathbf Z_i^\top
 +
 \sum_j
-\mathbf W_{ij}\boldsymbol\Psi_{trial}\mathbf W_{ij}^\top
+\mathbf W_{ij}\boldsymbol\Psi_T\mathbf W_{ij}^\top
 +
-\sigma^2\mathbf I.
-$
+\sigma^2\operatorname{blockdiag}_j\{\mathbf R_\theta\},
+\]
 
-Implemented by `fit_functional_mixed_effects_regression()`. Participant-only
-fits retain the established `statsmodels.MixedLM` backend. The explicit 0.48
-participant→trial extension uses a profiled Gaussian marginal likelihood with
-separate Cholesky-parameterized participant and trial covariance matrices.
-Both routes use explicitly sized B-spline bases and conditionally iid
-grid-level residual errors after the declared random effects. Neither is a
-collection of independent pointwise mixed models.
+with absent trial terms when no trial functional random effect is declared and
+\(\mathbf R_\theta=\mathbf I\) under the iid residual model.
+
+If
+
+\[
+\sigma^2\mathbf R_\theta=\mathbf L\mathbf L^\top,
+\]
+
+the diagnostic whitened residual is
+
+\[
+\mathbf e_{ij}^{(w)}=\mathbf L^{-1}\mathbf e_{ij}.
+\]
+
+Implemented by `fit_functional_mixed_effects_regression()` and
+`functional_mixed_effects_whitened_residuals()`. The historical
+participant-only iid route retains `statsmodels.MixedLM`; explicitly serial
+models and participant→trial models use the profiled Gaussian covariance
+backend. Residual covariance is block diagonal across trials, and no
+residual-correlation family is selected automatically.
+
 
 ## One participant random functional slope
 
