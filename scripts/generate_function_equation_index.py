@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import difflib
 from pathlib import Path
 
 from eyetrajectoriespy import list_mathematical_contracts
@@ -79,6 +80,20 @@ def main() -> None:
             if not path.exists() or path.read_text(encoding="utf-8") != content
         ]
         if stale:
+            for path, content in expected.items():
+                if not path.exists():
+                    continue
+                actual = path.read_text(encoding="utf-8")
+                if actual == content:
+                    continue
+                diff = difflib.unified_diff(
+                    actual.splitlines(),
+                    content.splitlines(),
+                    fromfile=str(path.relative_to(ROOT)),
+                    tofile=f"{path.relative_to(ROOT)} (generated)",
+                    lineterm="",
+                )
+                print("\n".join(diff))
             raise SystemExit(
                 "generated mathematical indexes are stale: " + ", ".join(stale)
             )
