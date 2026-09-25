@@ -45,15 +45,12 @@ def main() -> None:
 
     invalid_controls = []
     for markdown_path in ROOT.rglob("*.md"):
-        source = markdown_path.read_text(encoding="utf-8")
+        raw = markdown_path.read_bytes()
         bad_codes = sorted(
             {
-                ord(character)
-                for character in source
-                if (
-                    ord(character) < 32
-                    and character not in {"\n", "\r"}
-                )
+                byte
+                for byte in raw
+                if byte < 32 and byte != 10
             }
         )
         if bad_codes:
