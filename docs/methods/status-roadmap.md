@@ -19,6 +19,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Full-refit participant bootstrap | implemented; unique bootstrap group IDs for duplicate participant draws, complete MixedLM refit under fixed declared specification, retained variance-component distributions | `bootstrap_functional_mixed_effects_full_refit()` |
 | Participant random functional slope | implemented; one declared predictor, shared random basis size, full unstructured intercept/slope covariance, strict within-participant variation and covariance-complexity guards | `fit_functional_mixed_effects_regression(..., random_slope_predictor=...)` |
 | Mixed-effects residual / within-trial dependence diagnostics | implemented; explicit trial ACF/autocovariance, empirical semivariance, exact physical-lag pair audit, participant/overall stratification, and descriptive fit-vs-fit comparison | `functional_mixed_effects_residual_diagnostics()` |
+| Trial-level functional random effect | implemented; explicit nested trial identifier, one shared unstructured trial-basis covariance, profiled Gaussian marginal likelihood, separate trial BLUPs/covariance diagnostics, participant-level bootstrap propagation | `fit_functional_mixed_effects_regression(..., trial_random_effect="functional_intercept")` / `functional_trial_random_effect_frame()` |
 | Explicit irregular → common-grid projection | implemented | `resample_irregular_to_grid()` |
 | Univariate FPCA | implemented | `fit_fpca()` |
 | Joint multivariate FPCA | implemented | `fit_mfpca()` |
@@ -132,7 +133,7 @@ Still not provided are full uncertainty procedures that jointly include target m
 
 Future tranches may evaluate:
 
-- richer functional mixed-effects structures: trial-level functional random effects, residual serial correlation, multiple random functional slopes, and generalized responses;
+- richer functional mixed-effects structures: explicit residual serial correlation, multiple random functional slopes, and generalized responses;
 - richer multilevel functional mixed-effects backends;
 - explicit system-identification models for gaze dynamics;
 - model-based continuation / Floquet analysis only after a validated dynamical-system contract exists.
@@ -143,7 +144,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.47.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.48.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
@@ -161,15 +162,45 @@ choose AR(1), a trial-level functional random effect, or another covariance
 structure, and it does not treat residual-diagnostic differences as a model
 selection test.
 
-### Next structural priority
+### 0.48 trial-level functional random effects
 
-The next structural tranche should be chosen after residual patterns are
-explicit. Candidate 0.48 directions remain:
+Version **0.48** adds one explicitly declared nested trial functional random
+intercept,
 
-- a trial-level functional random effect when smooth trial-specific departures
-  remain after participant effects;
-- an explicit serial residual covariance model when short-range residual
-  dependence is the dominant remaining structure.
+```text
+participant -> trial -> time
+```
+
+with a shared unstructured covariance over analyst-declared trial B-spline
+coefficients. The participant covariance remains separate. The nested model is
+fitted by a profiled Gaussian marginal likelihood; the historical
+`statsmodels.MixedLM` path is unchanged when no trial random effect is
+requested.
+
+The 0.48 contract requires an explicit trial identifier, unique trial IDs within
+participant, at least two observed trials per participant, a declared trial
+basis size, and a minimum trial-count > free trial-covariance-parameter guard.
+It retains participant and trial BLUPs separately, exposes trial covariance
+eigenvalues/condition/boundary diagnostics, and keeps whole participants as the
+bootstrap resampling unit so all nested trials travel with the participant.
+
+### Next structural priority: 0.49
+
+Version **0.49** should add explicit residual covariance only after the 0.48
+trial-level smooth structure has been accounted for. The preferred first-class
+physical-time contract is continuous-time exponential correlation,
+
+```math
+R_\phi(t,s)=\exp\{-|t-s|/\phi\},
+```
+
+with ordinary AR(1) retained only as an explicitly index-step model for genuinely
+regular grids. No residual structure should be selected automatically.
+
+Version **0.50** should then provide covariance-structure
+sensitivity/comparison across predeclared participant/trial/residual covariance
+contracts without converting those comparisons into an automatic model
+selector.
 
 Multiple random functional slopes, generalized responses, TE networks, and
 automatic causal discovery remain later candidates.
