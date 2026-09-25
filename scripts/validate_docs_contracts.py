@@ -43,6 +43,33 @@ def main() -> None:
             f"or fenced-code rendering: {sorted(escaped_backticks)}"
         )
 
+    invalid_controls = []
+    for markdown_path in ROOT.rglob("*.md"):
+        source = markdown_path.read_text(encoding="utf-8")
+        bad_codes = sorted(
+            {
+                ord(character)
+                for character in source
+                if (
+                    ord(character) < 32
+                    and character not in {"\\n", "\\r"}
+                )
+            }
+        )
+        if bad_codes:
+            invalid_controls.append(
+                (
+                    str(markdown_path.relative_to(ROOT)),
+                    bad_codes,
+                )
+            )
+    if invalid_controls:
+        raise RuntimeError(
+            "Markdown files contain non-newline ASCII control characters; "
+            "these commonly indicate escaped LaTeX corruption: "
+            f"{invalid_controls}"
+        )
+
     math_page = (DOCS / "methods" / "mathematical-reference.md").read_text(
         encoding="utf-8"
     )
