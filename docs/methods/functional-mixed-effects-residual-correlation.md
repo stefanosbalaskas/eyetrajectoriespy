@@ -210,8 +210,8 @@ large shifts in the trial covariance after adding serial correlation should be
 treated as covariance-decomposition diagnostics—not automatic evidence that
 one component should be deleted.
 
-This is the motivation for the planned 0.50 covariance-structure sensitivity
-layer.
+Version 0.50 implements this downstream covariance-structure sensitivity layer
+for already fitted, predeclared models without automatic selection.
 
 ## Bootstrap contracts
 
