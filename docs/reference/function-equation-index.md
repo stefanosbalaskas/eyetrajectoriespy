@@ -248,6 +248,42 @@ $$
 
 [Expanded mathematical reference](../methods/mathematical-reference.md#functional-mixed-effects)
 
+## Predeclared functional mixed-effects covariance sensitivity
+
+**Functions:** \`functional_mixed_effects_covariance_sensitivity()\`, \`functional_mixed_effects_variance_decomposition()\`
+
+$
+\Delta\beta_m(t)=\widehat\beta_m(t)-\widehat\beta_r(t)
+$
+
+$
+D_{\infty,m}=\sup_t|\Delta\beta_m(t)|
+$
+
+$
+D_{2,m}=\left[\int\{\Delta\beta_m(t)\}^2dt\right]^{1/2}
+$
+
+$
+v_{P0}(t)=\mathbf B_P(t)^\top\boldsymbol\Psi_{P0}\mathbf B_P(t)
+$
+
+$
+v_T(t)=\mathbf B_T(t)^\top\boldsymbol\Psi_T\mathbf B_T(t)
+$
+
+$
+v_\varepsilon(t)=\sigma^2
+$
+
+$
+\mathrm{AIC}_m=-2\ell_m+2k_m,\qquad \mathrm{BIC}_m=-2\ell_m+k_m\log n
+$
+
+**Scope:** Descriptive comparison of already fitted, predeclared covariance structures against one analyst-declared reference. Successful fits must share observations, fixed design/basis, participant mapping, time grid, response dimension, and ML/REML mode. Failed declared structures remain visible. Coefficient changes, paired band-width changes, variance decomposition, raw/whitened residual diagnostics, and information criteria are reported without ranking, automatic selection, or likelihood-ratio p-values.
+
+[Expanded mathematical reference](../methods/mathematical-reference.md#functional-mixed-effects-covariance-sensitivity)
+
 ## One participant random functional slope
 
 **Functions:** `functional_random_effect_frame()`
