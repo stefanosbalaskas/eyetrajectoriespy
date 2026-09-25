@@ -39,6 +39,18 @@ def _validate_full_refit_reference(
         raise ValueError(
             "reference scalar_design_matrix has an unexpected shape"
         )
+    if result.residual_correlation not in {"iid", "exponential", "ar1"}:
+        raise ValueError("reference residual_correlation is unsupported")
+    if result.residual_correlation != "iid":
+        if (
+            result.residual_correlation_parameter is None
+            or result.residual_correlation_parameter_name is None
+            or result.residual_correlation_matrix is None
+        ):
+            raise ValueError(
+                "reference serial residual-correlation contract is incomplete"
+            )
+
     if result.trial_random_effect is not None:
         if (
             result.trial_random_effect != "functional_intercept"
@@ -315,6 +327,23 @@ def bootstrap_functional_mixed_effects_full_refit(
     bootstrap_trial_audit: list[
         tuple[tuple[str, str, str, str], ...]
     ] = []
+    if result.residual_correlation == "iid":
+        residual_correlation_parameters = None
+        residual_correlation_boundary_flags = None
+        residual_correlation_condition_numbers = None
+    else:
+        residual_correlation_parameters = np.empty(
+            n_bootstrap,
+            dtype=float,
+        )
+        residual_correlation_boundary_flags = np.empty(
+            n_bootstrap,
+            dtype=bool,
+        )
+        residual_correlation_condition_numbers = np.empty(
+            n_bootstrap,
+            dtype=float,
+        )
     if result.trial_random_effect is None:
         trial_covariances = None
         trial_covariance_eigenvalues = None
@@ -369,6 +398,7 @@ def bootstrap_functional_mixed_effects_full_refit(
                 trial_column=result.trial_column,
                 trial_random_effect=result.trial_random_effect,
                 trial_random_basis_size=result.trial_random_basis_size,
+                residual_correlation=result.residual_correlation,
                 spline_degree=result.spline_degree,
                 reml=result.reml,
                 method=result.method,
@@ -436,6 +466,27 @@ def bootstrap_functional_mixed_effects_full_refit(
                 fit_star.trial_random_effect_singular
             )
 
+        if residual_correlation_parameters is not None:
+            if (
+                fit_star.residual_correlation
+                != result.residual_correlation
+                or fit_star.residual_correlation_parameter is None
+                or fit_star.residual_correlation_condition_number is None
+            ):
+                raise RuntimeError(
+                    "full-refit bootstrap lost the declared residual "
+                    "correlation structure"
+                )
+            residual_correlation_parameters[bootstrap_index] = float(
+                fit_star.residual_correlation_parameter
+            )
+            residual_correlation_boundary_flags[bootstrap_index] = bool(
+                fit_star.residual_correlation_boundary_fit
+            )
+            residual_correlation_condition_numbers[bootstrap_index] = float(
+                fit_star.residual_correlation_condition_number
+            )
+
         covariance_eigenvalues[bootstrap_index] = (
             fit_star.random_effect_covariance_eigenvalues
         )
@@ -494,6 +545,13 @@ def bootstrap_functional_mixed_effects_full_refit(
         trial_random_effect_boundary_flags=trial_boundary_flags,
         trial_random_effect_singular_flags=trial_singular_flags,
         bootstrap_trial_audit=tuple(bootstrap_trial_audit),
+        residual_correlation_parameters=residual_correlation_parameters,
+        residual_correlation_boundary_flags=(
+            residual_correlation_boundary_flags
+        ),
+        residual_correlation_condition_numbers=(
+            residual_correlation_condition_numbers
+        ),
         provenance={
             **dict(result.provenance),
             "functional_mixed_effects_full_refit_bootstrap": {
@@ -522,6 +580,16 @@ def bootstrap_functional_mixed_effects_full_refit(
                     result.trial_random_effect is not None
                 ),
                 "residual_variance_refit": True,
+                "residual_correlation_refit": (
+                    result.residual_correlation != "iid"
+                ),
+                "residual_correlation_family_reselected": False,
+                "reference_residual_correlation": (
+                    result.residual_correlation
+                ),
+                "reference_residual_correlation_parameter_name": (
+                    result.residual_correlation_parameter_name
+                ),
                 "variance_components_refit": True,
                 "fixed_basis_size_reselected": False,
                 "random_basis_size_reselected": False,
