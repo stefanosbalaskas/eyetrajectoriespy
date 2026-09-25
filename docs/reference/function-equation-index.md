@@ -208,29 +208,29 @@ $$
 
 **Functions:** `fit_functional_mixed_effects_regression()`
 
-$
+$$
 Y_{ij}(t)=\mathbf x_{ij}^{\top}\boldsymbol\beta(t)+\mathbf B_r(t)^{\top}\mathbf u_i+\varepsilon_{ij}(t)
-$
+$$
 
-$
+$$
 \beta_p(t)=\mathbf B_f(t)^{\top}\boldsymbol\theta_p
-$
+$$
 
-$
+$$
 \mathbf u_i\sim N(\mathbf 0,\boldsymbol\Psi_{p}),\qquad \varepsilon_{ij}(t_m)\sim N(0,\sigma^2)
-$
+$$
 
-$
+$$
 \operatorname{Cov}(\mathbf Y_i\mid\mathbf X_i)=\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top+\sigma^2\mathbf I
-$
+$$
 
-$
+$$
 u_{ij}(t)=\mathbf B_u(t)^\top\mathbf v_{ij},\qquad \mathbf v_{ij}\sim N(\mathbf 0,\boldsymbol\Psi_{trial})
-$
+$$
 
-$
+$$
 \mathbf V_i=\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top+\sum_j\mathbf W_{ij}\boldsymbol\Psi_{trial}\mathbf W_{ij}^\top+\sigma^2\mathbf I
-$
+$$
 
 **Scope:** One selected Gaussian functional response dimension on a common grid with explicit B-spline fixed effects and participant functional random effects. Version 0.48 optionally adds one nested trial functional random intercept with its own shared unstructured basis-coefficient covariance. The trial extension is explicit, requires unique participant/trial pairs and at least two trials per participant, and retains conditionally iid grid residuals after the declared random effects. No automatic basis/covariance selection, residual serial-correlation model, multiple trial random effects, or multivariate cross-dimension covariance is claimed.
 
