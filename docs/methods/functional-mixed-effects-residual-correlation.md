@@ -73,6 +73,14 @@ replaced.
 Because the kernel uses actual elapsed separation \(|t-s|\), it remains
 meaningful on an unequally spaced common time grid.
 
+The iid model is the limit \(\phi\to0\). On a finite observed grid the
+likelihood can become essentially flat before the numerical lower optimizer
+bound is reached. Version 0.49 therefore also records
+`residual_correlation_independence_limit_fit=True` when the fitted exponential
+correlation matrix has maximum absolute off-diagonal correlation no greater
+than 0.05. This is an explicit practical non-identifiability diagnostic, not an
+automatic refit to iid.
+
 ## AR(1)
 
 For a verified equally spaced common grid, 0.49 also permits
