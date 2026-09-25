@@ -34,8 +34,7 @@ Use this model when:
 - one or more scalar predictors may vary across those trials;
 - participant-specific functional baseline deviations are scientifically
   plausible;
-- a Gaussian response model and conditionally iid grid residual structure are
-  acceptable for the first model.
+- a Gaussian response model is appropriate; residual covariance may remain iid or be explicitly declared as exponential/AR(1) under the 0.49 contract.
 
 Examples include condition effects on speed(t), curvature(t), horizontal
 gaze(t), or a windowed RQA metric trajectory.
@@ -211,6 +210,54 @@ automatically.
 See the dedicated
 [trial-functional-random-effect guide](../methods/functional-mixed-effects-trial-random-effect.md).
 
+## Explicit residual covariance and whitening
+
+Version 0.49 can add a declared within-trial residual process without changing
+the participant/trial hierarchy:
+
+~~~python
+serial_fit = fit_functional_mixed_effects_regression(
+    trajectories,
+    design,
+    predictors=("condition",),
+    participant_column="participant_id",
+    trial_column="trial_id",
+    trial_random_effect="functional_intercept",
+    residual_correlation="exponential",
+    dimension="metric",
+)
+~~~
+
+`residual_correlation="exponential"` uses actual physical-time separation and
+is valid on unequally spaced common grids. `residual_correlation="ar1"` uses
+index-step lag and is accepted only on a verified equally spaced grid; negative
+rho is allowed. `"iid"` remains the backward-compatible default.
+
+Residual covariance is block diagonal by source curve/trial. The serial
+parameter is estimated jointly with the participant covariance, optional trial
+covariance, and residual variance; the covariance family itself is never
+selected automatically.
+
+After fitting a serial model, do **not** expect the raw residual ACF to become
+flat. Use the fitted covariance to whiten within each trial:
+
+~~~python
+white = functional_mixed_effects_residual_diagnostics(
+    serial_fit,
+    max_lag=6,
+    residual_scale="whitened",
+)
+~~~
+
+The raw scale describes the fitted conditional residual process. The whitened
+scale diagnoses serial structure remaining after the declared covariance has
+been applied. See the dedicated [residual-covariance guide](../methods/functional-mixed-effects-residual-correlation.md).
+
+A long-range exponential process can compete with a smooth trial functional
+random effect. Large fitted range, trial-covariance ill-conditioning, boundary
+flags, or large covariance shifts should therefore be reported as decomposition
+diagnostics rather than used as automatic deletion/selection rules.
+
 ## Convergence
 
 A non-converged optimizer result raises an error.
@@ -269,7 +316,8 @@ trials/time points for a selected participant together. The fixed coefficient
 basis is re-estimated by GLS for every draw.
 
 The fitted participant random-effect covariance, optional shared trial
-random-effect covariance, and residual variance are held fixed. This makes the procedure computationally transparent and preserves the
+random-effect covariance, residual variance, and any declared residual-correlation
+parameter are held fixed. This makes the procedure computationally transparent and preserves the
 hierarchical resampling unit, but it does **not** propagate variance-component
 or basis-selection uncertainty.
 
@@ -298,7 +346,8 @@ full_boot = bootstrap_functional_mixed_effects_full_refit(
 
 Unlike the faster 0.44 fixed-covariance bootstrap, each replicate refits fixed
 coefficients, the complete declared participant covariance, the shared trial
-covariance when present, and residual variance.
+covariance when present, residual variance, and any declared residual-correlation
+parameter.
 
 Duplicate source participants receive distinct bootstrap participant identities.
 For a 0.48 nested model, their trials also receive distinct bootstrap trial
@@ -334,8 +383,6 @@ trial-level functional random effect, or another covariance structure. See
 
 The current mixed-effects layer does not yet estimate:
 
-- explicit residual serial correlation after the declared participant/trial
-  functional effects;
 - multiple trial random-effect terms;
 - generalized/non-Gaussian functional responses;
 - multivariate cross-dimension covariance;
@@ -361,9 +408,9 @@ trial-varying experimental predictors.
 
 `fit_functional_mixed_effects_regression()` instead models the conditional
 mean with scalar predictors, a participant functional random intercept,
-optionally one explicitly declared participant random functional slope, and
-from 0.48 an optional nested trial functional random intercept with its own
-shared covariance.
+optionally one explicitly declared participant random functional slope, from 0.48 an optional nested trial functional random intercept with its own
+shared covariance, and from 0.49 an optional explicit within-trial exponential
+or regular-grid AR(1) residual covariance.
 
 ## Evidence basis
 
@@ -379,7 +426,7 @@ functional fixed and random effects.
 The implementation remains intentionally narrower than those frameworks. Its
 scientific contract is a single Gaussian response dimension, explicit B-spline
 bases, one participant functional random intercept, at most one guarded
-participant random functional slope, and optionally one nested trial
-functional random intercept. Participant-only fits retain the historical
-statsmodels backend; the 0.48 nested covariance extension uses an explicit
-profiled Gaussian marginal likelihood.
+participant random functional slope, optionally one nested trial functional random intercept, and an explicitly
+declared residual-correlation family. Participant-only iid fits retain the
+historical statsmodels backend; nested and/or serial covariance models use the
+explicit profiled Gaussian marginal likelihood.
