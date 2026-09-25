@@ -52,7 +52,7 @@ specifications = (
 ~~~
 
 Fit each model independently with
-\`fit_functional_mixed_effects_regression()\`. The sensitivity routine receives
+`fit_functional_mixed_effects_regression()`. The sensitivity routine receives
 those fitted objects:
 
 ~~~python
@@ -73,7 +73,7 @@ sensitivity = functional_mixed_effects_covariance_sensitivity(
 )
 ~~~
 
-There is no \`best_model\` field and the model table is not sorted by an
+There is no `best_model` field and the model table is not sorted by an
 information criterion.
 
 ## Strict comparability contract
@@ -123,8 +123,8 @@ sensitivity = functional_mixed_effects_covariance_sensitivity(
 )
 ~~~
 
-The failed row is retained with \`status="failed"\`,
-\`converged=False\`, the supplied reason, and NaN numerical comparison fields.
+The failed row is retained with `status="failed"`,
+`converged=False`, the supplied reason, and NaN numerical comparison fields.
 It is never replaced, silently omitted, or redrawn.
 
 This contract differs intentionally from the inferential bootstrap, where a
