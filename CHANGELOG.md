@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.49.0.dev0
+
+- Add explicit within-trial residual correlation to \`fit_functional_mixed_effects_regression()\` through \`residual_correlation="iid"|"exponential"|"ar1"\`; no covariance family is selected automatically.
+- Make continuous-time exponential correlation the primary physical-time serial model: \(R_\phi(t,s)=\exp\{-|t-s|/\phi\}\), \(\phi>0\), with \(\phi\) estimated jointly and reported in the trajectory time unit.
+- Add index-step AR(1), \(R_{rs}=\rho^{|r-s|}\), \(-1<\rho<1\), only for verified equally spaced common grids; negative AR(1) correlation is supported and is not represented as an exponential model.
+- Keep residual covariance block diagonal by source curve/trial so serial dependence never crosses trial boundaries.
+- Generalize the profiled Gaussian likelihood so participant-only serial models, participant+trial iid models, and participant+trial serial models share the same covariance engine while the historical participant-only iid \`statsmodels.MixedLM\` path remains backward compatible.
+- Parameterize \(\phi=\exp(\eta_\phi)\) and \(\rho=\tanh(\eta_\rho)\), retain natural/transformed optimizer bounds in provenance, and flag fitted residual-correlation parameters at or near numerical bounds.
+- Retain the residual-correlation family, estimated parameter/name/unit, within-trial correlation matrix, eigenvalues, condition number, grid-regularity diagnostics, raw residual functions, and within-trial whitened residual functions.
+- Add \`functional_mixed_effects_whitened_residuals()\` and extend \`functional_mixed_effects_residual_diagnostics(..., residual_scale="raw"|"whitened")\`; raw residual correlation is expected under a correlated-error model, whereas whitened residual diagnostics assess remaining structure after the declared residual covariance.
+- Extend the fixed-covariance participant bootstrap to condition on the fitted residual correlation and extend the full-refit participant bootstrap to re-estimate \(\phi\) or \(\rho\), participant covariance, optional trial covariance, and residual variance in every replicate.
+- Extend \`functional_mixed_effects_variance_bootstrap_frame()\` with residual-correlation parameter, condition-number, and boundary diagnostics.
+- Add truth-known validation for irregular-grid exponential correlation, positive and negative AR(1), AR(1) irregular-grid rejection, trial-boundary blocking, fixed-effect recovery, whitening, combined participant random slope + trial functional random effect + residual correlation, iid-boundary behavior, and both bootstrap contracts.
+- Document the covariance-decomposition warning that a long-range residual process can compete with a smooth trial functional random effect; diagnose large \(\hat\phi\), ill-conditioned \(\Psi_{\mathrm{trial}}\), or major covariance shifts rather than treating them as automatic model-selection evidence.
+- Keep covariance-structure selection out of 0.49. Version 0.50 remains the planned descriptive sensitivity layer for predeclared covariance structures.
+
+
 ## 0.48.0.dev0
 
 - Add an explicit nested trial-level functional random intercept to `fit_functional_mixed_effects_regression()` through `trial_column`, `trial_random_effect="functional_intercept"`, and analyst-declared `trial_random_basis_size`.
