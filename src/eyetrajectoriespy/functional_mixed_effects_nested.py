@@ -598,19 +598,20 @@ def fit_nested_functional_mixed_effects_regression(
     predictors,
     *,
     participant_column: str,
-    trial_column: str,
+    trial_column: str | None,
     dimension: str,
     fixed_basis_size: int,
     random_basis_size: int,
     random_slope_predictor: str | None,
-    trial_random_effect: str,
+    trial_random_effect: str | None,
     trial_random_basis_size: int,
+    residual_correlation: str,
     spline_degree: int,
     reml: bool,
     method: str,
     maxiter: int,
 ) -> FunctionalMixedEffectsResult:
-    """Fit participant and trial functional random effects by marginal likelihood."""
+    """Fit participant/trial functional effects and residual correlation."""
 
     validate_trajectory_set(trajectories, require_complete=True)
     if not np.all(np.isfinite(trajectories.values)):
@@ -623,11 +624,24 @@ def fit_nested_functional_mixed_effects_regression(
             "Direct Gaussian functional mixed-effects regression is not "
             "supported for probability_simplex trajectories"
         )
-    if trial_random_effect != "functional_intercept":
+
+    has_trial_effect = trial_random_effect is not None
+    if has_trial_effect:
+        if trial_random_effect != "functional_intercept":
+            raise ValueError(
+                "trial_random_effect must be 'functional_intercept' for the "
+                "0.48/0.49 contract"
+            )
+        if trial_column is None:
+            raise ValueError(
+                "trial_column is required when trial_random_effect is supplied"
+            )
+    elif trial_column is not None:
         raise ValueError(
-            "trial_random_effect must be 'functional_intercept' for the "
-            "0.48 contract"
+            "trial_column is only used when trial_random_effect is explicitly "
+            "requested"
         )
+
     if not isinstance(reml, bool):
         raise TypeError("reml must be boolean")
     if not isinstance(method, str) or not method:
@@ -635,7 +649,7 @@ def fit_nested_functional_mixed_effects_regression(
     normalized_method = method.lower().replace("_", "-")
     if normalized_method not in {"lbfgs", "l-bfgs-b"}:
         raise ValueError(
-            "0.48 nested functional covariance currently supports only the "
+            "profiled functional covariance currently supports only the "
             "explicit 'lbfgs' optimizer contract; no optimizer fallback is "
             "performed"
         )
@@ -648,6 +662,14 @@ def fit_nested_functional_mixed_effects_regression(
         or not isinstance(trial_random_basis_size, int)
     ):
         raise TypeError("trial_random_basis_size must be an integer")
+
+    correlation_spec = _residual_correlation_spec(
+        residual_correlation,
+        trajectories.time,
+    )
+    residual_family = str(correlation_spec["family"])
+    if residual_family == "exponential":
+        correlation_spec["parameter_unit"] = trajectories.time_unit
 
     aligned_design, predictor_names = _validate_design_alignment(
         trajectories,
@@ -668,15 +690,23 @@ def fit_nested_functional_mixed_effects_regression(
         n_basis=random_basis_size,
         degree=spline_degree,
     )
-    trial_basis, trial_knots = _bspline_basis(
-        trajectories.time,
-        n_basis=trial_random_basis_size,
-        degree=spline_degree,
-    )
-    if np.linalg.matrix_rank(trial_basis) != trial_random_basis_size:
-        raise ValueError(
-            "trial random-effect basis is rank deficient on the observed grid"
+
+    if has_trial_effect:
+        trial_basis, trial_knots = _bspline_basis(
+            trajectories.time,
+            n_basis=trial_random_basis_size,
+            degree=spline_degree,
         )
+        if np.linalg.matrix_rank(trial_basis) != trial_random_basis_size:
+            raise ValueError(
+                "trial random-effect basis is rank deficient on the observed "
+                "grid"
+            )
+        trial_dimension = trial_random_basis_size
+    else:
+        trial_basis = None
+        trial_knots = None
+        trial_dimension = 0
 
     has_random_slope = random_slope_predictor is not None
     participant_dimension = random_basis_size * (
@@ -691,13 +721,18 @@ def fit_nested_functional_mixed_effects_regression(
         participant_column,
         random_effect_dimension=participant_dimension,
     )
-    source_trial_ids, composite_trial_ids = _validate_trial_structure(
-        trajectories,
-        participant_column=participant_column,
-        trial_column=trial_column,
-        curve_participants=curve_participants,
-        participant_ids=participant_ids,
-    )
+
+    if has_trial_effect:
+        source_trial_ids, composite_trial_ids = _validate_trial_structure(
+            trajectories,
+            participant_column=participant_column,
+            trial_column=str(trial_column),
+            curve_participants=curve_participants,
+            participant_ids=participant_ids,
+        )
+    else:
+        source_trial_ids = np.asarray([], dtype=str)
+        composite_trial_ids = ()
 
     slope_values = _validate_random_slope(
         random_slope_predictor=random_slope_predictor,
@@ -725,21 +760,26 @@ def fit_nested_functional_mixed_effects_regression(
         len(participant_ids) <= participant_covariance_parameter_count
     )
 
-    trial_covariance_parameter_count = _covariance_parameter_count(
-        trial_random_basis_size
-    )
-    n_trials = len(composite_trial_ids)
-    if n_trials <= trial_covariance_parameter_count:
-        raise ValueError(
-            "trial functional random-effect covariance requires the number of "
-            "observed nested trials to exceed the number of free unstructured "
-            "trial covariance parameters; "
-            f"got {n_trials} trials and "
-            f"{trial_covariance_parameter_count} covariance parameters"
+    if has_trial_effect:
+        trial_covariance_parameter_count = _covariance_parameter_count(
+            trial_dimension
         )
-    trial_complexity_warning = bool(
-        n_trials <= trial_covariance_parameter_count
-    )
+        n_trials = len(composite_trial_ids)
+        if n_trials <= trial_covariance_parameter_count:
+            raise ValueError(
+                "trial functional random-effect covariance requires the number "
+                "of observed nested trials to exceed the number of free "
+                "unstructured trial covariance parameters; "
+                f"got {n_trials} trials and "
+                f"{trial_covariance_parameter_count} covariance parameters"
+            )
+        trial_complexity_warning = bool(
+            n_trials <= trial_covariance_parameter_count
+        )
+    else:
+        trial_covariance_parameter_count = 0
+        n_trials = 0
+        trial_complexity_warning = False
 
     predictor_matrix = aligned_design.loc[
         :, list(predictor_names)
@@ -796,47 +836,67 @@ def fit_nested_functional_mixed_effects_regression(
         participant_dimension,
         dtype=float,
     ) * max(0.15 * response_variance, 1e-6)
-    trial_initial = np.eye(
-        trial_random_basis_size,
-        dtype=float,
-    ) * max(0.15 * response_variance, 1e-6)
+    pieces = [_pack_covariance_cholesky(participant_initial)]
+
+    if has_trial_effect:
+        trial_initial = np.eye(
+            trial_dimension,
+            dtype=float,
+        ) * max(0.15 * response_variance, 1e-6)
+        pieces.append(_pack_covariance_cholesky(trial_initial))
+
     residual_initial = max(0.40 * response_variance, 1e-6)
-    initial = np.concatenate(
-        [
-            _pack_covariance_cholesky(participant_initial),
-            _pack_covariance_cholesky(trial_initial),
-            np.asarray([0.5 * np.log(residual_initial)], dtype=float),
-        ]
+    pieces.append(
+        np.asarray([0.5 * np.log(residual_initial)], dtype=float)
     )
 
-    participant_count = _covariance_parameter_count(participant_dimension)
-    trial_count = _covariance_parameter_count(trial_random_basis_size)
-    bounds: list[tuple[float | None, float | None]] = []
-    for index in range(participant_count + trial_count):
-        is_participant_diagonal = False
-        cursor = 0
-        for dimension_value in (
-            participant_dimension,
-            trial_random_basis_size,
-        ):
-            for row in range(dimension_value):
-                for column in range(row + 1):
-                    if cursor == index and row == column:
-                        is_participant_diagonal = True
-                    cursor += 1
-        bounds.append(
-            (-14.0, 8.0)
-            if is_participant_diagonal
-            else (None, None)
+    if residual_family == "exponential":
+        positive_delta = np.diff(np.asarray(trajectories.time, dtype=float))
+        positive_delta = positive_delta[positive_delta > 0]
+        span = float(trajectories.time[-1] - trajectories.time[0])
+        initial_phi = max(
+            float(np.median(positive_delta)),
+            span / 5.0,
         )
+        lower_phi, upper_phi = correlation_spec["parameter_bounds"]
+        initial_phi = min(max(initial_phi, lower_phi * 1.01), upper_phi / 1.01)
+        pieces.append(np.asarray([np.log(initial_phi)], dtype=float))
+    elif residual_family == "ar1":
+        pieces.append(np.asarray([np.arctanh(0.20)], dtype=float))
+
+    initial = np.concatenate(pieces)
+
+    participant_count = _covariance_parameter_count(participant_dimension)
+    trial_count = _covariance_parameter_count(trial_dimension)
+    bounds: list[tuple[float | None, float | None]] = []
+    cursor = 0
+    for dimension_value in (participant_dimension, trial_dimension):
+        for row in range(dimension_value):
+            for column in range(row + 1):
+                bounds.append(
+                    (-14.0, 8.0)
+                    if row == column
+                    else (None, None)
+                )
+                cursor += 1
     bounds.append((-14.0, 8.0))
+    if residual_family != "iid":
+        transformed_bounds = correlation_spec["transformed_bounds"]
+        bounds.append(
+            (
+                float(transformed_bounds[0]),
+                float(transformed_bounds[1]),
+            )
+        )
 
     objective = lambda theta: _profiled_gaussian_state(
         theta,
         blocks=blocks,
         participant_dimension=participant_dimension,
-        trial_dimension=trial_random_basis_size,
+        trial_dimension=trial_dimension,
         n_fixed_parameters=n_fixed_parameters,
+        time=trajectories.time,
+        residual_correlation=residual_family,
         reml=reml,
         return_state=False,
     )
@@ -853,7 +913,7 @@ def fit_nested_functional_mixed_effects_regression(
     )
     if not bool(optimized.success):
         raise RuntimeError(
-            "nested functional mixed-effects optimization did not converge: "
+            "profiled functional mixed-effects optimization did not converge: "
             f"{optimized.message}"
         )
 
@@ -861,14 +921,16 @@ def fit_nested_functional_mixed_effects_regression(
         optimized.x,
         blocks=blocks,
         participant_dimension=participant_dimension,
-        trial_dimension=trial_random_basis_size,
+        trial_dimension=trial_dimension,
         n_fixed_parameters=n_fixed_parameters,
+        time=trajectories.time,
+        residual_correlation=residual_family,
         reml=reml,
         return_state=True,
     )
     if not isinstance(state, dict):
         raise RuntimeError(
-            "nested functional mixed-effects optimizer produced an invalid "
+            "profiled functional mixed-effects optimizer produced an invalid "
             "final covariance state"
         )
 
@@ -884,7 +946,7 @@ def fit_nested_functional_mixed_effects_regression(
         fixed_parameter_covariance = np.linalg.inv(fixed_information)
     except np.linalg.LinAlgError as exc:
         raise RuntimeError(
-            "nested mixed-effects fixed-effect information matrix is singular"
+            "profiled mixed-effects fixed-effect information matrix is singular"
         ) from exc
 
     fixed_basis_coefficients = fixed_parameters.reshape(
@@ -915,11 +977,20 @@ def fit_nested_functional_mixed_effects_regression(
         state["participant_covariance"],
         dtype=float,
     )
-    trial_covariance = np.asarray(
-        state["trial_covariance"],
-        dtype=float,
+    trial_covariance = (
+        None
+        if state["trial_covariance"] is None
+        else np.asarray(state["trial_covariance"], dtype=float)
     )
     residual_variance = float(state["residual_variance"])
+    residual_correlation_matrix = np.asarray(
+        state["residual_correlation_matrix"],
+        dtype=float,
+    )
+    residual_parameter = state["residual_correlation_parameter"]
+    transformed_correlation = state[
+        "residual_correlation_transformed_parameter"
+    ]
 
     (
         participant_eigenvalues,
@@ -928,31 +999,51 @@ def fit_nested_functional_mixed_effects_regression(
         participant_singular,
         participant_scale,
     ) = _covariance_diagnostics(participant_covariance)
-    (
-        trial_eigenvalues,
-        trial_condition_number,
-        trial_boundary_base,
-        trial_singular,
-        trial_scale,
-    ) = _covariance_diagnostics(trial_covariance)
 
-    reference_scale = max(
-        float(np.max(np.abs(participant_eigenvalues))),
-        residual_variance,
-        np.finfo(float).eps,
-    )
-    trial_boundary = bool(
-        trial_boundary_base
-        or float(np.max(trial_eigenvalues)) <= 0.10 * reference_scale
+    if trial_covariance is not None:
+        (
+            trial_eigenvalues,
+            trial_condition_number,
+            trial_boundary_base,
+            trial_singular,
+            _,
+        ) = _covariance_diagnostics(trial_covariance)
+        reference_scale = max(
+            float(np.max(np.abs(participant_eigenvalues))),
+            residual_variance,
+            np.finfo(float).eps,
+        )
+        trial_boundary = bool(
+            trial_boundary_base
+            or float(np.max(trial_eigenvalues)) <= 0.10 * reference_scale
+        )
+    else:
+        trial_eigenvalues = None
+        trial_condition_number = None
+        trial_singular = False
+        trial_boundary = False
+
+    (
+        residual_correlation_eigenvalues,
+        residual_correlation_condition_number,
+        residual_correlation_boundary,
+    ) = _residual_correlation_diagnostics(
+        residual_correlation_matrix,
+        transformed_parameter=transformed_correlation,
+        transformed_bounds=correlation_spec["transformed_bounds"],
     )
 
     participant_coefficients = np.empty(
         (len(participant_ids), participant_dimension),
         dtype=float,
     )
-    trial_coefficients = np.empty(
-        (trajectories.n_curves, trial_random_basis_size),
-        dtype=float,
+    trial_coefficients = (
+        np.empty(
+            (trajectories.n_curves, trial_dimension),
+            dtype=float,
+        )
+        if has_trial_effect
+        else None
     )
 
     for participant_index, block in enumerate(blocks):
@@ -967,11 +1058,16 @@ def fit_nested_functional_mixed_effects_regression(
 
         marginal = (
             z_block @ participant_covariance @ z_block.T
-            + residual_variance * np.eye(y_block.size, dtype=float)
+            + _block_residual_covariance(
+                n_curves=int(curve_indices.size),
+                residual_variance=residual_variance,
+                correlation=residual_correlation_matrix,
+            )
         )
-        for trial_design in trial_designs:
-            w = np.asarray(trial_design, dtype=float)
-            marginal += w @ trial_covariance @ w.T
+        if trial_covariance is not None:
+            for trial_design in trial_designs:
+                w = np.asarray(trial_design, dtype=float)
+                marginal += w @ trial_covariance @ w.T
         try:
             factor = cho_factor(
                 marginal,
@@ -985,7 +1081,7 @@ def fit_nested_functional_mixed_effects_regression(
             )
         except np.linalg.LinAlgError as exc:
             raise RuntimeError(
-                "nested mixed-effects BLUP covariance solve failed"
+                "profiled mixed-effects BLUP covariance solve failed"
             ) from exc
 
         participant_coefficients[participant_index] = (
@@ -993,13 +1089,14 @@ def fit_nested_functional_mixed_effects_regression(
             @ z_block.T
             @ conditional_score
         )
-        for within_index, curve_index in enumerate(curve_indices):
-            w = np.asarray(trial_designs[within_index], dtype=float)
-            trial_coefficients[curve_index] = (
-                trial_covariance
-                @ w.T
-                @ conditional_score
-            )
+        if trial_covariance is not None and trial_coefficients is not None:
+            for within_index, curve_index in enumerate(curve_indices):
+                w = np.asarray(trial_designs[within_index], dtype=float)
+                trial_coefficients[curve_index] = (
+                    trial_covariance
+                    @ w.T
+                    @ conditional_score
+                )
 
     random_intercept_coefficients = participant_coefficients[
         :, :random_basis_size
@@ -1044,7 +1141,10 @@ def fit_nested_functional_mixed_effects_regression(
         :random_basis_size,
         :random_basis_size,
     ].copy()
-    trial_functions = trial_coefficients @ trial_basis.T
+    if trial_coefficients is not None and trial_basis is not None:
+        trial_functions = trial_coefficients @ trial_basis.T
+    else:
+        trial_functions = None
     random_effect_functions = random_intercept_functions.copy()
 
     participant_lookup = {
@@ -1065,15 +1165,53 @@ def fit_nested_functional_mixed_effects_regression(
                 + slope_values[curve_index]
                 * random_slope_functions[participant_index]
             )
+        trial_contribution = (
+            np.zeros(n_time, dtype=float)
+            if trial_functions is None
+            else trial_functions[curve_index]
+        )
         fitted_functions[curve_index] = (
             fixed_fitted[curve_index]
             + random_contribution
-            + trial_functions[curve_index]
+            + trial_contribution
         )
 
     observed_functions = trajectories.values[:, :, dimension_index].copy()
     residual_functions = observed_functions - fitted_functions
+    residual_covariance = residual_variance * residual_correlation_matrix
+    try:
+        residual_chol = np.linalg.cholesky(residual_covariance)
+    except np.linalg.LinAlgError as exc:
+        raise RuntimeError(
+            "fitted residual covariance is not positive definite"
+        ) from exc
+    whitened_residual_functions = np.empty_like(
+        residual_functions,
+        dtype=float,
+    )
+    for curve_index, residual in enumerate(residual_functions):
+        whitened_residual_functions[curve_index] = solve_triangular(
+            residual_chol,
+            residual,
+            lower=True,
+            check_finite=False,
+        )
+
     backend_warnings: tuple[str, ...] = ()
+    overall_boundary = bool(
+        participant_boundary
+        or trial_boundary
+        or residual_correlation_boundary
+    )
+    parameter_bounds = correlation_spec["parameter_bounds"]
+    parameter_unit = correlation_spec["parameter_unit"]
+    parameter_name = correlation_spec["parameter_name"]
+
+    trial_covariance_trace = (
+        None
+        if trial_covariance is None
+        else float(np.trace(trial_covariance))
+    )
 
     return FunctionalMixedEffectsResult(
         coefficient_functions=coefficient_functions,
@@ -1138,20 +1276,20 @@ def fit_nested_functional_mixed_effects_regression(
         method=method,
         maxiter=maxiter,
         converged=True,
-        boundary_fit=bool(participant_boundary or trial_boundary),
+        boundary_fit=overall_boundary,
         backend_warnings=backend_warnings,
         log_likelihood=-float(state["negative_log_likelihood"]),
         provenance={
             **dict(trajectories.provenance),
             "functional_mixed_effects_regression": {
-                "method": "profiled_gaussian_nested_functional_mixed_model",
+                "method": "profiled_gaussian_functional_mixed_model",
                 "backend": "eyetrajectoriespy.profiled_gaussian_nested",
                 "response_dimension": dimension_name,
                 "participant_column": participant_column,
                 "trial_column": trial_column,
                 "n_source_curves": trajectories.n_curves,
                 "n_participants": len(participant_ids),
-                "n_trials": n_trials,
+                "n_trials_with_functional_random_effect": n_trials,
                 "n_grid_observations": int(
                     trajectories.n_curves * n_time
                 ),
@@ -1167,9 +1305,13 @@ def fit_nested_functional_mixed_effects_regression(
                     None if not has_random_slope else "clamped_bspline"
                 ),
                 "random_basis_size": random_basis_size,
-                "trial_random_effect": "functional_intercept",
-                "trial_random_basis": "clamped_bspline",
-                "trial_random_basis_size": trial_random_basis_size,
+                "trial_random_effect": trial_random_effect,
+                "trial_random_basis": (
+                    "clamped_bspline" if has_trial_effect else None
+                ),
+                "trial_random_basis_size": (
+                    trial_random_basis_size if has_trial_effect else 0
+                ),
                 "spline_degree": spline_degree,
                 "basis_size_selected_automatically": False,
                 "trial_basis_size_selected_automatically": False,
@@ -1181,45 +1323,88 @@ def fit_nested_functional_mixed_effects_regression(
                 "automatic_model_selection": False,
                 "automatic_random_slope_selection": False,
                 "automatic_trial_random_effect_selection": False,
+                "automatic_residual_correlation_selection": False,
                 "participant_random_effect_covariance": "unstructured",
-                "trial_random_effect_covariance": "shared_unstructured",
+                "trial_random_effect_covariance": (
+                    "shared_unstructured" if has_trial_effect else None
+                ),
                 "participant_trial_cross_covariance": False,
                 "participant_random_effect_dimension": participant_dimension,
                 "participant_random_effect_covariance_parameter_count": (
                     participant_covariance_parameter_count
                 ),
-                "trial_random_effect_dimension": trial_random_basis_size,
+                "trial_random_effect_dimension": trial_dimension,
                 "trial_random_effect_covariance_parameter_count": (
                     trial_covariance_parameter_count
                 ),
-                "n_trials_per_trial_covariance_parameter": float(
-                    n_trials / trial_covariance_parameter_count
+                "n_trials_per_trial_covariance_parameter": (
+                    float(n_trials / trial_covariance_parameter_count)
+                    if trial_covariance_parameter_count
+                    else None
                 ),
                 "trial_covariance_complexity_guard": (
                     "require n_nested_trials > "
                     "trial_random_effect_covariance_parameter_count"
+                    if has_trial_effect
+                    else None
                 ),
-                "minimum_trials_per_participant": 2,
+                "minimum_trials_per_participant": (
+                    2 if has_trial_effect else None
+                ),
                 "participant_covariance_eigenvalues": (
                     participant_eigenvalues.tolist()
                 ),
-                "trial_covariance_eigenvalues": trial_eigenvalues.tolist(),
+                "trial_covariance_eigenvalues": (
+                    None
+                    if trial_eigenvalues is None
+                    else trial_eigenvalues.tolist()
+                ),
                 "participant_covariance_condition_number": (
                     participant_condition_number
                 ),
-                "trial_covariance_condition_number": (
-                    trial_condition_number
-                ),
+                "trial_covariance_condition_number": trial_condition_number,
                 "participant_random_effect_singular": participant_singular,
                 "trial_random_effect_singular": trial_singular,
                 "trial_random_effect_boundary_fit": trial_boundary,
-                "curve_level_functional_random_effect": True,
+                "trial_covariance_trace": trial_covariance_trace,
+                "residual_correlation": residual_family,
+                "residual_correlation_parameter_name": parameter_name,
+                "residual_correlation_parameter": residual_parameter,
+                "residual_correlation_parameter_unit": parameter_unit,
+                "residual_correlation_parameter_bounds": parameter_bounds,
+                "residual_correlation_transformed_parameter": (
+                    transformed_correlation
+                ),
+                "residual_correlation_transformed_bounds": (
+                    correlation_spec["transformed_bounds"]
+                ),
+                "residual_correlation_grid_regular": (
+                    correlation_spec["grid_regular"]
+                ),
+                "residual_correlation_grid_interval": (
+                    correlation_spec["grid_interval"]
+                ),
+                "residual_correlation_eigenvalues": (
+                    residual_correlation_eigenvalues.tolist()
+                ),
+                "residual_correlation_condition_number": (
+                    residual_correlation_condition_number
+                ),
+                "residual_correlation_boundary_fit": (
+                    residual_correlation_boundary
+                ),
+                "residual_correlation_crosses_trial_boundaries": False,
+                "residual_correlation_parameter_estimated_jointly": (
+                    residual_family != "iid"
+                ),
+                "curve_level_functional_random_effect": has_trial_effect,
                 "curve_level_random_effect_interpretation": (
                     "nested_trial_functional_intercept"
+                    if has_trial_effect
+                    else None
                 ),
                 "residual_structure": (
-                    "conditionally_iid_gaussian_grid_errors_after_"
-                    "participant_and_trial_functional_random_effects"
+                    "within_trial_" + residual_family + "_gaussian"
                 ),
                 "trial_varying_predictors_supported": True,
                 "random_slope_requires_within_participant_variation": (
@@ -1231,11 +1416,10 @@ def fit_nested_functional_mixed_effects_regression(
                 "reml": reml,
                 "optimizer": "L-BFGS-B",
                 "optimizer_requested": method,
+                "optimizer_bounds": bounds,
                 "maxiter": maxiter,
                 "converged": True,
-                "boundary_fit": bool(
-                    participant_boundary or trial_boundary
-                ),
+                "boundary_fit": overall_boundary,
                 "backend_warnings": [],
             },
         },
@@ -1244,16 +1428,30 @@ def fit_nested_functional_mixed_effects_regression(
             "optimizer_result": optimized,
         },
         trial_column=trial_column,
-        curve_trial_ids=tuple(map(str, source_trial_ids)),
+        curve_trial_ids=(
+            tuple(map(str, source_trial_ids))
+            if has_trial_effect
+            else ()
+        ),
         trial_ids=composite_trial_ids,
-        trial_random_effect="functional_intercept",
-        trial_random_basis_size=trial_random_basis_size,
-        trial_random_basis=trial_basis.copy(),
-        trial_random_basis_knots=trial_knots.copy(),
+        trial_random_effect=trial_random_effect,
+        trial_random_basis_size=(
+            trial_random_basis_size if has_trial_effect else 0
+        ),
+        trial_random_basis=(
+            None if trial_basis is None else trial_basis.copy()
+        ),
+        trial_random_basis_knots=(
+            None if trial_knots is None else trial_knots.copy()
+        ),
         trial_random_effect_coefficients=trial_coefficients,
         trial_random_effect_functions=trial_functions,
         trial_random_effect_covariance=trial_covariance,
-        trial_random_effect_covariance_eigenvalues=trial_eigenvalues.copy(),
+        trial_random_effect_covariance_eigenvalues=(
+            None
+            if trial_eigenvalues is None
+            else trial_eigenvalues.copy()
+        ),
         trial_random_effect_covariance_condition_number=(
             trial_condition_number
         ),
@@ -1263,6 +1461,28 @@ def fit_nested_functional_mixed_effects_regression(
         trial_random_effect_complexity_warning=trial_complexity_warning,
         trial_random_effect_boundary_fit=trial_boundary,
         trial_random_effect_singular=trial_singular,
+        residual_correlation=residual_family,
+        residual_correlation_parameter=(
+            None if residual_parameter is None else float(residual_parameter)
+        ),
+        residual_correlation_parameter_name=parameter_name,
+        residual_correlation_parameter_unit=parameter_unit,
+        residual_correlation_matrix=residual_correlation_matrix.copy(),
+        residual_correlation_eigenvalues=(
+            residual_correlation_eigenvalues.copy()
+        ),
+        residual_correlation_condition_number=(
+            residual_correlation_condition_number
+        ),
+        residual_correlation_boundary_fit=residual_correlation_boundary,
+        residual_correlation_optimizer_bounds=parameter_bounds,
+        residual_correlation_grid_regular=bool(
+            correlation_spec["grid_regular"]
+        ),
+        residual_correlation_grid_interval=(
+            correlation_spec["grid_interval"]
+        ),
+        whitened_residual_functions=whitened_residual_functions,
     )
 
 
