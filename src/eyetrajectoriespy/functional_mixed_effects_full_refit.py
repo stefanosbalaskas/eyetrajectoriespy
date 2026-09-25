@@ -761,6 +761,22 @@ def functional_mixed_effects_variance_bootstrap_frame(
                 )
             ),
         }
+        if bootstrap.residual_correlation_parameters is not None:
+            row["residual_correlation_parameter"] = float(
+                bootstrap.residual_correlation_parameters[
+                    bootstrap_index
+                ]
+            )
+            row["residual_correlation_condition_number"] = float(
+                bootstrap.residual_correlation_condition_numbers[
+                    bootstrap_index
+                ]
+            )
+            row["residual_correlation_boundary_fit"] = bool(
+                bootstrap.residual_correlation_boundary_flags[
+                    bootstrap_index
+                ]
+            )
         if bootstrap.trial_random_effect_covariances is not None:
             trial_eigenvalues = (
                 bootstrap.trial_random_effect_covariance_eigenvalues[
