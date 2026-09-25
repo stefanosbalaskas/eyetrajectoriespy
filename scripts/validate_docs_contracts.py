@@ -52,7 +52,7 @@ def main() -> None:
                 for character in source
                 if (
                     ord(character) < 32
-                    and character not in {"\\n", "\\r"}
+                    and character not in {"\n", "\r"}
                 )
             }
         )
