@@ -91,6 +91,8 @@ def main() -> None:
         "bootstrap_functional_mixed_effects_full_refit()",
         "functional_mixed_effects_variance_bootstrap_frame()",
         "compare_functional_mixed_effects_bootstraps()",
+        "functional_mixed_effects_covariance_sensitivity()",
+        "functional_mixed_effects_variance_decomposition()",
         "fit_function_on_scalar_regression()",
         "function_on_scalar_simultaneous_bands()",
         "wild_bootstrap_fpca_projection()",
