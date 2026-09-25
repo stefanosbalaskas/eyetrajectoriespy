@@ -535,3 +535,26 @@ When a serial residual model is fitted, raw conditional residuals are expected
 to retain the modeled dependence. Residual adequacy should therefore be
 inspected on the whitened scale as well as the raw scale.
 
+## Covariance-structure sensitivity assumptions
+
+Version 0.50 assumes that successful models differ only in the predeclared
+covariance structures under study. Observations, source-curve order, fixed
+design and coefficient basis, participant mapping and participant random basis,
+response dimension, time grid/unit, spline degree, and ML/REML mode must match.
+When two models both contain trial functional random effects, their source trial
+identities and trial basis must also match.
+
+Likelihood/AIC/BIC differences therefore condition on this comparability
+contract. Under ML, the information-criterion parameter count includes fixed and
+covariance parameters. Under REML, the package uses the restricted likelihood
+with covariance-parameter count only and requires the same fixed design/basis.
+
+The BIC sample size is explicitly defined as the number of curve-by-time
+observations, \(n_{\mathrm{curves}}n_{\mathrm{time}}\). This is a transparent
+calculation convention, not an assumption that clustered functional data have a
+uniquely defined effective sample size equal to that quantity.
+
+Raw and whitened residual summaries are descriptive. Whitened residual
+structure diagnoses what remains after the fitted residual covariance; it is
+not a formal test that the covariance structure is correct.
+
