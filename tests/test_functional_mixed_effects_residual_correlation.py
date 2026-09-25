@@ -193,8 +193,25 @@ def _fit_serial(
 
 
 def test_exponential_irregular_grid_recovers_range_and_whitens():
-    time = np.array([0.0, 0.04, 0.13, 0.27, 0.48, 0.73, 1.0])
-    true_phi = 0.18
+    time = np.array(
+        [
+            0.0,
+            0.03,
+            0.08,
+            0.14,
+            0.21,
+            0.29,
+            0.38,
+            0.48,
+            0.59,
+            0.70,
+            0.80,
+            0.88,
+            0.94,
+            1.0,
+        ]
+    )
+    true_phi = 0.10
     trajectories, design, beta0, beta1 = _serial_data(
         family="exponential",
         parameter=true_phi,
@@ -407,12 +424,14 @@ def test_iid_truth_exponential_reaches_independence_boundary_or_tiny_range():
         residual_correlation="exponential",
     )
 
-    lower = fit.residual_correlation_optimizer_bounds[0]
+    off_diagonal = fit.residual_correlation_matrix.copy()
+    np.fill_diagonal(off_diagonal, 0.0)
     assert (
         fit.residual_correlation_boundary_fit
-        or fit.residual_correlation_parameter <= 20.0 * lower
-        or fit.residual_correlation_parameter < 0.05 * np.diff(time)[0]
+        or fit.residual_correlation_independence_limit_fit
     )
+    if fit.residual_correlation_independence_limit_fit:
+        assert np.max(np.abs(off_diagonal)) <= 0.05
 
 
 def test_fixed_covariance_bootstrap_conditions_on_serial_parameter():
@@ -471,6 +490,7 @@ def test_full_refit_bootstrap_reestimates_exponential_parameter_and_covariances(
 
     assert bootstrap.residual_correlation_parameters.shape == (20,)
     assert bootstrap.residual_correlation_boundary_flags.shape == (20,)
+    assert bootstrap.residual_correlation_independence_flags.shape == (20,)
     assert bootstrap.residual_correlation_condition_numbers.shape == (20,)
     assert np.all(np.isfinite(bootstrap.residual_correlation_parameters))
     assert np.all(bootstrap.residual_correlation_parameters > 0)
@@ -482,6 +502,7 @@ def test_full_refit_bootstrap_reestimates_exponential_parameter_and_covariances(
     assert "residual_correlation_parameter" in frame.columns
     assert "residual_correlation_condition_number" in frame.columns
     assert "residual_correlation_boundary_fit" in frame.columns
+    assert "residual_correlation_independence_limit_fit" in frame.columns
 
     contract = bootstrap.provenance[
         "functional_mixed_effects_full_refit_bootstrap"
