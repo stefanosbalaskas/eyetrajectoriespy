@@ -46,6 +46,36 @@ def _validate_reference(result: FunctionalMixedEffectsResult) -> None:
         )
 
 
+def _residual_array(
+    result: FunctionalMixedEffectsResult,
+    residual_scale: str,
+) -> np.ndarray:
+    if not isinstance(residual_scale, str) or not residual_scale:
+        raise TypeError("residual_scale must be a non-empty string")
+    scale = residual_scale.lower().strip()
+    if scale == "raw":
+        residuals = np.asarray(result.residual_functions, dtype=float)
+    elif scale == "whitened":
+        from .functional_mixed_effects_nested import (
+            functional_mixed_effects_whitened_residuals,
+        )
+
+        residuals = functional_mixed_effects_whitened_residuals(result)
+    else:
+        raise ValueError("residual_scale must be 'raw' or 'whitened'")
+
+    if residuals.shape != (result.n_curves, result.time.size):
+        raise ValueError(
+            f"{scale} residual functions must have shape (n_curves, n_time)"
+        )
+    if not np.all(np.isfinite(residuals)):
+        raise ValueError(
+            f"{scale} residual functions contain non-finite values; residual "
+            "diagnostics do not silently omit grid points"
+        )
+    return residuals
+
+
 def _validate_max_lag(max_lag: int, n_time: int) -> int:
     if isinstance(max_lag, bool) or not isinstance(max_lag, (int, np.integer)):
         raise TypeError("max_lag must be an integer")
@@ -143,6 +173,7 @@ def functional_mixed_effects_residual_diagnostics(
     result: FunctionalMixedEffectsResult,
     *,
     max_lag: int,
+    residual_scale: Literal["raw", "whitened"] = "raw",
 ) -> FunctionalMixedEffectsResidualDiagnosticsResult:
     """Compute descriptive residual-dependence diagnostics.
 
@@ -180,7 +211,8 @@ def functional_mixed_effects_residual_diagnostics(
     """
 
     _validate_reference(result)
-    residuals = np.asarray(result.residual_functions, dtype=float)
+    residuals = _residual_array(result, residual_scale)
+    residual_scale_value = str(residual_scale).lower().strip()
     time = np.asarray(result.time, dtype=float)
     max_lag_value = _validate_max_lag(max_lag, time.size)
 
@@ -245,7 +277,16 @@ def functional_mixed_effects_residual_diagnostics(
 
     provenance = {
         "functional_mixed_effects_residual_diagnostics": {
-            "residual_type": "conditional_residual_function",
+            "residual_type": (
+                "conditional_residual_function"
+                if residual_scale_value == "raw"
+                else "within_trial_whitened_conditional_residual_function"
+            ),
+            "residual_scale": residual_scale_value,
+            "source_residual_correlation": result.residual_correlation,
+            "whitening_uses_fitted_residual_covariance_only": (
+                residual_scale_value == "whitened"
+            ),
             "within_trial_centering": True,
             "max_lag_index": max_lag_value,
             "automatic_lag_selection": False,
@@ -269,6 +310,7 @@ def functional_mixed_effects_residual_diagnostics(
         overall_diagnostics=overall,
         max_lag=max_lag_value,
         provenance=provenance,
+        residual_scale=residual_scale_value,
     )
 
 
@@ -353,7 +395,7 @@ def functional_mixed_effects_residual_pair_frame(
         )
 
     reference = result.reference
-    residuals = np.asarray(reference.residual_functions, dtype=float)
+    residuals = _residual_array(reference, result.residual_scale)
     time = np.asarray(reference.time, dtype=float)
     rows: list[dict[str, object]] = []
 
@@ -404,6 +446,7 @@ def compare_functional_mixed_effects_residual_diagnostics(
     max_lag: int,
     reference_label: str = "reference",
     comparison_label: str = "comparison",
+    residual_scale: Literal["raw", "whitened"] = "raw",
 ) -> pd.DataFrame:
     """Compare overall residual-dependence diagnostics for two nested analyses.
 
@@ -437,10 +480,12 @@ def compare_functional_mixed_effects_residual_diagnostics(
     first = functional_mixed_effects_residual_diagnostics(
         reference,
         max_lag=max_lag,
+        residual_scale=residual_scale,
     ).overall_diagnostics
     second = functional_mixed_effects_residual_diagnostics(
         comparison,
         max_lag=max_lag,
+        residual_scale=residual_scale,
     ).overall_diagnostics
 
     keep = [
@@ -477,6 +522,7 @@ def compare_functional_mixed_effects_residual_diagnostics(
 
     merged.insert(0, "reference_label", str(reference_label))
     merged.insert(1, "comparison_label", str(comparison_label))
+    merged.insert(2, "residual_scale", str(residual_scale))
     return merged
 
 
@@ -512,11 +558,16 @@ def _plot_residual_metric(
     x = frame["lag_time_mean"].to_numpy(dtype=float)
     y = frame[metric].to_numpy(dtype=float)
     ax.plot(x, y, marker="o")
+    prefix = (
+        "Whitened residual"
+        if result.residual_scale == "whitened"
+        else "Residual"
+    )
     if metric == "autocorrelation":
         ax.axhline(0.0, linewidth=1.0)
-        ax.set_ylabel("Residual autocorrelation")
+        ax.set_ylabel(f"{prefix} autocorrelation")
     else:
-        ax.set_ylabel("Residual semivariance")
+        ax.set_ylabel(f"{prefix} semivariance")
     ax.set_xlabel(f"Physical lag ({result.reference.time_unit})")
 
     nonuniform = np.any(
@@ -593,8 +644,28 @@ def functional_mixed_effects_residual_reporting_text(
         )
     )
 
+    scale_text = (
+        "raw conditional residual functions"
+        if result.residual_scale == "raw"
+        else (
+            "conditional residual functions whitened within each trial by the "
+            "fitted residual covariance Cholesky factor"
+        )
+    )
+    whitening_text = (
+        ""
+        if result.residual_scale == "raw"
+        else (
+            " Whitening targets the declared residual covariance only; fitted "
+            "random effects and parameter uncertainty remain conditioned on "
+            "their estimates."
+        )
+    )
+
     return (
-        "Within-trial residual dependence was inspected using the conditional "
+        "Within-trial residual dependence was inspected using the "
+        + scale_text
+        + " from the converged functional mixed-effects fit "
         "residual functions from the converged functional mixed-effects fit "
         f"({structure}). Diagnostics were computed through the explicitly "
         f"declared maximum index lag {result.max_lag}. For each trial, residuals "
@@ -610,4 +681,5 @@ def functional_mixed_effects_residual_reporting_text(
         "undefined. These diagnostics do not automatically select AR(1), a "
         "trial-level functional random effect, or any other residual covariance "
         "structure."
+        + whitening_text
     )
