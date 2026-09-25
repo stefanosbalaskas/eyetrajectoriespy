@@ -73,8 +73,8 @@ per participant. Participant and trial covariance matrices remain distinct.
 Version 0.49 additionally retains the declared residual-correlation family,
 jointly estimated `phi` or `rho` when applicable, parameter name/unit and
 numerical bounds, within-trial residual correlation matrix, eigenvalues and
-condition number, regular-grid diagnostics, explicit serial-parameter boundary
-flag, and both raw and whitened conditional residual functions. Exponential
+condition number, regular-grid diagnostics, explicit numerical-bound and practical exponential-
+independence flags, and both raw and whitened conditional residual functions. Exponential
 correlation uses physical time; AR(1) uses index steps and is accepted only on
 an equally spaced common grid. Residual covariance is block diagonal by source
 curve/trial.
@@ -524,8 +524,8 @@ For 0.48+ nested fits it additionally retains the full trial covariance
 distribution, trial covariance eigenvalues/condition numbers, and
 trial-specific boundary/singularity flags. For 0.49 serial fits it also retains
 the bootstrap distribution of the residual-correlation parameter together with
-its correlation-matrix condition number and serial-parameter boundary flag in
-every replicate.
+its correlation-matrix condition number, numerical-bound flag, and practical
+exponential-independence flag in every replicate.
 
 Every occurrence of a sampled participant receives its own bootstrap
 participant identity. For a nested trial model, every trial inside that
