@@ -373,6 +373,69 @@ backend. Residual covariance is block diagonal across trials, and no
 residual-correlation family is selected automatically.
 
 
+## Covariance-structure sensitivity
+
+Version 0.50 compares already fitted, predeclared covariance structures against
+one analyst-declared reference. For model \(m\) relative to reference \(r\),
+
+\[
+\Delta\beta_m(t)
+=
+\widehat\beta_m(t)-\widehat\beta_r(t),
+\]
+
+with descriptive summaries
+
+\[
+D_{\infty,m}
+=
+\sup_t |\Delta\beta_m(t)|
+\]
+
+and
+
+\[
+D_{2,m}
+=
+\left[
+\int
+\{\Delta\beta_m(t)\}^2\,dt
+\right]^{1/2}.
+\]
+
+Functional covariance attribution is retained through
+
+\[
+v_{P0}(t)
+=
+\mathbf B_P(t)^\top\boldsymbol\Psi_{P0}\mathbf B_P(t),
+\qquad
+v_T(t)
+=
+\mathbf B_T(t)^\top\boldsymbol\Psi_T\mathbf B_T(t),
+\qquad
+v_\varepsilon(t)=\sigma^2.
+\]
+
+Information criteria use
+
+\[
+\mathrm{AIC}_m=-2\ell_m+2k_m,
+\qquad
+\mathrm{BIC}_m=-2\ell_m+k_m\log n,
+\]
+
+with \(n=n_{\mathrm{curves}}n_{\mathrm{time}}\) recorded explicitly for BIC.
+ML uses total fixed+covariance parameter count; REML uses the
+restricted-likelihood covariance-parameter count under an identical fixed
+design/basis.
+
+Implemented by \`functional_mixed_effects_covariance_sensitivity()\` and
+\`functional_mixed_effects_variance_decomposition()\`. Successful fits must
+satisfy the strict comparability contract; failed predeclared structures remain
+visible. The routine does not rank models, select a covariance structure, or
+compute likelihood-ratio p-values.
+
 ## One participant random functional slope
 
 Version 0.45 extends the participant functional random-intercept model with one
