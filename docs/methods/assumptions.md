@@ -509,3 +509,29 @@ Coordinate units and explicit dimension weights define the local geometry. All p
 - The resulting coefficient-function distribution includes variance-component
   re-estimation but does not represent uncertainty over alternative model
   specifications.
+
+## Explicit residual covariance (0.49)
+
+For `residual_correlation="exponential"`, the residual process is stationary
+within each source curve/trial under the declared physical-time kernel
+(R_\phi(t,s)=\exp\{-|t-s|/\phi\}). The common grid may be unequally spaced,
+but timestamps must retain their scientific physical-time meaning.
+
+For `residual_correlation="ar1"`, the common grid must be equally spaced.
+AR(1) lag is a sample-index step, not arbitrary elapsed time; negative
+correlation is allowed.
+
+Residual covariance is block diagonal across trials. The model assumes no
+residual-process correlation between different source curves/trials after the
+declared participant/trial random effects.
+
+The fitted serial parameter is an estimated covariance parameter, not a tuning
+constant. A fitted value near its numerical optimizer bound, a large exponential
+range, a large condition number, or material movement in the trial covariance
+after adding serial correlation should be treated as a covariance-decomposition
+diagnostic.
+
+When a serial residual model is fitted, raw conditional residuals are expected
+to retain the modeled dependence. Residual adequacy should therefore be
+inspected on the whitened scale as well as the raw scale.
+
