@@ -1,8 +1,9 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.47.0.dev0"
+    assert et.__version__=="0.48.0.dev0"
     required={
+        "functional_trial_random_effect_frame","plot_functional_trial_random_effects","functional_mixed_effects_full_refit_trial_audit_frame",
         "FunctionalMixedEffectsResidualDiagnosticsResult","functional_mixed_effects_residual_diagnostics","functional_mixed_effects_residual_diagnostic_frame","functional_mixed_effects_residual_pair_frame","compare_functional_mixed_effects_residual_diagnostics","plot_functional_mixed_effects_residual_acf","plot_functional_mixed_effects_residual_variogram","functional_mixed_effects_residual_reporting_text",
         "FunctionalMixedEffectsFullRefitBootstrapResult","bootstrap_functional_mixed_effects_full_refit","functional_mixed_effects_full_refit_audit_frame","functional_mixed_effects_variance_bootstrap_frame","compare_functional_mixed_effects_bootstraps","plot_functional_mixed_effects_bootstrap_comparison",
         "FunctionalMixedEffectsBootstrapResult","FunctionalMixedEffectsBandResult","bootstrap_functional_mixed_effects_coefficients","functional_mixed_effects_simultaneous_bands",
