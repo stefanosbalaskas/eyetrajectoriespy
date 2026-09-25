@@ -1018,3 +1018,32 @@ Whitened residual diagnostics are conditional on estimated parameters and
 random effects. Approximate whitening does not turn them into independent
 observations with known covariance.
 
+## Covariance sensitivity is not automatic model selection
+
+Version 0.50 deliberately does not choose, rank, weight, or recommend a
+covariance structure. AIC/BIC, coefficient changes, band-width changes,
+raw/whitened residual diagnostics, convergence behavior, and variance-component
+shifts remain separate descriptive evidence.
+
+No regular chi-square likelihood-ratio p-values are supplied. Trial-variance
+components and serial parameters can lie on boundaries, and many covariance
+structures are not simple regular nested models.
+
+A failed predeclared covariance structure remains visible in the sensitivity
+result. Numerical comparison fields for that structure are undefined rather
+than imputed from a simpler model or omitted.
+
+Functional variance curves improve interpretability but do not prove unique
+covariance decomposition. A smooth trial process and a long-range residual
+process can compete. Large changes in trial variance, residual range, or
+conditioning should be treated as sensitivity evidence, not an automatic rule
+for deleting one component.
+
+The BIC convention uses \(n_{\mathrm{curves}}n_{\mathrm{time}}\). It should not
+be interpreted as resolving the broader question of effective sample size for
+clustered functional observations.
+
+Version 0.50 closes the planned Gaussian covariance-engineering sequence.
+Multiple random slopes or additional covariance kernels are not implied next
+steps.
+
