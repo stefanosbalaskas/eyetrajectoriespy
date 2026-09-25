@@ -58,7 +58,7 @@ fit = fit_functional_mixed_effects_regression(
 ~~~
 
 The range parameter is estimated jointly with the other covariance parameters
-and is reported in \`TrajectorySet.time_unit\`. The numerical parameterization
+and is reported in `TrajectorySet.time_unit`. The numerical parameterization
 is
 
 \[
@@ -67,7 +67,7 @@ is
 
 Natural- and transformed-scale optimizer bounds are retained in provenance. A
 fit at or extremely near a numerical bound sets
-\`residual_correlation_boundary_fit=True\`; it is not silently regularized or
+`residual_correlation_boundary_fit=True`; it is not silently regularized or
 replaced.
 
 Because the kernel uses actual elapsed separation \(|t-s|\), it remains
@@ -120,19 +120,19 @@ For all observations from participant \(i\),
 
 The trial term is absent when no trial functional random effect is declared.
 The residual-correlation term becomes the identity under
-\`residual_correlation="iid"\`.
+`residual_correlation="iid"`.
 
 Participant covariance, optional trial covariance, residual variance, and the
 serial parameter are optimized jointly. Fixed B-spline coefficients are
 profiled by generalized least squares at each covariance-parameter evaluation.
 
 The historical participant-only iid model retains its existing
-\`statsmodels.MixedLM\` backend. Any explicitly serial model uses the profiled
+`statsmodels.MixedLM` backend. Any explicitly serial model uses the profiled
 Gaussian covariance backend.
 
 ## Retained diagnostics
 
-\`FunctionalMixedEffectsResult\` records the residual-correlation family,
+`FunctionalMixedEffectsResult` records the residual-correlation family,
 parameter/name/unit, within-trial correlation matrix, eigenvalues, condition
 number, natural optimizer bounds, regular-grid status, raw residual functions,
 whitened residual functions, and the explicit boundary flag.
@@ -212,7 +212,7 @@ covariance, optional trial covariance, residual variance, and fitted serial
 parameter. The full-refit participant bootstrap re-estimates every declared
 covariance parameter in each replicate, including \(\phi\) or \(\rho\).
 
-\`functional_mixed_effects_variance_bootstrap_frame()\` exposes the bootstrap
+`functional_mixed_effects_variance_bootstrap_frame()` exposes the bootstrap
 serial parameter, residual-correlation condition number, and boundary flag
 alongside the existing variance-component diagnostics.
 
