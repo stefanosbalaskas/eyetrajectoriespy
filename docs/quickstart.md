@@ -142,6 +142,28 @@ it as a confirmatory repeated-measures analysis.
 
 ## 7. Select dimension without leakage
 
+### Optional 0.48 nested trial functional intercept
+
+When residual diagnostics indicate smooth trial-specific departures, declare
+the nested trial structure explicitly:
+
+~~~python
+nested = fit_functional_mixed_effects_regression(
+    trajectories,
+    design,
+    predictors=("condition",),
+    participant_column="participant_id",
+    trial_column="trial_id",
+    trial_random_effect="functional_intercept",
+    dimension="metric",
+    trial_random_basis_size=3,
+)
+~~~
+
+This estimates one shared unstructured trial-basis covariance. It does not
+select the trial effect or basis size automatically. Whole participants remain
+the bootstrap resampling unit.
+
 For repeated trials, keep each participant in one held-out fold:
 
     cv = cross_validate_fpca_reconstruction(
