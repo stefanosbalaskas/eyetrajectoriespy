@@ -36,10 +36,11 @@ implement the full class of functional additive mixed models. It fits one
 selected Gaussian response dimension with a participant functional random
 intercept and conditionally iid grid residuals.
 
-There is currently no trial-level functional random effect, residual
-autocorrelation model, participant-specific random functional slope,
-crossed/nested second grouping factor, generalized functional response, or
-joint multivariate response covariance.
+There is currently no trial-level functional random effect, explicit residual
+autocorrelation model, crossed/nested second grouping factor, generalized
+functional response, or joint multivariate response covariance. Version 0.45
+does support exactly one guarded participant-specific random functional slope;
+multiple random slopes remain out of scope.
 
 The fixed and random B-spline basis sizes are user-declared model choices.
 They are not selected automatically, and uncertainty from choosing them is not
@@ -48,6 +49,12 @@ included in the reported pointwise coefficient standard errors.
 A near-singular random-effect covariance can represent a boundary estimate or
 an over-rich random basis. The result is flagged rather than silently treated
 as regular.
+
+Version 0.47 adds residual-dependence diagnostics but does not fit a new
+residual covariance. A residual ACF or variogram pattern cannot by itself
+distinguish a smooth trial-level functional deviation from a shorter-range
+serial error process, so the package does not auto-select AR(1) or another
+structure from these diagnostics.
 
 ## Function-on-scalar regression is not yet a repeated-measures functional model
 

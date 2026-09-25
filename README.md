@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.46.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.47.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -55,6 +55,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - function-on-scalar regression for experimental predictors with observed-grid coefficient functions, HC1 pointwise standard errors, fixed-design wild-bootstrap coefficient replicates, and coefficient-wise or familywise simultaneous bands;
 - fail-closed repeated-trial handling for function-on-scalar regression: participant aggregation is allowed only for participant-constant predictors;
 - joint Gaussian functional mixed-effects regression for trial-varying predictors, using explicit B-spline fixed coefficient functions and a participant functional random intercept fitted in one stacked MixedLM rather than separate pointwise models;
+- residual/within-trial dependence diagnostics for functional mixed-effects fits, including trial ACF/autocovariance, empirical semivariance, physical-lag auditing, participant/overall stratification, and descriptive before/after model comparisons without automatic covariance selection;
 - FPCA reconstruction/robust score-space review diagnostics and leave-one-group-out influence analysis;
 - split-conformal marginal anomaly p-values for new common-grid trajectories using explicit proper-training and calibration partitions;
 - participant → trial → time multilevel FPCA;

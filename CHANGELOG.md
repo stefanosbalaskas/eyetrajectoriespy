@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.47.0.dev0
+
+- Add `functional_mixed_effects_residual_diagnostics()` for explicit within-trial residual autocovariance, autocorrelation, and empirical semivariance through an analyst-declared maximum index lag.
+- Diagnose the conditional residual functions from the fitted likelihood-based mixed model; do not reinterpret them as marginal residuals or refit the model inside the diagnostic layer.
+- Retain every trial, including exact-zero residual-variance trials; their autocorrelation is marked undefined rather than replacing it with zero or silently dropping the trial.
+- Retain mean/minimum/maximum physical time separation for every index lag without assuming an equally spaced common grid or creating hidden physical-lag bins.
+- Add `functional_mixed_effects_residual_pair_frame()` to expose the exact physical lag, residual pair, centered-product contribution, and semivariance contribution for any declared index lag.
+- Add participant- and overall-level pair-count-weighted descriptive summaries while retaining the number of trials with defined ACF values.
+- Add `compare_functional_mixed_effects_residual_diagnostics()` for before/after model sensitivity comparisons without ranking fits, selecting a covariance structure, or performing an automatic hypothesis test.
+- Add residual ACF and empirical-variogram plotting plus manuscript-oriented reporting with explicit time-unit, lag, aggregation, and no-auto-selection provenance.
+- Add synthetic/manual validation for exact lag calculations, physical-lag auditing, zero-variance retention, plotting/reporting, comparison invariance, and fail-closed lag validation.
+- Keep structural modeling separate: 0.47 does not automatically choose AR(1), a trial-level functional random effect, or another residual covariance model. The next structural extension remains contingent on the diagnosed residual pattern.
+
 ## 0.46.0.dev0
 
 - Add `bootstrap_functional_mixed_effects_full_refit()` as a second, explicitly distinct whole-participant bootstrap for the likelihood-based functional mixed-effects layer.

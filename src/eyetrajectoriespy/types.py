@@ -803,6 +803,26 @@ class FunctionalMixedEffectsResult:
 
 
 @dataclass(frozen=True)
+class FunctionalMixedEffectsResidualDiagnosticsResult:
+    """Descriptive within-trial residual-dependence diagnostics."""
+
+    reference: FunctionalMixedEffectsResult
+    trial_diagnostics: pd.DataFrame
+    participant_diagnostics: pd.DataFrame
+    overall_diagnostics: pd.DataFrame
+    max_lag: int
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_curves(self) -> int:
+        return self.reference.n_curves
+
+    @property
+    def n_participants(self) -> int:
+        return self.reference.n_participants
+
+
+@dataclass(frozen=True)
 class FunctionalMixedEffectsBootstrapResult:
     """Participant-cluster bootstrap for functional mixed-effects coefficients."""
 

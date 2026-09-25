@@ -353,6 +353,14 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.functional_mixed_effects_coefficient_frame
 ::: eyetrajectoriespy.plot_functional_mixed_effects_coefficient
 ::: eyetrajectoriespy.functional_mixed_effects_reporting_text
+::: eyetrajectoriespy.FunctionalMixedEffectsResidualDiagnosticsResult
+::: eyetrajectoriespy.functional_mixed_effects_residual_diagnostics
+::: eyetrajectoriespy.functional_mixed_effects_residual_diagnostic_frame
+::: eyetrajectoriespy.functional_mixed_effects_residual_pair_frame
+::: eyetrajectoriespy.compare_functional_mixed_effects_residual_diagnostics
+::: eyetrajectoriespy.plot_functional_mixed_effects_residual_acf
+::: eyetrajectoriespy.plot_functional_mixed_effects_residual_variogram
+::: eyetrajectoriespy.functional_mixed_effects_residual_reporting_text
 
 ## Function-on-scalar regression
 ::: eyetrajectoriespy.FunctionOnScalarResult

@@ -433,6 +433,28 @@ source as shifted while target and conditioning processes remain fixed.
 
 Neither object claims causal identification or complete confounder adjustment.
 
+## FunctionalMixedEffectsResidualDiagnosticsResult
+
+Stores the reference converged mixed-effects fit together with three explicit
+descriptive residual-diagnostic tables: trial, participant, and overall.
+
+The trial table is primary. For every source curve and every declared index lag
+from zero through `max_lag`, it retains the residual mean/SD/RMS,
+autocovariance, autocorrelation, empirical semivariance, pair count, and
+mean/minimum/maximum physical time separation. Trials with exactly zero
+residual variance are retained and their ACF is undefined rather than replaced
+with zero.
+
+Participant and overall tables are pair-count-weighted summaries of the
+trial-level quantities and retain the total number of trials and the number
+with defined ACF values. The object records that no automatic lag selection,
+physical-lag binning, AR(1) selection, trial-level random-effect selection, or
+other covariance-structure selection occurred.
+
+Exact physical-lag pair contributions are generated on demand by
+`functional_mixed_effects_residual_pair_frame()` rather than materialized
+inside the result object.
+
 ## FunctionalMixedEffectsBootstrapResult
 
 Stores the reference `FunctionalMixedEffectsResult`, every participant-cluster
