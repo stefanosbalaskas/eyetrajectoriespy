@@ -219,6 +219,14 @@ def functional_mixed_effects_reporting_text(
             "recorded numerical optimizer bound and should be interpreted as "
             "a boundary diagnostic rather than an ordinary interior estimate."
         )
+    if result.residual_correlation_independence_limit_fit:
+        warning_text += (
+            " The fitted exponential residual correlation is at the recorded "
+            "practical independence limit on the observed grid (maximum "
+            "off-diagonal correlation no greater than 0.05); phi is therefore "
+            "weakly identified toward the iid boundary and should not be "
+            "interpreted as a precise positive range estimate."
+        )
     if result.backend_warnings:
         warning_text += (
             " Backend warnings were retained in the result provenance rather "
