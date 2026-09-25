@@ -81,18 +81,24 @@ in analyst-declared clamped B-spline bases. Basis size and degree therefore
 define the model space and should be justified or examined in sensitivity
 analysis.
 
-Conditional on the declared participant functional random effects, residual
-grid errors are iid Gaussian with one variance. The model can include a
-participant functional random intercept and, from version 0.45, exactly one
-explicitly declared participant random functional slope. It still does not
-represent additional serial residual correlation or a trial-level functional
-random effect.
+Conditional on the declared functional random effects, residual grid errors
+are iid Gaussian with one variance. The model can include a participant
+functional random intercept, from version 0.45 exactly one explicitly declared
+participant random functional slope, and from version 0.48 one explicitly
+declared nested trial functional random intercept. It still does not represent
+additional serial residual correlation after those smooth random effects.
 
 The participant random-basis coefficient vector is multivariate Gaussian with
-an unstructured covariance. Enough independent participants are required to
-estimate that covariance; near-boundary covariance estimates are flagged. The
-random-slope participant-count rule is a minimum covariance-complexity guard,
-not an adequacy guarantee.
+an unstructured covariance. The optional trial random-basis coefficient vector
+is separately multivariate Gaussian with one shared unstructured covariance
+across nested trials. Participant and trial random coefficients are modeled as
+independent in 0.48; no participant–trial cross-covariance is estimated.
+
+Enough independent participants are required to estimate the participant
+covariance, and enough nested trials are required to estimate the trial
+covariance. The participant/trial covariance-complexity guards are minimum
+structural safeguards, not adequacy guarantees. Near-boundary covariance
+estimates are retained and flagged.
 
 Version 0.47 can diagnose dependence left in the conditional residual
 functions through explicitly declared lags. Residual ACF/autocovariance and
