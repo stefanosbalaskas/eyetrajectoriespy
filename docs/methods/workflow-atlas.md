@@ -57,6 +57,10 @@ flowchart TD
     J --> O{Whole-function inference?}
     O -->|Yes| Q[Resample whole participants]
     Q --> Z[Fixed covariance or full declared-model refit]
+    Z --> Y{Predeclared covariance alternatives?}
+    Y -->|Yes| ZA[0.50 compare already fitted structures to declared reference]
+    ZA --> ZB[Coefficient / band / variance / raw+white residual / IC sensitivity]
+    ZB --> ZC[Report robustness; no ranking or winner]
 ```
 
 Participant-only iid fits preserve `statsmodels.MixedLM`. Nested and/or serial
@@ -67,6 +71,10 @@ spaced grid. Residual covariance never crosses trial boundaries.
 Whole participants remain the bootstrap resampling unit. The fixed-covariance
 bootstrap conditions on all declared covariance terms; the full-refit bootstrap
 re-estimates them, including phi/rho, while keeping the covariance family fixed.
+
+Version 0.50 compares already fitted, predeclared structures only after strict
+comparability checks; failed declarations remain visible and no structure is
+ranked or automatically selected.
 
 
 ## Functional response regression

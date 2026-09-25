@@ -35,6 +35,20 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 
 Function-on-scalar regression estimates coefficient functions over time. Scalar-on-function regression instead compresses or integrates information from a functional predictor to explain a scalar response. They answer opposite regression questions and should not be used interchangeably.
 
+## Mixed-effects covariance structures: fit versus sensitivity
+
+| Goal | Tool | Interpretation boundary |
+|---|---|---|
+| Fit one declared covariance structure | `fit_functional_mixed_effects_regression()` | no automatic covariance-family selection |
+| Diagnose residual structure within one fit | `functional_mixed_effects_residual_diagnostics()` | descriptive raw/whitened ACF and variogram |
+| Compare predeclared already fitted structures | `functional_mixed_effects_covariance_sensitivity()` | explicit reference; no ranking/winner/LRT |
+| Interpret where variability is attributed over time | `functional_mixed_effects_variance_decomposition()` | participant intercept/slope/cross-covariance, trial and residual terms remain separate |
+
+Version 0.50 requires successful comparison fits to use identical observations,
+fixed design/basis, participant mapping/basis, time grid, response dimension and
+ML/REML mode. Failed predeclared structures remain visible. AIC/BIC are
+descriptive and the returned table preserves declaration order instead of
+sorting by an information criterion.
 
 ## Pointwise versus simultaneous FPC uncertainty
 
@@ -300,6 +314,6 @@ Version 0.49 fits only the analyst-declared row; it does not rank these
 structures or choose a winner. A long-range exponential process can compete
 with a smooth trial functional random effect, so trial-covariance conditioning,
 serial-parameter boundaries, bootstrap stability, and fixed-effect sensitivity
-must be interpreted together. Version 0.50 is planned to make that structural
-sensitivity explicit without turning it into automatic model selection.
+must be interpreted together. Version 0.50 makes that structural sensitivity
+explicit without turning it into automatic model selection.
 

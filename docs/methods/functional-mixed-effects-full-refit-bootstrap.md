@@ -236,8 +236,8 @@ covariance bootstrap instead conditions on those fitted covariance quantities.
 
 ## What comes next?
 
-Version 0.49 now propagates explicitly declared residual covariance through
-both participant-bootstrap paths. Version 0.50 is planned for descriptive
+Version 0.49 propagates explicitly declared residual covariance through both
+participant-bootstrap paths. Version 0.50 now provides descriptive
 covariance-structure sensitivity/comparison rather than automatic selection.
 
 See also the

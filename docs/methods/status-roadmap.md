@@ -21,6 +21,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Mixed-effects residual / within-trial dependence diagnostics | implemented; explicit trial ACF/autocovariance, empirical semivariance, exact physical-lag pair audit, participant/overall stratification, and descriptive fit-vs-fit comparison | `functional_mixed_effects_residual_diagnostics()` |
 | Trial-level functional random effect | implemented; explicit nested trial identifier, one shared unstructured trial-basis covariance, profiled Gaussian marginal likelihood, separate trial BLUPs/covariance diagnostics, participant-level bootstrap propagation | `fit_functional_mixed_effects_regression(..., trial_random_effect="functional_intercept")` / `functional_trial_random_effect_frame()` |
 | Explicit mixed-effects residual covariance + whitening | implemented; physical-time exponential correlation on irregular common grids, signed index-step AR(1) on verified regular grids, block-diagonal trial residual covariance, jointly estimated serial parameter, raw/whitened diagnostics and bootstrap propagation | `fit_functional_mixed_effects_regression(..., residual_correlation=...)` / `functional_mixed_effects_whitened_residuals()` |
+| Mixed-effects covariance-structure sensitivity | implemented; predeclared already fitted structures, explicit reference, strict comparability, retained failures, coefficient/band/variance/residual/IC diagnostics, no ranking or automatic winner | `functional_mixed_effects_covariance_sensitivity()` / `functional_mixed_effects_variance_decomposition()` |
 | Explicit irregular → common-grid projection | implemented | `resample_irregular_to_grid()` |
 | Univariate FPCA | implemented | `fit_fpca()` |
 | Joint multivariate FPCA | implemented | `fit_mfpca()` |
@@ -134,8 +135,9 @@ Still not provided are full uncertainty procedures that jointly include target m
 
 Future tranches may evaluate:
 
-- richer functional mixed-effects structures after 0.50: multiple random functional slopes and generalized responses;
-- richer multilevel functional mixed-effects backends;
+- generalized/non-Gaussian functional responses after the 0.50 covariance sequence is closed;
+- richer sparse/irregular functional inference and external validation workflows;
+- richer multilevel functional mixed-effects backends only where they answer a distinct scientific need rather than adding another covariance knob;
 - explicit system-identification models for gaze dynamics;
 - model-based continuation / Floquet analysis only after a validated dynamical-system contract exists.
 
@@ -145,7 +147,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.49.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.50.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
@@ -208,12 +210,33 @@ serial process and a smooth trial functional random effect. Large estimated
 range, trial-covariance ill-conditioning, or covariance shifts are diagnostics,
 not automatic model-selection rules.
 
-### Next structural priority: 0.50
+### 0.50 covariance-structure sensitivity
 
-Version **0.50** should provide covariance-structure sensitivity/comparison
-across predeclared participant/trial/residual covariance contracts without
-converting AIC/BIC, residual diagnostics, coefficient changes, band-width
-changes, or variance-component shifts into an automatic winner.
+Version **0.50** closes the planned Gaussian covariance-engineering sequence.
+It compares already fitted, predeclared covariance structures against one
+analyst-declared reference under a strict comparability contract. Successful
+fits must use the same observations, fixed design/basis, participant mapping,
+time grid, response dimension, and ML/REML mode; matching trial IDs/bases are
+also required where both fits contain trial functional effects.
 
-Multiple random functional slopes, generalized responses, TE networks, and
-automatic causal discovery remain later candidates.
+The result retains failed declared structures rather than conditioning the
+report on converged models only. It reports reference-based fixed coefficient
+function differences, supremum and functional-L2 changes, paired simultaneous
+band-width ratios when compatible bands are supplied, separate participant
+intercept/slope/cross-covariance and trial/residual variance functions, raw and
+whitened residual dependence, covariance diagnostics, and auditable
+log-likelihood/AIC/BIC calculations.
+
+Information criteria are descriptive and models are never sorted or labelled
+as preferred. No naive likelihood-ratio p-values are produced. The central
+scientific target is robustness of the substantive fixed-effect conclusions
+and covariance attribution across defensible structures.
+
+### Post-0.50 direction
+
+The Gaussian covariance hierarchy is intentionally capped here. The next major
+development question should concern a **distinct scientific capability** rather
+than another covariance parameterization. Candidate areas include generalized
+functional responses, richer sparse/irregular inference, and external
+validation workflows. Multiple participant random slopes are not the automatic
+0.51 priority.

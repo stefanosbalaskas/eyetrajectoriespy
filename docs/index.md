@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.49 · explicit residual covariance + whitening</div>
+<div class="et-kicker">eyetrajectoriespy 0.50 · covariance-structure sensitivity</div>
 
 # Model the viewing process, not only its summaries
 
@@ -498,8 +498,9 @@ stability diagnostics.
 [Worked example](examples/functional-mixed-effects-full-refit-bootstrap.md)
 
 Version 0.47 introduced residual/within-trial diagnostics; 0.48 added the
-nested trial functional effect and 0.49 adds explicit serial residual covariance
-plus whitening. Version 0.50 is reserved for covariance-structure sensitivity.
+nested trial functional effect; 0.49 added explicit serial residual covariance
+plus whitening; and 0.50 closes the covariance sequence with predeclared,
+reference-based covariance-structure sensitivity that never selects a winner.
 
 ## New in 0.45: one guarded participant random functional slope
 

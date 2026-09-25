@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.50.0.dev0
+
+- Add `FunctionalMixedEffectsCovarianceSpecification` and `functional_mixed_effects_covariance_sensitivity()` for descriptive comparison of already fitted, predeclared covariance structures against one analyst-declared reference.
+- Keep model fitting and sensitivity comparison separate: 0.50 never generates covariance combinations, refits a model, ranks structures, returns a best model, or performs an automatic likelihood-ratio test.
+- Enforce strict comparability across successful fits: identical source observations/order, observed response functions, fixed-effect design, fixed basis/knots, participant random basis/knots, participant mapping, time grid/unit, response dimension, spline degree, and ML/REML choice; matching trial IDs/bases are additionally required when both fits contain trial functional effects.
+- Retain failed predeclared covariance structures explicitly with `status="failed"`, `converged=False`, a failure reason, and NaN numerical comparison fields rather than silently dropping them.
+- Add reference-based fixed coefficient sensitivity with complete observed-grid differences, supremum absolute differences, and trapezoidal functional L2 differences.
+- Add optional simultaneous-band width sensitivity using width ratios to the declared reference; supplied bands must use the same confidence/scope/bootstrap contract and identical participant bootstrap draws.
+- Add `functional_mixed_effects_variance_decomposition()` and `plot_functional_variance_decomposition()`, retaining participant-intercept variance, participant-slope variance, intercept/slope cross-covariance, trial variance, and residual variance as separate functional components.
+- Add side-by-side raw and whitened residual ACF/variogram summaries, global residual RMS, pair counts, maximum positive-lag whitened ACF magnitude, and summed squared whitened ACF as descriptive diagnostics rather than selection objectives.
+- Add auditable likelihood/AIC/BIC fields only after comparability passes. ML information criteria use total fixed+covariance parameter count; REML uses the restricted-likelihood covariance-parameter count under an identical fixed design/basis. BIC explicitly records `n_curves × n_time` as its conventional observation-count definition.
+- Report reference-based log-likelihood/AIC/BIC differences without sorting models or labeling a preferred structure.
+- Exclude naive likelihood-ratio p-values because covariance components and serial parameters can lie on boundaries and many declared comparisons are not regular nested models.
+- Add trial-versus-serial decomposition diagnostics through trial covariance traces, full trial variance curves, residual variance/range parameters, condition/boundary diagnostics, and raw/whitened residual structure without automatic deletion of competing covariance components.
+- Add `plot_covariance_sensitivity_coefficients()`, `plot_covariance_sensitivity_band_widths()`, and `functional_mixed_effects_covariance_sensitivity_reporting_text()`.
+- Add synthetic M1–M4 covariance sensitivity validation, retained failed-model behavior, information-criterion auditing, paired-bootstrap band sensitivity, comparability failures, reporting, plotting, and public-API coverage.
+- Close the planned Gaussian covariance-engineering sequence at 0.50; subsequent development should prioritize distinct scientific capabilities rather than additional covariance knobs.
+
 ## 0.49.0.dev0
 
 - Add explicit within-trial residual correlation to `fit_functional_mixed_effects_regression()` through `residual_correlation="iid"|"exponential"|"ar1"`; no covariance family is selected automatically.

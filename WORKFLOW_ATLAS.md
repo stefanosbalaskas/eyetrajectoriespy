@@ -50,6 +50,10 @@ flowchart LR
     H -->|Yes| I[Resample whole participants with all trials]
     I --> J[Fixed-covariance GLS or full declared-model refit]
     J --> K[Observed-grid simultaneous bands]
+    K --> L{Predeclared covariance alternatives?}
+    L -->|Yes| Z[0.50 compare already fitted structures against declared reference]
+    Z --> ZA[Coefficient / band / variance / raw+white residual / IC sensitivity]
+    ZA --> ZB[Report robustness; no ranking or automatic winner]
 ```
 
 Whole participants remain the resampling unit. Residual covariance is block
@@ -58,6 +62,10 @@ uses index steps and requires a regular grid. The fixed-covariance bootstrap
 conditions on every fitted covariance term, while the full-refit bootstrap
 re-estimates participant covariance, optional trial covariance, residual
 variance, and phi/rho without reselecting the covariance family.
+
+Version 0.50 is a separate comparison layer over already fitted, predeclared
+structures. It requires identical scientific inputs and likelihood mode,
+retains failed declarations, and reports robustness without selecting a model.
 
 
 ## Functional response regression

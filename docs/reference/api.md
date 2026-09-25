@@ -363,6 +363,16 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.plot_functional_mixed_effects_residual_variogram
 ::: eyetrajectoriespy.functional_mixed_effects_residual_reporting_text
 
+### Covariance-structure sensitivity
+::: eyetrajectoriespy.FunctionalMixedEffectsCovarianceSpecification
+::: eyetrajectoriespy.FunctionalMixedEffectsCovarianceSensitivityResult
+::: eyetrajectoriespy.functional_mixed_effects_covariance_sensitivity
+::: eyetrajectoriespy.functional_mixed_effects_variance_decomposition
+::: eyetrajectoriespy.plot_covariance_sensitivity_coefficients
+::: eyetrajectoriespy.plot_covariance_sensitivity_band_widths
+::: eyetrajectoriespy.plot_functional_variance_decomposition
+::: eyetrajectoriespy.functional_mixed_effects_covariance_sensitivity_reporting_text
+
 ## Function-on-scalar regression
 ::: eyetrajectoriespy.FunctionOnScalarResult
 ::: eyetrajectoriespy.FunctionOnScalarBootstrapResult

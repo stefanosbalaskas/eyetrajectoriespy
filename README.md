@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.49.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.50.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -58,6 +58,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - nested trial-level functional random intercepts with one shared unstructured trial-basis covariance, explicit participant→trial identifiers, separate trial BLUPs/covariance diagnostics, and a profiled Gaussian marginal-likelihood backend that leaves the legacy MixedLM path unchanged;
 - explicit within-trial residual covariance for functional mixed-effects fits: continuous-time exponential correlation on irregular physical-time grids and signed index-step AR(1) on verified regular grids, estimated jointly without automatic covariance-family selection and kept block diagonal across trials;
 - raw and within-trial whitened mixed-effects residual diagnostics, including trial ACF/autocovariance, empirical semivariance, physical-lag auditing, participant/overall stratification, and descriptive before/after model comparisons;
+- predeclared mixed-effects covariance-structure sensitivity across already fitted models, with strict comparability checks, retained failures, reference-based coefficient and band-width changes, functional variance decomposition, raw/whitened residual summaries, auditable AIC/BIC conventions, and no automatic ranking or winner;
 - FPCA reconstruction/robust score-space review diagnostics and leave-one-group-out influence analysis;
 - split-conformal marginal anomaly p-values for new common-grid trajectories using explicit proper-training and calibration partitions;
 - participant → trial → time multilevel FPCA;

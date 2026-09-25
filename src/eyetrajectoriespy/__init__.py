@@ -39,6 +39,14 @@ from .function_on_scalar import (
     function_on_scalar_coefficient_frame,
     function_on_scalar_simultaneous_bands,
 )
+from .functional_mixed_effects_covariance_sensitivity import (
+    functional_mixed_effects_covariance_sensitivity,
+    functional_mixed_effects_covariance_sensitivity_reporting_text,
+    functional_mixed_effects_variance_decomposition,
+    plot_covariance_sensitivity_band_widths,
+    plot_covariance_sensitivity_coefficients,
+    plot_functional_variance_decomposition,
+)
 from .functional_mixed_effects_full_refit import (
     bootstrap_functional_mixed_effects_full_refit,
     compare_functional_mixed_effects_bootstraps,
@@ -407,6 +415,8 @@ from .types import (
     FPCASubspaceStabilityResult,
     FunctionalMeanBandResult,
     FunctionalMixedEffectsBandResult,
+    FunctionalMixedEffectsCovarianceSensitivityResult,
+    FunctionalMixedEffectsCovarianceSpecification,
     FunctionalMixedEffectsBootstrapResult,
     FunctionalMixedEffectsFullRefitBootstrapResult,
     FunctionalMixedEffectsResidualDiagnosticsResult,
@@ -452,9 +462,17 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.49.0.dev0"
+__version__ = "0.50.0.dev0"
 
 __all__ = [
+    "FunctionalMixedEffectsCovarianceSpecification",
+    "FunctionalMixedEffectsCovarianceSensitivityResult",
+    "functional_mixed_effects_covariance_sensitivity",
+    "functional_mixed_effects_covariance_sensitivity_reporting_text",
+    "functional_mixed_effects_variance_decomposition",
+    "plot_covariance_sensitivity_coefficients",
+    "plot_covariance_sensitivity_band_widths",
+    "plot_functional_variance_decomposition",
     "functional_mixed_effects_whitened_residuals",
     "functional_trial_random_effect_frame",
     "plot_functional_trial_random_effects",
