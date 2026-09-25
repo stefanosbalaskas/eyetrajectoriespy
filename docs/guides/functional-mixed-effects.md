@@ -258,6 +258,64 @@ random effect. Large fitted range, trial-covariance ill-conditioning, boundary
 flags, or large covariance shifts should therefore be reported as decomposition
 diagnostics rather than used as automatic deletion/selection rules.
 
+## Covariance-structure sensitivity
+
+Version 0.50 compares **already fitted, predeclared** covariance structures
+against one analyst-declared reference:
+
+~~~python
+from eyetrajectoriespy import (
+    FunctionalMixedEffectsCovarianceSpecification,
+    functional_mixed_effects_covariance_sensitivity,
+)
+
+specifications = (
+    FunctionalMixedEffectsCovarianceSpecification(
+        "M1",
+        random_slope_predictor="condition",
+        residual_correlation="iid",
+    ),
+    FunctionalMixedEffectsCovarianceSpecification(
+        "M2",
+        random_slope_predictor="condition",
+        trial_random_effect="functional_intercept",
+        residual_correlation="iid",
+    ),
+    FunctionalMixedEffectsCovarianceSpecification(
+        "M3",
+        random_slope_predictor="condition",
+        residual_correlation="exponential",
+    ),
+    FunctionalMixedEffectsCovarianceSpecification(
+        "M4",
+        random_slope_predictor="condition",
+        trial_random_effect="functional_intercept",
+        residual_correlation="exponential",
+    ),
+)
+
+sensitivity = functional_mixed_effects_covariance_sensitivity(
+    fits={"M1": fit_m1, "M2": fit_m2, "M3": fit_m3, "M4": fit_m4},
+    specifications=specifications,
+    reference="M1",
+    max_lag=6,
+)
+~~~
+
+The comparison layer does not fit missing combinations or choose a preferred
+model. It requires identical observations, fixed design/basis, participant
+mapping/basis, response dimension, time grid/unit and ML/REML mode. Failed
+predeclared structures can be retained explicitly with their failure reason.
+
+The primary scientific outputs are fixed coefficient-function changes,
+simultaneous-band width changes where paired bands are available, functional
+participant/trial/residual variance attribution, and raw/whitened residual
+diagnostics. AIC/BIC and log-likelihood changes are secondary descriptive
+quantities and are never used to rank the returned table.
+
+See the dedicated
+[covariance-sensitivity guide](../methods/functional-mixed-effects-covariance-sensitivity.md).
+
 ## Convergence
 
 A non-converged optimizer result raises an error.
