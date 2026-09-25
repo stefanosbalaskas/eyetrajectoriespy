@@ -428,6 +428,43 @@ def test_comparability_contract_refuses_non_covariance_changes(
         )
 
 
+def test_trial_effect_models_are_cross_checked_when_reference_has_no_trial(
+    covariance_models,
+):
+    fits, specifications = covariance_models
+    altered_trial_basis = np.asarray(
+        fits["M4"].trial_random_basis,
+        dtype=float,
+    ).copy()
+    altered_trial_basis[0, 0] += 0.001
+    altered_m4 = replace(
+        fits["M4"],
+        trial_random_basis=altered_trial_basis,
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="trial random-effect basis evaluations",
+    ):
+        functional_mixed_effects_covariance_sensitivity(
+            {
+                "M1": fits["M1"],
+                "M2": fits["M2"],
+                "M3": fits["M3"],
+                "M4": altered_m4,
+            },
+            specifications=specifications,
+            failures={
+                "M5_failed_ar1": (
+                    "AR(1) was predeclared but rejected because the common "
+                    "time grid is irregular."
+                )
+            },
+            reference="M1",
+            max_lag=2,
+        )
+
+
 def test_failed_models_require_explicit_specifications(
     covariance_models,
 ):
