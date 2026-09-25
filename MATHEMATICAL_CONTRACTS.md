@@ -430,8 +430,8 @@ ML uses total fixed+covariance parameter count; REML uses the
 restricted-likelihood covariance-parameter count under an identical fixed
 design/basis.
 
-Implemented by \`functional_mixed_effects_covariance_sensitivity()\` and
-\`functional_mixed_effects_variance_decomposition()\`. Successful fits must
+Implemented by `functional_mixed_effects_covariance_sensitivity()` and
+`functional_mixed_effects_variance_decomposition()`. Successful fits must
 satisfy the strict comparability contract; failed predeclared structures remain
 visible. The routine does not rank models, select a covariance structure, or
 compute likelihood-ratio p-values.
