@@ -389,7 +389,7 @@ def _participant_blocks(
     curve_participants: np.ndarray,
     participant_ids: tuple[str, ...],
     n_time: int,
-    trial_basis: np.ndarray,
+    trial_basis: np.ndarray | None,
 ) -> list[dict[str, object]]:
     blocks: list[dict[str, object]] = []
     for participant_id in participant_ids:
@@ -402,14 +402,15 @@ def _participant_blocks(
         ).reshape(-1)
         n_curves = int(curve_indices.size)
         trial_designs: list[np.ndarray] = []
-        for within_index in range(n_curves):
-            design = np.zeros(
-                (n_curves * n_time, trial_basis.shape[1]),
-                dtype=float,
-            )
-            start = within_index * n_time
-            design[start : start + n_time] = trial_basis
-            trial_designs.append(design)
+        if trial_basis is not None:
+            for within_index in range(n_curves):
+                design = np.zeros(
+                    (n_curves * n_time, trial_basis.shape[1]),
+                    dtype=float,
+                )
+                start = within_index * n_time
+                design[start : start + n_time] = trial_basis
+                trial_designs.append(design)
         blocks.append(
             {
                 "participant_id": str(participant_id),
