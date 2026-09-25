@@ -45,6 +45,15 @@ from .functional_mixed_effects_full_refit import (
     functional_mixed_effects_full_refit_audit_frame,
     functional_mixed_effects_variance_bootstrap_frame,
 )
+from .functional_mixed_effects_diagnostics import (
+    compare_functional_mixed_effects_residual_diagnostics,
+    functional_mixed_effects_residual_diagnostic_frame,
+    functional_mixed_effects_residual_diagnostics,
+    functional_mixed_effects_residual_pair_frame,
+    functional_mixed_effects_residual_reporting_text,
+    plot_functional_mixed_effects_residual_acf,
+    plot_functional_mixed_effects_residual_variogram,
+)
 from .functional_mixed_effects_inference import (
     bootstrap_functional_mixed_effects_coefficients,
     functional_mixed_effects_simultaneous_bands,
@@ -394,6 +403,7 @@ from .types import (
     FunctionalMixedEffectsBandResult,
     FunctionalMixedEffectsBootstrapResult,
     FunctionalMixedEffectsFullRefitBootstrapResult,
+    FunctionalMixedEffectsResidualDiagnosticsResult,
     FunctionalMixedEffectsResult,
     FunctionOnScalarBandResult,
     FunctionOnScalarBootstrapResult,
@@ -436,9 +446,17 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.46.0.dev0"
+__version__ = "0.47.0.dev0"
 
 __all__ = [
+    "FunctionalMixedEffectsResidualDiagnosticsResult",
+    "functional_mixed_effects_residual_diagnostics",
+    "functional_mixed_effects_residual_diagnostic_frame",
+    "functional_mixed_effects_residual_pair_frame",
+    "compare_functional_mixed_effects_residual_diagnostics",
+    "plot_functional_mixed_effects_residual_acf",
+    "plot_functional_mixed_effects_residual_variogram",
+    "functional_mixed_effects_residual_reporting_text",
     "FunctionalMixedEffectsFullRefitBootstrapResult",
     "bootstrap_functional_mixed_effects_full_refit",
     "functional_mixed_effects_full_refit_audit_frame",
