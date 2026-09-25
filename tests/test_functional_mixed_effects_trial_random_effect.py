@@ -56,6 +56,7 @@ def _trial_random_effect_data(
         participant_covariance,
         size=n_participants,
     )
+    true_participant_functions = participant_coefficients @ basis.T
     if zero_trial_variance:
         trial_coefficients = np.zeros(
             (n_participants * trials_per_participant, 2),
@@ -72,9 +73,9 @@ def _trial_random_effect_data(
     curve_ids = []
     true_trial_functions = []
     for participant_index in range(n_participants):
-        participant_function = (
-            participant_coefficients[participant_index] @ basis.T
-        )
+        participant_function = true_participant_functions[
+            participant_index
+        ]
         for trial_index in range(trials_per_participant):
             curve_index = (
                 participant_index * trials_per_participant + trial_index
@@ -115,15 +116,21 @@ def _trial_random_effect_data(
         design,
         beta0,
         beta1,
+        true_participant_functions,
         np.asarray(true_trial_functions),
     )
 
 
 @pytest.fixture(scope="module")
 def nested_trial_fit():
-    trajectories, design, beta0, beta1, true_trial_functions = (
-        _trial_random_effect_data()
-    )
+    (
+        trajectories,
+        design,
+        beta0,
+        beta1,
+        true_participant_functions,
+        true_trial_functions,
+    ) = _trial_random_effect_data()
     fit = fit_functional_mixed_effects_regression(
         trajectories,
         design,
@@ -140,11 +147,23 @@ def nested_trial_fit():
         method="lbfgs",
         maxiter=1000,
     )
-    return fit, beta0, beta1, true_trial_functions
+    return (
+        fit,
+        beta0,
+        beta1,
+        true_participant_functions,
+        true_trial_functions,
+    )
 
 
 def test_trial_functional_random_effect_recovers_hierarchy(nested_trial_fit):
-    fit, beta0, beta1, true_trial_functions = nested_trial_fit
+    (
+        fit,
+        beta0,
+        beta1,
+        true_participant_functions,
+        true_trial_functions,
+    ) = nested_trial_fit
 
     assert fit.trial_random_effect == "functional_intercept"
     assert fit.trial_column == "trial_id"
@@ -171,11 +190,39 @@ def test_trial_functional_random_effect_recovers_hierarchy(nested_trial_fit):
         atol=0.10,
     )
 
-    recovery = np.corrcoef(
+    participant_recovery = np.corrcoef(
+        fit.random_intercept_functions.reshape(-1),
+        true_participant_functions.reshape(-1),
+    )[0, 1]
+    trial_recovery = np.corrcoef(
         fit.trial_random_effect_functions.reshape(-1),
         true_trial_functions.reshape(-1),
     )[0, 1]
-    assert recovery > 0.55
+    assert participant_recovery > 0.70
+    assert trial_recovery > 0.55
+
+    # Both independently generated hierarchy levels must be recoverable from
+    # their own BLUP layer; the trial process is not folded into the retained
+    # participant random-intercept functions.
+    expanded_participant_truth = np.repeat(
+        true_participant_functions,
+        3,
+        axis=0,
+    )
+    participant_to_trial_truth = abs(
+        np.corrcoef(
+            fit.random_intercept_functions.repeat(3, axis=0).reshape(-1),
+            true_trial_functions.reshape(-1),
+        )[0, 1]
+    )
+    trial_to_participant_truth = abs(
+        np.corrcoef(
+            fit.trial_random_effect_functions.reshape(-1),
+            expanded_participant_truth.reshape(-1),
+        )[0, 1]
+    )
+    assert participant_to_trial_truth < participant_recovery
+    assert trial_to_participant_truth < trial_recovery
 
     contract = fit.provenance["functional_mixed_effects_regression"]
     assert contract["backend"] == "eyetrajectoriespy.profiled_gaussian_nested"
@@ -186,7 +233,7 @@ def test_trial_functional_random_effect_recovers_hierarchy(nested_trial_fit):
 
 
 def test_trial_random_effect_frame_plot_and_identity(nested_trial_fit):
-    fit, _, _, _ = nested_trial_fit
+    fit, _, _, _, _ = nested_trial_fit
     frame = functional_trial_random_effect_frame(fit)
 
     assert len(frame) == fit.n_trials * fit.time.size
@@ -205,7 +252,7 @@ def test_trial_random_effect_frame_plot_and_identity(nested_trial_fit):
 
 
 def test_trial_effect_reduces_smooth_residual_dependence():
-    trajectories, design, _, _, _ = _trial_random_effect_data(seed=481)
+    trajectories, design, _, _, _, _ = _trial_random_effect_data(seed=481)
 
     participant_only = fit_functional_mixed_effects_regression(
         trajectories,
@@ -255,9 +302,21 @@ def test_trial_effect_reduces_smooth_residual_dependence():
     assert before_lag1 > 0.20
     assert abs(after_lag1) < abs(before_lag1)
 
+    before_positive = before.loc[
+        before["lag_index"] > 0,
+        "semivariance",
+    ].to_numpy(dtype=float)
+    after_positive = after.loc[
+        after["lag_index"] > 0,
+        "semivariance",
+    ].to_numpy(dtype=float)
+    before_variogram_range = float(np.ptp(before_positive))
+    after_variogram_range = float(np.ptp(after_positive))
+    assert after_variogram_range < before_variogram_range
+
 
 def test_zero_trial_variance_is_boundary_or_fails_closed():
-    trajectories, design, _, _, _ = _trial_random_effect_data(
+    trajectories, design, _, _, _, _ = _trial_random_effect_data(
         seed=482,
         n_participants=10,
         zero_trial_variance=True,
@@ -287,7 +346,7 @@ def test_zero_trial_variance_is_boundary_or_fails_closed():
 
 
 def test_trial_identifiability_guards_fail_closed():
-    trajectories, design, _, _, _ = _trial_random_effect_data(
+    trajectories, design, _, _, _, _ = _trial_random_effect_data(
         seed=483,
         n_participants=6,
         trials_per_participant=2,
@@ -342,7 +401,7 @@ def test_trial_identifiability_guards_fail_closed():
             spline_degree=1,
         )
 
-    small_trajectories, small_design, _, _, _ = (
+    small_trajectories, small_design, _, _, _, _ = (
         _trial_random_effect_data(
             seed=4831,
             n_participants=4,
@@ -368,7 +427,7 @@ def test_trial_identifiability_guards_fail_closed():
 def test_fixed_covariance_bootstrap_conditions_on_trial_covariance(
     nested_trial_fit,
 ):
-    fit, _, _, _ = nested_trial_fit
+    fit, _, _, _, _ = nested_trial_fit
     bootstrap = bootstrap_functional_mixed_effects_coefficients(
         fit,
         n_bootstrap=100,
@@ -385,7 +444,7 @@ def test_fixed_covariance_bootstrap_conditions_on_trial_covariance(
 
 
 def test_full_refit_bootstrap_preserves_nested_trial_identity():
-    trajectories, design, _, _, _ = _trial_random_effect_data(
+    trajectories, design, _, _, _, _ = _trial_random_effect_data(
         seed=484,
         n_participants=6,
         trials_per_participant=2,
@@ -460,7 +519,7 @@ def test_full_refit_bootstrap_preserves_nested_trial_identity():
 
 
 def test_trial_effect_requires_explicit_contract():
-    trajectories, design, _, _, _ = _trial_random_effect_data(seed=485)
+    trajectories, design, _, _, _, _ = _trial_random_effect_data(seed=485)
 
     with pytest.raises(ValueError, match="trial_column is required"):
         fit_functional_mixed_effects_regression(
