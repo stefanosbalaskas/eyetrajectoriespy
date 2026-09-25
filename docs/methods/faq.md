@@ -691,3 +691,33 @@ Redrawing until a requested number of successful fits is reached conditions the
 bootstrap distribution on fit success. Version 0.46 instead raises immediately,
 making bootstrap instability visible as evidence that the requested mixed model
 may be fragile for the available participant sample.
+
+## Why is the raw residual ACF still correlated after I fit exponential or AR(1) residual covariance?
+
+Because raw residual correlation is part of the fitted model. Under 0.49,
+(oldsymbolepsilon_{ij}\sim N(0,\sigma^2R_\theta)), so the raw residuals
+need not have a flat ACF.
+
+Use
+`functional_mixed_effects_residual_diagnostics(..., residual_scale="whitened")`
+to inspect the residuals after applying the fitted within-trial covariance
+Cholesky factor. A flatter whitened ACF is the relevant serial-covariance
+diagnostic; it is not a proof that every part of the covariance hierarchy is
+correct.
+
+## Why can I not use AR(1) on an irregular time grid?
+
+The package defines AR(1) in sample-index steps,
+(R_{rs}=\rho^{|r-s|}). Unequal elapsed intervals would make one index step
+physically inconsistent. Use `residual_correlation="exponential"` when the
+scientific dependence should be defined by elapsed time.
+
+## Should I remove the trial functional random effect when the fitted exponential range is large?
+
+Not automatically. A long-range residual process can compete with a smooth
+trial-specific functional effect. Inspect trial-covariance eigenvalues and
+condition number, serial-correlation conditioning/boundary diagnostics, the
+full-refit bootstrap, and the planned 0.50 covariance-structure sensitivity
+analysis. Boundary or instability evidence is diagnostic, not an automatic
+model-selection command.
+
