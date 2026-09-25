@@ -432,31 +432,54 @@ def _profiled_gaussian_state(
     participant_dimension: int,
     trial_dimension: int,
     n_fixed_parameters: int,
+    time: np.ndarray,
+    residual_correlation: str,
     reml: bool,
     return_state: bool = False,
 ):
     participant_count = _covariance_parameter_count(participant_dimension)
     trial_count = _covariance_parameter_count(trial_dimension)
+    has_serial = residual_correlation != "iid"
+    expected = participant_count + trial_count + 1 + int(has_serial)
     theta = np.asarray(theta, dtype=float)
-    if theta.size != participant_count + trial_count + 1:
+    if theta.size != expected:
         raise ValueError("unexpected covariance parameter vector length")
+
+    residual_index = participant_count + trial_count
+    correlation_index = residual_index + 1 if has_serial else None
 
     try:
         participant_covariance = _unpack_covariance_cholesky(
             theta[:participant_count],
             participant_dimension,
         )
-        trial_covariance = _unpack_covariance_cholesky(
-            theta[participant_count : participant_count + trial_count],
-            trial_dimension,
+        if trial_dimension > 0:
+            trial_covariance = _unpack_covariance_cholesky(
+                theta[participant_count : participant_count + trial_count],
+                trial_dimension,
+            )
+        else:
+            trial_covariance = None
+        residual_variance = float(np.exp(2.0 * theta[residual_index]))
+        transformed_correlation = (
+            float(theta[correlation_index])
+            if correlation_index is not None
+            else None
         )
-        residual_variance = float(np.exp(2.0 * theta[-1]))
+        residual_correlation_matrix, residual_parameter = (
+            _residual_correlation_matrix(
+                family=residual_correlation,
+                time=time,
+                transformed_parameter=transformed_correlation,
+            )
+        )
     except (FloatingPointError, OverflowError, ValueError):
         return float("inf")
 
     if (
         not np.isfinite(residual_variance)
         or residual_variance <= np.finfo(float).tiny
+        or not np.all(np.isfinite(residual_correlation_matrix))
     ):
         return float("inf")
 
@@ -474,14 +497,20 @@ def _profiled_gaussian_state(
         x = np.asarray(block["fixed_exog"], dtype=float)
         z = np.asarray(block["participant_random_exog"], dtype=float)
         trial_designs = block["trial_designs"]
+        curve_indices = np.asarray(block["curve_indices"], dtype=int)
 
         marginal = (
             z @ participant_covariance @ z.T
-            + residual_variance * np.eye(y.size, dtype=float)
+            + _block_residual_covariance(
+                n_curves=int(curve_indices.size),
+                residual_variance=residual_variance,
+                correlation=residual_correlation_matrix,
+            )
         )
-        for trial_design in trial_designs:
-            w = np.asarray(trial_design, dtype=float)
-            marginal += w @ trial_covariance @ w.T
+        if trial_covariance is not None:
+            for trial_design in trial_designs:
+                w = np.asarray(trial_design, dtype=float)
+                marginal += w @ trial_covariance @ w.T
 
         try:
             factor = cho_factor(
@@ -556,6 +585,9 @@ def _profiled_gaussian_state(
         "participant_covariance": participant_covariance,
         "trial_covariance": trial_covariance,
         "residual_variance": residual_variance,
+        "residual_correlation_matrix": residual_correlation_matrix,
+        "residual_correlation_parameter": residual_parameter,
+        "residual_correlation_transformed_parameter": transformed_correlation,
         "block_cache": cache,
     }
 
