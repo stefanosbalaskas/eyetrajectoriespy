@@ -330,6 +330,7 @@ def bootstrap_functional_mixed_effects_full_refit(
     if result.residual_correlation == "iid":
         residual_correlation_parameters = None
         residual_correlation_boundary_flags = None
+        residual_correlation_independence_flags = None
         residual_correlation_condition_numbers = None
     else:
         residual_correlation_parameters = np.empty(
@@ -337,6 +338,10 @@ def bootstrap_functional_mixed_effects_full_refit(
             dtype=float,
         )
         residual_correlation_boundary_flags = np.empty(
+            n_bootstrap,
+            dtype=bool,
+        )
+        residual_correlation_independence_flags = np.empty(
             n_bootstrap,
             dtype=bool,
         )
@@ -483,6 +488,9 @@ def bootstrap_functional_mixed_effects_full_refit(
             residual_correlation_boundary_flags[bootstrap_index] = bool(
                 fit_star.residual_correlation_boundary_fit
             )
+            residual_correlation_independence_flags[bootstrap_index] = bool(
+                fit_star.residual_correlation_independence_limit_fit
+            )
             residual_correlation_condition_numbers[bootstrap_index] = float(
                 fit_star.residual_correlation_condition_number
             )
@@ -548,6 +556,9 @@ def bootstrap_functional_mixed_effects_full_refit(
         residual_correlation_parameters=residual_correlation_parameters,
         residual_correlation_boundary_flags=(
             residual_correlation_boundary_flags
+        ),
+        residual_correlation_independence_flags=(
+            residual_correlation_independence_flags
         ),
         residual_correlation_condition_numbers=(
             residual_correlation_condition_numbers
@@ -774,6 +785,11 @@ def functional_mixed_effects_variance_bootstrap_frame(
             )
             row["residual_correlation_boundary_fit"] = bool(
                 bootstrap.residual_correlation_boundary_flags[
+                    bootstrap_index
+                ]
+            )
+            row["residual_correlation_independence_limit_fit"] = bool(
+                bootstrap.residual_correlation_independence_flags[
                     bootstrap_index
                 ]
             )
