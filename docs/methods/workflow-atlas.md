@@ -33,40 +33,41 @@ flowchart TD
     A[Common-grid functional response Y_ij(t)] --> B[Curve-level scalar design X_ij]
     A --> C[Participant grouping]
     B --> D{Predictor varies within participant?}
-    D -->|No and participant-average estimand desired| E[0.35 participant aggregation is available]
-    D -->|Yes or all trials should remain| F[0.36 functional mixed-effects regression]
+    D -->|No and participant-average estimand desired| E[0.35 participant aggregation]
+    D -->|Yes or all trials should remain| F[Functional mixed-effects regression]
     C --> F
-    F --> G[Declare fixed B-spline basis]
-    F --> H[Declare participant random B-spline basis]
-    G --> I[One stacked Gaussian MixedLM]
-    H --> I
-    I --> J[Fixed coefficient functions beta(t)]
-    I --> K[Participant random functions b_i(t)]
-    I --> L[Residual variance + convergence/boundary diagnostics]
-    I --> R{One random functional slope?}
-    R -->|Yes| S[Named fixed predictor varies within every participant]
-    S --> T[2q random dimension + covariance complexity guard]
-    T --> U[Inspect covariance blocks / eigenvalues / BLUP slope functions]
-    J --> M{Whole-function inference?}
-    M -->|Yes| N[Whole-participant bootstrap]
-    N --> O[Fixed-covariance GLS coefficient refits]
-    O --> P[Coefficient/family supremum calibration]
-    P --> Q[Observed-grid simultaneous band]
+    F --> G[Declare fixed + participant random B-spline bases]
+    F --> R{Trial functional random intercept declared?}
+    R -->|No| I[Historical stacked Gaussian MixedLM]
+    R -->|Yes| T[Validate trial IDs + at least two trials/participant]
+    T --> U[Declare trial B-spline basis + shared Psi_trial]
+    U --> V[Profiled participant-block Gaussian likelihood]
+    I --> S{Participant random slope declared?}
+    V --> S
+    S -->|Yes| W[Within-participant variation + covariance complexity guard]
+    S -->|No| J[Fixed coefficient functions beta(t)]
+    W --> J
+    J --> K[Participant BLUP functions]
+    J --> L[Optional trial BLUP functions]
+    J --> M[Covariance eigenvalue / condition / boundary diagnostics]
+    M --> N[0.47 residual ACF + variogram diagnostics]
+    J --> O{Whole-function inference?}
+    O -->|Yes| P[Resample whole participants with all trials]
+    P --> Q[Fixed-covariance GLS or full declared-model refit]
+    Q --> Z[Observed-grid simultaneous bands]
 ```
 
-The 0.36 path is one joint mixed model over all curve-by-time observations.
-It does not run independent mixed models at each time point and does not
-silently average trial-varying predictors.
+Participant-only fits preserve the historical one-model-over-all-grid-points
+`statsmodels.MixedLM` implementation. Version 0.48 activates a separate
+profiled Gaussian backend only when a nested trial functional random intercept
+is explicitly declared. The participant and trial covariance matrices are
+estimated separately, with one shared unstructured trial-basis covariance.
 
-Version 0.44 resamples complete participant trial bundles for simultaneous
-fixed-coefficient inference. The reference random-effect covariance, residual
-variance, and declared bases remain fixed, so the band is conditional on that
-covariance/basis contract and simultaneous over the observed grid only.
-
-Version 0.45 adds exactly one participant random functional slope for a
-predeclared predictor. The predictor must vary within every participant, and
-the participant count must exceed the free unstructured covariance-parameter
-count before the slope model is fitted.
+Whole participants remain the bootstrap resampling unit. Under 0.48, all nested
+trials travel with the participant; duplicated participant draws and their
+nested trials receive distinct bootstrap identities. The fixed-covariance
+bootstrap conditions on both covariance matrices, while the full-refit
+bootstrap re-estimates both.
 
 ## Functional response regression
 
