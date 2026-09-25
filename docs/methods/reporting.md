@@ -981,3 +981,36 @@ When reporting a 0.49 serial mixed-effects fit, state:
   full-refit participant bootstrap that re-estimates the serial parameter;
 - that the covariance family was declared rather than automatically selected.
 
+## Covariance-structure sensitivity reporting
+
+For a 0.50 mixed-effects covariance sensitivity analysis, report:
+
+- every predeclared covariance specification and the declared reference;
+- whether each specification converged or failed, retaining failure reasons;
+- the successful-fit comparability contract: same observations, fixed design and
+  fixed basis, participant mapping/basis, time grid/unit, response dimension,
+  and ML/REML mode;
+- fixed coefficient-function differences from the reference, including
+  observed-grid supremum and functional-L2 differences;
+- simultaneous-band width ratios only when bands use the same
+  confidence/scope/bootstrap contract and identical participant bootstrap draws;
+- participant-intercept variance, participant-slope variance and
+  intercept/slope cross-covariance when present, trial variance, and residual
+  variance as separate functional components;
+- raw and whitened residual ACF/variogram diagnostics, residual RMS and pair
+  support through the declared maximum lag;
+- participant/trial covariance condition and boundary diagnostics, residual
+  serial parameter and units, and residual-correlation boundary/independence
+  diagnostics;
+- log likelihood, total free parameters, the exact information-criterion
+  parameter count, AIC/BIC, and the BIC convention
+  \(n=n_{\mathrm{curves}}n_{\mathrm{time}}\);
+- that information criteria and residual diagnostics were descriptive and no
+  covariance structure was automatically selected;
+- that no naive likelihood-ratio p-values were computed.
+
+Do not report a package-selected best covariance model, AIC rank, model weight,
+or residual-diagnostic winner. When a long-range serial process and smooth trial
+effect compete, report the covariance shifts themselves rather than converting
+them into an automatic component-deletion rule.
+
