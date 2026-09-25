@@ -668,6 +668,35 @@ def functional_mixed_effects_covariance_sensitivity(
             label=label,
         )
 
+    trial_fit_labels = [
+        label
+        for label, fit in fit_map.items()
+        if fit.trial_random_effect is not None
+    ]
+    if len(trial_fit_labels) > 1:
+        trial_reference_label = trial_fit_labels[0]
+        trial_reference = fit_map[trial_reference_label]
+        for label in trial_fit_labels[1:]:
+            candidate = fit_map[label]
+            if tuple(candidate.curve_trial_ids) != tuple(
+                trial_reference.curve_trial_ids
+            ):
+                raise ValueError(
+                    "successful fits containing trial random effects must use "
+                    "the same source trial identities; "
+                    f"{label!r} differs from {trial_reference_label!r}"
+                )
+            _exact_array_match(
+                candidate.trial_random_basis,
+                trial_reference.trial_random_basis,
+                field="trial random-effect basis evaluations",
+            )
+            _exact_array_match(
+                candidate.trial_random_basis_knots,
+                trial_reference.trial_random_basis_knots,
+                field="trial random-effect basis knots",
+            )
+
     band_map = {} if bands is None else dict(bands)
     _validate_bands(fit_map, band_map, reference=reference)
 
@@ -790,12 +819,44 @@ def functional_mixed_effects_covariance_sensitivity(
                 "residual_correlation_condition_number": (
                     fit.residual_correlation_condition_number
                 ),
-                "participant_covariance_boundary_or_singular": bool(
-                    fit.boundary_fit or fit.random_effect_singular
+                "any_boundary_fit": bool(fit.boundary_fit),
+                "participant_covariance_min_eigenvalue": float(
+                    np.min(fit.random_effect_covariance_eigenvalues)
                 ),
-                "trial_covariance_boundary_or_singular": bool(
+                "participant_covariance_max_eigenvalue": float(
+                    np.max(fit.random_effect_covariance_eigenvalues)
+                ),
+                "participant_covariance_singular": bool(
+                    fit.random_effect_singular
+                ),
+                "random_slope_boundary_fit": bool(
+                    fit.random_slope_boundary_fit
+                ),
+                "trial_covariance_min_eigenvalue": (
+                    float(
+                        np.min(
+                            fit.trial_random_effect_covariance_eigenvalues
+                        )
+                    )
+                    if fit.trial_random_effect_covariance_eigenvalues
+                    is not None
+                    else float("nan")
+                ),
+                "trial_covariance_max_eigenvalue": (
+                    float(
+                        np.max(
+                            fit.trial_random_effect_covariance_eigenvalues
+                        )
+                    )
+                    if fit.trial_random_effect_covariance_eigenvalues
+                    is not None
+                    else float("nan")
+                ),
+                "trial_covariance_boundary_fit": bool(
                     fit.trial_random_effect_boundary_fit
-                    or fit.trial_random_effect_singular
+                ),
+                "trial_covariance_singular": bool(
+                    fit.trial_random_effect_singular
                 ),
                 "residual_correlation_boundary_fit": bool(
                     fit.residual_correlation_boundary_fit
@@ -818,6 +879,7 @@ def functional_mixed_effects_covariance_sensitivity(
                 "delta_aic": float(aic - reference_aic),
                 "delta_bic": float(bic - reference_bic),
                 "band_available": label in band_map,
+                "backend_warning_count": len(fit.backend_warnings),
                 **diagnostic_summary,
             }
         )
@@ -933,6 +995,7 @@ def functional_mixed_effects_covariance_sensitivity(
                     "same_time_unit": True,
                     "same_ml_reml_choice": True,
                     "explicit_trial_ids_checked_when_both_models_have_trial_effects": True,
+                    "all_successful_trial_effect_models_cross_checked": True,
                 },
                 "information_criterion_mode": information_criterion_mode,
                 "bic_sample_size_definition": (
