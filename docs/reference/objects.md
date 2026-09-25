@@ -88,6 +88,36 @@ random effects, multiple participant random slopes, or multivariate response
 covariance.
 
 
+## Functional mixed-effects covariance-sensitivity objects
+
+\`FunctionalMixedEffectsCovarianceSpecification\` is a compact declaration of
+one covariance structure: model name, optional participant random-slope
+predictor, optional trial functional random intercept, and residual-correlation
+family. It is a declaration/audit object; it does not fit a model.
+
+\`FunctionalMixedEffectsCovarianceSensitivityResult\` stores the ordered
+predeclared specifications, explicit reference label, successful fit mapping,
+retained failure mapping, model-level comparison table, complete
+coefficient-function comparison table, coefficient supremum/L2 summaries,
+optional simultaneous-band width comparisons, functional variance
+decomposition, raw/whitened residual diagnostic table, declared maximum lag,
+and provenance.
+
+Failed specifications remain members of the result even though they have no
+fitted object. Their model-summary rows retain the failure reason and NaN
+numerical comparison fields.
+
+The result contains no best-model field, ranking, likelihood-ratio p-value,
+model weight, or automatic covariance recommendation. Information criteria are
+only populated after the strict successful-fit comparability contract passes.
+For BIC, the stored convention uses \(n=n_{\mathrm{curves}}n_{\mathrm{time}}\);
+the provenance records that this is a calculation convention rather than a
+claim about a unique effective sample size for clustered functional data.
+
+Participant intercept variance, participant slope variance when present,
+intercept/slope cross-covariance, trial variance, and residual variance remain
+separate in the retained functional variance-decomposition table.
+
 ## Function-on-scalar result objects
 
 `FunctionOnScalarResult` stores the observed-grid coefficient functions, HC1 pointwise sandwich standard errors, fitted and residual functions, the exact functional responses used as inference units, the full scalar design matrix, rank and residual degrees of freedom, coefficient/predictor names, inference-unit IDs, curves-per-unit counts, time/dimension semantics, source curve IDs, and provenance.
