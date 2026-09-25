@@ -36,7 +36,7 @@ The residual model is
 \exp\!\left(-\frac{|t-s|}{\phi}\right).
 \]
 
-\`serial_fit.residual_correlation_parameter\` is \(\widehat\phi\), in the same
+`serial_fit.residual_correlation_parameter` is \(\widehat\phi\), in the same
 physical time unit recorded by the trajectories.
 
 ## Inspect the covariance contract
