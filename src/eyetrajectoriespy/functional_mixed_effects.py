@@ -786,6 +786,7 @@ def fit_functional_mixed_effects_regression(
         residual_correlation_eigenvalues=np.ones(n_time, dtype=float),
         residual_correlation_condition_number=1.0,
         residual_correlation_boundary_fit=False,
+        residual_correlation_independence_limit_fit=True,
         residual_correlation_optimizer_bounds=None,
         residual_correlation_grid_regular=bool(
             np.allclose(
