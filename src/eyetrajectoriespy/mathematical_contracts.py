@@ -284,9 +284,9 @@ _CONTRACTS = (
             "vector has one unstructured covariance. Version 0.45 requires the "
             "slope predictor to vary within every participant and requires the "
             "participant count to exceed the number of free covariance "
-            "parameters. No automatic random-slope selection, multiple random "
-            "slopes, residual serial-correlation model, or generalized response "
-            "is introduced."
+            "parameters. No automatic random-slope selection or multiple random "
+            "slopes is introduced. The slope may coexist with the separately "
+            "declared 0.48 trial effect and 0.49 residual-correlation family."
         ),
     ),
     MathematicalContract(
