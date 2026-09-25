@@ -270,6 +270,26 @@ Use the
 [full-refit bootstrap guide](../methods/functional-mixed-effects-full-refit-bootstrap.md)
 for the exact inferential and failure contract.
 
+## Residual dependence after fitting
+
+Version 0.47 adds a separate diagnostic layer for dependence that remains in
+the conditional residual functions:
+
+~~~python
+from eyetrajectoriespy import functional_mixed_effects_residual_diagnostics
+
+residual_diagnostics = functional_mixed_effects_residual_diagnostics(
+    fit,
+    max_lag=6,
+)
+~~~
+
+It exposes trial ACF/autocovariance, empirical semivariance, exact physical-lag
+pair auditing, participant/overall stratification, and descriptive comparison
+across two declared fits. It does **not** automatically choose AR(1), a
+trial-level functional random effect, or another covariance structure. See
+[Mixed-effects residual diagnostics](../methods/functional-mixed-effects-residual-diagnostics.md).
+
 ## Important current limitations
 
 The current mixed-effects layer does not yet estimate:
