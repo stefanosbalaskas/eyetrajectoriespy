@@ -551,3 +551,130 @@ def test_trial_effect_requires_explicit_contract():
             trial_random_effect="automatic",
             dimension="metric",
         )
+
+
+def test_trial_effect_coexists_with_participant_random_slope():
+    rng = np.random.default_rng(486)
+    n_participants = 14
+    trials_per_participant = 4
+    time = np.linspace(0.0, 1.0, 7)
+    basis = np.column_stack([1.0 - time, time])
+    condition_template = np.array([-0.75, -0.25, 0.25, 0.75])
+    condition = np.tile(condition_template, n_participants)
+    participants = np.repeat(
+        [f"P{i:03d}" for i in range(n_participants)],
+        trials_per_participant,
+    )
+    trials = np.tile(
+        [f"T{j:02d}" for j in range(trials_per_participant)],
+        n_participants,
+    )
+
+    beta0 = 0.20 + 0.12 * time
+    beta1 = 0.16 + 0.24 * time
+    participant_covariance = np.array(
+        [
+            [0.030, 0.004, 0.009, 0.002],
+            [0.004, 0.022, 0.002, 0.007],
+            [0.009, 0.002, 0.020, 0.003],
+            [0.002, 0.007, 0.003, 0.016],
+        ]
+    )
+    trial_covariance = np.array(
+        [[0.016, 0.004], [0.004, 0.013]]
+    )
+    participant_coefficients = rng.multivariate_normal(
+        np.zeros(4),
+        participant_covariance,
+        size=n_participants,
+    )
+    trial_coefficients = rng.multivariate_normal(
+        np.zeros(2),
+        trial_covariance,
+        size=n_participants * trials_per_participant,
+    )
+    true_slope_functions = participant_coefficients[:, 2:] @ basis.T
+    true_trial_functions = trial_coefficients @ basis.T
+
+    values = []
+    curve_ids = []
+    for participant_index in range(n_participants):
+        intercept_function = (
+            participant_coefficients[participant_index, :2] @ basis.T
+        )
+        slope_function = true_slope_functions[participant_index]
+        for trial_index in range(trials_per_participant):
+            curve_index = (
+                participant_index * trials_per_participant + trial_index
+            )
+            response = (
+                beta0
+                + condition[curve_index] * beta1
+                + intercept_function
+                + condition[curve_index] * slope_function
+                + true_trial_functions[curve_index]
+                + rng.normal(0.0, 0.018, size=time.size)
+            )
+            values.append(response[:, None])
+            curve_ids.append(f"C{curve_index:04d}")
+
+    trajectories = TrajectorySet(
+        time=time,
+        values=np.asarray(values),
+        curve_ids=tuple(curve_ids),
+        dimension_names=("metric",),
+        metadata=pd.DataFrame(
+            {
+                "participant_id": participants,
+                "trial_id": trials,
+            }
+        ),
+        time_unit="s",
+    )
+    design = pd.DataFrame(
+        {
+            "curve_id": trajectories.curve_ids,
+            "condition": condition,
+        }
+    )
+    fit = fit_functional_mixed_effects_regression(
+        trajectories,
+        design,
+        predictors=("condition",),
+        participant_column="participant_id",
+        trial_column="trial_id",
+        random_slope_predictor="condition",
+        trial_random_effect="functional_intercept",
+        dimension="metric",
+        fixed_basis_size=2,
+        random_basis_size=2,
+        trial_random_basis_size=2,
+        spline_degree=1,
+        reml=False,
+        method="lbfgs",
+        maxiter=1200,
+    )
+
+    assert fit.random_slope_predictor == "condition"
+    assert fit.random_effect_dimension == 4
+    assert fit.random_slope_functions is not None
+    assert fit.random_slope_covariance is not None
+    assert fit.random_intercept_slope_covariance is not None
+    assert fit.trial_random_effect_functions is not None
+    assert fit.trial_random_effect_covariance.shape == (2, 2)
+
+    slope_recovery = np.corrcoef(
+        fit.random_slope_functions.reshape(-1),
+        true_slope_functions.reshape(-1),
+    )[0, 1]
+    trial_recovery = np.corrcoef(
+        fit.trial_random_effect_functions.reshape(-1),
+        true_trial_functions.reshape(-1),
+    )[0, 1]
+    assert slope_recovery > 0.45
+    assert trial_recovery > 0.45
+
+    contract = fit.provenance["functional_mixed_effects_regression"]
+    assert contract["random_slope_requires_within_participant_variation"] is True
+    assert contract["participant_random_effect_covariance"] == "unstructured"
+    assert contract["trial_random_effect_covariance"] == "shared_unstructured"
