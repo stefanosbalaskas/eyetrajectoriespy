@@ -158,6 +158,12 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [Functional mixed-effects regression](../examples/functional-mixed-effects.md)
 
+-   **Do mixed-effects conclusions depend on covariance structure?**
+
+    Compare already fitted, predeclared participant/trial/residual covariance structures against an explicit reference, retaining failed structures and separating coefficient, uncertainty, variance-decomposition, residual, and information-criterion sensitivity without automatic model selection.
+
+    [Covariance-structure sensitivity](../examples/functional-mixed-effects-covariance-sensitivity.md)
+
 -   **Basis representation**
 
     Project a selected functional dimension to B-spline or Fourier coordinates through scikit-fda.
