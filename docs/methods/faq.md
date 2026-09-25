@@ -717,7 +717,23 @@ scientific dependence should be defined by elapsed time.
 Not automatically. A long-range residual process can compete with a smooth
 trial-specific functional effect. Inspect trial-covariance eigenvalues and
 condition number, serial-correlation conditioning/boundary diagnostics, the
-full-refit bootstrap, and the planned 0.50 covariance-structure sensitivity
+full-refit bootstrap, and the 0.50 covariance-structure sensitivity
 analysis. Boundary or instability evidence is diagnostic, not an automatic
 model-selection command.
+
+## Why does 0.50 not tell me which covariance model wins?
+
+Because covariance sensitivity is intended to show whether the scientific
+conclusions depend on defensible covariance choices, not to hide those choices
+behind one automated ranking. The 0.50 routine preserves the declared model
+order, compares each successful fit with the analyst-declared reference, keeps
+failed predeclared structures visible, and reports coefficient, uncertainty,
+variance-decomposition, residual, and information-criterion changes
+descriptively.
+
+AIC/BIC and whitened residual diagnostics can be useful evidence, but they are
+not converted into a package-selected winner. Ordinary likelihood-ratio
+p-values are also omitted because variance components and serial parameters may
+lie on boundaries and the compared structures need not form regular nested
+models.
 
