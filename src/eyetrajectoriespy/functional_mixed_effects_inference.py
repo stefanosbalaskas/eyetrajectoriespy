@@ -369,7 +369,7 @@ def bootstrap_functional_mixed_effects_coefficients(
             None if random_state is None else int(random_state)
         ),
         covariance_conditioning=(
-            "reference_participant_trial_and_residual_covariance_fixed"
+            "reference_participant_and_trial_random_effect_covariances_and_residual_covariance_fixed"
             if result.trial_random_effect is not None
             else "reference_participant_and_residual_covariance_fixed"
         ),
