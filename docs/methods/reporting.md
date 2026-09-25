@@ -959,3 +959,25 @@ automatically calibrated confidence intervals.
 If comparing to the fixed-covariance bootstrap, report the time-varying
 full-refit/fixed-covariance band-width ratio as a sensitivity diagnostic rather
 than a hypothesis test.
+
+## Explicit mixed-effects residual covariance
+
+When reporting a 0.49 serial mixed-effects fit, state:
+
+- the declared residual family (`iid`, `exponential`, or `ar1`);
+- for exponential correlation, (widehat\phi) and its physical time unit;
+- for AR(1), (widehat\rho), the verified regular grid interval, and that lag
+  is index-step based;
+- the recorded numerical parameter bounds and any
+  `residual_correlation_boundary_fit` flag;
+- that residual covariance is block diagonal by trial;
+- the residual-correlation matrix condition number or other relevant
+  conditioning diagnostics;
+- whether raw and/or whitened residual ACF/variogram diagnostics were examined;
+- any evidence that the serial process and trial functional covariance compete,
+  including large range, trial-covariance conditioning/boundary changes, or
+  bootstrap instability;
+- whether inference used the fixed-covariance participant bootstrap or the
+  full-refit participant bootstrap that re-estimates the serial parameter;
+- that the covariance family was declared rather than automatically selected.
+
