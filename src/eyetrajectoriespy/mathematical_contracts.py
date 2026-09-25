@@ -225,33 +225,42 @@ _CONTRACTS = (
     MathematicalContract(
         key="functional-mixed-effects",
         title="Joint functional mixed-effects regression",
-        public_api=("fit_functional_mixed_effects_regression",),
+        public_api=(
+            "fit_functional_mixed_effects_regression",
+            "functional_mixed_effects_whitened_residuals",
+        ),
         equations=(
             r"Y_{ij}(t)=\mathbf x_{ij}^{\top}\boldsymbol\beta(t)"
-            r"+\mathbf B_r(t)^{\top}\mathbf u_i+\varepsilon_{ij}(t)",
+            r"+\mathbf B_r(t)^{\top}\mathbf u_i+u_{ij}(t)+\varepsilon_{ij}(t)",
             r"\beta_p(t)=\mathbf B_f(t)^{\top}\boldsymbol\theta_p",
-            r"\mathbf u_i\sim N(\mathbf 0,\boldsymbol\Psi_{p}),\qquad "
-            r"\varepsilon_{ij}(t_m)\sim N(0,\sigma^2)",
-            r"\operatorname{Cov}(\mathbf Y_i\mid\mathbf X_i)="
-            r"\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top+\sigma^2\mathbf I",
+            r"\mathbf u_i\sim N(\mathbf 0,\boldsymbol\Psi_{P})",
             r"u_{ij}(t)=\mathbf B_u(t)^\top\mathbf v_{ij},\qquad "
-            r"\mathbf v_{ij}\sim N(\mathbf 0,\boldsymbol\Psi_{trial})",
-            r"\mathbf V_i=\mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top"
-            r"+\sum_j\mathbf W_{ij}\boldsymbol\Psi_{trial}\mathbf W_{ij}^\top"
-            r"+\sigma^2\mathbf I",
+            r"\mathbf v_{ij}\sim N(\mathbf 0,\boldsymbol\Psi_{T})",
+            r"\operatorname{Cov}\{\boldsymbol\varepsilon_{ij}\}="
+            r"\sigma^2\mathbf R_\theta",
+            r"R_\phi(t,s)=\exp\{-|t-s|/\phi\},\qquad \phi>0",
+            r"R_{\rho,rs}=\rho^{|r-s|},\qquad -1<\rho<1",
+            r"\mathbf V_i=\mathbf Z_i\boldsymbol\Psi_P\mathbf Z_i^\top"
+            r"+\sum_j\mathbf W_{ij}\boldsymbol\Psi_T\mathbf W_{ij}^\top"
+            r"+\sigma^2\operatorname{blockdiag}_j\{\mathbf R_\theta\}",
+            r"\sigma^2\mathbf R_\theta=\mathbf L\mathbf L^\top,\qquad "
+            r"\mathbf e_{ij}^{(w)}=\mathbf L^{-1}\mathbf e_{ij}",
         ),
         site_anchor="functional-mixed-effects",
         scope=(
             "One selected Gaussian functional response dimension on a common "
             "grid with explicit B-spline fixed effects and participant "
             "functional random effects. Version 0.48 optionally adds one nested "
-            "trial functional random intercept with its own shared unstructured "
-            "basis-coefficient covariance. The trial extension is explicit, "
-            "requires unique participant/trial pairs and at least two trials "
-            "per participant, and retains conditionally iid grid residuals "
-            "after the declared random effects. No automatic basis/covariance "
-            "selection, residual serial-correlation model, multiple trial "
-            "random effects, or multivariate cross-dimension covariance is claimed."
+            "trial functional random intercept with a shared unstructured "
+            "basis-coefficient covariance. Version 0.49 optionally adds an "
+            "analyst-declared within-trial residual covariance: physical-time "
+            "exponential correlation on arbitrary strictly increasing common "
+            "grids or signed index-step AR(1) on verified regular grids. "
+            "Residual covariance is block diagonal across trials; phi/rho is "
+            "estimated jointly and whitening uses the fitted residual covariance. "
+            "No automatic basis, trial-effect, or residual-correlation-family "
+            "selection, multiple trial random effects, or multivariate "
+            "cross-dimension covariance is claimed."
         ),
     ),
     MathematicalContract(
@@ -292,17 +301,19 @@ _CONTRACTS = (
             r"\overset{\mathrm{iid}}{\sim}\{1,\ldots,n\}",
             r"\mathcal D^{*(b)}\longrightarrow"
             r"\left\{\widehat{\boldsymbol\beta}^{*(b)}(t),"
-            r"\widehat{\boldsymbol\Psi}^{*(b)},"
-            r"\widehat\sigma^{2*(b)}\right\}",
+            r"\widehat{\boldsymbol\Psi}_P^{*(b)},"
+            r"\widehat{\boldsymbol\Psi}_T^{*(b)},"
+            r"\widehat\sigma^{2*(b)},\widehat\theta^{*(b)}\right\}",
             r"R_p(t_m)=\frac{W_{p,\mathrm{full}}(t_m)}"
             r"{W_{p,\mathrm{fixed}}(t_m)}",
         ),
         site_anchor="functional-mixed-effects-full-refit-bootstrap",
         scope=(
-            "Whole-participant case bootstrap with a complete MixedLM parameter "
-            "refit in every replicate. Duplicate source-participant draws receive "
-            "distinct bootstrap group identities. Fixed effects, the complete "
-            "random-effect covariance, and residual variance are re-estimated; "
+            "Whole-participant case bootstrap with a complete declared mixed-model "
+            "parameter refit in every replicate. Duplicate source-participant "
+            "draws receive distinct bootstrap group identities. Fixed effects, "
+            "participant covariance, optional trial covariance, residual variance, "
+            "and any declared residual-correlation parameter are re-estimated; "
             "basis sizes, spline degree, preprocessing, predictor specification, "
             "random-slope structure, REML/ML choice, and optimizer remain fixed. "
             "Failed replicates raise and are not silently redrawn."
@@ -316,8 +327,9 @@ _CONTRACTS = (
             "functional_mixed_effects_simultaneous_bands",
         ),
         equations=(
-            r"\mathbf V_i=\mathbf Z_i\widehat{\boldsymbol\Psi}\mathbf Z_i^\top+"
-            r"\widehat\sigma^2\mathbf I",
+            r"\mathbf V_i=\mathbf Z_i\widehat{\boldsymbol\Psi}_P\mathbf Z_i^\top"
+            r"+\sum_j\mathbf W_{ij}\widehat{\boldsymbol\Psi}_T\mathbf W_{ij}^\top"
+            r"+\widehat\sigma^2\operatorname{blockdiag}_j\{\widehat{\mathbf R}_\theta\}",
             r"\widehat{\boldsymbol\theta}^{*(b)}="
             r"\left[\sum_{r=1}^{n}\mathbf A_{I_r^{(b)}}\right]^{-1}"
             r"\sum_{r=1}^{n}\mathbf s_{I_r^{(b)}},\quad "
@@ -334,8 +346,9 @@ _CONTRACTS = (
         scope=(
             "Whole-participant case bootstrap for fixed coefficient functions. "
             "Each resample re-estimates the fixed B-spline coefficients by GLS "
-            "while conditioning on the reference random-effect covariance, "
-            "residual variance, and declared bases. Bands are simultaneous over "
+            "while conditioning on the reference participant covariance, optional "
+            "trial covariance, residual variance, residual-correlation parameter, "
+            "and declared bases. Bands are simultaneous over "
             "the observed time grid with coefficient or full fixed-effect-family "
             "scope; variance-component, basis-selection, and between-grid "
             "uncertainty are not included."
