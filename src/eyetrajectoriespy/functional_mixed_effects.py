@@ -202,6 +202,9 @@ def fit_functional_mixed_effects_regression(
     fixed_basis_size: int = 6,
     random_basis_size: int = 4,
     random_slope_predictor: str | None = None,
+    trial_column: str | None = None,
+    trial_random_effect: str | None = None,
+    trial_random_basis_size: int = 3,
     spline_degree: int = 3,
     reml: bool = True,
     method: str = "lbfgs",
@@ -220,9 +223,47 @@ def fit_functional_mixed_effects_regression(
     intercept and the single slope, with one unstructured covariance over the
     stacked random-basis coefficient vector.
 
-    No random-slope predictor, covariance structure, basis size, interaction,
-    or optimizer fallback is selected automatically.
+    Version 0.48 optionally adds one nested trial-level functional random
+    intercept through an explicit profiled Gaussian marginal-likelihood backend.
+    This extension estimates a shared unstructured trial-basis covariance and
+    preserves the existing statsmodels MixedLM path when no trial random effect
+    is requested.
+
+    No random-slope predictor, trial random effect, covariance structure, basis
+    size, interaction, or optimizer fallback is selected automatically.
     """
+
+    if trial_random_effect is not None:
+        from .functional_mixed_effects_nested import (
+            fit_nested_functional_mixed_effects_regression,
+        )
+
+        if trial_column is None:
+            raise ValueError(
+                "trial_column is required when trial_random_effect is supplied"
+            )
+        return fit_nested_functional_mixed_effects_regression(
+            trajectories,
+            design,
+            predictors,
+            participant_column=participant_column,
+            trial_column=trial_column,
+            dimension=dimension,
+            fixed_basis_size=fixed_basis_size,
+            random_basis_size=random_basis_size,
+            random_slope_predictor=random_slope_predictor,
+            trial_random_effect=trial_random_effect,
+            trial_random_basis_size=trial_random_basis_size,
+            spline_degree=spline_degree,
+            reml=reml,
+            method=method,
+            maxiter=maxiter,
+        )
+    if trial_column is not None:
+        raise ValueError(
+            "trial_column is only used when trial_random_effect is explicitly "
+            "requested"
+        )
 
     validate_trajectory_set(trajectories, require_complete=True)
     if not np.all(np.isfinite(trajectories.values)):
