@@ -145,6 +145,39 @@ This band is simultaneous over the observed time grid for the declared
 coefficient. Whole participant trial bundles are resampled; the fitted
 random-effect covariance and residual variance are held fixed.
 
+## Refit variance components under participant resampling
+
+For sensitivity to covariance-estimation uncertainty, version 0.46 provides a
+separate full-refit participant bootstrap:
+
+~~~python
+from eyetrajectoriespy import (
+    bootstrap_functional_mixed_effects_full_refit,
+)
+
+full_boot = bootstrap_functional_mixed_effects_full_refit(
+    fit,
+    n_bootstrap=500,
+    random_state=46,
+)
+
+full_band = functional_mixed_effects_simultaneous_bands(
+    full_boot,
+    confidence_level=0.95,
+    simultaneous_scope="coefficient",
+)
+~~~
+
+Every selected participant occurrence receives a distinct bootstrap group ID.
+Fixed effects, the complete random-effect covariance, and residual variance are
+refit in every bootstrap replicate while the declared basis/model
+specification remains fixed.
+
+Use the dedicated
+[full-refit worked example](functional-mixed-effects-full-refit-bootstrap.md)
+to inspect source/bootstrap participant identities, variance-component
+stability, and full-refit versus fixed-covariance band-width sensitivity.
+
 ## Export the coefficient table
 
 ~~~python
@@ -160,13 +193,20 @@ print(table.query("coefficient == 'condition'"))
 from eyetrajectoriespy import functional_mixed_effects_reporting_text
 
 print(functional_mixed_effects_reporting_text(fit, band=band))
+
+# Or, for the full-refit uncertainty contract:
+print(functional_mixed_effects_reporting_text(fit, band=full_band))
 ~~~
 
 Report the participant count, trial count, exact scalar design coding, fixed and
 random basis sizes, spline degree, ML/REML choice, optimizer, convergence,
 boundary-fit status, residual structure, whether predictors varied within
-participant, bootstrap replicate count, simultaneous scope, and the fact that
-variance components were conditioned on rather than refitted.
+participant, bootstrap replicate count, and simultaneous scope.
+
+For the fixed-covariance bootstrap, state that variance components were held
+fixed. For the full-refit bootstrap, state that fixed effects, the random-effect
+covariance, and residual variance were re-estimated while the declared model
+specification remained fixed.
 
 The executable counterpart is
 `examples/functional_mixed_effects_regression.py`.
