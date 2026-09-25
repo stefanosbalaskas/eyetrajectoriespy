@@ -213,6 +213,12 @@ def functional_mixed_effects_reporting_text(
             "unstructured random-effect covariance parameters; this "
             "covariance-complexity warning should be reported."
         )
+    if result.residual_correlation_boundary_fit:
+        warning_text += (
+            " The fitted residual-correlation parameter was at or near its "
+            "recorded numerical optimizer bound and should be interpreted as "
+            "a boundary diagnostic rather than an ordinary interior estimate."
+        )
     if result.backend_warnings:
         warning_text += (
             " Backend warnings were retained in the result provenance rather "
@@ -251,6 +257,31 @@ def functional_mixed_effects_reporting_text(
     else:
         trial_text = ""
 
+    if result.residual_correlation == "iid":
+        residual_text = (
+            "Grid-level residuals were conditionally iid Gaussian within each "
+            "source curve/trial."
+        )
+    elif result.residual_correlation == "exponential":
+        residual_text = (
+            "Grid-level residuals used a within-trial continuous-time "
+            "exponential correlation with jointly estimated range "
+            f"phi={result.residual_correlation_parameter:.4g} "
+            f"{result.residual_correlation_parameter_unit}; residual "
+            "correlation was block diagonal across trials."
+        )
+    elif result.residual_correlation == "ar1":
+        residual_text = (
+            "Grid-level residuals used a within-trial index-step AR(1) "
+            "correlation on the verified regular grid with jointly estimated "
+            f"rho={result.residual_correlation_parameter:.4g}; residual "
+            "correlation was block diagonal across trials."
+        )
+    else:
+        raise ValueError(
+            f"unsupported residual_correlation {result.residual_correlation!r}"
+        )
+
     inference_text = (
         " Reported 95% coefficient intervals are pointwise Wald intervals; "
         "simultaneous functional coverage and variance-component uncertainty "
@@ -275,8 +306,15 @@ def functional_mixed_effects_reporting_text(
                     if result.trial_random_effect is not None
                     else ""
                 )
-                + ", and residual variance under the unchanged "
-                "declared model specification. Basis sizes, preprocessing, "
+                + ", residual variance"
+                + (
+                    f", and the {result.residual_correlation} residual-"
+                    "correlation parameter"
+                    if result.residual_correlation != "iid"
+                    else ""
+                )
+                + " under the unchanged declared model specification. "
+                "Basis sizes, preprocessing, "
                 "predictors, random-slope structure, REML/ML choice, and "
                 "optimizer were not reselected. The bands therefore include "
                 "variance-component re-estimation across participant bootstrap "
@@ -298,7 +336,14 @@ def functional_mixed_effects_reporting_text(
                     if result.trial_random_effect is not None
                     else ""
                 )
-                + ", and residual variance were held fixed. Thus "
+                + ", residual variance"
+                + (
+                    f", and the fitted {result.residual_correlation} residual "
+                    "correlation"
+                    if result.residual_correlation != "iid"
+                    else ""
+                )
+                + " were held fixed. Thus "
                 "the bands target participant-sampling variability conditional "
                 "on the declared basis and fitted covariance model; they do not "
                 "include variance-component or basis-selection uncertainty and "
@@ -323,17 +368,13 @@ def functional_mixed_effects_reporting_text(
         f"{result.method!r}. The fitted random-effect covariance condition "
         f"number was {result.random_effect_covariance_condition_number:.3g}. "
         "Trial-varying predictors were retained at the curve level while "
-        "participant clustering was represented directly. Grid-level "
-        + (
-            "residuals were conditionally iid Gaussian after participant and "
-            "trial functional random effects. "
-            if result.trial_random_effect is not None
-            else "residuals were conditionally iid Gaussian. "
-        )
-        + "No automatic categorical "
+        "participant clustering was represented directly. "
+        + residual_text
+        + " No automatic categorical "
         "encoding, interaction construction, predictor scaling, basis-size "
         "selection, random-slope selection, trial-random-effect selection, "
-        "smoothing-penalty selection, or optimizer fallback was performed."
+        "residual-correlation-family selection, smoothing-penalty selection, "
+        "or optimizer fallback was performed."
         + inference_text
         + warning_text
     )
