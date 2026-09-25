@@ -342,10 +342,17 @@ def test_trial_identifiability_guards_fail_closed():
             spline_degree=1,
         )
 
+    small_trajectories, small_design, _, _, _ = (
+        _trial_random_effect_data(
+            seed=4831,
+            n_participants=4,
+            trials_per_participant=2,
+        )
+    )
     with pytest.raises(ValueError, match="number of observed nested trials"):
         fit_functional_mixed_effects_regression(
-            trajectories,
-            design,
+            small_trajectories,
+            small_design,
             predictors=("condition",),
             participant_column="participant_id",
             trial_column="trial_id",
