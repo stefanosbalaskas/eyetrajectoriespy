@@ -30,26 +30,32 @@ flowchart LR
     A[Repeated Y_ij(t)] --> B[Trial-level scalar design]
     A --> C[Participant groups]
     B --> D[Declared B-spline fixed effects]
-    C --> E[Declared participant functional random intercept]
-    D --> F[One joint Gaussian MixedLM]
+    C --> E[Declared participant functional random effects]
+    D --> F{Trial functional effect requested?}
     E --> F
-    F --> R{Random slope requested?}
-    R -->|No| G[beta(t) + participant random intercept]
-    R -->|Yes| S[Check within-participant predictor variation]
-    S --> T[Check covariance parameter count vs participants]
-    T --> U[Fit intercept + one random functional slope]
-    U --> V[Inspect covariance blocks + BLUP slope functions]
-    F --> G
-    F --> H{Whole-function fixed-effect inference?}
-    H -->|Yes| I[Resample whole participants]
-    I --> J[Fixed-covariance GLS coefficient refits]
+    F -->|No| M[Historical joint Gaussian MixedLM]
+    F -->|Yes| N[Validate participant/trial hierarchy]
+    N --> O[Declared trial B-spline random intercept]
+    O --> P[Profiled Gaussian participant-block likelihood]
+    M --> R{Participant random slope requested?}
+    P --> R
+    R -->|Yes| S[Check within-participant predictor variation + covariance complexity]
+    R -->|No| G[Retain declared participant/trial covariance]
+    S --> G
+    G --> Q[Inspect participant/trial BLUPs + covariance diagnostics]
+    Q --> H{Whole-function fixed-effect inference?}
+    H -->|Yes| I[Resample whole participants with all trials]
+    I --> J[Fixed-covariance GLS or full declared-model refit]
     J --> K[Coefficient/family observed-grid maxima]
     K --> L[Simultaneous bands]
+    Q --> X[0.47 residual ACF / variogram diagnostics]
 ```
 
-Whole participants remain the resampling unit for 0.44 simultaneous
-mixed-effects inference. The fitted random-effect covariance, residual
-variance, and declared bases are conditioned on rather than silently refitted.
+Whole participants remain the resampling unit. Under 0.48, all nested trials
+travel with the sampled participant; duplicated participant occurrences receive
+distinct bootstrap participant identities and their nested trials receive
+distinct bootstrap trial identities. The fixed-covariance path conditions on
+both declared covariance matrices, while the full-refit path re-estimates them.
 
 ## Functional response regression
 
