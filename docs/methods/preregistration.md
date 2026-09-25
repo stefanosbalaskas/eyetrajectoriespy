@@ -829,3 +829,26 @@ identity. Model/basis/preprocessing choices remain fixed across replicates.
 If both bootstrap methods are planned, specify whether the full-refit/fixed-
 covariance band-width ratio is a descriptive sensitivity diagnostic rather than
 a model-selection rule.
+
+## Explicit mixed-effects residual covariance
+
+Before examining outcome-driven residual patterns, pre-specify when feasible:
+
+- whether the primary residual model is iid, physical-time exponential, or
+  regular-grid AR(1);
+- the scientific reason that the chosen family matches the sampling grid and
+  expected dependence;
+- whether a trial functional random effect is also included;
+- the declared basis sizes for participant/trial random functions;
+- the primary residual diagnostic scale after fitting (`raw`,
+  `whitened`, or both), and the maximum diagnostic lag;
+- the bootstrap path (fixed covariance versus full refit);
+- how numerical boundary, singularity, or covariance-decomposition warnings
+  will be reported.
+
+Do not choose exponential versus AR(1), add/remove the trial functional effect,
+or expand the lag window solely because one specification produces a preferred
+fixed-effect conclusion. Version 0.50 is intended for transparent sensitivity
+across predeclared covariance structures rather than outcome-favorable
+selection.
+
