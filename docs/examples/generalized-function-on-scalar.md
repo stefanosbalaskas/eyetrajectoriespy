@@ -111,7 +111,7 @@ predictors fixed.
 ## Count-valued response and exposure-adjusted rates
 
 For non-negative integer count functions use the same interface with
-\`family="poisson"\`. Without exposure, coefficients describe log expected
+`family="poisson"`. Without exposure, coefficients describe log expected
 counts:
 
 ~~~python
@@ -145,10 +145,10 @@ rate_fit = fit_generalized_function_on_scalar_regression(
 )
 ~~~
 
-Then \`rate_fit.rate_functions\` contains fitted marginal rates,
-\`rate_fit.mean_functions\` contains exposure-specific expected counts, and
-\`rate_fit.linear_predictor_rate\` is separated from
-\`rate_fit.linear_predictor_count\`.
+Then `rate_fit.rate_functions` contains fitted marginal rates,
+`rate_fit.mean_functions` contains exposure-specific expected counts, and
+`rate_fit.linear_predictor_rate` is separated from
+`rate_fit.linear_predictor_count`.
 
 ~~~python
 from eyetrajectoriespy import generalized_function_on_scalar_exposure_frame
