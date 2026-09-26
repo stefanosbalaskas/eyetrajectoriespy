@@ -261,7 +261,7 @@ c_{k,1-\alpha}
 \widehat{\mathrm{SE}}\{\widehat\beta_k(t_m)\}.
 \]
 
-With \`simultaneous_scope="family"\`, one maximum is taken across all declared
+With `simultaneous_scope="family"`, one maximum is taken across all declared
 coefficient functions and observed time points.
 
 These are **link-scale coefficient bands**. They are not automatically
