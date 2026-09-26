@@ -96,6 +96,7 @@ def main() -> None:
         "fit_function_on_scalar_regression()",
         "function_on_scalar_simultaneous_bands()",
         "fit_generalized_function_on_scalar_regression()",
+        "bootstrap_generalized_function_on_scalar_coefficients()",
         "generalized_function_on_scalar_simultaneous_bands()",
         "wild_bootstrap_fpca_projection()",
         "fpca_wild_bootstrap_projection_family_test()",
