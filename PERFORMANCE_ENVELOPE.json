@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "package_version": "0.56.0.dev0",
+  "benchmark_kind": "single-package performance envelope",
+  "comparative_benchmark": false,
+  "profile": "ci-qualification",
+  "status": "pending_ci_measurement",
+  "qualification_commit": null,
+  "qualification_run_id": null,
+  "environment": null,
+  "results": [
+    {
+      "case": "fpca_bootstrap",
+      "scale": {
+        "n_participants": 10,
+        "n_trials": 3,
+        "n_time": 41,
+        "n_bootstrap": 20,
+        "q": 3
+      },
+      "repeats": 3,
+      "observed": null
+    },
+    {
+      "case": "mixed_full_refit_bootstrap",
+      "scale": {
+        "n_participants": 10,
+        "n_trials": 3,
+        "n_time": 5,
+        "n_bootstrap": 20,
+        "q": 2
+      },
+      "repeats": 3,
+      "observed": null
+    },
+    {
+      "case": "nested_mixed_fit",
+      "scale": {
+        "n_participants": 8,
+        "n_trials": 3,
+        "n_time": 5,
+        "q": 2
+      },
+      "repeats": 3,
+      "observed": null
+    },
+    {
+      "case": "generalized_gee_bootstrap",
+      "scale": {
+        "n_participants": 8,
+        "n_trials": 2,
+        "n_time": 5,
+        "n_bootstrap": 100,
+        "q": 2
+      },
+      "repeats": 3,
+      "observed": null
+    },
+    {
+      "case": "recurrence_rqa",
+      "scale": {
+        "n_participants": 1,
+        "n_trials": 1,
+        "n_time": 800,
+        "q": null
+      },
+      "repeats": 3,
+      "observed": null
+    },
+    {
+      "case": "nonlinear_sensitivity",
+      "scale": {
+        "n_participants": 1,
+        "n_trials": 1,
+        "n_time": 300,
+        "q": null,
+        "n_specifications": 16
+      },
+      "repeats": 3,
+      "observed": null
+    }
+  ],
+  "interpretation": "Pending first 0.56 CI qualification. No comparative or universal workstation claim."
+}
