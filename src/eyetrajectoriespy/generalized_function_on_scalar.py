@@ -51,7 +51,7 @@ def _validate_family_response(
             )
         return sm.families.Poisson(), "log"
     raise ValueError(
-        "family must be 'binomial' or 'poisson' for the 0.51 contract"
+        "family must be 'binomial' or 'poisson' for the 0.53 contract"
     )
 
 
@@ -230,11 +230,7 @@ def _fit_gee_arrays(
     if exposure is None:
         linear_count = linear_rate.copy()
         mean_functions = family_object.link.inverse(linear_rate)
-        rate_functions = (
-            np.asarray(mean_functions, dtype=float)
-            if str(family).lower().strip() == "poisson"
-            else None
-        )
+        rate_functions = None
         log_exposure = None
     else:
         log_exposure = np.log(np.asarray(exposure, dtype=float))
@@ -254,8 +250,17 @@ def _fit_gee_arrays(
         "basis_coefficients": basis_coefficients,
         "parameter_covariance": covariance,
         "linear_predictor_functions": linear_rate,
-        "linear_predictor_rate": linear_rate,
-        "linear_predictor_count": linear_count,
+        "linear_predictor_rate": (
+            linear_rate
+            if exposure is not None
+            and str(family).lower().strip() == "poisson"
+            else None
+        ),
+        "linear_predictor_count": (
+            linear_count
+            if str(family).lower().strip() == "poisson"
+            else None
+        ),
         "mean_functions": np.asarray(mean_functions, dtype=float),
         "rate_functions": (
             None
@@ -314,13 +319,13 @@ def fit_generalized_function_on_scalar_regression(
         )
     if working_correlation != "independence":
         raise ValueError(
-            "working_correlation must be 'independence' for the 0.51 "
+            "working_correlation must be 'independence' for the 0.53 "
             "marginal GEE contract"
         )
     if covariance_type != "robust":
         raise ValueError(
             "covariance_type must be 'robust'; naive working-correlation "
-            "standard errors are not exposed in 0.51"
+            "standard errors are not exposed in 0.53"
         )
     if isinstance(maxiter, bool) or not isinstance(maxiter, int):
         raise TypeError("maxiter must be an integer")
