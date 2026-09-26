@@ -75,3 +75,8 @@ jobs:
           python examples/rqa_functional_sensitivity.py
           python examples/return_map_stability.py
           python examples/fpcr_wild_bootstrap_selection.py
+          python examples/canonical_fpca_workflow.py
+          python examples/canonical_experimental_functional_regression.py
+          python examples/canonical_repeated_trial_mixed_effects.py
+          python examples/canonical_generalized_responses.py
+          python examples/canonical_nonlinear_recurrence.py

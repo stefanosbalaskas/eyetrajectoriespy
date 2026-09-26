@@ -149,6 +149,9 @@ nav:
       - Independent-reference validation ledger: validation/reference-validation-ledger.md
       - Numerical tolerance policy: validation/numerical-tolerance-policy.md
       - Performance envelope: validation/performance-envelope.md
+      - Portable scientific results: reproducibility/portable-results.md
+      - Reproducibility bundle checklist: reproducibility/checklist.md
+      - Release process: release-process.md
       - Research FAQ: methods/faq.md
       - Mathematical reference: methods/mathematical-reference.md
       - Visual gallery: methods/visual-gallery.md

@@ -1,0 +1,52 @@
+name: release-readiness
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  release-readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install release tooling
+        run: |
+          python -m pip install -U pip build twine packaging
+          python -m pip install -e ".[dev]"
+      - name: Verify release version declarations
+        run: python scripts/verify_release_version.py
+      - name: Build wheel and sdist
+        run: python -m build
+      - name: Validate distributions
+        run: python -m twine check dist/*
+      - name: Smoke-test wheel install
+        shell: bash
+        run: |
+          VERSION=$(python scripts/verify_release_version.py)
+          python -m venv .readiness-wheel
+          .readiness-wheel/bin/python -m pip install -U pip
+          .readiness-wheel/bin/python -m pip install dist/*.whl
+          .readiness-wheel/bin/python scripts/release_smoke_test.py --expected-version "${VERSION}"
+      - name: Smoke-test sdist install
+        shell: bash
+        run: |
+          VERSION=$(python scripts/verify_release_version.py)
+          python -m venv .readiness-sdist
+          .readiness-sdist/bin/python -m pip install -U pip
+          .readiness-sdist/bin/python -m pip install dist/*.tar.gz
+          .readiness-sdist/bin/python scripts/release_smoke_test.py --expected-version "${VERSION}"
+      - name: Validate release-hardening tests directly
+        run: python -m pytest -q tests/test_release_hardening.py tests/test_portable_results.py

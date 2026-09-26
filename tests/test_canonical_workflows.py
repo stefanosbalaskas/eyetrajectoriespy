@@ -32,6 +32,8 @@ def test_canonical_workflow_manifest_is_complete_and_public():
         assert workflow["level"] in allowed_levels
         docs_path = ROOT / workflow["docs"]
         assert docs_path.is_file()
+        example_path = ROOT / workflow["realistic_example"]
+        assert example_path.is_file()
 
         for role in (
             "entry_points",

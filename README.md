@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.56.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.57.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## What scientific problem does this solve?
 
@@ -127,11 +127,18 @@ zero-inflated, hurdle and Tweedie families are not automatic next features.
 Classical Floquet/monodromy and bifurcation analysis remain outside the raw-gaze
 API without an explicitly identified dynamical model.
 
-Version 0.55 began the stabilization line; version 0.56 adds evidence-typed
-independent/reference validation, an explicit numerical-tolerance policy, and
-a repeated runtime/peak-memory reference envelope. Scientific product
-qualification now takes priority over estimator count. See the
+Version 0.55 began the stabilization line; version 0.56 added
+evidence-typed independent/reference validation, an explicit numerical-tolerance
+policy, and a repeated runtime/peak-memory reference envelope. Version 0.57 adds
+portable scientific-result snapshots, explicit environment capture, five
+qualified canonical end-to-end examples, and coordinated TestPyPI/PyPI/GitHub
+release machinery without publishing the development version. Scientific
+product qualification remains more important than estimator count. See the
 [release-readiness checklist](https://stefanosbalaskas.github.io/eyetrajectoriespy/release-readiness/).
+
+- [Portable scientific results](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/portable-results/)
+- [Reproducibility bundle checklist](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/checklist/)
+- [Release process](https://stefanosbalaskas.github.io/eyetrajectoriespy/release-process/)
 
 ## Validation
 

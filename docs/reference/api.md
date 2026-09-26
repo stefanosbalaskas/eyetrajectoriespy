@@ -124,6 +124,12 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.get_mathematical_contract
 ::: eyetrajectoriespy.mathematical_contract_frame
 
+## Reproducibility and portable results
+::: eyetrajectoriespy.PortableScientificResultSnapshot
+::: eyetrajectoriespy.capture_environment
+::: eyetrajectoriespy.export_portable_result
+::: eyetrajectoriespy.load_portable_result
+
 ## Core objects
 ::: eyetrajectoriespy.TrajectorySet
 ::: eyetrajectoriespy.DiscreteFrechetResult

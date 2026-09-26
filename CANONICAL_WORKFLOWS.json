@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package_version": "0.56.0.dev0",
+  "package_version": "0.57.0.dev0",
   "policy": {
     "canonical": "recommended default route for a common scientific question",
     "advanced": "supported capability requiring a more specific scientific reason",
@@ -27,7 +27,8 @@
       ],
       "summaries": [
         "summarise_fpca"
-      ]
+      ],
+      "realistic_example": "examples/canonical_fpca_workflow.py"
     },
     {
       "id": "experimental-functional-regression",
@@ -46,7 +47,8 @@
       "advanced_branches": [
         "fit_scalar_on_function_regression",
         "wild_bootstrap_fpca_projection"
-      ]
+      ],
+      "realistic_example": "examples/canonical_experimental_functional_regression.py"
     },
     {
       "id": "repeated-trial-mixed-effects",
@@ -65,7 +67,8 @@
       "diagnostic_branches": [
         "functional_mixed_effects_residual_diagnostics",
         "functional_mixed_effects_covariance_sensitivity"
-      ]
+      ],
+      "realistic_example": "examples/canonical_repeated_trial_mixed_effects.py"
     },
     {
       "id": "generalized-responses",
@@ -84,7 +87,8 @@
       "advanced_branches": [
         "generalized_function_on_scalar_predict",
         "generalized_function_on_scalar_prediction_bands"
-      ]
+      ],
+      "realistic_example": "examples/canonical_generalized_responses.py"
     },
     {
       "id": "nonlinear-recurrence",
@@ -106,7 +110,8 @@
         "discrete_transfer_entropy",
         "conditional_transfer_entropy",
         "return_map_stability"
-      ]
+      ],
+      "realistic_example": "examples/canonical_nonlinear_recurrence.py"
     }
   ]
 }

@@ -1,22 +1,22 @@
 {
   "schema_version": 1,
-  "package_version": "0.56.0.dev0",
+  "package_version": "0.57.0.dev0",
   "benchmark_kind": "single-package performance envelope",
   "comparative_benchmark": false,
   "profile": "ci-qualification",
   "status": "qualified",
-  "qualification_commit": "97e26f2d66748789fbd30fcd7b15fbd6497a2fae",
-  "qualification_run_id": "36236636845",
+  "qualification_commit": "27920595f571a1909d093f1614dbee0250cc4236",
+  "qualification_run_id": "36239305198",
   "environment": {
-    "cpu_model": "AMD EPYC 9V74 80-Core Processor",
-    "github_run_id": "36236636845",
+    "cpu_model": "AMD EPYC 9V45 96-Core Processor",
+    "github_run_id": "36239305198",
     "github_runner_environment": "github-hosted",
-    "github_runner_name": "GitHub Actions 1000066045",
+    "github_runner_name": "GitHub Actions 1000066165",
     "implementation": "CPython",
     "logical_cpu_count": 4,
     "machine": "x86_64",
     "packages": {
-      "eyetrajectoriespy": "0.56.0.dev0",
+      "eyetrajectoriespy": "0.57.0.dev0",
       "numpy": "2.5.3",
       "pandas": "3.0.6",
       "scikit-learn": "1.9.1",
@@ -26,7 +26,7 @@
     "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
     "python": "3.12.14",
     "release": "6.17.0-1022-azure",
-    "source_commit": "97e26f2d66748789fbd30fcd7b15fbd6497a2fae",
+    "source_commit": "27920595f571a1909d093f1614dbee0250cc4236",
     "system": "Linux",
     "thread_limits": {
       "MKL_NUM_THREADS": "1",
@@ -34,74 +34,74 @@
       "OMP_NUM_THREADS": "1",
       "OPENBLAS_NUM_THREADS": "1"
     },
-    "workflow_commit": "75f2ee31e5080ea404334a2d82304e65530a7014"
+    "workflow_commit": "f544b27f9332b84ce0ed49e54efb51c80ae54b4c"
   },
   "results": [
     {
       "case": "fpca_bootstrap",
       "scale": {
-        "n_participants": 10,
-        "n_trials": 3,
-        "n_time": 41,
         "n_bootstrap": 20,
+        "n_participants": 10,
+        "n_time": 41,
+        "n_trials": 3,
         "q": 3
       },
       "repeats": 3,
       "observed": {
         "runtime_seconds": {
           "all": [
-            2.2422471590000015,
-            1.5420798730000058,
-            1.4952470050000102
+            2.5292288340000084,
+            1.1678296469999907,
+            1.1056768090000162
           ],
-          "maximum": 2.2422471590000015,
-          "median": 1.5420798730000058,
-          "minimum": 1.4952470050000102,
-          "q1": 1.518663439000008,
-          "q3": 1.8921635160000037
+          "maximum": 2.5292288340000084,
+          "median": 1.1678296469999907,
+          "minimum": 1.1056768090000162,
+          "q1": 1.1367532280000034,
+          "q3": 1.8485292404999996
         },
         "peak_memory_mib": {
           "all": [
-            225.4609375,
-            221.4375,
-            221.75
+            225.7421875,
+            221.8046875,
+            221.36328125
           ],
-          "maximum": 225.4609375,
-          "median": 221.75
+          "maximum": 225.7421875,
+          "median": 221.8046875
         }
       }
     },
     {
       "case": "mixed_full_refit_bootstrap",
       "scale": {
-        "n_participants": 12,
-        "n_trials": 3,
-        "n_time": 6,
         "n_bootstrap": 20,
+        "n_participants": 12,
+        "n_time": 6,
+        "n_trials": 3,
         "q": 2
       },
       "repeats": 3,
       "observed": {
         "runtime_seconds": {
           "all": [
-            2.0945798140000136,
-            2.097203494999974,
-            2.0856453400000134
+            1.4867423909999786,
+            1.5478277800000058,
+            1.4993513330000212
           ],
-          "maximum": 2.097203494999974,
-          "median": 2.0945798140000136,
-          "minimum": 2.0856453400000134,
-          "q1": 2.0901125770000135,
-          "q3": 2.0958916544999937
+          "maximum": 1.5478277800000058,
+          "median": 1.4993513330000212,
+          "minimum": 1.4867423909999786,
+          "q1": 1.493046862,
+          "q3": 1.5235895565000135
         },
         "peak_memory_mib": {
           "all": [
-            229.78515625,
-            228.8828125,
-            229.17578125
+            229.22265625,
+            229.6171875,
+            229.74609375
           ],
-          "maximum": 229.78515625,
-          "median": 229.17578125
+          "maximum": 229.74609375,
+          "median": 229.6171875
         }
       }
     },
@@ -109,66 +109,66 @@
       "case": "nested_mixed_fit",
       "scale": {
         "n_participants": 8,
-        "n_trials": 3,
         "n_time": 5,
+        "n_trials": 3,
         "q": 2
       },
       "repeats": 3,
       "observed": {
         "runtime_seconds": {
           "all": [
-            1.9758093599999995,
-            1.9519997980000028,
-            1.9459393659999762
+            1.3983479659999887,
+            1.4023733180000022,
+            1.391104562999999
           ],
-          "maximum": 1.9758093599999995,
-          "median": 1.9519997980000028,
-          "minimum": 1.9459393659999762,
-          "q1": 1.9489695819999895,
-          "q3": 1.9639045790000011
+          "maximum": 1.4023733180000022,
+          "median": 1.3983479659999887,
+          "minimum": 1.391104562999999,
+          "q1": 1.3947262644999938,
+          "q3": 1.4003606419999954
         },
         "peak_memory_mib": {
           "all": [
-            229.18359375,
-            228.73828125,
-            229.265625
+            229.00390625,
+            229.08203125,
+            229.44921875
           ],
-          "maximum": 229.265625,
-          "median": 229.18359375
+          "maximum": 229.44921875,
+          "median": 229.08203125
         }
       }
     },
     {
       "case": "generalized_gee_bootstrap",
       "scale": {
-        "n_participants": 8,
-        "n_trials": 2,
-        "n_time": 5,
         "n_bootstrap": 100,
+        "n_participants": 8,
+        "n_time": 5,
+        "n_trials": 2,
         "q": 2
       },
       "repeats": 3,
       "observed": {
         "runtime_seconds": {
           "all": [
-            1.6745970230000182,
-            1.6886842360000003,
-            1.6748700720000045
+            1.2266760759999897,
+            1.2175990060000004,
+            1.2524527710000086
           ],
-          "maximum": 1.6886842360000003,
-          "median": 1.6748700720000045,
-          "minimum": 1.6745970230000182,
-          "q1": 1.6747335475000114,
-          "q3": 1.6817771540000024
+          "maximum": 1.2524527710000086,
+          "median": 1.2266760759999897,
+          "minimum": 1.2175990060000004,
+          "q1": 1.222137540999995,
+          "q3": 1.2395644234999992
         },
         "peak_memory_mib": {
           "all": [
-            228.01953125,
-            228.1484375,
-            228.21484375
+            228.21484375,
+            228.06640625,
+            228.265625
           ],
-          "maximum": 228.21484375,
-          "median": 228.1484375
+          "maximum": 228.265625,
+          "median": 228.21484375
         }
       }
     },
@@ -176,32 +176,32 @@
       "case": "recurrence_rqa",
       "scale": {
         "n_participants": 1,
-        "n_trials": 1,
         "n_time": 800,
+        "n_trials": 1,
         "q": null
       },
       "repeats": 3,
       "observed": {
         "runtime_seconds": {
           "all": [
-            1.677797905999995,
-            1.6251987210000038,
-            1.6305166349999922
+            1.228692699000021,
+            1.2037433020000208,
+            1.2172430439999857
           ],
-          "maximum": 1.677797905999995,
-          "median": 1.6305166349999922,
-          "minimum": 1.6251987210000038,
-          "q1": 1.627857677999998,
-          "q3": 1.6541572704999936
+          "maximum": 1.228692699000021,
+          "median": 1.2172430439999857,
+          "minimum": 1.2037433020000208,
+          "q1": 1.2104931730000033,
+          "q3": 1.2229678715000034
         },
         "peak_memory_mib": {
           "all": [
-            228.25390625,
-            228.328125,
-            228.1015625
+            228.15625,
+            228.29296875,
+            228.640625
           ],
-          "maximum": 228.328125,
-          "median": 228.25390625
+          "maximum": 228.640625,
+          "median": 228.29296875
         }
       }
     },
@@ -209,33 +209,33 @@
       "case": "nonlinear_sensitivity",
       "scale": {
         "n_participants": 1,
-        "n_trials": 1,
+        "n_specifications": 16,
         "n_time": 300,
-        "q": null,
-        "n_specifications": 16
+        "n_trials": 1,
+        "q": null
       },
       "repeats": 3,
       "observed": {
         "runtime_seconds": {
           "all": [
-            1.7419150629999933,
-            1.7138662030000091,
-            1.751779689999978
+            1.305430685999994,
+            1.3084505269999909,
+            1.2827107990000002
           ],
-          "maximum": 1.751779689999978,
-          "median": 1.7419150629999933,
-          "minimum": 1.7138662030000091,
-          "q1": 1.7278906330000012,
-          "q3": 1.7468473764999857
+          "maximum": 1.3084505269999909,
+          "median": 1.305430685999994,
+          "minimum": 1.2827107990000002,
+          "q1": 1.294070742499997,
+          "q3": 1.3069406064999924
         },
         "peak_memory_mib": {
           "all": [
-            223.1875,
-            223.0625,
-            223.37890625
+            222.94140625,
+            223.20703125,
+            223.4453125
           ],
-          "maximum": 223.37890625,
-          "median": 223.1875
+          "maximum": 223.4453125,
+          "median": 223.20703125
         }
       }
     }

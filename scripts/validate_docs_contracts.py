@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 import re
+
+import yaml
 from pathlib import Path
 
 
@@ -23,6 +25,16 @@ def _nav_paths(node):
 
 
 def main() -> None:
+    for workflow_path in (
+        ROOT / ".github" / "workflows" / "release.yml",
+        ROOT / ".github" / "workflows" / "release-readiness.yml",
+    ):
+        parsed = yaml.safe_load(workflow_path.read_text(encoding="utf-8"))
+        if not isinstance(parsed, dict):
+            raise RuntimeError(
+                f"workflow did not parse as a mapping: {workflow_path}"
+            )
+
     config_text = (ROOT / "mkdocs.yml").read_text(encoding="utf-8")
     nav = re.findall(
         r":\s+([A-Za-z0-9_./-]+\.md)\s*$",
@@ -183,7 +195,7 @@ def main() -> None:
         ("tolerance policy", tolerance_policy),
         ("performance envelope", performance_ledger),
     ):
-        if payload.get("package_version") != "0.56.0.dev0":
+        if payload.get("package_version") != "0.57.0.dev0":
             raise RuntimeError(f"{name} package version is stale")
     evidence_types = set(reference_ledger.get("evidence_types", {}))
     if evidence_types != {
@@ -202,7 +214,7 @@ def main() -> None:
     manifest = json.loads(
         (ROOT / "CANONICAL_WORKFLOWS.json").read_text(encoding="utf-8")
     )
-    if manifest.get("package_version") != "0.56.0.dev0":
+    if manifest.get("package_version") != "0.57.0.dev0":
         raise RuntimeError("canonical workflow manifest version is stale")
     workflows = manifest.get("workflows", [])
     if len(workflows) != 5:
@@ -216,6 +228,11 @@ def main() -> None:
             raise RuntimeError(
                 f"canonical workflow docs target is missing: {docs_path}"
             )
+        example_path = ROOT / workflow["realistic_example"]
+        if not example_path.exists():
+            raise RuntimeError(
+                f"canonical realistic example is missing: {example_path}"
+            )
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     for required in (
@@ -223,13 +240,28 @@ def main() -> None:
         "FUNCTION_EQUATION_INDEX.md",
         "WORKFLOW_ATLAS.md",
         "Visual gallery",
-        "0.56.0.dev0",
+        "0.57.0.dev0",
         "Which workflow do I need?",
         "Where is the full advanced API?",
         "Reference validation & performance envelope",
+        "Portable scientific results",
+        "Release process",
     ):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
+
+    release_readiness = json.loads(
+        (ROOT / "RELEASE_READINESS.json").read_text(encoding="utf-8")
+    )
+    if release_readiness.get("current_development_version") != "0.57.0.dev0":
+        raise RuntimeError("release-readiness development version is stale")
+    if release_readiness.get("first_public_release_target") != "0.9.0rc1":
+        raise RuntimeError("first public release target must remain explicit")
+    if release_readiness.get("production_release_ready") is not False:
+        raise RuntimeError(
+            "0.57 docs must not claim production release readiness while "
+            "repository/publishing governance remains unresolved"
+        )
 
     public_api = (ROOT / "src" / "eyetrajectoriespy" / "__init__.py").read_text(
         encoding="utf-8"

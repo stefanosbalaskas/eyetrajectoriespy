@@ -149,7 +149,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.56.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.57.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
@@ -434,17 +434,41 @@ median/IQR/range, peak process RSS, workload scale, hardware/software versions,
 and commit/run identifiers. No claim of superiority over another package is
 made and no speed threshold is used to weaken scientific computation.
 
-### Planned stabilization sequence after 0.56
+### 0.57 reproducibility, serialization and release hardening
 
-**0.57 — reproducibility, serialization and release hardening**
+Version **0.57** adds no new statistical estimator. It closes the stabilization
+sequence by making scientific results, environments and publication mechanics
+explicit.
 
-- environment/software-version capture;
-- representative portable scientific-result schemas and round-trip provenance
-  tests rather than promises of permanent backend-object pickle compatibility;
-- error-message/failure-mode consistency;
-- realistic end-to-end examples for all five canonical workflows;
-- branch-protection/ruleset closure and release-candidate checklist review.
+Portable scientific results use an auditable JSON + NPZ schema. Numerical
+arrays, identifiers, specifications, units, diagnostics and provenance are
+retained; opaque backend-native fitted objects are explicitly marked
+nonportable rather than serialized through a compatibility promise the package
+cannot keep. Environment capture records package/Python/dependency/backend/OS
+information and a Git commit when available.
 
-Only after 0.57 should the project assess a 0.9-style release-candidate phase.
-New statistical estimators remain outside the default stabilization sequence.
+Each of the five canonical workflows now has one executable realistic
+research-style example in addition to its method documentation. The examples
+are part of ordinary CI.
+
+Release hardening is split into two workflows. `release-readiness` continuously
+tests version consistency, build/twine checks, fresh wheel and sdist installs
+and the installed-package smoke test without publishing. `release.yml` is
+isolated and owns coordinated TestPyPI/PyPI/GitHub publication. Production is
+tag-only, builds distributions once, uses OIDC Trusted Publishing, creates the
+GitHub Release only after PyPI succeeds and attaches the identical wheel/sdist.
+
+Production publication remains deliberately blocked while repository governance
+is incomplete. The planned first public release is **0.9.0rc1**, but only after
+`main` is protected, issue #64 is closed, TestPyPI rehearsal succeeds, the
+protected `pypi` environment has a required reviewer, and Trusted Publishing
+is configured.
+
+### After 0.57
+
+Do not automatically resume estimator expansion. Once the 0.57 qualification
+and repository governance gates are closed, assess whether the package is ready
+for a **0.9.0rc1** release-candidate phase. Release-candidate work should focus
+on defects, documentation clarity, reproducibility and installation/packaging
+feedback rather than adding new statistical families.
 

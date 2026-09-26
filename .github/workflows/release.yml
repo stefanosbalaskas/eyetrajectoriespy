@@ -1,0 +1,241 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Release rehearsal target
+        required: true
+        default: build-only
+        type: choice
+        options:
+          - build-only
+          - testpypi
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-once:
+    name: release-build-once
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install release tooling
+        run: python -m pip install -U pip build twine packaging
+      - name: Verify version contract
+        id: version
+        shell: bash
+        run: |
+          if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+            VERSION="$(python scripts/verify_release_version.py --tag "${GITHUB_REF_NAME}" --production)"
+          else
+            VERSION="$(python scripts/verify_release_version.py)"
+          fi
+          echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
+          echo "Release version: ${VERSION}"
+      - name: Build wheel and sdist exactly once
+        run: python -m build
+      - name: Validate distributions
+        run: python -m twine check dist/*
+      - name: Smoke-test wheel in a fresh environment
+        shell: bash
+        run: |
+          python -m venv .release-wheel
+          .release-wheel/bin/python -m pip install -U pip
+          .release-wheel/bin/python -m pip install dist/*.whl
+          .release-wheel/bin/python scripts/release_smoke_test.py --expected-version "${{ steps.version.outputs.version }}"
+      - name: Smoke-test sdist in a fresh environment
+        shell: bash
+        run: |
+          python -m venv .release-sdist
+          .release-sdist/bin/python -m pip install -U pip
+          .release-sdist/bin/python -m pip install dist/*.tar.gz
+          .release-sdist/bin/python scripts/release_smoke_test.py --expected-version "${{ steps.version.outputs.version }}"
+      - name: Upload immutable release distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-dist
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            dist/*.whl
+            dist/*.tar.gz
+
+  publish-testpypi:
+    name: publish-testpypi
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'testpypi'
+    needs: build-once
+    runs-on: ubuntu-latest
+    environment: testpypi
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Verify TestPyPI environment acknowledgement
+        env:
+          TRUSTED: ${{ vars.TESTPYPI_TRUSTED_PUBLISHING_CONFIGURED }}
+        run: |
+          test "${TRUSTED}" = "true" || {
+            echo "Set TESTPYPI_TRUSTED_PUBLISHING_CONFIGURED=true in the testpypi environment."; exit 1;
+          }
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-dist
+          path: dist
+      - name: Publish exact build artifacts to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+  verify-testpypi:
+    name: verify-testpypi-install
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'testpypi'
+    needs:
+      - build-once
+      - publish-testpypi
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install exact TestPyPI version and smoke test
+        shell: bash
+        run: |
+          python -m venv .testpypi-smoke
+          .testpypi-smoke/bin/python -m pip install -U pip
+          for attempt in 1 2 3 4 5; do
+            if .testpypi-smoke/bin/python -m pip install --pre --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple "eyetrajectoriespy==${{ needs.build-once.outputs.version }}"; then
+              break
+            fi
+            if [[ "${attempt}" == "5" ]]; then exit 1; fi
+            sleep 15
+          done
+          .testpypi-smoke/bin/python scripts/release_smoke_test.py --expected-version "${{ needs.build-once.outputs.version }}"
+
+  production-governance:
+    name: production-release-governance
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs: build-once
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: read
+      issues: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Resolve annotated tag target
+        id: commit
+        shell: bash
+        run: |
+          RELEASE_COMMIT="$(git rev-list -n 1 "${GITHUB_REF_NAME}")"
+          echo "sha=${RELEASE_COMMIT}" >> "${GITHUB_OUTPUT}"
+      - name: Require protected main, closed governance blocker, verified tag, and exact-main CI
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python scripts/verify_release_governance.py \
+            --repository "${GITHUB_REPOSITORY}" \
+            --commit "${{ steps.commit.outputs.sha }}" \
+            --tag "${GITHUB_REF_NAME}"
+
+  publish-pypi:
+    name: publish-pypi
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs:
+      - build-once
+      - production-governance
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Verify protected PyPI environment acknowledgement
+        env:
+          TRUSTED: ${{ vars.PYPI_TRUSTED_PUBLISHING_CONFIGURED }}
+          REVIEW: ${{ vars.PYPI_REQUIRED_REVIEWER_CONFIGURED }}
+        run: |
+          test "${TRUSTED}" = "true" || { echo "PyPI Trusted Publishing is not acknowledged as configured."; exit 1; }
+          test "${REVIEW}" = "true" || { echo "The pypi environment required-reviewer gate is not acknowledged as configured."; exit 1; }
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-dist
+          path: dist
+      - name: Publish exact build artifacts to PyPI through OIDC
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+  github-release:
+    name: create-github-release
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs:
+      - build-once
+      - publish-pypi
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-dist
+          path: dist
+      - name: Create checksums
+        run: sha256sum dist/* > SHA256SUMS
+      - name: Create GitHub Release from the same artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build-once.outputs.version }}
+        shell: bash
+        run: |
+          EXTRA=()
+          if [[ "${VERSION}" == *rc* || "${VERSION}" == *a* || "${VERSION}" == *b* ]]; then
+            EXTRA+=(--prerelease)
+          fi
+          gh release create "${GITHUB_REF_NAME}" dist/* SHA256SUMS \
+            --verify-tag --generate-notes --title "${GITHUB_REF_NAME}" "${EXTRA[@]}"
+
+  verify-pypi:
+    name: verify-pypi-install
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs:
+      - build-once
+      - github-release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install exact production version and smoke test
+        shell: bash
+        run: |
+          python -m venv .pypi-smoke
+          .pypi-smoke/bin/python -m pip install -U pip
+          for attempt in 1 2 3 4 5 6; do
+            if .pypi-smoke/bin/python -m pip install --pre "eyetrajectoriespy==${{ needs.build-once.outputs.version }}"; then
+              break
+            fi
+            if [[ "${attempt}" == "6" ]]; then exit 1; fi
+            sleep 20
+          done
+          .pypi-smoke/bin/python scripts/release_smoke_test.py --expected-version "${{ needs.build-once.outputs.version }}"

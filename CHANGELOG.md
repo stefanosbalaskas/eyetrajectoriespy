@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.57.0.dev0
+
+- Continue the stabilization line with no new statistical estimator or observation family.
+- Add `capture_environment()` for explicit package/Python/dependency/optional-backend/platform/thread-environment provenance, including Git commit when available.
+- Add `export_portable_result()` / `load_portable_result()` and `PortableScientificResultSnapshot` as an explicit JSON + NPZ scientific-result format rather than promising long-term pickle compatibility for backend-native model objects.
+- Preserve arrays, identifiers, units, specifications, diagnostics and provenance; mark unsupported opaque/backend fields explicitly in `nonportable_fields` instead of silently dropping them.
+- Add SHA-256 integrity checking for the portable NPZ payload and fail closed on unknown future schema versions.
+- Add one executable realistic end-to-end example for each of the five canonical workflows and bind those scripts into `CANONICAL_WORKFLOWS.json` and examples CI.
+- Archive the qualified 0.56 performance snapshot and require a fresh 0.57 performance qualification rather than relabeling prior measurements.
+- Add `.github/workflows/release-readiness.yml` to continuously validate version consistency, `python -m build`, `twine check`, fresh wheel/sdist installation, installed-package smoke testing and release-hardening contracts without publishing.
+- Add `.github/workflows/release.yml` as an isolated coordinated release workflow: build wheel + sdist once, smoke-test once, publish the exact files through OIDC, create the GitHub Release only after PyPI succeeds, attach the same distributions, then verify installation from PyPI.
+- Production publication is tag-only; manual dispatch supports only build-only or TestPyPI rehearsal.
+- Add fail-closed production governance checks requiring protected `main`, closed issue #64, release tag at current `main`, a GitHub-verified annotated tag, and successful exact-main required checks.
+- Require explicit `pypi`/TestPyPI environment acknowledgements for Trusted Publishing and the production required-reviewer gate; no long-lived PyPI API token is introduced.
+- Add `RELEASE_READINESS.json` so TestPyPI rehearsal, Trusted Publishing, environment review, branch protection and other production gates are auditable before the first public release.
+- Clarify the planned first synchronized GitHub/PyPI release target as `0.9.0rc1`, after 0.57 is closed and governance is actually enabled.
+
 ## 0.56.0.dev0
 
 - Continue the stabilization line with no new statistical estimator or observation family.
