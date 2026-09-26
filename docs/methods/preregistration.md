@@ -882,8 +882,11 @@ For a generalized functional response model, pre-register:
 
 - response family (`binomial` or `poisson`) and the scientific meaning of the
   response at each observed time;
-- response coding rule, including exact Bernoulli 0/1 or non-negative integer
-  counts;
+- response coding rule, including exact Bernoulli 0/1, grouped-binomial integer
+  successes, or non-negative Poisson integer counts;
+- for grouped-binomial models, the denominator definition, units/opportunity
+  meaning, shape/expansion rule, positivity/integer requirement, and the rule
+  that successes cannot exceed denominators;
 - for Poisson models, whether the estimand is expected count or an
   exposure-adjusted rate;
 - when exposure is used, its scientific denominator, units, alignment/expansion
@@ -898,9 +901,9 @@ For a generalized functional response model, pre-register:
 - bootstrap replicate count, seed, confidence level and simultaneous scope.
 
 Do not switch family/link, change basis size, reinterpret proportions as
-Bernoulli outcomes, invent or redefine exposure after seeing results, or change
-working correlation because another specification gives a preferred
-coefficient trajectory.
+Bernoulli outcomes, invent or redefine grouped denominators/exposure after
+seeing results, or change working correlation because another specification
+gives a preferred coefficient trajectory.
 
 ## Generalized fixed-profile prediction
 
