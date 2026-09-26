@@ -78,17 +78,20 @@ flowchart LR
     C -->|Yes participant-level predictors only| E[Participant-average FoSR]
     C -->|Yes trial-varying predictors| F[Gaussian functional mixed effects]
     B -->|Bernoulli 0/1| G[0.51 marginal generalized FoSR: logit]
-    B -->|Poisson counts| H[0.51 marginal generalized FoSR: log]
-    G --> I[Participant GEE clusters + working independence]
-    H --> I
+    B -->|Poisson counts| H[Marginal generalized FoSR: log]
+    H --> X{Explicit exposure?}
+    X -->|No: expected count| I[Participant GEE clusters + working independence]
+    X -->|Yes: E > 0| Y[0.53 log-rate estimand]
+    Y --> I
+    G --> I
     I --> J[Robust sandwich covariance]
     J --> K[Whole-participant case bootstrap refits]
     K --> L[Observed-grid link-scale simultaneous bands]
     L --> M{Fixed marginal profiles declared?}
-    M -->|Yes| N[0.52 eta_r(t) and inverse-link marginal mean]
+    M -->|Yes| N[0.52/0.53 fixed-profile probability, rate, or count]
     N --> O[Reuse same participant bootstrap]
     O --> P[Profile/family simultaneous response bands]
-    O --> Q[One predeclared response-scale mean difference]
+    O --> Q[One predeclared probability/rate/count contrast]
 ```
 
 The 0.51 generalized path is population averaged rather than conditional on
@@ -98,9 +101,13 @@ correlation automatically.
 
 Version 0.52 treats declared predictor profiles as fixed scientific targets,
 retains scalar-range extrapolation flags, and projects the same participant
-bootstrap through all profiles. It estimates marginal mean functions rather
-than future stochastic responses and does not select profiles or contrasts
-automatically.
+bootstrap through all profiles. Version 0.53 adds explicit strictly-positive
+Poisson exposure: coefficients become log-rate effects, exposure is carried
+with each participant bootstrap bundle, rate prediction needs no target
+exposure, and expected-count prediction requires an explicit target exposure.
+One predeclared Poisson contrast scale may be a rate difference, rate ratio, or
+expected-count difference. These are marginal response/rate functions rather
+than future stochastic responses.
 
 ## Trajectory-distance robustness
 
