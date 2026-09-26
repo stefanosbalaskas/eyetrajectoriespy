@@ -164,8 +164,8 @@ M_r^{*(b)}
 \right|.
 \]
 
-With \`simultaneous_scope="profile"\`, each profile receives its own maximum
-critical value. With \`simultaneous_scope="family"\`, one maximum is taken over
+With `simultaneous_scope="profile"`, each profile receives its own maximum
+critical value. With `simultaneous_scope="family"`, one maximum is taken over
 all declared profiles and observed time points.
 
 The calibrated linear-predictor interval
