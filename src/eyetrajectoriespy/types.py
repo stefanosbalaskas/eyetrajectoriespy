@@ -1091,6 +1091,85 @@ class GeneralizedFunctionOnScalarBandResult:
 
 
 @dataclass(frozen=True)
+class GeneralizedFunctionOnScalarPredictionResult:
+    """Fixed-profile marginal predictions for generalized FoSR."""
+
+    reference: GeneralizedFunctionOnScalarResult
+    profile_ids: tuple[str, ...]
+    profile_design_matrix: np.ndarray
+    predictor_values: np.ndarray
+    linear_predictor_functions: np.ndarray
+    linear_predictor_standard_errors: np.ndarray
+    mean_functions: np.ndarray
+    mean_standard_errors: np.ndarray
+    extrapolation_flags: np.ndarray
+    predictor_minima: np.ndarray
+    predictor_maxima: np.ndarray
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_profiles(self) -> int:
+        return len(self.profile_ids)
+
+
+@dataclass(frozen=True)
+class GeneralizedFunctionOnScalarPredictionBootstrapResult:
+    """Participant-bootstrap predictions for fixed generalized-FoSR profiles."""
+
+    prediction: GeneralizedFunctionOnScalarPredictionResult
+    coefficient_bootstrap: GeneralizedFunctionOnScalarBootstrapResult
+    bootstrap_linear_predictor_functions: np.ndarray
+    bootstrap_mean_functions: np.ndarray
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.bootstrap_linear_predictor_functions.shape[0]
+
+
+@dataclass(frozen=True)
+class GeneralizedFunctionOnScalarPredictionBandResult:
+    """Observed-grid simultaneous bands for fixed marginal profiles."""
+
+    prediction: GeneralizedFunctionOnScalarPredictionResult
+    linear_lower: np.ndarray
+    linear_upper: np.ndarray
+    mean_lower: np.ndarray
+    mean_upper: np.ndarray
+    critical_values: np.ndarray
+    max_statistics: np.ndarray
+    confidence_level: float
+    simultaneous_scope: str
+    bootstrap: GeneralizedFunctionOnScalarPredictionBootstrapResult
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_profiles(self) -> int:
+        return self.prediction.n_profiles
+
+
+@dataclass(frozen=True)
+class GeneralizedFunctionOnScalarMeanDifferenceResult:
+    """Simultaneous response-scale mean-difference band for two profiles."""
+
+    prediction_bootstrap: GeneralizedFunctionOnScalarPredictionBootstrapResult
+    profile_a: str
+    profile_b: str
+    estimate: np.ndarray
+    standard_error: np.ndarray
+    lower: np.ndarray
+    upper: np.ndarray
+    bootstrap_estimates: np.ndarray
+    max_statistics: np.ndarray
+    critical_value: float
+    confidence_level: float
+    physical_lower_bound: float | None
+    physical_upper_bound: float | None
+    interval_exceeds_physical_bounds: bool
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
 class FunctionOnScalarResult:
     """Observed-grid function-on-scalar regression fit."""
 

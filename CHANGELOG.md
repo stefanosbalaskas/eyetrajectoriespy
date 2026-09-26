@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.52.0.dev0
+
+- Add `generalized_function_on_scalar_predict()` for fixed analyst-declared scalar predictor profiles under the 0.51 marginal Bernoulli/logit or Poisson/log function-on-scalar GEE.
+- Retain both link-scale linear-predictor functions and directly interpretable marginal response functions: probabilities for Bernoulli models and expected counts for Poisson models under the current no-offset contract.
+- Map the retained robust GEE basis-parameter covariance to fixed-profile linear-predictor standard errors and use the inverse-link delta method for pointwise marginal-mean standard errors.
+- Audit scalar-predictor support for every target profile; profiles outside any observed predictor range are retained and explicitly flagged as extrapolations rather than silently clipped or rejected.
+- Add `bootstrap_generalized_function_on_scalar_predictions()`, projecting every existing whole-participant coefficient-bootstrap draw through all fixed profiles without drawing a second bootstrap sample or resampling target covariates.
+- Add `generalized_function_on_scalar_prediction_bands()` with profile-specific or complete-profile-family observed-grid simultaneous calibration on the linear-predictor scale.
+- Transform simultaneous linear-predictor endpoints through the strictly monotone inverse link, guaranteeing Bernoulli marginal-mean bands remain within the probability range and Poisson marginal-mean bands remain positive without clipping.
+- Add `generalized_function_on_scalar_mean_difference_band()` for one predeclared paired response-scale profile difference; the same participant-bootstrap coefficient draw is propagated through both profiles so their prediction dependence is retained.
+- For Bernoulli mean differences, retain rather than clip any simultaneous interval extending outside the logical [-1, 1] range and expose an explicit physical-bound diagnostic.
+- Add prediction/contrast frames, plots and manuscript-oriented reporting helpers.
+- Make the inferential boundary explicit: 0.52 estimates marginal mean functions, not future stochastic Bernoulli/count response trajectories; fixed target-profile uncertainty and between-grid simultaneous coverage are not propagated.
+- Add tests for exact reproduction of fitted means at observed profiles, inverse-link transformation, extrapolation flags, participant-bootstrap reuse, profile/family simultaneous calibration, paired mean differences, Poisson positivity, plotting/reporting and fail-closed profile contracts.
+- Continue to defer grouped-binomial denominators, Poisson exposure offsets, alternative working correlations, generalized functional random effects and multiple-contrast family adjustment.
+
 ## 0.51.0.dev0
 
 - Add `fit_generalized_function_on_scalar_regression()` for marginal non-Gaussian functional responses with scalar predictors and repeated participant trials.

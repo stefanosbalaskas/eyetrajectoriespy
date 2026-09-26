@@ -98,6 +98,9 @@ def main() -> None:
         "fit_generalized_function_on_scalar_regression()",
         "bootstrap_generalized_function_on_scalar_coefficients()",
         "generalized_function_on_scalar_simultaneous_bands()",
+        "generalized_function_on_scalar_predict()",
+        "generalized_function_on_scalar_prediction_bands()",
+        "generalized_function_on_scalar_mean_difference_band()",
         "wild_bootstrap_fpca_projection()",
         "fpca_wild_bootstrap_projection_family_test()",
         "fpca_wild_bootstrap_family_test_monte_carlo_diagnostics()",
@@ -165,7 +168,7 @@ def main() -> None:
         raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.51.0.dev0"):
+    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.52.0.dev0"):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
 

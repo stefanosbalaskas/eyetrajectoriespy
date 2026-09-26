@@ -1058,3 +1058,26 @@ Robust sandwich covariance is asymptotic in the number of independent participan
 Bootstrap simultaneous bands use whole-participant case refits and are calibrated over the observed time grid on the link scale. They are not continuous-domain bands and are not automatically transformed into response-scale coefficient bands.
 
 A failed bootstrap GEE refit stops the requested analysis rather than being silently deleted or replaced by another draw.
+
+## Generalized fixed-profile prediction limitations
+
+Version 0.52 estimates uncertainty for marginal mean functions, not prediction
+intervals for future Bernoulli or count realizations.
+
+Profile extrapolation is diagnosed only through separate observed scalar
+predictor ranges. The package does not estimate a multivariate convex hull,
+propensity score, overlap probability, or causal support region.
+
+The simultaneous prediction band covers the declared observed grid only.
+Between-grid coverage is not claimed.
+
+Only one predeclared response-scale mean-difference function is calibrated at a
+time. There is no automatic pair search and no familywise adjustment across
+multiple contrasts.
+
+For Bernoulli outcomes, an untrimmed studentized mean-difference band can
+extend outside [-1, 1]. Such a band is flagged but not silently clipped.
+
+The target profile values are fixed. Their measurement or estimation
+uncertainty is outside the current contract.
+

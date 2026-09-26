@@ -47,6 +47,18 @@ from .generalized_function_on_scalar import (
     generalized_function_on_scalar_simultaneous_bands,
     plot_generalized_function_on_scalar_coefficients,
 )
+from .generalized_function_on_scalar_prediction import (
+    bootstrap_generalized_function_on_scalar_predictions,
+    generalized_function_on_scalar_mean_difference_band,
+    generalized_function_on_scalar_mean_difference_frame,
+    generalized_function_on_scalar_mean_difference_reporting_text,
+    generalized_function_on_scalar_predict,
+    generalized_function_on_scalar_prediction_bands,
+    generalized_function_on_scalar_prediction_frame,
+    generalized_function_on_scalar_prediction_reporting_text,
+    plot_generalized_function_on_scalar_mean_difference,
+    plot_generalized_function_on_scalar_predictions,
+)
 from .functional_mixed_effects_covariance_sensitivity import (
     functional_mixed_effects_covariance_sensitivity,
     functional_mixed_effects_covariance_sensitivity_reporting_text,
@@ -430,6 +442,10 @@ from .types import (
     FunctionalMixedEffectsResidualDiagnosticsResult,
     FunctionalMixedEffectsResult,
     GeneralizedFunctionOnScalarBandResult,
+    GeneralizedFunctionOnScalarMeanDifferenceResult,
+    GeneralizedFunctionOnScalarPredictionBandResult,
+    GeneralizedFunctionOnScalarPredictionBootstrapResult,
+    GeneralizedFunctionOnScalarPredictionResult,
     GeneralizedFunctionOnScalarBootstrapResult,
     GeneralizedFunctionOnScalarResult,
     FunctionOnScalarBandResult,
@@ -473,9 +489,23 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.51.0.dev0"
+__version__ = "0.52.0.dev0"
 
 __all__ = [
+    "GeneralizedFunctionOnScalarPredictionResult",
+    "GeneralizedFunctionOnScalarPredictionBootstrapResult",
+    "GeneralizedFunctionOnScalarPredictionBandResult",
+    "GeneralizedFunctionOnScalarMeanDifferenceResult",
+    "generalized_function_on_scalar_predict",
+    "bootstrap_generalized_function_on_scalar_predictions",
+    "generalized_function_on_scalar_prediction_bands",
+    "generalized_function_on_scalar_mean_difference_band",
+    "generalized_function_on_scalar_prediction_frame",
+    "generalized_function_on_scalar_mean_difference_frame",
+    "plot_generalized_function_on_scalar_predictions",
+    "plot_generalized_function_on_scalar_mean_difference",
+    "generalized_function_on_scalar_prediction_reporting_text",
+    "generalized_function_on_scalar_mean_difference_reporting_text",
     "GeneralizedFunctionOnScalarResult",
     "GeneralizedFunctionOnScalarBootstrapResult",
     "GeneralizedFunctionOnScalarBandResult",

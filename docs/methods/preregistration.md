@@ -891,3 +891,24 @@ For a 0.51 generalized functional response model, pre-register:
 - bootstrap replicate count, seed, confidence level and simultaneous scope.
 
 Do not switch family/link, change basis size, reinterpret proportions as Bernoulli outcomes, or introduce a different working correlation after seeing which specification gives a preferred coefficient trajectory.
+
+## Generalized fixed-profile prediction
+
+If 0.52 marginal prediction is planned, pre-register the fixed scalar predictor
+profiles before examining response-scale curves. Record every predictor value,
+profile identifier, and which profiles will be compared.
+
+Also pre-register:
+
+- the coefficient-bootstrap size and seed;
+- profile-specific versus complete-profile-family simultaneous scope;
+- the exact ordered profile pair for any response-scale mean difference;
+- the observed-grid interpretation of simultaneous coverage;
+- how extrapolation flags will be reported;
+- whether an extrapolative profile is scientifically intended;
+- that profile values are treated as fixed without measurement/estimation
+  uncertainty.
+
+Do not choose a profile pair after inspecting which response-scale difference
+looks largest or which simultaneous band excludes zero.
+

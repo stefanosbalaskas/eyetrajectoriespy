@@ -36,6 +36,21 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 
 Function-on-scalar regression estimates coefficient functions over time. Scalar-on-function regression instead compresses or integrates information from a functional predictor to explain a scalar response. They answer opposite regression questions and should not be used interchangeably.
 
+## Generalized functional coefficients versus fixed-profile means
+
+| Scientific target | Tool | Scale / interpretation |
+|---|---|---|
+| Time-varying marginal association of one scalar predictor | `fit_generalized_function_on_scalar_regression()` | link-scale coefficient function; population averaged |
+| Whole-function uncertainty for one coefficient | `generalized_function_on_scalar_simultaneous_bands()` | observed-grid link-scale coefficient band |
+| Marginal response trajectory at a complete fixed covariate profile | `generalized_function_on_scalar_predict()` / `generalized_function_on_scalar_prediction_bands()` | probability or expected-count mean function |
+| Response-scale difference between one predeclared pair of fixed profiles | `generalized_function_on_scalar_mean_difference_band()` | probability difference or expected-count difference |
+
+A response-scale generalized effect cannot in general be obtained by applying
+the inverse link to one coefficient function in isolation. Version 0.52
+therefore requires the complete scalar predictor profile before producing
+marginal probability or expected-count functions. These are conditional mean
+functions for fixed covariate targets, not future-response prediction intervals.
+
 ## Mixed-effects covariance structures: fit versus sensitivity
 
 | Goal | Tool | Interpretation boundary |

@@ -268,6 +268,10 @@ These are **link-scale coefficient bands**. They are not automatically
 converted into probability/count-mean bands because a response-scale effect
 depends on the full scalar predictor vector.
 
+Version 0.52 adds that downstream interpretation only after the analyst
+declares the complete scalar predictor profile(s). See
+[fixed-profile marginal prediction and contrasts](generalized-function-on-scalar-prediction.md).
+
 ## Inspect and report
 
 ~~~python

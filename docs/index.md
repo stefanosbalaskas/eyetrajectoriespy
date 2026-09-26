@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.51 · marginal generalized functional responses</div>
+<div class="et-kicker">eyetrajectoriespy 0.52 · fixed-profile marginal generalized inference</div>
 
 # Model the viewing process, not only its summaries
 
@@ -51,6 +51,12 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
     Fit observed-grid function-on-scalar models, retain explicit participant/curve inference units, and calibrate wild-bootstrap simultaneous coefficient bands without hidden smoothing or trial pseudo-replication.
 
     [:material-chart-bell-curve: Function-on-scalar guide](guides/function-on-scalar.md)
+
+-   **Interpret binary/count functional models at fixed covariate profiles**
+
+    Project marginal generalized function-on-scalar fits to predeclared profiles, retain extrapolation flags, reuse whole-participant bootstrap draws for simultaneous probability/expected-count bands, and compare one declared profile pair without post-hoc target selection.
+
+    [:material-chart-areaspline: Generalized marginal prediction](methods/generalized-function-on-scalar-prediction.md)
 
 -   **Read the equations behind the API**
 

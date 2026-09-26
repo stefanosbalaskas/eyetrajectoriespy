@@ -372,6 +372,34 @@ $$
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#generalized-function-on-scalar
 
+## Fixed-profile marginal prediction and mean differences
+
+**Functions:** `generalized_function_on_scalar_predict()`, `generalized_function_on_scalar_prediction_bands()`, `generalized_function_on_scalar_mean_difference_band()`
+
+$$
+\eta_r(t)=\mathbf x_r^\top\widehat{\boldsymbol\beta}(t)
+$$
+
+$$
+\mu_r(t)=g^{-1}\{\eta_r(t)\}
+$$
+
+$$
+\widehat{\operatorname{Var}}\{\eta_r(t)\}=\mathbf z_r(t)^\top\widehat{\boldsymbol\Sigma}_\theta\mathbf z_r(t)
+$$
+
+$$
+D_{ab}(t)=\mu_a(t)-\mu_b(t)
+$$
+
+$$
+M_r^{*(b)}=\max_m\left|\frac{\eta_r^{*(b)}(t_m)-\eta_r(t_m)}{\widehat{\operatorname{SE}}\{\eta_r(t_m)\}}\right|
+$$
+
+**Scope:** Fixed analyst-declared scalar predictor profiles projected through the fitted marginal Bernoulli/logit or Poisson/log coefficient functions. Profile values are not resampled. Simultaneous marginal mean bands are calibrated on the linear-predictor scale using the existing whole-participant coefficient bootstrap and transformed through the strictly monotone inverse link. One predeclared response-scale mean-difference function may be calibrated from the same paired bootstrap draws. Scalar-predictor extrapolations are retained and flagged; no profile or contrast is selected automatically and between-grid coverage is not claimed.
+
+Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#generalized-function-on-scalar-prediction
+
 ## Function-on-scalar regression and simultaneous coefficient bands
 
 **Functions:** `fit_function_on_scalar_regression()`, `bootstrap_function_on_scalar_coefficients()`, `function_on_scalar_simultaneous_bands()`

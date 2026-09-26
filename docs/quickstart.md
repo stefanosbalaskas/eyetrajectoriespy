@@ -216,6 +216,58 @@ scale.
 
 For whole-function inference, resample complete participants with `bootstrap_generalized_function_on_scalar_coefficients()` and calibrate `generalized_function_on_scalar_simultaneous_bands()`.
 
+
+For interpretable 0.52 marginal probabilities or expected counts at fixed
+scientific profiles, project the same participant bootstrap rather than drawing
+a second resample:
+
+~~~python
+import pandas as pd
+
+from eyetrajectoriespy import (
+    bootstrap_generalized_function_on_scalar_coefficients,
+    bootstrap_generalized_function_on_scalar_predictions,
+    generalized_function_on_scalar_predict,
+    generalized_function_on_scalar_prediction_bands,
+)
+
+profiles = pd.DataFrame(
+    {
+        "profile_id": ["low", "high"],
+        "condition": [-0.7, 0.7],
+    }
+)
+
+prediction = generalized_function_on_scalar_predict(
+    generalized,
+    profiles,
+)
+
+coefficient_bootstrap = (
+    bootstrap_generalized_function_on_scalar_coefficients(
+        generalized,
+        n_bootstrap=1000,
+        random_state=52,
+    )
+)
+
+prediction_bootstrap = (
+    bootstrap_generalized_function_on_scalar_predictions(
+        coefficient_bootstrap,
+        profiles,
+    )
+)
+
+prediction_band = generalized_function_on_scalar_prediction_bands(
+    prediction_bootstrap,
+    simultaneous_scope="family",
+)
+~~~
+
+Profiles outside an observed scalar predictor range are retained and flagged as
+extrapolations. These are marginal mean-function bands, not future-response
+prediction intervals.
+
 ### Optional 0.50 covariance sensitivity
 
 When several covariance structures were predeclared and fitted independently,

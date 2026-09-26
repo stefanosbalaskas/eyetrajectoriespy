@@ -1033,3 +1033,30 @@ For version 0.51 report:
 - any backend warnings or bootstrap fit failures.
 
 Do not describe 0.51 coefficients as subject-specific/conditional random-effect coefficients. Do not describe aggregated proportions as Bernoulli observations unless an explicit denominator-aware model has actually been fitted.
+
+## Generalized fixed-profile prediction reporting
+
+For 0.52 fixed-profile marginal prediction, report:
+
+- the fitted 0.51 family/link, coefficient basis size and participant-cluster
+  definition;
+- every fixed prediction profile and its exact scalar predictor values;
+- the observed scalar predictor minima/maxima used for the support audit;
+- which profiles, if any, were flagged as extrapolative;
+- that target profile values were treated as fixed and were not resampled;
+- the inherited whole-participant coefficient-bootstrap size and seed;
+- whether simultaneous calibration was profile-specific or across the complete
+  declared profile family;
+- that calibration occurred on the linear-predictor scale and endpoints were
+  transformed through the monotone inverse link;
+- that the simultaneous claim applies only to the observed functional grid;
+- for a mean-difference band, the exact predeclared ordered pair
+  \(a-b\), response-scale interpretation, and whether a Bernoulli band exceeded
+  the logical [-1, 1] range;
+- that no profile or contrast was selected automatically and no
+  multiple-contrast family adjustment is implied.
+
+Do not describe the response-scale band as a future-response prediction
+interval. It is uncertainty for the marginal mean function conditional on the
+fixed declared profile.
+

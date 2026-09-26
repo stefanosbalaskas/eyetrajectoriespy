@@ -1,8 +1,9 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.51.0.dev0"
+    assert et.__version__=="0.52.0.dev0"
     required={
+        "GeneralizedFunctionOnScalarPredictionResult","GeneralizedFunctionOnScalarPredictionBootstrapResult","GeneralizedFunctionOnScalarPredictionBandResult","GeneralizedFunctionOnScalarMeanDifferenceResult","generalized_function_on_scalar_predict","bootstrap_generalized_function_on_scalar_predictions","generalized_function_on_scalar_prediction_bands","generalized_function_on_scalar_mean_difference_band","generalized_function_on_scalar_prediction_frame","generalized_function_on_scalar_mean_difference_frame","plot_generalized_function_on_scalar_predictions","plot_generalized_function_on_scalar_mean_difference","generalized_function_on_scalar_prediction_reporting_text","generalized_function_on_scalar_mean_difference_reporting_text",
         "GeneralizedFunctionOnScalarResult","GeneralizedFunctionOnScalarBootstrapResult","GeneralizedFunctionOnScalarBandResult","fit_generalized_function_on_scalar_regression","bootstrap_generalized_function_on_scalar_coefficients","generalized_function_on_scalar_simultaneous_bands","generalized_function_on_scalar_coefficient_frame","plot_generalized_function_on_scalar_coefficients","generalized_function_on_scalar_reporting_text",
         "FunctionalMixedEffectsCovarianceSpecification","FunctionalMixedEffectsCovarianceSensitivityResult","functional_mixed_effects_covariance_sensitivity","functional_mixed_effects_covariance_sensitivity_reporting_text","functional_mixed_effects_variance_decomposition","plot_covariance_sensitivity_coefficients","plot_covariance_sensitivity_band_widths","plot_functional_variance_decomposition",
         "functional_mixed_effects_whitened_residuals","functional_trial_random_effect_frame","plot_functional_trial_random_effects","functional_mixed_effects_full_refit_trial_audit_frame",

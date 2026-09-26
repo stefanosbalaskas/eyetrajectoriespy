@@ -158,6 +158,12 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [Generalized function-on-scalar regression](../examples/generalized-function-on-scalar.md)
 
+-   **What marginal probability/count trajectory is predicted for a fixed covariate profile?**
+
+    Project a fitted generalized FoSR through predeclared scalar profiles, reuse the whole-participant bootstrap for simultaneous response-scale bands, flag extrapolative targets, and compare one predeclared pair without post-hoc profile selection.
+
+    [Generalized FoSR marginal prediction](../examples/generalized-function-on-scalar-prediction.md)
+
 -   **Repeated trials with trial-varying predictors**
 
     Fit one joint Gaussian functional mixed model with a participant-specific functional random intercept, and optionally one explicitly declared random functional slope, instead of averaging trials or running separate pointwise models.
