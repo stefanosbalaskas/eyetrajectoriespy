@@ -573,3 +573,23 @@ Bernoulli responses must be genuine 0/1 observations under the declared sampling
 The coefficient basis is fixed before fitting. The participant-count > expanded-parameter-count rule is a structural guard only. Robust sandwich quality still depends on having enough independent, heterogeneous participant clusters.
 
 The marginal coefficient interpretation is different from a non-Gaussian mixed model conditioned on latent participant effects.
+
+## Generalized fixed-profile prediction assumptions
+
+Version 0.52 inherits all 0.51 marginal GEE assumptions and treats each supplied
+prediction profile as a fixed scalar covariate vector. The robust covariance of
+the fitted B-spline coefficients is propagated to the linear predictor, while
+pointwise response-scale standard errors use the inverse-link delta method.
+
+Simultaneous response bands are calibrated on the linear-predictor scale and
+transformed through the strictly monotone logit or log inverse link. This
+preserves the same simultaneous event for the declared observed time grid.
+
+The scalar support audit checks each predictor against its observed marginal
+minimum and maximum only. Passing that check does not establish multivariate
+support, positivity, causal identification, or interpolation inside the joint
+covariate distribution.
+
+The profile values themselves are assumed known. Uncertainty from estimating,
+measuring or selecting those values is not propagated.
+
