@@ -14,7 +14,7 @@ For an eyetrajectoriespy analysis, retain as applicable:
 - random seed and resampling count for stochastic procedures;
 - grouped-binomial denominators or Poisson exposure when used;
 - diagnostic/sensitivity specification;
-- portable result snapshot (\`manifest.json\` + \`arrays.npz\`);
+- portable result snapshot (`manifest.json` + `arrays.npz`);
 - captured software/environment metadata;
 - package version and Git commit when available;
 - reporting text or tables actually used in the manuscript;
