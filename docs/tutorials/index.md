@@ -152,6 +152,12 @@ Choose a tutorial by the scientific problem rather than by the function name.
 
     [Function-on-scalar regression](../examples/function-on-scalar.md)
 
+-   **Binary/count functional response with scalar predictors**
+
+    Fit population-averaged Bernoulli/logit or Poisson/log coefficient functions with participant-clustered robust GEE, then calibrate whole-participant bootstrap simultaneous bands on the link scale.
+
+    [Generalized function-on-scalar regression](../examples/generalized-function-on-scalar.md)
+
 -   **Repeated trials with trial-varying predictors**
 
     Fit one joint Gaussian functional mixed model with a participant-specific functional random intercept, and optionally one explicitly declared random functional slope, instead of averaging trials or running separate pointwise models.
