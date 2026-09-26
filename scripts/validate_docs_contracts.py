@@ -216,6 +216,11 @@ def main() -> None:
             raise RuntimeError(
                 f"canonical workflow docs target is missing: {docs_path}"
             )
+        example_path = ROOT / workflow["realistic_example"]
+        if not example_path.exists():
+            raise RuntimeError(
+                f"canonical realistic example is missing: {example_path}"
+            )
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     for required in (
@@ -232,6 +237,19 @@ def main() -> None:
     ):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
+
+    release_readiness = json.loads(
+        (ROOT / "RELEASE_READINESS.json").read_text(encoding="utf-8")
+    )
+    if release_readiness.get("current_development_version") != "0.57.0.dev0":
+        raise RuntimeError("release-readiness development version is stale")
+    if release_readiness.get("first_public_release_target") != "0.9.0rc1":
+        raise RuntimeError("first public release target must remain explicit")
+    if release_readiness.get("production_release_ready") is not False:
+        raise RuntimeError(
+            "0.57 docs must not claim production release readiness while "
+            "repository/publishing governance remains unresolved"
+        )
 
     public_api = (ROOT / "src" / "eyetrajectoriespy" / "__init__.py").read_text(
         encoding="utf-8"
