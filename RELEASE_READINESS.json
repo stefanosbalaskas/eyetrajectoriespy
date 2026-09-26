@@ -4,8 +4,8 @@
   "first_public_release_target": "0.9.0rc1",
   "production_release_ready": false,
   "gates": {
-    "portable_result_schema_qualified": true,
-    "environment_capture_qualified": true,
+    "portable_result_schema_qualified": false,
+    "environment_capture_qualified": false,
     "canonical_examples_qualified": false,
     "release_build_smoke_qualified": false,
     "testpypi_trusted_publishing_configured": false,
@@ -18,7 +18,8 @@
   },
   "notes": [
     "This manifest is an auditable declaration, not a substitute for live release-workflow checks.",
-    "Production release remains blocked while production_release_ready is false.",
+    "0.57 implementation gates remain false until pull-request CI qualifies them.",
+    "Production release remains blocked until repository and publishing governance are explicitly completed.",
     "The release workflow independently verifies protected main, closed issue #64, signed/verified annotated tag, and exact-main CI before PyPI publication."
   ]
 }
