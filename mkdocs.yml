@@ -38,6 +38,7 @@ nav:
       - Functional regression & clustering: guides/downstream.md
       - Function-on-scalar regression: guides/function-on-scalar.md
       - Generalized function-on-scalar regression: methods/generalized-function-on-scalar.md
+      - Generalized FoSR marginal prediction: methods/generalized-function-on-scalar-prediction.md
       - Functional mixed-effects regression: guides/functional-mixed-effects.md
       - Mixed-effects simultaneous bands: methods/functional-mixed-effects-simultaneous-bands.md
       - Random functional slope: methods/functional-mixed-effects-random-slope.md
@@ -92,6 +93,7 @@ nav:
       - Functional regression: examples/regression.md
       - Function-on-scalar regression: examples/function-on-scalar.md
       - Generalized function-on-scalar regression: examples/generalized-function-on-scalar.md
+      - Generalized FoSR marginal prediction: examples/generalized-function-on-scalar-prediction.md
       - Functional mixed-effects regression: examples/functional-mixed-effects.md
       - Mixed-effects simultaneous bands: examples/functional-mixed-effects-simultaneous-bands.md
       - Random functional slope: examples/functional-mixed-effects-random-slope.md
