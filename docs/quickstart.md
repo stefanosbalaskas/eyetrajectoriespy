@@ -214,6 +214,27 @@ the model, working independence is fixed, and robust sandwich uncertainty is
 reported. Coefficients are population-averaged marginal effects on the link
 scale.
 
+For grouped binomial data, keep success counts and denominators explicit rather
+than pre-dividing to proportions:
+
+~~~python
+grouped = fit_generalized_function_on_scalar_regression(
+    success_count_trajectories,
+    design,
+    predictors=("condition",),
+    participant_column="participant_id",
+    dimension="successes",
+    family="binomial",
+    binomial_denominator=trial_counts,
+    basis_size=4,
+    spline_degree=2,
+)
+~~~
+
+The fitted mean is a success probability. The denominator controls the grouped
+observation information and is carried with each participant bootstrap bundle;
+it is never inferred from a proportion.
+
 For whole-function inference, resample complete participants with `bootstrap_generalized_function_on_scalar_coefficients()` and calibrate `generalized_function_on_scalar_simultaneous_bands()`.
 
 For Poisson **rates**, add a scientifically meaningful strictly-positive exposure rather than manually normalizing counts:
