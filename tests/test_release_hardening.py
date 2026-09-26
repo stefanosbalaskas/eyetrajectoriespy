@@ -120,8 +120,11 @@ def test_release_workflow_builds_once_and_reuses_exact_artifact():
     assert "name: release-build-once" in workflow
     assert workflow.count("name: release-dist") >= 3
     assert "uses: pypa/gh-action-pypi-publish@release/v1" in workflow
-    assert "environment: pypi" in workflow
     assert "environment: testpypi" in workflow
+    assert 'gh release download "v${VERSION}"' in workflow
+    assert '--pattern "*.whl"' in workflow
+    assert '--pattern "*.tar.gz"' in workflow
+    assert "sha256sum -c SHA256SUMS" in workflow
     assert "id-token: write" in workflow
     assert "needs:" in workflow
     assert "- github-release" in workflow
