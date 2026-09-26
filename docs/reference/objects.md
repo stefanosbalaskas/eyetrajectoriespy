@@ -142,6 +142,35 @@ These objects intentionally do not contain conditional random effects,
 working-correlation selection results, response-scale coefficient functions, or
 an automatically chosen family/link/basis.
 
+### Generalized fixed-profile prediction objects
+
+\`GeneralizedFunctionOnScalarPredictionResult\` stores the fixed profile IDs,
+their exact scalar design rows, marginal linear-predictor and response-mean
+functions, robust delta-method standard errors, observed predictor minima/maxima,
+and a per-profile extrapolation flag. Profile values are fixed targets and are
+not resampled.
+
+\`GeneralizedFunctionOnScalarPredictionBootstrapResult\` projects every retained
+whole-participant coefficient-bootstrap draw through every fixed profile. It
+therefore preserves the dependence among profile predictions and directly
+retains the source coefficient-bootstrap object rather than drawing a second
+bootstrap sample.
+
+\`GeneralizedFunctionOnScalarPredictionBandResult\` stores simultaneous
+linear-predictor bands and their monotone inverse-link transformations to the
+marginal response scale. Calibration is over the observed grid with either
+profile-specific or complete declared-profile-family scope.
+
+\`GeneralizedFunctionOnScalarMeanDifferenceResult\` stores one predeclared
+response-scale profile difference, its paired bootstrap draws, pointwise
+bootstrap standard errors, observed-grid simultaneous band and physical-bound
+diagnostic. For Bernoulli outcomes, intervals that extend beyond the logical
+[-1, 1] difference range are flagged and retained rather than silently clipped.
+
+These objects are mean-function inference objects, not future-response
+prediction intervals. They do not select profiles or contrasts automatically
+and do not propagate uncertainty in the fixed predictor-profile values.
+
 ## Function-on-scalar result objects
 
 `FunctionOnScalarResult` stores the observed-grid coefficient functions, HC1 pointwise sandwich standard errors, fitted and residual functions, the exact functional responses used as inference units, the full scalar design matrix, rank and residual degrees of freedom, coefficient/predictor names, inference-unit IDs, curves-per-unit counts, time/dimension semantics, source curve IDs, and provenance.
