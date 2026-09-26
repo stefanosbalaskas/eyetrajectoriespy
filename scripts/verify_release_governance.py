@@ -1,4 +1,4 @@
-"""Verify repository/tag governance before production publication."""
+"""Verify exact-main governance before creating a production GitHub release."""
 
 from __future__ import annotations
 
@@ -6,52 +6,22 @@ import argparse
 import json
 import os
 from pathlib import Path
+import time
 import urllib.error
-import urllib.parse
 import urllib.request
-
 
 
 ROOT = Path(__file__).resolve().parents[1]
 
-_REQUIRED_DECLARATIONS = {
+_GITHUB_RELEASE_DECLARATIONS = {
     "portable_result_schema_qualified",
     "environment_capture_qualified",
     "canonical_examples_qualified",
     "release_build_smoke_qualified",
-    "testpypi_trusted_publishing_configured",
-    "testpypi_rehearsal_completed",
     "main_protected",
     "issue_64_closed",
-    "pypi_trusted_publishing_configured",
-    "pypi_environment_required_reviewer",
     "exact_main_ci_required",
 }
-
-
-def _release_readiness() -> dict[str, object]:
-    return json.loads(
-        (ROOT / "RELEASE_READINESS.json").read_text(encoding="utf-8")
-    )
-
-
-def _verify_declared_release_readiness() -> None:
-    readiness = _release_readiness()
-    if readiness.get("production_release_ready") is not True:
-        raise RuntimeError(
-            "production release blocked: RELEASE_READINESS.json is not armed"
-        )
-    gates = readiness.get("gates", {})
-    missing = sorted(
-        name
-        for name in _REQUIRED_DECLARATIONS
-        if gates.get(name) is not True
-    )
-    if missing:
-        raise RuntimeError(
-            "production release blocked: readiness declarations are not "
-            f"complete: {missing}"
-        )
 
 REQUIRED_CHECKS = {
     "package",
@@ -74,6 +44,32 @@ REQUIRED_CHECKS = {
 }
 
 
+def _release_readiness() -> dict[str, object]:
+    return json.loads(
+        (ROOT / "RELEASE_READINESS.json").read_text(encoding="utf-8")
+    )
+
+
+def _verify_declared_github_release_readiness() -> None:
+    readiness = _release_readiness()
+    if readiness.get("github_release_ready") is not True:
+        raise RuntimeError(
+            "GitHub release blocked: RELEASE_READINESS.json is not armed "
+            "for GitHub release"
+        )
+    gates = readiness.get("gates", {})
+    missing = sorted(
+        name
+        for name in _GITHUB_RELEASE_DECLARATIONS
+        if gates.get(name) is not True
+    )
+    if missing:
+        raise RuntimeError(
+            "GitHub release blocked: readiness declarations are incomplete: "
+            f"{missing}"
+        )
+
+
 def _github_json(url: str, token: str) -> object:
     request = urllib.request.Request(
         url,
@@ -94,84 +90,69 @@ def _github_json(url: str, token: str) -> object:
         ) from exc
 
 
-def verify_release_governance(
-    *,
-    repository: str,
-    commit: str,
-    tag: str,
-    token: str,
-) -> None:
-    _verify_declared_release_readiness()
+def _passed_checks(repository: str, commit: str, token: str) -> set[str]:
     api = f"https://api.github.com/repos/{repository}"
-
-    branch = _github_json(f"{api}/branches/main", token)
-    if not isinstance(branch, dict) or not branch.get("protected"):
-        raise RuntimeError(
-            "production release blocked: main is not protected"
-        )
-    main_sha = branch["commit"]["sha"]
-    if main_sha != commit:
-        raise RuntimeError(
-            "production release blocked: release tag does not point to current "
-            f"main HEAD ({commit} != {main_sha})"
-        )
-
-    issue = _github_json(f"{api}/issues/64", token)
-    if not isinstance(issue, dict) or issue.get("state") != "closed":
-        raise RuntimeError(
-            "production release blocked: release-readiness issue #64 is open"
-        )
-
-    encoded_tag = urllib.parse.quote(tag, safe="")
-    tag_ref = _github_json(f"{api}/git/ref/tags/{encoded_tag}", token)
-    if not isinstance(tag_ref, dict):
-        raise RuntimeError("production release tag reference is unavailable")
-    tag_object = tag_ref["object"]
-    if tag_object.get("type") != "tag":
-        raise RuntimeError(
-            "production release blocked: the version tag must be annotated"
-        )
-
-    annotated = _github_json(f"{api}/git/tags/{tag_object['sha']}", token)
-    if not isinstance(annotated, dict):
-        raise RuntimeError("annotated tag object is unavailable")
-    verification = annotated.get("verification") or {}
-    if not verification.get("verified"):
-        raise RuntimeError(
-            "production release blocked: annotated version tag is not "
-            "cryptographically verified by GitHub"
-        )
-    if annotated["object"]["sha"] != commit:
-        raise RuntimeError(
-            "production release blocked: annotated tag target differs from "
-            "the declared release commit"
-        )
-
     check_runs = _github_json(
         f"{api}/commits/{commit}/check-runs?per_page=100",
         token,
     )
     if not isinstance(check_runs, dict):
         raise RuntimeError("commit check-run response is unavailable")
-    passed = {
+    return {
         run["name"]
         for run in check_runs.get("check_runs", [])
         if run.get("status") == "completed"
         and run.get("conclusion") in {"success", "neutral", "skipped"}
     }
-    missing = sorted(REQUIRED_CHECKS - passed)
-    if missing:
+
+
+def verify_release_governance(
+    *,
+    repository: str,
+    commit: str,
+    token: str,
+    wait_seconds: int = 0,
+    poll_seconds: int = 20,
+) -> None:
+    _verify_declared_github_release_readiness()
+    api = f"https://api.github.com/repos/{repository}"
+
+    branch = _github_json(f"{api}/branches/main", token)
+    if not isinstance(branch, dict) or not branch.get("protected"):
+        raise RuntimeError("GitHub release blocked: main is not protected")
+    main_sha = branch["commit"]["sha"]
+    if main_sha != commit:
         raise RuntimeError(
-            "production release blocked: required exact-main checks are "
-            f"missing or not successful: {missing}"
+            "GitHub release blocked: release commit is not current main HEAD "
+            f"({commit} != {main_sha})"
         )
+
+    issue = _github_json(f"{api}/issues/64", token)
+    if not isinstance(issue, dict) or issue.get("state") != "closed":
+        raise RuntimeError(
+            "GitHub release blocked: release-readiness issue #64 is open"
+        )
+
+    deadline = time.monotonic() + max(wait_seconds, 0)
+    while True:
+        passed = _passed_checks(repository, commit, token)
+        missing = sorted(REQUIRED_CHECKS - passed)
+        if not missing:
+            return
+        if time.monotonic() >= deadline:
+            raise RuntimeError(
+                "GitHub release blocked: required exact-main checks are "
+                f"missing or not successful: {missing}"
+            )
+        time.sleep(max(poll_seconds, 1))
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repository", required=True)
     parser.add_argument("--commit", required=True)
-    parser.add_argument("--tag", required=True)
+    parser.add_argument("--wait-seconds", type=int, default=0)
+    parser.add_argument("--poll-seconds", type=int, default=20)
     args = parser.parse_args()
 
     token = os.environ.get("GITHUB_TOKEN")
@@ -180,10 +161,11 @@ def main() -> None:
     verify_release_governance(
         repository=args.repository,
         commit=args.commit,
-        tag=args.tag,
         token=token,
+        wait_seconds=args.wait_seconds,
+        poll_seconds=args.poll_seconds,
     )
-    print("production release governance gate passed")
+    print("GitHub release governance gate passed")
 
 
 if __name__ == "__main__":
