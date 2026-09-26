@@ -44,7 +44,7 @@ bootstrap = bootstrap_function_on_scalar_coefficients(
 
 ## 4. Interpret coefficients as functions
 
-A coefficient $\\beta_k(t)$ is the expected change in the functional response
+A coefficient $\beta_k(t)$ is the expected change in the functional response
 at time (t) for a one-unit change in the declared predictor, conditional on
 the fitted scalar design. Report the time domain over which simultaneous
 coverage is claimed.
