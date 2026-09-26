@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "current_development_version": "0.57.0.dev0",
+  "first_public_release_target": "0.9.0rc1",
+  "production_release_ready": false,
+  "gates": {
+    "portable_result_schema_qualified": true,
+    "environment_capture_qualified": true,
+    "canonical_examples_qualified": false,
+    "release_build_smoke_qualified": false,
+    "testpypi_trusted_publishing_configured": false,
+    "testpypi_rehearsal_completed": false,
+    "main_protected": false,
+    "issue_64_closed": false,
+    "pypi_trusted_publishing_configured": false,
+    "pypi_environment_required_reviewer": false,
+    "exact_main_ci_required": true
+  },
+  "notes": [
+    "This manifest is an auditable declaration, not a substitute for live release-workflow checks.",
+    "Production release remains blocked while production_release_ready is false.",
+    "The release workflow independently verifies protected main, closed issue #64, signed/verified annotated tag, and exact-main CI before PyPI publication."
+  ]
+}
