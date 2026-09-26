@@ -395,6 +395,22 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.plot_generalized_function_on_scalar_coefficients
 ::: eyetrajectoriespy.generalized_function_on_scalar_reporting_text
 
+### Generalized FoSR fixed-profile prediction
+::: eyetrajectoriespy.GeneralizedFunctionOnScalarPredictionResult
+::: eyetrajectoriespy.GeneralizedFunctionOnScalarPredictionBootstrapResult
+::: eyetrajectoriespy.GeneralizedFunctionOnScalarPredictionBandResult
+::: eyetrajectoriespy.GeneralizedFunctionOnScalarMeanDifferenceResult
+::: eyetrajectoriespy.generalized_function_on_scalar_predict
+::: eyetrajectoriespy.bootstrap_generalized_function_on_scalar_predictions
+::: eyetrajectoriespy.generalized_function_on_scalar_prediction_bands
+::: eyetrajectoriespy.generalized_function_on_scalar_mean_difference_band
+::: eyetrajectoriespy.generalized_function_on_scalar_prediction_frame
+::: eyetrajectoriespy.generalized_function_on_scalar_mean_difference_frame
+::: eyetrajectoriespy.plot_generalized_function_on_scalar_predictions
+::: eyetrajectoriespy.plot_generalized_function_on_scalar_mean_difference
+::: eyetrajectoriespy.generalized_function_on_scalar_prediction_reporting_text
+::: eyetrajectoriespy.generalized_function_on_scalar_mean_difference_reporting_text
+
 ## Downstream analysis
 ::: eyetrajectoriespy.functional_l2_distance
 ::: eyetrajectoriespy.pairwise_functional_distances
