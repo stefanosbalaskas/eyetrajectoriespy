@@ -81,25 +81,28 @@ ranked or automatically selected.
 
 ```mermaid
 flowchart TD
-    A[Common-grid functional response Y(t)] --> B{Independent sampling unit}
-    B -->|Independent curves| C[unit=curve]
-    B -->|Repeated trials, participant-level predictors| D[Average response within participant]
-    D --> E{Predictors constant within participant?}
-    E -->|No| F[Stop: repeated-measures functional model required]
-    E -->|Yes| G[Equal-weight participant design]
-    C --> H[Explicit numeric scalar design]
-    G --> H
-    H --> I[Observed-grid OLS beta(t)]
-    I --> J[HC1 pointwise SE]
-    I --> K[Whole-function fixed-design wild bootstrap]
-    K --> L{Simultaneous scope}
-    L -->|Coefficient| M[Max over time x dimension per coefficient]
-    L -->|Family| N[Max over coefficient x time x dimension]
-    M --> O[Observed-grid simultaneous band]
-    N --> O
+    A[Common-grid functional response Y_ij(t)] --> B{Response family}
+    B -->|Continuous Gaussian| C{Repeated trials?}
+    C -->|No independent curves| D[0.35 observed-grid FoSR OLS]
+    C -->|Yes participant-level predictors only| E[Participant-average response]
+    C -->|Yes trial-varying predictors| F[Gaussian functional mixed effects]
+    B -->|Bernoulli 0/1| G[0.51 marginal generalized FoSR: logit]
+    B -->|Poisson counts| H[0.51 marginal generalized FoSR: log]
+    G --> I[Participant is independent GEE cluster]
+    H --> I
+    I --> J[Working independence]
+    J --> K[Robust sandwich coefficient covariance]
+    K --> L{Whole-function inference?}
+    L -->|Yes| M[Resample complete participants]
+    M --> N[Refit same family/link/basis GEE]
+    N --> O[Observed-grid link-scale simultaneous band]
 ```
 
-Version 0.35 does not infer categorical coding, interactions, smoothing, basis regularization, or participant random effects. Trial-varying within-participant predictors stop at the explicit repeated-measures boundary rather than being approximated by independent pointwise models.
+Version 0.51 targets population-averaged marginal coefficient functions.
+Trial-varying scalar predictors remain in the generalized design; trials and
+time rows are not treated as independent clusters. Working independence is
+fixed rather than selected, and bootstrap failures are not silently dropped or
+redrawn.
 
 ## Ordered trajectory similarity
 
