@@ -1,0 +1,61 @@
+{
+  "schema_version": 1,
+  "package_version": "0.55.0.dev0",
+  "policy": {
+    "canonical": "recommended default route for a common scientific question",
+    "advanced": "supported capability requiring a more specific scientific reason",
+    "diagnostic": "audit or sensitivity capability that does not select a preferred model",
+    "experimental": "supported with an explicitly narrower interpretation or validation boundary"
+  },
+  "workflows": [
+    {
+      "id": "fpca-exploration",
+      "title": "Continuous gaze exploration and FPCA",
+      "level": "canonical",
+      "docs": "docs/workflows/fpca-exploration.md",
+      "entry_points": ["fit_fpca", "fit_mfpca"],
+      "reporting": ["summarise_fpca", "fpca_reporting_text"],
+      "advanced_branches": ["fit_sparse_fpca_fdapy", "fit_phase_fpca", "fit_compositional_fpca"]
+    },
+    {
+      "id": "experimental-functional-regression",
+      "title": "Experimental functional regression",
+      "level": "canonical",
+      "docs": "docs/workflows/experimental-functional-regression.md",
+      "entry_points": ["fit_function_on_scalar_regression"],
+      "bootstrap": ["bootstrap_function_on_scalar_coefficients"],
+      "reporting": ["function_on_scalar_reporting_text"],
+      "advanced_branches": ["fit_scalar_on_function_regression", "wild_bootstrap_fpca_projection"]
+    },
+    {
+      "id": "repeated-trial-mixed-effects",
+      "title": "Repeated-trial functional mixed effects",
+      "level": "canonical",
+      "docs": "docs/workflows/repeated-trial-mixed-effects.md",
+      "entry_points": ["fit_functional_mixed_effects_regression"],
+      "bootstrap": ["bootstrap_functional_mixed_effects_coefficients"],
+      "reporting": ["functional_mixed_effects_reporting_text"],
+      "diagnostic_branches": ["functional_mixed_effects_residual_diagnostics", "functional_mixed_effects_covariance_sensitivity"]
+    },
+    {
+      "id": "generalized-responses",
+      "title": "Generalized binary and count functional responses",
+      "level": "canonical",
+      "docs": "docs/workflows/generalized-responses.md",
+      "entry_points": ["fit_generalized_function_on_scalar_regression"],
+      "bootstrap": ["bootstrap_generalized_function_on_scalar_coefficients"],
+      "reporting": ["generalized_function_on_scalar_reporting_text"],
+      "advanced_branches": ["generalized_function_on_scalar_predict", "generalized_function_on_scalar_prediction_bands"]
+    },
+    {
+      "id": "nonlinear-recurrence",
+      "title": "Nonlinear and recurrence trajectory analysis",
+      "level": "canonical",
+      "docs": "docs/workflows/nonlinear-recurrence.md",
+      "entry_points": ["recurrence_matrix", "rqa_metrics"],
+      "reporting": ["rqa_reporting_text"],
+      "diagnostic_branches": ["rqa_parameter_sensitivity", "recurrence_radius_profile"],
+      "experimental_branches": ["discrete_transfer_entropy", "conditional_transfer_entropy", "return_map_stability"]
+    }
+  ]
+}
