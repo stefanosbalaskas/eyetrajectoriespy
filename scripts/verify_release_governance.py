@@ -5,10 +5,53 @@ from __future__ import annotations
 import argparse
 import json
 import os
+from pathlib import Path
 import urllib.error
 import urllib.parse
 import urllib.request
 
+
+
+ROOT = Path(__file__).resolve().parents[1]
+
+_REQUIRED_DECLARATIONS = {
+    "portable_result_schema_qualified",
+    "environment_capture_qualified",
+    "canonical_examples_qualified",
+    "release_build_smoke_qualified",
+    "testpypi_trusted_publishing_configured",
+    "testpypi_rehearsal_completed",
+    "main_protected",
+    "issue_64_closed",
+    "pypi_trusted_publishing_configured",
+    "pypi_environment_required_reviewer",
+    "exact_main_ci_required",
+}
+
+
+def _release_readiness() -> dict[str, object]:
+    return json.loads(
+        (ROOT / "RELEASE_READINESS.json").read_text(encoding="utf-8")
+    )
+
+
+def _verify_declared_release_readiness() -> None:
+    readiness = _release_readiness()
+    if readiness.get("production_release_ready") is not True:
+        raise RuntimeError(
+            "production release blocked: RELEASE_READINESS.json is not armed"
+        )
+    gates = readiness.get("gates", {})
+    missing = sorted(
+        name
+        for name in _REQUIRED_DECLARATIONS
+        if gates.get(name) is not True
+    )
+    if missing:
+        raise RuntimeError(
+            "production release blocked: readiness declarations are not "
+            f"complete: {missing}"
+        )
 
 REQUIRED_CHECKS = {
     "package",
@@ -57,6 +100,7 @@ def verify_release_governance(
     tag: str,
     token: str,
 ) -> None:
+    _verify_declared_release_readiness()
     api = f"https://api.github.com/repos/{repository}"
 
     branch = _github_json(f"{api}/branches/main", token)
