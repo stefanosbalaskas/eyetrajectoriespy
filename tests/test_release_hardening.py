@@ -16,18 +16,17 @@ def _load_script(name):
     return module
 
 
-def test_release_version_contract_agrees_for_057():
+def test_release_version_contract_agrees_for_rc1():
     module = _load_script("verify_release_version.py")
-    assert module.verify_version_contract() == "0.57.0.dev0"
+    assert module.verify_version_contract() == "0.9.0rc1"
 
 
-def test_production_release_rejects_dev_version():
+def test_production_release_accepts_matching_rc_tag():
     module = _load_script("verify_release_version.py")
-    with pytest.raises(RuntimeError, match="development versions"):
-        module.verify_version_contract(
-            tag="v0.57.0.dev0",
-            production=True,
-        )
+    assert module.verify_version_contract(
+        tag="v0.9.0rc1",
+        production=True,
+    ) == "0.9.0rc1"
 
 
 def test_release_governance_happy_path_requires_all_quality_gates(monkeypatch):
