@@ -1128,6 +1128,92 @@ continuous B-spline domain.
 **API:** `bootstrap_functional_mixed_effects_coefficients()`,
 `functional_mixed_effects_simultaneous_bands()`.
 
+## Marginal generalized function-on-scalar regression { #generalized-function-on-scalar }
+
+Version 0.51 models repeated non-Gaussian functional responses through a
+population-averaged generalized estimating equation. For participant \(i\),
+trial \(j\), and observed time \(t\),
+
+\[
+g\{\mu_{ij}(t)\}
+=
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t),
+\qquad
+\mu_{ij}(t)
+=
+E\{Y_{ij}(t)\mid\mathbf x_{ij}\}.
+\]
+
+Each coefficient function is represented by a fixed analyst-declared B-spline
+basis,
+
+\[
+\beta_k(t)
+=
+\mathbf B(t)^\top\boldsymbol\theta_k.
+\]
+
+For Bernoulli responses, \(g\) is the logit link and observations must be coded
+exactly as 0/1. For Poisson responses, \(g\) is the log link and observations
+must be non-negative integer counts.
+
+Participants are the independent GEE clusters. Trial-varying scalar predictors
+remain in the design; trials are not averaged before fitting. Version 0.51
+fixes the working dependence structure to independence and uses the robust
+cluster sandwich covariance,
+
+\[
+\widehat{\operatorname{Var}}_{\mathrm{robust}}
+(\widehat{\boldsymbol\theta})
+=
+\mathbf A^{-1}
+\mathbf B_{\mathrm{sand}}
+\mathbf A^{-1}.
+\]
+
+Pointwise coefficient-function standard errors are obtained by mapping the
+robust covariance of the basis coefficients through \(\mathbf B(t)\).
+
+If there are \(K\) scalar coefficients including the intercept and \(q\) basis
+functions per coefficient, the expanded parameter vector has \(Kq\) entries.
+The implementation requires
+
+\[
+n_{\mathrm{participants}}>Kq.
+\]
+
+This is a minimum structural guard, not an adequacy theorem for robust sandwich
+inference.
+
+Whole-participant case bootstrap refits resample complete participant bundles.
+Duplicate source-participant draws receive distinct bootstrap cluster
+identities. For coefficient \(k\),
+
+\[
+M_k^{*(b)}
+=
+\max_m
+\left|
+\frac{
+\widehat\beta_k^{*(b)}(t_m)-\widehat\beta_k(t_m)
+}{
+\widehat{\mathrm{SE}}\{\widehat\beta_k(t_m)\}
+}
+\right|.
+\]
+
+The resulting observed-grid simultaneous band is calibrated on the link scale.
+A familywise option takes the maximum across all declared coefficient functions
+and observed time points.
+
+The coefficients are marginal / population averaged. They are not conditional
+generalized mixed-model coefficients. No family, link, basis dimension, working
+correlation, smoothing penalty or model is selected automatically.
+
+**API:** \`fit_generalized_function_on_scalar_regression()\`,
+\`bootstrap_generalized_function_on_scalar_coefficients()\`,
+\`generalized_function_on_scalar_simultaneous_bands()\`.
+
 ## Function-on-scalar regression { #function-on-scalar }
 
 Let \(Y_{id}(t_m)\) be functional response dimension \(d\) for independent inference unit \(i\), and let \(\mathbf x_i\) contain an intercept and the analyst-declared scalar predictors. At each observed time and selected response dimension,
