@@ -1014,3 +1014,22 @@ or residual-diagnostic winner. When a long-range serial process and smooth trial
 effect compete, report the covariance shifts themselves rather than converting
 them into an automatic component-deletion rule.
 
+## Generalized function-on-scalar reporting
+
+For version 0.51 report:
+
+- the functional response dimension and whether the family was Bernoulli/logit or Poisson/log;
+- exact binary/count response coding and any exclusions performed upstream;
+- the participant column defining independent clusters;
+- every scalar predictor and whether predictors vary across trials;
+- B-spline basis size, degree and observed time domain;
+- that working independence was fixed rather than selected;
+- that coefficient uncertainty used the robust cluster sandwich covariance;
+- the participant count and expanded coefficient-parameter count, making clear that the count guard is not an adequacy theorem;
+- coefficient functions on the link scale and their interpretation as marginal population-averaged effects;
+- bootstrap resampling at the whole-participant level when simultaneous bands are used;
+- number of bootstrap replicates, seed, confidence level and coefficient/family simultaneous scope;
+- that duplicate sampled participants received distinct bootstrap GEE group identities;
+- any backend warnings or bootstrap fit failures.
+
+Do not describe 0.51 coefficients as subject-specific/conditional random-effect coefficients. Do not describe aggregated proportions as Bernoulli observations unless an explicit denominator-aware model has actually been fitted.
