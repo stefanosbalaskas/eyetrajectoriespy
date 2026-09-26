@@ -172,7 +172,7 @@ def main() -> None:
     manifest = json.loads(
         (ROOT / "CANONICAL_WORKFLOWS.json").read_text(encoding="utf-8")
     )
-    if manifest.get("package_version") != "0.55.0.dev0":
+    if manifest.get("package_version") != "0.56.0.dev0":
         raise RuntimeError("canonical workflow manifest version is stale")
     workflows = manifest.get("workflows", [])
     if len(workflows) != 5:
@@ -193,7 +193,7 @@ def main() -> None:
         "FUNCTION_EQUATION_INDEX.md",
         "WORKFLOW_ATLAS.md",
         "Visual gallery",
-        "0.55.0.dev0",
+        "0.56.0.dev0",
         "Which workflow do I need?",
         "Where is the full advanced API?",
     ):
