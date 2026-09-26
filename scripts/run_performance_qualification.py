@@ -139,7 +139,7 @@ def _mixed_data(*, n_participants, n_trials, n_time, seed, include_trial_ids):
         curve_ids=tuple(f"M{i:03d}" for i in range(len(values))),
         dimension_names=("response",),
         metadata=pd.DataFrame(metadata),
-        coordinate_system="arbitrary",
+        coordinate_system="unknown",
         time_unit="s",
     )
     design = pd.DataFrame(
@@ -269,7 +269,7 @@ def _case_generalized_gee_bootstrap(scale):
         curve_ids=tuple(f"G{i:03d}" for i in range(counts.shape[0])),
         dimension_names=("count",),
         metadata=pd.DataFrame({"participant_id": participants}),
-        coordinate_system="arbitrary",
+        coordinate_system="unknown",
         time_unit="s",
     )
     design = pd.DataFrame(
@@ -313,7 +313,7 @@ def _case_recurrence_rqa(scale):
         values=values[None, :, None],
         curve_ids=("R0",),
         dimension_names=("x",),
-        coordinate_system="arbitrary",
+        coordinate_system="unknown",
         time_unit="samples",
     )
     recurrence = recurrence_matrix(
@@ -343,7 +343,7 @@ def _case_nonlinear_sensitivity(scale):
         values=values[None, :, None],
         curve_ids=("S0",),
         dimension_names=("x",),
-        coordinate_system="arbitrary",
+        coordinate_system="unknown",
         time_unit="samples",
     )
     result = rqa_parameter_sensitivity(
