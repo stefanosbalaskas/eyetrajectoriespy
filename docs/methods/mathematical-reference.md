@@ -1290,9 +1290,9 @@ resampled. No profile or contrast is selected automatically, multiple-contrast
 family control is not claimed, and simultaneous coverage is restricted to the
 observed time grid.
 
-**API:** \`generalized_function_on_scalar_predict()\`,
-\`generalized_function_on_scalar_prediction_bands()\`,
-\`generalized_function_on_scalar_mean_difference_band()\`.
+**API:** `generalized_function_on_scalar_predict()`,
+`generalized_function_on_scalar_prediction_bands()`,
+`generalized_function_on_scalar_mean_difference_band()`.
 
 ## Function-on-scalar regression { #function-on-scalar }
 
