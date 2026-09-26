@@ -36,6 +36,7 @@ def test_canonical_workflow_manifest_is_complete_and_public():
         for role in (
             "entry_points",
             "bootstrap",
+            "summaries",
             "reporting",
             "advanced_branches",
             "diagnostic_branches",
@@ -58,6 +59,7 @@ def test_canonical_workflows_do_not_create_namespace_aliases():
         for role in (
             "entry_points",
             "bootstrap",
+            "summaries",
             "reporting",
             "advanced_branches",
             "diagnostic_branches",
