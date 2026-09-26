@@ -46,6 +46,7 @@ The current check contexts intended for protection are:
 - `FDApy sparse / Python 3.11`;
 - `FDApy sparse / Python 3.12`.
 - `performance-envelope`.
+- `release-readiness`.
 
 Use exact names from a recent successful pull request when configuring the
 ruleset. Required status checks should remain unique across workflows.
@@ -57,7 +58,8 @@ ruleset. Required status checks should remain unique across workflows.
 - [x] Each route includes assumptions, fitting, uncertainty/diagnostics and
       reporting.
 - [x] Advanced/diagnostic/experimental branches are visibly separated.
-- [ ] Realistic external-data end-to-end examples are qualified for every route.
+- [x] One realistic research-style executable end-to-end example exists for
+      every canonical route and is exercised by examples CI.
 
 ## API stability
 
@@ -102,13 +104,47 @@ to claim that the 0.56 qualification harness itself is operational.
 
 ## Reproducibility and serialization
 
-- [ ] Define a stable environment/software-version capture payload.
-- [ ] Audit serialization of representative result objects.
-- [ ] Verify round-trip preservation of consequential provenance.
-- [ ] Define compatibility behavior across development versions.
-- [ ] Add a reproducibility bundle/checklist for manuscript workflows.
+- [x] Define an explicit environment/software-version capture payload.
+- [x] Define a portable JSON + NPZ scientific-result snapshot rather than
+      permanent backend-object pickle compatibility.
+- [x] Preserve scientific arrays, identifiers, units, diagnostics and
+      provenance while marking opaque backend fields explicitly nonportable.
+- [x] Verify round-trip preservation, schema rejection and array checksum
+      integrity in CI.
+- [x] Define cross-version behavior: schema compatibility is explicit and
+      source/current package versions remain visible.
+- [x] Add a reproducibility bundle checklist for manuscript workflows.
 
-These items are planned for the 0.57 hardening tranche.
+These 0.57 portability/environment items are pull-request qualified; exact-main
+requalification remains required after merge.
+
+
+
+## Release automation and publication
+
+- [x] Dedicated `release.yml` is isolated from ordinary push/PR CI.
+- [x] Release distributions are built exactly once and reused for TestPyPI,
+      PyPI and GitHub Release attachment.
+- [x] `python -m build`, `twine check`, fresh wheel install, fresh sdist
+      install and an installed-package canonical smoke test are encoded in both
+      release automation and non-publishing release-readiness CI.
+- [x] Production publication is version-tag-only; manual dispatch cannot choose
+      production PyPI.
+- [x] Production creates the GitHub Release only after PyPI publication
+      succeeds.
+- [x] PyPI publishing uses the OIDC Trusted Publishing action and no long-lived
+      API token.
+- [x] TestPyPI rehearsal is supported through the same build artifact.
+- [x] Production checks live GitHub governance and exact-main CI before
+      publishing.
+- [ ] TestPyPI Trusted Publisher is configured and rehearsal completed.
+- [ ] Production PyPI Trusted Publisher is configured.
+- [ ] `pypi` GitHub environment has the intended required-reviewer protection.
+- [ ] `main` is protected and issue #64 is closed.
+- [ ] `RELEASE_READINESS.json` is armed for production.
+
+The planned first synchronized public release is `0.9.0rc1`. None of the
+unchecked items may be inferred from successful package CI.
 
 ## Release-candidate gate
 

@@ -483,6 +483,12 @@ from .wild_regression import (
     fpca_wild_bootstrap_projection_frame,
     wild_bootstrap_fpca_projection,
 )
+from .portable_results import (
+    PortableScientificResultSnapshot,
+    capture_environment,
+    export_portable_result,
+    load_portable_result,
+)
 from .validation import (
     validate_common_grid,
     validate_no_long_missing_runs,
@@ -490,9 +496,13 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.56.0.dev0"
+__version__ = "0.57.0.dev0"
 
 __all__ = [
+    "PortableScientificResultSnapshot",
+    "capture_environment",
+    "export_portable_result",
+    "load_portable_result",
     "GeneralizedFunctionOnScalarPredictionResult",
     "GeneralizedFunctionOnScalarPredictionBootstrapResult",
     "GeneralizedFunctionOnScalarPredictionBandResult",

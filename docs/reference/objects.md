@@ -633,3 +633,25 @@ not silently discarded or replaced. Basis sizes, spline degree, preprocessing,
 predictor specification, random-effect structure, REML/ML choice, and optimizer
 remain the declared reference specification and are not automatically
 reselected.
+
+## Portable scientific-result snapshots
+
+`PortableScientificResultSnapshot` is a transport/audit container returned by
+`load_portable_result()`. It is intentionally **not** a reconstructed fitted
+estimator. The snapshot exposes:
+
+- the original result type;
+- source and currently loaded package versions;
+- decoded scientific payload;
+- captured environment metadata when included;
+- explicit unit metadata;
+- explicit paths of backend/opaque fields that were not portable;
+- the original manifest.
+
+The `package_version_match` property reports whether the source package version
+matches the package currently loading the snapshot. A mismatch is visible but
+does not prevent reading schema-compatible scientific state.
+
+The portable format is documented in
+[Portable scientific results](../reproducibility/portable-results.md).
+

@@ -6,8 +6,11 @@ namespace redesign.
 
 ## Current public surface
 
-At the 0.55 stabilization branch, `eyetrajectoriespy.__all__` contains **407**
+At the 0.55 stabilization branch, `eyetrajectoriespy.__all__` contains **411**
 public exports with no duplicate names.
+
+
+Version 0.57 adds four non-estimator reproducibility exports—`capture_environment()`, `export_portable_result()`, `load_portable_result()`, and `PortableScientificResultSnapshot`—without changing the established estimator/resampling/reporting prefix counts.
 
 Convention-shaped groups currently include:
 
