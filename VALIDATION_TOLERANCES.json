@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "package_version": "0.56.0.dev0",
+  "classes": [
+    {
+      "id": "exact_combinatorial",
+      "applies_to": [
+        "integer counts",
+        "line counts",
+        "support counts",
+        "exact discrete paths/couplings when unique"
+      ],
+      "policy": "Prefer exact equality. If a derived floating ratio or logarithm is unavoidable, use zero relative tolerance and an absolute tolerance near machine precision.",
+      "default_rtol": 0,
+      "default_atol": 1e-15,
+      "notes": "Do not loosen tolerance to accommodate a wrong counting convention."
+    },
+    {
+      "id": "deterministic_geometry",
+      "applies_to": [
+        "Fréchet distance",
+        "DTW cumulative cost",
+        "deterministic functional distances"
+      ],
+      "policy": "Use hand-computable examples where possible. Exact representable values may use zero tolerance; otherwise use tight floating-point tolerance and audit the path/coupling as well as the scalar distance.",
+      "default_rtol": 1e-12,
+      "default_atol": 1e-12
+    },
+    {
+      "id": "linear_algebra_invariant",
+      "applies_to": [
+        "FPCA eigenvalues",
+        "eigenspaces",
+        "reconstruction",
+        "principal angles"
+      ],
+      "policy": "Compare invariant scientific quantities. Eigenfunction signs are arbitrary; near-tied eigenvectors should be compared as subspaces, not elementwise.",
+      "default_rtol": 1e-10,
+      "default_atol": 1e-12
+    },
+    {
+      "id": "optimizer_equivalence",
+      "applies_to": [
+        "MixedLM fits",
+        "GEE fits",
+        "other converged numerical optimizers"
+      ],
+      "policy": "Require the same likelihood/estimand/specification and successful convergence. Compare fixed parameters, covariance/scale and objective or fitted means with explicit per-test tolerances. Do not use a loose universal tolerance.",
+      "default_rtol": 1e-7,
+      "default_atol": 1e-9
+    },
+    {
+      "id": "external_backend_equivalence",
+      "applies_to": [
+        "independent scientific libraries or separately assembled backend fits"
+      ],
+      "policy": "Record backend/version, parameterization mapping and the quantity being compared. Tolerance must be justified per ledger entry because defaults, optimization and normalization can differ.",
+      "default_rtol": null,
+      "default_atol": null
+    },
+    {
+      "id": "simulation_recovery",
+      "applies_to": [
+        "known-parameter stochastic simulation"
+      ],
+      "policy": "Do not use machine-precision equality. Predeclare sample size, seed, estimand and recovery criterion informed by stochastic variability. Simulation recovery is weaker evidence than analytical truth or independent equivalence.",
+      "default_rtol": null,
+      "default_atol": null
+    },
+    {
+      "id": "bootstrap_monte_carlo",
+      "applies_to": [
+        "bootstrap quantiles",
+        "Monte Carlo p-values",
+        "surrogate summaries"
+      ],
+      "policy": "For reproducibility under identical stored draws/seeds, compare deterministically where appropriate. For statistical agreement across independent draws, base acceptance on Monte Carlo error rather than arbitrary decimal-place matching.",
+      "default_rtol": null,
+      "default_atol": null
+    }
+  ]
+}
