@@ -843,6 +843,7 @@ def generalized_function_on_scalar_exposure_frame(
                 "curve_id": curve_id,
                 "minimum_exposure": minimum,
                 "maximum_exposure": maximum,
+                "exposure_range": maximum - minimum,
                 "exposure_ratio": maximum / minimum,
                 "varies_over_time": bool(
                     not np.allclose(values, values[0], rtol=0.0, atol=0.0)
@@ -857,6 +858,7 @@ def generalized_function_on_scalar_exposure_frame(
     frame.attrs["exposure_audit"] = {
         "minimum_exposure": global_min,
         "maximum_exposure": global_max,
+        "exposure_range": global_max - global_min,
         "extreme_exposure_ratio": global_max / global_min,
         "varies_over_time": bool(np.any(frame["varies_over_time"])),
         "varies_between_curves": bool(
