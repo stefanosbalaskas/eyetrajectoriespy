@@ -15,6 +15,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Function-on-scalar regression | implemented; observed-grid OLS with explicit design and HC1 standard errors | `fit_function_on_scalar_regression()` |
 | Function-on-scalar simultaneous coefficient bands | implemented; fixed-design wild bootstrap with coefficient/family scope | `function_on_scalar_simultaneous_bands()` |
 | Generalized function-on-scalar regression | implemented; Bernoulli/logit and Poisson/log marginal GEE with participant clusters, explicit B-spline coefficient functions, robust sandwich covariance, participant bootstrap simultaneous bands, and no automatic working-correlation selection | `fit_generalized_function_on_scalar_regression()` / `generalized_function_on_scalar_simultaneous_bands()` |
+| Generalized FoSR fixed-profile prediction | implemented; fixed marginal profiles, extrapolation audit, response-scale mean functions, participant-bootstrap simultaneous prediction bands, one predeclared mean-difference band, no automatic target/contrast selection | `generalized_function_on_scalar_predict()` / `generalized_function_on_scalar_prediction_bands()` |
 | Functional mixed-effects regression | implemented; one Gaussian response dimension, B-spline fixed effects, participant functional random intercept, optional one guarded participant random functional slope, joint MixedLM fit | `fit_functional_mixed_effects_regression()` |
 | Functional mixed-effects simultaneous coefficient bands | implemented; whole-participant case bootstrap, fixed-covariance GLS coefficient refits, coefficient/family observed-grid maxima | `bootstrap_functional_mixed_effects_coefficients()` / `functional_mixed_effects_simultaneous_bands()` |
 | Full-refit participant bootstrap | implemented; unique bootstrap group IDs for duplicate participant draws, complete MixedLM refit under fixed declared specification, retained variance-component distributions | `bootstrap_functional_mixed_effects_full_refit()` |
@@ -130,13 +131,13 @@ Review flags are descriptive diagnostics. The package does not turn them into au
 
 `bootstrap_fpca_regression_uncertainty()` now refits the common-grid Gaussian FPCR pipeline under paired resampling and propagates basis/regression sampling variability into the reconstructed slope and fitted conditional means.
 
-Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, coverage-optimal automatic wild-bootstrap truncation tuning, heteroscedastic future-outcome prediction, aggregated-binomial denominators, Poisson offsets, non-independence generalized working correlations, or generalized functional random effects. Version 0.51 adds marginal Bernoulli/Poisson function-on-scalar GEE with whole-participant bootstrap inference.
+Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, coverage-optimal automatic wild-bootstrap truncation tuning, heteroscedastic future-outcome prediction, aggregated-binomial denominators, Poisson offsets, non-independence generalized working correlations, generalized functional random effects, uncertainty in declared prediction-profile values, or future-response prediction for generalized functional outcomes. Version 0.51 adds marginal Bernoulli/Poisson function-on-scalar GEE and version 0.52 adds fixed-profile marginal mean inference.
 
 ## Research/development candidates
 
 Future tranches may evaluate:
 
-- richer generalized functional responses beyond the guarded 0.51 Bernoulli/Poisson marginal GEE contract;
+- richer generalized functional responses beyond the guarded 0.51–0.52 marginal GEE/prediction contracts;
 - richer sparse/irregular functional inference and external validation workflows;
 - richer multilevel functional mixed-effects backends only where they answer a distinct scientific need rather than adding another covariance knob;
 - explicit system-identification models for gaze dynamics;
@@ -148,7 +149,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.51.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.52.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
@@ -259,11 +260,41 @@ The estimand is explicitly marginal/population averaged. Version 0.51 does not
 pretend that these coefficients are conditional generalized functional random
 effects.
 
-### Post-0.51 direction
+### 0.52 fixed-profile marginal prediction and contrasts
 
-The next tranche should deepen this new generalized-response line only when a
-distinct estimand is clear. Candidate extensions include explicit binomial
-denominators/proportion responses, Poisson exposure offsets, richer
-sparse/irregular generalized functional responses, or external validation.
-Automatic working-correlation selection and a generalized mixed-effects
-covariance multiverse are not implied next steps.
+Version **0.52** turns the 0.51 marginal coefficient functions into fixed-profile
+marginal response functions without changing the fitted GEE estimand.
+
+For every analyst-declared scalar profile (x_r), it retains the linear
+predictor and inverse-link marginal mean, robust delta-method pointwise
+uncertainty, observed scalar-predictor range diagnostics, and an explicit
+extrapolation flag. Profiles remain fixed scientific targets and are never
+resampled or selected automatically.
+
+The existing whole-participant coefficient bootstrap is projected through every
+profile using the exact same participant draws. Simultaneous prediction bands
+are calibrated on the linear-predictor scale and transformed through the
+strictly monotone inverse link, so Bernoulli probability bands remain valid
+probabilities and Poisson expected-count bands remain positive without
+clipping. Scope can be one profile at a time or the complete predeclared
+profile family.
+
+Version 0.52 also supports one predeclared response-scale mean difference using
+paired profile projections from the same bootstrap draw. It does not search
+across profile pairs or claim multiple-contrast family adjustment. Bernoulli
+difference intervals that cross the logical [-1, 1] range are flagged and
+retained rather than silently clipped.
+
+These are marginal mean-function intervals, not predictive intervals for future
+stochastic Bernoulli/count trajectories, and the simultaneous claim remains on
+the observed grid.
+
+### Post-0.52 direction
+
+The next generalized-response extension should add a genuinely new observation
+contract rather than another prediction display. Strong candidates are explicit
+Poisson exposure offsets, grouped-binomial denominators/proportions if the
+backend contract can be validated directly, or richer sparse/irregular
+generalized functional responses. Automatic working-correlation selection and a
+generalized mixed-effects covariance multiverse remain deliberately out of
+scope.
