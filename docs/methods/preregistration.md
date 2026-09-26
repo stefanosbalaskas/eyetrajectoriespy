@@ -878,37 +878,53 @@ the preferred substantive conclusion.
 
 ## Generalized function-on-scalar regression
 
-For a 0.51 generalized functional response model, pre-register:
+For a generalized functional response model, pre-register:
 
-- response family (`binomial` or `poisson`) and the scientific meaning of the response at each observed time;
-- response coding rule, including whether observations are exact Bernoulli 0/1 or non-negative integer counts;
+- response family (`binomial` or `poisson`) and the scientific meaning of the
+  response at each observed time;
+- response coding rule, including exact Bernoulli 0/1 or non-negative integer
+  counts;
+- for Poisson models, whether the estimand is expected count or an
+  exposure-adjusted rate;
+- when exposure is used, its scientific denominator, units, alignment/expansion
+  rule, positivity requirement, and justification for proportional expected-
+  count scaling before inspecting results;
 - participant column defining independent clusters;
-- scalar predictors and any analyst-created interactions;
+- scalar predictors and analyst-created interactions;
 - response dimension, coefficient B-spline basis size and spline degree;
 - the fixed working-independence GEE contract;
 - robust sandwich covariance as the inferential covariance;
 - whether whole-participant bootstrap simultaneous bands will be reported;
 - bootstrap replicate count, seed, confidence level and simultaneous scope.
 
-Do not switch family/link, change basis size, reinterpret proportions as Bernoulli outcomes, or introduce a different working correlation after seeing which specification gives a preferred coefficient trajectory.
+Do not switch family/link, change basis size, reinterpret proportions as
+Bernoulli outcomes, invent or redefine exposure after seeing results, or change
+working correlation because another specification gives a preferred
+coefficient trajectory.
 
 ## Generalized fixed-profile prediction
 
-If 0.52 marginal prediction is planned, pre-register the fixed scalar predictor
-profiles before examining response-scale curves. Record every predictor value,
-profile identifier, and which profiles will be compared.
+Pre-register fixed scalar predictor profiles before examining response-scale
+curves. Record every predictor value, profile identifier, and profile pair that
+will be compared.
 
 Also pre-register:
 
-- the coefficient-bootstrap size and seed;
+- coefficient-bootstrap size and seed;
 - profile-specific versus complete-profile-family simultaneous scope;
-- the exact ordered profile pair for any response-scale mean difference;
-- the observed-grid interpretation of simultaneous coverage;
+- prediction scale;
+- for exposure-adjusted expected-count predictions, every target exposure and
+  its units;
+- the exact ordered profile pair and contrast scale;
+- for exposure-adjusted Poisson contrasts, choose rate difference, rate ratio,
+  or expected-count difference rather than generating all three post hoc;
+- observed-grid interpretation of simultaneous coverage;
 - how extrapolation flags will be reported;
 - whether an extrapolative profile is scientifically intended;
-- that profile values are treated as fixed without measurement/estimation
-  uncertainty.
+- that profile values and target exposure are treated as fixed without
+  measurement/estimation uncertainty.
 
-Do not choose a profile pair after inspecting which response-scale difference
-looks largest or which simultaneous band excludes zero.
+Do not choose a profile pair, target exposure, or contrast scale after
+inspecting which response-scale result looks largest or which simultaneous band
+excludes its null value.
 
