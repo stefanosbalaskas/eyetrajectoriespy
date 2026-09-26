@@ -71,7 +71,7 @@ prediction = generalized_function_on_scalar_predict(
 ## Exposure-adjusted Poisson prediction
 
 For a Poisson fit estimated with exposure, the default prediction scale is
-\`"rate"\`:
+`"rate"`:
 
 ~~~python
 rate_prediction = generalized_function_on_scalar_predict(
@@ -95,16 +95,16 @@ expected_count_prediction = generalized_function_on_scalar_predict(
 )
 ~~~
 
-\`exposure_profiles\` may have shape \`(n_profiles, n_time)\` or
-\`(n_profiles,)\`; the latter is explicitly expanded over time. Every value must
+`exposure_profiles` may have shape `(n_profiles, n_time)` or
+`(n_profiles,)`; the latter is explicitly expanded over time. Every value must
 be finite and strictly positive. If a model was fitted with exposure and
 expected-count prediction is requested without target exposure, the function
 fails rather than silently assuming \(E=1\). Conversely, target exposure is not
 accepted for a rate prediction.
 
 The result retains the selected response scale together with
-\`rate_functions\`, \`expected_count_functions\`, \`linear_predictor_rate\`,
-\`linear_predictor_count\`, and the supplied target exposure where applicable.
+`rate_functions`, `expected_count_functions`, `linear_predictor_rate`,
+`linear_predictor_count`, and the supplied target exposure where applicable.
 
 ## Prediction uncertainty
 
@@ -197,8 +197,8 @@ M_r^{*(b)}
 \right|.
 \]
 
-With \`simultaneous_scope="profile"\`, each profile receives its own maximum
-critical value. With \`simultaneous_scope="family"\`, one maximum is taken over
+With `simultaneous_scope="profile"`, each profile receives its own maximum
+critical value. With `simultaneous_scope="family"`, one maximum is taken over
 all declared profiles and observed time points.
 
 The calibrated linear-predictor endpoints are transformed through the monotone
@@ -274,10 +274,10 @@ multiple post-hoc contrasts.
 
 ## Frames, plots, and reporting
 
-\`generalized_function_on_scalar_prediction_frame()\` now records the selected
+`generalized_function_on_scalar_prediction_frame()` now records the selected
 prediction scale and, where available, rate, expected count, and target
-exposure. \`generalized_function_on_scalar_mean_difference_frame()\` records
-both \`contrast_scale\` and the scale on which inference was calibrated.
+exposure. `generalized_function_on_scalar_mean_difference_frame()` records
+both `contrast_scale` and the scale on which inference was calibrated.
 
 The existing plotting and manuscript-reporting helpers adapt their labels to
 probability, rate, rate ratio, or expected-count interpretation.
