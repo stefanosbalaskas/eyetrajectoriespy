@@ -183,7 +183,7 @@ def main() -> None:
         ("tolerance policy", tolerance_policy),
         ("performance envelope", performance_ledger),
     ):
-        if payload.get("package_version") != "0.56.0.dev0":
+        if payload.get("package_version") != "0.57.0.dev0":
             raise RuntimeError(f"{name} package version is stale")
     evidence_types = set(reference_ledger.get("evidence_types", {}))
     if evidence_types != {
@@ -202,7 +202,7 @@ def main() -> None:
     manifest = json.loads(
         (ROOT / "CANONICAL_WORKFLOWS.json").read_text(encoding="utf-8")
     )
-    if manifest.get("package_version") != "0.56.0.dev0":
+    if manifest.get("package_version") != "0.57.0.dev0":
         raise RuntimeError("canonical workflow manifest version is stale")
     workflows = manifest.get("workflows", [])
     if len(workflows) != 5:
@@ -223,10 +223,12 @@ def main() -> None:
         "FUNCTION_EQUATION_INDEX.md",
         "WORKFLOW_ATLAS.md",
         "Visual gallery",
-        "0.56.0.dev0",
+        "0.57.0.dev0",
         "Which workflow do I need?",
         "Where is the full advanced API?",
         "Reference validation & performance envelope",
+        "Portable scientific results",
+        "Release process",
     ):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
