@@ -1214,6 +1214,86 @@ correlation, smoothing penalty or model is selected automatically.
 `bootstrap_generalized_function_on_scalar_coefficients()`,
 `generalized_function_on_scalar_simultaneous_bands()`.
 
+## Fixed-profile marginal prediction and mean differences { #generalized-function-on-scalar-prediction }
+
+For a fixed analyst-declared scalar predictor profile \(\mathbf x_r\), version
+0.52 maps the fitted marginal generalized function-on-scalar coefficient
+functions to the linear predictor
+
+\[
+\eta_r(t)
+=
+\mathbf x_r^\top
+\widehat{\boldsymbol\beta}(t)
+\]
+
+and marginal response mean
+
+\[
+\mu_r(t)
+=
+g^{-1}\{\eta_r(t)\}.
+\]
+
+Let \(\mathbf z_r(t)\) denote the profile-by-basis row in the expanded
+coefficient design and let
+\(\widehat{\boldsymbol\Sigma}_\theta\) be the retained robust GEE covariance of
+the basis-coefficient vector. The pointwise linear-predictor variance is
+
+\[
+\widehat{\operatorname{Var}}\{\eta_r(t)\}
+=
+\mathbf z_r(t)^\top
+\widehat{\boldsymbol\Sigma}_\theta
+\mathbf z_r(t).
+\]
+
+Response-scale pointwise standard errors use the inverse-link delta method. For
+the Bernoulli/logit family the derivative is
+\(\mu_r(t)\{1-\mu_r(t)\}\); for the Poisson/log family it is \(\mu_r(t)\).
+
+Every whole-participant coefficient-bootstrap draw is projected through the
+same fixed profiles. For profile \(r\),
+
+\[
+M_r^{*(b)}
+=
+\max_m
+\left|
+\frac{
+\eta_r^{*(b)}(t_m)-\eta_r(t_m)
+}{
+\widehat{\operatorname{SE}}\{\eta_r(t_m)\}
+}
+\right|.
+\]
+
+Calibration occurs on the linear-predictor scale. Because both supported
+inverse links are strictly monotone, transforming the two calibrated endpoints
+produces the corresponding observed-grid simultaneous marginal-mean band.
+
+For one predeclared ordered profile pair,
+
+\[
+D_{ab}(t)
+=
+\mu_a(t)-\mu_b(t).
+\]
+
+The same participant-bootstrap coefficient draw is used for both profiles, so
+their dependence is retained when the response-scale difference is formed.
+
+Profiles outside any observed scalar predictor range are retained and flagged.
+This marginal-range audit is not a multivariate support, positivity, or causal
+identification claim. Profile values themselves are fixed and are not
+resampled. No profile or contrast is selected automatically, multiple-contrast
+family control is not claimed, and simultaneous coverage is restricted to the
+observed time grid.
+
+**API:** \`generalized_function_on_scalar_predict()\`,
+\`generalized_function_on_scalar_prediction_bands()\`,
+\`generalized_function_on_scalar_mean_difference_band()\`.
+
 ## Function-on-scalar regression { #function-on-scalar }
 
 Let \(Y_{id}(t_m)\) be functional response dimension \(d\) for independent inference unit \(i\), and let \(\mathbf x_i\) contain an intercept and the analyst-declared scalar predictors. At each observed time and selected response dimension,
