@@ -23,7 +23,7 @@ jobs:
           python-version: "3.12"
           cache: pip
       - name: Install release tooling
-        run: python -m pip install -U pip build twine packaging
+        run: python -m pip install -U pip build twine packaging pytest
       - name: Verify release version declarations
         run: python scripts/verify_release_version.py
       - name: Build wheel and sdist
