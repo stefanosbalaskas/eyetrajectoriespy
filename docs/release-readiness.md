@@ -137,14 +137,16 @@ requalification remains required after merge.
 - [x] TestPyPI rehearsal is supported through the same build artifact.
 - [x] Production checks live GitHub governance and exact-main CI before
       publishing.
-- [ ] TestPyPI Trusted Publisher is configured and rehearsal completed.
-- [ ] Production PyPI Trusted Publisher is configured.
-- [ ] `pypi` GitHub environment has the intended required-reviewer protection.
-- [ ] `main` is protected and issue #64 is closed.
-- [ ] `RELEASE_READINESS.json` is armed for production.
+- [ ] TestPyPI Trusted Publisher/rehearsal remains available as an optional rehearsal.
+- [ ] Production PyPI Trusted Publisher is configured for environment `pypi`.
+- [x] `pypi` GitHub environment has the intended required-reviewer protection.
+- [x] `main` is protected and issue #64 is closed.
+- [x] `RELEASE_READINESS.json` is armed for GitHub Release; PyPI trust remains independently fail-closed.
 
-The planned first synchronized public release is `0.9.0rc1`. None of the
-unchecked items may be inferred from successful package CI.
+The first public prerelease is `0.9.0rc1`. GitHub Release creation now
+precedes PyPI publication. An unchecked PyPI Trusted Publisher item therefore
+does not block creation of the GitHub prerelease, but it does block the
+subsequent PyPI OIDC exchange.
 
 ## Release-candidate gate
 
