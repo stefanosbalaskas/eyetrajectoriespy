@@ -558,3 +558,18 @@ Raw and whitened residual summaries are descriptive. Whitened residual
 structure diagnoses what remains after the fitted residual covariance; it is
 not a formal test that the covariance structure is correct.
 
+## Marginal generalized functional-response assumptions
+
+Version 0.51 targets the marginal mean
+
+\[
+g\{E[Y_{ij}(t)\mid x_{ij}]\}=x_{ij}^{\top}\beta(t).
+\]
+
+Participants are assumed independent across clusters. Dependence among trials and time points within participant may be misspecified by the working independence structure; the robust sandwich covariance is used for coefficient uncertainty.
+
+Bernoulli responses must be genuine 0/1 observations under the declared sampling interpretation. Poisson responses must be non-negative integer counts under the current no-offset contract. The package does not infer binomial denominators or exposure time.
+
+The coefficient basis is fixed before fitting. The participant-count > expanded-parameter-count rule is a structural guard only. Robust sandwich quality still depends on having enough independent, heterogeneous participant clusters.
+
+The marginal coefficient interpretation is different from a non-Gaussian mixed model conditioned on latent participant effects.
