@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.55 · canonical workflows and stabilization</div>
+<div class="et-kicker">eyetrajectoriespy 0.56 · reference validation and performance qualification</div>
 
 # Model the viewing process, not only its summaries
 
@@ -14,8 +14,9 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
 
 ## Start with the scientific question
 
-Version 0.55 makes five routes the primary navigation layer. The advanced API
-remains available, but new analyses should begin here.
+The five canonical routes remain the primary navigation layer. Version 0.56
+adds evidence-typed reference validation and a reproducible performance
+envelope without expanding the statistical method surface.
 
 <div class="grid cards" markdown>
 
