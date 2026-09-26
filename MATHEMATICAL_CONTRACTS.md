@@ -686,6 +686,58 @@ Implemented by `fit_generalized_function_on_scalar_regression()`,
 marginal/population averaged; no family, link, working correlation, basis size,
 or model is selected automatically.
 
+## Fixed-profile marginal prediction and mean differences
+
+For a fixed scalar profile \(\mathbf x_r\), version 0.52 defines
+
+\[
+\eta_r(t)
+=
+\mathbf x_r^\top\widehat{\boldsymbol\beta}(t),
+\qquad
+\mu_r(t)
+=
+g^{-1}\{\eta_r(t)\}.
+\]
+
+With expanded profile/basis row \(\mathbf z_r(t)\),
+
+\[
+\widehat{\operatorname{Var}}\{\eta_r(t)\}
+=
+\mathbf z_r(t)^\top
+\widehat{\boldsymbol\Sigma}_\theta
+\mathbf z_r(t).
+\]
+
+The whole-participant coefficient bootstrap is projected through every fixed
+profile. Observed-grid simultaneous calibration uses
+
+\[
+M_r^{*(b)}
+=
+\max_m
+\left|
+\frac{
+\eta_r^{*(b)}(t_m)-\eta_r(t_m)
+}{
+\widehat{\operatorname{SE}}\{\eta_r(t_m)\}
+}
+\right|.
+\]
+
+For one predeclared ordered pair,
+
+\[
+D_{ab}(t)=\mu_a(t)-\mu_b(t).
+\]
+
+Implemented by \`generalized_function_on_scalar_predict()\`,
+\`generalized_function_on_scalar_prediction_bands()\`, and
+\`generalized_function_on_scalar_mean_difference_band()\`. Profile values are
+fixed, extrapolative scalar targets are retained and flagged, no profile or
+contrast is selected automatically, and between-grid coverage is not claimed.
+
 ## Function-on-scalar regression
 
 For functional response vector \(\mathbf Y(t)\) and scalar design matrix \(\mathbf X\),
