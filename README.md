@@ -109,7 +109,9 @@ The methods site is configured for GitHub Pages:
 
 **https://stefanosbalaskas.github.io/eyetrajectoriespy/**
 
-It includes a tutorial gallery, representation selection, nonlinear state-space reconstruction, recurrence/RQA, local-divergence and surrogate workflows, experimental return-map stability, native irregular and sparse PACE workflows, FPCA/MFPCA interpretation, leakage-aware component selection, matched-bootstrap FPC uncertainty, simultaneous FPC-shape bands, spectrum uncertainty, score basis-resampling uncertainty, Gaussian FPCR bootstrap uncertainty, simultaneous slope bands, future-outcome prediction intervals, heteroscedastic wild-bootstrap projection inference, simultaneous fixed-target wild-bootstrap intervals, eigengap/subspace stability, bootstrap stability, phase analysis, registration cautions, multilevel and compositional workflows, basis/elastic interoperability, failure cases, pre-registration/reporting guidance, limitations, worked examples, and API documentation, an implementation-matched mathematical reference, and a reproducible SVG plot gallery.
+Use the site for the five canonical workflows, advanced method guides, worked
+examples, assumptions/limitations, validation ledger, implementation-matched
+mathematical reference, API documentation and reproducible SVG plot gallery.
 
 ## Scope boundary
 
