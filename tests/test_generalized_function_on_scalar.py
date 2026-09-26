@@ -4,6 +4,7 @@ matplotlib.use("Agg")
 import numpy as np
 import pandas as pd
 import pytest
+import statsmodels.api as sm
 
 from eyetrajectoriespy import (
     GeneralizedFunctionOnScalarBandResult,
@@ -67,6 +68,45 @@ def _binary_data(seed=510, n_participants=60):
         }
     )
     return trajectories, design, beta0, beta1
+
+
+def _grouped_binomial_data(seed=540, n_participants=36):
+    rng = np.random.default_rng(seed)
+    trials_per_participant = 3
+    time = np.linspace(0.0, 1.0, 7)
+    condition_template = np.array([-0.7, 0.0, 0.7])
+    condition = np.tile(condition_template, n_participants)
+    participants = np.repeat(
+        [f"P{i:03d}" for i in range(n_participants)],
+        trials_per_participant,
+    )
+
+    beta0 = -0.30 + 0.35 * time
+    beta1 = 0.75 - 0.25 * time
+    eta = beta0[None, :] + condition[:, None] * beta1[None, :]
+    probability = 1.0 / (1.0 + np.exp(-eta))
+
+    curve_index = np.arange(condition.size)[:, None]
+    time_index = np.arange(time.size)[None, :]
+    denominator = 6 + ((curve_index + 2 * time_index) % 7)
+    successes = rng.binomial(denominator, probability).astype(float)
+
+    trajectories = TrajectorySet(
+        time=time,
+        values=successes[:, :, None],
+        curve_ids=tuple(f"G{i:04d}" for i in range(successes.shape[0])),
+        dimension_names=("successes",),
+        metadata=pd.DataFrame({"participant_id": participants}),
+        coordinate_system="unknown",
+        time_unit="s",
+    )
+    design = pd.DataFrame(
+        {
+            "curve_id": trajectories.curve_ids,
+            "condition": condition,
+        }
+    )
+    return trajectories, design, denominator.astype(float), beta0, beta1
 
 
 def _poisson_data(seed=511, n_participants=50):
@@ -1322,4 +1362,313 @@ def test_exposure_audit_rejects_non_exposure_fit():
     )
     with pytest.raises(ValueError, match="does not contain an exposure"):
         generalized_function_on_scalar_exposure_frame(fit)
+
+def test_grouped_binomial_retains_success_denominator_contract():
+    trajectories, design, denominator, beta0, beta1 = (
+        _grouped_binomial_data()
+    )
+    fit = fit_generalized_function_on_scalar_regression(
+        trajectories,
+        design,
+        predictors=("condition",),
+        participant_column="participant_id",
+        dimension="successes",
+        family="binomial",
+        binomial_denominator=denominator,
+        basis_size=2,
+        spline_degree=1,
+    )
+
+    successes = trajectories.values[:, :, 0]
+    np.testing.assert_allclose(fit.binomial_successes, successes)
+    np.testing.assert_allclose(fit.binomial_denominators, denominator)
+    np.testing.assert_allclose(
+        fit.binomial_observed_proportions,
+        successes / denominator,
+    )
+    np.testing.assert_allclose(
+        fit.binomial_expected_successes,
+        denominator * fit.mean_functions,
+    )
+    assert np.all((fit.mean_functions > 0.0) & (fit.mean_functions < 1.0))
+    assert fit.binomial_denominator_expanded_from_curve is False
+    np.testing.assert_allclose(fit.coefficient_functions[0], beta0, atol=0.45)
+    np.testing.assert_allclose(fit.coefficient_functions[1], beta1, atol=0.45)
+
+    contract = fit.provenance["generalized_function_on_scalar_regression"]
+    assert contract["grouped_binomial_success_denominator_supported"] is True
+    assert contract["grouped_binomial_supplied"] is True
+    assert (
+        contract["grouped_binomial_response_representation"]
+        == "integer_successes_plus_integer_denominator"
+    )
+    assert (
+        contract["grouped_binomial_backend_representation"]
+        == "proportion_plus_gee_weights"
+    )
+    assert contract["binomial_denominator_inferred"] is False
+    assert contract["generic_proportion_input_supported"] is False
+
+    report = generalized_function_on_scalar_reporting_text(fit)
+    assert "grouped-binomial integer success counts" in report
+    assert "denominator weights" in report
+
+
+def test_grouped_binomial_matches_row_expanded_bernoulli_reference():
+    trajectories, design, denominator, _, _ = _grouped_binomial_data(
+        seed=541,
+        n_participants=24,
+    )
+    fit = fit_generalized_function_on_scalar_regression(
+        trajectories,
+        design,
+        predictors=("condition",),
+        participant_column="participant_id",
+        dimension="successes",
+        family="binomial",
+        binomial_denominator=denominator,
+        basis_size=2,
+        spline_degree=1,
+    )
+
+    model = fit.model.model
+    grouped_exog = np.asarray(model.exog, dtype=float)
+    grouped_groups = np.asarray(model.groups)
+    successes = fit.binomial_successes.reshape(-1).astype(int)
+    denominators = fit.binomial_denominators.reshape(-1).astype(int)
+
+    expanded_y = []
+    expanded_x = []
+    expanded_groups = []
+    for row, (success, total) in enumerate(
+        zip(successes, denominators, strict=True)
+    ):
+        expanded_y.append(
+            np.concatenate(
+                (
+                    np.ones(success, dtype=float),
+                    np.zeros(total - success, dtype=float),
+                )
+            )
+        )
+        expanded_x.append(
+            np.repeat(grouped_exog[row][None, :], total, axis=0)
+        )
+        expanded_groups.append(
+            np.repeat(grouped_groups[row], total)
+        )
+
+    direct = sm.GEE(
+        np.concatenate(expanded_y),
+        np.vstack(expanded_x),
+        groups=np.concatenate(expanded_groups),
+        family=sm.families.Binomial(),
+        cov_struct=sm.cov_struct.Independence(),
+    ).fit(cov_type="robust")
+
+    np.testing.assert_allclose(
+        fit.basis_coefficients.reshape(-1),
+        direct.params,
+        rtol=1e-9,
+        atol=1e-10,
+    )
+    np.testing.assert_allclose(
+        fit.parameter_covariance,
+        direct.cov_params(),
+        rtol=1e-8,
+        atol=1e-10,
+    )
+
+
+def test_grouped_binomial_denominator_validation_fails_closed():
+    trajectories, design, denominator, _, _ = _grouped_binomial_data(
+        seed=542,
+        n_participants=12,
+    )
+
+    zero = denominator.copy()
+    zero[0, 0] = 0.0
+    noninteger = denominator.copy()
+    noninteger[0, 0] = 2.5
+    nonfinite = denominator.copy()
+    nonfinite[0, 0] = np.nan
+    for bad, match in (
+        (zero, "strictly positive"),
+        (noninteger, "integer trial counts"),
+        (nonfinite, "finite values"),
+    ):
+        with pytest.raises(ValueError, match=match):
+            fit_generalized_function_on_scalar_regression(
+                trajectories,
+                design,
+                predictors=("condition",),
+                participant_column="participant_id",
+                dimension="successes",
+                family="binomial",
+                binomial_denominator=bad,
+                basis_size=2,
+                spline_degree=1,
+            )
+
+    with pytest.raises(ValueError, match="shape"):
+        fit_generalized_function_on_scalar_regression(
+            trajectories,
+            design,
+            predictors=("condition",),
+            participant_column="participant_id",
+            dimension="successes",
+            family="binomial",
+            binomial_denominator=np.ones((trajectories.n_curves, 2)),
+            basis_size=2,
+            spline_degree=1,
+        )
+
+    too_many = trajectories.values.copy()
+    too_many[0, 0, 0] = denominator[0, 0] + 1.0
+    bad_success = TrajectorySet(
+        time=trajectories.time,
+        values=too_many,
+        curve_ids=trajectories.curve_ids,
+        dimension_names=trajectories.dimension_names,
+        metadata=trajectories.metadata,
+        coordinate_system=trajectories.coordinate_system,
+        time_unit=trajectories.time_unit,
+    )
+    with pytest.raises(ValueError, match="must not exceed"):
+        fit_generalized_function_on_scalar_regression(
+            bad_success,
+            design,
+            predictors=("condition",),
+            participant_column="participant_id",
+            dimension="successes",
+            family="binomial",
+            binomial_denominator=denominator,
+            basis_size=2,
+            spline_degree=1,
+        )
+
+    fractional = trajectories.values.copy()
+    fractional[0, 0, 0] = 0.5
+    proportion_like = TrajectorySet(
+        time=trajectories.time,
+        values=fractional,
+        curve_ids=trajectories.curve_ids,
+        dimension_names=trajectories.dimension_names,
+        metadata=trajectories.metadata,
+        coordinate_system=trajectories.coordinate_system,
+        time_unit=trajectories.time_unit,
+    )
+    with pytest.raises(ValueError, match="integer success counts"):
+        fit_generalized_function_on_scalar_regression(
+            proportion_like,
+            design,
+            predictors=("condition",),
+            participant_column="participant_id",
+            dimension="successes",
+            family="binomial",
+            binomial_denominator=denominator,
+            basis_size=2,
+            spline_degree=1,
+        )
+
+    poisson, poisson_design, _, _ = _poisson_data(
+        seed=543,
+        n_participants=12,
+    )
+    with pytest.raises(ValueError, match="only for family='binomial'"):
+        fit_generalized_function_on_scalar_regression(
+            poisson,
+            poisson_design,
+            predictors=("condition",),
+            participant_column="participant_id",
+            dimension="count",
+            family="poisson",
+            binomial_denominator=np.ones(
+                (poisson.n_curves, poisson.n_time)
+            ),
+            basis_size=2,
+            spline_degree=1,
+        )
+
+
+def test_grouped_binomial_curve_denominator_expansion_and_bootstrap():
+    trajectories, design, _, _, _ = _grouped_binomial_data(
+        seed=544,
+        n_participants=16,
+    )
+    per_curve = np.full(trajectories.n_curves, 12.0)
+    values = trajectories.values.copy()
+    values[:, :, 0] = np.minimum(values[:, :, 0], 12.0)
+    adjusted = TrajectorySet(
+        time=trajectories.time,
+        values=values,
+        curve_ids=trajectories.curve_ids,
+        dimension_names=trajectories.dimension_names,
+        metadata=trajectories.metadata,
+        coordinate_system=trajectories.coordinate_system,
+        time_unit=trajectories.time_unit,
+    )
+
+    fit = fit_generalized_function_on_scalar_regression(
+        adjusted,
+        design,
+        predictors=("condition",),
+        participant_column="participant_id",
+        dimension="successes",
+        family="binomial",
+        binomial_denominator=per_curve,
+        basis_size=2,
+        spline_degree=1,
+    )
+    np.testing.assert_allclose(
+        fit.binomial_denominators,
+        np.repeat(per_curve[:, None], adjusted.n_time, axis=1),
+    )
+    assert fit.binomial_denominator_expanded_from_curve is True
+
+    bootstrap = bootstrap_generalized_function_on_scalar_coefficients(
+        fit,
+        n_bootstrap=100,
+        random_state=544,
+    )
+    contract = bootstrap.provenance[
+        "generalized_function_on_scalar_bootstrap"
+    ]
+    assert contract["binomial_denominator_observed_and_fixed"] is True
+    assert (
+        contract["binomial_denominator_resampled_with_response_bundle"]
+        is True
+    )
+    assert contract["binomial_denominator_measurement_uncertainty"] is False
+
+
+def test_grouped_binomial_prediction_remains_probability_estimand():
+    trajectories, design, denominator, _, _ = _grouped_binomial_data(
+        seed=545,
+        n_participants=18,
+    )
+    fit = fit_generalized_function_on_scalar_regression(
+        trajectories,
+        design,
+        predictors=("condition",),
+        participant_column="participant_id",
+        dimension="successes",
+        family="binomial",
+        binomial_denominator=denominator,
+        basis_size=2,
+        spline_degree=1,
+    )
+    profiles = pd.DataFrame(
+        {
+            "profile_id": ("low", "high"),
+            "condition": (-0.7, 0.7),
+        }
+    )
+    prediction = generalized_function_on_scalar_predict(fit, profiles)
+    assert prediction.prediction_scale == "probability"
+    assert np.all(
+        (prediction.mean_functions > 0.0)
+        & (prediction.mean_functions < 1.0)
+    )
+
 
