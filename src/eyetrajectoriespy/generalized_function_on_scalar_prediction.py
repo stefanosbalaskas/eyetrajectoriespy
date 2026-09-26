@@ -1078,6 +1078,13 @@ def generalized_function_on_scalar_prediction_reporting_text(
         "rate": "marginal exposure-adjusted rate",
         "expected_count": "marginal expected count",
     }[prediction.prediction_scale]
+    grouped_text = (
+        " The fitted binomial model used explicit grouped success counts and "
+        "denominators; fixed-profile prediction targets success probability "
+        "and does not require or infer a target denominator."
+        if prediction.reference.binomial_denominators is not None
+        else ""
+    )
     return (
         f"Fixed-profile {scale} functions were derived from the fitted "
         f"{prediction.reference.family}/{prediction.reference.link} marginal "
@@ -1089,6 +1096,7 @@ def generalized_function_on_scalar_prediction_reporting_text(
         f"{result.simultaneous_scope!r} over the observed grid; no "
         "between-grid coverage is claimed and no profile was selected "
         "automatically."
+        + grouped_text
         + extrapolation_text
     )
 
