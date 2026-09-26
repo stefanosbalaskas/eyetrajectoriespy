@@ -29,9 +29,9 @@ PROFILE = {
             "q": 3,
         },
         "mixed_full_refit_bootstrap": {
-            "n_participants": 10,
+            "n_participants": 12,
             "n_trials": 3,
-            "n_time": 5,
+            "n_time": 6,
             "n_bootstrap": 20,
             "q": 2,
         },
@@ -95,7 +95,7 @@ def _mixed_data(*, n_participants, n_trials, n_time, seed, include_trial_ids):
     rng = np.random.default_rng(seed)
     time_values = np.linspace(0.0, 1.0, n_time)
     basis = _linear_basis(time_values)
-    condition_template = np.linspace(0.0, 1.0, n_trials)
+    condition_template = np.linspace(-0.5, 0.5, n_trials)
     condition = np.tile(condition_template, n_participants)
     participant_ids = np.repeat(
         [f"P{i:02d}" for i in range(n_participants)],
@@ -106,8 +106,8 @@ def _mixed_data(*, n_participants, n_trials, n_time, seed, include_trial_ids):
         np.array([[0.030, 0.004], [0.004, 0.020]]),
         size=n_participants,
     )
-    intercept = np.array([0.20, 0.40]) @ basis.T
-    slope = np.array([0.15, 0.50]) @ basis.T
+    intercept = 0.25 + 0.10 * time_values
+    slope = 0.15 + 0.25 * time_values
 
     values = []
     trial_ids = []
@@ -115,7 +115,11 @@ def _mixed_data(*, n_participants, n_trials, n_time, seed, include_trial_ids):
         participant_random = random_coefficients[participant_index] @ basis.T
         for trial_index in range(n_trials):
             curve_index = participant_index * n_trials + trial_index
-            trial_random = rng.normal(0.0, 0.025, size=n_time)
+            trial_random = (
+                rng.normal(0.0, 0.025, size=n_time)
+                if include_trial_ids
+                else 0.0
+            )
             response = (
                 intercept
                 + condition[curve_index] * slope
@@ -180,7 +184,7 @@ def _case_mixed_full_refit_bootstrap(scale):
         n_participants=scale["n_participants"],
         n_trials=scale["n_trials"],
         n_time=scale["n_time"],
-        seed=561,
+        seed=461,
         include_trial_ids=False,
     )
     fitted = fit_functional_mixed_effects_regression(
@@ -193,7 +197,7 @@ def _case_mixed_full_refit_bootstrap(scale):
         random_basis_size=scale["q"],
         spline_degree=1,
         reml=True,
-        maxiter=300,
+        maxiter=1000,
     )
     bootstrap_functional_mixed_effects_full_refit(
         fitted,
@@ -469,11 +473,17 @@ def _run_parent(profile_name, repeats, output_path):
                     "--child-case",
                     case_name,
                 ],
-                check=True,
+                check=False,
                 capture_output=True,
                 text=True,
                 env=env,
             )
+            if completed.returncode != 0:
+                raise RuntimeError(
+                    f"benchmark child {case_name!r} failed with exit "
+                    f"{completed.returncode}\nSTDOUT:\n{completed.stdout}\n"
+                    f"STDERR:\n{completed.stderr}"
+                )
             marker = [
                 line
                 for line in completed.stdout.splitlines()
