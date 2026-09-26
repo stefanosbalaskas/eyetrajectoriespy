@@ -636,8 +636,8 @@ reselected.
 
 ## Portable scientific-result snapshots
 
-\`PortableScientificResultSnapshot\` is a transport/audit container returned by
-\`load_portable_result()\`. It is intentionally **not** a reconstructed fitted
+`PortableScientificResultSnapshot` is a transport/audit container returned by
+`load_portable_result()`. It is intentionally **not** a reconstructed fitted
 estimator. The snapshot exposes:
 
 - the original result type;
@@ -648,7 +648,7 @@ estimator. The snapshot exposes:
 - explicit paths of backend/opaque fields that were not portable;
 - the original manifest.
 
-The \`package_version_match\` property reports whether the source package version
+The `package_version_match` property reports whether the source package version
 matches the package currently loading the snapshot. A mismatch is visible but
 does not prevent reading schema-compatible scientific state.
 
