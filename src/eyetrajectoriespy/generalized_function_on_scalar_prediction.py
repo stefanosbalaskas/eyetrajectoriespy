@@ -568,12 +568,12 @@ def generalized_function_on_scalar_mean_difference_band(
     confidence_level: float = 0.95,
     contrast_scale: str | None = None,
 ) -> GeneralizedFunctionOnScalarMeanDifferenceResult:
-    """Construct one predeclared simultaneous marginal mean-difference band.
+    """Construct one predeclared simultaneous marginal profile contrast.
 
-    The contrast is mean(profile_a) - mean(profile_b) on the response scale.
-    For Bernoulli outcomes this is a marginal probability/risk difference; for
-    Poisson outcomes it is an expected-count difference under the no-offset
-    0.51/0.52 contract.
+    Bernoulli fits support a probability difference. Poisson fits without
+    exposure support an expected-count difference. Exposure-adjusted Poisson
+    fits support an explicit rate difference, rate ratio, or expected-count
+    difference when target exposure was supplied for count prediction.
     """
 
     if not isinstance(
@@ -993,7 +993,7 @@ def plot_generalized_function_on_scalar_mean_difference(
     *,
     ax=None,
 ):
-    """Plot one predeclared response-scale mean-difference band."""
+    """Plot one predeclared response-scale profile contrast band."""
 
     import matplotlib.pyplot as plt
 
@@ -1033,8 +1033,8 @@ def plot_generalized_function_on_scalar_mean_difference(
     }[result.contrast_scale]
     ax.set_ylabel(ylabel)
     ax.set_title(
-        f"Generalized FoSR mean difference: "
-        f"{result.profile_a} - {result.profile_b}"
+        f"Generalized FoSR {result.contrast_scale.replace('_', ' ')}: "
+        f"{result.profile_a} versus {result.profile_b}"
     )
     ax.legend()
     return ax
@@ -1096,7 +1096,7 @@ def generalized_function_on_scalar_prediction_reporting_text(
 def generalized_function_on_scalar_mean_difference_reporting_text(
     result: GeneralizedFunctionOnScalarMeanDifferenceResult,
 ) -> str:
-    """Return manuscript wording for one predeclared mean-difference band."""
+    """Return manuscript wording for one predeclared profile contrast band."""
 
     if not isinstance(
         result,
