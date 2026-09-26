@@ -40,10 +40,10 @@ Function-on-scalar regression estimates coefficient functions over time. Scalar-
 
 | Scientific target | Tool | Scale / interpretation |
 |---|---|---|
-| Time-varying marginal association of one scalar predictor | \`fit_generalized_function_on_scalar_regression()\` | link-scale coefficient function; population averaged |
-| Whole-function uncertainty for one coefficient | \`generalized_function_on_scalar_simultaneous_bands()\` | observed-grid link-scale coefficient band |
-| Marginal response trajectory at a complete fixed covariate profile | \`generalized_function_on_scalar_predict()\` / \`generalized_function_on_scalar_prediction_bands()\` | probability or expected-count mean function |
-| Response-scale difference between one predeclared pair of fixed profiles | \`generalized_function_on_scalar_mean_difference_band()\` | probability difference or expected-count difference |
+| Time-varying marginal association of one scalar predictor | `fit_generalized_function_on_scalar_regression()` | link-scale coefficient function; population averaged |
+| Whole-function uncertainty for one coefficient | `generalized_function_on_scalar_simultaneous_bands()` | observed-grid link-scale coefficient band |
+| Marginal response trajectory at a complete fixed covariate profile | `generalized_function_on_scalar_predict()` / `generalized_function_on_scalar_prediction_bands()` | probability or expected-count mean function |
+| Response-scale difference between one predeclared pair of fixed profiles | `generalized_function_on_scalar_mean_difference_band()` | probability difference or expected-count difference |
 
 A response-scale generalized effect cannot in general be obtained by applying
 the inverse link to one coefficient function in isolation. Version 0.52
