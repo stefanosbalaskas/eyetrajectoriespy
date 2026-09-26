@@ -352,25 +352,26 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 **Functions:** `fit_generalized_function_on_scalar_regression()`, `bootstrap_generalized_function_on_scalar_coefficients()`, `generalized_function_on_scalar_simultaneous_bands()`
 
-$
+$$
 g\{\mu_{ij}(t)\}=\mathbf x_{ij}^\top\boldsymbol\beta(t)
-$
+$$
 
-$
+$$
 \beta_k(t)=\mathbf B(t)^\top\boldsymbol\theta_k
-$
+$$
 
-$
+$$
 \widehat{\operatorname{Var}}_{\mathrm{robust}}(\widehat{\boldsymbol\theta})=\mathbf A^{-1}\mathbf B_{\mathrm{sand}}\mathbf A^{-1}
-$
+$$
 
-$
+$$
 M_k^{*(b)}=\max_m\left|\frac{\widehat\beta_k^{*(b)}(t_m)-\widehat\beta_k(t_m)}{\widehat{\mathrm{SE}}\{\widehat\beta_k(t_m)\}}\right|
-$
+$$
 
 **Scope:** Marginal population-averaged GEE for Bernoulli/logit or Poisson/log functional responses on a common grid. Coefficient functions use an analyst-declared clamped B-spline basis; participants are independent clusters, trial-varying predictors are allowed, working independence is fixed in 0.51, and robust sandwich covariance is used. Whole-participant case bootstrap refits calibrate observed-grid link-scale simultaneous bands. No family, link, basis size, working correlation, or model is selected automatically.
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#generalized-function-on-scalar
+
 ## Function-on-scalar regression and simultaneous coefficient bands
 
 **Functions:** `fit_function_on_scalar_regression()`, `bootstrap_function_on_scalar_coefficients()`, `function_on_scalar_simultaneous_bands()`
