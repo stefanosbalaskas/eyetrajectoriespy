@@ -10,16 +10,17 @@
     "release_build_smoke_qualified": true,
     "testpypi_trusted_publishing_configured": false,
     "testpypi_rehearsal_completed": false,
-    "main_protected": false,
-    "issue_64_closed": false,
+    "main_protected": true,
+    "issue_64_closed": true,
     "pypi_trusted_publishing_configured": false,
-    "pypi_environment_required_reviewer": false,
+    "pypi_environment_required_reviewer": true,
     "exact_main_ci_required": true
   },
   "notes": [
-    "0.9.0rc1 release candidate is prepared for qualification but production publication remains fail-closed.",
-    "Scientific/reproducibility/release-build gates were qualified in 0.57 and will be requalified at the RC head.",
-    "Production publication remains blocked until main protection, issue #64 closure, TestPyPI rehearsal, PyPI Trusted Publishing, and pypi required-reviewer configuration are actually completed.",
-    "The release workflow independently verifies live GitHub governance and exact-main CI before PyPI publication."
-  ]
+    "0.9.0rc1 is qualified for a GitHub prerelease once exact-main CI succeeds.",
+    "main protection is active and issue #64 is closed.",
+    "The user requested GitHub Release before PyPI; TestPyPI is not a prerequisite for creating the GitHub prerelease.",
+    "Production PyPI remains dependent on a matching PyPI Trusted Publisher for the protected pypi environment; the publishing job will fail closed if OIDC claims do not match."
+  ],
+  "github_release_ready": true
 }
