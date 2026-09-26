@@ -636,6 +636,56 @@ bundles are resampled. The random-effect covariance, residual variance, and
 declared bases are held fixed at the reference fit; variance-component,
 basis-selection, and between-grid uncertainty are not included.
 
+## Marginal generalized function-on-scalar regression
+
+For participant \(i\), trial \(j\), and time \(t\), version 0.51 fits
+
+\[
+g\{\mu_{ij}(t)\}
+=
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t),
+\qquad
+\beta_k(t)
+=
+\mathbf B(t)^\top\boldsymbol\theta_k.
+\]
+
+Bernoulli responses use a logit link and Poisson responses use a log link.
+Participants are independent GEE clusters, trial-varying predictors are
+retained, working independence is fixed, and uncertainty uses the robust
+cluster sandwich covariance
+
+\[
+\widehat{\operatorname{Var}}_{\mathrm{robust}}
+(\widehat{\boldsymbol\theta})
+=
+\mathbf A^{-1}
+\mathbf B_{\mathrm{sand}}
+\mathbf A^{-1}.
+\]
+
+Whole-participant case bootstrap refits calibrate the observed-grid
+link-scale maximum
+
+\[
+M_k^{*(b)}
+=
+\max_m
+\left|
+\frac{
+\widehat\beta_k^{*(b)}(t_m)-\widehat\beta_k(t_m)
+}{
+\widehat{\mathrm{SE}}\{\widehat\beta_k(t_m)\}
+}
+\right|.
+\]
+
+Implemented by \`fit_generalized_function_on_scalar_regression()\`,
+\`bootstrap_generalized_function_on_scalar_coefficients()\`, and
+\`generalized_function_on_scalar_simultaneous_bands()\`. The estimand is
+marginal/population averaged; no family, link, working correlation, basis size,
+or model is selected automatically.
+
 ## Function-on-scalar regression
 
 For functional response vector \(\mathbf Y(t)\) and scalar design matrix \(\mathbf X\),
