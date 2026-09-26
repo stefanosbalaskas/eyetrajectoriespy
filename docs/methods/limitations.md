@@ -1047,3 +1047,14 @@ Version 0.50 closes the planned Gaussian covariance-engineering sequence.
 Multiple random slopes or additional covariance kernels are not implied next
 steps.
 
+## Generalized function-on-scalar limitations
+
+Version 0.51 supports only Bernoulli/logit and Poisson/log marginal functional responses on a complete common grid. It does not provide aggregated binomial denominator handling, Poisson exposure offsets, negative-binomial or zero-inflated families, sparse/irregular generalized response estimation, or generalized functional random effects.
+
+Working independence is deliberate. The package does not scan exchangeable, AR-like or unstructured GEE working correlations and then choose whichever produces the preferred result.
+
+Robust sandwich covariance is asymptotic in the number of independent participant clusters. The structural participant-count guard does not establish finite-sample adequacy.
+
+Bootstrap simultaneous bands use whole-participant case refits and are calibrated over the observed time grid on the link scale. They are not continuous-domain bands and are not automatically transformed into response-scale coefficient bands.
+
+A failed bootstrap GEE refit stops the requested analysis rather than being silently deleted or replaced by another draw.
