@@ -211,6 +211,6 @@ rate_ratio = generalized_function_on_scalar_mean_difference_band(
 ~~~
 
 The rate-ratio band is calibrated on the log-rate-ratio scale and exponentiated.
-Use \`contrast_scale="rate_difference"\` for an additive rate difference, or
-\`"expected_count_difference"\` after creating expected-count predictions with
+Use `contrast_scale="rate_difference"` for an additive rate difference, or
+`"expected_count_difference"` after creating expected-count predictions with
 explicit target exposures.
