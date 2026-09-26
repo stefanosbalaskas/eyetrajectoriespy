@@ -1001,6 +1001,96 @@ class FunctionalMixedEffectsCovarianceSensitivityResult:
 
 
 @dataclass(frozen=True)
+class GeneralizedFunctionOnScalarResult:
+    """Marginal generalized function-on-scalar regression fit."""
+
+    coefficient_functions: np.ndarray
+    coefficient_standard_errors: np.ndarray
+    basis_coefficients: np.ndarray
+    parameter_covariance: np.ndarray
+    basis: np.ndarray
+    basis_knots: np.ndarray
+    linear_predictor_functions: np.ndarray
+    mean_functions: np.ndarray
+    observed_functions: np.ndarray
+    scalar_design_matrix: np.ndarray
+    expanded_design_rank: int
+    coefficient_names: tuple[str, ...]
+    predictor_names: tuple[str, ...]
+    participant_column: str
+    participant_ids: tuple[str, ...]
+    curve_participant_ids: tuple[str, ...]
+    curves_per_participant: tuple[int, ...]
+    source_curve_ids: tuple[str, ...]
+    time: np.ndarray
+    dimension_name: str
+    coordinate_system: str
+    time_unit: str
+    family: str
+    link: str
+    basis_size: int
+    spline_degree: int
+    working_correlation: str
+    covariance_type: str
+    scale: float
+    maxiter: int
+    ctol: float
+    converged: bool
+    backend_warnings: tuple[str, ...]
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+    model: Any = field(default=None, repr=False)
+
+    @property
+    def n_coefficients(self) -> int:
+        return len(self.coefficient_names)
+
+    @property
+    def n_curves(self) -> int:
+        return len(self.source_curve_ids)
+
+    @property
+    def n_participants(self) -> int:
+        return len(self.participant_ids)
+
+
+@dataclass(frozen=True)
+class GeneralizedFunctionOnScalarBootstrapResult:
+    """Whole-participant bootstrap for generalized function-on-scalar curves."""
+
+    reference: GeneralizedFunctionOnScalarResult
+    bootstrap_coefficient_functions: np.ndarray
+    sampled_participant_indices: np.ndarray
+    sampled_source_participant_ids: tuple[tuple[str, ...], ...]
+    sampled_bootstrap_participant_ids: tuple[tuple[str, ...], ...]
+    random_state: int | None
+    failure_policy: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_bootstrap(self) -> int:
+        return self.bootstrap_coefficient_functions.shape[0]
+
+
+@dataclass(frozen=True)
+class GeneralizedFunctionOnScalarBandResult:
+    """Observed-grid simultaneous bands for generalized FoSR coefficients."""
+
+    reference: GeneralizedFunctionOnScalarResult
+    lower: np.ndarray
+    upper: np.ndarray
+    critical_values: np.ndarray
+    max_statistics: np.ndarray
+    confidence_level: float
+    simultaneous_scope: str
+    bootstrap: GeneralizedFunctionOnScalarBootstrapResult
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_coefficients(self) -> int:
+        return self.lower.shape[0]
+
+
+@dataclass(frozen=True)
 class FunctionOnScalarResult:
     """Observed-grid function-on-scalar regression fit."""
 
