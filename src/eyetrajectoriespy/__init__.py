@@ -473,7 +473,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.50.0.dev0"
+__version__ = "0.51.0.dev0"
 
 __all__ = [
     "GeneralizedFunctionOnScalarResult",
