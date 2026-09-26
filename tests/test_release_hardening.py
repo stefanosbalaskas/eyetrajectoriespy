@@ -21,6 +21,13 @@ def test_release_version_contract_agrees_for_rc1():
     assert module.verify_version_contract() == "0.9.0rc1"
 
 
+def test_production_release_accepts_rc_on_exact_main_before_tag_creation():
+    module = _load_script("verify_release_version.py")
+    assert module.verify_version_contract(
+        production=True,
+    ) == "0.9.0rc1"
+
+
 def test_production_release_accepts_matching_rc_tag():
     module = _load_script("verify_release_version.py")
     assert module.verify_version_contract(
@@ -33,8 +40,6 @@ def test_release_governance_happy_path_requires_all_quality_gates(monkeypatch):
     module = _load_script("verify_release_governance.py")
     repository = "stefanosbalaskas/eyetrajectoriespy"
     commit = "a" * 40
-    tag_sha = "b" * 40
-
     def fake_get(url, token):
         assert token == "token"
         if url.endswith("/branches/main"):
@@ -44,18 +49,6 @@ def test_release_governance_happy_path_requires_all_quality_gates(monkeypatch):
             }
         if url.endswith("/issues/64"):
             return {"state": "closed"}
-        if "/git/ref/tags/" in url:
-            return {
-                "object": {
-                    "type": "tag",
-                    "sha": tag_sha,
-                }
-            }
-        if url.endswith(f"/git/tags/{tag_sha}"):
-            return {
-                "verification": {"verified": True},
-                "object": {"sha": commit},
-            }
         if "/check-runs?" in url:
             return {
                 "check_runs": [
@@ -74,17 +67,16 @@ def test_release_governance_happy_path_requires_all_quality_gates(monkeypatch):
         module,
         "_release_readiness",
         lambda: {
-            "production_release_ready": True,
+            "github_release_ready": True,
             "gates": {
                 name: True
-                for name in module._REQUIRED_DECLARATIONS
+                for name in module._GITHUB_RELEASE_DECLARATIONS
             },
         },
     )
     module.verify_release_governance(
         repository=repository,
         commit=commit,
-        tag="v0.9.0rc1",
         token="token",
     )
 
@@ -96,10 +88,10 @@ def test_release_governance_blocks_unprotected_main(monkeypatch):
         module,
         "_release_readiness",
         lambda: {
-            "production_release_ready": True,
+            "github_release_ready": True,
             "gates": {
                 name: True
-                for name in module._REQUIRED_DECLARATIONS
+                for name in module._GITHUB_RELEASE_DECLARATIONS
             },
         },
     )
@@ -115,7 +107,6 @@ def test_release_governance_blocks_unprotected_main(monkeypatch):
         module.verify_release_governance(
             repository="stefanosbalaskas/eyetrajectoriespy",
             commit="a" * 40,
-            tag="v0.9.0rc1",
             token="token",
         )
 
@@ -133,8 +124,12 @@ def test_release_workflow_builds_once_and_reuses_exact_artifact():
     assert "environment: testpypi" in workflow
     assert "id-token: write" in workflow
     assert "needs:" in workflow
-    assert "- publish-pypi" in workflow
+    assert "- github-release" in workflow
     assert "gh release create" in workflow
+    assert workflow.index("gh release create") < workflow.index(
+        "uses: pypa/gh-action-pypi-publish@release/v1",
+        workflow.index("publish-pypi:"),
+    )
     assert "--verify-tag" in workflow
     assert "verify-pypi-install" in workflow
 
@@ -146,7 +141,7 @@ def test_production_release_has_no_manual_dispatch_path():
 
     assert "publish-pypi:" in workflow
     assert "github.event_name == 'push'" in workflow
-    assert "startsWith(github.ref, 'refs/tags/v')" in workflow
+    assert "github.ref == 'refs/heads/main'" in workflow
     assert "inputs.target == 'testpypi'" in workflow
     assert "production" not in workflow.split("options:", 1)[1].split(
         "concurrency:", 1
@@ -158,7 +153,7 @@ def test_release_governance_blocks_unarmed_readiness_manifest(monkeypatch):
         module,
         "_release_readiness",
         lambda: {
-            "production_release_ready": False,
+            "github_release_ready": False,
             "gates": {},
         },
     )
@@ -167,7 +162,6 @@ def test_release_governance_blocks_unarmed_readiness_manifest(monkeypatch):
         module.verify_release_governance(
             repository="stefanosbalaskas/eyetrajectoriespy",
             commit="a" * 40,
-            tag="v0.9.0rc1",
             token="token",
         )
 
