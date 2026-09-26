@@ -149,7 +149,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.57.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.9.0rc1**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
@@ -463,6 +463,32 @@ is incomplete. The planned first public release is **0.9.0rc1**, but only after
 `main` is protected, issue #64 is closed, TestPyPI rehearsal succeeds, the
 protected `pypi` environment has a required reviewer, and Trusted Publishing
 is configured.
+
+### 0.9.0rc1 release-candidate preparation
+
+The 0.9.0rc1 line does not add new statistical methodology. It packages the
+qualified 0.55-0.57 platform as the first public prerelease candidate and
+re-runs the same scientific, backend, documentation, examples, performance and
+release-readiness gates under the exact RC version.
+
+The release candidate is intentionally fail-closed for publication. Version
+alignment and CI qualification can be prepared on the release branch, but
+production PyPI/GitHub publication remains blocked until GitHub reports
+`main` protected, issue #64 is closed, TestPyPI rehearsal has succeeded,
+production Trusted Publishing is configured, and the `pypi` environment has
+the required-reviewer protection.
+
+The release-candidate phase is for defect correction, installation feedback,
+documentation clarity and reproducibility verification. It is not a return to
+feature expansion.
+
+### After 0.9.0rc1
+
+Evaluate prerelease feedback and unresolved defects before deciding whether a
+subsequent RC or 1.0 release is justified. Scientific/API changes that alter an
+estimand, observation contract, resampling unit, covariance interpretation or
+portable-result schema require explicit review rather than being folded into a
+release-only patch.
 
 ### After 0.57
 

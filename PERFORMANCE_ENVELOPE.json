@@ -1,22 +1,22 @@
 {
   "schema_version": 1,
-  "package_version": "0.57.0.dev0",
+  "package_version": "0.9.0rc1",
   "benchmark_kind": "single-package performance envelope",
   "comparative_benchmark": false,
   "profile": "ci-qualification",
   "status": "qualified",
-  "qualification_commit": "27920595f571a1909d093f1614dbee0250cc4236",
-  "qualification_run_id": "36239305198",
+  "qualification_commit": "ecd73e96deda07d1a64949ab0ce85999079a4b56",
+  "qualification_run_id": "36275419531",
   "environment": {
-    "cpu_model": "AMD EPYC 9V45 96-Core Processor",
-    "github_run_id": "36239305198",
+    "cpu_model": "AMD EPYC 7763 64-Core Processor",
+    "github_run_id": "36275419531",
     "github_runner_environment": "github-hosted",
-    "github_runner_name": "GitHub Actions 1000066165",
+    "github_runner_name": "GitHub Actions 1000066293",
     "implementation": "CPython",
     "logical_cpu_count": 4,
     "machine": "x86_64",
     "packages": {
-      "eyetrajectoriespy": "0.57.0.dev0",
+      "eyetrajectoriespy": "0.9.0rc1",
       "numpy": "2.5.3",
       "pandas": "3.0.6",
       "scikit-learn": "1.9.1",
@@ -26,7 +26,7 @@
     "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
     "python": "3.12.14",
     "release": "6.17.0-1022-azure",
-    "source_commit": "27920595f571a1909d093f1614dbee0250cc4236",
+    "source_commit": "ecd73e96deda07d1a64949ab0ce85999079a4b56",
     "system": "Linux",
     "thread_limits": {
       "MKL_NUM_THREADS": "1",
@@ -34,7 +34,7 @@
       "OMP_NUM_THREADS": "1",
       "OPENBLAS_NUM_THREADS": "1"
     },
-    "workflow_commit": "f544b27f9332b84ce0ed49e54efb51c80ae54b4c"
+    "workflow_commit": "66dd5d36e36037238922897f5e4c06a23b308116"
   },
   "results": [
     {
@@ -50,24 +50,24 @@
       "observed": {
         "runtime_seconds": {
           "all": [
-            2.5292288340000084,
-            1.1678296469999907,
-            1.1056768090000162
+            2.9505780730000026,
+            1.997572355999992,
+            1.963803544000001
           ],
-          "maximum": 2.5292288340000084,
-          "median": 1.1678296469999907,
-          "minimum": 1.1056768090000162,
-          "q1": 1.1367532280000034,
-          "q3": 1.8485292404999996
+          "maximum": 2.9505780730000026,
+          "median": 1.997572355999992,
+          "minimum": 1.963803544000001,
+          "q1": 1.9806879499999965,
+          "q3": 2.4740752144999973
         },
         "peak_memory_mib": {
           "all": [
-            225.7421875,
-            221.8046875,
-            221.36328125
+            227.625,
+            223.1640625,
+            223.44921875
           ],
-          "maximum": 225.7421875,
-          "median": 221.8046875
+          "maximum": 227.625,
+          "median": 223.44921875
         }
       }
     },
@@ -84,24 +84,24 @@
       "observed": {
         "runtime_seconds": {
           "all": [
-            1.4867423909999786,
-            1.5478277800000058,
-            1.4993513330000212
+            2.9368517540000028,
+            2.9711323809999897,
+            2.886410964999996
           ],
-          "maximum": 1.5478277800000058,
-          "median": 1.4993513330000212,
-          "minimum": 1.4867423909999786,
-          "q1": 1.493046862,
-          "q3": 1.5235895565000135
+          "maximum": 2.9711323809999897,
+          "median": 2.9368517540000028,
+          "minimum": 2.886410964999996,
+          "q1": 2.9116313594999994,
+          "q3": 2.953992067499996
         },
         "peak_memory_mib": {
           "all": [
-            229.22265625,
-            229.6171875,
-            229.74609375
+            226.515625,
+            227.15625,
+            226.7421875
           ],
-          "maximum": 229.74609375,
-          "median": 229.6171875
+          "maximum": 227.15625,
+          "median": 226.7421875
         }
       }
     },
@@ -117,24 +117,24 @@
       "observed": {
         "runtime_seconds": {
           "all": [
-            1.3983479659999887,
-            1.4023733180000022,
-            1.391104562999999
+            2.629973700000008,
+            2.602379038999999,
+            2.6076566689999936
           ],
-          "maximum": 1.4023733180000022,
-          "median": 1.3983479659999887,
-          "minimum": 1.391104562999999,
-          "q1": 1.3947262644999938,
-          "q3": 1.4003606419999954
+          "maximum": 2.629973700000008,
+          "median": 2.6076566689999936,
+          "minimum": 2.602379038999999,
+          "q1": 2.605017853999996,
+          "q3": 2.6188151845000007
         },
         "peak_memory_mib": {
           "all": [
-            229.00390625,
-            229.08203125,
-            229.44921875
+            226.56640625,
+            226.5234375,
+            226.53125
           ],
-          "maximum": 229.44921875,
-          "median": 229.08203125
+          "maximum": 226.56640625,
+          "median": 226.53125
         }
       }
     },
@@ -151,24 +151,24 @@
       "observed": {
         "runtime_seconds": {
           "all": [
-            1.2266760759999897,
-            1.2175990060000004,
-            1.2524527710000086
+            2.1837385160000053,
+            2.201584896,
+            2.1724881089999997
           ],
-          "maximum": 1.2524527710000086,
-          "median": 1.2266760759999897,
-          "minimum": 1.2175990060000004,
-          "q1": 1.222137540999995,
-          "q3": 1.2395644234999992
+          "maximum": 2.201584896,
+          "median": 2.1837385160000053,
+          "minimum": 2.1724881089999997,
+          "q1": 2.1781133125000025,
+          "q3": 2.1926617060000027
         },
         "peak_memory_mib": {
           "all": [
-            228.21484375,
-            228.06640625,
-            228.265625
+            225.765625,
+            225.75,
+            225.64453125
           ],
-          "maximum": 228.265625,
-          "median": 228.21484375
+          "maximum": 225.765625,
+          "median": 225.75
         }
       }
     },
@@ -184,24 +184,24 @@
       "observed": {
         "runtime_seconds": {
           "all": [
-            1.228692699000021,
-            1.2037433020000208,
-            1.2172430439999857
+            2.06301434800001,
+            2.054059086999999,
+            2.0680320109999997
           ],
-          "maximum": 1.228692699000021,
-          "median": 1.2172430439999857,
-          "minimum": 1.2037433020000208,
-          "q1": 1.2104931730000033,
-          "q3": 1.2229678715000034
+          "maximum": 2.0680320109999997,
+          "median": 2.06301434800001,
+          "minimum": 2.054059086999999,
+          "q1": 2.0585367175000044,
+          "q3": 2.065523179500005
         },
         "peak_memory_mib": {
           "all": [
-            228.15625,
-            228.29296875,
-            228.640625
+            228.328125,
+            227.5625,
+            227.94140625
           ],
-          "maximum": 228.640625,
-          "median": 228.29296875
+          "maximum": 228.328125,
+          "median": 227.94140625
         }
       }
     },
@@ -218,27 +218,27 @@
       "observed": {
         "runtime_seconds": {
           "all": [
-            1.305430685999994,
-            1.3084505269999909,
-            1.2827107990000002
+            2.217865927999995,
+            2.235388327999999,
+            2.214746273000003
           ],
-          "maximum": 1.3084505269999909,
-          "median": 1.305430685999994,
-          "minimum": 1.2827107990000002,
-          "q1": 1.294070742499997,
-          "q3": 1.3069406064999924
+          "maximum": 2.235388327999999,
+          "median": 2.217865927999995,
+          "minimum": 2.214746273000003,
+          "q1": 2.216306100499999,
+          "q3": 2.226627127999997
         },
         "peak_memory_mib": {
           "all": [
-            222.94140625,
-            223.20703125,
-            223.4453125
+            222.71875,
+            222.53515625,
+            222.95703125
           ],
-          "maximum": 223.4453125,
-          "median": 223.20703125
+          "maximum": 222.95703125,
+          "median": 222.71875
         }
       }
     }
   ],
-  "interpretation": "Qualified CI-sized single-package reference envelope measured on the recorded GitHub-hosted Linux runner. Runtime and process peak RSS are conditional on this workload/environment; no cross-package or universal workstation speed claim."
+  "interpretation": "Qualified 0.9.0rc1 CI-sized single-package reference envelope measured on the recorded GitHub-hosted Linux runner. Runtime and process peak RSS are conditional on this workload/environment; no cross-package or universal workstation speed claim."
 }

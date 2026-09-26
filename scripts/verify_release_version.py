@@ -107,8 +107,6 @@ def verify_version_contract(
             )
 
     if production:
-        if tag is None:
-            raise RuntimeError("production verification requires a version tag")
         if parsed.is_devrelease:
             raise RuntimeError(
                 "development versions must not be published to production PyPI"

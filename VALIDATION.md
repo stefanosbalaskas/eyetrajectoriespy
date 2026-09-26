@@ -4,7 +4,7 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.57.0.dev0`.
+- Package line: `0.9.0rc1`.
 - Development phase: reproducibility, portable-result, and release hardening; no new statistical family or estimator is introduced in 0.57.
 - Canonical routes: FPCA/exploration, experimental functional regression, repeated-trial functional mixed effects, generalized binary/count responses, and nonlinear/recurrence analysis.
 - Generalized observation-family expansion is paused after the 0.51-0.54 Bernoulli/grouped-binomial/Poisson contracts.

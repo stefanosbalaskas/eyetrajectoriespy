@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.57.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** release candidate (`0.9.0rc1`). The scientific platform, reference-validation layer, reproducibility contracts, packaging checks, and canonical workflows are qualified; prerelease feedback and release-candidate defect correction remain active.
 
 ## What scientific problem does this solve?
 
@@ -61,6 +61,14 @@ The README is intentionally no longer the exhaustive function catalogue.
 - [Reference validation & performance envelope](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/)
 
 ## Install
+
+Release candidate:
+
+```bash
+pip install --pre eyetrajectoriespy==0.9.0rc1
+```
+
+Development checkout:
 
 ```bash
 pip install -e .
