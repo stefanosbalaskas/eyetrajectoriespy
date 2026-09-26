@@ -14,6 +14,8 @@ Current observed repository state at the start of 0.55:
 
 This is a release-readiness blocker, not a statistical-method defect.
 
+Tracked in [GitHub issue #64](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/64).
+
 ### Required target policy for `main`
 
 Configure a branch ruleset or branch-protection rule that:
