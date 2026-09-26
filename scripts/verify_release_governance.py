@@ -70,6 +70,7 @@ REQUIRED_CHECKS = {
     "FDApy sparse / Python 3.11",
     "FDApy sparse / Python 3.12",
     "performance-envelope",
+    "release-readiness",
 }
 
 
