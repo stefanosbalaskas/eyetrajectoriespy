@@ -39,6 +39,14 @@ from .function_on_scalar import (
     function_on_scalar_coefficient_frame,
     function_on_scalar_simultaneous_bands,
 )
+from .generalized_function_on_scalar import (
+    bootstrap_generalized_function_on_scalar_coefficients,
+    fit_generalized_function_on_scalar_regression,
+    generalized_function_on_scalar_coefficient_frame,
+    generalized_function_on_scalar_reporting_text,
+    generalized_function_on_scalar_simultaneous_bands,
+    plot_generalized_function_on_scalar_coefficients,
+)
 from .functional_mixed_effects_covariance_sensitivity import (
     functional_mixed_effects_covariance_sensitivity,
     functional_mixed_effects_covariance_sensitivity_reporting_text,
@@ -421,6 +429,9 @@ from .types import (
     FunctionalMixedEffectsFullRefitBootstrapResult,
     FunctionalMixedEffectsResidualDiagnosticsResult,
     FunctionalMixedEffectsResult,
+    GeneralizedFunctionOnScalarBandResult,
+    GeneralizedFunctionOnScalarBootstrapResult,
+    GeneralizedFunctionOnScalarResult,
     FunctionOnScalarBandResult,
     FunctionOnScalarBootstrapResult,
     FunctionOnScalarResult,
@@ -465,6 +476,15 @@ from .validation import (
 __version__ = "0.50.0.dev0"
 
 __all__ = [
+    "GeneralizedFunctionOnScalarResult",
+    "GeneralizedFunctionOnScalarBootstrapResult",
+    "GeneralizedFunctionOnScalarBandResult",
+    "fit_generalized_function_on_scalar_regression",
+    "bootstrap_generalized_function_on_scalar_coefficients",
+    "generalized_function_on_scalar_simultaneous_bands",
+    "generalized_function_on_scalar_coefficient_frame",
+    "plot_generalized_function_on_scalar_coefficients",
+    "generalized_function_on_scalar_reporting_text",
     "FunctionalMixedEffectsCovarianceSpecification",
     "FunctionalMixedEffectsCovarianceSensitivityResult",
     "functional_mixed_effects_covariance_sensitivity",
