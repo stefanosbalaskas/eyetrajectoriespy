@@ -147,6 +147,8 @@ nav:
       - Capability status & roadmap: methods/status-roadmap.md
       - Release readiness: release-readiness.md
       - Independent-reference validation ledger: validation/reference-validation-ledger.md
+      - Numerical tolerance policy: validation/numerical-tolerance-policy.md
+      - Performance envelope: validation/performance-envelope.md
       - Research FAQ: methods/faq.md
       - Mathematical reference: methods/mathematical-reference.md
       - Visual gallery: methods/visual-gallery.md

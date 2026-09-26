@@ -4,13 +4,14 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.55.0.dev0`.
-- Development phase: stabilization; no new statistical family or estimator is introduced in 0.55.
+- Package line: `0.56.0.dev0`.
+- Development phase: scientific product qualification; no new statistical family or estimator is introduced in 0.56.
 - Canonical routes: FPCA/exploration, experimental functional regression, repeated-trial functional mixed effects, generalized binary/count responses, and nonlinear/recurrence analysis.
 - Generalized observation-family expansion is paused after the 0.51-0.54 Bernoulli/grouped-binomial/Poisson contracts.
 - Coverage floor remains **90%**. Stabilization prioritizes independent-reference validation quality, cross-platform reproducibility and practical performance qualification rather than increasing coverage percentage for its own sake.
 - Hosted CI qualification and repository governance are reported separately. At the start of 0.55, GitHub reports `main` as unprotected and no repository ruleset is active; this is tracked as a release-readiness blocker rather than hidden behind successful CI.
 - Existing tests, coverage thresholds, mathematical contracts, documentation checks and scientific validation rules have not been weakened or bypassed.
+- 0.56 adds evidence-typed independent-reference validation, a numerical-tolerance policy, and repeated runtime/peak-memory qualification without using performance as a scientific pass/fail shortcut.
 
 See `docs/release-readiness.md` for the pre-1.0 gate and
 `docs/validation/reference-validation-ledger.md` for independent-reference

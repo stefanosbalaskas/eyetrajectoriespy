@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.55.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.56.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## What scientific problem does this solve?
 
@@ -58,6 +58,7 @@ The README is intentionally no longer the exhaustive function catalogue.
 - [API stability and hierarchy](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/api-stability/)
 - [Mathematical reference](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/)
 - [Capability status and roadmap](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/status-roadmap/)
+- [Reference validation & performance envelope](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/)
 
 ## Install
 
@@ -126,9 +127,10 @@ zero-inflated, hurdle and Tweedie families are not automatic next features.
 Classical Floquet/monodromy and bifurcation analysis remain outside the raw-gaze
 API without an explicitly identified dynamical model.
 
-Version 0.55 begins a stabilization line: canonical workflows, API consistency,
-independent-reference validation, performance qualification and release
-hardening take priority over estimator count. See the
+Version 0.55 began the stabilization line; version 0.56 adds evidence-typed
+independent/reference validation, an explicit numerical-tolerance policy, and
+a repeated runtime/peak-memory reference envelope. Scientific product
+qualification now takes priority over estimator count. See the
 [release-readiness checklist](https://stefanosbalaskas.github.io/eyetrajectoriespy/release-readiness/).
 
 ## Validation

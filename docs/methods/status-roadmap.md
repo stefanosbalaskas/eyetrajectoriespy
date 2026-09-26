@@ -149,7 +149,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.55.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.56.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
@@ -407,30 +407,44 @@ The independent-reference validation ledger is also formalized. The 0.54
 grouped-binomial row-expanded Bernoulli comparison is its first qualified
 entry and serves as the template for later validation cases.
 
-### Planned stabilization sequence after 0.55
+### 0.56 independent-reference validation and performance qualification
 
-**0.56 — independent-reference validation and performance qualification**
+Version **0.56** keeps the 0.55 stabilization operating model and adds no new
+statistical method. It formalizes two auditable ledgers.
 
-- selected FPCA, mixed-model, Poisson-exposure GEE, distance, RQA and transfer-
-  entropy reference cases;
-- runtime and peak-memory scaling across participant count, trial count, grid
-  length and basis dimension;
-- practical-envelope guidance rather than unsupported speed claims.
+The independent-reference ledger classifies every selected validation as one
+of **analytical truth**, **independent implementation equivalence**, or
+**simulation recovery**. Qualified cases cover FPCA, Gaussian functional mixed
+effects, Poisson exposure GEE, grouped-binomial GEE, discrete Fréchet, DTW,
+RQA, and discrete transfer entropy. The evidence type remains visible because
+a seeded recovery simulation is not equivalent to an exact truth or an
+independently represented fit.
+
+A separate numerical-tolerance policy prevents `rtol`/`atol` values from
+becoming ad hoc. Exact counts and deterministic geometry use tight/exact
+contracts; FPCA comparisons use sign/subspace invariants; optimizer-backed
+comparisons require matching estimands/specifications and explicit
+case-specific tolerances; simulation and Monte Carlo validation use
+finite-sample or Monte Carlo reasoning rather than machine precision.
+
+The performance ledger records a single-package reference envelope rather than
+a marketing benchmark. Six expensive routes are measured separately using
+fresh processes and at least three repetitions, retaining runtime
+median/IQR/range, peak process RSS, workload scale, hardware/software versions,
+and commit/run identifiers. No claim of superiority over another package is
+made and no speed threshold is used to weaken scientific computation.
+
+### Planned stabilization sequence after 0.56
 
 **0.57 — reproducibility, serialization and release hardening**
 
 - environment/software-version capture;
-- representative result serialization and round-trip provenance tests;
+- representative portable scientific-result schemas and round-trip provenance
+  tests rather than promises of permanent backend-object pickle compatibility;
 - error-message/failure-mode consistency;
-- realistic external-data examples for the canonical workflows;
-- release-candidate checklist closure.
+- realistic end-to-end examples for all five canonical workflows;
+- branch-protection/ruleset closure and release-candidate checklist review.
 
-Only after those stabilization tranches should the project assess a 0.9-style
-release-candidate phase. New statistical estimators are not the default measure
-of progress.
-
-Sparse/irregular generalized functional responses and external-validation /
-transport workflows remain substantive research candidates, but they should be
-evaluated against the stabilized package scope rather than through an automatic
-feature conveyor belt.
+Only after 0.57 should the project assess a 0.9-style release-candidate phase.
+New statistical estimators remain outside the default stabilization sequence.
 

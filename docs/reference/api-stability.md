@@ -76,6 +76,13 @@ introduced, unless retaining it would cause incorrect scientific results or a
 security defect. Scientific-correctness exceptions must be documented
 explicitly.
 
+Concrete example: if a replacement is introduced and the historical API is
+first deprecated in **0.55**, the deprecated API remains available throughout
+**0.56** and **0.57**. The earliest ordinary removal release is therefore
+**0.58**. A release counts for this clock when that minor development version
+is merged to `main`; patch-only documentation corrections do not advance the
+clock.
+
 Deprecation is not an excuse to reinterpret an existing result object silently.
 Changes to estimands, units, resampling units, clustering, denominator/exposure
 semantics or uncertainty definitions require a new explicit contract.

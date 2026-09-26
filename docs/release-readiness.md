@@ -45,6 +45,7 @@ The current check contexts intended for protection are:
 - `scikit-fda`;
 - `FDApy sparse / Python 3.11`;
 - `FDApy sparse / Python 3.12`.
+- `performance-envelope`.
 
 Use exact names from a recent successful pull request when configuring the
 ruleset. Required status checks should remain unique across workflows.
@@ -72,25 +73,32 @@ ruleset. Required status checks should remain unique across workflows.
 - [x] Existing synthetic truth and contract tests remain mandatory.
 - [x] 0.54 grouped-binomial GEE is checked against an independently represented
       row-expanded Bernoulli fit.
-- [ ] Independent-reference validation ledger covers selected FPCA, mixed-model,
+- [x] Independent-reference validation ledger covers selected FPCA, mixed-model,
       GEE/exposure, distance, RQA and transfer-entropy reference cases.
-- [ ] Reference cases include expected quantity, tolerance and CI test.
+- [x] Reference cases include expected quantity, evidence type, tolerance and CI
+      test.
+- [x] Numerical tolerances are governed by quantity/reference class rather than
+      one universal threshold.
 
-The unchecked external-reference items are the primary 0.56 validation target.
 Coverage remains a floor; raising line coverage alone is not a release target.
+The 0.56 ledger keeps analytical truth, independent-equivalence and simulation
+recovery as distinct evidence types.
 
 ## Performance qualification
 
-- [ ] Benchmark participant count.
-- [ ] Benchmark trials per participant.
-- [ ] Benchmark functional grid length.
-- [ ] Benchmark basis dimension.
-- [ ] Record runtime and peak memory for FPCA/bootstrap, nested mixed effects,
-      full-refit bootstrap, generalized GEE, recurrence/RQA and sensitivity
-      multiverses.
-- [ ] Publish practical-envelope guidance rather than unsupported speed claims.
+- [x] Record participant count in the qualified workload scale.
+- [x] Record trials per participant in the qualified workload scale.
+- [x] Record functional grid length in the qualified workload scale.
+- [x] Record basis/component dimension where applicable.
+- [x] Record repeated runtime and peak memory for FPCA/bootstrap, nested mixed
+      effects, full-refit bootstrap, generalized GEE, recurrence/RQA and
+      sensitivity multiverses.
+- [x] Publish a conditional single-package reference envelope without
+      unsupported comparative speed claims.
 
-These items are planned for 0.56.
+The first qualified reference snapshot is a CI-sized GitHub-hosted Linux
+envelope. Broader scaling curves may be added later, but they are not required
+to claim that the 0.56 qualification harness itself is operational.
 
 ## Reproducibility and serialization
 
