@@ -28,14 +28,15 @@ def _validate_family_response(
     values: np.ndarray,
     *,
     family: str,
+    grouped_binomial: bool = False,
 ) -> tuple[object, str]:
     family_name = str(family).lower().strip()
     if family_name == "binomial":
-        if not np.all(np.isin(values, (0.0, 1.0))):
+        if not grouped_binomial and not np.all(np.isin(values, (0.0, 1.0))):
             raise ValueError(
-                "family='binomial' requires Bernoulli functional responses "
-                "coded exactly as 0/1 in version 0.51; aggregated proportions "
-                "or trial denominators are not silently inferred"
+                "family='binomial' without binomial_denominator requires "
+                "Bernoulli functional responses coded exactly as 0/1; grouped "
+                "success counts require an explicit denominator array"
             )
         return sm.families.Binomial(), "logit"
     if family_name == "poisson":
@@ -51,7 +52,80 @@ def _validate_family_response(
             )
         return sm.families.Poisson(), "log"
     raise ValueError(
-        "family must be 'binomial' or 'poisson' for the 0.53 contract"
+        "family must be 'binomial' or 'poisson' for the 0.54 contract"
+    )
+
+
+def _validate_grouped_binomial(
+    successes: np.ndarray,
+    denominator: np.ndarray | Sequence[float] | None,
+    *,
+    family: str,
+    n_curves: int,
+    n_time: int,
+) -> tuple[
+    np.ndarray | None,
+    np.ndarray | None,
+    np.ndarray | None,
+    bool,
+]:
+    """Validate explicit grouped-binomial successes and denominators."""
+
+    if denominator is None:
+        return None, None, None, False
+    if str(family).lower().strip() != "binomial":
+        raise ValueError(
+            "binomial_denominator is supported only for family='binomial'"
+        )
+
+    denominators = np.asarray(denominator, dtype=float)
+    expanded_from_curve = False
+    if denominators.shape == (n_curves,):
+        denominators = np.repeat(denominators[:, None], n_time, axis=1)
+        expanded_from_curve = True
+    elif denominators.shape != (n_curves, n_time):
+        raise ValueError(
+            "binomial_denominator must have shape (n_curves, n_time) or "
+            f"(n_curves,); got {denominators.shape}"
+        )
+    if not np.all(np.isfinite(denominators)):
+        raise ValueError(
+            "binomial_denominator must contain only finite values"
+        )
+    if np.any(denominators <= 0):
+        raise ValueError(
+            "binomial_denominator must be strictly positive everywhere"
+        )
+    if not np.allclose(
+        denominators,
+        np.round(denominators),
+        rtol=0.0,
+        atol=1e-12,
+    ):
+        raise ValueError("binomial_denominator must contain integer trial counts")
+
+    success_values = np.asarray(successes, dtype=float)
+    if np.any(success_values < 0) or not np.allclose(
+        success_values,
+        np.round(success_values),
+        rtol=0.0,
+        atol=1e-12,
+    ):
+        raise ValueError(
+            "grouped binomial responses must be non-negative integer "
+            "success counts"
+        )
+    if np.any(success_values > denominators):
+        raise ValueError(
+            "grouped binomial success counts must not exceed denominators"
+        )
+
+    proportions = success_values / denominators
+    return (
+        success_values.copy(),
+        denominators.copy(),
+        proportions,
+        expanded_from_curve,
     )
 
 
@@ -130,12 +204,15 @@ def _fit_gee_arrays(
     basis: np.ndarray,
     family: str,
     exposure: np.ndarray | None,
+    binomial_denominator: np.ndarray | None,
     maxiter: int,
     ctol: float,
 ) -> dict[str, object]:
+    grouped_binomial = binomial_denominator is not None
     family_object, link_name = _validate_family_response(
         observed_functions,
         family=family,
+        grouped_binomial=grouped_binomial,
     )
     expanded_design = _fixed_effect_design(scalar_design, basis)
     expanded_rank = int(np.linalg.matrix_rank(expanded_design))
@@ -145,7 +222,17 @@ def _fit_gee_arrays(
             "deficient; change the declared predictors or basis size"
         )
 
-    endog = np.asarray(observed_functions, dtype=float).reshape(-1)
+    if grouped_binomial:
+        denominator_array = np.asarray(binomial_denominator, dtype=float)
+        endog_array = (
+            np.asarray(observed_functions, dtype=float) / denominator_array
+        )
+        weight_vector = denominator_array.reshape(-1)
+    else:
+        endog_array = np.asarray(observed_functions, dtype=float)
+        weight_vector = None
+
+    endog = endog_array.reshape(-1)
     groups = np.repeat(
         np.asarray(curve_participants, dtype=str),
         observed_functions.shape[1],
@@ -163,6 +250,7 @@ def _fit_gee_arrays(
         family=family_object,
         cov_struct=sm.cov_struct.Independence(),
         exposure=exposure_vector,
+        weights=weight_vector,
     )
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always")
@@ -268,6 +356,15 @@ def _fit_gee_arrays(
             else np.asarray(rate_functions, dtype=float)
         ),
         "log_exposure": log_exposure,
+        "binomial_observed_proportions": (
+            endog_array.copy() if grouped_binomial else None
+        ),
+        "binomial_expected_successes": (
+            np.asarray(mean_functions, dtype=float)
+            * np.asarray(binomial_denominator, dtype=float)
+            if grouped_binomial
+            else None
+        ),
         "expanded_design_rank": expanded_rank,
         "link_name": link_name,
         "warning_messages": warning_messages,
@@ -283,6 +380,7 @@ def fit_generalized_function_on_scalar_regression(
     participant_column: str,
     dimension: str,
     family: str,
+    binomial_denominator: np.ndarray | Sequence[float] | None = None,
     exposure: np.ndarray | Sequence[float] | None = None,
     exposure_units: str | None = None,
     basis_size: int = 5,
@@ -294,8 +392,9 @@ def fit_generalized_function_on_scalar_regression(
 ) -> GeneralizedFunctionOnScalarResult:
     """Fit a marginal generalized function-on-scalar model by clustered GEE.
 
-    Version 0.53 supports Bernoulli/logit and Poisson/log functional outcomes,
-    including an explicit positive exposure contract for Poisson rate models.
+    Version 0.54 supports Bernoulli/logit and Poisson/log functional outcomes,
+    including explicit grouped-binomial denominators and the 0.53 positive
+    Poisson exposure contract.
     Coefficient functions use an explicitly sized clamped B-spline basis.
     Participants are the independent GEE clusters; trial-varying predictors are
     allowed.  The only working correlation in this tranche is independence,
@@ -319,13 +418,13 @@ def fit_generalized_function_on_scalar_regression(
         )
     if working_correlation != "independence":
         raise ValueError(
-            "working_correlation must be 'independence' for the 0.53 "
+            "working_correlation must be 'independence' for the 0.54 "
             "marginal GEE contract"
         )
     if covariance_type != "robust":
         raise ValueError(
             "covariance_type must be 'robust'; naive working-correlation "
-            "standard errors are not exposed in 0.53"
+            "standard errors are not exposed in 0.54"
         )
     if isinstance(maxiter, bool) or not isinstance(maxiter, int):
         raise TypeError("maxiter must be an integer")
@@ -348,9 +447,22 @@ def fit_generalized_function_on_scalar_regression(
         :,
         dimension_index,
     ].copy()
+    (
+        binomial_successes,
+        binomial_denominators,
+        binomial_proportions,
+        denominator_expanded,
+    ) = _validate_grouped_binomial(
+        observed_functions,
+        binomial_denominator,
+        family=family,
+        n_curves=trajectories.n_curves,
+        n_time=trajectories.n_time,
+    )
     _, link_name = _validate_family_response(
         observed_functions,
         family=family,
+        grouped_binomial=binomial_denominators is not None,
     )
     exposure_array, log_exposure, exposure_expanded = _validate_poisson_exposure(
         exposure,
@@ -358,6 +470,11 @@ def fit_generalized_function_on_scalar_regression(
         n_curves=trajectories.n_curves,
         n_time=trajectories.n_time,
     )
+    if exposure_array is not None and binomial_denominators is not None:
+        raise ValueError(
+            "Poisson exposure and grouped-binomial denominators cannot be "
+            "used in the same model"
+        )
     if exposure_units is not None:
         if not isinstance(exposure_units, str) or not exposure_units.strip():
             raise TypeError("exposure_units must be a non-empty string or None")
@@ -412,6 +529,7 @@ def fit_generalized_function_on_scalar_regression(
         basis=basis,
         family=family,
         exposure=exposure_array,
+        binomial_denominator=binomial_denominators,
         maxiter=maxiter,
         ctol=ctol,
     )
@@ -466,6 +584,21 @@ def fit_generalized_function_on_scalar_regression(
         linear_predictor_count=state["linear_predictor_count"],
         exposure_units=exposure_units,
         exposure_expanded_from_curve=exposure_expanded,
+        binomial_successes=(
+            None if binomial_successes is None else binomial_successes.copy()
+        ),
+        binomial_denominators=(
+            None
+            if binomial_denominators is None
+            else binomial_denominators.copy()
+        ),
+        binomial_observed_proportions=(
+            None
+            if binomial_proportions is None
+            else binomial_proportions.copy()
+        ),
+        binomial_expected_successes=state["binomial_expected_successes"],
+        binomial_denominator_expanded_from_curve=denominator_expanded,
         provenance={
             **dict(trajectories.provenance),
             "generalized_function_on_scalar_regression": {
@@ -510,7 +643,34 @@ def fit_generalized_function_on_scalar_regression(
                 ),
                 "expanded_coefficient_parameter_count": n_parameters,
                 "cluster_count_guard_is_adequacy_theorem": False,
-                "aggregated_binomial_proportions_supported": False,
+                "grouped_binomial_success_denominator_supported": True,
+                "grouped_binomial_supplied": (
+                    binomial_denominators is not None
+                ),
+                "grouped_binomial_response_representation": (
+                    None
+                    if binomial_denominators is None
+                    else "integer_successes_plus_integer_denominator"
+                ),
+                "grouped_binomial_backend_representation": (
+                    None
+                    if binomial_denominators is None
+                    else "proportion_plus_gee_weights"
+                ),
+                "binomial_denominator_shape": (
+                    None
+                    if binomial_denominators is None
+                    else list(binomial_denominators.shape)
+                ),
+                "binomial_denominator_expanded_from_curve": (
+                    denominator_expanded
+                ),
+                "binomial_denominator_inferred": False,
+                "binomial_denominator_observed_and_fixed": (
+                    binomial_denominators is not None
+                ),
+                "binomial_denominator_measurement_uncertainty": False,
+                "generic_proportion_input_supported": False,
                 "generic_offset_supported": False,
                 "poisson_exposure_supported": True,
                 "exposure_supplied": exposure_array is not None,
@@ -526,6 +686,13 @@ def fit_generalized_function_on_scalar_regression(
                 "exposure_inferred_from_metadata": False,
                 "exposure_observed_and_fixed": exposure_array is not None,
                 "exposure_measurement_uncertainty": False,
+                "binomial_denominator_observed_and_fixed": (
+                    result.binomial_denominators is not None
+                ),
+                "binomial_denominator_resampled_with_response_bundle": (
+                    result.binomial_denominators is not None
+                ),
+                "binomial_denominator_measurement_uncertainty": False,
                 "converged": True,
                 "backend_warnings": list(state["warning_messages"]),
             },
@@ -617,6 +784,11 @@ def bootstrap_generalized_function_on_scalar_coefficients(
                     None
                     if result.exposure is None
                     else result.exposure[index]
+                ),
+                binomial_denominator=(
+                    None
+                    if result.binomial_denominators is None
+                    else result.binomial_denominators[index]
                 ),
                 maxiter=result.maxiter,
                 ctol=result.ctol,
@@ -952,6 +1124,17 @@ def generalized_function_on_scalar_reporting_text(
             f"bootstrap refits ({band.bootstrap.n_bootstrap} replicates)."
         )
     )
+    grouped_text = ""
+    if result.family == "binomial" and result.binomial_denominators is not None:
+        grouped_text = (
+            " The response was modeled as explicit grouped-binomial integer "
+            "success counts with observed integer denominators; the backend "
+            "used success proportions with denominator weights. Coefficients "
+            "therefore describe marginal log odds of success. Denominators "
+            "were treated as observed and fixed, were not inferred, and their "
+            "measurement uncertainty was not modeled."
+        )
+
     exposure_text = ""
     if result.family == "poisson" and result.exposure is not None:
         exposure_text = (
@@ -980,6 +1163,7 @@ def generalized_function_on_scalar_reporting_text(
         "random-effects interpretation. No working correlation, smoothing "
         "penalty, exposure definition, family, link, or model was selected "
         "automatically."
+        + grouped_text
         + exposure_text
         + band_text
     )
