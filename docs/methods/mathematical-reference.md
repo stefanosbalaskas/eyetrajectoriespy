@@ -1131,16 +1131,16 @@ continuous B-spline domain.
 ## Marginal generalized function-on-scalar regression { #generalized-function-on-scalar }
 
 Version 0.51 introduced repeated non-Gaussian functional responses through a
-population-averaged generalized estimating equation. For participant (i),
-trial (j), and observed time (t),
+population-averaged generalized estimating equation. For participant \(i\),
+trial \(j\), and observed time \(t\),
 
-[
-g{mu_{ij}(t)}
+\[
+g\{\mu_{ij}(t)\}
 =
-mathbf x_{ij}^{	op}oldsymboleta(t),
-qquad
-eta_k(t)=mathbf B(t)^{	op}oldsymbol	heta_k.
-]
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t),
+\qquad
+\beta_k(t)=\mathbf B(t)^{\top}\boldsymbol\theta_k.
+\]
 
 Bernoulli responses use the logit link and must be coded exactly as 0/1.
 Poisson responses use the log link and must be non-negative integer counts.
@@ -1148,43 +1148,43 @@ Participants are the independent GEE clusters; trial-varying scalar predictors
 remain in the design. Working independence is fixed and inference uses the
 participant-cluster robust sandwich covariance,
 
-[
-widehat{operatorname{Var}}_{mathrm{robust}}
-(widehat{oldsymbol	heta})
+\[
+\widehat{\operatorname{Var}}_{\mathrm{robust}}
+(\widehat{\boldsymbol\theta})
 =
-mathbf A^{-1}mathbf B_{mathrm{sand}}mathbf A^{-1}.
-]
+\mathbf A^{-1}\mathbf B_{\mathrm{sand}}\mathbf A^{-1}.
+\]
 
 Version 0.53 adds an explicit **Poisson exposure** contract. When a strictly
-positive analyst-supplied exposure (E_{ij}(t)) is present,
+positive analyst-supplied exposure \(E_{ij}(t)\) is present,
 
-[
-Y_{ij}(t)simoperatorname{Poisson}{mu_{ij}(t)},
-]
+\[
+Y_{ij}(t)\sim\operatorname{Poisson}\{\mu_{ij}(t)\},
+\]
 
-[
-logmu_{ij}(t)
+\[
+\log\mu_{ij}(t)
 =
-log E_{ij}(t)
+\log E_{ij}(t)
 +
-mathbf x_{ij}^{	op}oldsymboleta(t),
-qquad E_{ij}(t)>0,
-]
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t),
+\qquad E_{ij}(t)>0,
+\]
 
 and therefore
 
-[
-lambda_{ij}(t)
+\[
+\lambda_{ij}(t)
 =
-rac{mu_{ij}(t)}{E_{ij}(t)}
+\frac{\mu_{ij}(t)}{E_{ij}(t)}
 =
-exp{mathbf x_{ij}^{	op}oldsymboleta(t)}.
-]
+\exp\{\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\}.
+\]
 
-Thus (mathbf x_{ij}^{	op}oldsymboleta(t)) is the log-rate predictor,
-whereas (log E_{ij}(t)+mathbf x_{ij}^{	op}oldsymboleta(t)) is the
-log-expected-count predictor. For coefficient (k),
-(exp{eta_k(t)}) is the time-varying multiplicative rate ratio for a
+Thus \(\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\) is the log-rate predictor,
+whereas \(\log E_{ij}(t)+\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\) is the
+log-expected-count predictor. For coefficient \(k\),
+\(\exp\{\beta_k(t)\}\) is the time-varying multiplicative rate ratio for a
 one-unit predictor change, holding exposure fixed.
 
 Exposure is part of the observation contract rather than a generic
@@ -1201,80 +1201,80 @@ are treated as observed and fixed; exposure measurement uncertainty is not
 modeled. Coefficient simultaneous bands retain the existing observed-grid
 maximum standardized-deviation statistic,
 
-[
+\[
 M_k^{*(b)}
 =
-max_m
-left|
-rac{
-widehateta_k^{*(b)}(t_m)-widehateta_k(t_m)
+\max_m
+\left|
+\frac{
+\widehat\beta_k^{*(b)}(t_m)-\widehat\beta_k(t_m)
 }{
-widehat{mathrm{SE}}{widehateta_k(t_m)}
+\widehat{\mathrm{SE}}\{\widehat\beta_k(t_m)\}
 }
-ight|.
-]
+\right|.
+\]
 
 The estimand remains marginal / population averaged. No family, link, basis
 dimension, working correlation, exposure definition, smoothing penalty, or
 model is selected automatically.
 
-**API:** `fit_generalized_function_on_scalar_regression()`,
-`bootstrap_generalized_function_on_scalar_coefficients()`,
-`generalized_function_on_scalar_simultaneous_bands()`, and
-`generalized_function_on_scalar_exposure_frame()`.
+**API:** fit_generalized_function_on_scalar_regression(),
+bootstrap_generalized_function_on_scalar_coefficients(),
+generalized_function_on_scalar_simultaneous_bands(), and
+generalized_function_on_scalar_exposure_frame().
 
 ## Fixed-profile marginal prediction and explicit contrasts { #generalized-function-on-scalar-prediction }
 
-For a fixed analyst-declared scalar predictor profile (mathbf x_r), an
+For a fixed analyst-declared scalar predictor profile \(\mathbf x_r\), an
 exposure-adjusted Poisson fit first defines the rate-scale linear predictor
 
-[
-eta_r^{mathrm{rate}}(t)
+\[
+\eta_r^{\mathrm{rate}}(t)
 =
-mathbf x_r^	opwidehat{oldsymboleta}(t)
-]
+\mathbf x_r^\top\widehat{\boldsymbol\beta}(t)
+\]
 
 and rate function
 
-[
-lambda_r(t)
+\[
+\lambda_r(t)
 =
-exp{eta_r^{mathrm{rate}}(t)}.
-]
+\exp\{\eta_r^{\mathrm{rate}}(t)\}.
+\]
 
 A rate prediction is therefore independent of target exposure. If the analyst
-supplies a strictly positive target exposure (E_r(t)), the expected-count
+supplies a strictly positive target exposure \(E_r(t)\), the expected-count
 function is
 
-[
-mu_r(t)
+\[
+\mu_r(t)
 =
-E_r(t)lambda_r(t)
-]
+E_r(t)\lambda_r(t)
+\]
 
 with count-scale linear predictor
 
-[
-eta_r^{mathrm{count}}(t)
+\[
+\eta_r^{\mathrm{count}}(t)
 =
-log E_r(t)+eta_r^{mathrm{rate}}(t).
-]
+\log E_r(t)+\eta_r^{\mathrm{rate}}(t).
+\]
 
-The package does not silently set (E_r(t)=1) when expected counts are
+The package does not silently set \(E_r(t)=1\) when expected counts are
 requested from an exposure-adjusted fit. Missing target exposure is an error
 for that prediction scale.
 
-Let (mathbf z_r(t)) denote the profile-by-basis row and let
-(widehat{oldsymbolSigma}_	heta) be the robust GEE covariance of the
+Let \(\mathbf z_r(t)\) denote the profile-by-basis row and let
+\(\widehat{\boldsymbol\Sigma}_\theta\) be the robust GEE covariance of the
 basis-coefficient vector. Because exposure is treated as fixed,
 
-[
-widehat{operatorname{Var}}{eta_r(t)}
+\[
+\widehat{\operatorname{Var}}\{\eta_r(t)\}
 =
-mathbf z_r(t)^	op
-widehat{oldsymbolSigma}_	heta
-mathbf z_r(t)
-]
+\mathbf z_r(t)^\top
+\widehat{\boldsymbol\Sigma}_\theta
+\mathbf z_r(t)
+\]
 
 on either the rate or expected-count linear-predictor scale. Whole-participant
 bootstrap coefficient draws are projected through the same fixed profiles and,
@@ -1284,31 +1284,31 @@ and transformed through the monotone inverse link.
 
 Version 0.53 exposes one predeclared Poisson contrast scale at a time:
 
-[
-D_{ab}^{mathrm{rate}}(t)
+\[
+D_{ab}^{\mathrm{rate}}(t)
 =
-lambda_a(t)-lambda_b(t),
-]
+\lambda_a(t)-\lambda_b(t),
+\]
 
-[
+\[
 RR_{ab}(t)
 =
-rac{lambda_a(t)}{lambda_b(t)}
+\frac{\lambda_a(t)}{\lambda_b(t)}
 =
-exp{(mathbf x_a-mathbf x_b)^	op
-widehat{oldsymboleta}(t)},
-]
+\exp\{(\mathbf x_a-\mathbf x_b)^\top
+\widehat{\boldsymbol\beta}(t)\},
+\]
 
 or, when target exposures have been supplied,
 
-[
-D_{ab}^{mathrm{count}}(t)
+\[
+D_{ab}^{\mathrm{count}}(t)
 =
-mu_a(t)-mu_b(t).
-]
+\mu_a(t)-\mu_b(t).
+\]
 
 The rate-ratio simultaneous band is calibrated on
-(log RR_{ab}(t)) and then exponentiated, preserving positivity. The package
+\(\log RR_{ab}(t)\) and then exponentiated, preserving positivity. The package
 does not automatically generate all contrast scales, search across profile
 pairs, or claim multiple-contrast family adjustment. Bernoulli prediction and
 probability-difference behavior from 0.52 is unchanged.
@@ -1317,10 +1317,10 @@ Scalar-predictor extrapolations remain explicit, profile and exposure values are
 fixed rather than resampled, and simultaneous coverage is restricted to the
 observed time grid.
 
-**API:** `generalized_function_on_scalar_predict()`,
-`bootstrap_generalized_function_on_scalar_predictions()`,
-`generalized_function_on_scalar_prediction_bands()`, and
-`generalized_function_on_scalar_mean_difference_band()`.
+**API:** generalized_function_on_scalar_predict(),
+bootstrap_generalized_function_on_scalar_predictions(),
+generalized_function_on_scalar_prediction_bands(), and
+generalized_function_on_scalar_mean_difference_band().
 
 ## Function-on-scalar regression { #function-on-scalar }
 
