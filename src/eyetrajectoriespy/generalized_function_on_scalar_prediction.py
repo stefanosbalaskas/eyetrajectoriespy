@@ -112,11 +112,43 @@ def _validate_profiles(
     return aligned, profile_ids, predictor_values
 
 
+def _validate_prediction_exposure(
+    result: GeneralizedFunctionOnScalarResult,
+    exposure_profiles,
+    *,
+    n_profiles: int,
+) -> tuple[np.ndarray | None, np.ndarray | None]:
+    if exposure_profiles is None:
+        return None, None
+    if result.family != "poisson":
+        raise ValueError("exposure_profiles is supported only for Poisson fits")
+    if result.exposure is None:
+        raise ValueError(
+            "target exposure cannot be supplied to a Poisson fit estimated "
+            "without exposure"
+        )
+    values = np.asarray(exposure_profiles, dtype=float)
+    if values.shape == (n_profiles,):
+        values = np.repeat(values[:, None], result.time.size, axis=1)
+    elif values.shape != (n_profiles, result.time.size):
+        raise ValueError(
+            "exposure_profiles must have shape (n_profiles, n_time) or "
+            f"(n_profiles,); got {values.shape}"
+        )
+    if not np.all(np.isfinite(values)):
+        raise ValueError("exposure_profiles must contain only finite values")
+    if np.any(values <= 0):
+        raise ValueError("exposure_profiles must be strictly positive")
+    return values.copy(), np.log(values)
+
+
 def generalized_function_on_scalar_predict(
     result: GeneralizedFunctionOnScalarResult,
     profiles: pd.DataFrame,
     *,
     profile_id_column: str = "profile_id",
+    exposure_profiles=None,
+    prediction_scale: str | None = None,
 ) -> GeneralizedFunctionOnScalarPredictionResult:
     """Predict fixed marginal response profiles under a generalized FoSR fit.
 
@@ -131,6 +163,44 @@ def generalized_function_on_scalar_predict(
         profiles,
         profile_id_column=profile_id_column,
     )
+    target_exposure, target_log_exposure = _validate_prediction_exposure(
+        result,
+        exposure_profiles,
+        n_profiles=len(profile_ids),
+    )
+    if result.family == "binomial":
+        if prediction_scale not in {None, "probability"}:
+            raise ValueError(
+                "binomial prediction_scale must be 'probability' or None"
+            )
+        selected_scale = "probability"
+    elif result.exposure is None:
+        if prediction_scale not in {None, "expected_count"}:
+            raise ValueError(
+                "a Poisson fit without exposure supports expected_count "
+                "prediction only; refit with exposure for a rate estimand"
+            )
+        selected_scale = "expected_count"
+    else:
+        if prediction_scale is None:
+            selected_scale = "rate"
+        elif prediction_scale in {"rate", "expected_count"}:
+            selected_scale = prediction_scale
+        else:
+            raise ValueError(
+                "Poisson exposure prediction_scale must be 'rate' or "
+                "'expected_count'"
+            )
+        if selected_scale == "rate" and target_exposure is not None:
+            raise ValueError(
+                "exposure_profiles must be omitted for rate predictions"
+            )
+        if selected_scale == "expected_count" and target_exposure is None:
+            raise ValueError(
+                "expected-count prediction from an exposure-adjusted fit "
+                "requires explicit exposure_profiles"
+            )
+
     scalar_design = np.column_stack(
         [
             np.ones(len(profile_ids), dtype=float),
@@ -145,9 +215,13 @@ def generalized_function_on_scalar_predict(
         result.basis_coefficients,
         dtype=float,
     ).reshape(-1)
-    linear = (
+    linear_rate = (
         expanded_design @ parameter_vector
     ).reshape(len(profile_ids), result.time.size)
+    if selected_scale == "expected_count" and target_log_exposure is not None:
+        linear = linear_rate + target_log_exposure
+    else:
+        linear = linear_rate
 
     covariance = np.asarray(
         result.parameter_covariance,
@@ -163,6 +237,16 @@ def generalized_function_on_scalar_predict(
     linear_se = np.sqrt(np.maximum(linear_variance, 0.0))
 
     mean = _inverse_link(result.family, linear)
+    rate = (
+        _inverse_link("poisson", linear_rate)
+        if result.family == "poisson" and result.exposure is not None
+        else None
+    )
+    expected_count = (
+        mean
+        if result.family == "poisson" and selected_scale == "expected_count"
+        else None
+    )
     derivative = _inverse_link_derivative(result.family, mean)
     mean_se = derivative * linear_se
 
@@ -195,6 +279,19 @@ def generalized_function_on_scalar_predict(
         extrapolation_flags=extrapolation,
         predictor_minima=minima,
         predictor_maxima=maxima,
+        prediction_scale=selected_scale,
+        exposure_profiles=target_exposure,
+        log_exposure_profiles=target_log_exposure,
+        rate_functions=rate,
+        expected_count_functions=expected_count,
+        linear_predictor_rate=(
+            linear_rate if result.family == "poisson" else None
+        ),
+        linear_predictor_count=(
+            linear
+            if result.family == "poisson" and selected_scale == "expected_count"
+            else None
+        ),
         provenance={
             **dict(result.provenance),
             "generalized_function_on_scalar_prediction": {
@@ -210,11 +307,12 @@ def generalized_function_on_scalar_predict(
                 "predictor_scaling": False,
                 "marginal_population_averaged_interpretation": True,
                 "linear_predictor_scale": result.link,
-                "mean_scale": (
-                    "probability"
-                    if result.family == "binomial"
-                    else "expected_count"
+                "mean_scale": selected_scale,
+                "poisson_rate_estimand": (
+                    result.family == "poisson" and result.exposure is not None
                 ),
+                "target_exposure_supplied": target_exposure is not None,
+                "target_exposure_assumed_unit": False,
                 "pointwise_linear_predictor_standard_error": (
                     "delta_from_gee_robust_parameter_covariance"
                 ),
@@ -237,6 +335,8 @@ def bootstrap_generalized_function_on_scalar_predictions(
     profiles: pd.DataFrame,
     *,
     profile_id_column: str = "profile_id",
+    exposure_profiles=None,
+    prediction_scale: str | None = None,
 ) -> GeneralizedFunctionOnScalarPredictionBootstrapResult:
     """Project participant-bootstrap coefficient functions to fixed profiles."""
 
@@ -251,6 +351,8 @@ def bootstrap_generalized_function_on_scalar_predictions(
         bootstrap.reference,
         profiles,
         profile_id_column=profile_id_column,
+        exposure_profiles=exposure_profiles,
+        prediction_scale=prediction_scale,
     )
     design = np.asarray(
         prediction.profile_design_matrix,
@@ -260,15 +362,37 @@ def bootstrap_generalized_function_on_scalar_predictions(
         bootstrap.bootstrap_coefficient_functions,
         dtype=float,
     )
-    linear_draws = np.einsum(
+    linear_rate_draws = np.einsum(
         "pc,bct->bpt",
         design,
         coefficient_draws,
         optimize=True,
     )
+    rate_draws = (
+        _inverse_link("poisson", linear_rate_draws)
+        if bootstrap.reference.family == "poisson"
+        and bootstrap.reference.exposure is not None
+        else None
+    )
+    if (
+        prediction.prediction_scale == "expected_count"
+        and prediction.log_exposure_profiles is not None
+    ):
+        linear_draws = (
+            linear_rate_draws
+            + prediction.log_exposure_profiles[None, :, :]
+        )
+    else:
+        linear_draws = linear_rate_draws
     mean_draws = _inverse_link(
         bootstrap.reference.family,
         linear_draws,
+    )
+    expected_count_draws = (
+        mean_draws
+        if bootstrap.reference.family == "poisson"
+        and prediction.prediction_scale == "expected_count"
+        else None
     )
     if not np.all(np.isfinite(linear_draws)):
         raise RuntimeError(
@@ -284,6 +408,8 @@ def bootstrap_generalized_function_on_scalar_predictions(
         coefficient_bootstrap=bootstrap,
         bootstrap_linear_predictor_functions=linear_draws,
         bootstrap_mean_functions=mean_draws,
+        bootstrap_rate_functions=rate_draws,
+        bootstrap_expected_count_functions=expected_count_draws,
         provenance={
             **dict(bootstrap.provenance),
             "generalized_function_on_scalar_prediction_bootstrap": {
@@ -300,6 +426,10 @@ def bootstrap_generalized_function_on_scalar_predictions(
                     "inverse_logit"
                     if bootstrap.reference.family == "binomial"
                     else "exponential"
+                ),
+                "prediction_scale": prediction.prediction_scale,
+                "target_exposure_supplied": (
+                    prediction.exposure_profiles is not None
                 ),
                 "automatic_profile_selection": False,
             },
