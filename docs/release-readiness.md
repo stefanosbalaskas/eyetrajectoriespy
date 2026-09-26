@@ -58,8 +58,8 @@ ruleset. Required status checks should remain unique across workflows.
 - [x] Each route includes assumptions, fitting, uncertainty/diagnostics and
       reporting.
 - [x] Advanced/diagnostic/experimental branches are visibly separated.
-- [ ] One realistic research-style executable end-to-end example exists for
-      every canonical route; final qualification awaits the 0.57 examples CI.
+- [x] One realistic research-style executable end-to-end example exists for
+      every canonical route and is exercised by examples CI.
 
 ## API stability
 
@@ -115,8 +115,8 @@ to claim that the 0.56 qualification harness itself is operational.
       source/current package versions remain visible.
 - [x] Add a reproducibility bundle checklist for manuscript workflows.
 
-These 0.57 items are implemented in the release-hardening branch and become
-qualified only when the complete pull-request and exact-main CI cycles pass.
+These 0.57 portability/environment items are pull-request qualified; exact-main
+requalification remains required after merge.
 
 
 
