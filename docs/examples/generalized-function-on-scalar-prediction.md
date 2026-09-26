@@ -35,7 +35,7 @@ prediction.mean_functions
 prediction.extrapolation_flags
 ~~~
 
-For a Bernoulli/logit fit, \`mean_functions\` contains marginal probabilities.
+For a Bernoulli/logit fit, `mean_functions` contains marginal probabilities.
 
 ## Propagate the participant bootstrap
 
