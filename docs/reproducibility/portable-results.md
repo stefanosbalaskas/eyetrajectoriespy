@@ -6,17 +6,17 @@ backend objects can be unpickled forever.
 
 ## Portable scope
 
-\`export_portable_result()\` writes a directory containing:
+`export_portable_result()` writes a directory containing:
 
-- \`manifest.json\`: schema version, result type, package version, units,
+- `manifest.json`: schema version, result type, package version, units,
   provenance structure, environment capture and explicit nonportable fields;
-- \`arrays.npz\`: numerical/string array payload with a SHA-256 checksum.
+- `arrays.npz`: numerical/string array payload with a SHA-256 checksum.
 
 The portable scope includes scientific arrays, identifiers, specifications,
 units, diagnostics and provenance. Backend-native fitted objects such as
 statsmodels/sklearn/scikit-fda model instances are **not** promised portable.
 When encountered, they are represented by an explicit nonportable marker and
-their field paths are retained in \`nonportable_fields\`; they are never silently
+their field paths are retained in `nonportable_fields`; they are never silently
 discarded.
 
 ~~~python
@@ -30,13 +30,13 @@ print(snapshot.nonportable_fields)
 ~~~
 
 Loading verifies the array checksum and schema version. It returns a
-\`PortableScientificResultSnapshot\`, not a reconstructed fitted estimator.
+`PortableScientificResultSnapshot`, not a reconstructed fitted estimator.
 That distinction prevents a JSON/NPZ archive from pretending to preserve
 backend optimizer internals that may change across dependency versions.
 
 ## Environment capture
 
-\`capture_environment()\` records:
+`capture_environment()` records:
 
 - eyetrajectoriespy version;
 - Git commit when available;
@@ -63,7 +63,7 @@ Portable schema version 1 is explicit and fail-closed:
 - unknown future schema versions raise rather than being guessed;
 - source and current package versions are retained separately;
 - cross-version loading is allowed as a scientific snapshot but
-  \`package_version_match\` makes the mismatch visible;
+  `package_version_match` makes the mismatch visible;
 - exact reconstruction of opaque backend objects is outside the schema.
 
 If a future release changes the portable schema, it must either preserve a
