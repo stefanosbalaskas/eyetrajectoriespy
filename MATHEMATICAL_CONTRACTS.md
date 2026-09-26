@@ -732,9 +732,9 @@ For one predeclared ordered pair,
 D_{ab}(t)=\mu_a(t)-\mu_b(t).
 \]
 
-Implemented by \`generalized_function_on_scalar_predict()\`,
-\`generalized_function_on_scalar_prediction_bands()\`, and
-\`generalized_function_on_scalar_mean_difference_band()\`. Profile values are
+Implemented by `generalized_function_on_scalar_predict()`,
+`generalized_function_on_scalar_prediction_bands()`, and
+`generalized_function_on_scalar_mean_difference_band()`. Profile values are
 fixed, extrapolative scalar targets are retained and flagged, no profile or
 contrast is selected automatically, and between-grid coverage is not claimed.
 
