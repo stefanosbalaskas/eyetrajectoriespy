@@ -55,6 +55,38 @@ def _validate_family_response(
     )
 
 
+def _validate_poisson_exposure(
+    exposure: np.ndarray | Sequence[float] | None,
+    *,
+    family: str,
+    n_curves: int,
+    n_time: int,
+) -> tuple[np.ndarray | None, np.ndarray | None, bool]:
+    """Validate an explicit Poisson exposure array without inferring it."""
+
+    if exposure is None:
+        return None, None, False
+    family_name = str(family).lower().strip()
+    if family_name != "poisson":
+        raise ValueError("exposure is supported only for family='poisson'")
+
+    values = np.asarray(exposure, dtype=float)
+    expanded_from_curve = False
+    if values.shape == (n_curves,):
+        values = np.repeat(values[:, None], n_time, axis=1)
+        expanded_from_curve = True
+    elif values.shape != (n_curves, n_time):
+        raise ValueError(
+            "exposure must have shape (n_curves, n_time) or (n_curves,); "
+            f"got {values.shape}"
+        )
+    if not np.all(np.isfinite(values)):
+        raise ValueError("exposure must contain only finite values")
+    if np.any(values <= 0):
+        raise ValueError("exposure must be strictly positive everywhere")
+    return values.copy(), np.log(values), expanded_from_curve
+
+
 def _validate_participant_clusters(
     trajectories: TrajectorySet,
     *,
@@ -97,6 +129,7 @@ def _fit_gee_arrays(
     curve_participants: np.ndarray,
     basis: np.ndarray,
     family: str,
+    exposure: np.ndarray | None,
     maxiter: int,
     ctol: float,
 ) -> dict[str, object]:
@@ -118,12 +151,18 @@ def _fit_gee_arrays(
         observed_functions.shape[1],
     )
 
+    exposure_vector = (
+        None
+        if exposure is None
+        else np.asarray(exposure, dtype=float).reshape(-1)
+    )
     model = sm.GEE(
         endog,
         expanded_design,
         groups=groups,
         family=family_object,
         cov_struct=sm.cov_struct.Independence(),
+        exposure=exposure_vector,
     )
     with warnings.catch_warnings(record=True) as caught:
         warnings.simplefilter("always")
@@ -187,12 +226,25 @@ def _fit_gee_arrays(
             np.maximum(pointwise_variance, 0.0)
         )
 
-    linear_predictor = (
-        scalar_design @ coefficient_functions
-    )
-    mean_functions = family_object.link.inverse(linear_predictor)
+    linear_rate = scalar_design @ coefficient_functions
+    if exposure is None:
+        linear_count = linear_rate.copy()
+        mean_functions = family_object.link.inverse(linear_rate)
+        rate_functions = (
+            np.asarray(mean_functions, dtype=float)
+            if str(family).lower().strip() == "poisson"
+            else None
+        )
+        log_exposure = None
+    else:
+        log_exposure = np.log(np.asarray(exposure, dtype=float))
+        linear_count = linear_rate + log_exposure
+        rate_functions = np.exp(linear_rate)
+        mean_functions = np.exp(linear_count)
     if not np.all(np.isfinite(mean_functions)):
         raise RuntimeError("GEE fitted marginal means are non-finite")
+    if rate_functions is not None and not np.all(np.isfinite(rate_functions)):
+        raise RuntimeError("GEE fitted marginal rates are non-finite")
 
     return {
         "model": model,
@@ -201,8 +253,16 @@ def _fit_gee_arrays(
         "coefficient_standard_errors": standard_errors,
         "basis_coefficients": basis_coefficients,
         "parameter_covariance": covariance,
-        "linear_predictor_functions": linear_predictor,
+        "linear_predictor_functions": linear_rate,
+        "linear_predictor_rate": linear_rate,
+        "linear_predictor_count": linear_count,
         "mean_functions": np.asarray(mean_functions, dtype=float),
+        "rate_functions": (
+            None
+            if rate_functions is None
+            else np.asarray(rate_functions, dtype=float)
+        ),
+        "log_exposure": log_exposure,
         "expanded_design_rank": expanded_rank,
         "link_name": link_name,
         "warning_messages": warning_messages,
@@ -218,6 +278,8 @@ def fit_generalized_function_on_scalar_regression(
     participant_column: str,
     dimension: str,
     family: str,
+    exposure: np.ndarray | Sequence[float] | None = None,
+    exposure_units: str | None = None,
     basis_size: int = 5,
     spline_degree: int = 3,
     working_correlation: str = "independence",
@@ -227,7 +289,8 @@ def fit_generalized_function_on_scalar_regression(
 ) -> GeneralizedFunctionOnScalarResult:
     """Fit a marginal generalized function-on-scalar model by clustered GEE.
 
-    Version 0.51 supports Bernoulli/logit and Poisson/log functional outcomes.
+    Version 0.53 supports Bernoulli/logit and Poisson/log functional outcomes,
+    including an explicit positive exposure contract for Poisson rate models.
     Coefficient functions use an explicitly sized clamped B-spline basis.
     Participants are the independent GEE clusters; trial-varying predictors are
     allowed.  The only working correlation in this tranche is independence,
@@ -284,6 +347,18 @@ def fit_generalized_function_on_scalar_regression(
         observed_functions,
         family=family,
     )
+    exposure_array, log_exposure, exposure_expanded = _validate_poisson_exposure(
+        exposure,
+        family=family,
+        n_curves=trajectories.n_curves,
+        n_time=trajectories.n_time,
+    )
+    if exposure_units is not None:
+        if not isinstance(exposure_units, str) or not exposure_units.strip():
+            raise TypeError("exposure_units must be a non-empty string or None")
+        if exposure_array is None:
+            raise ValueError("exposure_units requires an explicit exposure array")
+        exposure_units = exposure_units.strip()
 
     basis, basis_knots = _bspline_basis(
         trajectories.time,
@@ -331,6 +406,7 @@ def fit_generalized_function_on_scalar_regression(
         curve_participants=curve_participants,
         basis=basis,
         family=family,
+        exposure=exposure_array,
         maxiter=maxiter,
         ctol=ctol,
     )
@@ -374,6 +450,17 @@ def fit_generalized_function_on_scalar_regression(
         ctol=float(ctol),
         converged=True,
         backend_warnings=state["warning_messages"],
+        exposure=(
+            None if exposure_array is None else exposure_array.copy()
+        ),
+        log_exposure=(
+            None if log_exposure is None else log_exposure.copy()
+        ),
+        rate_functions=state["rate_functions"],
+        linear_predictor_rate=state["linear_predictor_rate"],
+        linear_predictor_count=state["linear_predictor_count"],
+        exposure_units=exposure_units,
+        exposure_expanded_from_curve=exposure_expanded,
         provenance={
             **dict(trajectories.provenance),
             "generalized_function_on_scalar_regression": {
@@ -419,7 +506,21 @@ def fit_generalized_function_on_scalar_regression(
                 "expanded_coefficient_parameter_count": n_parameters,
                 "cluster_count_guard_is_adequacy_theorem": False,
                 "aggregated_binomial_proportions_supported": False,
-                "poisson_offset_supported": False,
+                "generic_offset_supported": False,
+                "poisson_exposure_supported": True,
+                "exposure_supplied": exposure_array is not None,
+                "exposure_shape": (
+                    None
+                    if exposure_array is None
+                    else list(exposure_array.shape)
+                ),
+                "exposure_units": exposure_units,
+                "exposure_expanded_from_curve": exposure_expanded,
+                "exposure_inferred_from_time_grid": False,
+                "exposure_inferred_from_trial_duration": False,
+                "exposure_inferred_from_metadata": False,
+                "exposure_observed_and_fixed": exposure_array is not None,
+                "exposure_measurement_uncertainty": False,
                 "converged": True,
                 "backend_warnings": list(state["warning_messages"]),
             },
@@ -507,6 +608,11 @@ def bootstrap_generalized_function_on_scalar_coefficients(
                 curve_participants=np.asarray(groups, dtype=str),
                 basis=result.basis,
                 family=result.family,
+                exposure=(
+                    None
+                    if result.exposure is None
+                    else result.exposure[index]
+                ),
                 maxiter=result.maxiter,
                 ctol=result.ctol,
             )
@@ -547,6 +653,11 @@ def bootstrap_generalized_function_on_scalar_coefficients(
                 "basis_selected_automatically": False,
                 "failed_replicate_policy": "raise",
                 "failed_replicates_redrawn": False,
+                "exposure_observed_and_fixed": result.exposure is not None,
+                "exposure_resampled_with_response_bundle": (
+                    result.exposure is not None
+                ),
+                "exposure_measurement_uncertainty": False,
             },
         },
     )
@@ -704,6 +815,54 @@ def generalized_function_on_scalar_coefficient_frame(
                 )
             rows.append(row)
     return pd.DataFrame(rows)
+
+
+def generalized_function_on_scalar_exposure_frame(
+    result: GeneralizedFunctionOnScalarResult,
+) -> pd.DataFrame:
+    """Return a per-curve audit of an explicitly supplied Poisson exposure."""
+
+    if not isinstance(result, GeneralizedFunctionOnScalarResult):
+        raise TypeError("result must be a GeneralizedFunctionOnScalarResult")
+    if result.exposure is None:
+        raise ValueError("the fitted model does not contain an exposure array")
+
+    exposure = np.asarray(result.exposure, dtype=float)
+    rows = []
+    for index, curve_id in enumerate(result.source_curve_ids):
+        values = exposure[index]
+        minimum = float(np.min(values))
+        maximum = float(np.max(values))
+        rows.append(
+            {
+                "curve_id": curve_id,
+                "minimum_exposure": minimum,
+                "maximum_exposure": maximum,
+                "exposure_ratio": maximum / minimum,
+                "varies_over_time": bool(
+                    not np.allclose(values, values[0], rtol=0.0, atol=0.0)
+                ),
+                "exposure_units": result.exposure_units,
+            }
+        )
+    frame = pd.DataFrame(rows)
+    global_min = float(np.min(exposure))
+    global_max = float(np.max(exposure))
+    curve_means = np.mean(exposure, axis=1)
+    frame.attrs["exposure_audit"] = {
+        "minimum_exposure": global_min,
+        "maximum_exposure": global_max,
+        "extreme_exposure_ratio": global_max / global_min,
+        "varies_over_time": bool(np.any(frame["varies_over_time"])),
+        "varies_between_curves": bool(
+            not np.allclose(curve_means, curve_means[0], rtol=0.0, atol=0.0)
+        ),
+        "exposure_units": result.exposure_units,
+        "exposure_expanded_from_curve": result.exposure_expanded_from_curve,
+        "exposure_observed_and_fixed": True,
+        "exposure_measurement_uncertainty": False,
+    }
+    return frame
 
 
 def plot_generalized_function_on_scalar_coefficients(
