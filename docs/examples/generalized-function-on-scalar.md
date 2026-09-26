@@ -51,7 +51,7 @@ fit.coefficient_standard_errors
 fit.mean_functions
 ~~~
 
-The coefficient curves are on the logit scale. \`mean_functions\` contains the
+The coefficient curves are on the logit scale. `mean_functions` contains the
 fitted marginal Bernoulli probabilities for the observed trial predictor rows.
 
 ~~~python
@@ -111,7 +111,7 @@ predictors fixed.
 ## Count-valued response
 
 For non-negative integer count functions use the same interface with
-\`family="poisson"\`:
+`family="poisson"`:
 
 ~~~python
 count_fit = fit_generalized_function_on_scalar_regression(
