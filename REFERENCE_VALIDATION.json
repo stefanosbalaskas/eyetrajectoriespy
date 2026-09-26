@@ -1,0 +1,210 @@
+{
+  "schema_version": 1,
+  "package_version": "0.56.0.dev0",
+  "evidence_types": {
+    "analytical_truth": "Exact or hand-computable scientific quantity from a small declared problem.",
+    "independent_implementation_equivalence": "Same estimand/specification represented or fitted independently from the package code path.",
+    "simulation_recovery": "Known data-generating parameters assessed for recovery under finite stochastic sampling."
+  },
+  "entries": [
+    {
+      "id": "fpca-rank-one-analytical",
+      "method": "FPCA",
+      "scientific_quantity": [
+        "leading eigenvalue",
+        "leading functional subspace",
+        "exact rank-one reconstruction"
+      ],
+      "reference_source": "hand-derived rank-one weighted functional process",
+      "reference_type": "analytical_truth",
+      "dataset_problem": "Four mean-zero curves X_i(t)=a_i phi(t) on an irregular three-point grid with unit functional norm for phi.",
+      "expected_result": "lambda_1 equals sample variance of a_i; absolute weighted inner product with phi equals 1; one-component reconstruction is exact.",
+      "comparison_metric": "eigenvalue, sign-invariant weighted inner product, reconstruction",
+      "tolerance_class": "linear_algebra_invariant",
+      "tolerance": "eigenvalue/sign-invariant similarity/reconstruction use 1e-12-scale tolerances",
+      "platforms": "core CI matrix",
+      "ci_test": "test_reference_fpca_rank_one_analytical_truth",
+      "status": "qualified",
+      "limitations": "Rank-one analytical case; it does not by itself validate sparse/PACE or near-tied eigenspaces."
+    },
+    {
+      "id": "mixedlm-independent-stacked",
+      "method": "Gaussian functional mixed effects",
+      "scientific_quantity": [
+        "fixed B-spline coefficients",
+        "participant random-effect covariance",
+        "residual variance",
+        "log likelihood"
+      ],
+      "reference_source": "independently assembled statsmodels.MixedLM stacked design",
+      "reference_type": "independent_implementation_equivalence",
+      "dataset_problem": "Repeated synthetic participant/trial functions with the same explicitly declared degree-1 fixed/random bases and REML specification.",
+      "expected_result": "Package fit and separately assembled stacked MixedLM agree for the same likelihood and covariance parameterization.",
+      "comparison_metric": "parameter/covariance/scale/log-likelihood allclose",
+      "tolerance_class": "optimizer_equivalence",
+      "tolerance": "fixed parameters rtol=1e-8; random covariance rtol=1e-7; scale/log-likelihood 1e-8 to 1e-9",
+      "platforms": "core CI matrix",
+      "ci_test": "test_reference_mixed_effects_matches_independent_stacked_mixedlm",
+      "status": "qualified",
+      "limitations": "Independent design assembly but the same established statsmodels optimizer/backend; nested trial covariance is not covered by this row."
+    },
+    {
+      "id": "poisson-exposure-direct-gee",
+      "method": "Poisson exposure generalized FoSR",
+      "scientific_quantity": [
+        "basis coefficients",
+        "robust sandwich covariance",
+        "fitted rates",
+        "expected counts"
+      ],
+      "reference_source": "independently assembled direct statsmodels.GEE exposure fit",
+      "reference_type": "independent_implementation_equivalence",
+      "dataset_problem": "Repeated Poisson counts with explicit time-varying exposure and degree-1 coefficient basis.",
+      "expected_result": "Direct stacked GEE and package fit agree; rate is exp(eta_rate), expected count is exposure*rate.",
+      "comparison_metric": "coefficient/covariance/rate/count allclose",
+      "tolerance_class": "optimizer_equivalence",
+      "tolerance": "coefficients rtol=1e-9; covariance rtol=1e-8; fitted functions rtol=1e-10",
+      "platforms": "core CI matrix",
+      "ci_test": "test_reference_poisson_exposure_matches_direct_stacked_gee",
+      "status": "qualified",
+      "limitations": "Validates the working-independence marginal exposure contract, not alternative GEE correlation structures."
+    },
+    {
+      "id": "grouped-binomial-row-expanded",
+      "method": "Grouped-binomial generalized FoSR",
+      "scientific_quantity": [
+        "basis coefficients",
+        "robust sandwich covariance"
+      ],
+      "reference_source": "row-expanded Bernoulli observations fitted directly with statsmodels.GEE",
+      "reference_type": "independent_implementation_equivalence",
+      "dataset_problem": "Grouped success counts plus explicit denominators expanded into individual Bernoulli rows under the same participant clustering.",
+      "expected_result": "Weighted grouped representation and row-expanded Bernoulli representation agree.",
+      "comparison_metric": "coefficient and robust covariance allclose",
+      "tolerance_class": "optimizer_equivalence",
+      "tolerance": "coefficients rtol=1e-9, covariance rtol=1e-8",
+      "platforms": "core CI matrix",
+      "ci_test": "test_grouped_binomial_matches_row_expanded_bernoulli_reference",
+      "status": "qualified",
+      "limitations": "Working-independence marginal GEE only."
+    },
+    {
+      "id": "frechet-hand-optimum",
+      "method": "Discrete Frechet distance",
+      "scientific_quantity": [
+        "distance",
+        "optimal coupling bottleneck"
+      ],
+      "reference_source": "hand-computable three-point versus two-point path",
+      "reference_type": "analytical_truth",
+      "dataset_problem": "a=[0,1,2], b=[0,2] in one dimension.",
+      "expected_result": "Discrete Frechet distance = 1.",
+      "comparison_metric": "exact scalar/coupled local maximum",
+      "tolerance_class": "deterministic_geometry",
+      "tolerance": "exact representable value",
+      "platforms": "core CI matrix",
+      "ci_test": "test_reference_frechet_and_dtw_have_hand_computable_optima",
+      "status": "qualified",
+      "limitations": "Small path; validates recurrence semantics/tie-independent optimum rather than large-scale performance."
+    },
+    {
+      "id": "dtw-hand-optimum",
+      "method": "Dynamic time warping",
+      "scientific_quantity": [
+        "symmetric1 raw cost",
+        "symmetric2 raw cost",
+        "symmetric2 normalized cost"
+      ],
+      "reference_source": "hand-computable three-point versus two-point path",
+      "reference_type": "analytical_truth",
+      "dataset_problem": "a=[0,1,2], b=[0,2] in one dimension.",
+      "expected_result": "symmetric1 raw=1; symmetric2 raw=1; normalization denominator=5; normalized=0.2.",
+      "comparison_metric": "scalar cost plus path-cost audit",
+      "tolerance_class": "deterministic_geometry",
+      "tolerance": "exact or <=1e-15 for 0.2 representation",
+      "platforms": "core CI matrix",
+      "ci_test": "test_reference_frechet_and_dtw_have_hand_computable_optima",
+      "status": "qualified",
+      "limitations": "Does not validate every Sakoe-Chiba window configuration."
+    },
+    {
+      "id": "rqa-hand-counted-cross",
+      "method": "RQA",
+      "scientific_quantity": [
+        "RR",
+        "DET",
+        "mean/max diagonal length",
+        "entropy",
+        "LAM",
+        "line counts"
+      ],
+      "reference_source": "hand-constructed 4x4 cross-recurrence matrix",
+      "reference_type": "analytical_truth",
+      "dataset_problem": "Three recurrence points forming one diagonal line of length 3 and no qualifying vertical line.",
+      "expected_result": "RR=3/16, DET=1, Lmean=Lmax=3, diagonal entropy=0, LAM=0.",
+      "comparison_metric": "exact counts and derived ratios",
+      "tolerance_class": "exact_combinatorial",
+      "tolerance": "exact counts; zero relative tolerance for derived ratios",
+      "platforms": "core CI matrix",
+      "ci_test": "test_reference_rqa_matches_hand_counted_cross_recurrence",
+      "status": "qualified",
+      "limitations": "Uses the package's explicitly documented finite-border convention; other software may use different RQA conventions."
+    },
+    {
+      "id": "te-exact-contingency",
+      "method": "Discrete transfer entropy",
+      "scientific_quantity": [
+        "plug-in conditional mutual information",
+        "local TE contributions"
+      ],
+      "reference_source": "independently enumerated contingency counts",
+      "reference_type": "analytical_truth",
+      "dataset_problem": "Five-sample binary source/target construction with four effective transitions, each local contribution equal to 1 bit.",
+      "expected_result": "TE=1 bit and every local contribution=1 bit.",
+      "comparison_metric": "direct count-formula result versus package TE",
+      "tolerance_class": "exact_combinatorial",
+      "tolerance": "absolute tolerance 1e-15 for base-2 logarithm arithmetic",
+      "platforms": "core CI matrix",
+      "ci_test": "test_reference_transfer_entropy_matches_exact_contingency_calculation",
+      "status": "qualified",
+      "limitations": "Empirical plug-in discrete TE only; does not validate causal interpretation or continuous-state estimators."
+    },
+    {
+      "id": "mixed-effects-simulation-recovery",
+      "method": "Gaussian functional mixed effects",
+      "scientific_quantity": [
+        "intercept coefficient function",
+        "trial-varying condition coefficient function"
+      ],
+      "reference_source": "known-parameter synthetic generator",
+      "reference_type": "simulation_recovery",
+      "dataset_problem": "Repeated participant trial functions generated in the fitted degree-1 basis.",
+      "expected_result": "Recovered functions remain within predeclared finite-sample absolute recovery bands.",
+      "comparison_metric": "pointwise absolute error bounds",
+      "tolerance_class": "simulation_recovery",
+      "tolerance": "atol=0.12 intercept; atol=0.08 condition in existing truth test",
+      "platforms": "core CI matrix",
+      "ci_test": "test_joint_functional_mixed_effects_recovers_trial_varying_condition",
+      "status": "qualified",
+      "limitations": "Finite seeded simulation evidence; weaker than analytical truth or independent implementation equivalence."
+    },
+    {
+      "id": "poisson-simulation-recovery",
+      "method": "Poisson generalized FoSR",
+      "scientific_quantity": [
+        "log-count coefficient functions"
+      ],
+      "reference_source": "known-parameter Poisson simulation",
+      "reference_type": "simulation_recovery",
+      "dataset_problem": "Repeated Poisson functional counts generated from declared log-link coefficient functions.",
+      "expected_result": "Estimated coefficient functions recover generating functions within predeclared stochastic bounds.",
+      "comparison_metric": "pointwise absolute recovery bounds",
+      "tolerance_class": "simulation_recovery",
+      "tolerance": "as encoded in test_poisson_generalized_fosr_recovers_log_scale_coefficients",
+      "platforms": "core CI matrix",
+      "ci_test": "test_poisson_generalized_fosr_recovers_log_scale_coefficients",
+      "status": "qualified",
+      "limitations": "Seeded finite-sample recovery, not an external implementation comparison."
+    }
+  ]
+}
