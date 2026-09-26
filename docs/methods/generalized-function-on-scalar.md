@@ -297,8 +297,10 @@ print(
 For a Bernoulli/logit model, \(\beta_k(t)\) is a time-varying marginal
 log-odds coefficient.
 
-For a Poisson/log model, \(\beta_k(t)\) is a time-varying marginal log-rate
-coefficient under the current no-offset contract.
+For a Poisson/log model, \(\beta_k(t)\) is a time-varying marginal
+log-mean-count coefficient under the current no-offset contract. Calling it a
+rate coefficient would require an explicitly defined exposure scale or offset,
+which 0.51 does not infer.
 
 These coefficients are not subject-specific effects conditional on functional
 random effects.
