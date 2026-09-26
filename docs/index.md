@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.52 · fixed-profile marginal generalized inference</div>
+<div class="et-kicker">eyetrajectoriespy 0.55 · canonical workflows and stabilization</div>
 
 # Model the viewing process, not only its summaries
 
@@ -11,6 +11,56 @@ eyetrajectoriespy provides a vendor-neutral scientific layer for continuous gaze
 
 <span class="et-pill">2-D x(t), y(t)</span><span class="et-pill">physical-time residual covariance</span><span class="et-pill">whitened residual diagnostics</span><span class="et-pill">multivariate IAAFT</span><span class="et-pill">functional mixed effects</span><span class="et-pill">trial functional random effects</span><span class="et-pill">random functional slopes</span><span class="et-pill">mixed-effects simultaneous bands</span><span class="et-pill">function-on-scalar inference</span><span class="et-pill">Fréchet + audited DTW</span><span class="et-pill">distance sensitivity</span><span class="et-pill">native irregular grids</span><span class="et-pill">sparse PACE FPCA</span><span class="et-pill">FPCA / MFPCA</span><span class="et-pill">LaTeX contracts</span><span class="et-pill">reproducible plots</span><span class="et-pill">grouped reconstruction CV</span><span class="et-pill">bootstrap stability</span><span class="et-pill">eigenspace stability</span><span class="et-pill">mean-band inference</span><span class="et-pill">outlier / influence review</span><span class="et-pill">multilevel</span><span class="et-pill">phase</span><span class="et-pill">elastic SRVF</span>
 </div>
+
+## Start with the scientific question
+
+Version 0.55 makes five routes the primary navigation layer. The advanced API
+remains available, but new analyses should begin here.
+
+<div class="grid cards" markdown>
+
+-   **Continuous gaze exploration + FPCA**
+
+    Represent the trajectory explicitly, inspect variation and stability, and
+    report component uncertainty without hiding preprocessing decisions.
+
+    [:octicons-arrow-right-24: Canonical FPCA workflow](workflows/fpca-exploration.md)
+
+-   **Experimental functional regression**
+
+    Estimate how declared scalar predictors change a continuous functional
+    response, with explicit design and whole-function inference.
+
+    [:octicons-arrow-right-24: Canonical experimental workflow](workflows/experimental-functional-regression.md)
+
+-   **Repeated-trial functional mixed effects**
+
+    Preserve participant → trial → time hierarchy and separate fixed-effect
+    inference from covariance diagnostics and sensitivity.
+
+    [:octicons-arrow-right-24: Canonical mixed-effects workflow](workflows/repeated-trial-mixed-effects.md)
+
+-   **Generalized binary/count responses**
+
+    Keep Bernoulli, grouped-binomial, Poisson count and exposure-adjusted rate
+    observation contracts explicit under marginal participant-clustered GEE.
+
+    [:octicons-arrow-right-24: Canonical generalized workflow](workflows/generalized-responses.md)
+
+-   **Nonlinear/recurrence analysis**
+
+    Begin from a declared state representation and recurrence specification;
+    treat sensitivity analysis as robustness evidence rather than tuning.
+
+    [:octicons-arrow-right-24: Canonical nonlinear workflow](workflows/nonlinear-recurrence.md)
+
+</div>
+
+[Browse all five canonical routes](workflows/index.md) ·
+[See the full capability inventory](reference/capability-inventory.md) ·
+[Read the API stability policy](reference/api-stability.md)
+
+## Advanced and specialist capabilities
 
 <div class="grid cards" markdown>
 

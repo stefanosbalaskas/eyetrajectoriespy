@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 from pathlib import Path
 
@@ -168,8 +169,34 @@ def main() -> None:
     if missing_assets:
         raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
 
+    manifest = json.loads(
+        (ROOT / "CANONICAL_WORKFLOWS.json").read_text(encoding="utf-8")
+    )
+    if manifest.get("package_version") != "0.55.0.dev0":
+        raise RuntimeError("canonical workflow manifest version is stale")
+    workflows = manifest.get("workflows", [])
+    if len(workflows) != 5:
+        raise RuntimeError("canonical workflow manifest must define five routes")
+    workflow_ids = [item.get("id") for item in workflows]
+    if len(workflow_ids) != len(set(workflow_ids)):
+        raise RuntimeError("canonical workflow IDs must be unique")
+    for workflow in workflows:
+        docs_path = ROOT / workflow["docs"]
+        if not docs_path.exists():
+            raise RuntimeError(
+                f"canonical workflow docs target is missing: {docs_path}"
+            )
+
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for required in ("MATHEMATICAL_CONTRACTS.md", "FUNCTION_EQUATION_INDEX.md", "WORKFLOW_ATLAS.md", "Visual gallery", "0.54.0.dev0"):
+    for required in (
+        "MATHEMATICAL_CONTRACTS.md",
+        "FUNCTION_EQUATION_INDEX.md",
+        "WORKFLOW_ATLAS.md",
+        "Visual gallery",
+        "0.55.0.dev0",
+        "Which workflow do I need?",
+        "Where is the full advanced API?",
+    ):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
 

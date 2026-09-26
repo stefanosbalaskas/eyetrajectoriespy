@@ -4,9 +4,17 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-- Package line: `0.23.0.dev0`
-- Scientific scope: continuous functional gaze trajectories, FPCA/MFPCA, native and genuinely sparse irregular trajectories, optional FDApy/PACE interoperability, simultaneous observed-grid functional mean inference, stability, leakage-aware reconstruction and outcome-tuned predictive component selection, descriptive and simultaneous FPC-shape uncertainty, FPCA spectrum uncertainty, FPC score basis-resampling uncertainty, Gaussian FPCR paired-bootstrap uncertainty, observed-grid simultaneous Gaussian FPCR slope bands, Gaussian FPCR future-outcome prediction intervals, heteroscedastic Gaussian FPCR fixed-target wild-bootstrap inference, stabilized-volatility wild-bootstrap truncation selection, familywise simultaneous fixed-target wild-bootstrap calibration, fixed-family wild-bootstrap hypothesis testing with single-step maxT adjustment and a global family test, finite-bootstrap Monte Carlo precision diagnostics for retained resampling tail probabilities, split-conformal FPCA anomaly review, eigengap/principal-angle subspace stability, phase/registration, compositional FPCA, functional anomaly/influence diagnostics, delay-coordinate reconstruction, sparse recurrence/RQA and cross-RQA, Rosenstein local-divergence/LLE diagnostics, IAAFT surrogate testing, and experimental empirical Poincare return-map stability.
-- Tests, branch protections, coverage thresholds, and scientific validation rules have not been weakened or bypassed.
+- Package line: `0.55.0.dev0`.
+- Development phase: stabilization; no new statistical family or estimator is introduced in 0.55.
+- Canonical routes: FPCA/exploration, experimental functional regression, repeated-trial functional mixed effects, generalized binary/count responses, and nonlinear/recurrence analysis.
+- Generalized observation-family expansion is paused after the 0.51-0.54 Bernoulli/grouped-binomial/Poisson contracts.
+- Coverage floor remains **90%**. Stabilization prioritizes independent-reference validation quality, cross-platform reproducibility and practical performance qualification rather than increasing coverage percentage for its own sake.
+- Hosted CI qualification and repository governance are reported separately. At the start of 0.55, GitHub reports `main` as unprotected and no repository ruleset is active; this is tracked as a release-readiness blocker rather than hidden behind successful CI.
+- Existing tests, coverage thresholds, mathematical contracts, documentation checks and scientific validation rules have not been weakened or bypassed.
+
+See `docs/release-readiness.md` for the pre-1.0 gate and
+`docs/validation/reference-validation-ledger.md` for independent-reference
+qualification.
 
 ## Locally validated — 2026-09-19
 

@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.55.0.dev0
+
+- Begin a stabilization line with no new statistical family or estimator.
+- Add `CANONICAL_WORKFLOWS.json` as a machine-readable map of five recommended scientific routes: FPCA/exploration, experimental functional regression, repeated-trial mixed effects, generalized binary/count responses, and nonlinear/recurrence analysis.
+- Add dedicated end-to-end canonical workflow guides that start from the scientific question/data contract and end with uncertainty, interpretation, reporting, and explicit "do not use" boundaries.
+- Add CI tests that require every canonical/advanced/diagnostic/experimental function named by the manifest to remain a public export with an existing documentation target.
+- Refocus the README on four onboarding questions and move the exhaustive capability/representation inventory to the documentation.
+- Add a public API hierarchy, forward naming conventions, compatibility-first deprecation policy, and a 0.55 consistency audit without mass-renaming historical APIs.
+- Establish a minimum two-minor-release deprecation window before pre-1.0 public API removals unless retaining an API would be scientifically incorrect or insecure.
+- Add a pre-1.0 release-readiness checklist covering repository governance, canonical workflows, independent validation, performance, reproducibility and serialization.
+- Record the current repository-policy gap explicitly: `main` is unprotected and no repository ruleset is active at the start of 0.55.
+- Rename the documentation CI job from generic `build` to unique `docs-build` so it can be selected unambiguously as a required status check.
+- Add an independent-reference validation ledger seeded by the 0.54 grouped-binomial versus row-expanded Bernoulli GEE coefficient/covariance comparison.
+- Keep the configured 90% coverage floor unchanged; stabilization prioritizes independent-reference validation quality rather than optimizing for a higher line-coverage percentage alone.
+- Document the intended post-0.55 sequence: 0.56 external-reference validation + runtime/memory qualification, then 0.57 reproducibility/serialization + release hardening before assessing a 0.9-style release-candidate phase.
+
 ## 0.54.0.dev0
 
 - Add an explicit grouped-binomial contract to `fit_generalized_function_on_scalar_regression()` through `binomial_denominator=`, with the trajectory response interpreted as integer success counts rather than arbitrary proportions.
