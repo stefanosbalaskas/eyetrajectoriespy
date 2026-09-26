@@ -1,10 +1,9 @@
 # Coordinated GitHub Release and PyPI publication
 
-Version 0.57 adds release machinery but does **not** publish the development
-version to production PyPI.
-
-The intended first public release remains `0.9.0rc1`, after 0.57 hardening,
-branch protection, TestPyPI rehearsal and PyPI environment configuration are
+Version 0.57 added the coordinated release machinery. The `0.9.0rc1`
+release branch now exercises that machinery under the exact prerelease version,
+but production publication remains fail-closed until branch protection,
+TestPyPI rehearsal and PyPI environment/Trusted Publishing configuration are
 complete.
 
 ## One build, two publication surfaces
