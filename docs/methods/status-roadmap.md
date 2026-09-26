@@ -149,7 +149,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.54.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.55.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
@@ -366,32 +366,71 @@ estimand is denominator-independent. The result retains original successes,
 denominators, observed proportions, and denominator-specific fitted expected
 successes for the observed data.
 
-### Post-0.54 stabilization line
+### 0.55 canonical workflows and API stabilization
 
-The generalized observation-family expansion is now intentionally paused.
-Negative binomial, zero-inflated, hurdle, Tweedie, automatic working-correlation
-selection, generalized random effects, and additional generalized covariance
-multiverses are not queued as automatic next versions.
+Version **0.55** begins the stabilization line with essentially zero new
+statistical methodology.
 
-The next development phase prioritizes turning the broad research codebase into
-a stable, navigable scientific platform:
+It establishes five canonical routes:
 
-1. API consistency, naming review, and deprecation policy;
-2. five canonical workflows covering FPCA exploration, experimental functional
-   regression, repeated-trial mixed effects, generalized binary/count
-   responses, and nonlinear/recurrence analysis;
-3. external-reference validation against independent implementations and
-   established benchmark cases;
-4. runtime/memory scaling benchmarks across participant count, trial count,
-   grid length, and basis dimension;
-5. serialization/reproducibility and environment capture;
-6. error-message consistency and failure-mode audits;
-7. realistic end-to-end examples and clearer documentation hierarchy separating
-   canonical, advanced, diagnostic, and experimental APIs;
-8. a formal scope/release-readiness document for the pre-1.0 line.
+1. continuous gaze exploration + FPCA;
+2. experimental functional regression;
+3. repeated-trial functional mixed effects;
+4. generalized binary/count functional responses;
+5. nonlinear/recurrence trajectory analysis.
+
+The routes are declared in `CANONICAL_WORKFLOWS.json`, linked to dedicated
+end-to-end documentation, and tested so canonical/advanced/diagnostic/
+experimental references cannot silently drift away from the public API.
+
+The README is deliberately shortened around four questions: what scientific
+problem the package solves, which canonical route applies, what assumptions
+that route makes, and where the full advanced API lives. The previous exhaustive
+capability inventory remains available in the documentation instead of serving
+as the primary onboarding surface.
+
+0.55 also introduces an API hierarchy and deprecation policy. Existing public
+statistical functions are not mass-renamed or removed. New APIs should follow
+the established `fit_*`, `bootstrap_*`, `plot_*`, `*_frame`,
+`*_reporting_text`, `random_state`, `confidence_level`,
+participant/trial terminology and `*Result` conventions where applicable.
+Historical exceptions remain compatible until an individually documented
+deprecation path exists.
+
+The release-readiness checklist records repository governance as a scientific
+quality gate. At the start of 0.55, GitHub reports `main` as unprotected and
+no repository ruleset targets it. Required PR/status-check protection is
+therefore explicitly marked as unresolved release-readiness work rather than
+silently assumed.
+
+The independent-reference validation ledger is also formalized. The 0.54
+grouped-binomial row-expanded Bernoulli comparison is its first qualified
+entry and serves as the template for later validation cases.
+
+### Planned stabilization sequence after 0.55
+
+**0.56 — independent-reference validation and performance qualification**
+
+- selected FPCA, mixed-model, Poisson-exposure GEE, distance, RQA and transfer-
+  entropy reference cases;
+- runtime and peak-memory scaling across participant count, trial count, grid
+  length and basis dimension;
+- practical-envelope guidance rather than unsupported speed claims.
+
+**0.57 — reproducibility, serialization and release hardening**
+
+- environment/software-version capture;
+- representative result serialization and round-trip provenance tests;
+- error-message/failure-mode consistency;
+- realistic external-data examples for the canonical workflows;
+- release-candidate checklist closure.
+
+Only after those stabilization tranches should the project assess a 0.9-style
+release-candidate phase. New statistical estimators are not the default measure
+of progress.
 
 Sparse/irregular generalized functional responses and external-validation /
 transport workflows remain substantive research candidates, but they should be
-evaluated within this stabilization strategy rather than through an automatic
+evaluated against the stabilized package scope rather than through an automatic
 feature conveyor belt.
 
