@@ -430,7 +430,11 @@ def _environment():
         "cpu_model": _cpu_model(),
         "logical_cpu_count": os.cpu_count(),
         "packages": packages,
-        "git_commit": os.environ.get("GITHUB_SHA"),
+        "source_commit": os.environ.get(
+            "EYETRAJECTORIESPY_SOURCE_SHA",
+            os.environ.get("GITHUB_SHA"),
+        ),
+        "workflow_commit": os.environ.get("GITHUB_SHA"),
         "github_run_id": os.environ.get("GITHUB_RUN_ID"),
         "github_runner_name": os.environ.get("RUNNER_NAME"),
         "github_runner_environment": os.environ.get("RUNNER_ENVIRONMENT"),
