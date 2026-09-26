@@ -169,6 +169,36 @@ def main() -> None:
     if missing_assets:
         raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
 
+    reference_ledger = json.loads(
+        (ROOT / "REFERENCE_VALIDATION.json").read_text(encoding="utf-8")
+    )
+    tolerance_policy = json.loads(
+        (ROOT / "VALIDATION_TOLERANCES.json").read_text(encoding="utf-8")
+    )
+    performance_ledger = json.loads(
+        (ROOT / "PERFORMANCE_ENVELOPE.json").read_text(encoding="utf-8")
+    )
+    for name, payload in (
+        ("reference validation", reference_ledger),
+        ("tolerance policy", tolerance_policy),
+        ("performance envelope", performance_ledger),
+    ):
+        if payload.get("package_version") != "0.56.0.dev0":
+            raise RuntimeError(f"{name} package version is stale")
+    evidence_types = set(reference_ledger.get("evidence_types", {}))
+    if evidence_types != {
+        "analytical_truth",
+        "independent_implementation_equivalence",
+        "simulation_recovery",
+    }:
+        raise RuntimeError("reference validation evidence types are incomplete")
+    if performance_ledger.get("status") != "qualified":
+        raise RuntimeError("performance envelope must be qualified before merge")
+    if performance_ledger.get("comparative_benchmark") is not False:
+        raise RuntimeError("performance envelope must remain non-comparative")
+    if len(performance_ledger.get("results", [])) != 6:
+        raise RuntimeError("performance envelope must contain six workflow rows")
+
     manifest = json.loads(
         (ROOT / "CANONICAL_WORKFLOWS.json").read_text(encoding="utf-8")
     )
@@ -196,6 +226,7 @@ def main() -> None:
         "0.56.0.dev0",
         "Which workflow do I need?",
         "Where is the full advanced API?",
+        "Reference validation & performance envelope",
     ):
         if required not in readme:
             raise RuntimeError(f"README integration missing {required!r}")
@@ -214,7 +245,9 @@ def main() -> None:
         f"{len(nav)} nav targets, "
         f"{len(symbols)} documented API symbols, "
         f"{len(asset_refs)} gallery assets, "
-        f"{len(math_fragments)} mathematical deep links"
+        f"{len(math_fragments)} mathematical deep links, "
+        f"{len(reference_ledger['entries'])} reference-validation rows, "
+        f"{len(performance_ledger['results'])} performance rows"
     )
 
 
