@@ -950,6 +950,22 @@ def generalized_function_on_scalar_reporting_text(
             f"bootstrap refits ({band.bootstrap.n_bootstrap} replicates)."
         )
     )
+    exposure_text = ""
+    if result.family == "poisson" and result.exposure is not None:
+        exposure_text = (
+            " A strictly positive observed exposure was included explicitly "
+            f"({result.exposure_units or 'units not declared'}); coefficients "
+            "therefore describe marginal log rates and exponentiated "
+            "coefficients are rate ratios holding exposure fixed. Exposure "
+            "was treated as observed and fixed, was not inferred, and "
+            "measurement uncertainty in exposure was not modeled."
+        )
+    elif result.family == "poisson":
+        exposure_text = (
+            " No exposure was supplied, so Poisson coefficients describe "
+            "marginal log expected counts rather than rates."
+        )
+
     return (
         "Marginal generalized function-on-scalar regression modeled "
         f"{result.dimension_name!r} using a {result.family} family with "
@@ -960,6 +976,8 @@ def generalized_function_on_scalar_reporting_text(
         "covariance. Coefficients therefore have a population-averaged "
         "marginal interpretation on the link scale, not a conditional "
         "random-effects interpretation. No working correlation, smoothing "
-        "penalty, family, link, or model was selected automatically."
+        "penalty, exposure definition, family, link, or model was selected "
+        "automatically."
+        + exposure_text
         + band_text
     )
