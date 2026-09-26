@@ -1037,6 +1037,13 @@ class GeneralizedFunctionOnScalarResult:
     ctol: float
     converged: bool
     backend_warnings: tuple[str, ...]
+    exposure: np.ndarray | None = None
+    log_exposure: np.ndarray | None = None
+    rate_functions: np.ndarray | None = None
+    linear_predictor_rate: np.ndarray | None = None
+    linear_predictor_count: np.ndarray | None = None
+    exposure_units: str | None = None
+    exposure_expanded_from_curve: bool = False
     provenance: Mapping[str, Any] = field(default_factory=dict)
     model: Any = field(default=None, repr=False)
 
@@ -1105,6 +1112,13 @@ class GeneralizedFunctionOnScalarPredictionResult:
     extrapolation_flags: np.ndarray
     predictor_minima: np.ndarray
     predictor_maxima: np.ndarray
+    prediction_scale: str = "response"
+    exposure_profiles: np.ndarray | None = None
+    log_exposure_profiles: np.ndarray | None = None
+    rate_functions: np.ndarray | None = None
+    expected_count_functions: np.ndarray | None = None
+    linear_predictor_rate: np.ndarray | None = None
+    linear_predictor_count: np.ndarray | None = None
     provenance: Mapping[str, Any] = field(default_factory=dict)
 
     @property
@@ -1120,6 +1134,8 @@ class GeneralizedFunctionOnScalarPredictionBootstrapResult:
     coefficient_bootstrap: GeneralizedFunctionOnScalarBootstrapResult
     bootstrap_linear_predictor_functions: np.ndarray
     bootstrap_mean_functions: np.ndarray
+    bootstrap_rate_functions: np.ndarray | None = None
+    bootstrap_expected_count_functions: np.ndarray | None = None
     provenance: Mapping[str, Any] = field(default_factory=dict)
 
     @property
@@ -1166,6 +1182,8 @@ class GeneralizedFunctionOnScalarMeanDifferenceResult:
     physical_lower_bound: float | None
     physical_upper_bound: float | None
     interval_exceeds_physical_bounds: bool
+    contrast_scale: str = "response_difference"
+    inference_scale: str = "response"
     provenance: Mapping[str, Any] = field(default_factory=dict)
 
 
