@@ -3,7 +3,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
 ---
 
 <div class="et-hero" markdown>
-<div class="et-kicker">eyetrajectoriespy 0.57 · reproducibility and release hardening</div>
+<div class="et-kicker">eyetrajectoriespy 0.9.0rc1 · first public release candidate</div>
 
 # Model the viewing process, not only its summaries
 
