@@ -118,6 +118,30 @@ Participant intercept variance, participant slope variance when present,
 intercept/slope cross-covariance, trial variance, and residual variance remain
 separate in the retained functional variance-decomposition table.
 
+## Generalized function-on-scalar result objects
+
+\`GeneralizedFunctionOnScalarResult\` stores the fitted marginal coefficient
+functions on the declared link scale, robust pointwise standard errors, the
+B-spline basis coefficients and robust parameter covariance, fitted linear
+predictor and marginal mean functions, observed response functions, scalar
+design matrix, participant cluster identities, family/link, basis contract,
+working-correlation contract, convergence diagnostics and provenance.
+
+\`GeneralizedFunctionOnScalarBootstrapResult\` stores whole-participant
+case-bootstrap coefficient-function refits together with the sampled source
+participant indices and both source and unique bootstrap participant
+identities. Duplicate source-participant draws therefore remain auditable
+without being collapsed into one GEE cluster.
+
+\`GeneralizedFunctionOnScalarBandResult\` stores observed-grid simultaneous
+link-scale coefficient bands, bootstrap maximum statistics, critical values,
+confidence level, simultaneous scope and the full bootstrap object used for
+calibration.
+
+These objects intentionally do not contain conditional random effects,
+working-correlation selection results, response-scale coefficient functions, or
+an automatically chosen family/link/basis.
+
 ## Function-on-scalar result objects
 
 `FunctionOnScalarResult` stores the observed-grid coefficient functions, HC1 pointwise sandwich standard errors, fitted and residual functions, the exact functional responses used as inference units, the full scalar design matrix, rank and residual degrees of freedom, coefficient/predictor names, inference-unit IDs, curves-per-unit counts, time/dimension semantics, source curve IDs, and provenance.
