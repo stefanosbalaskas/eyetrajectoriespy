@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.56.0.dev0
+
+- Continue the stabilization line with no new statistical estimator or observation family.
+- Add `REFERENCE_VALIDATION.json` as a machine-readable evidence ledger that distinguishes analytical truth, independent implementation equivalence, and simulation recovery rather than collapsing all evidence into a generic "validated" label.
+- Add analytical rank-one FPCA validation covering the leading eigenvalue, sign-invariant functional subspace, and exact reconstruction.
+- Add independently assembled stacked `statsmodels.MixedLM` equivalence for Gaussian functional mixed effects, checking fixed basis coefficients, participant random-effect covariance, residual variance, and log likelihood under the same REML/covariance specification.
+- Add independently assembled direct `statsmodels.GEE` equivalence for exposure-adjusted Poisson FoSR, checking coefficients, robust sandwich covariance, marginal rates, and expected counts.
+- Retain the 0.54 grouped-binomial versus row-expanded Bernoulli equivalence as a qualified ledger entry.
+- Add hand-computable analytical references for discrete Fréchet, symmetric1/symmetric2 DTW, RQA line statistics, and discrete transfer entropy contingency calculations.
+- Record selected existing mixed-effects and Poisson simulation-recovery tests explicitly as weaker simulation evidence rather than reclassifying them as independent validation.
+- Add `VALIDATION_TOLERANCES.json` and a documented numerical-tolerance policy covering exact combinatorial quantities, deterministic geometry, linear-algebra invariants, optimizer equivalence, external backends, simulation recovery, and bootstrap/Monte Carlo summaries.
+- Add a reproducible single-package performance-envelope harness for FPCA bootstrap, mixed-effects full-refit bootstrap, nested participant/trial covariance fitting, generalized GEE participant bootstrap, recurrence/RQA, and nonlinear sensitivity grids.
+- Performance qualification uses at least three fresh-process repetitions, reports median/IQR/range wall time and process peak RSS, and records hardware/software/commit context. It makes no cross-package speed claim and applies no runtime pass/fail threshold.
+- Clarify the pre-1.0 deprecation clock: an API first deprecated in 0.55 remains available throughout 0.56 and 0.57 and is ordinarily first eligible for removal in 0.58.
+- Keep the configured 90% coverage floor unchanged; 0.56 prioritizes reference quality and practical-envelope evidence rather than coverage inflation.
+
 ## 0.55.0.dev0
 
 - Begin a stabilization line with no new statistical family or estimator.
