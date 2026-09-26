@@ -46,6 +46,7 @@ The current check contexts intended for protection are:
 - `FDApy sparse / Python 3.11`;
 - `FDApy sparse / Python 3.12`.
 - `performance-envelope`.
+- `release-readiness`.
 
 Use exact names from a recent successful pull request when configuring the
 ruleset. Required status checks should remain unique across workflows.
