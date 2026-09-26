@@ -830,6 +830,34 @@ def generalized_function_on_scalar_prediction_frame(
                 ),
                 "family": prediction.reference.family,
                 "link": prediction.reference.link,
+                "prediction_scale": prediction.prediction_scale,
+                "rate": (
+                    None
+                    if prediction.rate_functions is None
+                    else float(
+                        prediction.rate_functions[
+                            profile_index, time_index
+                        ]
+                    )
+                ),
+                "expected_count": (
+                    None
+                    if prediction.expected_count_functions is None
+                    else float(
+                        prediction.expected_count_functions[
+                            profile_index, time_index
+                        ]
+                    )
+                ),
+                "exposure": (
+                    None
+                    if prediction.exposure_profiles is None
+                    else float(
+                        prediction.exposure_profiles[
+                            profile_index, time_index
+                        ]
+                    )
+                ),
                 "extrapolation": bool(
                     prediction.extrapolation_flags[profile_index]
                 ),
@@ -893,6 +921,8 @@ def generalized_function_on_scalar_mean_difference_frame(
             "profile_a": result.profile_a,
             "profile_b": result.profile_b,
             "critical_value": result.critical_value,
+            "contrast_scale": result.contrast_scale,
+            "inference_scale": result.inference_scale,
             "interval_exceeds_physical_bounds": (
                 result.interval_exceeds_physical_bounds
             ),
@@ -946,11 +976,13 @@ def plot_generalized_function_on_scalar_predictions(
     ax.set_xlabel(
         f"Time ({prediction.reference.time_unit})"
     )
-    ax.set_ylabel(
-        "Marginal probability"
-        if prediction.reference.family == "binomial"
-        else "Marginal expected count"
-    )
+    if prediction.reference.family == "binomial":
+        ylabel = "Marginal probability"
+    elif prediction.prediction_scale == "rate":
+        ylabel = "Marginal exposure-adjusted rate"
+    else:
+        ylabel = "Marginal expected count"
+    ax.set_ylabel(ylabel)
     ax.set_title("Generalized FoSR fixed-profile marginal predictions")
     ax.legend()
     return ax
@@ -985,17 +1017,20 @@ def plot_generalized_function_on_scalar_mean_difference(
             f"{100 * result.confidence_level:.0f}% simultaneous band"
         ),
     )
-    ax.axhline(0.0, linewidth=1.0)
+    ax.axhline(
+        1.0 if result.contrast_scale == "rate_ratio" else 0.0,
+        linewidth=1.0,
+    )
     ax.set_xlabel(
         "Time "
         f"({result.prediction_bootstrap.prediction.reference.time_unit})"
     )
-    ylabel = (
-        "Marginal probability difference"
-        if result.prediction_bootstrap.prediction.reference.family
-        == "binomial"
-        else "Marginal expected-count difference"
-    )
+    ylabel = {
+        "probability_difference": "Marginal probability difference",
+        "rate_difference": "Marginal rate difference",
+        "rate_ratio": "Marginal rate ratio",
+        "expected_count_difference": "Marginal expected-count difference",
+    }[result.contrast_scale]
     ax.set_ylabel(ylabel)
     ax.set_title(
         f"Generalized FoSR mean difference: "
@@ -1038,11 +1073,11 @@ def generalized_function_on_scalar_prediction_reporting_text(
             + "."
         )
     )
-    scale = (
-        "marginal probability"
-        if prediction.reference.family == "binomial"
-        else "marginal expected count"
-    )
+    scale = {
+        "probability": "marginal probability",
+        "rate": "marginal exposure-adjusted rate",
+        "expected_count": "marginal expected count",
+    }[prediction.prediction_scale]
     return (
         f"Fixed-profile {scale} functions were derived from the fitted "
         f"{prediction.reference.family}/{prediction.reference.link} marginal "
@@ -1070,14 +1105,12 @@ def generalized_function_on_scalar_mean_difference_reporting_text(
         raise TypeError(
             "result must be a GeneralizedFunctionOnScalarMeanDifferenceResult"
         )
-    family = (
-        result.prediction_bootstrap.prediction.reference.family
-    )
-    measure = (
-        "marginal probability difference"
-        if family == "binomial"
-        else "marginal expected-count difference"
-    )
+    measure = {
+        "probability_difference": "marginal probability difference",
+        "rate_difference": "marginal exposure-adjusted rate difference",
+        "rate_ratio": "marginal exposure-adjusted rate ratio",
+        "expected_count_difference": "marginal expected-count difference",
+    }[result.contrast_scale]
     bounds_text = ""
     if result.interval_exceeds_physical_bounds:
         bounds_text = (
@@ -1094,5 +1127,11 @@ def generalized_function_on_scalar_mean_difference_reporting_text(
         f"{100 * result.confidence_level:.1f}%. The profile pair was not "
         "selected from the bootstrap results and no multiple-contrast family "
         "adjustment is claimed."
+        + (
+            " The simultaneous interval was calibrated on the log-rate-ratio "
+            "scale and exponentiated, preserving positivity."
+            if result.contrast_scale == "rate_ratio"
+            else ""
+        )
         + bounds_text
     )
