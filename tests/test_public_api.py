@@ -1,8 +1,9 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.50.0.dev0"
+    assert et.__version__=="0.51.0.dev0"
     required={
+        "GeneralizedFunctionOnScalarResult","GeneralizedFunctionOnScalarBootstrapResult","GeneralizedFunctionOnScalarBandResult","fit_generalized_function_on_scalar_regression","bootstrap_generalized_function_on_scalar_coefficients","generalized_function_on_scalar_simultaneous_bands","generalized_function_on_scalar_coefficient_frame","plot_generalized_function_on_scalar_coefficients","generalized_function_on_scalar_reporting_text",
         "FunctionalMixedEffectsCovarianceSpecification","FunctionalMixedEffectsCovarianceSensitivityResult","functional_mixed_effects_covariance_sensitivity","functional_mixed_effects_covariance_sensitivity_reporting_text","functional_mixed_effects_variance_decomposition","plot_covariance_sensitivity_coefficients","plot_covariance_sensitivity_band_widths","plot_functional_variance_decomposition",
         "functional_mixed_effects_whitened_residuals","functional_trial_random_effect_frame","plot_functional_trial_random_effects","functional_mixed_effects_full_refit_trial_audit_frame",
         "FunctionalMixedEffectsResidualDiagnosticsResult","functional_mixed_effects_residual_diagnostics","functional_mixed_effects_residual_diagnostic_frame","functional_mixed_effects_residual_pair_frame","compare_functional_mixed_effects_residual_diagnostics","plot_functional_mixed_effects_residual_acf","plot_functional_mixed_effects_residual_variogram","functional_mixed_effects_residual_reporting_text",
