@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import json
 import re
+
+import yaml
 from pathlib import Path
 
 
@@ -23,6 +25,16 @@ def _nav_paths(node):
 
 
 def main() -> None:
+    for workflow_path in (
+        ROOT / ".github" / "workflows" / "release.yml",
+        ROOT / ".github" / "workflows" / "release-readiness.yml",
+    ):
+        parsed = yaml.safe_load(workflow_path.read_text(encoding="utf-8"))
+        if not isinstance(parsed, dict):
+            raise RuntimeError(
+                f"workflow did not parse as a mapping: {workflow_path}"
+            )
+
     config_text = (ROOT / "mkdocs.yml").read_text(encoding="utf-8")
     nav = re.findall(
         r":\s+([A-Za-z0-9_./-]+\.md)\s*$",
