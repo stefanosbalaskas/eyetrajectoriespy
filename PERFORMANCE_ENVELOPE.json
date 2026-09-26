@@ -24,9 +24,9 @@
     {
       "case": "mixed_full_refit_bootstrap",
       "scale": {
-        "n_participants": 10,
+        "n_participants": 12,
         "n_trials": 3,
-        "n_time": 5,
+        "n_time": 6,
         "n_bootstrap": 20,
         "q": 2
       },
