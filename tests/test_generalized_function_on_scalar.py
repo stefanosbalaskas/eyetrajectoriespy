@@ -1268,6 +1268,30 @@ def test_exposure_bootstrap_rate_contrasts_and_log_rate_ratio_band():
         "generalized_function_on_scalar_mean_difference_band"
     ]["rate_ratio_band_calibrated_on_log_scale"] is True
 
+    fit_report = generalized_function_on_scalar_reporting_text(fit)
+    assert "log rates" in fit_report
+    assert "observed and fixed" in fit_report
+
+    rate_band = generalized_function_on_scalar_prediction_bands(
+        rate_bootstrap,
+        confidence_level=0.95,
+    )
+    prediction_report = (
+        generalized_function_on_scalar_prediction_reporting_text(rate_band)
+    )
+    assert "exposure-adjusted rate" in prediction_report
+    prediction_ax = plot_generalized_function_on_scalar_predictions(rate_band)
+    assert "exposure-adjusted rate" in prediction_ax.get_ylabel().lower()
+
+    ratio_report = (
+        generalized_function_on_scalar_mean_difference_reporting_text(ratio)
+    )
+    assert "log-rate-ratio" in ratio_report
+    ratio_ax = plot_generalized_function_on_scalar_mean_difference(ratio)
+    assert "high - low" in ratio_ax.get_title()
+    assert "rate ratio" in ratio_ax.get_ylabel().lower()
+    assert ratio_ax.lines[-1].get_ydata()[0] == pytest.approx(1.0)
+
     count_bootstrap = bootstrap_generalized_function_on_scalar_predictions(
         coefficient_bootstrap,
         profiles,
