@@ -52,6 +52,12 @@ def version_contract() -> dict[str, str]:
         "package __version__": _package_init_version(),
         "CITATION.cff": _citation_version(),
     }
+    release_readiness = json.loads(
+        (ROOT / "RELEASE_READINESS.json").read_text(encoding="utf-8")
+    )
+    versions["RELEASE_READINESS.json"] = str(
+        release_readiness["current_development_version"]
+    )
     for relative_path in _VERSION_JSON_FILES:
         payload = json.loads(
             (ROOT / relative_path).read_text(encoding="utf-8")
@@ -69,6 +75,9 @@ def version_contract() -> dict[str, str]:
             "status roadmap does not declare the pyproject version as the "
             "current development line"
         )
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    if project_version not in readme:
+        raise RuntimeError("README does not contain the pyproject version")
     return versions
 
 
