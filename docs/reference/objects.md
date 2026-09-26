@@ -144,24 +144,24 @@ an automatically chosen family/link/basis.
 
 ### Generalized fixed-profile prediction objects
 
-\`GeneralizedFunctionOnScalarPredictionResult\` stores the fixed profile IDs,
+`GeneralizedFunctionOnScalarPredictionResult` stores the fixed profile IDs,
 their exact scalar design rows, marginal linear-predictor and response-mean
 functions, robust delta-method standard errors, observed predictor minima/maxima,
 and a per-profile extrapolation flag. Profile values are fixed targets and are
 not resampled.
 
-\`GeneralizedFunctionOnScalarPredictionBootstrapResult\` projects every retained
+`GeneralizedFunctionOnScalarPredictionBootstrapResult` projects every retained
 whole-participant coefficient-bootstrap draw through every fixed profile. It
 therefore preserves the dependence among profile predictions and directly
 retains the source coefficient-bootstrap object rather than drawing a second
 bootstrap sample.
 
-\`GeneralizedFunctionOnScalarPredictionBandResult\` stores simultaneous
+`GeneralizedFunctionOnScalarPredictionBandResult` stores simultaneous
 linear-predictor bands and their monotone inverse-link transformations to the
 marginal response scale. Calibration is over the observed grid with either
 profile-specific or complete declared-profile-family scope.
 
-\`GeneralizedFunctionOnScalarMeanDifferenceResult\` stores one predeclared
+`GeneralizedFunctionOnScalarMeanDifferenceResult` stores one predeclared
 response-scale profile difference, its paired bootstrap draws, pointwise
 bootstrap standard errors, observed-grid simultaneous band and physical-bound
 diagnostic. For Bernoulli outcomes, intervals that extend beyond the logical
