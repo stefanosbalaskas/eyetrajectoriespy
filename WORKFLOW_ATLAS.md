@@ -84,12 +84,23 @@ flowchart LR
     I --> J[Robust sandwich covariance]
     J --> K[Whole-participant case bootstrap refits]
     K --> L[Observed-grid link-scale simultaneous bands]
+    L --> M{Fixed marginal profiles declared?}
+    M -->|Yes| N[0.52 eta_r(t) and inverse-link marginal mean]
+    N --> O[Reuse same participant bootstrap]
+    O --> P[Profile/family simultaneous response bands]
+    O --> Q[One predeclared response-scale mean difference]
 ```
 
 The 0.51 generalized path is population averaged rather than conditional on
 functional random effects. It allows trial-varying predictors, fixes working
 independence, and does not select a family, link, basis size, or working
 correlation automatically.
+
+Version 0.52 treats declared predictor profiles as fixed scientific targets,
+retains scalar-range extrapolation flags, and projects the same participant
+bootstrap through all profiles. It estimates marginal mean functions rather
+than future stochastic responses and does not select profiles or contrasts
+automatically.
 
 ## Trajectory-distance robustness
 
