@@ -14,6 +14,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Simultaneous functional mean band | implemented | `multiplier_functional_mean_band()` |
 | Function-on-scalar regression | implemented; observed-grid OLS with explicit design and HC1 standard errors | `fit_function_on_scalar_regression()` |
 | Function-on-scalar simultaneous coefficient bands | implemented; fixed-design wild bootstrap with coefficient/family scope | `function_on_scalar_simultaneous_bands()` |
+| Generalized function-on-scalar regression | implemented; Bernoulli/logit and Poisson/log marginal GEE with participant clusters, explicit B-spline coefficient functions, robust sandwich covariance, participant bootstrap simultaneous bands, and no automatic working-correlation selection | `fit_generalized_function_on_scalar_regression()` / `generalized_function_on_scalar_simultaneous_bands()` |
 | Functional mixed-effects regression | implemented; one Gaussian response dimension, B-spline fixed effects, participant functional random intercept, optional one guarded participant random functional slope, joint MixedLM fit | `fit_functional_mixed_effects_regression()` |
 | Functional mixed-effects simultaneous coefficient bands | implemented; whole-participant case bootstrap, fixed-covariance GLS coefficient refits, coefficient/family observed-grid maxima | `bootstrap_functional_mixed_effects_coefficients()` / `functional_mixed_effects_simultaneous_bands()` |
 | Full-refit participant bootstrap | implemented; unique bootstrap group IDs for duplicate participant draws, complete MixedLM refit under fixed declared specification, retained variance-component distributions | `bootstrap_functional_mixed_effects_full_refit()` |
@@ -129,13 +130,13 @@ Review flags are descriptive diagnostics. The package does not turn them into au
 
 `bootstrap_fpca_regression_uncertainty()` now refits the common-grid Gaussian FPCR pipeline under paired resampling and propagates basis/regression sampling variability into the reconstructed slope and fitted conditional means.
 
-Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, clustered/repeated-participant wild-bootstrap inference, coverage-optimal automatic wild-bootstrap truncation tuning, heteroscedastic future-outcome prediction, or non-Gaussian/binomial functional-regression inference.
+Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, coverage-optimal automatic wild-bootstrap truncation tuning, heteroscedastic future-outcome prediction, aggregated-binomial denominators, Poisson offsets, non-independence generalized working correlations, or generalized functional random effects. Version 0.51 adds marginal Bernoulli/Poisson function-on-scalar GEE with whole-participant bootstrap inference.
 
 ## Research/development candidates
 
 Future tranches may evaluate:
 
-- generalized/non-Gaussian functional responses after the 0.50 covariance sequence is closed;
+- richer generalized functional responses beyond the guarded 0.51 Bernoulli/Poisson marginal GEE contract;
 - richer sparse/irregular functional inference and external validation workflows;
 - richer multilevel functional mixed-effects backends only where they answer a distinct scientific need rather than adding another covariance knob;
 - explicit system-identification models for gaze dynamics;
@@ -147,7 +148,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.50.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.51.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
@@ -232,11 +233,37 @@ as preferred. No naive likelihood-ratio p-values are produced. The central
 scientific target is robustness of the substantive fixed-effect conclusions
 and covariance attribution across defensible structures.
 
-### Post-0.50 direction
+### 0.51 marginal generalized function-on-scalar regression
 
-The Gaussian covariance hierarchy is intentionally capped here. The next major
-development question should concern a **distinct scientific capability** rather
-than another covariance parameterization. Candidate areas include generalized
-functional responses, richer sparse/irregular inference, and external
-validation workflows. Multiple participant random slopes are not the automatic
-0.51 priority.
+Version **0.51** starts a new scientific line rather than reopening Gaussian
+covariance engineering. It models repeated Bernoulli or Poisson functional
+responses with scalar predictors using population-averaged GEE,
+
+```text
+g(E[Y_ij(t) | x_ij]) = x_ij^T beta(t)
+```
+
+with analyst-declared clamped B-spline coefficient functions. Participants are
+the independent clusters, trial-varying predictors are retained, working
+independence is fixed, and robust sandwich covariance is used. The participant
+count must exceed the expanded coefficient-parameter count as a minimum
+structural guard, not an adequacy theorem.
+
+Whole-participant case bootstrap refits preserve the family/link/basis/working
+correlation contract and calibrate observed-grid simultaneous coefficient bands
+on the link scale. Duplicate sampled participant occurrences receive distinct
+bootstrap group identities; failed replicates are not silently dropped or
+redrawn.
+
+The estimand is explicitly marginal/population averaged. Version 0.51 does not
+pretend that these coefficients are conditional generalized functional random
+effects.
+
+### Post-0.51 direction
+
+The next tranche should deepen this new generalized-response line only when a
+distinct estimand is clear. Candidate extensions include explicit binomial
+denominators/proportion responses, Poisson exposure offsets, richer
+sparse/irregular generalized functional responses, or external validation.
+Automatic working-correlation selection and a generalized mixed-effects
+covariance multiverse are not implied next steps.
