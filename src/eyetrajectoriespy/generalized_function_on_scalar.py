@@ -686,13 +686,6 @@ def fit_generalized_function_on_scalar_regression(
                 "exposure_inferred_from_metadata": False,
                 "exposure_observed_and_fixed": exposure_array is not None,
                 "exposure_measurement_uncertainty": False,
-                "binomial_denominator_observed_and_fixed": (
-                    result.binomial_denominators is not None
-                ),
-                "binomial_denominator_resampled_with_response_bundle": (
-                    result.binomial_denominators is not None
-                ),
-                "binomial_denominator_measurement_uncertainty": False,
                 "converged": True,
                 "backend_warnings": list(state["warning_messages"]),
             },
@@ -835,6 +828,13 @@ def bootstrap_generalized_function_on_scalar_coefficients(
                     result.exposure is not None
                 ),
                 "exposure_measurement_uncertainty": False,
+                "binomial_denominator_observed_and_fixed": (
+                    result.binomial_denominators is not None
+                ),
+                "binomial_denominator_resampled_with_response_bundle": (
+                    result.binomial_denominators is not None
+                ),
+                "binomial_denominator_measurement_uncertainty": False,
             },
         },
     )
