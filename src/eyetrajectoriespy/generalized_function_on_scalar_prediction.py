@@ -1034,7 +1034,7 @@ def plot_generalized_function_on_scalar_mean_difference(
     ax.set_ylabel(ylabel)
     ax.set_title(
         f"Generalized FoSR {result.contrast_scale.replace('_', ' ')}: "
-        f"{result.profile_a} versus {result.profile_b}"
+        f"{result.profile_a} - {result.profile_b}"
     )
     ax.legend()
     return ax
