@@ -131,13 +131,13 @@ Review flags are descriptive diagnostics. The package does not turn them into au
 
 `bootstrap_fpca_regression_uncertainty()` now refits the common-grid Gaussian FPCR pipeline under paired resampling and propagates basis/regression sampling variability into the reconstructed slope and fitted conditional means.
 
-Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, coverage-optimal automatic wild-bootstrap truncation tuning, heteroscedastic future-outcome prediction, aggregated-binomial denominators, generic arbitrary offsets, exposure-measurement-error models, non-independence generalized working correlations, generalized functional random effects, uncertainty in declared prediction-profile values, or future-response prediction for generalized functional outcomes. Version 0.51 adds marginal Bernoulli/Poisson function-on-scalar GEE and version 0.52 adds fixed-profile marginal mean inference.
+Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, coverage-optimal automatic wild-bootstrap truncation tuning, heteroscedastic future-outcome prediction, generic arbitrary offsets, denominator/exposure measurement-error models, non-independence generalized working correlations, generalized functional random effects, uncertainty in declared prediction-profile values, or future-response prediction for generalized functional outcomes. Versions 0.51-0.54 provide the guarded marginal Bernoulli/grouped-binomial/Poisson GEE line and fixed-profile marginal inference.
 
 ## Research/development candidates
 
 Future tranches may evaluate:
 
-- richer generalized functional responses beyond the guarded 0.51–0.53 marginal GEE/exposure/prediction contracts;
+- generalized functional-response extensions only when they answer a distinct validated scientific need beyond the closed 0.51–0.54 Bernoulli/grouped-binomial/Poisson contract;
 - richer sparse/irregular functional inference and external validation workflows;
 - richer multilevel functional mixed-effects backends only where they answer a distinct scientific need rather than adding another covariance knob;
 - explicit system-identification models for gaze dynamics;
@@ -149,7 +149,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.53.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.54.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
@@ -326,14 +326,72 @@ strictly-positive target exposure and fails rather than silently setting
 rate difference, rate ratio, or expected-count difference. Rate-ratio
 simultaneous bands are calibrated on the log-rate-ratio scale and exponentiated.
 
-### Post-0.53 direction
+### 0.54 explicit grouped-binomial denominators
 
-The next guarded generalized-response tranche is grouped-binomial denominators,
-provided the backend pathway reproduces known grouped-binomial results under an
-explicit success/denominator contract. After that, generalized observation-
-family expansion should pause in favor of larger methodological gaps such as
-sparse/irregular generalized functional responses or external-validation /
-transport workflows. Negative binomial, zero-inflated, hurdle, Tweedie,
-automatic working-correlation selection, and generalized mixed-effects
-covariance multiverses are not queued as automatic follow-ons.
+Version **0.54** closes the planned generalized observation-family gap with an
+explicit grouped-binomial success/denominator contract. The observed functional
+response is an integer success-count function \(S_{ij}(t)\), accompanied by a
+strictly positive integer denominator \(N_{ij}(t)\) satisfying
+
+\[
+0 \le S_{ij}(t) \le N_{ij}(t).
+\]
+
+The marginal model is
+
+\[
+S_{ij}(t)\sim\operatorname{Binomial}\{N_{ij}(t),p_{ij}(t)\},
+\qquad
+\operatorname{logit}p_{ij}(t)
+=
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t).
+\]
+
+The public contract accepts integer successes plus an explicit denominator. It
+does not accept arbitrary proportions as sufficient grouped-binomial input, so
+a numerical value such as 0.67 cannot silently stand for either 2/3 or
+670/1000. Internally, the validated successes are converted to proportions and
+the denominators are supplied to the GEE backend as observation weights.
+
+The backend pathway is validated directly against a row-expanded Bernoulli GEE
+reference under the same participant clustering and working-independence
+contract, including agreement of the robust sandwich covariance. Denominators
+travel with the complete source-participant response/design bundle in every
+bootstrap refit and are treated as observed/fixed rather than resampled or
+perturbed independently.
+
+Fixed-profile inference remains on the marginal success-probability scale.
+Target denominators are neither required nor inferred because the probability
+estimand is denominator-independent. The result retains original successes,
+denominators, observed proportions, and denominator-specific fitted expected
+successes for the observed data.
+
+### Post-0.54 stabilization line
+
+The generalized observation-family expansion is now intentionally paused.
+Negative binomial, zero-inflated, hurdle, Tweedie, automatic working-correlation
+selection, generalized random effects, and additional generalized covariance
+multiverses are not queued as automatic next versions.
+
+The next development phase prioritizes turning the broad research codebase into
+a stable, navigable scientific platform:
+
+1. API consistency, naming review, and deprecation policy;
+2. five canonical workflows covering FPCA exploration, experimental functional
+   regression, repeated-trial mixed effects, generalized binary/count
+   responses, and nonlinear/recurrence analysis;
+3. external-reference validation against independent implementations and
+   established benchmark cases;
+4. runtime/memory scaling benchmarks across participant count, trial count,
+   grid length, and basis dimension;
+5. serialization/reproducibility and environment capture;
+6. error-message consistency and failure-mode audits;
+7. realistic end-to-end examples and clearer documentation hierarchy separating
+   canonical, advanced, diagnostic, and experimental APIs;
+8. a formal scope/release-readiness document for the pre-1.0 line.
+
+Sparse/irregular generalized functional responses and external-validation /
+transport workflows remain substantive research candidates, but they should be
+evaluated within this stabilization strategy rather than through an automatic
+feature conveyor belt.
 
