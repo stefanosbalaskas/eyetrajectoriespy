@@ -125,7 +125,10 @@ functions on the declared link scale, robust pointwise standard errors, the
 B-spline basis coefficients and robust parameter covariance, fitted linear
 predictor and marginal mean functions, observed response functions, scalar
 design matrix, participant cluster identities, family/link, basis contract,
-working-correlation contract, convergence diagnostics and provenance.
+working-correlation contract, convergence diagnostics and provenance. For an
+exposure-adjusted Poisson fit it additionally retains the aligned exposure,
+log exposure, exposure units/expansion flag, marginal rate functions, and
+separate rate- and count-scale linear predictors.
 
 `GeneralizedFunctionOnScalarBootstrapResult` stores whole-participant
 case-bootstrap coefficient-function refits together with the sampled source
@@ -147,8 +150,11 @@ an automatically chosen family/link/basis.
 `GeneralizedFunctionOnScalarPredictionResult` stores the fixed profile IDs,
 their exact scalar design rows, marginal linear-predictor and response-mean
 functions, robust delta-method standard errors, observed predictor minima/maxima,
-and a per-profile extrapolation flag. Profile values are fixed targets and are
-not resampled.
+and a per-profile extrapolation flag. Exposure-adjusted Poisson predictions
+also retain the selected prediction scale, target exposure when supplied,
+rate functions, expected-count functions, and separate rate/count linear
+predictors. Profile and target-exposure values are fixed targets and are not
+resampled.
 
 `GeneralizedFunctionOnScalarPredictionBootstrapResult` projects every retained
 whole-participant coefficient-bootstrap draw through every fixed profile. It
@@ -163,9 +169,12 @@ profile-specific or complete declared-profile-family scope.
 
 `GeneralizedFunctionOnScalarMeanDifferenceResult` stores one predeclared
 response-scale profile difference, its paired bootstrap draws, pointwise
-bootstrap standard errors, observed-grid simultaneous band and physical-bound
-diagnostic. For Bernoulli outcomes, intervals that extend beyond the logical
-[-1, 1] difference range are flagged and retained rather than silently clipped.
+bootstrap standard errors, observed-grid simultaneous band, explicit
+`contrast_scale`/`inference_scale`, and physical-bound diagnostic. For
+Bernoulli outcomes, intervals that extend beyond the logical [-1, 1] difference
+range are flagged and retained rather than silently clipped. Exposure-adjusted
+Poisson objects may represent a rate difference, a positive rate ratio
+(calibrated on the log-rate-ratio scale), or an expected-count difference.
 
 These objects are mean-function inference objects, not future-response
 prediction intervals. They do not select profiles or contrasts automatically

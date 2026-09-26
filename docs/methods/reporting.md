@@ -1016,47 +1016,70 @@ them into an automatic component-deletion rule.
 
 ## Generalized function-on-scalar reporting
 
-For version 0.51 report:
+For the generalized FoSR fit report:
 
-- the functional response dimension and whether the family was Bernoulli/logit or Poisson/log;
+- the functional response dimension and whether the family was Bernoulli/logit
+  or Poisson/log;
 - exact binary/count response coding and any exclusions performed upstream;
+- for Poisson models, whether exposure was supplied; if so, its scientific
+  meaning, units, shape/expansion rule, range, and why proportional scaling of
+  expected count with exposure is defensible;
 - the participant column defining independent clusters;
 - every scalar predictor and whether predictors vary across trials;
 - B-spline basis size, degree and observed time domain;
 - that working independence was fixed rather than selected;
 - that coefficient uncertainty used the robust cluster sandwich covariance;
-- the participant count and expanded coefficient-parameter count, making clear that the count guard is not an adequacy theorem;
-- coefficient functions on the link scale and their interpretation as marginal population-averaged effects;
-- bootstrap resampling at the whole-participant level when simultaneous bands are used;
-- number of bootstrap replicates, seed, confidence level and coefficient/family simultaneous scope;
-- that duplicate sampled participants received distinct bootstrap GEE group identities;
+- the participant count and expanded coefficient-parameter count, making clear
+  that the count guard is not an adequacy theorem;
+- coefficient functions on the link scale and their marginal
+  population-averaged interpretation;
+- bootstrap resampling at the whole-participant level when simultaneous bands
+  are used;
+- number of bootstrap replicates, seed, confidence level and coefficient/family
+  simultaneous scope;
+- that duplicate sampled participants received distinct bootstrap GEE group
+  identities;
+- for exposure-adjusted bootstrap inference, that exposure travelled with the
+  source-participant response/design bundle and was treated as observed/fixed;
 - any backend warnings or bootstrap fit failures.
 
-Do not describe 0.51 coefficients as subject-specific/conditional random-effect coefficients. Do not describe aggregated proportions as Bernoulli observations unless an explicit denominator-aware model has actually been fitted.
+Do not describe these coefficients as subject-specific/conditional random-effect
+coefficients. Do not describe aggregated proportions as Bernoulli observations
+unless an explicit denominator-aware model has actually been fitted. For
+Poisson models without exposure, report log expected-count effects rather than
+rates. With exposure, report log-rate effects and exponentiated coefficients as
+rate ratios holding exposure fixed.
 
 ## Generalized fixed-profile prediction reporting
 
-For 0.52 fixed-profile marginal prediction, report:
+For fixed-profile marginal prediction, including the 0.53 exposure extension,
+report:
 
-- the fitted 0.51 family/link, coefficient basis size and participant-cluster
+- the fitted family/link, coefficient basis size and participant-cluster
   definition;
 - every fixed prediction profile and its exact scalar predictor values;
 - the observed scalar predictor minima/maxima used for the support audit;
 - which profiles, if any, were flagged as extrapolative;
 - that target profile values were treated as fixed and were not resampled;
 - the inherited whole-participant coefficient-bootstrap size and seed;
+- the requested prediction scale;
+- for an exposure-adjusted Poisson fit, distinguish rate from expected count
+  and report every target exposure used for expected-count prediction;
 - whether simultaneous calibration was profile-specific or across the complete
   declared profile family;
 - that calibration occurred on the linear-predictor scale and endpoints were
   transformed through the monotone inverse link;
 - that the simultaneous claim applies only to the observed functional grid;
-- for a mean-difference band, the exact predeclared ordered pair
-  \(a-b\), response-scale interpretation, and whether a Bernoulli band exceeded
-  the logical [-1, 1] range;
+- for a contrast band, the exact predeclared ordered profile pair and
+  `contrast_scale`;
+- for a rate ratio, that calibration occurred on the log-rate-ratio scale before
+  exponentiation;
+- for a Bernoulli difference, whether the interval exceeded the logical
+  \([-1,1]\) range;
 - that no profile or contrast was selected automatically and no
   multiple-contrast family adjustment is implied.
 
-Do not describe the response-scale band as a future-response prediction
-interval. It is uncertainty for the marginal mean function conditional on the
-fixed declared profile.
+Do not describe these response-scale bands as future-response prediction
+intervals. They quantify uncertainty in fixed-profile marginal probability,
+rate, or expected-count functions.
 

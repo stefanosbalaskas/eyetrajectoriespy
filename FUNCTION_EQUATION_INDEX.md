@@ -357,6 +357,14 @@ g\{\mu_{ij}(t)\}=\mathbf x_{ij}^\top\boldsymbol\beta(t)
 $$
 
 $$
+\log\mu_{ij}(t)=\log E_{ij}(t)+\mathbf x_{ij}^\top\boldsymbol\beta(t),\quad E_{ij}(t)>0
+$$
+
+$$
+\lambda_{ij}(t)=\frac{\mu_{ij}(t)}{E_{ij}(t)}=\exp\{\mathbf x_{ij}^\top\boldsymbol\beta(t)\}
+$$
+
+$$
 \beta_k(t)=\mathbf B(t)^\top\boldsymbol\theta_k
 $$
 
@@ -368,20 +376,24 @@ $$
 M_k^{*(b)}=\max_m\left|\frac{\widehat\beta_k^{*(b)}(t_m)-\widehat\beta_k(t_m)}{\widehat{\mathrm{SE}}\{\widehat\beta_k(t_m)\}}\right|
 $$
 
-**Scope:** Marginal population-averaged GEE for Bernoulli/logit or Poisson/log functional responses on a common grid. Coefficient functions use an analyst-declared clamped B-spline basis; participants are independent clusters, trial-varying predictors are allowed, working independence is fixed in 0.51, and robust sandwich covariance is used. Whole-participant case bootstrap refits calibrate observed-grid link-scale simultaneous bands. No family, link, basis size, working correlation, or model is selected automatically.
+**Scope:** Marginal population-averaged GEE for Bernoulli/logit or Poisson/log functional responses on a common grid. Version 0.53 adds an optional explicit strictly-positive Poisson exposure, making the coefficient functions log-rate effects while retaining expected counts separately. Generic offsets are not exposed or inferred. Participants are independent clusters, working independence is fixed, robust sandwich covariance is used, and whole-participant bootstrap refits carry exposure with each response/design bundle. No family, link, exposure, basis size, working correlation, or model is selected automatically.
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#generalized-function-on-scalar
 
-## Fixed-profile marginal prediction and mean differences
+## Fixed-profile marginal prediction and explicit contrasts
 
 **Functions:** `generalized_function_on_scalar_predict()`, `generalized_function_on_scalar_prediction_bands()`, `generalized_function_on_scalar_mean_difference_band()`
 
 $$
-\eta_r(t)=\mathbf x_r^\top\widehat{\boldsymbol\beta}(t)
+\eta_r^{\mathrm{rate}}(t)=\mathbf x_r^\top\widehat{\boldsymbol\beta}(t)
 $$
 
 $$
-\mu_r(t)=g^{-1}\{\eta_r(t)\}
+\lambda_r(t)=\exp\{\eta_r^{\mathrm{rate}}(t)\}
+$$
+
+$$
+\mu_r(t)=E_r(t)\lambda_r(t)
 $$
 
 $$
@@ -389,14 +401,22 @@ $$
 $$
 
 $$
-D_{ab}(t)=\mu_a(t)-\mu_b(t)
+D^{\mathrm{rate}}_{ab}(t)=\lambda_a(t)-\lambda_b(t)
+$$
+
+$$
+RR_{ab}(t)=\frac{\lambda_a(t)}{\lambda_b(t)}=\exp\{(\mathbf x_a-\mathbf x_b)^\top\widehat{\boldsymbol\beta}(t)\}
+$$
+
+$$
+D^{\mathrm{count}}_{ab}(t)=\mu_a(t)-\mu_b(t)
 $$
 
 $$
 M_r^{*(b)}=\max_m\left|\frac{\eta_r^{*(b)}(t_m)-\eta_r(t_m)}{\widehat{\operatorname{SE}}\{\eta_r(t_m)\}}\right|
 $$
 
-**Scope:** Fixed analyst-declared scalar predictor profiles projected through the fitted marginal Bernoulli/logit or Poisson/log coefficient functions. Profile values are not resampled. Simultaneous marginal mean bands are calibrated on the linear-predictor scale using the existing whole-participant coefficient bootstrap and transformed through the strictly monotone inverse link. One predeclared response-scale mean-difference function may be calibrated from the same paired bootstrap draws. Scalar-predictor extrapolations are retained and flagged; no profile or contrast is selected automatically and between-grid coverage is not claimed.
+**Scope:** Fixed analyst-declared scalar predictor profiles projected through the fitted marginal Bernoulli/logit or Poisson/log coefficient functions. Exposure-adjusted Poisson fits can always predict rates; expected-count prediction requires an explicit strictly-positive target exposure and never assumes unit exposure silently. One predeclared contrast may target a rate difference, rate ratio, or expected-count difference; rate-ratio bands are calibrated on the log-rate-ratio scale and exponentiated. Profile values and target exposures are fixed, not resampled. No profile or contrast is selected automatically and between-grid coverage is not claimed.
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#generalized-function-on-scalar-prediction
 

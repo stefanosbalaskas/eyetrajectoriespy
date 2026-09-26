@@ -43,6 +43,7 @@ from .generalized_function_on_scalar import (
     bootstrap_generalized_function_on_scalar_coefficients,
     fit_generalized_function_on_scalar_regression,
     generalized_function_on_scalar_coefficient_frame,
+    generalized_function_on_scalar_exposure_frame,
     generalized_function_on_scalar_reporting_text,
     generalized_function_on_scalar_simultaneous_bands,
     plot_generalized_function_on_scalar_coefficients,
@@ -489,7 +490,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.52.0.dev0"
+__version__ = "0.53.0.dev0"
 
 __all__ = [
     "GeneralizedFunctionOnScalarPredictionResult",
@@ -513,6 +514,7 @@ __all__ = [
     "bootstrap_generalized_function_on_scalar_coefficients",
     "generalized_function_on_scalar_simultaneous_bands",
     "generalized_function_on_scalar_coefficient_frame",
+    "generalized_function_on_scalar_exposure_frame",
     "plot_generalized_function_on_scalar_coefficients",
     "generalized_function_on_scalar_reporting_text",
     "FunctionalMixedEffectsCovarianceSpecification",

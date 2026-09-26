@@ -18,6 +18,7 @@ from eyetrajectoriespy import (
     bootstrap_generalized_function_on_scalar_predictions,
     fit_generalized_function_on_scalar_regression,
     generalized_function_on_scalar_coefficient_frame,
+    generalized_function_on_scalar_exposure_frame,
     generalized_function_on_scalar_mean_difference_band,
     generalized_function_on_scalar_mean_difference_frame,
     generalized_function_on_scalar_mean_difference_reporting_text,
@@ -101,6 +102,45 @@ def _poisson_data(seed=511, n_participants=50):
         }
     )
     return trajectories, design, beta0, beta1
+
+
+def _poisson_exposure_data(seed=530, n_participants=40):
+    rng = np.random.default_rng(seed)
+    trials_per_participant = 3
+    time = np.linspace(0.0, 1.0, 7)
+    condition_template = np.array([-0.5, 0.0, 0.5])
+    condition = np.tile(condition_template, n_participants)
+    participants = np.repeat(
+        [f"P{i:03d}" for i in range(n_participants)],
+        trials_per_participant,
+    )
+
+    beta0 = 0.10 + 0.20 * time
+    beta1 = 0.35 - 0.10 * time
+    eta_rate = beta0[None, :] + condition[:, None] * beta1[None, :]
+    curve_scale = 0.75 + 0.50 * (
+        np.arange(condition.size, dtype=float) % 5
+    ) / 4.0
+    exposure = curve_scale[:, None] * (0.80 + 0.40 * time[None, :])
+    mean_count = exposure * np.exp(eta_rate)
+    response = rng.poisson(mean_count).astype(float)
+
+    trajectories = TrajectorySet(
+        time=time,
+        values=response[:, :, None],
+        curve_ids=tuple(f"E{i:04d}" for i in range(response.shape[0])),
+        dimension_names=("count",),
+        metadata=pd.DataFrame({"participant_id": participants}),
+        coordinate_system="unknown",
+        time_unit="s",
+    )
+    design = pd.DataFrame(
+        {
+            "curve_id": trajectories.curve_ids,
+            "condition": condition,
+        }
+    )
+    return trajectories, design, exposure, beta0, beta1
 
 
 def test_binomial_generalized_fosr_recovers_link_scale_coefficients():
@@ -955,4 +995,331 @@ def test_profile_contracts_fail_closed(_binary_prediction_bundle):
                 }
             ),
         )
+
+def test_poisson_exposure_retains_rate_and_expected_count_semantics():
+    trajectories, design, exposure, beta0, beta1 = _poisson_exposure_data()
+    fit = fit_generalized_function_on_scalar_regression(
+        trajectories,
+        design,
+        predictors=("condition",),
+        participant_column="participant_id",
+        dimension="count",
+        family="poisson",
+        exposure=exposure,
+        exposure_units="seconds",
+        basis_size=2,
+        spline_degree=1,
+    )
+
+    np.testing.assert_allclose(fit.exposure, exposure)
+    np.testing.assert_allclose(fit.log_exposure, np.log(exposure))
+    np.testing.assert_allclose(
+        fit.linear_predictor_count,
+        fit.linear_predictor_rate + np.log(exposure),
+    )
+    np.testing.assert_allclose(
+        fit.mean_functions,
+        exposure * fit.rate_functions,
+        rtol=1e-12,
+        atol=1e-12,
+    )
+    assert fit.exposure_units == "seconds"
+    assert fit.exposure_expanded_from_curve is False
+    np.testing.assert_allclose(fit.coefficient_functions[0], beta0, atol=0.35)
+    np.testing.assert_allclose(fit.coefficient_functions[1], beta1, atol=0.40)
+
+    contract = fit.provenance["generalized_function_on_scalar_regression"]
+    assert contract["generic_offset_supported"] is False
+    assert contract["poisson_exposure_supported"] is True
+    assert contract["exposure_inferred_from_time_grid"] is False
+    assert contract["exposure_inferred_from_trial_duration"] is False
+    assert contract["exposure_inferred_from_metadata"] is False
+    assert contract["exposure_observed_and_fixed"] is True
+    assert contract["exposure_measurement_uncertainty"] is False
+
+    audit = generalized_function_on_scalar_exposure_frame(fit)
+    assert len(audit) == trajectories.n_curves
+    assert np.all(audit["minimum_exposure"] > 0)
+    assert audit.attrs["exposure_audit"]["varies_over_time"] is True
+    assert audit.attrs["exposure_audit"]["varies_between_curves"] is True
+    assert audit.attrs["exposure_audit"]["exposure_units"] == "seconds"
+
+
+def test_poisson_exposure_validation_and_curve_expansion_fail_closed():
+    trajectories, design, exposure, _, _ = _poisson_exposure_data(
+        seed=531,
+        n_participants=12,
+    )
+
+    zero = exposure.copy()
+    zero[0, 0] = 0.0
+    negative = exposure.copy()
+    negative[0, 0] = -1.0
+    nonfinite = exposure.copy()
+    nonfinite[0, 0] = np.nan
+    for bad in (zero, negative, nonfinite):
+        with pytest.raises(ValueError, match="exposure"):
+            fit_generalized_function_on_scalar_regression(
+                trajectories,
+                design,
+                predictors=("condition",),
+                participant_column="participant_id",
+                dimension="count",
+                family="poisson",
+                exposure=bad,
+                basis_size=2,
+                spline_degree=1,
+            )
+
+    with pytest.raises(ValueError, match="shape"):
+        fit_generalized_function_on_scalar_regression(
+            trajectories,
+            design,
+            predictors=("condition",),
+            participant_column="participant_id",
+            dimension="count",
+            family="poisson",
+            exposure=np.ones((trajectories.n_curves, 2)),
+            basis_size=2,
+            spline_degree=1,
+        )
+
+    per_curve = np.linspace(0.5, 1.5, trajectories.n_curves)
+    expanded = fit_generalized_function_on_scalar_regression(
+        trajectories,
+        design,
+        predictors=("condition",),
+        participant_column="participant_id",
+        dimension="count",
+        family="poisson",
+        exposure=per_curve,
+        basis_size=2,
+        spline_degree=1,
+    )
+    np.testing.assert_allclose(
+        expanded.exposure,
+        np.repeat(per_curve[:, None], trajectories.n_time, axis=1),
+    )
+    assert expanded.exposure_expanded_from_curve is True
+
+    with pytest.raises(ValueError, match="exposure_units"):
+        fit_generalized_function_on_scalar_regression(
+            trajectories,
+            design,
+            predictors=("condition",),
+            participant_column="participant_id",
+            dimension="count",
+            family="poisson",
+            exposure_units="seconds",
+            basis_size=2,
+            spline_degree=1,
+        )
+
+    binary, binary_design, _, _ = _binary_data(seed=532, n_participants=12)
+    with pytest.raises(ValueError, match="only for family='poisson'"):
+        fit_generalized_function_on_scalar_regression(
+            binary,
+            binary_design,
+            predictors=("condition",),
+            participant_column="participant_id",
+            dimension="target_aoi",
+            family="binomial",
+            exposure=np.ones((binary.n_curves, binary.n_time)),
+            basis_size=2,
+            spline_degree=1,
+        )
+
+
+def test_exposure_adjusted_prediction_requires_target_exposure_for_counts():
+    trajectories, design, exposure, _, _ = _poisson_exposure_data(
+        seed=533,
+        n_participants=18,
+    )
+    fit = fit_generalized_function_on_scalar_regression(
+        trajectories,
+        design,
+        predictors=("condition",),
+        participant_column="participant_id",
+        dimension="count",
+        family="poisson",
+        exposure=exposure,
+        exposure_units="seconds",
+        basis_size=2,
+        spline_degree=1,
+    )
+    profiles = pd.DataFrame(
+        {"profile_id": ("low", "high"), "condition": (-0.5, 0.5)}
+    )
+
+    rate = generalized_function_on_scalar_predict(fit, profiles)
+    assert rate.prediction_scale == "rate"
+    assert rate.exposure_profiles is None
+    assert rate.expected_count_functions is None
+    np.testing.assert_allclose(rate.mean_functions, rate.rate_functions)
+    np.testing.assert_allclose(
+        rate.rate_functions,
+        np.exp(rate.linear_predictor_rate),
+    )
+
+    with pytest.raises(ValueError, match="requires explicit exposure_profiles"):
+        generalized_function_on_scalar_predict(
+            fit,
+            profiles,
+            prediction_scale="expected_count",
+        )
+
+    target_exposure = np.array([1.5, 2.0])
+    count = generalized_function_on_scalar_predict(
+        fit,
+        profiles,
+        exposure_profiles=target_exposure,
+        prediction_scale="expected_count",
+    )
+    expected_exposure = np.repeat(
+        target_exposure[:, None], trajectories.n_time, axis=1
+    )
+    np.testing.assert_allclose(count.exposure_profiles, expected_exposure)
+    np.testing.assert_allclose(
+        count.linear_predictor_count,
+        count.linear_predictor_rate + np.log(expected_exposure),
+    )
+    np.testing.assert_allclose(
+        count.expected_count_functions,
+        expected_exposure * count.rate_functions,
+    )
+    np.testing.assert_allclose(
+        count.mean_functions,
+        count.expected_count_functions,
+    )
+
+    with pytest.raises(ValueError, match="must be omitted for rate"):
+        generalized_function_on_scalar_predict(
+            fit,
+            profiles,
+            exposure_profiles=target_exposure,
+            prediction_scale="rate",
+        )
+
+
+def test_exposure_bootstrap_rate_contrasts_and_log_rate_ratio_band():
+    trajectories, design, exposure, _, _ = _poisson_exposure_data(
+        seed=534,
+        n_participants=16,
+    )
+    fit = fit_generalized_function_on_scalar_regression(
+        trajectories,
+        design,
+        predictors=("condition",),
+        participant_column="participant_id",
+        dimension="count",
+        family="poisson",
+        exposure=exposure,
+        basis_size=2,
+        spline_degree=1,
+    )
+    coefficient_bootstrap = bootstrap_generalized_function_on_scalar_coefficients(
+        fit,
+        n_bootstrap=100,
+        random_state=534,
+    )
+    contract = coefficient_bootstrap.provenance[
+        "generalized_function_on_scalar_bootstrap"
+    ]
+    assert contract["exposure_observed_and_fixed"] is True
+    assert contract["exposure_resampled_with_response_bundle"] is True
+    assert contract["exposure_measurement_uncertainty"] is False
+
+    profiles = pd.DataFrame(
+        {"profile_id": ("low", "high"), "condition": (-0.5, 0.5)}
+    )
+    rate_bootstrap = bootstrap_generalized_function_on_scalar_predictions(
+        coefficient_bootstrap,
+        profiles,
+        prediction_scale="rate",
+    )
+
+    difference = generalized_function_on_scalar_mean_difference_band(
+        rate_bootstrap,
+        profile_a="high",
+        profile_b="low",
+        contrast_scale="rate_difference",
+    )
+    assert difference.contrast_scale == "rate_difference"
+
+    ratio = generalized_function_on_scalar_mean_difference_band(
+        rate_bootstrap,
+        profile_a="high",
+        profile_b="low",
+        contrast_scale="rate_ratio",
+    )
+    assert ratio.contrast_scale == "rate_ratio"
+    assert ratio.inference_scale == "log_rate_ratio"
+    assert np.all(ratio.estimate > 0)
+    assert np.all(ratio.lower > 0)
+    assert np.all(ratio.upper > 0)
+    np.testing.assert_allclose(
+        ratio.estimate,
+        (
+            rate_bootstrap.prediction.rate_functions[1]
+            / rate_bootstrap.prediction.rate_functions[0]
+        ),
+    )
+    assert ratio.provenance[
+        "generalized_function_on_scalar_mean_difference_band"
+    ]["rate_ratio_band_calibrated_on_log_scale"] is True
+
+    fit_report = generalized_function_on_scalar_reporting_text(fit)
+    assert "log rates" in fit_report
+    assert "observed and fixed" in fit_report
+
+    rate_band = generalized_function_on_scalar_prediction_bands(
+        rate_bootstrap,
+        confidence_level=0.95,
+    )
+    prediction_report = (
+        generalized_function_on_scalar_prediction_reporting_text(rate_band)
+    )
+    assert "exposure-adjusted rate" in prediction_report
+    prediction_ax = plot_generalized_function_on_scalar_predictions(rate_band)
+    assert "exposure-adjusted rate" in prediction_ax.get_ylabel().lower()
+
+    ratio_report = (
+        generalized_function_on_scalar_mean_difference_reporting_text(ratio)
+    )
+    assert "log-rate-ratio" in ratio_report
+    ratio_ax = plot_generalized_function_on_scalar_mean_difference(ratio)
+    assert "high - low" in ratio_ax.get_title()
+    assert "rate ratio" in ratio_ax.get_ylabel().lower()
+    assert ratio_ax.lines[-1].get_ydata()[0] == pytest.approx(1.0)
+
+    count_bootstrap = bootstrap_generalized_function_on_scalar_predictions(
+        coefficient_bootstrap,
+        profiles,
+        exposure_profiles=np.array([1.0, 1.5]),
+        prediction_scale="expected_count",
+    )
+    count_difference = generalized_function_on_scalar_mean_difference_band(
+        count_bootstrap,
+        profile_a="high",
+        profile_b="low",
+        contrast_scale="expected_count_difference",
+    )
+    assert count_difference.contrast_scale == "expected_count_difference"
+    assert np.all(np.isfinite(count_difference.estimate))
+
+
+def test_exposure_audit_rejects_non_exposure_fit():
+    trajectories, design, _, _ = _poisson_data(seed=535, n_participants=12)
+    fit = fit_generalized_function_on_scalar_regression(
+        trajectories,
+        design,
+        predictors=("condition",),
+        participant_column="participant_id",
+        dimension="count",
+        family="poisson",
+        basis_size=2,
+        spline_degree=1,
+    )
+    with pytest.raises(ValueError, match="does not contain an exposure"):
+        generalized_function_on_scalar_exposure_frame(fit)
 

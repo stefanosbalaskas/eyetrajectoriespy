@@ -216,8 +216,28 @@ scale.
 
 For whole-function inference, resample complete participants with `bootstrap_generalized_function_on_scalar_coefficients()` and calibrate `generalized_function_on_scalar_simultaneous_bands()`.
 
+For Poisson **rates**, add a scientifically meaningful strictly-positive exposure rather than manually normalizing counts:
 
-For interpretable 0.52 marginal probabilities or expected counts at fixed
+~~~python
+rate_fit = fit_generalized_function_on_scalar_regression(
+    count_trajectories,
+    design,
+    predictors=("condition",),
+    participant_column="participant_id",
+    dimension="fixation_count",
+    family="poisson",
+    exposure=valid_monitored_seconds,
+    exposure_units="seconds",
+    basis_size=4,
+    spline_degree=2,
+)
+~~~
+
+The coefficient predictor is then a log rate; expected counts remain
+`exposure * rate`. Exposure is never inferred.
+
+
+For interpretable marginal probabilities, exposure-adjusted rates, or expected counts at fixed
 scientific profiles, project the same participant bootstrap rather than drawing
 a second resample:
 
@@ -267,6 +287,12 @@ prediction_band = generalized_function_on_scalar_prediction_bands(
 Profiles outside an observed scalar predictor range are retained and flagged as
 extrapolations. These are marginal mean-function bands, not future-response
 prediction intervals.
+
+For an exposure-adjusted Poisson fit, `prediction_scale="rate"` requires no
+target exposure. `prediction_scale="expected_count"` requires explicit
+`exposure_profiles`; the package does not assume unit exposure. Poisson
+contrasts are likewise explicit: `"rate_difference"`, `"rate_ratio"`, or
+`"expected_count_difference"`, one predeclared scale at a time.
 
 ### Optional 0.50 covariance sensitivity
 

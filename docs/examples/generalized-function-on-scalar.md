@@ -108,10 +108,11 @@ A positive condition coefficient at time \(t\) indicates larger marginal
 log-odds of target-AOI occupancy at that time, holding the other declared
 predictors fixed.
 
-## Count-valued response
+## Count-valued response and exposure-adjusted rates
 
 For non-negative integer count functions use the same interface with
-`family="poisson"`:
+`family="poisson"`. Without exposure, coefficients describe log expected
+counts:
 
 ~~~python
 count_fit = fit_generalized_function_on_scalar_regression(
@@ -126,7 +127,39 @@ count_fit = fit_generalized_function_on_scalar_regression(
 )
 ~~~
 
-The coefficient functions are then on the log scale.
+When counts were accumulated under unequal, scientifically meaningful
+observation opportunities, supply exposure explicitly:
+
+~~~python
+rate_fit = fit_generalized_function_on_scalar_regression(
+    count_trajectories,
+    design,
+    predictors=("condition",),
+    participant_column="participant_id",
+    dimension="fixation_count",
+    family="poisson",
+    exposure=valid_monitored_seconds,
+    exposure_units="seconds",
+    basis_size=4,
+    spline_degree=2,
+)
+~~~
+
+Then `rate_fit.rate_functions` contains fitted marginal rates,
+`rate_fit.mean_functions` contains exposure-specific expected counts, and
+`rate_fit.linear_predictor_rate` is separated from
+`rate_fit.linear_predictor_count`.
+
+~~~python
+from eyetrajectoriespy import generalized_function_on_scalar_exposure_frame
+
+exposure_frame = generalized_function_on_scalar_exposure_frame(rate_fit)
+exposure_frame.attrs["exposure_audit"]
+~~~
+
+Use exposure only when expected count is substantively proportional to the
+declared denominator. The package does not infer exposure from time-grid
+spacing, trial duration, sample counts, or metadata.
 
 ## Reporting
 

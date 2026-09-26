@@ -1049,7 +1049,7 @@ steps.
 
 ## Generalized function-on-scalar limitations
 
-Version 0.51 supports only Bernoulli/logit and Poisson/log marginal functional responses on a complete common grid. It does not provide aggregated binomial denominator handling, Poisson exposure offsets, negative-binomial or zero-inflated families, sparse/irregular generalized response estimation, or generalized functional random effects.
+The generalized functional-response layer supports Bernoulli/logit and Poisson/log marginal responses on a complete common grid. Version 0.53 supports an explicit strictly-positive Poisson exposure, but not generic arbitrary offsets, exposure-measurement-error models, aggregated binomial denominators, negative-binomial or zero-inflated families, sparse/irregular generalized response estimation, or generalized functional random effects.
 
 Working independence is deliberate. The package does not scan exchangeable, AR-like or unstructured GEE working correlations and then choose whichever produces the preferred result.
 
@@ -1071,13 +1071,10 @@ propensity score, overlap probability, or causal support region.
 The simultaneous prediction band covers the declared observed grid only.
 Between-grid coverage is not claimed.
 
-Only one predeclared response-scale mean-difference function is calibrated at a
-time. There is no automatic pair search and no familywise adjustment across
-multiple contrasts.
+Only one predeclared response-scale contrast is calibrated at a time. Exposure-adjusted Poisson models may use a rate difference, rate ratio, or expected-count difference, but the package does not generate all scales automatically. There is no automatic pair search and no familywise adjustment across multiple contrasts.
 
 For Bernoulli outcomes, an untrimmed studentized mean-difference band can
 extend outside [-1, 1]. Such a band is flagged but not silently clipped.
 
-The target profile values are fixed. Their measurement or estimation
-uncertainty is outside the current contract.
+The target profile values and any target exposure are fixed. Their measurement or estimation uncertainty is outside the current contract. Expected-count prediction from an exposure-adjusted fit requires explicit target exposure; silently assuming unit exposure is deliberately unsupported.
 

@@ -392,6 +392,7 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.bootstrap_generalized_function_on_scalar_coefficients
 ::: eyetrajectoriespy.generalized_function_on_scalar_simultaneous_bands
 ::: eyetrajectoriespy.generalized_function_on_scalar_coefficient_frame
+::: eyetrajectoriespy.generalized_function_on_scalar_exposure_frame
 ::: eyetrajectoriespy.plot_generalized_function_on_scalar_coefficients
 ::: eyetrajectoriespy.generalized_function_on_scalar_reporting_text
 

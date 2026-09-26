@@ -112,11 +112,43 @@ def _validate_profiles(
     return aligned, profile_ids, predictor_values
 
 
+def _validate_prediction_exposure(
+    result: GeneralizedFunctionOnScalarResult,
+    exposure_profiles,
+    *,
+    n_profiles: int,
+) -> tuple[np.ndarray | None, np.ndarray | None]:
+    if exposure_profiles is None:
+        return None, None
+    if result.family != "poisson":
+        raise ValueError("exposure_profiles is supported only for Poisson fits")
+    if result.exposure is None:
+        raise ValueError(
+            "target exposure cannot be supplied to a Poisson fit estimated "
+            "without exposure"
+        )
+    values = np.asarray(exposure_profiles, dtype=float)
+    if values.shape == (n_profiles,):
+        values = np.repeat(values[:, None], result.time.size, axis=1)
+    elif values.shape != (n_profiles, result.time.size):
+        raise ValueError(
+            "exposure_profiles must have shape (n_profiles, n_time) or "
+            f"(n_profiles,); got {values.shape}"
+        )
+    if not np.all(np.isfinite(values)):
+        raise ValueError("exposure_profiles must contain only finite values")
+    if np.any(values <= 0):
+        raise ValueError("exposure_profiles must be strictly positive")
+    return values.copy(), np.log(values)
+
+
 def generalized_function_on_scalar_predict(
     result: GeneralizedFunctionOnScalarResult,
     profiles: pd.DataFrame,
     *,
     profile_id_column: str = "profile_id",
+    exposure_profiles=None,
+    prediction_scale: str | None = None,
 ) -> GeneralizedFunctionOnScalarPredictionResult:
     """Predict fixed marginal response profiles under a generalized FoSR fit.
 
@@ -131,6 +163,44 @@ def generalized_function_on_scalar_predict(
         profiles,
         profile_id_column=profile_id_column,
     )
+    target_exposure, target_log_exposure = _validate_prediction_exposure(
+        result,
+        exposure_profiles,
+        n_profiles=len(profile_ids),
+    )
+    if result.family == "binomial":
+        if prediction_scale not in {None, "probability"}:
+            raise ValueError(
+                "binomial prediction_scale must be 'probability' or None"
+            )
+        selected_scale = "probability"
+    elif result.exposure is None:
+        if prediction_scale not in {None, "expected_count"}:
+            raise ValueError(
+                "a Poisson fit without exposure supports expected_count "
+                "prediction only; refit with exposure for a rate estimand"
+            )
+        selected_scale = "expected_count"
+    else:
+        if prediction_scale is None:
+            selected_scale = "rate"
+        elif prediction_scale in {"rate", "expected_count"}:
+            selected_scale = prediction_scale
+        else:
+            raise ValueError(
+                "Poisson exposure prediction_scale must be 'rate' or "
+                "'expected_count'"
+            )
+        if selected_scale == "rate" and target_exposure is not None:
+            raise ValueError(
+                "exposure_profiles must be omitted for rate predictions"
+            )
+        if selected_scale == "expected_count" and target_exposure is None:
+            raise ValueError(
+                "expected-count prediction from an exposure-adjusted fit "
+                "requires explicit exposure_profiles"
+            )
+
     scalar_design = np.column_stack(
         [
             np.ones(len(profile_ids), dtype=float),
@@ -145,9 +215,13 @@ def generalized_function_on_scalar_predict(
         result.basis_coefficients,
         dtype=float,
     ).reshape(-1)
-    linear = (
+    linear_rate = (
         expanded_design @ parameter_vector
     ).reshape(len(profile_ids), result.time.size)
+    if selected_scale == "expected_count" and target_log_exposure is not None:
+        linear = linear_rate + target_log_exposure
+    else:
+        linear = linear_rate
 
     covariance = np.asarray(
         result.parameter_covariance,
@@ -163,6 +237,16 @@ def generalized_function_on_scalar_predict(
     linear_se = np.sqrt(np.maximum(linear_variance, 0.0))
 
     mean = _inverse_link(result.family, linear)
+    rate = (
+        _inverse_link("poisson", linear_rate)
+        if result.family == "poisson" and result.exposure is not None
+        else None
+    )
+    expected_count = (
+        mean
+        if result.family == "poisson" and selected_scale == "expected_count"
+        else None
+    )
     derivative = _inverse_link_derivative(result.family, mean)
     mean_se = derivative * linear_se
 
@@ -195,6 +279,19 @@ def generalized_function_on_scalar_predict(
         extrapolation_flags=extrapolation,
         predictor_minima=minima,
         predictor_maxima=maxima,
+        prediction_scale=selected_scale,
+        exposure_profiles=target_exposure,
+        log_exposure_profiles=target_log_exposure,
+        rate_functions=rate,
+        expected_count_functions=expected_count,
+        linear_predictor_rate=(
+            linear_rate if result.family == "poisson" else None
+        ),
+        linear_predictor_count=(
+            linear
+            if result.family == "poisson" and selected_scale == "expected_count"
+            else None
+        ),
         provenance={
             **dict(result.provenance),
             "generalized_function_on_scalar_prediction": {
@@ -210,11 +307,12 @@ def generalized_function_on_scalar_predict(
                 "predictor_scaling": False,
                 "marginal_population_averaged_interpretation": True,
                 "linear_predictor_scale": result.link,
-                "mean_scale": (
-                    "probability"
-                    if result.family == "binomial"
-                    else "expected_count"
+                "mean_scale": selected_scale,
+                "poisson_rate_estimand": (
+                    result.family == "poisson" and result.exposure is not None
                 ),
+                "target_exposure_supplied": target_exposure is not None,
+                "target_exposure_assumed_unit": False,
                 "pointwise_linear_predictor_standard_error": (
                     "delta_from_gee_robust_parameter_covariance"
                 ),
@@ -237,6 +335,8 @@ def bootstrap_generalized_function_on_scalar_predictions(
     profiles: pd.DataFrame,
     *,
     profile_id_column: str = "profile_id",
+    exposure_profiles=None,
+    prediction_scale: str | None = None,
 ) -> GeneralizedFunctionOnScalarPredictionBootstrapResult:
     """Project participant-bootstrap coefficient functions to fixed profiles."""
 
@@ -251,6 +351,8 @@ def bootstrap_generalized_function_on_scalar_predictions(
         bootstrap.reference,
         profiles,
         profile_id_column=profile_id_column,
+        exposure_profiles=exposure_profiles,
+        prediction_scale=prediction_scale,
     )
     design = np.asarray(
         prediction.profile_design_matrix,
@@ -260,15 +362,37 @@ def bootstrap_generalized_function_on_scalar_predictions(
         bootstrap.bootstrap_coefficient_functions,
         dtype=float,
     )
-    linear_draws = np.einsum(
+    linear_rate_draws = np.einsum(
         "pc,bct->bpt",
         design,
         coefficient_draws,
         optimize=True,
     )
+    rate_draws = (
+        _inverse_link("poisson", linear_rate_draws)
+        if bootstrap.reference.family == "poisson"
+        and bootstrap.reference.exposure is not None
+        else None
+    )
+    if (
+        prediction.prediction_scale == "expected_count"
+        and prediction.log_exposure_profiles is not None
+    ):
+        linear_draws = (
+            linear_rate_draws
+            + prediction.log_exposure_profiles[None, :, :]
+        )
+    else:
+        linear_draws = linear_rate_draws
     mean_draws = _inverse_link(
         bootstrap.reference.family,
         linear_draws,
+    )
+    expected_count_draws = (
+        mean_draws
+        if bootstrap.reference.family == "poisson"
+        and prediction.prediction_scale == "expected_count"
+        else None
     )
     if not np.all(np.isfinite(linear_draws)):
         raise RuntimeError(
@@ -284,6 +408,8 @@ def bootstrap_generalized_function_on_scalar_predictions(
         coefficient_bootstrap=bootstrap,
         bootstrap_linear_predictor_functions=linear_draws,
         bootstrap_mean_functions=mean_draws,
+        bootstrap_rate_functions=rate_draws,
+        bootstrap_expected_count_functions=expected_count_draws,
         provenance={
             **dict(bootstrap.provenance),
             "generalized_function_on_scalar_prediction_bootstrap": {
@@ -300,6 +426,10 @@ def bootstrap_generalized_function_on_scalar_predictions(
                     "inverse_logit"
                     if bootstrap.reference.family == "binomial"
                     else "exponential"
+                ),
+                "prediction_scale": prediction.prediction_scale,
+                "target_exposure_supplied": (
+                    prediction.exposure_profiles is not None
                 ),
                 "automatic_profile_selection": False,
             },
@@ -436,13 +566,14 @@ def generalized_function_on_scalar_mean_difference_band(
     profile_a: str,
     profile_b: str,
     confidence_level: float = 0.95,
+    contrast_scale: str | None = None,
 ) -> GeneralizedFunctionOnScalarMeanDifferenceResult:
-    """Construct one predeclared simultaneous marginal mean-difference band.
+    """Construct one predeclared simultaneous marginal profile contrast.
 
-    The contrast is mean(profile_a) - mean(profile_b) on the response scale.
-    For Bernoulli outcomes this is a marginal probability/risk difference; for
-    Poisson outcomes it is an expected-count difference under the no-offset
-    0.51/0.52 contract.
+    Bernoulli fits support a probability difference. Poisson fits without
+    exposure support an expected-count difference. Exposure-adjusted Poisson
+    fits support an explicit rate difference, rate ratio, or expected-count
+    difference when target exposure was supplied for count prediction.
     """
 
     if not isinstance(
@@ -463,6 +594,45 @@ def generalized_function_on_scalar_mean_difference_band(
         raise ValueError("confidence_level must lie in (0, 1)")
 
     prediction = bootstrap.prediction
+    family = prediction.reference.family
+    has_exposure = prediction.reference.exposure is not None
+    if family == "binomial":
+        allowed = {"probability_difference"}
+        selected_contrast = (
+            "probability_difference"
+            if contrast_scale is None
+            else contrast_scale
+        )
+    elif has_exposure:
+        allowed = {
+            "rate_difference",
+            "rate_ratio",
+            "expected_count_difference",
+        }
+        selected_contrast = (
+            "rate_difference" if contrast_scale is None else contrast_scale
+        )
+    else:
+        allowed = {"expected_count_difference"}
+        selected_contrast = (
+            "expected_count_difference"
+            if contrast_scale is None
+            else contrast_scale
+        )
+    if selected_contrast not in allowed:
+        raise ValueError(
+            f"contrast_scale must be one of {sorted(allowed)} for this fit"
+        )
+    if (
+        selected_contrast == "expected_count_difference"
+        and prediction.expected_count_functions is None
+    ):
+        raise ValueError(
+            "expected_count_difference requires predictions created with "
+            "prediction_scale='expected_count' and explicit target exposure "
+            "for exposure-adjusted fits"
+        )
+
     lookup = {
         profile_id: index
         for index, profile_id in enumerate(prediction.profile_ids)
@@ -477,30 +647,58 @@ def generalized_function_on_scalar_mean_difference_band(
 
     a = lookup[profile_a]
     b = lookup[profile_b]
-    estimate = (
-        prediction.mean_functions[a]
-        - prediction.mean_functions[b]
-    )
-    bootstrap_estimates = (
-        bootstrap.bootstrap_mean_functions[:, a, :]
-        - bootstrap.bootstrap_mean_functions[:, b, :]
-    )
-    standard_error = np.std(
-        bootstrap_estimates,
-        axis=0,
-        ddof=1,
-    )
+    if selected_contrast == "rate_difference":
+        estimate = prediction.rate_functions[a] - prediction.rate_functions[b]
+        bootstrap_estimates = (
+            bootstrap.bootstrap_rate_functions[:, a, :]
+            - bootstrap.bootstrap_rate_functions[:, b, :]
+        )
+        inference_estimate = estimate
+        inference_draws = bootstrap_estimates
+        inference_scale = "rate_difference"
+    elif selected_contrast == "rate_ratio":
+        estimate = prediction.rate_functions[a] / prediction.rate_functions[b]
+        bootstrap_estimates = (
+            bootstrap.bootstrap_rate_functions[:, a, :]
+            / bootstrap.bootstrap_rate_functions[:, b, :]
+        )
+        inference_estimate = np.log(estimate)
+        inference_draws = np.log(bootstrap_estimates)
+        inference_scale = "log_rate_ratio"
+    elif selected_contrast == "expected_count_difference":
+        estimate = (
+            prediction.expected_count_functions[a]
+            - prediction.expected_count_functions[b]
+        )
+        bootstrap_estimates = (
+            bootstrap.bootstrap_expected_count_functions[:, a, :]
+            - bootstrap.bootstrap_expected_count_functions[:, b, :]
+        )
+        inference_estimate = estimate
+        inference_draws = bootstrap_estimates
+        inference_scale = "expected_count_difference"
+    else:
+        estimate = prediction.mean_functions[a] - prediction.mean_functions[b]
+        bootstrap_estimates = (
+            bootstrap.bootstrap_mean_functions[:, a, :]
+            - bootstrap.bootstrap_mean_functions[:, b, :]
+        )
+        inference_estimate = estimate
+        inference_draws = bootstrap_estimates
+        inference_scale = "probability_difference"
+
+    standard_error = np.std(inference_draws, axis=0, ddof=1)
     if (
         np.any(~np.isfinite(standard_error))
         or np.any(standard_error <= np.finfo(float).eps)
     ):
         raise ValueError(
-            "mean-difference simultaneous band requires strictly positive "
-            "finite bootstrap standard errors at every observed time point"
+            "contrast simultaneous band requires strictly positive finite "
+            "bootstrap standard errors at every observed time point"
         )
 
     standardized = np.abs(
-        (bootstrap_estimates - estimate[None, :])
+        (inference_draws - inference_estimate[None, :])
         / standard_error[None, :]
     )
     max_statistics = np.max(standardized, axis=1)
@@ -511,10 +709,16 @@ def generalized_function_on_scalar_mean_difference_band(
             method="higher",
         )
     )
-    lower = estimate - critical_value * standard_error
-    upper = estimate + critical_value * standard_error
+    inference_lower = inference_estimate - critical_value * standard_error
+    inference_upper = inference_estimate + critical_value * standard_error
+    if selected_contrast == "rate_ratio":
+        lower = np.exp(inference_lower)
+        upper = np.exp(inference_upper)
+    else:
+        lower = inference_lower
+        upper = inference_upper
 
-    if prediction.reference.family == "binomial":
+    if selected_contrast == "probability_difference":
         physical_lower: float | None = -1.0
         physical_upper: float | None = 1.0
         exceeds = bool(
@@ -545,14 +749,16 @@ def generalized_function_on_scalar_mean_difference_band(
         physical_lower_bound=physical_lower,
         physical_upper_bound=physical_upper,
         interval_exceeds_physical_bounds=exceeds,
+        contrast_scale=selected_contrast,
+        inference_scale=inference_scale,
         provenance={
             **dict(bootstrap.provenance),
             "generalized_function_on_scalar_mean_difference_band": {
                 "contrast": f"{profile_a} - {profile_b}",
-                "response_scale": (
-                    "probability_difference"
-                    if prediction.reference.family == "binomial"
-                    else "expected_count_difference"
+                "response_scale": selected_contrast,
+                "inference_scale": inference_scale,
+                "rate_ratio_band_calibrated_on_log_scale": (
+                    selected_contrast == "rate_ratio"
                 ),
                 "profiles_fixed": True,
                 "profile_pair_predeclared": True,
@@ -624,6 +830,34 @@ def generalized_function_on_scalar_prediction_frame(
                 ),
                 "family": prediction.reference.family,
                 "link": prediction.reference.link,
+                "prediction_scale": prediction.prediction_scale,
+                "rate": (
+                    None
+                    if prediction.rate_functions is None
+                    else float(
+                        prediction.rate_functions[
+                            profile_index, time_index
+                        ]
+                    )
+                ),
+                "expected_count": (
+                    None
+                    if prediction.expected_count_functions is None
+                    else float(
+                        prediction.expected_count_functions[
+                            profile_index, time_index
+                        ]
+                    )
+                ),
+                "exposure": (
+                    None
+                    if prediction.exposure_profiles is None
+                    else float(
+                        prediction.exposure_profiles[
+                            profile_index, time_index
+                        ]
+                    )
+                ),
                 "extrapolation": bool(
                     prediction.extrapolation_flags[profile_index]
                 ),
@@ -687,6 +921,8 @@ def generalized_function_on_scalar_mean_difference_frame(
             "profile_a": result.profile_a,
             "profile_b": result.profile_b,
             "critical_value": result.critical_value,
+            "contrast_scale": result.contrast_scale,
+            "inference_scale": result.inference_scale,
             "interval_exceeds_physical_bounds": (
                 result.interval_exceeds_physical_bounds
             ),
@@ -740,11 +976,13 @@ def plot_generalized_function_on_scalar_predictions(
     ax.set_xlabel(
         f"Time ({prediction.reference.time_unit})"
     )
-    ax.set_ylabel(
-        "Marginal probability"
-        if prediction.reference.family == "binomial"
-        else "Marginal expected count"
-    )
+    if prediction.reference.family == "binomial":
+        ylabel = "Marginal probability"
+    elif prediction.prediction_scale == "rate":
+        ylabel = "Marginal exposure-adjusted rate"
+    else:
+        ylabel = "Marginal expected count"
+    ax.set_ylabel(ylabel)
     ax.set_title("Generalized FoSR fixed-profile marginal predictions")
     ax.legend()
     return ax
@@ -755,7 +993,7 @@ def plot_generalized_function_on_scalar_mean_difference(
     *,
     ax=None,
 ):
-    """Plot one predeclared response-scale mean-difference band."""
+    """Plot one predeclared response-scale profile contrast band."""
 
     import matplotlib.pyplot as plt
 
@@ -779,20 +1017,23 @@ def plot_generalized_function_on_scalar_mean_difference(
             f"{100 * result.confidence_level:.0f}% simultaneous band"
         ),
     )
-    ax.axhline(0.0, linewidth=1.0)
+    ax.axhline(
+        1.0 if result.contrast_scale == "rate_ratio" else 0.0,
+        linewidth=1.0,
+    )
     ax.set_xlabel(
         "Time "
         f"({result.prediction_bootstrap.prediction.reference.time_unit})"
     )
-    ylabel = (
-        "Marginal probability difference"
-        if result.prediction_bootstrap.prediction.reference.family
-        == "binomial"
-        else "Marginal expected-count difference"
-    )
+    ylabel = {
+        "probability_difference": "Marginal probability difference",
+        "rate_difference": "Marginal rate difference",
+        "rate_ratio": "Marginal rate ratio",
+        "expected_count_difference": "Marginal expected-count difference",
+    }[result.contrast_scale]
     ax.set_ylabel(ylabel)
     ax.set_title(
-        f"Generalized FoSR mean difference: "
+        f"Generalized FoSR {result.contrast_scale.replace('_', ' ')}: "
         f"{result.profile_a} - {result.profile_b}"
     )
     ax.legend()
@@ -832,11 +1073,11 @@ def generalized_function_on_scalar_prediction_reporting_text(
             + "."
         )
     )
-    scale = (
-        "marginal probability"
-        if prediction.reference.family == "binomial"
-        else "marginal expected count"
-    )
+    scale = {
+        "probability": "marginal probability",
+        "rate": "marginal exposure-adjusted rate",
+        "expected_count": "marginal expected count",
+    }[prediction.prediction_scale]
     return (
         f"Fixed-profile {scale} functions were derived from the fitted "
         f"{prediction.reference.family}/{prediction.reference.link} marginal "
@@ -855,7 +1096,7 @@ def generalized_function_on_scalar_prediction_reporting_text(
 def generalized_function_on_scalar_mean_difference_reporting_text(
     result: GeneralizedFunctionOnScalarMeanDifferenceResult,
 ) -> str:
-    """Return manuscript wording for one predeclared mean-difference band."""
+    """Return manuscript wording for one predeclared profile contrast band."""
 
     if not isinstance(
         result,
@@ -864,14 +1105,12 @@ def generalized_function_on_scalar_mean_difference_reporting_text(
         raise TypeError(
             "result must be a GeneralizedFunctionOnScalarMeanDifferenceResult"
         )
-    family = (
-        result.prediction_bootstrap.prediction.reference.family
-    )
-    measure = (
-        "marginal probability difference"
-        if family == "binomial"
-        else "marginal expected-count difference"
-    )
+    measure = {
+        "probability_difference": "marginal probability difference",
+        "rate_difference": "marginal exposure-adjusted rate difference",
+        "rate_ratio": "marginal exposure-adjusted rate ratio",
+        "expected_count_difference": "marginal expected-count difference",
+    }[result.contrast_scale]
     bounds_text = ""
     if result.interval_exceeds_physical_bounds:
         bounds_text = (
@@ -888,5 +1127,11 @@ def generalized_function_on_scalar_mean_difference_reporting_text(
         f"{100 * result.confidence_level:.1f}%. The profile pair was not "
         "selected from the bootstrap results and no multiple-contrast family "
         "adjustment is claimed."
+        + (
+            " The simultaneous interval was calibrated on the log-rate-ratio "
+            "scale and exponentiated, preserving positivity."
+            if result.contrast_scale == "rate_ratio"
+            else ""
+        )
         + bounds_text
     )

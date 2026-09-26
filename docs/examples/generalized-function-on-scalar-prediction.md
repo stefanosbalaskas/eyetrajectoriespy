@@ -164,5 +164,53 @@ print(
 )
 ~~~
 
-For Poisson/log models the same workflow returns marginal expected-count
-functions and expected-count differences.
+## Exposure-adjusted Poisson rates and counts
+
+For a Poisson model fitted with exposure, predict rates without specifying a
+target exposure:
+
+~~~python
+rate_prediction = generalized_function_on_scalar_predict(
+    rate_fit,
+    profiles,
+    prediction_scale="rate",
+)
+~~~
+
+To predict expected counts, provide the target exposure explicitly:
+
+~~~python
+target_exposure = [1.0, 1.5]
+
+count_prediction = generalized_function_on_scalar_predict(
+    rate_fit,
+    profiles,
+    exposure_profiles=target_exposure,
+    prediction_scale="expected_count",
+)
+~~~
+
+The package raises if expected-count prediction is requested without target
+exposure.
+
+Rate contrasts are explicit:
+
+~~~python
+rate_bootstrap = bootstrap_generalized_function_on_scalar_predictions(
+    coefficient_bootstrap,
+    profiles,
+    prediction_scale="rate",
+)
+
+rate_ratio = generalized_function_on_scalar_mean_difference_band(
+    rate_bootstrap,
+    profile_a="high",
+    profile_b="low",
+    contrast_scale="rate_ratio",
+)
+~~~
+
+The rate-ratio band is calibrated on the log-rate-ratio scale and exponentiated.
+Use `contrast_scale="rate_difference"` for an additive rate difference, or
+`"expected_count_difference"` after creating expected-count predictions with
+explicit target exposures.

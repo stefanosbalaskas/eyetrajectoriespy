@@ -14,8 +14,8 @@ This page distinguishes implemented scientific contracts from optional interoper
 | Simultaneous functional mean band | implemented | `multiplier_functional_mean_band()` |
 | Function-on-scalar regression | implemented; observed-grid OLS with explicit design and HC1 standard errors | `fit_function_on_scalar_regression()` |
 | Function-on-scalar simultaneous coefficient bands | implemented; fixed-design wild bootstrap with coefficient/family scope | `function_on_scalar_simultaneous_bands()` |
-| Generalized function-on-scalar regression | implemented; Bernoulli/logit and Poisson/log marginal GEE with participant clusters, explicit B-spline coefficient functions, robust sandwich covariance, participant bootstrap simultaneous bands, and no automatic working-correlation selection | `fit_generalized_function_on_scalar_regression()` / `generalized_function_on_scalar_simultaneous_bands()` |
-| Generalized FoSR fixed-profile prediction | implemented; fixed marginal profiles, extrapolation audit, response-scale mean functions, participant-bootstrap simultaneous prediction bands, one predeclared mean-difference band, no automatic target/contrast selection | `generalized_function_on_scalar_predict()` / `generalized_function_on_scalar_prediction_bands()` |
+| Generalized function-on-scalar regression | implemented; Bernoulli/logit and Poisson/log marginal GEE with participant clusters, explicit B-spline coefficient functions, robust sandwich covariance, participant bootstrap simultaneous bands, optional explicit strictly-positive Poisson exposure, and no automatic working-correlation selection | `fit_generalized_function_on_scalar_regression()` / `generalized_function_on_scalar_simultaneous_bands()` |
+| Generalized FoSR fixed-profile prediction | implemented; fixed marginal profiles, extrapolation audit, explicit Poisson rate versus expected-count prediction, participant-bootstrap simultaneous bands, one predeclared probability/rate/count contrast scale, and no automatic target/contrast selection | `generalized_function_on_scalar_predict()` / `generalized_function_on_scalar_prediction_bands()` |
 | Functional mixed-effects regression | implemented; one Gaussian response dimension, B-spline fixed effects, participant functional random intercept, optional one guarded participant random functional slope, joint MixedLM fit | `fit_functional_mixed_effects_regression()` |
 | Functional mixed-effects simultaneous coefficient bands | implemented; whole-participant case bootstrap, fixed-covariance GLS coefficient refits, coefficient/family observed-grid maxima | `bootstrap_functional_mixed_effects_coefficients()` / `functional_mixed_effects_simultaneous_bands()` |
 | Full-refit participant bootstrap | implemented; unique bootstrap group IDs for duplicate participant draws, complete MixedLM refit under fixed declared specification, retained variance-component distributions | `bootstrap_functional_mixed_effects_full_refit()` |
@@ -131,13 +131,13 @@ Review flags are descriptive diagnostics. The package does not turn them into au
 
 `bootstrap_fpca_regression_uncertainty()` now refits the common-grid Gaussian FPCR pipeline under paired resampling and propagates basis/regression sampling variability into the reconstructed slope and fitted conditional means.
 
-Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, coverage-optimal automatic wild-bootstrap truncation tuning, heteroscedastic future-outcome prediction, aggregated-binomial denominators, Poisson offsets, non-independence generalized working correlations, generalized functional random effects, uncertainty in declared prediction-profile values, or future-response prediction for generalized functional outcomes. Version 0.51 adds marginal Bernoulli/Poisson function-on-scalar GEE and version 0.52 adds fixed-profile marginal mean inference.
+Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, coverage-optimal automatic wild-bootstrap truncation tuning, heteroscedastic future-outcome prediction, aggregated-binomial denominators, generic arbitrary offsets, exposure-measurement-error models, non-independence generalized working correlations, generalized functional random effects, uncertainty in declared prediction-profile values, or future-response prediction for generalized functional outcomes. Version 0.51 adds marginal Bernoulli/Poisson function-on-scalar GEE and version 0.52 adds fixed-profile marginal mean inference.
 
 ## Research/development candidates
 
 Future tranches may evaluate:
 
-- richer generalized functional responses beyond the guarded 0.51–0.52 marginal GEE/prediction contracts;
+- richer generalized functional responses beyond the guarded 0.51–0.53 marginal GEE/exposure/prediction contracts;
 - richer sparse/irregular functional inference and external validation workflows;
 - richer multilevel functional mixed-effects backends only where they answer a distinct scientific need rather than adding another covariance knob;
 - explicit system-identification models for gaze dynamics;
@@ -149,7 +149,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.52.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current development line is **0.53.0.dev0**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
@@ -289,12 +289,51 @@ These are marginal mean-function intervals, not predictive intervals for future
 stochastic Bernoulli/count trajectories, and the simultaneous claim remains on
 the observed grid.
 
-### Post-0.52 direction
+### 0.53 explicit Poisson exposure and rate estimand
 
-The next generalized-response extension should add a genuinely new observation
-contract rather than another prediction display. Strong candidates are explicit
-Poisson exposure offsets, grouped-binomial denominators/proportions if the
-backend contract can be validated directly, or richer sparse/irregular
-generalized functional responses. Automatic working-correlation selection and a
-generalized mixed-effects covariance multiverse remain deliberately out of
-scope.
+Version **0.53** adds an explicit exposure-based Poisson rate contract without
+changing the marginal GEE interpretation. For \(E_{ij}(t)>0\),
+
+\[
+\log \mu_{ij}(t)
+=
+\log E_{ij}(t)+\mathbf x_{ij}^{\top}\boldsymbol\beta(t),
+\]
+
+so the fitted coefficient predictor is a log rate and
+
+\[
+\lambda_{ij}(t)=\mu_{ij}(t)/E_{ij}(t)
+\]
+
+is retained separately from the expected count. Exposure is supplied explicitly
+as a curve-by-time array or as one value per curve that is deliberately
+expanded and recorded in provenance. Zero, negative, missing, or non-finite
+exposure is rejected. Exposure is never inferred from grid spacing, trial
+duration, sample counts, or metadata, and no generic arbitrary-offset API is
+introduced.
+
+The whole-participant bootstrap carries exposure with the response/design
+bundle under the same sampled participant identity. Exposure is treated as
+observed and fixed; its measurement uncertainty is not modeled. The exposure
+audit reports minimum/maximum values, within-curve ranges, temporal and
+between-curve variation, units, and the global exposure ratio.
+
+For fixed-profile prediction, rate functions require no target exposure.
+Expected-count prediction from an exposure-adjusted fit requires an explicit
+strictly-positive target exposure and fails rather than silently setting
+\(E=1\). One predeclared Poisson contrast scale may be requested:
+rate difference, rate ratio, or expected-count difference. Rate-ratio
+simultaneous bands are calibrated on the log-rate-ratio scale and exponentiated.
+
+### Post-0.53 direction
+
+The next guarded generalized-response tranche is grouped-binomial denominators,
+provided the backend pathway reproduces known grouped-binomial results under an
+explicit success/denominator contract. After that, generalized observation-
+family expansion should pause in favor of larger methodological gaps such as
+sparse/irregular generalized functional responses or external-validation /
+transport workflows. Negative binomial, zero-inflated, hurdle, Tweedie,
+automatic working-correlation selection, and generalized mixed-effects
+covariance multiverses are not queued as automatic follow-ons.
+

@@ -1130,7 +1130,7 @@ continuous B-spline domain.
 
 ## Marginal generalized function-on-scalar regression { #generalized-function-on-scalar }
 
-Version 0.51 models repeated non-Gaussian functional responses through a
+Version 0.51 introduced repeated non-Gaussian functional responses through a
 population-averaged generalized estimating equation. For participant \(i\),
 trial \(j\), and observed time \(t\),
 
@@ -1139,55 +1139,67 @@ g\{\mu_{ij}(t)\}
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t),
 \qquad
-\mu_{ij}(t)
-=
-E\{Y_{ij}(t)\mid\mathbf x_{ij}\}.
+\beta_k(t)=\mathbf B(t)^{\top}\boldsymbol\theta_k.
 \]
 
-Each coefficient function is represented by a fixed analyst-declared B-spline
-basis,
-
-\[
-\beta_k(t)
-=
-\mathbf B(t)^\top\boldsymbol\theta_k.
-\]
-
-For Bernoulli responses, \(g\) is the logit link and observations must be coded
-exactly as 0/1. For Poisson responses, \(g\) is the log link and observations
-must be non-negative integer counts.
-
-Participants are the independent GEE clusters. Trial-varying scalar predictors
-remain in the design; trials are not averaged before fitting. Version 0.51
-fixes the working dependence structure to independence and uses the robust
-cluster sandwich covariance,
+Bernoulli responses use the logit link and must be coded exactly as 0/1.
+Poisson responses use the log link and must be non-negative integer counts.
+Participants are the independent GEE clusters; trial-varying scalar predictors
+remain in the design. Working independence is fixed and inference uses the
+participant-cluster robust sandwich covariance,
 
 \[
 \widehat{\operatorname{Var}}_{\mathrm{robust}}
 (\widehat{\boldsymbol\theta})
 =
-\mathbf A^{-1}
-\mathbf B_{\mathrm{sand}}
-\mathbf A^{-1}.
+\mathbf A^{-1}\mathbf B_{\mathrm{sand}}\mathbf A^{-1}.
 \]
 
-Pointwise coefficient-function standard errors are obtained by mapping the
-robust covariance of the basis coefficients through \(\mathbf B(t)\).
-
-If there are \(K\) scalar coefficients including the intercept and \(q\) basis
-functions per coefficient, the expanded parameter vector has \(Kq\) entries.
-The implementation requires
+Version 0.53 adds an explicit **Poisson exposure** contract. When a strictly
+positive analyst-supplied exposure \(E_{ij}(t)\) is present,
 
 \[
-n_{\mathrm{participants}}>Kq.
+Y_{ij}(t)\sim\operatorname{Poisson}\{\mu_{ij}(t)\},
 \]
 
-This is a minimum structural guard, not an adequacy theorem for robust sandwich
-inference.
+\[
+\log\mu_{ij}(t)
+=
+\log E_{ij}(t)
++
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t),
+\qquad E_{ij}(t)>0,
+\]
 
-Whole-participant case bootstrap refits resample complete participant bundles.
-Duplicate source-participant draws receive distinct bootstrap cluster
-identities. For coefficient \(k\),
+and therefore
+
+\[
+\lambda_{ij}(t)
+=
+\frac{\mu_{ij}(t)}{E_{ij}(t)}
+=
+\exp\{\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\}.
+\]
+
+Thus \(\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\) is the log-rate predictor,
+whereas \(\log E_{ij}(t)+\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\) is the
+log-expected-count predictor. For coefficient \(k\),
+\(\exp\{\beta_k(t)\}\) is the time-varying multiplicative rate ratio for a
+one-unit predictor change, holding exposure fixed.
+
+Exposure is part of the observation contract rather than a generic
+normalization device. It may be supplied at every curve/time point or once per
+curve and explicitly expanded over the grid. It is never inferred from grid
+spacing, trial duration, sample count, or metadata. Zero, negative, missing, or
+non-finite exposure values are invalid. A generic arbitrary-offset API is not
+exposed.
+
+Whole-participant bootstrap refits resample the response, scalar design, and
+exposure together as one source-participant bundle. Duplicate sampled
+participants receive distinct bootstrap cluster identifiers. Exposure values
+are treated as observed and fixed; exposure measurement uncertainty is not
+modeled. Coefficient simultaneous bands retain the existing observed-grid
+maximum standardized-deviation statistic,
 
 \[
 M_k^{*(b)}
@@ -1202,97 +1214,113 @@ M_k^{*(b)}
 \right|.
 \]
 
-The resulting observed-grid simultaneous band is calibrated on the link scale.
-A familywise option takes the maximum across all declared coefficient functions
-and observed time points.
+The estimand remains marginal / population averaged. No family, link, basis
+dimension, working correlation, exposure definition, smoothing penalty, or
+model is selected automatically.
 
-The coefficients are marginal / population averaged. They are not conditional
-generalized mixed-model coefficients. No family, link, basis dimension, working
-correlation, smoothing penalty or model is selected automatically.
+**API:** fit_generalized_function_on_scalar_regression(),
+bootstrap_generalized_function_on_scalar_coefficients(),
+generalized_function_on_scalar_simultaneous_bands(), and
+generalized_function_on_scalar_exposure_frame().
 
-**API:** `fit_generalized_function_on_scalar_regression()`,
-`bootstrap_generalized_function_on_scalar_coefficients()`,
-`generalized_function_on_scalar_simultaneous_bands()`.
+## Fixed-profile marginal prediction and explicit contrasts { #generalized-function-on-scalar-prediction }
 
-## Fixed-profile marginal prediction and mean differences { #generalized-function-on-scalar-prediction }
-
-For a fixed analyst-declared scalar predictor profile \(\mathbf x_r\), version
-0.52 maps the fitted marginal generalized function-on-scalar coefficient
-functions to the linear predictor
+For a fixed analyst-declared scalar predictor profile \(\mathbf x_r\), an
+exposure-adjusted Poisson fit first defines the rate-scale linear predictor
 
 \[
-\eta_r(t)
+\eta_r^{\mathrm{rate}}(t)
 =
-\mathbf x_r^\top
-\widehat{\boldsymbol\beta}(t)
+\mathbf x_r^\top\widehat{\boldsymbol\beta}(t)
 \]
 
-and marginal response mean
+and rate function
+
+\[
+\lambda_r(t)
+=
+\exp\{\eta_r^{\mathrm{rate}}(t)\}.
+\]
+
+A rate prediction is therefore independent of target exposure. If the analyst
+supplies a strictly positive target exposure \(E_r(t)\), the expected-count
+function is
 
 \[
 \mu_r(t)
 =
-g^{-1}\{\eta_r(t)\}.
+E_r(t)\lambda_r(t)
 \]
 
-Let \(\mathbf z_r(t)\) denote the profile-by-basis row in the expanded
-coefficient design and let
-\(\widehat{\boldsymbol\Sigma}_\theta\) be the retained robust GEE covariance of
-the basis-coefficient vector. The pointwise linear-predictor variance is
+with count-scale linear predictor
+
+\[
+\eta_r^{\mathrm{count}}(t)
+=
+\log E_r(t)+\eta_r^{\mathrm{rate}}(t).
+\]
+
+The package does not silently set \(E_r(t)=1\) when expected counts are
+requested from an exposure-adjusted fit. Missing target exposure is an error
+for that prediction scale.
+
+Let \(\mathbf z_r(t)\) denote the profile-by-basis row and let
+\(\widehat{\boldsymbol\Sigma}_\theta\) be the robust GEE covariance of the
+basis-coefficient vector. Because exposure is treated as fixed,
 
 \[
 \widehat{\operatorname{Var}}\{\eta_r(t)\}
 =
 \mathbf z_r(t)^\top
 \widehat{\boldsymbol\Sigma}_\theta
-\mathbf z_r(t).
+\mathbf z_r(t)
 \]
 
-Response-scale pointwise standard errors use the inverse-link delta method. For
-the Bernoulli/logit family the derivative is
-\(\mu_r(t)\{1-\mu_r(t)\}\); for the Poisson/log family it is \(\mu_r(t)\).
+on either the rate or expected-count linear-predictor scale. Whole-participant
+bootstrap coefficient draws are projected through the same fixed profiles and,
+for expected-count predictions, through the same fixed target exposures.
+Simultaneous prediction bands remain calibrated on the linear-predictor scale
+and transformed through the monotone inverse link.
 
-Every whole-participant coefficient-bootstrap draw is projected through the
-same fixed profiles. For profile \(r\),
+Version 0.53 exposes one predeclared Poisson contrast scale at a time:
 
 \[
-M_r^{*(b)}
+D_{ab}^{\mathrm{rate}}(t)
 =
-\max_m
-\left|
-\frac{
-\eta_r^{*(b)}(t_m)-\eta_r(t_m)
-}{
-\widehat{\operatorname{SE}}\{\eta_r(t_m)\}
-}
-\right|.
+\lambda_a(t)-\lambda_b(t),
 \]
 
-Calibration occurs on the linear-predictor scale. Because both supported
-inverse links are strictly monotone, transforming the two calibrated endpoints
-produces the corresponding observed-grid simultaneous marginal-mean band.
+\[
+RR_{ab}(t)
+=
+\frac{\lambda_a(t)}{\lambda_b(t)}
+=
+\exp\{(\mathbf x_a-\mathbf x_b)^\top
+\widehat{\boldsymbol\beta}(t)\},
+\]
 
-For one predeclared ordered profile pair,
+or, when target exposures have been supplied,
 
 \[
-D_{ab}(t)
+D_{ab}^{\mathrm{count}}(t)
 =
 \mu_a(t)-\mu_b(t).
 \]
 
-The same participant-bootstrap coefficient draw is used for both profiles, so
-their dependence is retained when the response-scale difference is formed.
+The rate-ratio simultaneous band is calibrated on
+\(\log RR_{ab}(t)\) and then exponentiated, preserving positivity. The package
+does not automatically generate all contrast scales, search across profile
+pairs, or claim multiple-contrast family adjustment. Bernoulli prediction and
+probability-difference behavior from 0.52 is unchanged.
 
-Profiles outside any observed scalar predictor range are retained and flagged.
-This marginal-range audit is not a multivariate support, positivity, or causal
-identification claim. Profile values themselves are fixed and are not
-resampled. No profile or contrast is selected automatically, multiple-contrast
-family control is not claimed, and simultaneous coverage is restricted to the
+Scalar-predictor extrapolations remain explicit, profile and exposure values are
+fixed rather than resampled, and simultaneous coverage is restricted to the
 observed time grid.
 
-**API:** `generalized_function_on_scalar_predict()`,
-`generalized_function_on_scalar_prediction_bands()`,
-`generalized_function_on_scalar_mean_difference_band()`.
+**API:** generalized_function_on_scalar_predict(),
+bootstrap_generalized_function_on_scalar_predictions(),
+generalized_function_on_scalar_prediction_bands(), and
+generalized_function_on_scalar_mean_difference_band().
 
 ## Function-on-scalar regression { #function-on-scalar }
 
