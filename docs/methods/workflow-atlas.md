@@ -87,9 +87,12 @@ flowchart TD
     C -->|Yes participant-level predictors only| E[Participant-average response]
     C -->|Yes trial-varying predictors| F[Gaussian functional mixed effects]
     B -->|Bernoulli 0/1| G[0.51 marginal generalized FoSR: logit]
-    B -->|Poisson counts| H[0.51 marginal generalized FoSR: log]
-    G --> I[Participant is independent GEE cluster]
-    H --> I
+    B -->|Poisson counts| H[Marginal generalized FoSR: log]
+    H --> U{Explicit exposure?}
+    U -->|No: expected count| I[Participant is independent GEE cluster]
+    U -->|Yes: E > 0| V[0.53 log-rate estimand]
+    V --> I
+    G --> I
     I --> J[Working independence]
     J --> K[Robust sandwich coefficient covariance]
     K --> L{Whole-function inference?}
@@ -97,10 +100,10 @@ flowchart TD
     M --> N[Refit same family/link/basis GEE]
     N --> O[Observed-grid link-scale simultaneous band]
     O --> P{Fixed marginal profiles declared?}
-    P -->|Yes| Q[0.52 profile eta and inverse-link mean functions]
+    P -->|Yes| Q[0.52/0.53 fixed-profile probability, rate, or count]
     Q --> R[Reuse identical participant-bootstrap coefficient draws]
     R --> S[Profile/family simultaneous response bands]
-    R --> T[One predeclared response-scale mean difference]
+    R --> T[One predeclared probability/rate/count contrast]
 ```
 
 Version 0.51 targets population-averaged marginal coefficient functions.
@@ -110,10 +113,12 @@ fixed rather than selected, and bootstrap failures are not silently dropped or
 redrawn.
 
 Version 0.52 adds fixed-profile marginal interpretation without a second
-resampling scheme. Profile values are fixed, scalar-range extrapolations are
-flagged, simultaneous response bands inherit the exact participant bootstrap,
-and the result remains mean-function inference rather than future-response
-prediction.
+resampling scheme. Version 0.53 adds explicit strictly-positive Poisson
+exposure: the fitted coefficient predictor is a log rate, exposure travels with
+the participant bootstrap bundle, rate prediction is exposure-independent, and
+expected-count prediction requires explicit target exposure. Profile values and
+target exposures remain fixed; the result is marginal rate/mean-function
+inference rather than future-response prediction.
 
 ## Ordered trajectory similarity
 
