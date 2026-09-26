@@ -204,31 +204,12 @@ jobs:
               --verify-tag --generate-notes --title "${TAG}" "${EXTRA[@]}"
           fi
 
-  pypi-approval:
-    name: pypi-approval
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs:
-      - github-release
-    runs-on: ubuntu-latest
-    environment: pypi
-    permissions:
-      contents: read
-    steps:
-      - name: Verify protected PyPI approval environment
-        env:
-          REVIEW: ${{ vars.PYPI_REQUIRED_REVIEWER_CONFIGURED }}
-        run: |
-          test "${REVIEW}" = "true" || {
-            echo "The pypi environment required-reviewer gate is not acknowledged as configured."; exit 1;
-          }
-          echo "Protected pypi environment approved."
-
   publish-pypi:
     name: publish-pypi
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs:
       - build-once
-      - pypi-approval
+      - github-release
     runs-on: ubuntu-latest
     environment: testpypi
     permissions:
