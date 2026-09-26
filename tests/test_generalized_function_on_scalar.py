@@ -833,7 +833,7 @@ def test_profile_contracts_fail_closed(_binary_prediction_bundle):
             ),
         )
 
-    with pytest.raises(ValueError, match="profile.*family"):
+    with pytest.raises(ValueError, match="simultaneous_scope"):
         generalized_function_on_scalar_prediction_bands(
             prediction_bootstrap,
             simultaneous_scope="bad",
