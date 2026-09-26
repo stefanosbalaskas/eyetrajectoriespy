@@ -11,7 +11,7 @@ complete.
 `.github/workflows/release.yml` owns the coordinated release:
 
 ~~~text
-verified version tag
+merge the qualified release-candidate PR to protected main
         |
         v
 build wheel + sdist once
@@ -21,19 +21,17 @@ build wheel + sdist once
         +--> fresh-sdist smoke test
         |
         v
-upload immutable release-dist artifact
+wait for exact-main required checks
         |
         v
-production governance gate
+create annotated version tag + GitHub prerelease
+attach the exact wheel + sdist + SHA256SUMS
         |
         v
 manual approval through pypi environment
         |
         v
-publish exact files to PyPI through OIDC
-        |
-        v
-create GitHub Release and attach the same wheel + sdist
+publish the SAME wheel + sdist to PyPI through OIDC
         |
         v
 install exact PyPI version and run smoke test
@@ -43,27 +41,30 @@ The distributions are never rebuilt separately for GitHub and PyPI.
 
 ## Production trigger
 
-Production publication has **no manual workflow-dispatch path**. It is triggered
-only by a version tag matching `v*`.
+Production publication has **no manual workflow-dispatch path**. It starts from
+the protected `main` push created by merging the qualified release-candidate
+PR. The workflow waits for the exact-main required checks before creating the
+version tag and GitHub Release.
 
 Before publication, the workflow requires:
 
 1. tag/version agreement across `pyproject.toml`, package `__version__`,
    `CITATION.cff`, canonical/validation/tolerance/performance manifests and
    the status roadmap;
-2. a non-development production version;
+2. a non-development production/prerelease version;
 3. `main` reported protected by GitHub;
 4. issue #64 closed;
-5. the release tag to target current `main`;
-6. an annotated tag whose signature GitHub reports as verified;
-7. the full exact-main required check set to have completed successfully;
+5. the release commit to equal current `main`;
+6. the full exact-main required check set to have completed successfully;
+7. creation of an annotated version tag at that exact commit;
 8. the `pypi` environment to expose explicit acknowledgements that Trusted
-   Publishing and the required-reviewer gate are configured.
+   Publishing and the required-reviewer gate are configured before PyPI
+   publication.
 
 The `pypi` publishing job receives `id-token: write` and no stored PyPI API
 token.
 
-## TestPyPI rehearsal
+## Optional TestPyPI rehearsal
 
 Manual dispatch supports only:
 
@@ -110,21 +111,23 @@ make the intended configuration fail-closed and auditable from the workflow.
 
 ## First public release ceremony
 
-After 0.57 is closed:
+For `0.9.0rc1`:
 
-1. enable/verify the `main` ruleset and close issue #64;
-2. complete one TestPyPI rehearsal;
-3. configure the protected `pypi` environment and production Trusted
+1. verify the active `main` ruleset and close issue #64;
+2. configure the protected `pypi` environment and production Trusted
    Publisher;
-4. update `RELEASE_READINESS.json` through a reviewed PR;
-5. change all release-version declarations to `0.9.0rc1`;
-6. merge the release PR only after the complete matrix passes;
-7. create a signed annotated `v0.9.0rc1` tag at exact `main`;
-8. allow `release.yml` to build once and reach the `pypi` environment;
-9. approve the protected deployment;
-10. let OIDC publish to PyPI;
-11. create the GitHub Release from the same distributions;
-12. verify installation of exactly `eyetrajectoriespy==0.9.0rc1`.
+3. keep `RELEASE_READINESS.json` truthful about GitHub-release and PyPI state;
+4. align all release-version declarations to `0.9.0rc1`;
+5. merge the release PR only after the complete PR-head matrix passes;
+6. let the `main` push run `release.yml`;
+7. wait for all exact-main required checks;
+8. create annotated tag `v0.9.0rc1` and the GitHub prerelease first;
+9. approve the protected `pypi` environment;
+10. publish the exact same distributions to PyPI through OIDC;
+11. verify installation of exactly `eyetrajectoriespy==0.9.0rc1`.
+
+A TestPyPI rehearsal remains available but is not required for this GitHub-first
+release sequence.
 
 Because `0.9.0rc1` is a prerelease, ordinary dependency resolution should not
 be described as equivalent to a final stable release. The verification command
