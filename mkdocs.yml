@@ -9,6 +9,13 @@ nav:
   - Home: index.md
   - Start here:
       - Quick start: quickstart.md
+      - Canonical workflows:
+          - Overview: workflows/index.md
+          - Continuous gaze + FPCA: workflows/fpca-exploration.md
+          - Experimental functional regression: workflows/experimental-functional-regression.md
+          - Repeated-trial mixed effects: workflows/repeated-trial-mixed-effects.md
+          - Generalized binary/count responses: workflows/generalized-responses.md
+          - Nonlinear/recurrence analysis: workflows/nonlinear-recurrence.md
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md
       - Scientific contracts: concepts/contracts.md
@@ -138,6 +145,8 @@ nav:
       - Limitations & failure modes: methods/limitations.md
       - Method comparison: methods/method-comparison.md
       - Capability status & roadmap: methods/status-roadmap.md
+      - Release readiness: release-readiness.md
+      - Independent-reference validation ledger: validation/reference-validation-ledger.md
       - Research FAQ: methods/faq.md
       - Mathematical reference: methods/mathematical-reference.md
       - Visual gallery: methods/visual-gallery.md
@@ -145,6 +154,9 @@ nav:
       - RQA software conventions: methods/rqa-software-conventions.md
       - References: methods/references.md
   - API:
+      - API stability & hierarchy: reference/api-stability.md
+      - 0.55 consistency audit: reference/api-consistency-audit.md
+      - Capability inventory: reference/capability-inventory.md
       - Public API: reference/api.md
       - Function → equation index: reference/function-equation-index.md
       - Object contracts: reference/objects.md
