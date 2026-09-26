@@ -96,17 +96,22 @@ def test_performance_envelope_declares_noncomparative_repeated_workloads():
     assert set(rows) == expected_cases
     assert all(row["repeats"] >= 3 for row in rows.values())
 
-    if ledger["status"] == "qualified":
-        assert ledger["qualification_commit"]
-        assert ledger["qualification_run_id"]
-        assert ledger["environment"]
-        for row in rows.values():
-            observed = row["observed"]
-            assert observed is not None
-            assert observed["runtime_seconds"]["median"] >= 0.0
-            assert observed["runtime_seconds"]["q1"] <= observed[
-                "runtime_seconds"
-            ]["q3"]
-            assert observed["peak_memory_mib"]["median"] > 0.0
-    else:
-        assert ledger["status"] == "pending_ci_measurement"
+    assert ledger["status"] == "qualified"
+    assert ledger["qualification_commit"]
+    assert ledger["qualification_run_id"]
+    assert ledger["environment"]
+    assert ledger["environment"]["source_commit"] == ledger[
+        "qualification_commit"
+    ]
+    assert set(ledger["environment"]["thread_limits"].values()) == {"1"}
+    for row in rows.values():
+        observed = row["observed"]
+        assert observed is not None
+        assert observed["runtime_seconds"]["median"] >= 0.0
+        assert observed["runtime_seconds"]["minimum"] <= observed[
+            "runtime_seconds"
+        ]["median"] <= observed["runtime_seconds"]["maximum"]
+        assert observed["runtime_seconds"]["q1"] <= observed[
+            "runtime_seconds"
+        ]["q3"]
+        assert observed["peak_memory_mib"]["median"] > 0.0
