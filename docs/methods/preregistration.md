@@ -876,3 +876,18 @@ Do not choose the reference, remove failed models, expand the specification set,
 or redefine a residual diagnostic after seeing which covariance structure gives
 the preferred substantive conclusion.
 
+## Generalized function-on-scalar regression
+
+For a 0.51 generalized functional response model, pre-register:
+
+- response family (`binomial` or `poisson`) and the scientific meaning of the response at each observed time;
+- response coding rule, including whether observations are exact Bernoulli 0/1 or non-negative integer counts;
+- participant column defining independent clusters;
+- scalar predictors and any analyst-created interactions;
+- response dimension, coefficient B-spline basis size and spline degree;
+- the fixed working-independence GEE contract;
+- robust sandwich covariance as the inferential covariance;
+- whether whole-participant bootstrap simultaneous bands will be reported;
+- bootstrap replicate count, seed, confidence level and simultaneous scope.
+
+Do not switch family/link, change basis size, reinterpret proportions as Bernoulli outcomes, or introduce a different working correlation after seeing which specification gives a preferred coefficient trajectory.
