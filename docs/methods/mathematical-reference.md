@@ -1210,9 +1210,9 @@ The coefficients are marginal / population averaged. They are not conditional
 generalized mixed-model coefficients. No family, link, basis dimension, working
 correlation, smoothing penalty or model is selected automatically.
 
-**API:** \`fit_generalized_function_on_scalar_regression()\`,
-\`bootstrap_generalized_function_on_scalar_coefficients()\`,
-\`generalized_function_on_scalar_simultaneous_bands()\`.
+**API:** `fit_generalized_function_on_scalar_regression()`,
+`bootstrap_generalized_function_on_scalar_coefficients()`,
+`generalized_function_on_scalar_simultaneous_bands()`.
 
 ## Function-on-scalar regression { #function-on-scalar }
 
