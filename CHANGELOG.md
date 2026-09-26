@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.9.0rc1
+
+- First coordinated public release candidate.
+- Promote the stabilized 0.55–0.57 scientific platform into a prerelease line without adding a new statistical estimator or observation family.
+- Retain five machine-checked canonical workflows covering FPCA/exploration, experimental functional regression, repeated-trial mixed effects, generalized binary/count responses, and nonlinear/recurrence analysis.
+- Carry forward analytical-truth, independent-implementation-equivalence, and simulation-recovery validation ledgers plus the explicit numerical-tolerance policy.
+- Requalify runtime and peak-memory reference workloads rather than relabeling the 0.57 performance snapshot.
+- Include portable JSON + NPZ scientific-result snapshots, environment capture, reproducibility bundle guidance, and five executable canonical workflow examples.
+- Require coordinated build-once GitHub/PyPI publication through Trusted Publishing after production governance gates are satisfied.
+- Keep production publication fail-closed until branch protection, issue #64 closure, TestPyPI rehearsal, PyPI Trusted Publishing, and protected `pypi` environment approval are actually configured.
+- Install the prerelease explicitly with `pip install --pre eyetrajectoriespy==0.9.0rc1`.
+
 ## 0.57.0.dev0
 
 - Continue the stabilization line with no new statistical estimator or observation family.
