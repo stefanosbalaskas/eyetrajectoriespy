@@ -204,32 +204,58 @@ jobs:
               --verify-tag --generate-notes --title "${TAG}" "${EXTRA[@]}"
           fi
 
-  publish-pypi:
-    name: publish-pypi
+  pypi-approval:
+    name: pypi-approval
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs:
-      - build-once
       - github-release
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
       contents: read
-      id-token: write
     steps:
-      - name: Verify protected PyPI environment acknowledgement
+      - name: Verify protected PyPI approval environment
         env:
-          TRUSTED: ${{ vars.PYPI_TRUSTED_PUBLISHING_CONFIGURED }}
           REVIEW: ${{ vars.PYPI_REQUIRED_REVIEWER_CONFIGURED }}
         run: |
-          test "${TRUSTED}" = "true" || { echo "PyPI Trusted Publishing is not acknowledged as configured."; exit 1; }
-          test "${REVIEW}" = "true" || { echo "The pypi environment required-reviewer gate is not acknowledged as configured."; exit 1; }
-      - uses: actions/download-artifact@v4
-        with:
-          name: release-dist
-          path: dist
+          test "${REVIEW}" = "true" || {
+            echo "The pypi environment required-reviewer gate is not acknowledged as configured."; exit 1;
+          }
+          echo "Protected pypi environment approved."
+
+  publish-pypi:
+    name: publish-pypi
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs:
+      - build-once
+      - pypi-approval
+    runs-on: ubuntu-latest
+    environment: testpypi
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Verify registered publisher environment acknowledgement
+        env:
+          TRUSTED: ${{ vars.TESTPYPI_TRUSTED_PUBLISHING_CONFIGURED }}
+        run: |
+          test "${TRUSTED}" = "true" || {
+            echo "The testpypi environment acknowledgement is required for the currently registered production PyPI publisher claim."; exit 1;
+          }
+      - name: Download exact GitHub Release distributions
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build-once.outputs.version }}
+        shell: bash
+        run: |
+          mkdir -p dist
+          gh release download "v${VERSION}" --repo "${GITHUB_REPOSITORY}" \
+            --pattern "*.whl" --pattern "*.tar.gz" --pattern "SHA256SUMS" --dir dist
+          (cd dist && sha256sum -c SHA256SUMS)
       - name: Publish exact GitHub Release artifacts to PyPI through OIDC
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
+          packages-dir: dist/
           skip-existing: true
 
   verify-pypi:
