@@ -651,9 +651,23 @@ g\{\mu_{ij}(t)\}
 \]
 
 Bernoulli responses use a logit link and Poisson responses use a log link.
-Participants are independent GEE clusters, trial-varying predictors are
-retained, working independence is fixed, and uncertainty uses the robust
-cluster sandwich covariance
+Version 0.54 also supports explicit grouped-binomial integer successes and
+positive integer denominators,
+
+\[
+S_{ij}(t)\sim\operatorname{Binomial}\{N_{ij}(t),p_{ij}(t)\},
+\qquad
+\operatorname{logit}p_{ij}(t)
+=
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t).
+\]
+
+Validated grouped observations are represented internally as \(S/N\) with
+denominator GEE weights and are checked against an equivalent row-expanded
+Bernoulli reference fit. Version 0.53 optionally adds Poisson exposure through
+\(\log E_{ij}(t)\). Participants are independent GEE clusters, trial-varying
+predictors are retained, working independence is fixed, and uncertainty uses
+the robust cluster sandwich covariance
 
 \[
 \widehat{\operatorname{Var}}_{\mathrm{robust}}
@@ -683,7 +697,8 @@ M_k^{*(b)}
 Implemented by `fit_generalized_function_on_scalar_regression()`,
 `bootstrap_generalized_function_on_scalar_coefficients()`, and
 `generalized_function_on_scalar_simultaneous_bands()`. The estimand is
-marginal/population averaged; no family, link, working correlation, basis size,
+marginal/population averaged; grouped denominators and Poisson exposure are
+explicit and never inferred; no family, link, working correlation, basis size,
 or model is selected automatically.
 
 ## Fixed-profile marginal prediction and mean differences
