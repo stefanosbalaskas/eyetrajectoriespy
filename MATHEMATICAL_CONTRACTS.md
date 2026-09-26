@@ -680,9 +680,9 @@ M_k^{*(b)}
 \right|.
 \]
 
-Implemented by \`fit_generalized_function_on_scalar_regression()\`,
-\`bootstrap_generalized_function_on_scalar_coefficients()\`, and
-\`generalized_function_on_scalar_simultaneous_bands()\`. The estimand is
+Implemented by `fit_generalized_function_on_scalar_regression()`,
+`bootstrap_generalized_function_on_scalar_coefficients()`, and
+`generalized_function_on_scalar_simultaneous_bands()`. The estimand is
 marginal/population averaged; no family, link, working correlation, basis size,
 or model is selected automatically.
 
