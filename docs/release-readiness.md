@@ -122,10 +122,10 @@ qualified only when the complete pull-request and exact-main CI cycles pass.
 
 ## Release automation and publication
 
-- [x] Dedicated \`release.yml\` is isolated from ordinary push/PR CI.
+- [x] Dedicated `release.yml` is isolated from ordinary push/PR CI.
 - [x] Release distributions are built exactly once and reused for TestPyPI,
       PyPI and GitHub Release attachment.
-- [x] \`python -m build\`, \`twine check\`, fresh wheel install, fresh sdist
+- [x] `python -m build`, `twine check`, fresh wheel install, fresh sdist
       install and an installed-package canonical smoke test are encoded in both
       release automation and non-publishing release-readiness CI.
 - [x] Production publication is version-tag-only; manual dispatch cannot choose
@@ -139,11 +139,11 @@ qualified only when the complete pull-request and exact-main CI cycles pass.
       publishing.
 - [ ] TestPyPI Trusted Publisher is configured and rehearsal completed.
 - [ ] Production PyPI Trusted Publisher is configured.
-- [ ] \`pypi\` GitHub environment has the intended required-reviewer protection.
-- [ ] \`main\` is protected and issue #64 is closed.
-- [ ] \`RELEASE_READINESS.json\` is armed for production.
+- [ ] `pypi` GitHub environment has the intended required-reviewer protection.
+- [ ] `main` is protected and issue #64 is closed.
+- [ ] `RELEASE_READINESS.json` is armed for production.
 
-The planned first synchronized public release is \`0.9.0rc1\`. None of the
+The planned first synchronized public release is `0.9.0rc1`. None of the
 unchecked items may be inferred from successful package CI.
 
 ## Release-candidate gate
