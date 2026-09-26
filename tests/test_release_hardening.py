@@ -71,6 +71,17 @@ def test_release_governance_happy_path_requires_all_quality_gates(monkeypatch):
         raise AssertionError(url)
 
     monkeypatch.setattr(module, "_github_json", fake_get)
+    monkeypatch.setattr(
+        module,
+        "_release_readiness",
+        lambda: {
+            "production_release_ready": True,
+            "gates": {
+                name: True
+                for name in module._REQUIRED_DECLARATIONS
+            },
+        },
+    )
     module.verify_release_governance(
         repository=repository,
         commit=commit,
@@ -82,6 +93,17 @@ def test_release_governance_happy_path_requires_all_quality_gates(monkeypatch):
 def test_release_governance_blocks_unprotected_main(monkeypatch):
     module = _load_script("verify_release_governance.py")
 
+    monkeypatch.setattr(
+        module,
+        "_release_readiness",
+        lambda: {
+            "production_release_ready": True,
+            "gates": {
+                name: True
+                for name in module._REQUIRED_DECLARATIONS
+            },
+        },
+    )
     monkeypatch.setattr(
         module,
         "_github_json",
@@ -130,3 +152,23 @@ def test_production_release_has_no_manual_dispatch_path():
     assert "production" not in workflow.split("options:", 1)[1].split(
         "concurrency:", 1
     )[0]
+
+def test_release_governance_blocks_unarmed_readiness_manifest(monkeypatch):
+    module = _load_script("verify_release_governance.py")
+    monkeypatch.setattr(
+        module,
+        "_release_readiness",
+        lambda: {
+            "production_release_ready": False,
+            "gates": {},
+        },
+    )
+
+    with pytest.raises(RuntimeError, match="is not armed"):
+        module.verify_release_governance(
+            repository="stefanosbalaskas/eyetrajectoriespy",
+            commit="a" * 40,
+            tag="v0.9.0rc1",
+            token="token",
+        )
+
