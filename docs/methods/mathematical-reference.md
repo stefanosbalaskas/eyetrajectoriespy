@@ -1143,6 +1143,29 @@ g\{\mu_{ij}(t)\}
 \]
 
 Bernoulli responses use the logit link and must be coded exactly as 0/1.
+Version 0.54 also permits an explicit grouped-binomial representation with
+integer success counts \(S_{ij}(t)\) and strictly positive integer denominators
+\(N_{ij}(t)\),
+
+\[
+S_{ij}(t)\sim\operatorname{Binomial}\{N_{ij}(t),p_{ij}(t)\},
+\qquad
+0\le S_{ij}(t)\le N_{ij}(t),
+\]
+
+\[
+\operatorname{logit}p_{ij}(t)
+=
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t).
+\]
+
+The public observation contract is successes plus denominator, not an arbitrary
+proportion alone. Internally, the validated grouped response is represented as
+\(S_{ij}(t)/N_{ij}(t)\) with \(N_{ij}(t)\) supplied to the GEE estimating
+equations as an observation weight. This representation is validated against
+the equivalent row-expanded Bernoulli fit under working independence, including
+the participant-cluster robust sandwich covariance.
+
 Poisson responses use the log link and must be non-negative integer counts.
 Participants are the independent GEE clusters; trial-varying scalar predictors
 remain in the design. Working independence is fixed and inference uses the
@@ -1195,11 +1218,13 @@ non-finite exposure values are invalid. A generic arbitrary-offset API is not
 exposed.
 
 Whole-participant bootstrap refits resample the response, scalar design, and
-exposure together as one source-participant bundle. Duplicate sampled
-participants receive distinct bootstrap cluster identifiers. Exposure values
-are treated as observed and fixed; exposure measurement uncertainty is not
-modeled. Coefficient simultaneous bands retain the existing observed-grid
-maximum standardized-deviation statistic,
+the complete observation contract together as one source-participant bundle.
+For Poisson rate models, exposure travels with the response. For grouped
+binomial models, the denominator array travels with the success counts.
+Duplicate sampled participants receive distinct bootstrap cluster identifiers.
+Exposure and denominators are treated as observed and fixed; their measurement
+uncertainty is not modeled. Coefficient simultaneous bands retain the existing
+observed-grid maximum standardized-deviation statistic,
 
 \[
 M_k^{*(b)}
@@ -1215,8 +1240,9 @@ M_k^{*(b)}
 \]
 
 The estimand remains marginal / population averaged. No family, link, basis
-dimension, working correlation, exposure definition, smoothing penalty, or
-model is selected automatically.
+dimension, working correlation, denominator, exposure definition, smoothing
+penalty, or model is selected automatically. Grouped-binomial denominators and
+Poisson exposure are never inferred from metadata or convenience heuristics.
 
 **API:** fit_generalized_function_on_scalar_regression(),
 bootstrap_generalized_function_on_scalar_coefficients(),
