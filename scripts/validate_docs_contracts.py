@@ -98,6 +98,7 @@ def main() -> None:
         "fit_generalized_function_on_scalar_regression()",
         "bootstrap_generalized_function_on_scalar_coefficients()",
         "generalized_function_on_scalar_simultaneous_bands()",
+        "generalized_function_on_scalar_exposure_frame()",
         "generalized_function_on_scalar_predict()",
         "generalized_function_on_scalar_prediction_bands()",
         "generalized_function_on_scalar_mean_difference_band()",
