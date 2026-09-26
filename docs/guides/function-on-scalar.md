@@ -218,11 +218,11 @@ Do not apply the Gaussian observed-grid OLS contract to Bernoulli or count
 trajectories merely for convenience. Version 0.51 provides a distinct marginal
 model:
 
-[
-g{E[Y_{ij}(t)mid x_{ij}]}
+\[
+g\{E[Y_{ij}(t)\mid x_{ij}]\}
 =
-x_{ij}^{	op}eta(t),
-]
+x_{ij}^{\top}\beta(t),
+\]
 
 with Bernoulli/logit or Poisson/log family, participant clusters, explicit
 B-spline coefficient functions, working independence and robust sandwich
@@ -235,4 +235,3 @@ does not reuse Gaussian random effects and its link-scale coefficients should
 not be interpreted as conditional mixed-model effects.
 
 See [Marginal generalized function-on-scalar regression](../methods/generalized-function-on-scalar.md).
-
