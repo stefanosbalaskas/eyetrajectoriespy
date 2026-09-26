@@ -195,8 +195,8 @@ so that
 \]
 
 The package exposes **exposure**, not a generic arbitrary offset. Exposure must
-be supplied explicitly with shape \`(n_curves, n_time)\`, or with shape
-\`(n_curves,)\` when one value applies to a complete curve. Curve-level values
+be supplied explicitly with shape `(n_curves, n_time)`, or with shape
+`(n_curves,)` when one value applies to a complete curve. Curve-level values
 are expanded over time and that expansion is recorded in provenance. Exposure
 must be finite and strictly positive everywhere; zero exposure is rejected even
 when the observed count is zero.
