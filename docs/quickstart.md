@@ -225,6 +225,7 @@ a second resample:
 import pandas as pd
 
 from eyetrajectoriespy import (
+    bootstrap_generalized_function_on_scalar_coefficients,
     bootstrap_generalized_function_on_scalar_predictions,
     generalized_function_on_scalar_predict,
     generalized_function_on_scalar_prediction_bands,
@@ -242,9 +243,17 @@ prediction = generalized_function_on_scalar_predict(
     profiles,
 )
 
+coefficient_bootstrap = (
+    bootstrap_generalized_function_on_scalar_coefficients(
+        generalized,
+        n_bootstrap=1000,
+        random_state=52,
+    )
+)
+
 prediction_bootstrap = (
     bootstrap_generalized_function_on_scalar_predictions(
-        generalized_bootstrap,
+        coefficient_bootstrap,
         profiles,
     )
 )
