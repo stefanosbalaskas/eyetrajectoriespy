@@ -96,6 +96,11 @@ flowchart TD
     L -->|Yes| M[Resample complete participants]
     M --> N[Refit same family/link/basis GEE]
     N --> O[Observed-grid link-scale simultaneous band]
+    O --> P{Fixed marginal profiles declared?}
+    P -->|Yes| Q[0.52 profile eta and inverse-link mean functions]
+    Q --> R[Reuse identical participant-bootstrap coefficient draws]
+    R --> S[Profile/family simultaneous response bands]
+    R --> T[One predeclared response-scale mean difference]
 ```
 
 Version 0.51 targets population-averaged marginal coefficient functions.
@@ -103,6 +108,12 @@ Trial-varying scalar predictors remain in the generalized design; trials and
 time rows are not treated as independent clusters. Working independence is
 fixed rather than selected, and bootstrap failures are not silently dropped or
 redrawn.
+
+Version 0.52 adds fixed-profile marginal interpretation without a second
+resampling scheme. Profile values are fixed, scalar-range extrapolations are
+flagged, simultaneous response bands inherit the exact participant bootstrap,
+and the result remains mean-function inference rather than future-response
+prediction.
 
 ## Ordered trajectory similarity
 
