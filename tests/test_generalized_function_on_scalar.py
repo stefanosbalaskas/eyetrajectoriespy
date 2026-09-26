@@ -805,6 +805,98 @@ def test_poisson_profile_prediction_is_positive_and_transform_exact():
     )
 
 
+def test_profile_input_validation_closes_edge_contracts(
+    _binary_prediction_bundle,
+):
+    _, _, fit, _, _, _ = _binary_prediction_bundle
+
+    with pytest.raises(TypeError, match="GeneralizedFunctionOnScalarResult"):
+        generalized_function_on_scalar_predict(
+            "not-a-fit",
+            pd.DataFrame(
+                {
+                    "profile_id": ("a",),
+                    "condition": (0.0,),
+                }
+            ),
+        )
+
+    with pytest.raises(TypeError, match="pandas DataFrame"):
+        generalized_function_on_scalar_predict(
+            fit,
+            {"profile_id": ["a"], "condition": [0.0]},
+        )
+
+    with pytest.raises(ValueError, match="at least one row"):
+        generalized_function_on_scalar_predict(
+            fit,
+            pd.DataFrame(columns=["profile_id", "condition"]),
+        )
+
+    with pytest.raises(TypeError, match="profile_id_column"):
+        generalized_function_on_scalar_predict(
+            fit,
+            pd.DataFrame(
+                {
+                    "profile_id": ("a",),
+                    "condition": (0.0,),
+                }
+            ),
+            profile_id_column="",
+        )
+
+    with pytest.raises(ValueError, match="must not reuse"):
+        generalized_function_on_scalar_predict(
+            fit,
+            pd.DataFrame({"condition": (0.0,)}),
+            profile_id_column="condition",
+        )
+
+    with pytest.raises(ValueError, match="must not be missing"):
+        generalized_function_on_scalar_predict(
+            fit,
+            pd.DataFrame(
+                {
+                    "profile_id": (None,),
+                    "condition": (0.0,),
+                }
+            ),
+        )
+
+    with pytest.raises(ValueError, match="must be non-empty"):
+        generalized_function_on_scalar_predict(
+            fit,
+            pd.DataFrame(
+                {
+                    "profile_id": ("",),
+                    "condition": (0.0,),
+                }
+            ),
+        )
+
+    with pytest.raises(TypeError, match="must be numeric"):
+        generalized_function_on_scalar_predict(
+            fit,
+            pd.DataFrame(
+                {
+                    "profile_id": ("a",),
+                    "condition": ("bad",),
+                }
+            ),
+        )
+
+    with pytest.raises(ValueError, match="non-finite"):
+        generalized_function_on_scalar_predict(
+            fit,
+            pd.DataFrame(
+                {
+                    "profile_id": ("a",),
+                    "condition": (np.nan,),
+                }
+            ),
+        )
+
+
 def test_profile_contracts_fail_closed(_binary_prediction_bundle):
     _, _, fit, coefficient_bootstrap, _, prediction_bootstrap = (
         _binary_prediction_bundle
