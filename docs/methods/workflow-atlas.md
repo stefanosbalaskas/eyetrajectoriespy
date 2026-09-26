@@ -92,7 +92,10 @@ flowchart TD
     U -->|No: expected count| I[Participant is independent GEE cluster]
     U -->|Yes: E > 0| V[0.53 log-rate estimand]
     V --> I
-    G --> I
+    G --> GB{Grouped successes?}
+    GB -->|No: Bernoulli 0/1| I
+    GB -->|Yes: explicit N > 0| GX[0.54 grouped-binomial weights]
+    GX --> I
     I --> J[Working independence]
     J --> K[Robust sandwich coefficient covariance]
     K --> L{Whole-function inference?}
@@ -100,7 +103,7 @@ flowchart TD
     M --> N[Refit same family/link/basis GEE]
     N --> O[Observed-grid link-scale simultaneous band]
     O --> P{Fixed marginal profiles declared?}
-    P -->|Yes| Q[0.52/0.53 fixed-profile probability, rate, or count]
+    P -->|Yes| Q[0.52-0.54 fixed-profile probability, rate, or count]
     Q --> R[Reuse identical participant-bootstrap coefficient draws]
     R --> S[Profile/family simultaneous response bands]
     R --> T[One predeclared probability/rate/count contrast]
