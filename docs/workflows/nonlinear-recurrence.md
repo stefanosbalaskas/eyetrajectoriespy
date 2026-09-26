@@ -7,7 +7,7 @@ coefficient function.
 ## 1. Define the state representation first
 
 Choose the observed/derived state and, when reconstruction is required, declare
-embedding dimension (m), delay (	au), Theiler exclusion and any scaling
+embedding dimension $m$, delay $\\tau$, Theiler exclusion and any scaling
 before computing recurrence quantities.
 
 ## 2. Start with a declared recurrence specification
