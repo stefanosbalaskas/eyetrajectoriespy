@@ -108,6 +108,34 @@ A positive condition coefficient at time \(t\) indicates larger marginal
 log-odds of target-AOI occupancy at that time, holding the other declared
 predictors fixed.
 
+## Grouped-binomial success counts
+
+When each functional observation summarizes several binary opportunities, retain
+the integer successes and denominator explicitly:
+
+~~~python
+grouped_fit = fit_generalized_function_on_scalar_regression(
+    grouped_success_trajectories,
+    design,
+    predictors=("condition",),
+    participant_column="participant_id",
+    dimension="successes",
+    family="binomial",
+    binomial_denominator=trial_counts,
+    basis_size=4,
+    spline_degree=2,
+)
+~~~
+
+The trajectory values are integer successes. `trial_counts` contains the
+corresponding positive integer denominators. The result retains successes,
+denominators, observed proportions and fitted expected successes, while the
+coefficient functions remain marginal log-odds effects on success probability.
+
+Do not replace `successes / trial_counts` with a proportion-only response:
+the denominator is required because 2/3 and 670/1000 do not contain the same
+amount of information.
+
 ## Count-valued response and exposure-adjusted rates
 
 For non-negative integer count functions use the same interface with
