@@ -415,6 +415,39 @@ _CONTRACTS = (
         ),
     ),
     MathematicalContract(
+        key="generalized-function-on-scalar-prediction",
+        title="Fixed-profile marginal prediction and mean differences",
+        public_api=(
+            "generalized_function_on_scalar_predict",
+            "generalized_function_on_scalar_prediction_bands",
+            "generalized_function_on_scalar_mean_difference_band",
+        ),
+        equations=(
+            r"\eta_r(t)=\mathbf x_r^\top\widehat{\boldsymbol\beta}(t)",
+            r"\mu_r(t)=g^{-1}\{\eta_r(t)\}",
+            r"\widehat{\operatorname{Var}}\{\eta_r(t)\}="
+            r"\mathbf z_r(t)^\top\widehat{\boldsymbol\Sigma}_\theta"
+            r"\mathbf z_r(t)",
+            r"D_{ab}(t)=\mu_a(t)-\mu_b(t)",
+            r"M_r^{*(b)}=\max_m\left|"
+            r"\frac{\eta_r^{*(b)}(t_m)-\eta_r(t_m)}"
+            r"{\widehat{\operatorname{SE}}\{\eta_r(t_m)\}}\right|",
+        ),
+        site_anchor="generalized-function-on-scalar-prediction",
+        scope=(
+            "Fixed analyst-declared scalar predictor profiles projected through "
+            "the fitted marginal Bernoulli/logit or Poisson/log coefficient "
+            "functions. Profile values are not resampled. Simultaneous marginal "
+            "mean bands are calibrated on the linear-predictor scale using the "
+            "existing whole-participant coefficient bootstrap and transformed "
+            "through the strictly monotone inverse link. One predeclared "
+            "response-scale mean-difference function may be calibrated from the "
+            "same paired bootstrap draws. Scalar-predictor extrapolations are "
+            "retained and flagged; no profile or contrast is selected "
+            "automatically and between-grid coverage is not claimed."
+        ),
+    ),
+    MathematicalContract(
         key="function-on-scalar",
         title="Function-on-scalar regression and simultaneous coefficient bands",
         public_api=(
