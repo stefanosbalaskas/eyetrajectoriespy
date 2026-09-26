@@ -29,6 +29,7 @@ FDA and GAMMs are complementary: FPCA summarizes covariance and dominant modes; 
 | Question | Direction | Primary tool | Boundary |
 |---|---|---|---|
 | How does a continuous gaze response change with condition, expertise, age, or another scalar predictor? | scalar predictors → functional response | `fit_function_on_scalar_regression()` | 0.35 repeated trials require participant-constant predictors and aggregation |
+| How does a repeated binary/count functional response change with scalar predictors? | scalar predictors → non-Gaussian functional response | `fit_generalized_function_on_scalar_regression()` | marginal participant-clustered GEE; Bernoulli/logit or Poisson/log; working independence + robust sandwich in 0.51 |
 | How does a functional gaze trajectory predict a scalar outcome? | functional predictor → scalar response | `fit_scalar_on_function_regression()` / FPCR | inference depends on retained FPCA representation |
 | Do I need participant-specific random functional effects or within-participant trial predictors? | repeated-measures functional response | `fit_functional_mixed_effects_regression()` | joint Gaussian mixed model; declare bases/covariance assumptions explicitly |
 | Do residuals show smooth trial-specific shape beyond participant effects? | participant → trial → time covariance | `fit_functional_mixed_effects_regression(..., trial_random_effect="functional_intercept")` | shared unstructured trial-basis covariance; no automatic covariance selection |

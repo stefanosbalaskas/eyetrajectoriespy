@@ -10,7 +10,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** early alpha (`0.50.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
+> **Status:** early alpha (`0.51.0.dev0`). The scientific contracts and core workflows are tested; methodological review and backend validation remain active.
 
 ## Scientific design
 
@@ -54,6 +54,7 @@ Registration is especially explicit because latency can itself be psychologicall
 - simultaneous functional-mean bands with curve- or equal-weight participant-level inference;
 - function-on-scalar regression for experimental predictors with observed-grid coefficient functions, HC1 pointwise standard errors, fixed-design wild-bootstrap coefficient replicates, and coefficient-wise or familywise simultaneous bands;
 - fail-closed repeated-trial handling for function-on-scalar regression: participant aggregation is allowed only for participant-constant predictors;
+- marginal generalized function-on-scalar regression for repeated Bernoulli/logit and Poisson/log functional responses, with participant-clustered working-independence GEE, robust sandwich covariance, trial-varying predictors, whole-participant bootstrap refits, and observed-grid link-scale simultaneous bands;
 - joint Gaussian functional mixed-effects regression for trial-varying predictors, using explicit B-spline fixed coefficient functions and a participant functional random intercept fitted in one stacked MixedLM rather than separate pointwise models;
 - nested trial-level functional random intercepts with one shared unstructured trial-basis covariance, explicit participant→trial identifiers, separate trial BLUPs/covariance diagnostics, and a profiled Gaussian marginal-likelihood backend that leaves the legacy MixedLM path unchanged;
 - explicit within-trial residual covariance for functional mixed-effects fits: continuous-time exponential correlation on irregular physical-time grids and signed index-step AR(1) on verified regular grids, estimated jointly without automatic covariance-family selection and kept block diagonal across trials;
@@ -175,6 +176,7 @@ print(summarise_fpca(fit))
 | Group influence | leave-one-group-out matched FPCs | `leave_one_group_out_fpca_influence()` |
 | Scalar outcome predicted by gaze | FPCA-score approximation | `fit_scalar_on_function_regression()` |
 | Functional gaze predicted by experimental variables | observed-grid function-on-scalar OLS + wild-bootstrap simultaneous bands | `fit_function_on_scalar_regression()` / `function_on_scalar_simultaneous_bands()` |
+| Binary/count functional response predicted by experimental variables | marginal participant-clustered generalized function-on-scalar GEE with explicit B-spline coefficient functions and robust sandwich inference | `fit_generalized_function_on_scalar_regression()` / `generalized_function_on_scalar_simultaneous_bands()` |
 | Repeated-trial functional response with trial-varying predictors | joint B-spline functional mixed-effects regression with participant functional random intercept and optional one explicitly declared random functional slope | `fit_functional_mixed_effects_regression()` |
 | Nested participant→trial functional covariance | optional trial functional random intercept with shared unstructured trial-basis covariance, separate trial BLUPs, covariance diagnostics, and participant-level resampling | `fit_functional_mixed_effects_regression(..., trial_random_effect="functional_intercept")` / `functional_trial_random_effect_frame()` |
 | Whole-function inference for repeated-trial coefficient functions | whole-participant cluster bootstrap + observed-grid simultaneous coefficient/family bands conditional on fitted covariance | `bootstrap_functional_mixed_effects_coefficients()` / `functional_mixed_effects_simultaneous_bands()` |

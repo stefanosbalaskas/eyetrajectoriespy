@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.51.0.dev0
+
+- Add `fit_generalized_function_on_scalar_regression()` for marginal non-Gaussian functional responses with scalar predictors and repeated participant trials.
+- Support explicit Bernoulli/logit and Poisson/log response families only; binary responses must be coded exactly 0/1 and Poisson responses must be non-negative integers.
+- Represent each time-varying coefficient in an analyst-declared clamped B-spline basis and fit the full trial-by-time response through one stacked marginal GEE.
+- Treat participants as the independent clusters while allowing predictors to vary across trials within participant.
+- Fix the 0.51 working dependence contract to independence and use robust sandwich covariance; no working correlation, family, link, basis size, interaction, or model is selected automatically.
+- Make the estimand explicitly population averaged / marginal rather than conditional on functional random effects.
+- Add a conservative structural guard requiring the participant count to exceed the expanded coefficient-parameter count; document that this is not an adequacy theorem for sandwich covariance estimation.
+- Add whole-participant case-bootstrap refits through `bootstrap_generalized_function_on_scalar_coefficients()`; duplicate sampled participant occurrences receive unique bootstrap cluster IDs and failed replicates are raised rather than silently dropped/redrawn.
+- Add observed-grid link-scale simultaneous coefficient bands through `generalized_function_on_scalar_simultaneous_bands()` with coefficient or full-family scope.
+- Add coefficient frames, plotting and manuscript-oriented reporting helpers.
+- Preserve fitted marginal means and linear predictors separately from the link-scale coefficient functions.
+- Explicitly defer aggregated binomial proportions/denominators, Poisson offsets, negative-binomial/zero-inflated families, sparse response grids, non-independence working correlations, generalized functional random effects and automatic smoothing-parameter selection.
+- Add truth-known Bernoulli and Poisson validation, trial-varying predictor coverage, participant-bootstrap reproducibility/auditing, simultaneous-band tests, response-domain guards, cluster-count guards and public-API coverage.
+- Advance the post-0.50 roadmap from Gaussian covariance engineering to a genuinely distinct marginal generalized functional-response capability.
+
 ## 0.50.0.dev0
 
 - Add `FunctionalMixedEffectsCovarianceSpecification` and `functional_mixed_effects_covariance_sensitivity()` for descriptive comparison of already fitted, predeclared covariance structures against one analyst-declared reference.

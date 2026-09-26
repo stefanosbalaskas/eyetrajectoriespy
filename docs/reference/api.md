@@ -384,6 +384,17 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.plot_function_on_scalar_coefficients
 ::: eyetrajectoriespy.function_on_scalar_reporting_text
 
+### Generalized function-on-scalar regression
+::: eyetrajectoriespy.GeneralizedFunctionOnScalarResult
+::: eyetrajectoriespy.GeneralizedFunctionOnScalarBootstrapResult
+::: eyetrajectoriespy.GeneralizedFunctionOnScalarBandResult
+::: eyetrajectoriespy.fit_generalized_function_on_scalar_regression
+::: eyetrajectoriespy.bootstrap_generalized_function_on_scalar_coefficients
+::: eyetrajectoriespy.generalized_function_on_scalar_simultaneous_bands
+::: eyetrajectoriespy.generalized_function_on_scalar_coefficient_frame
+::: eyetrajectoriespy.plot_generalized_function_on_scalar_coefficients
+::: eyetrajectoriespy.generalized_function_on_scalar_reporting_text
+
 ## Downstream analysis
 ::: eyetrajectoriespy.functional_l2_distance
 ::: eyetrajectoriespy.pairwise_functional_distances

@@ -111,7 +111,7 @@ $$
 
 It does **not** support trial-varying within-participant condition effects. If `condition` changes across trials within the same participant, participant mode raises an error instead of averaging the predictor or pretending trials are independent.
 
-That case belongs to the planned repeated-measures functional regression / functional mixed-effects tranche.
+For a continuous Gaussian response, that case belongs to the implemented functional mixed-effects model. For a binary or count functional response, version 0.51 instead provides marginal participant-clustered generalized function-on-scalar GEE with trial-varying predictors.
 
 ## Wild-bootstrap coefficient functions
 
@@ -211,3 +211,27 @@ The next repeated-measures tranche should be researched and specified as a genui
 Morris (2015) classifies functional response regression / function-on-scalar regression as one of the three fundamental functional-regression configurations. Chang, Lin, and Ogden (2017) study simultaneous confidence bands for general function-on-scalar regression and propose wild-bootstrap calibration that accommodates multiple covariates and heteroscedastic functional responses.
 
 The 0.35 contribution is therefore not novelty of function-on-scalar regression itself. It is the package-specific contract: explicit design alignment, no hidden smoothing/encoding, fail-closed repeated-trial handling, provenance, deterministic bootstrap seeding, and observed-grid simultaneous inference.
+
+## Binary and count functional responses
+
+Do not apply the Gaussian observed-grid OLS contract to Bernoulli or count
+trajectories merely for convenience. Version 0.51 provides a distinct marginal
+model:
+
+\[
+g\{E[Y_{ij}(t)\mid x_{ij}]\}
+=
+x_{ij}^{\top}\beta(t),
+\]
+
+with Bernoulli/logit or Poisson/log family, participant clusters, explicit
+B-spline coefficient functions, working independence and robust sandwich
+covariance.
+
+Use
+`fit_generalized_function_on_scalar_regression()` when that marginal
+population-averaged estimand is the scientific target. The generalized model
+does not reuse Gaussian random effects and its link-scale coefficients should
+not be interpreted as conditional mixed-model effects.
+
+See [Marginal generalized function-on-scalar regression](../methods/generalized-function-on-scalar.md).

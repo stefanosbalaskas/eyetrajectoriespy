@@ -737,3 +737,12 @@ p-values are also omitted because variance components and serial parameters may
 lie on boundaries and the compared structures need not form regular nested
 models.
 
+## Why use generalized function-on-scalar GEE instead of the Gaussian mixed model?
+
+Because a binary or count trajectory has a different mean-variance relationship and link-scale estimand. Version 0.51 targets a marginal, population-averaged coefficient function through Bernoulli/logit or Poisson/log GEE. The Gaussian functional mixed model instead targets a continuous Gaussian response with conditional random effects and an explicit covariance hierarchy.
+
+For non-Gaussian responses, marginal and conditional coefficients are not generally interchangeable. The package therefore exposes them as different model families rather than silently routing one through the other.
+
+## Why is working correlation fixed to independence in 0.51?
+
+The first generalized-response tranche is intended to establish the marginal estimand, response contracts, robust cluster inference and participant bootstrap correctly before adding another dependence-selection problem. Working independence paired with robust sandwich covariance provides a clear population-averaged starting contract. It should not be interpreted as a claim that observations within participant are scientifically independent.

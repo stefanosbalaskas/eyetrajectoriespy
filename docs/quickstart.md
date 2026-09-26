@@ -189,6 +189,33 @@ a verified regular grid when index-step AR(1) is the intended model.
 After a serial fit, diagnose both native and whitened residuals. The raw ACF is
 not expected to be flat merely because serial covariance has been modeled.
 
+### Optional 0.51 generalized functional response
+
+For repeated binary or count trajectories, use the marginal generalized
+function-on-scalar model rather than coercing the response to Gaussian:
+
+~~~python
+from eyetrajectoriespy import fit_generalized_function_on_scalar_regression
+
+generalized = fit_generalized_function_on_scalar_regression(
+    trajectories,
+    design,
+    predictors=("condition",),
+    participant_column="participant_id",
+    dimension="target_aoi",
+    family="binomial",
+    basis_size=4,
+    spline_degree=2,
+)
+~~~
+
+Participants are independent GEE clusters, trial-varying predictors remain in
+the model, working independence is fixed, and robust sandwich uncertainty is
+reported. Coefficients are population-averaged marginal effects on the link
+scale.
+
+For whole-function inference, resample complete participants with `bootstrap_generalized_function_on_scalar_coefficients()` and calibrate `generalized_function_on_scalar_simultaneous_bands()`.
+
 ### Optional 0.50 covariance sensitivity
 
 When several covariance structures were predeclared and fitted independently,

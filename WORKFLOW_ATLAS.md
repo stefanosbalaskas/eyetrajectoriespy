@@ -72,18 +72,24 @@ retains failed declarations, and reports robustness without selecting a model.
 
 ```mermaid
 flowchart LR
-    A[Functional response Y(t)] --> B{Inference unit}
-    B -->|Independent curves| C[Curve-level design]
-    B -->|Repeated trials + participant-level predictors| D[Participant-average response]
-    D --> E{Predictors constant within participant?}
-    E -->|No| F[Defer to functional mixed effects]
-    E -->|Yes| G[Participant-level design]
-    C --> H[Observed-grid function-on-scalar OLS]
-    G --> H
-    H --> I[HC1 pointwise SE]
-    H --> J[Whole-function wild bootstrap]
-    J --> K[Coefficient/family simultaneous bands]
+    A[Functional response Y_ij(t)] --> B{Response family}
+    B -->|Continuous Gaussian| C{Repeated trials?}
+    C -->|No independent curves| D[0.35 observed-grid FoSR OLS]
+    C -->|Yes participant-level predictors only| E[Participant-average FoSR]
+    C -->|Yes trial-varying predictors| F[Gaussian functional mixed effects]
+    B -->|Bernoulli 0/1| G[0.51 marginal generalized FoSR: logit]
+    B -->|Poisson counts| H[0.51 marginal generalized FoSR: log]
+    G --> I[Participant GEE clusters + working independence]
+    H --> I
+    I --> J[Robust sandwich covariance]
+    J --> K[Whole-participant case bootstrap refits]
+    K --> L[Observed-grid link-scale simultaneous bands]
 ```
+
+The 0.51 generalized path is population averaged rather than conditional on
+functional random effects. It allows trial-varying predictors, fixes working
+independence, and does not select a family, link, basis size, or working
+correlation automatically.
 
 ## Trajectory-distance robustness
 
