@@ -128,7 +128,10 @@ design matrix, participant cluster identities, family/link, basis contract,
 working-correlation contract, convergence diagnostics and provenance. For an
 exposure-adjusted Poisson fit it additionally retains the aligned exposure,
 log exposure, exposure units/expansion flag, marginal rate functions, and
-separate rate- and count-scale linear predictors.
+separate rate- and count-scale linear predictors. For grouped-binomial fits it
+retains the original integer successes, integer denominators, observed success
+proportions, denominator-specific fitted expected successes, and whether a
+curve-level denominator was explicitly expanded over time.
 
 `GeneralizedFunctionOnScalarBootstrapResult` stores whole-participant
 case-bootstrap coefficient-function refits together with the sampled source

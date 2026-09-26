@@ -1021,6 +1021,7 @@ For the generalized FoSR fit report:
 - the functional response dimension and whether the family was Bernoulli/logit
   or Poisson/log;
 - exact binary/count response coding and any exclusions performed upstream;
+- for grouped-binomial models, the integer-success definition, denominator definition, denominator range/shape, any curve-level expansion, and confirmation that denominators were not inferred from proportions;
 - for Poisson models, whether exposure was supplied; if so, its scientific
   meaning, units, shape/expansion rule, range, and why proportional scaling of
   expected count with exposure is defensible;
@@ -1041,13 +1042,17 @@ For the generalized FoSR fit report:
   identities;
 - for exposure-adjusted bootstrap inference, that exposure travelled with the
   source-participant response/design bundle and was treated as observed/fixed;
+- for grouped-binomial bootstrap inference, that denominators travelled with the
+  source-participant success/design bundle and were treated as observed/fixed;
 - any backend warnings or bootstrap fit failures.
 
 Do not describe these coefficients as subject-specific/conditional random-effect
 coefficients. Do not describe aggregated proportions as Bernoulli observations
-unless an explicit denominator-aware model has actually been fitted. For
-Poisson models without exposure, report log expected-count effects rather than
-rates. With exposure, report log-rate effects and exponentiated coefficients as
+unless an explicit denominator-aware model has actually been fitted. For a
+grouped-binomial model, report coefficients as marginal log-odds effects on the
+success probability and state that denominator weights determine the grouped
+observation information. For Poisson models without exposure, report log
+expected-count effects rather than rates. With exposure, report log-rate effects and exponentiated coefficients as
 rate ratios holding exposure fixed.
 
 ## Generalized fixed-profile prediction reporting

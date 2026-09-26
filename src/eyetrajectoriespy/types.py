@@ -1044,6 +1044,11 @@ class GeneralizedFunctionOnScalarResult:
     linear_predictor_count: np.ndarray | None = None
     exposure_units: str | None = None
     exposure_expanded_from_curve: bool = False
+    binomial_successes: np.ndarray | None = None
+    binomial_denominators: np.ndarray | None = None
+    binomial_observed_proportions: np.ndarray | None = None
+    binomial_expected_successes: np.ndarray | None = None
+    binomial_denominator_expanded_from_curve: bool = False
     provenance: Mapping[str, Any] = field(default_factory=dict)
     model: Any = field(default=None, repr=False)
 

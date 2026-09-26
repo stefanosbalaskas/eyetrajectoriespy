@@ -357,6 +357,10 @@ g\{\mu_{ij}(t)\}=\mathbf x_{ij}^\top\boldsymbol\beta(t)
 $$
 
 $$
+S_{ij}(t)\sim\operatorname{Binomial}\{N_{ij}(t),p_{ij}(t)\},\quad \operatorname{logit}p_{ij}(t)=\mathbf x_{ij}^\top\boldsymbol\beta(t)
+$$
+
+$$
 \log\mu_{ij}(t)=\log E_{ij}(t)+\mathbf x_{ij}^\top\boldsymbol\beta(t),\quad E_{ij}(t)>0
 $$
 
@@ -376,7 +380,7 @@ $$
 M_k^{*(b)}=\max_m\left|\frac{\widehat\beta_k^{*(b)}(t_m)-\widehat\beta_k(t_m)}{\widehat{\mathrm{SE}}\{\widehat\beta_k(t_m)\}}\right|
 $$
 
-**Scope:** Marginal population-averaged GEE for Bernoulli/logit or Poisson/log functional responses on a common grid. Version 0.53 adds an optional explicit strictly-positive Poisson exposure, making the coefficient functions log-rate effects while retaining expected counts separately. Generic offsets are not exposed or inferred. Participants are independent clusters, working independence is fixed, robust sandwich covariance is used, and whole-participant bootstrap refits carry exposure with each response/design bundle. No family, link, exposure, basis size, working correlation, or model is selected automatically.
+**Scope:** Marginal population-averaged GEE for Bernoulli/logit or Poisson/log functional responses on a common grid. Version 0.54 adds explicit grouped-binomial integer successes and positive integer denominators, implemented as success proportions with denominator GEE weights and validated against row-expanded Bernoulli reference fits. Version 0.53 Poisson exposure remains available. Denominators and exposure are never inferred, and generic proportion/offset inputs are not exposed. Participants are independent clusters, working independence is fixed, robust sandwich covariance is used, and whole-participant bootstrap refits carry the observation contract with each response/design bundle. No family, link, denominator, exposure, basis size, working correlation, or model is selected automatically.
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#generalized-function-on-scalar
 
@@ -416,7 +420,7 @@ $$
 M_r^{*(b)}=\max_m\left|\frac{\eta_r^{*(b)}(t_m)-\eta_r(t_m)}{\widehat{\operatorname{SE}}\{\eta_r(t_m)\}}\right|
 $$
 
-**Scope:** Fixed analyst-declared scalar predictor profiles projected through the fitted marginal Bernoulli/logit or Poisson/log coefficient functions. Exposure-adjusted Poisson fits can always predict rates; expected-count prediction requires an explicit strictly-positive target exposure and never assumes unit exposure silently. One predeclared contrast may target a rate difference, rate ratio, or expected-count difference; rate-ratio bands are calibrated on the log-rate-ratio scale and exponentiated. Profile values and target exposures are fixed, not resampled. No profile or contrast is selected automatically and between-grid coverage is not claimed.
+**Scope:** Fixed analyst-declared scalar predictor profiles projected through the fitted marginal Bernoulli/logit or Poisson/log coefficient functions. Grouped-binomial fits predict success probability; target denominators are neither required nor inferred. Exposure-adjusted Poisson fits can always predict rates; expected-count prediction requires an explicit strictly-positive target exposure and never assumes unit exposure silently. One predeclared contrast may target a rate difference, rate ratio, or expected-count difference; rate-ratio bands are calibrated on the log-rate-ratio scale and exponentiated. Profile values and target exposures are fixed, not resampled. No profile or contrast is selected automatically and between-grid coverage is not claimed.
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#generalized-function-on-scalar-prediction
 

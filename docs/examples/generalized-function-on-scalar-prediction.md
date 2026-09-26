@@ -37,6 +37,11 @@ prediction.extrapolation_flags
 
 For a Bernoulli/logit fit, `mean_functions` contains marginal probabilities.
 
+The same probability-scale prediction applies to a 0.54 grouped-binomial fit.
+The observed denominators determine the information in the fitted model but a
+fixed-profile success-probability target does not require a target denominator.
+
+
 ## Propagate the participant bootstrap
 
 ~~~python

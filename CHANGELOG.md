@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.54.0.dev0
+
+- Add an explicit grouped-binomial contract to `fit_generalized_function_on_scalar_regression()` through `binomial_denominator=`, with the trajectory response interpreted as integer success counts rather than arbitrary proportions.
+- Require finite, strictly positive integer denominators aligned as `(n_curves, n_time)`; allow `(n_curves,)` only through explicit time expansion recorded in provenance.
+- Require non-negative integer successes satisfying `0 <= successes <= denominator` everywhere and reject proportion-like fractional responses.
+- Fit grouped binomial responses through statsmodels GEE using success proportions as the backend response and denominators as observation weights while preserving the package-level success-count representation.
+- Retain integer successes, denominators, observed success proportions, and fitted expected-success functions separately in `GeneralizedFunctionOnScalarResult`.
+- Validate the grouped-binomial backend directly against a row-expanded Bernoulli GEE reference and require agreement in both coefficient estimates and robust sandwich covariance.
+- Resample denominators with the complete source-participant response/design bundle in the whole-participant bootstrap; denominators are treated as observed/fixed and denominator measurement uncertainty is not modeled.
+- Keep fixed-profile prediction on the marginal success-probability scale; grouped-binomial prediction does not require or infer a target denominator.
+- Preserve Bernoulli 0/1, Poisson expected-count, and Poisson exposure/rate behavior from 0.51-0.53.
+- Explicitly avoid a generic proportion-input API: a value such as 0.67 is not accepted as grouped binomial unless represented by integer successes and an explicit integer denominator.
+- Update mathematical contracts, generated function-to-equation indexes, methods/examples, assumptions, limitations, reporting, preregistration, roadmap, quick start, and package metadata for 0.54.
+- Close the planned generalized observation-family expansion after 0.54. Negative binomial, zero inflation, hurdle, Tweedie, generalized random effects, and automatic working-correlation selection are not queued as automatic follow-ons.
+- Redirect the post-0.54 roadmap toward stabilization: API consistency, canonical workflows, external-reference validation, performance benchmarks, serialization/reproducibility, error-message consistency, realistic examples, documentation hierarchy, and release readiness.
+
 ## 0.53.0.dev0
 
 - Add an explicit Poisson `exposure` contract to `fit_generalized_function_on_scalar_regression()` without exposing a generic arbitrary-offset API.

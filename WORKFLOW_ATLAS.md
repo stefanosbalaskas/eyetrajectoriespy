@@ -77,18 +77,21 @@ flowchart LR
     C -->|No independent curves| D[0.35 observed-grid FoSR OLS]
     C -->|Yes participant-level predictors only| E[Participant-average FoSR]
     C -->|Yes trial-varying predictors| F[Gaussian functional mixed effects]
-    B -->|Bernoulli 0/1| G[0.51 marginal generalized FoSR: logit]
+    B -->|Bernoulli 0/1| G[Marginal generalized FoSR: logit]
     B -->|Poisson counts| H[Marginal generalized FoSR: log]
     H --> X{Explicit exposure?}
     X -->|No: expected count| I[Participant GEE clusters + working independence]
     X -->|Yes: E > 0| Y[0.53 log-rate estimand]
     Y --> I
-    G --> I
+    G --> GB{Grouped successes?}
+    GB -->|No: Bernoulli 0/1| I
+    GB -->|Yes: explicit N > 0| GX[0.54 grouped-binomial weights]
+    GX --> I
     I --> J[Robust sandwich covariance]
     J --> K[Whole-participant case bootstrap refits]
     K --> L[Observed-grid link-scale simultaneous bands]
     L --> M{Fixed marginal profiles declared?}
-    M -->|Yes| N[0.52/0.53 fixed-profile probability, rate, or count]
+    M -->|Yes| N[0.52-0.54 fixed-profile probability, rate, or count]
     N --> O[Reuse same participant bootstrap]
     O --> P[Profile/family simultaneous response bands]
     O --> Q[One predeclared probability/rate/count contrast]

@@ -2,8 +2,9 @@
 
 Version 0.51 adds a distinct non-Gaussian functional-response model after the
 Gaussian mixed-effects covariance sequence was closed at 0.50. Version 0.53
-adds an explicit Poisson exposure/rate observation contract without changing
-the marginal GEE estimand.
+adds an explicit Poisson exposure/rate observation contract, and version 0.54
+adds explicit grouped-binomial success/denominator observations without
+changing the marginal GEE estimand.
 
 For participant \(i\), trial \(j\), and observed time \(t\),
 
@@ -26,9 +27,10 @@ B-spline basis,
 
 The generalized layer supports two deliberately narrow families:
 
-- Bernoulli responses with logit link;
+- binomial responses with logit link, represented either as Bernoulli 0/1
+  observations or explicit grouped integer successes plus integer denominators;
 - Poisson count responses with log link, optionally with an explicit strictly
-  positive exposure in version 0.53.
+  positive exposure.
 
 The estimand is **marginal / population averaged**. There are no functional
 random effects in this model.
@@ -148,7 +150,56 @@ Y_{ij}(t)\in\{0,1\}.
 Aggregated proportions are not treated as Bernoulli observations and trial
 denominators are never inferred silently.
 
-The model is
+For grouped binomial data, version 0.54 requires an integer success-count
+trajectory \(S_{ij}(t)\) and an explicit positive integer denominator
+\(N_{ij}(t)\),
+
+\[
+0\le S_{ij}(t)\le N_{ij}(t),
+\]
+
+with
+
+\[
+S_{ij}(t)\sim\operatorname{Binomial}\{N_{ij}(t),p_{ij}(t)\},
+\qquad
+\operatorname{logit}p_{ij}(t)
+=
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t).
+\]
+
+~~~python
+grouped_fit = fit_generalized_function_on_scalar_regression(
+    success_count_trajectories,
+    design,
+    predictors=("condition",),
+    participant_column="participant_id",
+    dimension="successes",
+    family="binomial",
+    binomial_denominator=trial_counts,
+    basis_size=4,
+    spline_degree=2,
+)
+~~~
+
+`binomial_denominator` must have shape `(n_curves, n_time)` or
+`(n_curves,)`; curve-level denominators are explicitly expanded over time and
+that expansion is recorded. Denominators must be finite, strictly positive
+integers. Successes must be finite non-negative integers and cannot exceed the
+corresponding denominator.
+
+The public API intentionally does **not** accept arbitrary proportions as a
+substitute. A value such as `0.67` is scientifically ambiguous because 2/3 and
+670/1000 carry very different information. Internally, after validation, the
+backend receives \(S/N\) as the binomial response and \(N\) as the GEE
+observation weight. The package retains the original successes, denominators,
+observed proportions, and fitted denominator-specific expected successes.
+
+The grouped backend is regression-tested against the equivalent row-expanded
+Bernoulli representation under the same participant clustering and working
+independence, including the robust sandwich covariance.
+
+The Bernoulli model is
 
 \[
 \operatorname{logit}\{\mu_{ij}(t)\}
@@ -382,8 +433,9 @@ random effects.
 
 The generalized contract intentionally does not include:
 
-- aggregated binomial proportions with explicit denominators;
-- arbitrary user-defined offsets or silently inferred exposure;
+- arbitrary proportion-only grouped-binomial input without integer successes
+  and explicit denominators;
+- arbitrary user-defined offsets or silently inferred exposure/denominators;
 - exposure-measurement-error models;
 - negative-binomial or zero-inflated families;
 - automatically selected working correlation;

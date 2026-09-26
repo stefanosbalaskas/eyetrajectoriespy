@@ -568,7 +568,7 @@ g\{E[Y_{ij}(t)\mid x_{ij}]\}=x_{ij}^{\top}\beta(t).
 
 Participants are assumed independent across clusters. Dependence among trials and time points within participant may be misspecified by the working independence structure; the robust sandwich covariance is used for coefficient uncertainty.
 
-Bernoulli responses must be genuine 0/1 observations under the declared sampling interpretation. Poisson responses must be non-negative integer counts. Without exposure, the Poisson estimand is expected count. With exposure, the analyst must supply finite strictly positive values and the model assumes (E[Ymid x,E]=Elambda(x)), so expected count is proportional to the declared time/opportunity denominator. The package does not infer binomial denominators or exposure from grid spacing, duration, sample counts, or metadata.
+Bernoulli responses must be genuine 0/1 observations under the declared sampling interpretation. Grouped-binomial responses require explicit non-negative integer successes and strictly positive integer denominators with successes not exceeding denominators. The denominator is part of the observation contract and determines information content; it is never inferred from proportions or metadata. Poisson responses must be non-negative integer counts. Without exposure, the Poisson estimand is expected count. With exposure, the analyst must supply finite strictly positive values and the model assumes proportional expected-count scaling with the declared time/opportunity denominator. Exposure is never inferred from grid spacing, duration, sample counts, or metadata.
 
 The coefficient basis is fixed before fitting. The participant-count > expanded-parameter-count rule is a structural guard only. Robust sandwich quality still depends on having enough independent, heterogeneous participant clusters.
 
@@ -576,9 +576,9 @@ The marginal coefficient interpretation is different from a non-Gaussian mixed m
 
 ## Generalized fixed-profile prediction assumptions
 
-Version 0.52 fixed-profile prediction and the 0.53 exposure extension inherit
-the marginal GEE assumptions and treat each supplied prediction profile as a
-fixed scalar covariate vector. The robust covariance of
+Version 0.52 fixed-profile prediction and the 0.53-0.54 observation-contract
+extensions inherit the marginal GEE assumptions and treat each supplied
+prediction profile as a fixed scalar covariate vector. The robust covariance of
 the fitted B-spline coefficients is propagated to the linear predictor, while
 pointwise response-scale standard errors use the inverse-link delta method.
 
