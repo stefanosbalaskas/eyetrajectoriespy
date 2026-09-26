@@ -1,7 +1,9 @@
 # Marginal generalized function-on-scalar regression
 
 Version 0.51 adds a distinct non-Gaussian functional-response model after the
-Gaussian mixed-effects covariance sequence was closed at 0.50.
+Gaussian mixed-effects covariance sequence was closed at 0.50. Version 0.53
+adds an explicit Poisson exposure/rate observation contract without changing
+the marginal GEE estimand.
 
 For participant \(i\), trial \(j\), and observed time \(t\),
 
@@ -22,10 +24,11 @@ B-spline basis,
 \mathbf B(t)^\top\boldsymbol\theta_k.
 \]
 
-Version 0.51 supports two deliberately narrow families:
+The generalized layer supports two deliberately narrow families:
 
 - Bernoulli responses with logit link;
-- Poisson count responses with log link.
+- Poisson count responses with log link, optionally with an explicit strictly
+  positive exposure in version 0.53.
 
 The estimand is **marginal / population averaged**. There are no functional
 random effects in this model.
@@ -169,8 +172,54 @@ The model is
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t).
 \]
 
-Version 0.51 does not silently estimate an exposure offset. If an application
-requires exposure-time normalization, that is outside the current contract.
+Without an exposure argument, this remains the 0.51/0.52 expected-count model.
+
+With a scientifically meaningful exposure \(E_{ij}(t)>0\), version 0.53 fits
+
+\[
+\log \mu_{ij}(t)
+=
+\log E_{ij}(t)
++
+\mathbf x_{ij}^{\top}\boldsymbol\beta(t),
+\]
+
+so that
+
+\[
+\lambda_{ij}(t)
+=
+\frac{\mu_{ij}(t)}{E_{ij}(t)}
+=
+\exp\{\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\}.
+\]
+
+The package exposes **exposure**, not a generic arbitrary offset. Exposure must
+be supplied explicitly with shape \`(n_curves, n_time)\`, or with shape
+\`(n_curves,)\` when one value applies to a complete curve. Curve-level values
+are expanded over time and that expansion is recorded in provenance. Exposure
+must be finite and strictly positive everywhere; zero exposure is rejected even
+when the observed count is zero.
+
+~~~python
+rate_fit = fit_generalized_function_on_scalar_regression(
+    count_trajectories,
+    design,
+    predictors=("condition",),
+    participant_column="participant_id",
+    dimension="fixation_count",
+    family="poisson",
+    exposure=observed_duration,
+    exposure_units="seconds",
+    basis_size=4,
+    spline_degree=2,
+)
+~~~
+
+The package never infers exposure from grid spacing, trial duration, sample
+counts, or metadata. The scientific assumption is substantive:
+\(E[Y\mid x,E]=E\lambda(x)\), so expected counts are assumed to scale
+proportionally with the declared opportunity/time denominator.
 
 ## Robust covariance
 
@@ -272,6 +321,23 @@ Version 0.52 adds that downstream interpretation only after the analyst
 declares the complete scalar predictor profile(s). See
 [fixed-profile marginal prediction and contrasts](generalized-function-on-scalar-prediction.md).
 
+## Exposure audit
+
+For an exposure-adjusted Poisson fit, inspect the observation contract directly:
+
+~~~python
+from eyetrajectoriespy import generalized_function_on_scalar_exposure_frame
+
+exposure_audit = generalized_function_on_scalar_exposure_frame(rate_fit)
+print(exposure_audit)
+print(exposure_audit.attrs["exposure_audit"])
+~~~
+
+The audit reports per-curve minimum/maximum exposure, within-curve range,
+whether exposure varies over time, declared units, global minimum/maximum,
+between-curve variation, and the global maximum/minimum exposure ratio. Large
+ratios are exposed for review rather than automatically rejected.
+
 ## Inspect and report
 
 ~~~python
@@ -301,20 +367,24 @@ print(
 For a Bernoulli/logit model, \(\beta_k(t)\) is a time-varying marginal
 log-odds coefficient.
 
-For a Poisson/log model, \(\beta_k(t)\) is a time-varying marginal
-log-mean-count coefficient under the current no-offset contract. Calling it a
-rate coefficient would require an explicitly defined exposure scale or offset,
-which 0.51 does not infer.
+For a Poisson/log model **without exposure**, \(\beta_k(t)\) remains a
+time-varying marginal log-mean-count coefficient.
+
+For a Poisson/log model **with explicit exposure**, \(\beta_k(t)\) is a
+time-varying marginal log-rate coefficient and
+\(\exp\{\beta_k(t)\}\) is a multiplicative rate ratio for a one-unit predictor
+change, holding exposure fixed.
 
 These coefficients are not subject-specific effects conditional on functional
 random effects.
 
 ## Limitations
 
-Version 0.51 intentionally does not include:
+The generalized contract intentionally does not include:
 
 - aggregated binomial proportions with explicit denominators;
-- exposure offsets for Poisson models;
+- arbitrary user-defined offsets or silently inferred exposure;
+- exposure-measurement-error models;
 - negative-binomial or zero-inflated families;
 - automatically selected working correlation;
 - penalized/smoothing-parameter selection;
