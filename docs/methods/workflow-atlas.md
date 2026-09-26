@@ -86,7 +86,7 @@ flowchart TD
     C -->|No independent curves| D[0.35 observed-grid FoSR OLS]
     C -->|Yes participant-level predictors only| E[Participant-average response]
     C -->|Yes trial-varying predictors| F[Gaussian functional mixed effects]
-    B -->|Bernoulli 0/1| G[0.51 marginal generalized FoSR: logit]
+    B -->|Bernoulli 0/1| G[Marginal generalized FoSR: logit]
     B -->|Poisson counts| H[Marginal generalized FoSR: log]
     H --> U{Explicit exposure?}
     U -->|No: expected count| I[Participant is independent GEE cluster]
