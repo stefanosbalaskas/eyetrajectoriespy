@@ -1049,7 +1049,7 @@ steps.
 
 ## Generalized function-on-scalar limitations
 
-The generalized functional-response layer supports Bernoulli/logit and Poisson/log marginal responses on a complete common grid. Version 0.53 supports an explicit strictly-positive Poisson exposure, but not generic arbitrary offsets, exposure-measurement-error models, aggregated binomial denominators, negative-binomial or zero-inflated families, sparse/irregular generalized response estimation, or generalized functional random effects.
+The generalized functional-response layer supports Bernoulli/grouped-binomial logit and Poisson/log marginal responses on a complete common grid. Version 0.54 requires grouped-binomial integer successes plus explicit positive integer denominators, and version 0.53 supports explicit strictly-positive Poisson exposure. The layer does not support generic proportion-only grouped-binomial input, generic arbitrary offsets, denominator/exposure measurement-error models, negative-binomial or zero-inflated families, sparse/irregular generalized response estimation, or generalized functional random effects.
 
 Working independence is deliberate. The package does not scan exchangeable, AR-like or unstructured GEE working correlations and then choose whichever produces the preferred result.
 
