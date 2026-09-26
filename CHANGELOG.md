@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.53.0.dev0
+
+- Add an explicit Poisson `exposure` contract to `fit_generalized_function_on_scalar_regression()` without exposing a generic arbitrary-offset API.
+- Require finite, strictly positive exposure values aligned as `(n_curves, n_time)`; allow `(n_curves,)` only through explicit time expansion recorded in provenance.
+- Retain exposure, log exposure, marginal rate functions, rate-scale linear predictors, count-scale linear predictors, and exposure-specific expected-count functions separately.
+- Preserve the no-exposure Poisson path as an expected-count model rather than retroactively relabeling its coefficients as rates.
+- Add `generalized_function_on_scalar_exposure_frame()` with per-curve and global exposure range, temporal/between-curve variation, units, and maximum/minimum ratio auditing.
+- Resample exposure with the complete source-participant response/design bundle in every participant-bootstrap refit while treating exposure as observed/fixed and not modeling exposure measurement uncertainty.
+- Extend fixed-profile prediction with explicit `prediction_scale="rate"` and `"expected_count"`; exposure-adjusted rate predictions require no target exposure, whereas expected-count predictions require explicit strictly-positive `exposure_profiles` and never silently assume unit exposure.
+- Retain fixed target exposure through all prediction-bootstrap draws without resampling or perturbing it.
+- Extend the one-predeclared-contrast contract to `rate_difference`, `rate_ratio`, and `expected_count_difference` for exposure-adjusted Poisson models.
+- Calibrate rate-ratio simultaneous bands on the log-rate-ratio scale and exponentiate the endpoints, preserving positivity.
+- Keep Bernoulli probability prediction/contrast behavior and no-exposure Poisson expected-count behavior backward compatible.
+- Document the substantive exposure assumption (E[Y\mid x,E]=E\lambda(x)): exposure must represent a defensible amount of observation time/opportunity rather than an arbitrary normalization factor.
+- Explicitly record that exposure is never inferred from grid spacing, trial duration, sample counts, or metadata.
+- Update the mathematical registry, generated function-to-equation indexes, method/reference pages, examples, public API/version contracts, changelog, and roadmap for the 0.53 rate estimand.
+- Continue to defer grouped-binomial denominators to 0.54 pending direct backend validation; generic offsets, negative-binomial/zero-inflated families, generalized random effects, and automatic working-correlation selection remain outside 0.53.
+
 ## 0.52.0.dev0
 
 - Add `generalized_function_on_scalar_predict()` for fixed analyst-declared scalar predictor profiles under the 0.51 marginal Bernoulli/logit or Poisson/log function-on-scalar GEE.
