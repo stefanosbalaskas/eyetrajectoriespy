@@ -2,8 +2,9 @@
 
 Version 0.52 extends the marginal generalized function-on-scalar model from
 link-scale coefficient functions to fixed-profile marginal response functions.
-Version 0.53 preserves that prediction system and adds explicit rate versus
-expected-count semantics for exposure-adjusted Poisson fits.
+Version 0.53 adds explicit rate versus expected-count semantics for
+exposure-adjusted Poisson fits. Version 0.54 keeps grouped-binomial prediction
+on the marginal success-probability scale.
 
 For a predeclared scalar predictor profile \(\mathbf x_r\),
 
@@ -35,7 +36,11 @@ supplied,
 gives the expected count.
 
 Bernoulli/logit prediction is unchanged: the inverse-logit of the declared
-profile linear predictor is the marginal probability.
+profile linear predictor is the marginal probability. The same is true after a
+grouped-binomial fit: the denominator affects the information contributed by
+the observed grouped response, but the fixed-profile estimand is the success
+probability (p_r(t)). A target denominator is therefore neither required nor
+inferred.
 
 ## Fixed scientific targets
 
@@ -304,7 +309,8 @@ These functions estimate marginal rate, probability, or expected-count
 functions. They do not provide predictive intervals for future stochastic
 Bernoulli/count realizations.
 
-The package does not infer exposure, model exposure measurement uncertainty,
-expose arbitrary generic offsets, add grouped-binomial denominators, choose a
-working correlation automatically, add generalized random effects, or provide
-multiple-contrast family adjustment.
+The package does not infer exposure or grouped-binomial denominators, model
+exposure/denominator measurement uncertainty, expose arbitrary generic offsets
+or proportion-only grouped-binomial input, choose a working correlation
+automatically, add generalized random effects, or provide multiple-contrast
+family adjustment.
