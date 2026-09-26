@@ -53,7 +53,7 @@ def test_reference_fpca_rank_one_analytical_truth():
         curve_ids=tuple(f"C{i}" for i in range(values.shape[0])),
         dimension_names=("signal",),
         metadata=pd.DataFrame(index=np.arange(values.shape[0])),
-        coordinate_system="arbitrary",
+        coordinate_system="unknown",
         time_unit="s",
     )
     result = fit_fpca(trajectories, n_components=1, scaling="none")
@@ -123,7 +123,7 @@ def _mixed_reference_data(seed=560):
         curve_ids=tuple(f"M{i:03d}" for i in range(len(values))),
         dimension_names=("response",),
         metadata=pd.DataFrame({"participant_id": participants}),
-        coordinate_system="arbitrary",
+        coordinate_system="unknown",
         time_unit="s",
     )
     design = pd.DataFrame(
@@ -232,7 +232,7 @@ def _poisson_exposure_reference_data(seed=561):
         curve_ids=tuple(f"G{i:03d}" for i in range(counts.shape[0])),
         dimension_names=("count",),
         metadata=pd.DataFrame({"participant_id": participants}),
-        coordinate_system="arbitrary",
+        coordinate_system="unknown",
         time_unit="s",
     )
     design = pd.DataFrame(
