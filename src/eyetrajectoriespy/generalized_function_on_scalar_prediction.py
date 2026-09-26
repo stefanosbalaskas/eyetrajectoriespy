@@ -566,6 +566,7 @@ def generalized_function_on_scalar_mean_difference_band(
     profile_a: str,
     profile_b: str,
     confidence_level: float = 0.95,
+    contrast_scale: str | None = None,
 ) -> GeneralizedFunctionOnScalarMeanDifferenceResult:
     """Construct one predeclared simultaneous marginal mean-difference band.
 
@@ -593,6 +594,45 @@ def generalized_function_on_scalar_mean_difference_band(
         raise ValueError("confidence_level must lie in (0, 1)")
 
     prediction = bootstrap.prediction
+    family = prediction.reference.family
+    has_exposure = prediction.reference.exposure is not None
+    if family == "binomial":
+        allowed = {"probability_difference"}
+        selected_contrast = (
+            "probability_difference"
+            if contrast_scale is None
+            else contrast_scale
+        )
+    elif has_exposure:
+        allowed = {
+            "rate_difference",
+            "rate_ratio",
+            "expected_count_difference",
+        }
+        selected_contrast = (
+            "rate_difference" if contrast_scale is None else contrast_scale
+        )
+    else:
+        allowed = {"expected_count_difference"}
+        selected_contrast = (
+            "expected_count_difference"
+            if contrast_scale is None
+            else contrast_scale
+        )
+    if selected_contrast not in allowed:
+        raise ValueError(
+            f"contrast_scale must be one of {sorted(allowed)} for this fit"
+        )
+    if (
+        selected_contrast == "expected_count_difference"
+        and prediction.expected_count_functions is None
+    ):
+        raise ValueError(
+            "expected_count_difference requires predictions created with "
+            "prediction_scale='expected_count' and explicit target exposure "
+            "for exposure-adjusted fits"
+        )
+
     lookup = {
         profile_id: index
         for index, profile_id in enumerate(prediction.profile_ids)
@@ -607,30 +647,58 @@ def generalized_function_on_scalar_mean_difference_band(
 
     a = lookup[profile_a]
     b = lookup[profile_b]
-    estimate = (
-        prediction.mean_functions[a]
-        - prediction.mean_functions[b]
-    )
-    bootstrap_estimates = (
-        bootstrap.bootstrap_mean_functions[:, a, :]
-        - bootstrap.bootstrap_mean_functions[:, b, :]
-    )
-    standard_error = np.std(
-        bootstrap_estimates,
-        axis=0,
-        ddof=1,
-    )
+    if selected_contrast == "rate_difference":
+        estimate = prediction.rate_functions[a] - prediction.rate_functions[b]
+        bootstrap_estimates = (
+            bootstrap.bootstrap_rate_functions[:, a, :]
+            - bootstrap.bootstrap_rate_functions[:, b, :]
+        )
+        inference_estimate = estimate
+        inference_draws = bootstrap_estimates
+        inference_scale = "rate_difference"
+    elif selected_contrast == "rate_ratio":
+        estimate = prediction.rate_functions[a] / prediction.rate_functions[b]
+        bootstrap_estimates = (
+            bootstrap.bootstrap_rate_functions[:, a, :]
+            / bootstrap.bootstrap_rate_functions[:, b, :]
+        )
+        inference_estimate = np.log(estimate)
+        inference_draws = np.log(bootstrap_estimates)
+        inference_scale = "log_rate_ratio"
+    elif selected_contrast == "expected_count_difference":
+        estimate = (
+            prediction.expected_count_functions[a]
+            - prediction.expected_count_functions[b]
+        )
+        bootstrap_estimates = (
+            bootstrap.bootstrap_expected_count_functions[:, a, :]
+            - bootstrap.bootstrap_expected_count_functions[:, b, :]
+        )
+        inference_estimate = estimate
+        inference_draws = bootstrap_estimates
+        inference_scale = "expected_count_difference"
+    else:
+        estimate = prediction.mean_functions[a] - prediction.mean_functions[b]
+        bootstrap_estimates = (
+            bootstrap.bootstrap_mean_functions[:, a, :]
+            - bootstrap.bootstrap_mean_functions[:, b, :]
+        )
+        inference_estimate = estimate
+        inference_draws = bootstrap_estimates
+        inference_scale = "probability_difference"
+
+    standard_error = np.std(inference_draws, axis=0, ddof=1)
     if (
         np.any(~np.isfinite(standard_error))
         or np.any(standard_error <= np.finfo(float).eps)
     ):
         raise ValueError(
-            "mean-difference simultaneous band requires strictly positive "
-            "finite bootstrap standard errors at every observed time point"
+            "contrast simultaneous band requires strictly positive finite "
+            "bootstrap standard errors at every observed time point"
         )
 
     standardized = np.abs(
-        (bootstrap_estimates - estimate[None, :])
+        (inference_draws - inference_estimate[None, :])
         / standard_error[None, :]
     )
     max_statistics = np.max(standardized, axis=1)
@@ -641,10 +709,16 @@ def generalized_function_on_scalar_mean_difference_band(
             method="higher",
         )
     )
-    lower = estimate - critical_value * standard_error
-    upper = estimate + critical_value * standard_error
+    inference_lower = inference_estimate - critical_value * standard_error
+    inference_upper = inference_estimate + critical_value * standard_error
+    if selected_contrast == "rate_ratio":
+        lower = np.exp(inference_lower)
+        upper = np.exp(inference_upper)
+    else:
+        lower = inference_lower
+        upper = inference_upper
 
-    if prediction.reference.family == "binomial":
+    if selected_contrast == "probability_difference":
         physical_lower: float | None = -1.0
         physical_upper: float | None = 1.0
         exceeds = bool(
@@ -675,14 +749,16 @@ def generalized_function_on_scalar_mean_difference_band(
         physical_lower_bound=physical_lower,
         physical_upper_bound=physical_upper,
         interval_exceeds_physical_bounds=exceeds,
+        contrast_scale=selected_contrast,
+        inference_scale=inference_scale,
         provenance={
             **dict(bootstrap.provenance),
             "generalized_function_on_scalar_mean_difference_band": {
                 "contrast": f"{profile_a} - {profile_b}",
-                "response_scale": (
-                    "probability_difference"
-                    if prediction.reference.family == "binomial"
-                    else "expected_count_difference"
+                "response_scale": selected_contrast,
+                "inference_scale": inference_scale,
+                "rate_ratio_band_calibrated_on_log_scale": (
+                    selected_contrast == "rate_ratio"
                 ),
                 "profiles_fixed": True,
                 "profile_pair_predeclared": True,
