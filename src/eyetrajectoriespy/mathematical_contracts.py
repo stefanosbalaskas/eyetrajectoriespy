@@ -393,6 +393,10 @@ _CONTRACTS = (
         ),
         equations=(
             r"g\{\mu_{ij}(t)\}=\mathbf x_{ij}^\top\boldsymbol\beta(t)",
+            r"\log\mu_{ij}(t)=\log E_{ij}(t)+"
+            r"\mathbf x_{ij}^\top\boldsymbol\beta(t),\quad E_{ij}(t)>0",
+            r"\lambda_{ij}(t)=\frac{\mu_{ij}(t)}{E_{ij}(t)}="
+            r"\exp\{\mathbf x_{ij}^\top\boldsymbol\beta(t)\}",
             r"\beta_k(t)=\mathbf B(t)^\top\boldsymbol\theta_k",
             r"\widehat{\operatorname{Var}}_{\mathrm{robust}}"
             r"(\widehat{\boldsymbol\theta})"
@@ -404,31 +408,38 @@ _CONTRACTS = (
         site_anchor="generalized-function-on-scalar",
         scope=(
             "Marginal population-averaged GEE for Bernoulli/logit or "
-            "Poisson/log functional responses on a common grid. Coefficient "
-            "functions use an analyst-declared clamped B-spline basis; "
-            "participants are independent clusters, trial-varying predictors "
-            "are allowed, working independence is fixed in 0.51, and robust "
-            "sandwich covariance is used. Whole-participant case bootstrap "
-            "refits calibrate observed-grid link-scale simultaneous bands. "
-            "No family, link, basis size, working correlation, or model is "
-            "selected automatically."
+            "Poisson/log functional responses on a common grid. Version 0.53 "
+            "adds an optional explicit strictly-positive Poisson exposure, "
+            "making the coefficient functions log-rate effects while retaining "
+            "expected counts separately. Generic offsets are not exposed or "
+            "inferred. Participants are independent clusters, working "
+            "independence is fixed, robust sandwich covariance is used, and "
+            "whole-participant bootstrap refits carry exposure with each "
+            "response/design bundle. No family, link, exposure, basis size, "
+            "working correlation, or model is selected automatically."
         ),
     ),
     MathematicalContract(
         key="generalized-function-on-scalar-prediction",
-        title="Fixed-profile marginal prediction and mean differences",
+        title="Fixed-profile marginal prediction and explicit contrasts",
         public_api=(
             "generalized_function_on_scalar_predict",
             "generalized_function_on_scalar_prediction_bands",
             "generalized_function_on_scalar_mean_difference_band",
         ),
         equations=(
-            r"\eta_r(t)=\mathbf x_r^\top\widehat{\boldsymbol\beta}(t)",
-            r"\mu_r(t)=g^{-1}\{\eta_r(t)\}",
+            r"\eta_r^{\mathrm{rate}}(t)="
+            r"\mathbf x_r^\top\widehat{\boldsymbol\beta}(t)",
+            r"\lambda_r(t)=\exp\{\eta_r^{\mathrm{rate}}(t)\}",
+            r"\mu_r(t)=E_r(t)\lambda_r(t)",
             r"\widehat{\operatorname{Var}}\{\eta_r(t)\}="
             r"\mathbf z_r(t)^\top\widehat{\boldsymbol\Sigma}_\theta"
             r"\mathbf z_r(t)",
-            r"D_{ab}(t)=\mu_a(t)-\mu_b(t)",
+            r"D^{\mathrm{rate}}_{ab}(t)=\lambda_a(t)-\lambda_b(t)",
+            r"RR_{ab}(t)=\frac{\lambda_a(t)}{\lambda_b(t)}="
+            r"\exp\{(\mathbf x_a-\mathbf x_b)^\top"
+            r"\widehat{\boldsymbol\beta}(t)\}",
+            r"D^{\mathrm{count}}_{ab}(t)=\mu_a(t)-\mu_b(t)",
             r"M_r^{*(b)}=\max_m\left|"
             r"\frac{\eta_r^{*(b)}(t_m)-\eta_r(t_m)}"
             r"{\widehat{\operatorname{SE}}\{\eta_r(t_m)\}}\right|",
@@ -437,14 +448,14 @@ _CONTRACTS = (
         scope=(
             "Fixed analyst-declared scalar predictor profiles projected through "
             "the fitted marginal Bernoulli/logit or Poisson/log coefficient "
-            "functions. Profile values are not resampled. Simultaneous marginal "
-            "mean bands are calibrated on the linear-predictor scale using the "
-            "existing whole-participant coefficient bootstrap and transformed "
-            "through the strictly monotone inverse link. One predeclared "
-            "response-scale mean-difference function may be calibrated from the "
-            "same paired bootstrap draws. Scalar-predictor extrapolations are "
-            "retained and flagged; no profile or contrast is selected "
-            "automatically and between-grid coverage is not claimed."
+            "functions. Exposure-adjusted Poisson fits can always predict rates; "
+            "expected-count prediction requires an explicit strictly-positive "
+            "target exposure and never assumes unit exposure silently. One "
+            "predeclared contrast may target a rate difference, rate ratio, or "
+            "expected-count difference; rate-ratio bands are calibrated on the "
+            "log-rate-ratio scale and exponentiated. Profile values and target "
+            "exposures are fixed, not resampled. No profile or contrast is "
+            "selected automatically and between-grid coverage is not claimed."
         ),
     ),
     MathematicalContract(
