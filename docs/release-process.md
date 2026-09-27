@@ -41,43 +41,72 @@ run installed-package smoke test
 
 The wheel and sdist are never rebuilt separately for GitHub and PyPI.
 
-## Production trigger
+## Production and recovery triggers
 
-Production publication is now explicit-dispatch only. Normal pushes and merges
-to `main` never publish. A maintainer must run `release.yml` manually with
-`target=production` from the exact protected `main` commit after the version
-has been changed from a `.devN` line to a qualified release version.
+Release automation is manual-dispatch only. Normal pushes and merges to
+`main` never publish.
 
-The workflow verifies:
+The workflow exposes four explicit targets:
 
-1. all current version declarations agree;
-2. the selected target is explicitly `production`;
-3. the version is not a development release;
-4. GitHub reports `main` protected;
-5. governance issue #64 is closed;
-6. the dispatched commit is current `main`;
-7. all required exact-main scientific, packaging, documentation, examples,
-   optional-backend, performance and release-readiness checks have completed
-   successfully.
+~~~text
+build-only
+testpypi
+production
+resume-production
+~~~
 
-Only then is the annotated final tag and GitHub Release created.
+`production` is the ordinary publication path. It is intentionally strict:
 
-## Production PyPI
+1. all version declarations must agree;
+2. the version must not be a development release;
+3. GitHub must report exact protected `main`;
+4. governance issue #64 must be closed;
+5. all required exact-main qualification checks must pass;
+6. the target GitHub tag/release must not already exist;
+7. the target PyPI version must not already exist.
 
-The PyPI job has `id-token: write` and uses
-`pypa/gh-action-pypi-publish`; no long-lived PyPI API token is stored.
+If any release/tag/version already exists, ordinary production fails. It does
+not silently retain an existing GitHub Release and it does not use
+`skip-existing` on production PyPI.
 
-The successful 0.9.0rc1 ceremony proved the production Trusted Publishing/OIDC
-path and production-PyPI clean-install verification. For the 0.9.0 final
-release, the same registered publisher claim is retained so the final ceremony
-can reproduce the proven path.
+`resume-production` is a deliberately separate recovery path. It requires an
+existing GitHub Release for the same version whose tag resolves to exact current
+`main`. It then reuses those immutable GitHub Release artifacts and may use
+PyPI `skip-existing` semantics to recover from a partially completed upload or
+post-upload verification failure.
 
-At present the working production Trusted Publisher claim is bound to the
-GitHub environment named `testpypi`. This naming is not ideal and is tracked
-in issue #69. It does not change the destination: the production job publishes
-to `https://upload.pypi.org/legacy/`. Before a later release, migrate that
-publisher claim to the dedicated protected `pypi` environment and update the
-workflow/acknowledgement variables together.
+This separation enforces the ordinary invariant:
+
+~~~text
+one production invocation -> one previously unpublished version
+~~~
+
+while still providing an explicit audited recovery mechanism.
+
+## Dedicated production PyPI authority
+
+Production and recovery jobs use only:
+
+~~~text
+environment: pypi
+PYPI_TRUSTED_PUBLISHING_CONFIGURED
+PYPI_REQUIRED_REVIEWER_CONFIGURED
+~~~
+
+The `testpypi` environment is no longer accepted as production authority.
+Issue #69 is therefore a mandatory pre-release blocker until the production
+PyPI Trusted Publisher is registered with:
+
+~~~text
+Owner:       stefanosbalaskas
+Repository:  eyetrajectoriespy
+Workflow:    release.yml
+Environment: pypi
+~~~
+
+The successful 0.9.0rc1/0.9.0 OIDC publications remain historical evidence that
+Trusted Publishing works, but they do not count as evidence that the dedicated
+`pypi` publisher claim has been migrated.
 
 ## Optional TestPyPI rehearsal
 
