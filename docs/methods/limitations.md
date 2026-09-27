@@ -792,15 +792,15 @@ Curvature divides by speed cubed and turning rate by speed squared. Values near 
 
 ### Coordinate scaling changes the geometry
 
-Curvature and tortuosity are not invariant to anisotropic scaling of \(x\) and \(y\). Separately normalized screen axes can therefore change the estimand. Convert to a meaningful isotropic spatial metric upstream if geometric interpretation requires it.
+Curvature and tortuosity are not invariant to anisotropic scaling of $x$ and $y$. Separately normalized screen axes can therefore change the estimand. Convert to a meaningful isotropic spatial metric upstream if geometric interpretation requires it.
 
 ### Signed curvature depends on axis orientation
 
-The formula is evaluated in the recorded coordinates. If screen \(y\) increases downward, visual sign interpretation is reversed relative to a standard \(y\)-up Cartesian plot. No silent axis flip is performed.
+The formula is evaluated in the recorded coordinates. If screen $y$ increases downward, visual sign interpretation is reversed relative to a standard $y$-up Cartesian plot. No silent axis flip is performed.
 
 ### Wrapped heading is not ordinary Euclidean data
 
-The discontinuity between \(+\pi\) and \(-\pi\) is representational, not physical. Standard linear summaries or FPCA on wrapped heading can be misleading without an explicit circular-data strategy.
+The discontinuity between $+\pi$ and $-\pi$ is representational, not physical. Standard linear summaries or FPCA on wrapped heading can be misleading without an explicit circular-data strategy.
 
 ### Tortuosity is undefined for zero endpoint displacement
 
@@ -863,7 +863,7 @@ symmetric2 gives diagonal advances twice the local-cost weight of horizontal or 
 
 ### The window is an index constraint, not a clock-time constraint
 
-A Sakoe-Chiba `window_radius` limits \(|i-j|\) in sample indices. It does not mean the same number of milliseconds when trajectories use different physical sampling intervals or irregular timing.
+A Sakoe-Chiba `window_radius` limits $|i-j|$ in sample indices. It does not mean the same number of milliseconds when trajectories use different physical sampling intervals or irregular timing.
 
 ### Coordinate scaling changes the result
 
@@ -1039,7 +1039,7 @@ process can compete. Large changes in trial variance, residual range, or
 conditioning should be treated as sensitivity evidence, not an automatic rule
 for deleting one component.
 
-The BIC convention uses \(n_{\mathrm{curves}}n_{\mathrm{time}}\). It should not
+The BIC convention uses $n_{\mathrm{curves}}n_{\mathrm{time}}$. It should not
 be interpreted as resolving the broader question of effective sample size for
 clustered functional observations.
 
