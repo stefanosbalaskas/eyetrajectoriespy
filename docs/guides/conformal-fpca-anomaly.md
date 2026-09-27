@@ -38,7 +38,7 @@ eyetrajectoriespy therefore makes the partition a visible study-design decision 
 
 ## Marginal p-value
 
-For a calibration nonconformity sample \(s_1,\dots,s_n\) and target score \(s^*\),
+For a calibration nonconformity sample $s_1,\dots,s_n$ and target score $s^*$,
 
 $
 \hat p =
