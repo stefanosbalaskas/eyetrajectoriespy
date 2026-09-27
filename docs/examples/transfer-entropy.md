@@ -61,7 +61,7 @@ print(shift_test.surrogate_centered_transfer_entropy_bits)
 print(shift_test.upper_tail_p_value)
 ```
 
-The smallest possible plus-one p-value with 50 supplied shifts is \(1/51\).
+The smallest possible plus-one p-value with 50 supplied shifts is $1/51$.
 Increasing the number of shifts increases Monte Carlo resolution; it does not
 repair an inappropriate surrogate null.
 

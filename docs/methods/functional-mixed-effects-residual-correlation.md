@@ -5,10 +5,10 @@ Gaussian functional mixed-effects model. The covariance family is always
 declared by the analyst; the package does not choose among iid, exponential,
 or AR(1) residuals from the observed result.
 
-With participant effect \(b_i(t)\), optional trial functional effect
-\(u_{ij}(t)\), and fixed coefficient functions \(\boldsymbol\beta(t)\),
+With participant effect $b_i(t)$, optional trial functional effect
+$u_{ij}(t)$, and fixed coefficient functions $\boldsymbol\beta(t)$,
 
-\[
+$$
 Y_{ij}(t)
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t)
@@ -18,15 +18,15 @@ b_i(t)
 u_{ij}(t)
 +
 \epsilon_{ij}(t).
-\]
+$$
 
 The residual vector for each source curve/trial is
 
-\[
+$$
 \boldsymbol\epsilon_{ij}
 \sim
 N\!\left(\mathbf 0,\sigma^2\mathbf R_\theta\right).
-\]
+$$
 
 Residual covariance is **block diagonal by trial**. Observations from different
 trials receive zero residual covariance even when their numerical timestamps
@@ -36,13 +36,13 @@ are close.
 
 The primary physical-time model is
 
-\[
+$$
 R_\phi(t,s)
 =
 \exp\!\left(-\frac{|t-s|}{\phi}\right),
 \qquad
 \phi>0.
-\]
+$$
 
 Use:
 
@@ -61,19 +61,19 @@ The range parameter is estimated jointly with the other covariance parameters
 and is reported in `TrajectorySet.time_unit`. The numerical parameterization
 is
 
-\[
+$$
 \phi=\exp(\eta_\phi).
-\]
+$$
 
 Natural- and transformed-scale optimizer bounds are retained in provenance. A
 fit at or extremely near a numerical bound sets
 `residual_correlation_boundary_fit=True`; it is not silently regularized or
 replaced.
 
-Because the kernel uses actual elapsed separation \(|t-s|\), it remains
+Because the kernel uses actual elapsed separation $|t-s|$, it remains
 meaningful on an unequally spaced common time grid.
 
-The iid model is the limit \(\phi\to0\). On a finite observed grid the
+The iid model is the limit $\phi\to0$. On a finite observed grid the
 likelihood can become essentially flat before the numerical lower optimizer
 bound is reached. Version 0.49 therefore also records
 `residual_correlation_independence_limit_fit=True` when the fitted exponential
@@ -85,36 +85,36 @@ automatic refit to iid.
 
 For a verified equally spaced common grid, 0.49 also permits
 
-\[
+$$
 R_{rs}=\rho^{|r-s|},
 \qquad
 -1<\rho<1.
-\]
+$$
 
 The AR(1) lag is an **index-step lag**. The package rejects AR(1) on an irregular
 grid rather than treating one sample step as a constant physical-time interval.
 
 The numerical parameterization is
 
-\[
+$$
 \rho=\tanh(\eta_\rho).
-\]
+$$
 
-Negative \(\rho\) is allowed. On a regular grid with spacing \(\Delta\), a
+Negative $\rho$ is allowed. On a regular grid with spacing $\Delta$, a
 positive AR(1) can be related to an exponential process through
 
-\[
+$$
 \rho=\exp(-\Delta/\phi),
-\]
+$$
 
 but exponential correlation cannot represent negative AR(1). The two public
 families therefore remain distinct.
 
 ## Marginal covariance
 
-For all observations from participant \(i\),
+For all observations from participant $i$,
 
-\[
+$$
 \mathbf V_i
 =
 \mathbf Z_i\boldsymbol\Psi_{\mathrm P}\mathbf Z_i^\top
@@ -124,7 +124,7 @@ For all observations from participant \(i\),
 +
 \sigma^2
 \operatorname{blockdiag}_j\{\mathbf R_\theta\}.
-\]
+$$
 
 The trial term is absent when no trial functional random effect is declared.
 The residual-correlation term becomes the identity under
@@ -154,23 +154,23 @@ process never crosses source-curve/trial boundaries.
 Once a correlated residual process is fitted, raw residual correlation is not
 expected to disappear. Under the declared model,
 
-\[
+$$
 \boldsymbol\epsilon_{ij}
 \sim
 N(\mathbf 0,\sigma^2\mathbf R_\theta).
-\]
+$$
 
 If
 
-\[
+$$
 \sigma^2\mathbf R_\theta=\mathbf L\mathbf L^\top,
-\]
+$$
 
 define the diagnostic whitened residual vector as
 
-\[
+$$
 \mathbf e_{ij}^{(w)}=\mathbf L^{-1}\mathbf e_{ij}.
-\]
+$$
 
 ~~~python
 from eyetrajectoriespy import (
@@ -205,7 +205,7 @@ whitened residuals are independent observations with known parameters.
 
 A smooth long-range residual process can compete with a smooth trial functional
 random effect. A large fitted exponential range, an ill-conditioned
-\(\boldsymbol\Psi_{\mathrm T}\), a trial covariance approaching a boundary, or
+$\boldsymbol\Psi_{\mathrm T}$, a trial covariance approaching a boundary, or
 large shifts in the trial covariance after adding serial correlation should be
 treated as covariance-decomposition diagnostics—not automatic evidence that
 one component should be deleted.
@@ -218,7 +218,7 @@ for already fitted, predeclared models without automatic selection.
 The fixed-covariance participant bootstrap conditions on the fitted participant
 covariance, optional trial covariance, residual variance, and fitted serial
 parameter. The full-refit participant bootstrap re-estimates every declared
-covariance parameter in each replicate, including \(\phi\) or \(\rho\).
+covariance parameter in each replicate, including $\phi$ or $\rho$.
 
 `functional_mixed_effects_variance_bootstrap_frame()` exposes the bootstrap
 serial parameter, residual-correlation condition number, and boundary flag

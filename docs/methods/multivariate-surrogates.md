@@ -9,13 +9,13 @@ relationships are treated jointly.
 
 ## Scientific target
 
-For channel \(k\),
+For channel $k$,
 
 $$
 F_k(\omega)=A_k(\omega)e^{i\phi_k(\omega)}.
 $$
 
-Relative to an explicitly declared reference channel \(r\), the algorithm
+Relative to an explicitly declared reference channel $r$, the algorithm
 retains the observed phase difference
 
 $$

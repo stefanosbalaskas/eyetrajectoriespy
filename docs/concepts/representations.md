@@ -113,7 +113,7 @@ states. The codes may represent scientifically defined AOIs, behavioral states,
 quantized motion states, or another preregistered symbolic representation, but
 `eyetrajectoriespy` does not choose that representation.
 
-Raw continuous \([x(t),y(t)]\) gaze, pupil diameter, or head rotation should
+Raw continuous $[x(t),y(t)]$ gaze, pupil diameter, or head rotation should
 not be passed to the discrete TE API unless the analyst has explicitly
 constructed and justified the states upstream. Changing the state definition
 changes the empirical probability model and therefore the TE estimand.

@@ -4,11 +4,11 @@ Version 0.50 is the capstone covariance-robustness layer for the Gaussian
 functional mixed-effects subsystem. Its question is deliberately not *which
 covariance model wins?* but:
 
-\[
+$$
 \boxed{
 \text{How much do the scientific conclusions change under defensible covariance structures?}
 }
-\]
+$$
 
 The sensitivity layer compares **already fitted, predeclared models**. It does
 not generate covariance combinations, refit models, rank models, choose a
@@ -132,33 +132,33 @@ failed replicate invalidates the requested bootstrap calculation.
 
 ## Fixed coefficient sensitivity
 
-For model \(m\) relative to declared reference \(r\),
+For model $m$ relative to declared reference $r$,
 
-\[
+$$
 \Delta\beta_m(t)
 =
 \widehat\beta_m(t)-\widehat\beta_r(t).
-\]
+$$
 
 The result retains every observed-grid difference and summarizes, for each
 coefficient,
 
-\[
+$$
 D_{\infty,m}
 =
 \sup_t |\Delta\beta_m(t)|
-\]
+$$
 
 and
 
-\[
+$$
 D_{2,m}
 =
 \left[
 \int
 \{\Delta\beta_m(t)\}^2\,dt
 \right]^{1/2},
-\]
+$$
 
 using trapezoidal integration on the observed time grid.
 
@@ -195,17 +195,17 @@ If simultaneous-band objects are supplied, they must:
 This paired-resampling requirement prevents Monte Carlo draw differences from
 being confounded with covariance-structure sensitivity.
 
-For model \(m\),
+For model $m$,
 
-\[
+$$
 w_m(t)=U_m(t)-L_m(t),
-\]
+$$
 
 and 0.50 reports
 
-\[
+$$
 \frac{w_m(t)}{w_r(t)}
-\]
+$$
 
 against the declared reference. It does not color or annotate a preferred
 model.
@@ -224,49 +224,49 @@ Raw basis covariance matrices can be difficult to compare directly. Version
 
 For the participant random intercept,
 
-\[
+$$
 v_{\mathrm P0}(t)
 =
 \mathbf B_P(t)^\top
 \boldsymbol\Psi_{\mathrm P0}
 \mathbf B_P(t).
-\]
+$$
 
 When a participant random slope is present, 0.50 retains separately
 
-\[
+$$
 v_{\mathrm P1}(t)
 =
 \mathbf B_P(t)^\top
 \boldsymbol\Psi_{\mathrm P1}
 \mathbf B_P(t)
-\]
+$$
 
 and the intercept/slope cross-covariance function
 
-\[
+$$
 c_{\mathrm P01}(t)
 =
 \mathbf B_P(t)^\top
 \boldsymbol\Psi_{\mathrm P01}
 \mathbf B_P(t).
-\]
+$$
 
 The trial functional variance is
 
-\[
+$$
 v_{\mathrm T}(t)
 =
 \mathbf B_T(t)^\top
 \boldsymbol\Psi_{\mathrm T}
 \mathbf B_T(t),
-\]
+$$
 
 while the pointwise residual marginal variance is
 
-\[
+$$
 v_\epsilon(t)=\sigma^2.
-\]
+$$
 
 No participant intercept, slope, and cross-covariance terms are collapsed into
 one percentage.
@@ -299,19 +299,19 @@ Each successful model is diagnosed on both scales:
 - global residual RMS;
 - retained pair counts.
 
-For positive lags \(h=1,\ldots,H\), 0.50 also records
+For positive lags $h=1,\ldots,H$, 0.50 also records
 
-\[
+$$
 \max_{1\le h\le H}
 |\widehat\rho_w(h)|
-\]
+$$
 
 and
 
-\[
+$$
 \sum_{h=1}^{H}
 \widehat\rho_w(h)^2.
-\]
+$$
 
 These are descriptive residual-dependence summaries. The package never
 minimizes them to choose a covariance structure.
@@ -328,56 +328,56 @@ or fixed-basis changes.
 
 For ML fits, the recorded parameter count for information criteria is
 
-\[
+$$
 k_{\mathrm{ML}}
 =
 k_{\mathrm{fixed}}
 +
 k_{\mathrm{covariance}}.
-\]
+$$
 
 For REML fits with the same fixed design and basis, the recorded restricted
 likelihood convention uses
 
-\[
+$$
 k_{\mathrm{REML}}
 =
 k_{\mathrm{covariance}}.
-\]
+$$
 
 The table retains both the total free-parameter count and the exact
 information-criterion parameter count.
 
 The reported quantities are
 
-\[
+$$
 \mathrm{AIC}
 =
 -2\ell+2k
-\]
+$$
 
 and
 
-\[
+$$
 \mathrm{BIC}
 =
 -2\ell+k\log n.
-\]
+$$
 
 For BIC, 0.50 explicitly defines
 
-\[
+$$
 n
 =
 n_{\mathrm{curves}}\times n_{\mathrm{observed\ time\ points}}.
-\]
+$$
 
 That conventional observation count is an auditable calculation rule, not a
 claim that clustered functional data have an uncontroversial philosophical
 effective sample size.
 
 Every model is compared with the declared reference through
-\(\Delta\ell\), \(\Delta\mathrm{AIC}\), and \(\Delta\mathrm{BIC}\). Models are
+$\Delta\ell$, $\Delta\mathrm{AIC}$, and $\Delta\mathrm{BIC}$. Models are
 not sorted by these quantities.
 
 ## No naive likelihood-ratio testing
@@ -395,18 +395,18 @@ clear scientific need justifies it.
 The participant–trial–serial hierarchy makes covariance decomposition
 scientifically interpretable but also creates possible competition between
 
-\[
+$$
 u_{ij}(t)
 \quad\text{and}\quad
 \epsilon_{ij}(t).
-\]
+$$
 
 For example, compare a trial+iid model with a trial+exponential model using:
 
-- \(\operatorname{tr}(\widehat\Psi_T)\);
-- the full \(v_T(t)\) curve;
-- \(\widehat\phi\);
-- \(\widehat\sigma^2\);
+- $\operatorname{tr}(\widehat\Psi_T)$;
+- the full $v_T(t)$ curve;
+- $\widehat\phi$;
+- $\widehat\sigma^2$;
 - trial covariance eigenvalues, condition number, and boundary diagnostics;
 - raw and whitened residual dependence.
 

@@ -294,19 +294,19 @@ the observed grid.
 ### 0.53 explicit Poisson exposure and rate estimand
 
 Version **0.53** adds an explicit exposure-based Poisson rate contract without
-changing the marginal GEE interpretation. For \(E_{ij}(t)>0\),
+changing the marginal GEE interpretation. For $E_{ij}(t)>0$,
 
-\[
+$$
 \log \mu_{ij}(t)
 =
 \log E_{ij}(t)+\mathbf x_{ij}^{\top}\boldsymbol\beta(t),
-\]
+$$
 
 so the fitted coefficient predictor is a log rate and
 
-\[
+$$
 \lambda_{ij}(t)=\mu_{ij}(t)/E_{ij}(t)
-\]
+$$
 
 is retained separately from the expected count. Exposure is supplied explicitly
 as a curve-by-time array or as one value per curve that is deliberately
@@ -324,7 +324,7 @@ between-curve variation, units, and the global exposure ratio.
 For fixed-profile prediction, rate functions require no target exposure.
 Expected-count prediction from an exposure-adjusted fit requires an explicit
 strictly-positive target exposure and fails rather than silently setting
-\(E=1\). One predeclared Poisson contrast scale may be requested:
+$E=1$. One predeclared Poisson contrast scale may be requested:
 rate difference, rate ratio, or expected-count difference. Rate-ratio
 simultaneous bands are calibrated on the log-rate-ratio scale and exponentiated.
 
@@ -332,22 +332,22 @@ simultaneous bands are calibrated on the log-rate-ratio scale and exponentiated.
 
 Version **0.54** closes the planned generalized observation-family gap with an
 explicit grouped-binomial success/denominator contract. The observed functional
-response is an integer success-count function \(S_{ij}(t)\), accompanied by a
-strictly positive integer denominator \(N_{ij}(t)\) satisfying
+response is an integer success-count function $S_{ij}(t)$, accompanied by a
+strictly positive integer denominator $N_{ij}(t)$ satisfying
 
-\[
+$$
 0 \le S_{ij}(t) \le N_{ij}(t).
-\]
+$$
 
 The marginal model is
 
-\[
+$$
 S_{ij}(t)\sim\operatorname{Binomial}\{N_{ij}(t),p_{ij}(t)\},
 \qquad
 \operatorname{logit}p_{ij}(t)
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t).
-\]
+$$
 
 The public contract accepts integer successes plus an explicit denominator. It
 does not accept arbitrary proportions as sufficient grouped-binomial input, so

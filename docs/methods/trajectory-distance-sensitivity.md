@@ -76,8 +76,8 @@ The result keeps:
 - the complete specification table;
 - every unordered curve-pair distance and within-specification rank;
 - every pairwise comparison between specifications;
-- per-curve top-\(k\) neighbor sets;
-- per-curve top-\(k\) Jaccard overlap;
+- per-curve top-$k$ neighbor sets;
+- per-curve top-$k$ Jaccard overlap;
 - nearest-neighbor identity agreement;
 - deterministic neighbor selections;
 - cutoff-tie flags;
@@ -85,8 +85,8 @@ The result keeps:
 
 ## Global pair-order agreement
 
-For specification \(s\), let the upper triangle of the distance matrix be
-\(\mathbf v^{(s)}\). Version 0.38 compares pair ordering using Spearman
+For specification $s$, let the upper triangle of the distance matrix be
+$\mathbf v^{(s)}$. Version 0.38 compares pair ordering using Spearman
 correlation:
 
 $$
@@ -107,7 +107,7 @@ different native scales.
 
 ## Local neighborhood agreement
 
-For each curve, top-\(k\) neighbor sets are compared using Jaccard overlap,
+For each curve, top-$k$ neighbor sets are compared using Jaccard overlap,
 
 $$
 J_k
@@ -117,9 +117,9 @@ $$
 
 The result additionally records:
 
-- exact top-\(k\) set agreement;
+- exact top-$k$ set agreement;
 - nearest-neighbor identity agreement;
-- whether a tie occurs at the \(k\)/\(k+1\) cutoff.
+- whether a tie occurs at the $k$/$k+1$ cutoff.
 
 That last point is important: when the cutoff is tied, one deterministic
 neighbor set is still returned for reproducibility, but it is not presented as
@@ -139,7 +139,7 @@ structure.
 
 ## No p-values from dependent pair distances
 
-The \(n(n-1)/2\) pairwise distances are not independent observations because
+The $n(n-1)/2$ pairwise distances are not independent observations because
 each trajectory appears in many pairs.
 
 Version 0.38 therefore reports descriptive rank and neighborhood agreement only.
@@ -180,7 +180,7 @@ print(trajectory_distance_sensitivity_reporting_text(robustness))
 ~~~
 
 Report the full specification set, selected dimensions, dimension weights,
-neighbor \(k\), global rank agreement, local neighbor agreement, cutoff ties,
+neighbor $k$, global rank agreement, local neighbor agreement, cutoff ties,
 and the fact that the analysis is descriptive rather than a statistical test
 of which distance is correct.
 

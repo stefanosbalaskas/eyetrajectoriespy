@@ -101,7 +101,7 @@ Both AMI and false-nearest-neighbor diagnostics require an approximately regular
 
 ## 2. Sparse recurrence analysis
 
-For states \(\mathbf z_i\),
+For states $\mathbf z_i$,
 
 $$
 R_{ij}
@@ -112,7 +112,7 @@ R_{ij}
 ].
 $$
 
-`recurrence_matrix()` stores the matrix as SciPy CSR rather than creating an \(N\times N\) dense Boolean array.
+`recurrence_matrix()` stores the matrix as SciPy CSR rather than creating an $N\times N$ dense Boolean array.
 
 You must declare exactly one radius policy:
 
@@ -216,7 +216,7 @@ dynamic = windowed_rqa(
 )
 ```
 
-The returned table contains \(RR(t)\), \(DET(t)\), \(LAM(t)\), trapping time, entropy, CORM, and the radius used in each window.
+The returned table contains $RR(t)$, $DET(t)$, $LAM(t)$, trapping time, entropy, CORM, and the radius used in each window.
 
 Only complete windows are analyzed. Any trailing samples not included in a full window are reported as `dropped_tail_samples`; they are never silently forgotten.
 
@@ -327,7 +327,7 @@ divergence = local_divergence_curve(
 )
 ```
 
-For each state \(i\), the nearest positive-distance neighbor outside the Theiler window is followed forward:
+For each state $i$, the nearest positive-distance neighbor outside the Theiler window is followed forward:
 
 $$
 d_i(k)=
@@ -352,7 +352,7 @@ lle = estimate_largest_lyapunov_rosenstein(
 No automated “linear region” selector is used.
 
 !!! warning "Interpretation"
-    A positive estimated \(\lambda_{\max}\) does **not** by itself prove deterministic chaos in gaze behavior. Noise, filtering, nonstationarity, short records, embedding choices, and fit-interval choice can all create or alter apparent divergence.
+    A positive estimated $\lambda_{\max}$ does **not** by itself prove deterministic chaos in gaze behavior. Noise, filtering, nonstationarity, short records, embedding choices, and fit-interval choice can all create or alter apparent divergence.
 
 ### Kantz fixed-radius neighborhood divergence
 
@@ -597,7 +597,7 @@ $$
 \boldsymbol\varepsilon_n.
 $$
 
-The fit also retains its design condition number and per-state fit \(R^2\), with no package-imposed condition-number cutoff. The spectral radius
+The fit also retains its design condition number and per-state fit $R^2$, with no package-imposed condition-number cutoff. The spectral radius
 
 $$
 \rho(\mathbf J)=\max_j|\lambda_j(\mathbf J)|
@@ -606,13 +606,13 @@ $$
 is labeled contracting, expanding, or near-neutral relative to an explicit tolerance.
 
 !!! danger "Experimental—not classical Floquet theory"
-    The fitted \(\mathbf J\) is estimated from noisy observed cycle-to-cycle data. It is not obtained by integrating a known ODE's variational equations. Do not call it a monodromy matrix and do not report its eigenvalues as Floquet multipliers.
+    The fitted $\mathbf J$ is estimated from noisy observed cycle-to-cycle data. It is not obtained by integrating a known ODE's variational equations. Do not call it a monodromy matrix and do not report its eigenvalues as Floquet multipliers.
 
 ## Computational scaling
 
-A dense recurrence plot requires \(O(N^2)\) storage. Version 0.23 therefore stores recurrence matrices sparsely and uses spatial-tree neighbor search.
+A dense recurrence plot requires $O(N^2)$ storage. Version 0.23 therefore stores recurrence matrices sparsely and uses spatial-tree neighbor search.
 
-Target-recurrence-rate mode repeatedly counts neighbors while solving for \(\varepsilon\); it avoids a full dense pairwise-distance matrix but can still be computationally demanding for very long or high-dimensional embeddings.
+Target-recurrence-rate mode repeatedly counts neighbors while solving for $\varepsilon$; it avoids a full dense pairwise-distance matrix but can still be computationally demanding for very long or high-dimensional embeddings.
 
 Windowed RQA repeats recurrence construction in each declared window. Keep exploratory grids modest and report every parameter.
 
@@ -625,9 +625,9 @@ No silent choice is made for:
 
 - interpolation or smoothing;
 - dimensions included in state space;
-- delay \(\tau\);
-- embedding dimension \(m\);
-- recurrence radius \(\varepsilon\);
+- delay $\tau$;
+- embedding dimension $m$;
+- recurrence radius $\varepsilon$;
 - fixed-radius versus target-RR policy;
 - distance metric;
 - Theiler window;
@@ -647,10 +647,10 @@ At minimum report:
 
 1. sampling rate/grid and analyzed dimensions;
 2. whether recurrence used observed or reconstructed state;
-3. \(m\), \(\tau\), scaling/preprocessing, metric, \(\varepsilon\) policy, and Theiler window;
+3. $m$, $\tau$, scaling/preprocessing, metric, $\varepsilon$ policy, and Theiler window;
 4. line-length thresholds for RQA;
 5. window/step and explicit trailing-tail count for windowed RQA;
-6. LLE fit interval, exponent units, \(R^2\), and number of fit points;
+6. LLE fit interval, exponent units, $R^2$, and number of fit points;
 7. IAAFT surrogate count, seed, alternative, plus-one p-value, and convergence settings;
 8. section, crossing direction, state dimensions, reference, neighborhood, and spectral radius for return maps;
 9. the interpretation boundaries above.

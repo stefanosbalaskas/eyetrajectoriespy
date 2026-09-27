@@ -21,143 +21,162 @@ nav:
       - Scientific contracts: concepts/contracts.md
       - Analysis decision map: concepts/decision-map.md
   - Guides:
-      - Preparing trajectories: guides/preprocessing.md
-      - Native irregular trajectories: guides/irregular-trajectories.md
-      - Sparse irregular / PACE FPCA: guides/sparse-irregular-fpca.md
-      - FPCA & MFPCA: guides/fpca.md
-      - FPCA stability & validation: guides/stability-validation.md
-      - Selecting FPC count: guides/component-selection.md
-      - Predictive FPC selection: guides/predictive-component-selection.md
-      - FPC shape uncertainty: guides/component-uncertainty.md
-      - Simultaneous FPC bands: guides/simultaneous-fpc-bands.md
-      - FPCA spectrum uncertainty: guides/spectrum-uncertainty.md
-      - FPC score basis uncertainty: guides/score-uncertainty.md
-      - Simultaneous functional mean bands: guides/simultaneous-mean-bands.md
-      - Near-tied FPC subspaces: guides/subspace-stability.md
-      - Outliers & influence: guides/outliers-influence.md
-      - Conformal FPCA anomaly review: guides/conformal-fpca-anomaly.md
-      - Registration & phase: guides/registration.md
-      - Phase FPCA & registration sensitivity: guides/phase-fpca.md
-      - Basis representations: guides/basis-representations.md
-      - Multilevel FPCA: guides/multilevel.md
-      - AOI probability functions: guides/compositional.md
-      - Elastic trajectory analysis: guides/elastic.md
-      - Functional regression & clustering: guides/downstream.md
-      - Function-on-scalar regression: guides/function-on-scalar.md
-      - Generalized function-on-scalar regression: methods/generalized-function-on-scalar.md
-      - Generalized FoSR marginal prediction: methods/generalized-function-on-scalar-prediction.md
-      - Functional mixed-effects regression: guides/functional-mixed-effects.md
-      - Mixed-effects simultaneous bands: methods/functional-mixed-effects-simultaneous-bands.md
-      - Random functional slope: methods/functional-mixed-effects-random-slope.md
-      - Trial functional random effect: methods/functional-mixed-effects-trial-random-effect.md
-      - Explicit residual covariance & whitening: methods/functional-mixed-effects-residual-correlation.md
-      - Covariance-structure sensitivity: methods/functional-mixed-effects-covariance-sensitivity.md
-      - Mixed-effects full-refit bootstrap: methods/functional-mixed-effects-full-refit-bootstrap.md
-      - Mixed-effects residual diagnostics: methods/functional-mixed-effects-residual-diagnostics.md
-      - Gaussian FPCR bootstrap uncertainty: guides/fpcr-bootstrap-inference.md
-      - Gaussian FPCR simultaneous slope bands: guides/fpcr-simultaneous-slope-band.md
-      - Gaussian FPCR future-outcome prediction: guides/fpcr-future-prediction.md
-      - Heteroscedastic FPCR wild bootstrap: guides/fpcr-wild-bootstrap.md
-      - Simultaneous fixed-target FPCR wild bootstrap: guides/fpcr-wild-bootstrap-simultaneous.md
-      - Fixed-family FPCR wild-bootstrap tests: guides/fpcr-wild-bootstrap-family-tests.md
-      - Wild-bootstrap Monte Carlo precision: guides/fpcr-wild-bootstrap-monte-carlo.md
-      - Stabilized-volatility FPCR selection: guides/fpcr-wild-bootstrap-selection.md
-      - Derived continuous functions: guides/derived-functions.md
-      - Continuous trajectory geometry: methods/trajectory-geometry.md
-      - Discrete Fréchet trajectory distance: methods/discrete-frechet.md
-      - Dynamic time warping: methods/dynamic-time-warping.md
-      - Trajectory-distance sensitivity: methods/trajectory-distance-sensitivity.md
-      - Nonlinear trajectory dynamics: guides/nonlinear-dynamics.md
-      - Joint recurrence analysis: methods/joint-recurrence.md
-      - Recurrence networks: methods/recurrence-networks.md
-      - Discrete transfer entropy: methods/transfer-entropy.md
-      - Transfer entropy sensitivity: methods/transfer-entropy-sensitivity.md
-      - Conditional transfer entropy: methods/conditional-transfer-entropy.md
-      - Multivariate surrogate testing: methods/multivariate-surrogates.md
-      - Recurrence-threshold diagnostics: methods/recurrence-threshold-diagnostics.md
-      - RQA population bootstrap: methods/rqa-population-bootstrap.md
-      - Kantz largest-Lyapunov estimation: methods/kantz-lle.md
-      - Nonlinear parameter sensitivity: methods/nonlinear-parameter-sensitivity.md
-      - Functional RQA sensitivity & dependence: methods/rqa-functional-dependence.md
-      - Interpretation: guides/interpretation.md
+      - Overview: guides/index.md
+      - Data & representation:
+          - Preparing trajectories: guides/preprocessing.md
+          - Native irregular trajectories: guides/irregular-trajectories.md
+          - Sparse irregular / PACE FPCA: guides/sparse-irregular-fpca.md
+          - Basis representations: guides/basis-representations.md
+          - Derived continuous functions: guides/derived-functions.md
+      - FPCA, uncertainty & review:
+          - FPCA & MFPCA: guides/fpca.md
+          - FPCA stability & validation: guides/stability-validation.md
+          - Selecting FPC count: guides/component-selection.md
+          - Predictive FPC selection: guides/predictive-component-selection.md
+          - FPC shape uncertainty: guides/component-uncertainty.md
+          - Simultaneous FPC bands: guides/simultaneous-fpc-bands.md
+          - FPCA spectrum uncertainty: guides/spectrum-uncertainty.md
+          - FPC score basis uncertainty: guides/score-uncertainty.md
+          - Simultaneous functional mean bands: guides/simultaneous-mean-bands.md
+          - Near-tied FPC subspaces: guides/subspace-stability.md
+          - Outliers & influence: guides/outliers-influence.md
+          - Conformal anomaly review: guides/conformal-fpca-anomaly.md
+      - Registration, multilevel & composition:
+          - Registration & phase: guides/registration.md
+          - Phase FPCA & registration sensitivity: guides/phase-fpca.md
+          - Multilevel FPCA: guides/multilevel.md
+          - AOI probability functions: guides/compositional.md
+          - Elastic trajectory analysis: guides/elastic.md
+      - Functional regression & repeated measures:
+          - Functional regression & clustering: guides/downstream.md
+          - Function-on-scalar regression: guides/function-on-scalar.md
+          - Generalized function-on-scalar: methods/generalized-function-on-scalar.md
+          - Generalized marginal prediction: methods/generalized-function-on-scalar-prediction.md
+          - Functional mixed-effects regression: guides/functional-mixed-effects.md
+          - Mixed-effects simultaneous bands: methods/functional-mixed-effects-simultaneous-bands.md
+          - Random functional slope: methods/functional-mixed-effects-random-slope.md
+          - Trial functional random effect: methods/functional-mixed-effects-trial-random-effect.md
+          - Residual covariance & whitening: methods/functional-mixed-effects-residual-correlation.md
+          - Covariance-structure sensitivity: methods/functional-mixed-effects-covariance-sensitivity.md
+          - Full-refit bootstrap: methods/functional-mixed-effects-full-refit-bootstrap.md
+          - Residual diagnostics: methods/functional-mixed-effects-residual-diagnostics.md
+          - Gaussian FPCR bootstrap uncertainty: guides/fpcr-bootstrap-inference.md
+          - Gaussian FPCR simultaneous slope bands: guides/fpcr-simultaneous-slope-band.md
+          - Gaussian FPCR future prediction: guides/fpcr-future-prediction.md
+          - Heteroscedastic FPCR wild bootstrap: guides/fpcr-wild-bootstrap.md
+          - Simultaneous fixed-target bootstrap: guides/fpcr-wild-bootstrap-simultaneous.md
+          - Fixed-family bootstrap tests: guides/fpcr-wild-bootstrap-family-tests.md
+          - Wild-bootstrap Monte Carlo precision: guides/fpcr-wild-bootstrap-monte-carlo.md
+          - Stabilized-volatility selection: guides/fpcr-wild-bootstrap-selection.md
+      - Geometry & nonlinear dynamics:
+          - Continuous trajectory geometry: methods/trajectory-geometry.md
+          - Discrete Fréchet distance: methods/discrete-frechet.md
+          - Dynamic time warping: methods/dynamic-time-warping.md
+          - Distance sensitivity: methods/trajectory-distance-sensitivity.md
+          - Nonlinear trajectory dynamics: guides/nonlinear-dynamics.md
+          - Joint recurrence analysis: methods/joint-recurrence.md
+          - Recurrence networks: methods/recurrence-networks.md
+          - Recurrence-threshold diagnostics: methods/recurrence-threshold-diagnostics.md
+          - RQA population bootstrap: methods/rqa-population-bootstrap.md
+          - Functional RQA sensitivity: methods/rqa-functional-dependence.md
+          - Kantz largest-Lyapunov estimation: methods/kantz-lle.md
+          - Nonlinear parameter sensitivity: methods/nonlinear-parameter-sensitivity.md
+          - Discrete transfer entropy: methods/transfer-entropy.md
+          - Transfer-entropy sensitivity: methods/transfer-entropy-sensitivity.md
+          - Conditional transfer entropy: methods/conditional-transfer-entropy.md
+          - Multivariate surrogate testing: methods/multivariate-surrogates.md
+          - Interpretation: guides/interpretation.md
   - Worked examples:
-      - 2-D evidence inspection: examples/evidence-inspection.md
-      - Native irregular sampling: examples/native-irregular.md
-      - Sparse PACE FPCA: examples/sparse-pace-fpca.md
-      - FPCA stability: examples/fpca-stability.md
-      - Selection & FPC uncertainty: examples/fpca-selection-uncertainty.md
-      - Simultaneous FPC bands: examples/simultaneous-fpc-bands.md
-      - FPCA spectrum uncertainty: examples/fpca-spectrum-uncertainty.md
-      - FPC score basis uncertainty: examples/fpca-score-uncertainty.md
-      - Predictive FPCA regression: examples/predictive-fpca-regression.md
-      - Near-tied FPC subspaces: examples/near-tied-subspace.md
-      - Functional mean bands: examples/functional-mean-bands.md
-      - Outlier & influence diagnostics: examples/outlier-influence.md
-      - Conformal FPCA anomaly review: examples/conformal-fpca-anomaly.md
-      - Phase FPCA: examples/phase-fpca.md
-      - Repeated-trial multilevel FPCA: examples/multilevel.md
-      - Compositional AOI trajectories: examples/compositional.md
-      - Functional regression: examples/regression.md
-      - Function-on-scalar regression: examples/function-on-scalar.md
-      - Generalized function-on-scalar regression: examples/generalized-function-on-scalar.md
-      - Generalized FoSR marginal prediction: examples/generalized-function-on-scalar-prediction.md
-      - Functional mixed-effects regression: examples/functional-mixed-effects.md
-      - Mixed-effects simultaneous bands: examples/functional-mixed-effects-simultaneous-bands.md
-      - Random functional slope: examples/functional-mixed-effects-random-slope.md
-      - Trial functional random effect: examples/functional-mixed-effects-trial-random-effect.md
-      - Explicit residual covariance & whitening: examples/functional-mixed-effects-residual-correlation.md
-      - Covariance-structure sensitivity: examples/functional-mixed-effects-covariance-sensitivity.md
-      - Mixed-effects full-refit bootstrap: examples/functional-mixed-effects-full-refit-bootstrap.md
-      - Mixed-effects residual diagnostics: examples/functional-mixed-effects-residual-diagnostics.md
-      - Gaussian FPCR bootstrap uncertainty: examples/fpcr-bootstrap-inference.md
-      - Gaussian FPCR simultaneous slope bands: examples/fpcr-simultaneous-slope-band.md
-      - Gaussian FPCR future-outcome prediction: examples/fpcr-future-prediction.md
-      - Heteroscedastic FPCR wild bootstrap: examples/fpcr-wild-bootstrap.md
-      - Simultaneous fixed-target FPCR wild bootstrap: examples/fpcr-wild-bootstrap-simultaneous.md
-      - Fixed-family FPCR wild-bootstrap tests: examples/fpcr-wild-bootstrap-family-tests.md
-      - Wild-bootstrap Monte Carlo precision: examples/fpcr-wild-bootstrap-monte-carlo.md
-      - Stabilized-volatility FPCR selection: examples/fpcr-wild-bootstrap-selection.md
-      - Irregular sampling & gaps: examples/irregular-data.md
-      - Continuous trajectory geometry: examples/trajectory-geometry.md
-      - Discrete Fréchet trajectory comparison: examples/discrete-frechet.md
-      - Dynamic time warping comparison: examples/dynamic-time-warping.md
-      - Trajectory-distance sensitivity: examples/trajectory-distance-sensitivity.md
-      - Function → equation registry: examples/function-equation-registry.md
-      - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
-      - Joint recurrence analysis: examples/joint-recurrence.md
-      - Recurrence networks: examples/recurrence-networks.md
-      - Discrete transfer entropy: examples/transfer-entropy.md
-      - Transfer entropy sensitivity: examples/transfer-entropy-sensitivity.md
-      - Conditional transfer entropy: examples/conditional-transfer-entropy.md
-      - Multivariate surrogate testing: examples/multivariate-surrogates.md
-      - Recurrence-threshold diagnostics: examples/recurrence-threshold-diagnostics.md
-      - RQA population bootstrap: examples/rqa-population-bootstrap.md
-      - Rosenstein vs Kantz LLE: examples/kantz-lle.md
-      - Nonlinear parameter sensitivity: examples/nonlinear-parameter-sensitivity.md
-      - RQA-derived functional trajectories: examples/rqa-functional-trajectories.md
-      - Functional RQA sensitivity & inference: examples/rqa-functional-sensitivity.md
-      - Empirical return-map stability: examples/return-map-stability.md
-      - Failure cases: examples/failure-cases.md
+      - Overview: examples/index.md
+      - Foundations & representation:
+          - 2-D evidence inspection: examples/evidence-inspection.md
+          - Native irregular sampling: examples/native-irregular.md
+          - Irregular sampling & gaps: examples/irregular-data.md
+          - Sparse PACE FPCA: examples/sparse-pace-fpca.md
+          - Compositional AOI trajectories: examples/compositional.md
+          - Repeated-trial multilevel FPCA: examples/multilevel.md
+          - Phase FPCA: examples/phase-fpca.md
+      - FPCA & uncertainty:
+          - FPCA stability: examples/fpca-stability.md
+          - Selection & FPC uncertainty: examples/fpca-selection-uncertainty.md
+          - Simultaneous FPC bands: examples/simultaneous-fpc-bands.md
+          - FPCA spectrum uncertainty: examples/fpca-spectrum-uncertainty.md
+          - FPC score basis uncertainty: examples/fpca-score-uncertainty.md
+          - Predictive FPCA regression: examples/predictive-fpca-regression.md
+          - Near-tied FPC subspaces: examples/near-tied-subspace.md
+          - Functional mean bands: examples/functional-mean-bands.md
+          - Outlier & influence diagnostics: examples/outlier-influence.md
+          - Conformal anomaly review: examples/conformal-fpca-anomaly.md
+      - Functional regression & prediction:
+          - Functional regression: examples/regression.md
+          - Function-on-scalar regression: examples/function-on-scalar.md
+          - Generalized function-on-scalar: examples/generalized-function-on-scalar.md
+          - Generalized marginal prediction: examples/generalized-function-on-scalar-prediction.md
+          - Gaussian FPCR bootstrap uncertainty: examples/fpcr-bootstrap-inference.md
+          - Gaussian FPCR simultaneous slope bands: examples/fpcr-simultaneous-slope-band.md
+          - Gaussian FPCR future prediction: examples/fpcr-future-prediction.md
+          - Heteroscedastic FPCR wild bootstrap: examples/fpcr-wild-bootstrap.md
+          - Simultaneous fixed-target bootstrap: examples/fpcr-wild-bootstrap-simultaneous.md
+          - Fixed-family bootstrap tests: examples/fpcr-wild-bootstrap-family-tests.md
+          - Wild-bootstrap Monte Carlo precision: examples/fpcr-wild-bootstrap-monte-carlo.md
+          - Stabilized-volatility selection: examples/fpcr-wild-bootstrap-selection.md
+      - Repeated-trial mixed effects:
+          - Functional mixed-effects regression: examples/functional-mixed-effects.md
+          - Simultaneous coefficient bands: examples/functional-mixed-effects-simultaneous-bands.md
+          - Random functional slope: examples/functional-mixed-effects-random-slope.md
+          - Trial functional random effect: examples/functional-mixed-effects-trial-random-effect.md
+          - Residual covariance & whitening: examples/functional-mixed-effects-residual-correlation.md
+          - Covariance-structure sensitivity: examples/functional-mixed-effects-covariance-sensitivity.md
+          - Full-refit bootstrap: examples/functional-mixed-effects-full-refit-bootstrap.md
+          - Residual diagnostics: examples/functional-mixed-effects-residual-diagnostics.md
+      - Geometry & trajectory comparison:
+          - Continuous trajectory geometry: examples/trajectory-geometry.md
+          - Discrete Fréchet comparison: examples/discrete-frechet.md
+          - Dynamic time warping: examples/dynamic-time-warping.md
+          - Distance sensitivity: examples/trajectory-distance-sensitivity.md
+      - Nonlinear, recurrence & information flow:
+          - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
+          - Joint recurrence analysis: examples/joint-recurrence.md
+          - Recurrence networks: examples/recurrence-networks.md
+          - Recurrence-threshold diagnostics: examples/recurrence-threshold-diagnostics.md
+          - RQA population bootstrap: examples/rqa-population-bootstrap.md
+          - RQA-derived functional trajectories: examples/rqa-functional-trajectories.md
+          - Functional RQA sensitivity: examples/rqa-functional-sensitivity.md
+          - Rosenstein vs Kantz LLE: examples/kantz-lle.md
+          - Nonlinear parameter sensitivity: examples/nonlinear-parameter-sensitivity.md
+          - Discrete transfer entropy: examples/transfer-entropy.md
+          - Transfer-entropy sensitivity: examples/transfer-entropy-sensitivity.md
+          - Conditional transfer entropy: examples/conditional-transfer-entropy.md
+          - Multivariate surrogate testing: examples/multivariate-surrogates.md
+          - Empirical return-map stability: examples/return-map-stability.md
+      - Audit utilities:
+          - Function → equation registry: examples/function-equation-registry.md
+          - Failure cases: examples/failure-cases.md
   - Methods:
-      - Reporting checklist: methods/reporting.md
-      - Pre-registration checklist: methods/preregistration.md
-      - Assumptions & diagnostics: methods/assumptions.md
-      - Limitations & failure modes: methods/limitations.md
-      - Method comparison: methods/method-comparison.md
-      - Capability status & roadmap: methods/status-roadmap.md
-      - Release readiness: release-readiness.md
-      - Independent-reference validation ledger: validation/reference-validation-ledger.md
-      - Numerical tolerance policy: validation/numerical-tolerance-policy.md
-      - Performance envelope: validation/performance-envelope.md
-      - Portable scientific results: reproducibility/portable-results.md
-      - Reproducibility bundle checklist: reproducibility/checklist.md
-      - Release process: release-process.md
-      - Research FAQ: methods/faq.md
-      - Mathematical reference: methods/mathematical-reference.md
-      - Visual gallery: methods/visual-gallery.md
-      - Workflow atlas: methods/workflow-atlas.md
-      - RQA software conventions: methods/rqa-software-conventions.md
-      - References: methods/references.md
+      - Overview: methods/index.md
+      - Scientific practice:
+          - Reporting checklist: methods/reporting.md
+          - Pre-registration checklist: methods/preregistration.md
+          - Assumptions & diagnostics: methods/assumptions.md
+          - Limitations & failure modes: methods/limitations.md
+          - Method comparison: methods/method-comparison.md
+          - Research FAQ: methods/faq.md
+      - Mathematical & visual reference:
+          - Mathematical reference: methods/mathematical-reference.md
+          - Visual gallery: methods/visual-gallery.md
+          - Workflow atlas: methods/workflow-atlas.md
+          - RQA software conventions: methods/rqa-software-conventions.md
+          - References: methods/references.md
+      - Validation & qualification:
+          - Capability status & roadmap: methods/status-roadmap.md
+          - Release readiness: release-readiness.md
+          - Independent-reference validation ledger: validation/reference-validation-ledger.md
+          - Numerical tolerance policy: validation/numerical-tolerance-policy.md
+          - Performance envelope: validation/performance-envelope.md
+      - Reproducibility & release:
+          - Portable scientific results: reproducibility/portable-results.md
+          - Reproducibility bundle checklist: reproducibility/checklist.md
+          - Release process: release-process.md
   - API:
       - API stability & hierarchy: reference/api-stability.md
       - 0.55 consistency audit: reference/api-consistency-audit.md
@@ -193,6 +212,7 @@ theme:
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.sections
+    - navigation.indexes
     - navigation.path
     - navigation.tracking
     - navigation.top

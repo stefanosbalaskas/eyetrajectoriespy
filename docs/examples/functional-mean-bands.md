@@ -100,14 +100,14 @@ A curve-weighted mean gives participant A three times the contribution of partic
 
 Participant-level inference instead computes:
 
-\[
+$$
 \frac{1}{2}
 \left[
 \frac{X_{A1}(t)+X_{A2}(t)+X_{A3}(t)}{3}
 +
 X_{B1}(t)
 \right].
-\]
+$$
 
 This is the estimand used by `unit="participant"`.
 

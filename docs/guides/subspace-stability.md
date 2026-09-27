@@ -8,11 +8,11 @@ That instability is not always evidence that the underlying low-dimensional func
 
 Suppose FPC1 and FPC2 have similar eigenvalues. A bootstrap sample may return a rotated pair:
 
-\[
+$$
 \tilde\phi_1 = \cos(\theta)\phi_1 + \sin(\theta)\phi_2,
 \qquad
 \tilde\phi_2 = -\sin(\theta)\phi_1 + \cos(\theta)\phi_2.
-\]
+$$
 
 Each individual component can have only moderate similarity to its reference counterpart even though the span of the two functions is unchanged.
 

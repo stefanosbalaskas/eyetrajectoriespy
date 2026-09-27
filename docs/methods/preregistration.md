@@ -611,7 +611,7 @@ If heading, curvature, turning rate, or tortuosity will be analyzed, pre-specify
 - the two planar dimensions;
 - coordinate system and any calibration to pixels, physical units, or degrees of visual angle;
 - whether horizontal and vertical scales are commensurate;
-- recorded \(y\)-axis orientation if signed geometry will be interpreted;
+- recorded $y$-axis orientation if signed geometry will be interpreted;
 - upstream filtering/smoothing, if any;
 - `min_speed` and `undefined_policy`;
 - whether wrapped heading will be analyzed directly or transformed using a declared circular/unwrapping method;

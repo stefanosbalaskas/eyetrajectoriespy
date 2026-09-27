@@ -6,24 +6,24 @@ adds an explicit Poisson exposure/rate observation contract, and version 0.54
 adds explicit grouped-binomial success/denominator observations without
 changing the marginal GEE estimand.
 
-For participant \(i\), trial \(j\), and observed time \(t\),
+For participant $i$, trial $j$, and observed time $t$,
 
-\[
+$$
 g\{\mu_{ij}(t)\}
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t),
 \qquad
 \mu_{ij}(t)=E\{Y_{ij}(t)\mid\mathbf x_{ij}\}.
-\]
+$$
 
 The coefficient functions are represented in an analyst-declared clamped
 B-spline basis,
 
-\[
+$$
 \beta_k(t)
 =
 \mathbf B(t)^\top\boldsymbol\theta_k.
-\]
+$$
 
 The generalized layer supports two deliberately narrow families:
 
@@ -91,47 +91,47 @@ correlation, or model is chosen automatically.
 
 Let
 
-\[
+$$
 \mathbf x_{ij}
 =
 (1,x_{ij1},\ldots,x_{ijp})^\top
-\]
+$$
 
 and let
 
-\[
+$$
 \mathbf B(t)
 =
 (B_1(t),\ldots,B_q(t))^\top.
-\]
+$$
 
 The stacked GEE design contains the products
 
-\[
+$$
 x_{ijk}B_r(t),
-\]
+$$
 
-so each scalar coefficient receives its own \(q\)-dimensional basis coefficient
+so each scalar coefficient receives its own $q$-dimensional basis coefficient
 vector.
 
 The expanded design must be full rank.
 
 ## Cluster-count guard
 
-If there are \(K\) scalar coefficients including the intercept and \(q\)
+If there are $K$ scalar coefficients including the intercept and $q$
 B-spline functions per coefficient, the expanded coefficient vector has
 
-\[
+$$
 Kq
-\]
+$$
 
 free parameters.
 
 Version 0.51 requires
 
-\[
+$$
 n_{\mathrm{participants}}>Kq.
-\]
+$$
 
 This is a **minimum structural guard**, not a theorem that the robust sandwich
 covariance is accurately estimated. The number and heterogeneity of independent
@@ -143,30 +143,30 @@ participants remain scientifically important.
 
 The binary response is required to be coded exactly as
 
-\[
+$$
 Y_{ij}(t)\in\{0,1\}.
-\]
+$$
 
 Aggregated proportions are not treated as Bernoulli observations and trial
 denominators are never inferred silently.
 
 For grouped binomial data, version 0.54 requires an integer success-count
-trajectory \(S_{ij}(t)\) and an explicit positive integer denominator
-\(N_{ij}(t)\),
+trajectory $S_{ij}(t)$ and an explicit positive integer denominator
+$N_{ij}(t)$,
 
-\[
+$$
 0\le S_{ij}(t)\le N_{ij}(t),
-\]
+$$
 
 with
 
-\[
+$$
 S_{ij}(t)\sim\operatorname{Binomial}\{N_{ij}(t),p_{ij}(t)\},
 \qquad
 \operatorname{logit}p_{ij}(t)
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t).
-\]
+$$
 
 ~~~python
 grouped_fit = fit_generalized_function_on_scalar_regression(
@@ -191,7 +191,7 @@ corresponding denominator.
 The public API intentionally does **not** accept arbitrary proportions as a
 substitute. A value such as `0.67` is scientifically ambiguous because 2/3 and
 670/1000 carry very different information. Internally, after validation, the
-backend receives \(S/N\) as the binomial response and \(N\) as the GEE
+backend receives $S/N$ as the binomial response and $N$ as the GEE
 observation weight. The package retains the original successes, denominators,
 observed proportions, and fitted denominator-specific expected successes.
 
@@ -201,49 +201,49 @@ independence, including the robust sandwich covariance.
 
 The Bernoulli model is
 
-\[
+$$
 \operatorname{logit}\{\mu_{ij}(t)\}
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t).
-\]
+$$
 
 ### Poisson
 
 The count response must be a non-negative integer:
 
-\[
+$$
 Y_{ij}(t)\in\{0,1,2,\ldots\}.
-\]
+$$
 
 The model is
 
-\[
+$$
 \log\{\mu_{ij}(t)\}
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t).
-\]
+$$
 
 Without an exposure argument, this remains the 0.51/0.52 expected-count model.
 
-With a scientifically meaningful exposure \(E_{ij}(t)>0\), version 0.53 fits
+With a scientifically meaningful exposure $E_{ij}(t)>0$, version 0.53 fits
 
-\[
+$$
 \log \mu_{ij}(t)
 =
 \log E_{ij}(t)
 +
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t),
-\]
+$$
 
 so that
 
-\[
+$$
 \lambda_{ij}(t)
 =
 \frac{\mu_{ij}(t)}{E_{ij}(t)}
 =
 \exp\{\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\}.
-\]
+$$
 
 The package exposes **exposure**, not a generic arbitrary offset. Exposure must
 be supplied explicitly with shape `(n_curves, n_time)`, or with shape
@@ -269,7 +269,7 @@ rate_fit = fit_generalized_function_on_scalar_regression(
 
 The package never infers exposure from grid spacing, trial duration, sample
 counts, or metadata. The scientific assumption is substantive:
-\(E[Y\mid x,E]=E\lambda(x)\), so expected counts are assumed to scale
+$E[Y\mid x,E]=E\lambda(x)$, so expected counts are assumed to scale
 proportionally with the declared opportunity/time denominator.
 
 ## Robust covariance
@@ -277,19 +277,19 @@ proportionally with the declared opportunity/time denominator.
 With working independence, the GEE point estimate is combined with the robust
 cluster sandwich covariance,
 
-\[
+$$
 \widehat{\operatorname{Var}}_{\mathrm{robust}}
 (\widehat{\boldsymbol\theta})
 =
 \mathbf A^{-1}
 \mathbf B_{\mathrm{sand}}
 \mathbf A^{-1},
-\]
+$$
 
 where the middle empirical term accumulates cluster-level score contributions.
 
 The package reports coefficient-function pointwise standard errors obtained by
-mapping the robust basis-parameter covariance back through \(\mathbf B(t)\).
+mapping the robust basis-parameter covariance back through $\mathbf B(t)$.
 
 Naive working-correlation standard errors are not exposed in 0.51.
 
@@ -334,10 +334,10 @@ band = generalized_function_on_scalar_simultaneous_bands(
 )
 ~~~
 
-For coefficient \(k\), bootstrap replicate \(b\), and observed grid point
-\(t_m\),
+For coefficient $k$, bootstrap replicate $b$, and observed grid point
+$t_m$,
 
-\[
+$$
 M_k^{*(b)}
 =
 \max_m
@@ -350,16 +350,16 @@ M_k^{*(b)}
 \widehat{\mathrm{SE}}\{\widehat\beta_k(t_m)\}
 }
 \right|.
-\]
+$$
 
 The resulting band is
 
-\[
+$$
 \widehat\beta_k(t_m)
 \pm
 c_{k,1-\alpha}
 \widehat{\mathrm{SE}}\{\widehat\beta_k(t_m)\}.
-\]
+$$
 
 With `simultaneous_scope="family"`, one maximum is taken across all declared
 coefficient functions and observed time points.
@@ -415,15 +415,15 @@ print(
 
 ## Interpretation
 
-For a Bernoulli/logit model, \(\beta_k(t)\) is a time-varying marginal
+For a Bernoulli/logit model, $\beta_k(t)$ is a time-varying marginal
 log-odds coefficient.
 
-For a Poisson/log model **without exposure**, \(\beta_k(t)\) remains a
+For a Poisson/log model **without exposure**, $\beta_k(t)$ remains a
 time-varying marginal log-mean-count coefficient.
 
-For a Poisson/log model **with explicit exposure**, \(\beta_k(t)\) is a
+For a Poisson/log model **with explicit exposure**, $\beta_k(t)$ is a
 time-varying marginal log-rate coefficient and
-\(\exp\{\beta_k(t)\}\) is a multiplicative rate ratio for a one-unit predictor
+$\exp\{\beta_k(t)\}$ is a multiplicative rate ratio for a one-unit predictor
 change, holding exposure fixed.
 
 These coefficients are not subject-specific effects conditional on functional

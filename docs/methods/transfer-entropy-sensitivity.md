@@ -7,17 +7,17 @@ target history, source history, and source lag.
 
 The package evaluates the full declared Cartesian multiverse
 
-\[
+$$
 \Theta=\mathcal K\times\mathcal L\times\mathcal D,
-\]
+$$
 
-and, for every \(\theta=(k,l,d)\in\Theta\), computes
+and, for every $\theta=(k,l,d)\in\Theta$, computes
 
-\[
+$$
 T_{\theta}
 =
 I\!\left(X_{t-d}^{(l)};Y_t\mid Y_{t-1}^{(k)}\right).
-\]
+$$
 
 This is **not** an automatic history/lag selector.
 
@@ -87,13 +87,13 @@ result = transfer_entropy_parameter_sensitivity(
 The **identical shift set** is used for every specification. Each row then also
 retains the surrogate mean, surrogate-centered TE,
 
-\[
+$$
 \Delta T_{\theta}
 =
 T_{\theta,\mathrm{obs}}
 -
 \frac{1}{B}\sum_{b=1}^{B}T_{\theta,b}^{*},
-\]
+$$
 
 the plus-one upper-tail p-value, its attainable resolution, and the number of
 shifts.

@@ -2,11 +2,11 @@
 
 At each time point, AOI probabilities satisfy
 
-$
+$$
 p_k(t)\ge 0,
 \qquad
 \sum_{k=1}^{K}p_k(t)=1.
-$
+$$
 
 That constraint means the channels are not ordinary unconstrained Euclidean variables.
 
@@ -26,7 +26,7 @@ Report how probabilities were built, the reference AOI, zero-replacement epsilon
 
 ## Mathematical contract
 
-After explicit zero replacement and renormalization, the additive log-ratio coordinate relative to reference AOI \(r\) is
+After explicit zero replacement and renormalization, the additive log-ratio coordinate relative to reference AOI $r$ is
 
 $$
 z_k(t)
@@ -35,7 +35,7 @@ z_k(t)
 \qquad k\ne r.
 $$
 
-The inverse transformation normalizes \(q_r(t)=1\) and \(q_k(t)=\exp\{z_k(t)\}\):
+The inverse transformation normalizes $q_r(t)=1$ and $q_k(t)=\exp\{z_k(t)\}$:
 
 $$
 p_k(t)

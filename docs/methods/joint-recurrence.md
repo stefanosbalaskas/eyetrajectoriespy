@@ -14,7 +14,7 @@ This is not cross-recurrence.
 
 ## Definition
 
-For subsystem auto-recurrence matrices \(R^{(s)}\),
+For subsystem auto-recurrence matrices $R^{(s)}$,
 
 $$
 JR_{ij}

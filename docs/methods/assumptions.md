@@ -387,13 +387,13 @@ The heading, curvature, turning-rate, and tortuosity APIs assume that the two de
 
 Horizontal and vertical axes should therefore be commensurate. Coordinates normalized independently to display width and height can distort angle, curvature, path length, and tortuosity when the physical/visual scales differ.
 
-The sign of curvature and turning rate follows the **recorded coordinate orientation**. In common screen coordinates where \(y\) increases downward, visual clockwise/counterclockwise interpretation is reversed relative to a conventional Cartesian \(y\)-up plot.
+The sign of curvature and turning rate follows the **recorded coordinate orientation**. In common screen coordinates where $y$ increases downward, visual clockwise/counterclockwise interpretation is reversed relative to a conventional Cartesian $y$-up plot.
 
 Differential geometry assumes the observed trajectory is complete and has at least three time points. Derivatives are computed on the supplied strictly increasing grid without hidden smoothing or interpolation.
 
 The `min_speed` threshold is part of the estimand. The default zero threshold masks only exactly stationary numerical derivatives; any positive near-zero threshold must be scientifically declared.
 
-Wrapped heading is circular data. Ordinary Euclidean FDA of heading requires an explicit representation decision because the \(-\pi/+ \pi\) branch cut is not a true directional discontinuity.
+Wrapped heading is circular data. Ordinary Euclidean FDA of heading requires an explicit representation decision because the $-\pi/+ \pi$ branch cut is not a true directional discontinuity.
 
 
 ## Discrete Fréchet trajectory distance
@@ -550,7 +550,7 @@ covariance parameters. Under REML, the package uses the restricted likelihood
 with covariance-parameter count only and requires the same fixed design/basis.
 
 The BIC sample size is explicitly defined as the number of curve-by-time
-observations, \(n_{\mathrm{curves}}n_{\mathrm{time}}\). This is a transparent
+observations, $n_{\mathrm{curves}}n_{\mathrm{time}}$. This is a transparent
 calculation convention, not an assumption that clustered functional data have a
 uniquely defined effective sample size equal to that quantity.
 
@@ -562,9 +562,9 @@ not a formal test that the covariance structure is correct.
 
 Version 0.51 targets the marginal mean
 
-\[
+$$
 g\{E[Y_{ij}(t)\mid x_{ij}]\}=x_{ij}^{\top}\beta(t).
-\]
+$$
 
 Participants are assumed independent across clusters. Dependence among trials and time points within participant may be misspecified by the working independence structure; the robust sandwich covariance is used for coefficient uncertainty.
 

@@ -51,7 +51,7 @@ dimension_diag = embedding_dimension_diagnostics(
 )
 ```
 
-These are diagnostics only. The analysis still declares its own \(m\) and \(\tau\).
+These are diagnostics only. The analysis still declares its own $m$ and $\tau$.
 
 ## Reconstruct state space
 

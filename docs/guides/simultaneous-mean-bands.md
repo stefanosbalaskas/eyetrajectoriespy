@@ -2,9 +2,9 @@
 
 A functional mean is a time-varying estimand:
 
-\[
+$$
 \mu(t) = E\{X(t)\}.
-\]
+$$
 
 For multivariate gaze trajectories, the package treats the observed functional object as all requested dimensions over the same sampled time grid. A simultaneous band should therefore account for multiplicity across **time and functional dimensions**, not only provide separate pointwise intervals.
 
@@ -16,14 +16,14 @@ At each bootstrap replication, Gaussian multipliers are applied to centered infe
 
 The returned band is:
 
-\[
+$$
 \hat\mu(t,d)
 \pm
 c_{1-\alpha}
 \, \widehat{\operatorname{SE}}\{\hat\mu(t,d)\},
-\]
+$$
 
-where \(c_{1-\alpha}\) is the multiplier quantile of the gridwise maximum statistic.
+where $c_{1-\alpha}$ is the multiplier quantile of the gridwise maximum statistic.
 
 This is not the same as drawing independent 95% intervals at every time point.
 

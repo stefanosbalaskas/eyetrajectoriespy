@@ -18,12 +18,15 @@ from eyetrajectoriespy import (
     bootstrap_functional_mixed_effects_coefficients,
     bootstrap_rqa_metric_means,
     delay_embed_trajectory,
+    embedding_delay_diagnostics,
+    embedding_dimension_diagnostics,
     dynamic_time_warping_distance,
     estimate_largest_lyapunov_kantz,
     estimate_largest_lyapunov_rosenstein,
     fit_function_on_scalar_regression,
     generate_multivariate_iaaft_surrogates,
     fit_functional_mixed_effects_regression,
+    functional_mixed_effects_residual_diagnostics,
     fit_local_return_map,
     fit_mfpca,
     fpca_wild_bootstrap_family_test_monte_carlo_diagnostics,
@@ -34,6 +37,8 @@ from eyetrajectoriespy import (
     local_divergence_curve,
     multiplier_functional_mean_band,
     plot_dynamic_time_warping_alignment,
+    plot_embedding_delay_diagnostics,
+    plot_embedding_dimension_diagnostics,
     plot_fpca_component,
     plot_fpca_variance,
     plot_fpca_wild_bootstrap_family_test,
@@ -41,6 +46,8 @@ from eyetrajectoriespy import (
     plot_fpca_wild_bootstrap_projection,
     plot_function_on_scalar_coefficients,
     plot_functional_mixed_effects_coefficient,
+    plot_functional_mixed_effects_residual_acf,
+    plot_functional_mixed_effects_residual_variogram,
     plot_functional_random_effects,
     plot_functional_mean_band,
     plot_joint_recurrence,
@@ -67,6 +74,8 @@ from eyetrajectoriespy import (
     register_to_landmarks,
     signed_curvature_function,
     trajectory_distance_sensitivity,
+    transfer_entropy_circular_shift_test,
+    plot_transfer_entropy_circular_shift_test,
     simulate_planar_trajectories,
     wild_bootstrap_fpca_projection,
     windowed_rqa,
@@ -309,6 +318,21 @@ def main() -> None:
     )
     _save(ax, "functional-mixed-effects-random-slope.svg")
 
+    fmix_residual = functional_mixed_effects_residual_diagnostics(
+        fmix_fit,
+        max_lag=4,
+    )
+    ax = plot_functional_mixed_effects_residual_acf(
+        fmix_residual,
+        level="overall",
+    )
+    _save(ax, "functional-mixed-effects-residual-acf.svg")
+    ax = plot_functional_mixed_effects_residual_variogram(
+        fmix_residual,
+        level="overall",
+    )
+    _save(ax, "functional-mixed-effects-residual-variogram.svg")
+
     miaaft_rng = np.random.default_rng(2111)
     miaaft_n = 180
     miaaft_x = np.empty(miaaft_n, dtype=float)
@@ -430,6 +454,27 @@ def main() -> None:
         time_unit="s",
         coordinate_system="arbitrary",
     )
+
+    delay_diagnostic = embedding_delay_diagnostics(
+        nonlinear,
+        curve=0,
+        dimension="x",
+        max_lag=30,
+        bins=12,
+    )
+    ax = plot_embedding_delay_diagnostics(delay_diagnostic)
+    _save(ax, "embedding-delay-diagnostics.svg")
+
+    dimension_diagnostic = embedding_dimension_diagnostics(
+        nonlinear,
+        curve=0,
+        dimension="x",
+        delay=1,
+        max_dimension=5,
+        theiler_window=8,
+    )
+    ax = plot_embedding_dimension_diagnostics(dimension_diagnostic)
+    _save(ax, "embedding-dimension-diagnostics.svg")
     embedded = delay_embed_trajectory(
         nonlinear,
         embedding_dimension=2,
@@ -670,8 +715,36 @@ def main() -> None:
     ax = plot_poincare_return_map(crossings, fit=return_fit)
     _save(ax, "return-map.svg")
 
+    te_rng = np.random.default_rng(2115)
+    te_n = 1200
+    te_source = te_rng.integers(0, 2, size=te_n)
+    te_target = np.zeros(te_n, dtype=int)
+    te_noise = te_rng.random(te_n) < 0.08
+    te_target[1:] = np.bitwise_xor(
+        te_source[:-1],
+        te_noise[1:].astype(int),
+    )
+    te_shift = transfer_entropy_circular_shift_test(
+        te_source,
+        te_target,
+        target_history=1,
+        source_history=1,
+        source_lag=1,
+        shifts=range(40, 90),
+    )
+    ax = plot_transfer_entropy_circular_shift_test(te_shift)
+    _save(ax, "transfer-entropy-shift-test.svg")
+
     expected = {
         "planar-trajectories.svg",
+        "transfer-entropy-shift-test.svg",
+        "embedding-dimension-diagnostics.svg",
+        "embedding-delay-diagnostics.svg",
+        "functional-mixed-effects-residual-variogram.svg",
+        "functional-mixed-effects-residual-acf.svg",
+        "functional-mixed-effects-random-slope.svg",
+        "functional-mixed-effects-coefficient.svg",
+        "function-on-scalar-coefficient.svg",
         "fpca-component.svg",
         "fpca-variance.svg",
         "trajectory-curvature.svg",

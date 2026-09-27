@@ -2,9 +2,9 @@
 
 Grid values are not the only way to represent a function. A basis expansion represents a curve as
 
-\[
+$$
 f(t)=\sum_{k=1}^{K} c_k \phi_k(t).
-\]
+$$
 
 General FDA libraries support B-spline, Fourier, and other basis families. Basis choice and basis size are analytical decisions because they determine which shapes can be represented.
 
