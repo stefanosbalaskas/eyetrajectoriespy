@@ -8,30 +8,30 @@ on the marginal success-probability scale.
 
 For a predeclared scalar predictor profile $\mathbf x_r$,
 
-$
+$$
 \eta_r^{\mathrm{rate}}(t)
 =
 \mathbf x_r^\top\widehat{\boldsymbol\beta}(t)
-$
+$$
 
 is the Poisson log-rate predictor when the fitted model used exposure, and
 
-$
+$$
 \lambda_r(t)
 =
 \exp\{\eta_r^{\mathrm{rate}}(t)\}
-$
+$$
 
 is the exposure-adjusted rate. If an explicit target exposure $E_r(t)>0$ is
 supplied,
 
-$
+$$
 \eta_r^{\mathrm{count}}(t)
 =
 \log E_r(t)+\eta_r^{\mathrm{rate}}(t),
 \qquad
 \mu_r(t)=E_r(t)\lambda_r(t)
-$
+$$
 
 gives the expected count.
 
@@ -117,13 +117,13 @@ Let $\widehat{\boldsymbol\Sigma}_\theta$ be the robust covariance of the
 B-spline coefficient vector and let $\mathbf z_r(t)$ be the expanded
 profile-by-basis design row. Then
 
-$
+$$
 \widehat{\operatorname{Var}}\{\eta_r(t)\}
 =
 \mathbf z_r(t)^\top
 \widehat{\boldsymbol\Sigma}_\theta
 \mathbf z_r(t).
-$
+$$
 
 Because exposure is treated as fixed, adding $\log E_r(t)$ changes the
 linear-predictor location but not this coefficient-estimation variance.
@@ -189,7 +189,7 @@ prediction_band = generalized_function_on_scalar_prediction_bands(
 
 For profile $r$, bootstrap replicate $b$, and observed grid point $t_m$,
 
-$
+$$
 M_r^{*(b)}
 =
 \max_m
@@ -200,7 +200,7 @@ M_r^{*(b)}
 \widehat{\operatorname{SE}}\{\eta_r(t_m)\}
 }
 \right|.
-$
+$$
 
 With `simultaneous_scope="profile"`, each profile receives its own maximum
 critical value. With `simultaneous_scope="family"`, one maximum is taken over
@@ -235,22 +235,22 @@ rate_ratio = generalized_function_on_scalar_mean_difference_band(
 
 The quantities are
 
-$
+$$
 D_{ab}^{\mathrm{rate}}(t)
 =
 \lambda_a(t)-\lambda_b(t)
-$
+$$
 
 and
 
-$
+$$
 RR_{ab}(t)
 =
 \frac{\lambda_a(t)}{\lambda_b(t)}
 =
 \exp\{(\mathbf x_a-\mathbf x_b)^\top
 \widehat{\boldsymbol\beta}(t)\}.
-$
+$$
 
 The rate-ratio band is calibrated on the log-rate-ratio scale and
 exponentiated, preserving positivity.
@@ -269,9 +269,9 @@ count_difference = generalized_function_on_scalar_mean_difference_band(
 
 corresponding to
 
-$
+$$
 D_{ab}^{\mathrm{count}}(t)=\mu_a(t)-\mu_b(t).
-$
+$$
 
 The package does not automatically generate all three Poisson contrasts, search
 over profile pairs, report a best contrast, or claim familywise control over
