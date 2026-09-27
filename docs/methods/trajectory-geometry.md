@@ -4,13 +4,13 @@ Version 0.31 adds differential-geometric functions for continuous planar gaze tr
 
 The goal is not to replace event-level saccade-curvature metrics. It is to expose continuous functions that can themselves enter the package's FDA pipeline:
 
-\[
+$
 G_i(t)
 \rightarrow
 \theta_i(t),\ \kappa_i(t),\ \omega_i(t)
 \rightarrow
 \text{FPCA / multilevel FPCA / functional inference}.
-\]
+$
 
 ## APIs
 
@@ -27,9 +27,9 @@ All require a complete planar trajectory. Differential quantities require at lea
 
 For \(G(t)=[x(t),y(t)]^\top\),
 
-\[
+$
 \theta(t)=\operatorname{atan2}\{y'(t),x'(t)\}.
-\]
+$
 
 The returned angle is wrapped to \([-\pi,\pi]\). The package does **not** unwrap it automatically.
 
@@ -37,12 +37,12 @@ This matters for FDA: two directions near \(+\pi\) and \(-\pi\) are geometricall
 
 ## Signed curvature
 
-\[
+$
 \kappa(t)
 =
 \frac{x'(t)y''(t)-y'(t)x''(t)}
 {\{x'(t)^2+y'(t)^2\}^{3/2}}.
-\]
+$
 
 Curvature is positive or negative according to the orientation of the supplied coordinate axes.
 
@@ -50,14 +50,14 @@ The package does not assume that screen \(y\) points upward. If your tracker rep
 
 ## Turning rate
 
-\[
+$
 \omega(t)
 =
 \frac{x'(t)y''(t)-y'(t)x''(t)}
 {x'(t)^2+y'(t)^2}
 =
 \kappa(t)\|G'(t)\|.
-\]
+$
 
 The implementation computes this directly from the derivatives. It does not differentiate the wrapped heading function, so artificial jumps at the \(\pm\pi\) branch cut do not create turning-rate spikes.
 
@@ -83,9 +83,9 @@ With:
 
 samples satisfying
 
-\[
+$
 \|G'(t)\|\le v_{\min}
-\]
+$
 
 remain missing. They are never converted to zero.
 
@@ -121,12 +121,12 @@ If geometric interpretation matters, use an isotropic coordinate representation 
 
 The implemented whole-trajectory tortuosity is
 
-\[
+$
 T
 =
 \frac{\text{observed path length}}
 {\text{endpoint displacement}}.
-\]
+$
 
 A straight trajectory has \(T=1\); more circuitous open paths have \(T>1\).
 
