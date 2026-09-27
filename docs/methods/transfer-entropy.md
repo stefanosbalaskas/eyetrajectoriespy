@@ -8,10 +8,10 @@ the target's own history.
 For discrete source states \(X_t\) and target states \(Y_t\), the package
 estimates
 
-\[
+$
 T_{X\rightarrow Y}(k,l,d)
 = I\!\left(X_{t-d}^{(l)};Y_t\mid Y_{t-1}^{(k)}\right),
-\]
+$
 
 where \(k\) is the target-history length, \(l\) is the source-history length,
 and \(d\ge1\) is the source lag in sample-index units. The empirical plug-in
@@ -35,15 +35,15 @@ support is exposed instead of hidden.
 
 With `target_history=k`, the target history at index \(t\) is
 
-\[
+$
 (Y_{t-1},\ldots,Y_{t-k}),
-\]
+$
 
 and with `source_history=l` and `source_lag=d`, the source history is
 
-\[
+$
 (X_{t-d},\ldots,X_{t-d-l+1}).
-\]
+$
 
 All three settings are required. The result retains the effective number of
 transitions, source/target state counts, numbers of target and joint histories,
@@ -67,9 +67,9 @@ automatically.
 
 The procedure reports the plus-one upper-tail Monte Carlo value
 
-\[
+$
 p_{+}=\frac{1+\sum_b I(T_b^*\ge T_{obs})}{B+1},
-\]
+$
 
 plus the surrogate mean and the surrogate-centered difference
 \(T_{obs}-\bar T^*\).
