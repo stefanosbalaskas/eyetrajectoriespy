@@ -4,10 +4,38 @@
   "benchmark_kind": "single-package performance envelope",
   "comparative_benchmark": false,
   "profile": "ci-qualification",
-  "status": "pending_ci_measurement",
-  "qualification_commit": null,
-  "qualification_run_id": null,
-  "environment": null,
+  "status": "qualified",
+  "qualification_commit": "09850da2f79bb32c94ee09d0436826b8a7399289",
+  "qualification_run_id": "36303746820",
+  "environment": {
+    "cpu_model": "AMD EPYC 7763 64-Core Processor",
+    "github_run_id": "36303746820",
+    "github_runner_environment": "github-hosted",
+    "github_runner_name": "GitHub Actions 1000066718",
+    "implementation": "CPython",
+    "logical_cpu_count": 4,
+    "machine": "x86_64",
+    "packages": {
+      "eyetrajectoriespy": "0.9.0",
+      "numpy": "2.5.3",
+      "pandas": "3.0.6",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "statsmodels": "0.15.0"
+    },
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "python": "3.12.14",
+    "release": "6.17.0-1022-azure",
+    "source_commit": "09850da2f79bb32c94ee09d0436826b8a7399289",
+    "system": "Linux",
+    "thread_limits": {
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    },
+    "workflow_commit": "a835b47a0c78ebbb5de2383cbe9954be39aa428f"
+  },
   "results": [
     {
       "case": "fpca_bootstrap",
@@ -19,7 +47,29 @@
         "q": 3
       },
       "repeats": 3,
-      "observed": null
+      "observed": {
+        "runtime_seconds": {
+          "all": [
+            3.098544844999992,
+            1.9731008349999968,
+            1.9628072290000205
+          ],
+          "maximum": 3.098544844999992,
+          "median": 1.9731008349999968,
+          "minimum": 1.9628072290000205,
+          "q1": 1.9679540320000086,
+          "q3": 2.5358228399999945
+        },
+        "peak_memory_mib": {
+          "all": [
+            227.94140625,
+            223.453125,
+            223.5
+          ],
+          "maximum": 227.94140625,
+          "median": 223.5
+        }
+      }
     },
     {
       "case": "mixed_full_refit_bootstrap",
@@ -31,7 +81,29 @@
         "q": 2
       },
       "repeats": 3,
-      "observed": null
+      "observed": {
+        "runtime_seconds": {
+          "all": [
+            2.9775931120000223,
+            2.9474560650000114,
+            2.9553778859999795
+          ],
+          "maximum": 2.9775931120000223,
+          "median": 2.9553778859999795,
+          "minimum": 2.9474560650000114,
+          "q1": 2.9514169754999955,
+          "q3": 2.966485499000001
+        },
+        "peak_memory_mib": {
+          "all": [
+            226.7578125,
+            227.03125,
+            226.80859375
+          ],
+          "maximum": 227.03125,
+          "median": 226.80859375
+        }
+      }
     },
     {
       "case": "nested_mixed_fit",
@@ -42,7 +114,29 @@
         "q": 2
       },
       "repeats": 3,
-      "observed": null
+      "observed": {
+        "runtime_seconds": {
+          "all": [
+            2.6880069119999916,
+            2.678300821999983,
+            2.69036231299998
+          ],
+          "maximum": 2.69036231299998,
+          "median": 2.6880069119999916,
+          "minimum": 2.678300821999983,
+          "q1": 2.6831538669999873,
+          "q3": 2.689184612499986
+        },
+        "peak_memory_mib": {
+          "all": [
+            226.32421875,
+            226.25,
+            226.484375
+          ],
+          "maximum": 226.484375,
+          "median": 226.32421875
+        }
+      }
     },
     {
       "case": "generalized_gee_bootstrap",
@@ -54,7 +148,29 @@
         "q": 2
       },
       "repeats": 3,
-      "observed": null
+      "observed": {
+        "runtime_seconds": {
+          "all": [
+            2.2591680819999738,
+            2.279988605999989,
+            2.237730591000002
+          ],
+          "maximum": 2.279988605999989,
+          "median": 2.2591680819999738,
+          "minimum": 2.237730591000002,
+          "q1": 2.248449336499988,
+          "q3": 2.2695783439999815
+        },
+        "peak_memory_mib": {
+          "all": [
+            225.35546875,
+            225.703125,
+            225.48046875
+          ],
+          "maximum": 225.703125,
+          "median": 225.48046875
+        }
+      }
     },
     {
       "case": "recurrence_rqa",
@@ -65,7 +181,29 @@
         "q": null
       },
       "repeats": 3,
-      "observed": null
+      "observed": {
+        "runtime_seconds": {
+          "all": [
+            2.1737545279999893,
+            2.1366451990000144,
+            2.153178564000001
+          ],
+          "maximum": 2.1737545279999893,
+          "median": 2.153178564000001,
+          "minimum": 2.1366451990000144,
+          "q1": 2.1449118815000077,
+          "q3": 2.163466545999995
+        },
+        "peak_memory_mib": {
+          "all": [
+            228.28515625,
+            227.57421875,
+            227.6796875
+          ],
+          "maximum": 228.28515625,
+          "median": 227.6796875
+        }
+      }
     },
     {
       "case": "nonlinear_sensitivity",
@@ -77,8 +215,30 @@
         "q": null
       },
       "repeats": 3,
-      "observed": null
+      "observed": {
+        "runtime_seconds": {
+          "all": [
+            2.3152655229999937,
+            2.2964758880000034,
+            2.271441679999981
+          ],
+          "maximum": 2.3152655229999937,
+          "median": 2.2964758880000034,
+          "minimum": 2.271441679999981,
+          "q1": 2.283958783999992,
+          "q3": 2.3058707054999985
+        },
+        "peak_memory_mib": {
+          "all": [
+            222.734375,
+            222.9921875,
+            222.73046875
+          ],
+          "maximum": 222.9921875,
+          "median": 222.734375
+        }
+      }
     }
   ],
-  "interpretation": "Pending 0.9.0 final CI qualification. Qualified 0.56, 0.57, and 0.9.0rc1 snapshots remain archived under validation/performance/. No comparative or universal workstation claim."
+  "interpretation": "Qualified 0.9.0 final CI-sized single-package reference envelope measured on the recorded GitHub-hosted Linux runner. Runtime and process peak RSS are conditional on this workload/environment; no cross-package or universal workstation speed claim."
 }
