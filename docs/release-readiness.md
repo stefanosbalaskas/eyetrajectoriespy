@@ -128,7 +128,7 @@ requalification remains required after merge.
 - [x] `python -m build`, `twine check`, fresh wheel install, fresh sdist
       install and an installed-package canonical smoke test are encoded in both
       release automation and non-publishing release-readiness CI.
-- [x] Production publication starts only from a qualified protected-`main` merge; manual dispatch cannot choose production PyPI.
+- [x] Normal `main` pushes never publish; production requires an explicit `release.yml` dispatch with `target=production` from exact protected `main`.
 - [x] Production creates the GitHub Release first, then publishes the identical checksum-verified wheel/sdist to PyPI.
 - [x] PyPI publishing uses the OIDC Trusted Publishing action and no long-lived
       API token.
@@ -139,7 +139,7 @@ requalification remains required after merge.
 - [x] Production PyPI Trusted Publishing/OIDC is operational and was proven by the successful 0.9.0rc1 publication.
 - [x] `pypi` GitHub environment has the intended required-reviewer protection.
 - [x] `main` is protected and issue #64 is closed.
-- [x] `RELEASE_READINESS.json` is armed for the 0.9.0 final GitHub/PyPI ceremony.
+- [x] `RELEASE_READINESS.json` was armed for 0.9.0; it is deliberately disarmed again on `0.9.1.dev0`.
 
 The first public prerelease `0.9.0rc1` successfully exercised GitHub-first
 publication followed by production PyPI OIDC publication and clean installation.
@@ -161,3 +161,13 @@ Do not enter a 0.9-style release-candidate phase until:
    experimental APIs;
 7. no known scientific correctness issue is hidden by a warning, fallback or
    undocumented default.
+
+
+## Post-0.9.0 state
+
+Stable release `0.9.0` is immutable on GitHub and PyPI. The active development
+line is `0.9.1.dev0`. Release automation is manual-dispatch only, so ordinary
+maintenance merges cannot trigger a production upload. Before the next release,
+the version and readiness manifests must be deliberately armed through a
+reviewed pull request, and issue #69 should be resolved by migrating the
+production Trusted Publisher claim to the dedicated `pypi` environment.
