@@ -36,7 +36,7 @@ $
 \exp\!\left(-\frac{|t-s|}{\phi}\right).
 $
 
-`serial_fit.residual_correlation_parameter` is \(\widehat\phi\), in the same
+`serial_fit.residual_correlation_parameter` is $\widehat\phi$, in the same
 physical time unit recorded by the trajectories.
 
 ## Inspect the covariance contract
@@ -120,7 +120,7 @@ ar1_fit = fit_functional_mixed_effects_regression(
 )
 ~~~
 
-The fitted parameter is \(\widehat\rho\). Negative values are allowed. The same
+The fitted parameter is $\widehat\rho$. Negative values are allowed. The same
 call fails closed on an irregular grid.
 
 ## Full-refit participant bootstrap
