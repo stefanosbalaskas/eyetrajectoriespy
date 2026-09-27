@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       target:
-        description: Release rehearsal target
+        description: Release target
         required: true
         default: build-only
         type: choice
@@ -12,6 +12,7 @@ on:
           - build-only
           - testpypi
           - production
+          - resume-production
 
 concurrency:
   group: release-${{ github.ref }}
@@ -39,7 +40,7 @@ jobs:
         id: version
         shell: bash
         run: |
-          if [[ "${{ inputs.target }}" == "production" ]]; then
+          if [[ "${{ inputs.target }}" == "production" || "${{ inputs.target }}" == "resume-production" ]]; then
             VERSION="$(python scripts/verify_release_version.py --production)"
           else
             VERSION="$(python scripts/verify_release_version.py)"
@@ -99,6 +100,7 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
+          skip-existing: true
 
   verify-testpypi:
     name: verify-testpypi-install
@@ -118,17 +120,23 @@ jobs:
           python -m venv .testpypi-smoke
           .testpypi-smoke/bin/python -m pip install -U pip
           for attempt in 1 2 3 4 5; do
-            if .testpypi-smoke/bin/python -m pip install --pre --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple "eyetrajectoriespy==${{ needs.build-once.outputs.version }}"; then
+            if .testpypi-smoke/bin/python -m pip install --pre \
+              --index-url https://test.pypi.org/simple/ \
+              --extra-index-url https://pypi.org/simple \
+              "eyetrajectoriespy==${{ needs.build-once.outputs.version }}"; then
               break
             fi
             if [[ "${attempt}" == "5" ]]; then exit 1; fi
             sleep 15
           done
-          .testpypi-smoke/bin/python scripts/release_smoke_test.py --expected-version "${{ needs.build-once.outputs.version }}"
+          .testpypi-smoke/bin/python scripts/release_smoke_test.py \
+            --expected-version "${{ needs.build-once.outputs.version }}"
 
   production-governance:
     name: production-release-governance
-    if: github.event_name == 'workflow_dispatch' && inputs.target == 'production'
+    if: >-
+      github.event_name == 'workflow_dispatch' &&
+      (inputs.target == 'production' || inputs.target == 'resume-production')
     needs: build-once
     runs-on: ubuntu-latest
     permissions:
@@ -149,12 +157,44 @@ jobs:
             --wait-seconds 1800 \
             --poll-seconds 20
 
+  production-preflight:
+    name: production-new-version-preflight
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'production'
+    needs:
+      - build-once
+      - production-governance
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require unpublished GitHub and PyPI version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build-once.outputs.version }}
+        shell: bash
+        run: |
+          TAG="v${VERSION}"
+          if gh release view "${TAG}" --repo "${GITHUB_REPOSITORY}" >/dev/null 2>&1; then
+            echo "Production release ${TAG} already exists on GitHub; use resume-production only for deliberate recovery."
+            exit 1
+          fi
+          if git ls-remote --exit-code --tags origin "refs/tags/${TAG}" >/dev/null 2>&1; then
+            echo "Production tag ${TAG} already exists; use resume-production only for deliberate recovery."
+            exit 1
+          fi
+          python scripts/verify_pypi_version_unpublished.py \
+            --package eyetrajectoriespy \
+            --version "${VERSION}"
+
   github-release:
     name: create-github-release
     if: github.event_name == 'workflow_dispatch' && inputs.target == 'production'
     needs:
       - build-once
-      - production-governance
+      - production-preflight
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -168,26 +208,17 @@ jobs:
           path: dist
       - name: Create checksums
         run: sha256sum dist/* > SHA256SUMS
-      - name: Create annotated tag and GitHub Release from exact artifacts
+      - name: Create new annotated tag and GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ needs.build-once.outputs.version }}
         shell: bash
         run: |
           TAG="v${VERSION}"
-          if gh release view "${TAG}" >/dev/null 2>&1; then
-            echo "GitHub Release ${TAG} already exists; retaining it."
-            exit 0
-          fi
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git rev-parse "${TAG}" >/dev/null 2>&1; then
-            echo "Tag ${TAG} already exists."
-          else
-            git tag -a "${TAG}" "${GITHUB_SHA}" -m "eyetrajectoriespy ${VERSION}"
-            git push origin "${TAG}"
-          fi
+          git tag -a "${TAG}" "${GITHUB_SHA}" -m "eyetrajectoriespy ${VERSION}"
+          git push origin "${TAG}"
 
           EXTRA=()
           if [[ "${VERSION}" == *rc* || "${VERSION}" == *a* || "${VERSION}" == *b* ]]; then
@@ -196,11 +227,41 @@ jobs:
           NOTES="docs/releases/${VERSION}.md"
           if [[ -f "${NOTES}" ]]; then
             gh release create "${TAG}" dist/* SHA256SUMS \
+              --repo "${GITHUB_REPOSITORY}" \
               --verify-tag --notes-file "${NOTES}" --title "${TAG}" "${EXTRA[@]}"
           else
             gh release create "${TAG}" dist/* SHA256SUMS \
+              --repo "${GITHUB_REPOSITORY}" \
               --verify-tag --generate-notes --title "${TAG}" "${EXTRA[@]}"
           fi
+
+  resume-release-preflight:
+    name: resume-existing-github-release
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'resume-production'
+    needs:
+      - build-once
+      - production-governance
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require matching existing GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build-once.outputs.version }}
+        shell: bash
+        run: |
+          TAG="v${VERSION}"
+          gh release view "${TAG}" --repo "${GITHUB_REPOSITORY}" >/dev/null
+          git fetch --tags --force
+          TARGET="$(git rev-list -n 1 "${TAG}")"
+          test "${TARGET}" = "${GITHUB_SHA}" || {
+            echo "Existing ${TAG} points to ${TARGET}, not exact main ${GITHUB_SHA}."
+            exit 1
+          }
 
   publish-pypi:
     name: publish-pypi
@@ -209,19 +270,23 @@ jobs:
       - build-once
       - github-release
     runs-on: ubuntu-latest
-    environment: testpypi
+    environment: pypi
     permissions:
       contents: read
       id-token: write
     steps:
-      - name: Verify registered publisher environment acknowledgement
+      - name: Verify dedicated production environment acknowledgement
         env:
-          TRUSTED: ${{ vars.TESTPYPI_TRUSTED_PUBLISHING_CONFIGURED }}
+          TRUSTED: ${{ vars.PYPI_TRUSTED_PUBLISHING_CONFIGURED }}
+          REVIEW: ${{ vars.PYPI_REQUIRED_REVIEWER_CONFIGURED }}
         run: |
           test "${TRUSTED}" = "true" || {
-            echo "The testpypi environment acknowledgement is required for the currently registered production PyPI publisher claim."; exit 1;
+            echo "Set PYPI_TRUSTED_PUBLISHING_CONFIGURED=true in the pypi environment."; exit 1;
           }
-      - name: Download exact GitHub Release distributions
+          test "${REVIEW}" = "true" || {
+            echo "Set PYPI_REQUIRED_REVIEWER_CONFIGURED=true in the pypi environment."; exit 1;
+          }
+      - name: Download and verify exact GitHub Release distributions
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ needs.build-once.outputs.version }}
@@ -232,7 +297,46 @@ jobs:
             --pattern "*.whl" --pattern "*.tar.gz" --pattern "SHA256SUMS" --dir dist
           sha256sum -c dist/SHA256SUMS
           rm dist/SHA256SUMS
-      - name: Publish exact GitHub Release artifacts to PyPI through OIDC
+      - name: Publish previously unpublished version to PyPI through OIDC
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+
+  resume-pypi:
+    name: resume-pypi
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'resume-production'
+    needs:
+      - build-once
+      - resume-release-preflight
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Verify dedicated production environment acknowledgement
+        env:
+          TRUSTED: ${{ vars.PYPI_TRUSTED_PUBLISHING_CONFIGURED }}
+          REVIEW: ${{ vars.PYPI_REQUIRED_REVIEWER_CONFIGURED }}
+        run: |
+          test "${TRUSTED}" = "true" || {
+            echo "Set PYPI_TRUSTED_PUBLISHING_CONFIGURED=true in the pypi environment."; exit 1;
+          }
+          test "${REVIEW}" = "true" || {
+            echo "Set PYPI_REQUIRED_REVIEWER_CONFIGURED=true in the pypi environment."; exit 1;
+          }
+      - name: Download and verify immutable GitHub Release distributions
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build-once.outputs.version }}
+        shell: bash
+        run: |
+          mkdir -p dist
+          gh release download "v${VERSION}" --repo "${GITHUB_REPOSITORY}" \
+            --pattern "*.whl" --pattern "*.tar.gz" --pattern "SHA256SUMS" --dir dist
+          sha256sum -c dist/SHA256SUMS
+          rm dist/SHA256SUMS
+      - name: Resume PyPI upload using immutable release artifacts
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: dist/
@@ -256,10 +360,40 @@ jobs:
           python -m venv .pypi-smoke
           .pypi-smoke/bin/python -m pip install -U pip
           for attempt in 1 2 3 4 5 6; do
-            if .pypi-smoke/bin/python -m pip install "eyetrajectoriespy==${{ needs.build-once.outputs.version }}"; then
+            if .pypi-smoke/bin/python -m pip install \
+              "eyetrajectoriespy==${{ needs.build-once.outputs.version }}"; then
               break
             fi
             if [[ "${attempt}" == "6" ]]; then exit 1; fi
             sleep 20
           done
-          .pypi-smoke/bin/python scripts/release_smoke_test.py --expected-version "${{ needs.build-once.outputs.version }}"
+          .pypi-smoke/bin/python scripts/release_smoke_test.py \
+            --expected-version "${{ needs.build-once.outputs.version }}"
+
+  verify-resume-pypi:
+    name: verify-resume-pypi-install
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'resume-production'
+    needs:
+      - build-once
+      - resume-pypi
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify recovered production installation
+        shell: bash
+        run: |
+          python -m venv .pypi-resume-smoke
+          .pypi-resume-smoke/bin/python -m pip install -U pip
+          for attempt in 1 2 3 4 5 6; do
+            if .pypi-resume-smoke/bin/python -m pip install \
+              "eyetrajectoriespy==${{ needs.build-once.outputs.version }}"; then
+              break
+            fi
+            if [[ "${attempt}" == "6" ]]; then exit 1; fi
+            sleep 20
+          done
+          .pypi-resume-smoke/bin/python scripts/release_smoke_test.py \
+            --expected-version "${{ needs.build-once.outputs.version }}"
