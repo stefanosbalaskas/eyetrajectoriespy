@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "current_development_version": "0.9.0",
+  "current_development_version": "0.9.1.dev0",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": true,
+  "production_release_ready": false,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -17,11 +17,10 @@
     "exact_main_ci_required": true
   },
   "notes": [
-    "0.9.0 final release is armed only after complete final-version PR-head qualification.",
-    "main protection is active and issue #64 is closed.",
-    "Production PyPI Trusted Publishing/OIDC was proven by the successful 0.9.0rc1 publication and clean installed-package smoke test.",
-    "TestPyPI remains an optional rehearsal and is not a production-release prerequisite.",
-    "Production currently uses the working Trusted Publisher claim bound to the GitHub environment named testpypi; issue #69 tracks migration to the dedicated pypi environment before the next release."
+    "0.9.0 is the current stable pre-1.0 GitHub/PyPI release.",
+    "0.9.1.dev0 is the active development line and is intentionally not armed for production publication.",
+    "Production release requires an explicit workflow dispatch with target=production and a non-development version aligned across all release declarations.",
+    "Production Trusted Publishing currently uses the working publisher claim bound to the GitHub environment named testpypi; issue #69 tracks migration to the dedicated pypi environment before the next release."
   ],
-  "github_release_ready": true
+  "github_release_ready": false
 }
