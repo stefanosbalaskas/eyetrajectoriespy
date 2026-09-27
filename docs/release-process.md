@@ -43,18 +43,20 @@ The wheel and sdist are never rebuilt separately for GitHub and PyPI.
 
 ## Production trigger
 
-Production publication has no manual-dispatch path. It starts only from the
-protected-`main` push produced by merging the fully qualified final-release
-pull request.
+Production publication is now explicit-dispatch only. Normal pushes and merges
+to `main` never publish. A maintainer must run `release.yml` manually with
+`target=production` from the exact protected `main` commit after the version
+has been changed from a `.devN` line to a qualified release version.
 
 The workflow verifies:
 
-1. all current version declarations agree on `0.9.0`;
-2. the version is not a development release;
-3. GitHub reports `main` protected;
-4. governance issue #64 is closed;
-5. the release commit is current `main`;
-6. all required exact-main scientific, packaging, documentation, examples,
+1. all current version declarations agree;
+2. the selected target is explicitly `production`;
+3. the version is not a development release;
+4. GitHub reports `main` protected;
+5. governance issue #64 is closed;
+6. the dispatched commit is current `main`;
+7. all required exact-main scientific, packaging, documentation, examples,
    optional-backend, performance and release-readiness checks have completed
    successfully.
 
@@ -105,3 +107,12 @@ future publisher/environment migrations.
 12. Run the installed-package canonical smoke test.
 
 The ceremony is complete only after step 12 succeeds.
+
+
+## Post-release development
+
+After a stable release, `main` moves to a development version such as
+`0.9.1.dev0`, and `RELEASE_READINESS.json` is disarmed. Ordinary development
+therefore cannot accidentally republish the previous version or create a new
+GitHub Release. A future release requires a reviewed version/readiness change
+plus explicit `target=production` dispatch.
