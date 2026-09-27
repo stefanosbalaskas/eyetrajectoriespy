@@ -40,7 +40,7 @@ structure the mixed model was introduced to preserve.
 
 ## What is re-estimated
 
-For participant \(i\), let
+For participant $i$, let
 
 $$
 \mathbf V_i
@@ -88,7 +88,7 @@ not a variance-component bootstrap.
 
 ## Simultaneous calibration
 
-For coefficient \(p\), bootstrap pointwise standard deviations are calculated
+For coefficient $p$, bootstrap pointwise standard deviations are calculated
 from the participant-resampled coefficient functions. The centered,
 studentized bootstrap process is summarized by
 
@@ -107,7 +107,7 @@ M_p^{*(b)}
 \right|.
 $$
 
-The empirical \(1-\alpha\) quantile gives
+The empirical $1-\alpha$ quantile gives
 
 $$
 \widehat\beta_p(t_m)
@@ -151,7 +151,7 @@ A simultaneous band supports a statement about the complete **observed-grid
 coefficient function** under the declared model and bootstrap contract.
 
 For example, if a 95% coefficient-scope band for
-\(\beta_{\mathrm{condition}}(t)\) stays above zero at every observed grid point,
+$\beta_{\mathrm{condition}}(t)$ stays above zero at every observed grid point,
 the estimated condition coefficient is positive over that entire observed
 grid under this model-based inference procedure.
 
