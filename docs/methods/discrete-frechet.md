@@ -6,7 +6,7 @@ Version 0.32 adds an order-preserving elastic trajectory distance without requir
 
 Integrated functional L2 compares functions at the same trial-time grid. Discrete Fréchet compares ordered point sequences and permits one sequence to advance while the other temporarily holds its index.
 
-For point sequences \(P=(p_1,\ldots,p_m)\) and \(Q=(q_1,\ldots,q_n)\), with weighted Euclidean local distance
+For point sequences $P=(p_1,\ldots,p_m)$ and $Q=(q_1,\ldots,q_n)$, with weighted Euclidean local distance
 
 $$
 d_w(p_i,q_j)
