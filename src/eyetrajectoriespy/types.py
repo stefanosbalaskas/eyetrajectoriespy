@@ -670,6 +670,18 @@ class SparseFPCAResult:
     backend_object: Any | None = None
     backend_data: Any | None = None
     reconstructed_backend: Any | None = None
+    evaluation_grid: np.ndarray | None = None
+    mean: np.ndarray | None = None
+    covariance: np.ndarray | None = None
+    eigenfunctions: np.ndarray | None = None
+    noise_variance: float | None = None
+    quadrature_weights: np.ndarray | None = None
+    score_diagnostics: pd.DataFrame = field(default_factory=pd.DataFrame)
+    covariance_diagnostics: Mapping[str, Any] = field(default_factory=dict)
+    mean_support_counts: np.ndarray | None = None
+    covariance_support_counts: np.ndarray | None = None
+    noise_raw_diagonal: np.ndarray | None = None
+    noise_diagonal_difference: np.ndarray | None = None
 
 
 @dataclass(frozen=True)
