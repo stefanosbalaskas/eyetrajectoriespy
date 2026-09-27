@@ -110,7 +110,7 @@ numerical comparison fields.
 The result contains no best-model field, ranking, likelihood-ratio p-value,
 model weight, or automatic covariance recommendation. Information criteria are
 only populated after the strict successful-fit comparability contract passes.
-For BIC, the stored convention uses \(n=n_{\mathrm{curves}}n_{\mathrm{time}}\);
+For BIC, the stored convention uses $n=n_{\mathrm{curves}}n_{\mathrm{time}}$;
 the provenance records that this is a calculation convention rather than a
 claim about a unique effective sample size for clustered functional data.
 
