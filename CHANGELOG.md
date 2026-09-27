@@ -7,7 +7,10 @@
 - Archive the exact 0.9.0 performance qualification before collecting new development evidence.
 - Change production release automation from every protected-main push to explicit manual `target=production` dispatch.
 - Keep development versions fail-closed for production publication.
-- Keep issue #69 open for migration of the production Trusted Publisher claim to the dedicated `pypi` environment.
+- Make issue #69 a mandatory blocker before the next public release and move production workflow authority to the dedicated protected `pypi` environment.
+- Make ordinary `production` fail if the GitHub tag/release or PyPI version already exists.
+- Add an explicit PyPI preflight against the requested production version.
+- Add `resume-production` as a separate recovery mode that requires the existing GitHub Release to point to exact `main` and is the only production path allowed to use `skip-existing`.
 
 ## 0.9.0
 

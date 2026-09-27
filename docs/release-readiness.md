@@ -129,6 +129,8 @@ requalification remains required after merge.
       install and an installed-package canonical smoke test are encoded in both
       release automation and non-publishing release-readiness CI.
 - [x] Normal `main` pushes never publish; production requires an explicit `release.yml` dispatch with `target=production` from exact protected `main`.
+- [x] Ordinary `production` fails if the GitHub tag/release or PyPI version already exists.
+- [x] Partial-publication recovery is isolated behind explicit `target=resume-production`.
 - [x] Production creates the GitHub Release first, then publishes the identical checksum-verified wheel/sdist to PyPI.
 - [x] PyPI publishing uses the OIDC Trusted Publishing action and no long-lived
       API token.
@@ -136,7 +138,7 @@ requalification remains required after merge.
 - [x] Production checks live GitHub governance and exact-main CI before
       publishing.
 - [ ] TestPyPI Trusted Publisher/rehearsal remains available as an optional rehearsal.
-- [x] Production PyPI Trusted Publishing/OIDC is operational and was proven by the successful 0.9.0rc1 publication.
+- [ ] Dedicated production PyPI Trusted Publisher is configured for GitHub environment `pypi` (mandatory before the next release; issue #69).
 - [x] `pypi` GitHub environment has the intended required-reviewer protection.
 - [x] `main` is protected and issue #64 is closed.
 - [x] `RELEASE_READINESS.json` was armed for 0.9.0; it is deliberately disarmed again on `0.9.1.dev0`.
@@ -144,9 +146,9 @@ requalification remains required after merge.
 The first public prerelease `0.9.0rc1` successfully exercised GitHub-first
 publication followed by production PyPI OIDC publication and clean installation.
 Version `0.9.0` repeats the complete qualification under the final version
-rather than relabeling RC evidence. Issue #69 tracks migration of the working
-production Trusted Publisher claim from the GitHub environment named
-`testpypi` to the dedicated `pypi` environment before the next release.
+rather than relabeling RC evidence. Production workflow authority now points
+only at the dedicated `pypi` environment. Issue #69 is a mandatory blocker until
+the matching PyPI Trusted Publisher claim is migrated there.
 
 ## Release-candidate gate
 
