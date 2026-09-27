@@ -213,7 +213,6 @@ theme:
     - navigation.tabs.sticky
     - navigation.sections
     - navigation.indexes
-    - navigation.path
     - navigation.tracking
     - navigation.top
     - content.code.copy
