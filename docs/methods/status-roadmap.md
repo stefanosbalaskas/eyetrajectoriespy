@@ -10,7 +10,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 |---|---|---|
 | Common-grid functional gaze objects | implemented | `TrajectorySet` |
 | Native curve-specific time grids | implemented | `IrregularTrajectorySet` |
-| Sparse univariate covariance FPCA + PACE scores | implemented (optional FDApy backend) | `fit_sparse_fpca_fdapy()` |
+| Sparse univariate covariance FPCA + PACE scores | implemented compatibility/reference backend; native estimator planned for 0.10.0 | `fit_sparse_fpca_fdapy()` today; planned `fit_sparse_fpca()` |
 | Simultaneous functional mean band | implemented | `multiplier_functional_mean_band()` |
 | Function-on-scalar regression | implemented; observed-grid OLS with explicit design and HC1 standard errors | `fit_function_on_scalar_regression()` |
 | Function-on-scalar simultaneous coefficient bands | implemented; fixed-design wild bootstrap with coefficient/family scope | `function_on_scalar_simultaneous_bands()` |
@@ -110,7 +110,7 @@ A future documentation-platform migration can be evaluated independently of the 
 | B-spline/Fourier basis representation | scikit-fda | preserve eye-tracking provenance while delegating basis mathematics |
 | Functional boxplot screening | scikit-fda | optional sensitivity/review diagnostic |
 | Magnitude-shape outlier screening | scikit-fda | optional sensitivity/review diagnostic |
-| Sparse covariance UFPCA + PACE scores | FDApy | preserve native irregular grids while delegating sparse estimation |
+| Sparse covariance UFPCA + PACE scores | FDApy | transitional compatibility backend and independent validation reference; not the planned canonical 0.10 implementation |
 | Elastic SRVF trajectory alignment | fdasrsf | specialist phase/amplitude backend |
 
 Optional backends are never imported until the corresponding feature is requested.
@@ -133,6 +133,40 @@ Review flags are descriptive diagnostics. The package does not turn them into au
 
 Still not provided are full uncertainty procedures that jointly include target measurement error, latent-curve uncertainty, preprocessing uncertainty, data-driven component-selection uncertainty, sparse PACE score uncertainty, coverage-optimal automatic wild-bootstrap truncation tuning, heteroscedastic future-outcome prediction, generic arbitrary offsets, denominator/exposure measurement-error models, non-independence generalized working correlations, generalized functional random effects, uncertainty in declared prediction-profile values, or future-response prediction for generalized functional outcomes. Versions 0.51-0.54 provide the guarded marginal Bernoulli/grouped-binomial/Poisson GEE line and fixed-profile marginal inference.
 
+## Declared release sequence
+
+### 0.9.1 — maintenance and consolidation
+
+The current 0.9.1 line is **maintenance-only by policy**. Appropriate work
+includes bug fixes, documentation, compatibility, UX, website, validation,
+performance, and release hardening. A new major estimator should not be merged
+into this line.
+
+### 0.10.0 — native sparse/irregular FPCA + PACE
+
+The next estimator tranche is a native univariate sparse-FPCA/PACE
+implementation operating directly on `IrregularTrajectorySet`. The scientific
+pipeline includes explicit pooled mean smoothing, covariance-surface smoothing,
+measurement-error handling, covariance eigendecomposition, and conditional
+PACE scoring.
+
+FDApy remains useful as an external numerical comparator and transitional
+compatibility backend, but the canonical native estimator must not call FDApy
+internally.
+
+See the [native sparse/PACE development contract](../development/native-sparse-fpca.md)
+and the [external reference implementation policy](../validation/external-reference-policy.md).
+
+### 0.11.0 candidate — native functional simulation
+
+After native sparse FPCA/PACE is stable, the preferred next infrastructure
+tranche is a richer native functional simulation framework with explicit truth
+for eigenfunctions, eigenvalues, scores, hierarchy, measurement noise,
+irregular sampling, sparsity, missingness, channel correlation, and phase
+variation.
+
+See the [simulation framework roadmap](../development/simulation-framework.md).
+
 ## Research/development candidates
 
 Future tranches may evaluate:
@@ -151,7 +185,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 The current stable pre-1.0 release is **0.9.0**. The current development line is **0.9.1.dev0**. Scientific contracts, optional-backend validation, documentation, and cross-platform qualification remain active release-quality surfaces.
 
-The 0.9.1 development line is a maintenance/hardening line by default. Normal merges to `main` do not trigger production publication; a future release requires an explicit release workflow dispatch after version/readiness qualification.
+The 0.9.1 development line is a maintenance/hardening line by policy; major new estimators are reserved for the next minor development tranche. Normal merges to `main` do not trigger production publication; a future release requires an explicit release workflow dispatch after version/readiness qualification.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
