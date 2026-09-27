@@ -24,7 +24,7 @@ Version 0.31 extends the derived-function layer from kinematics to planar differ
 - `turning_rate_function()` returns signed angular change per unit time;
 - `trajectory_tortuosity()` returns observed path length divided by endpoint displacement.
 
-These quantities remain conditional on the declared coordinate metric. Separately normalized horizontal/vertical axes can distort Euclidean geometry, and screen \(y\)-axis direction affects the visual interpretation of signed curvature.
+These quantities remain conditional on the declared coordinate metric. Separately normalized horizontal/vertical axes can distort Euclidean geometry, and screen $y$-axis direction affects the visual interpretation of signed curvature.
 
 ## Low speed is explicit
 
@@ -34,7 +34,7 @@ Use `min_speed` and `undefined_policy` explicitly. Missing geometry remains `NaN
 
 ## Heading is circular
 
-Wrapped angles near \(-\pi\) and \(+\pi\) are physically close but numerically distant. Standard Euclidean FPCA is therefore not automatically appropriate for wrapped heading.
+Wrapped angles near $-\pi$ and $+\pi$ are physically close but numerically distant. Standard Euclidean FPCA is therefore not automatically appropriate for wrapped heading.
 
 ## More detail
 
