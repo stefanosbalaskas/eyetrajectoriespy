@@ -112,7 +112,7 @@ constrained = dynamic_time_warping_distance(
 )
 ~~~
 
-Only cells satisfying \(|i-j|\le w\) are admissible. The radius is measured in sample indices, not milliseconds or seconds. A band too narrow to connect unequal-length endpoints raises explicitly.
+Only cells satisfying $|i-j|\le w$ are admissible. The radius is measured in sample indices, not milliseconds or seconds. A band too narrow to connect unequal-length endpoints raises explicitly.
 
 No window is inferred or optimized from observed outcomes.
 
