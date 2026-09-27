@@ -233,6 +233,7 @@ jobs:
           gh release download "v${VERSION}" --repo "${GITHUB_REPOSITORY}" \
             --pattern "*.whl" --pattern "*.tar.gz" --pattern "SHA256SUMS" --dir dist
           sha256sum -c dist/SHA256SUMS
+          rm dist/SHA256SUMS
       - name: Publish exact GitHub Release artifacts to PyPI through OIDC
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
