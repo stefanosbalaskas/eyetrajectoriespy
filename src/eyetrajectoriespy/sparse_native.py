@@ -1,0 +1,397 @@
+"""Native univariate sparse FPCA + PACE composition for the 0.10 branch."""
+
+from __future__ import annotations
+
+from typing import Any
+
+import numpy as np
+
+from ._sparse_native import (
+    SparseNativeError,
+    estimate_noise_variance_diagonal_difference,
+    local_linear_covariance_surface,
+    local_linear_smooth_1d,
+    pace_scores,
+    raw_offdiagonal_covariance_pairs,
+    repair_covariance_psd,
+    weighted_covariance_eigendecomposition,
+)
+from .types import IrregularTrajectorySet, SparseFPCAResult
+
+
+def _validate_native_sparse_dimension(
+    trajectories: IrregularTrajectorySet,
+    *,
+    dimension: str,
+) -> int:
+    if not isinstance(trajectories, IrregularTrajectorySet):
+        raise TypeError("trajectories must be an IrregularTrajectorySet")
+    if dimension not in trajectories.dimension_names:
+        raise KeyError(f"Unknown dimension {dimension!r}")
+    if trajectories.n_curves < 3:
+        raise SparseNativeError(
+            "insufficient_pooled_support",
+            "native sparse FPCA requires at least three curves",
+            details={"n_curves": trajectories.n_curves},
+        )
+    index = trajectories.dimension_names.index(dimension)
+    for curve_id, values in zip(
+        trajectories.curve_ids,
+        trajectories.values,
+        strict=True,
+    ):
+        selected = np.asarray(values[:, index], dtype=float)
+        if not np.all(np.isfinite(selected)):
+            raise SparseNativeError(
+                "nonfinite_sparse_observation",
+                "absent sparse observations must be represented by absent samples",
+                details={
+                    "curve_id": str(curve_id),
+                    "dimension": dimension,
+                    "n_nonfinite": int(np.count_nonzero(~np.isfinite(selected))),
+                },
+            )
+    return index
+
+
+def _validate_evaluation_grid(
+    trajectories: IrregularTrajectorySet,
+    evaluation_grid: np.ndarray,
+) -> np.ndarray:
+    grid = np.asarray(evaluation_grid, dtype=float)
+    if (
+        grid.ndim != 1
+        or grid.size < 3
+        or not np.all(np.isfinite(grid))
+        or not np.all(np.diff(grid) > 0)
+    ):
+        raise ValueError(
+            "evaluation_grid must be a finite, strictly increasing "
+            "one-dimensional array with at least three points"
+        )
+    pooled_start = min(float(time[0]) for time in trajectories.time)
+    pooled_end = max(float(time[-1]) for time in trajectories.time)
+    scale = max(1.0, abs(pooled_start), abs(pooled_end))
+    tolerance = 1e-12 * scale
+    if (
+        abs(float(grid[0]) - pooled_start) > tolerance
+        or abs(float(grid[-1]) - pooled_end) > tolerance
+    ):
+        raise SparseNativeError(
+            "evaluation_grid_support_mismatch",
+            "evaluation_grid must span the complete pooled observed support",
+            details={
+                "pooled_start": pooled_start,
+                "pooled_end": pooled_end,
+                "grid_start": float(grid[0]),
+                "grid_end": float(grid[-1]),
+            },
+        )
+    return grid
+
+
+def _validate_native_sparse_settings(
+    *,
+    n_components: int,
+    n_curves: int,
+    mean_smoother: str,
+    covariance_smoother: str,
+    kernel: str,
+    noise_variance_method: str,
+    measurement_error_variance: float | None,
+) -> None:
+    if isinstance(n_components, bool) or not isinstance(n_components, int):
+        raise TypeError("n_components must be an integer")
+    if n_components < 1:
+        raise ValueError("n_components must be positive")
+    if n_components > n_curves - 1:
+        raise ValueError(
+            "n_components cannot exceed the centered curve-count rank "
+            f"(n_curves - 1 = {n_curves - 1})"
+        )
+    if mean_smoother != "local_linear":
+        raise ValueError(
+            "mean_smoother must be 'local_linear' in the first native tranche"
+        )
+    if covariance_smoother != "local_linear":
+        raise ValueError(
+            "covariance_smoother must be 'local_linear' in the first native tranche"
+        )
+    if kernel != "epanechnikov":
+        raise ValueError(
+            "kernel must be 'epanechnikov' in the first native tranche"
+        )
+    if noise_variance_method not in {"diagonal_difference", "fixed"}:
+        raise ValueError(
+            "noise_variance_method must be 'diagonal_difference' or 'fixed'"
+        )
+    if noise_variance_method == "fixed":
+        if measurement_error_variance is None:
+            raise ValueError(
+                "measurement_error_variance is required when "
+                "noise_variance_method='fixed'"
+            )
+        value = float(measurement_error_variance)
+        if not np.isfinite(value) or value < 0:
+            raise ValueError(
+                "measurement_error_variance must be finite and non-negative"
+            )
+    elif measurement_error_variance is not None:
+        raise ValueError(
+            "measurement_error_variance must be None when "
+            "noise_variance_method='diagonal_difference'"
+        )
+
+
+def fit_sparse_fpca(
+    trajectories: IrregularTrajectorySet,
+    *,
+    dimension: str,
+    n_components: int,
+    evaluation_grid: np.ndarray,
+    mean_bandwidth: float,
+    covariance_bandwidth: float,
+    noise_bandwidth: float | None = None,
+    mean_smoother: str = "local_linear",
+    covariance_smoother: str = "local_linear",
+    kernel: str = "epanechnikov",
+    noise_variance_method: str = "diagonal_difference",
+    measurement_error_variance: float | None = None,
+    psd_action: str = "error",
+    psd_tolerance: float = 1e-8,
+    positive_eigen_tolerance: float = 1e-10,
+    score_ridge: float = 0.0,
+    score_condition_limit: float = 1e12,
+    min_score_samples: int = 2,
+    score_failure_action: str = "error",
+    mean_min_local_points: int = 3,
+    covariance_min_local_pairs: int = 6,
+    noise_min_local_points: int = 3,
+) -> SparseFPCAResult:
+    """Fit native univariate sparse FPCA and recover PACE scores.
+
+    Sparse raw trajectories remain on their native grids. Population mean,
+    covariance, and eigenfunctions are smooth fitted objects that may be
+    evaluated at those native observation times; this is model evaluation, not
+    interpolation of the raw sparse trajectories.
+
+    The PACE conditional covariance system uses the complete fitted/repaired
+    covariance surface plus measurement-error variance. n_components controls
+    the returned eigenfunctions and scores, not the rank of that conditional
+    covariance system.
+    """
+
+    index = _validate_native_sparse_dimension(
+        trajectories,
+        dimension=dimension,
+    )
+    grid = _validate_evaluation_grid(trajectories, evaluation_grid)
+    _validate_native_sparse_settings(
+        n_components=n_components,
+        n_curves=trajectories.n_curves,
+        mean_smoother=mean_smoother,
+        covariance_smoother=covariance_smoother,
+        kernel=kernel,
+        noise_variance_method=noise_variance_method,
+        measurement_error_variance=measurement_error_variance,
+    )
+
+    pooled_time = np.concatenate(trajectories.time)
+    curve_values = tuple(
+        np.asarray(values[:, index], dtype=float)
+        for values in trajectories.values
+    )
+    pooled_values = np.concatenate(curve_values)
+
+    mean_fit = local_linear_smooth_1d(
+        pooled_time,
+        pooled_values,
+        grid,
+        bandwidth=mean_bandwidth,
+        min_local_points=mean_min_local_points,
+    )
+
+    residuals: list[np.ndarray] = []
+    for time, observed in zip(
+        trajectories.time,
+        curve_values,
+        strict=True,
+    ):
+        mean_at_native = local_linear_smooth_1d(
+            pooled_time,
+            pooled_values,
+            time,
+            bandwidth=mean_bandwidth,
+            min_local_points=mean_min_local_points,
+        ).values
+        residuals.append(observed - mean_at_native)
+
+    pairs = raw_offdiagonal_covariance_pairs(
+        trajectories.time,
+        tuple(residuals),
+        include_mirror=True,
+    )
+    covariance_fit = local_linear_covariance_surface(
+        pairs,
+        grid,
+        bandwidth=covariance_bandwidth,
+        min_local_pairs=covariance_min_local_pairs,
+    )
+
+    noise_result = None
+    if noise_variance_method == "diagonal_difference":
+        if noise_bandwidth is None:
+            raise ValueError(
+                "noise_bandwidth is required when "
+                "noise_variance_method='diagonal_difference'"
+            )
+        noise_result = estimate_noise_variance_diagonal_difference(
+            trajectories.time,
+            tuple(residuals),
+            grid,
+            covariance_fit.values,
+            bandwidth=noise_bandwidth,
+            min_local_points=noise_min_local_points,
+        )
+        if noise_result.status_code != "ok":
+            raise SparseNativeError(
+                "noise_variance_invalid",
+                "diagonal-difference measurement-noise estimate is not positive",
+                details={
+                    "estimated_noise_variance": float(noise_result.variance),
+                    "minimum_diagonal_difference": float(
+                        np.min(noise_result.diagonal_difference)
+                    ),
+                    "maximum_diagonal_difference": float(
+                        np.max(noise_result.diagonal_difference)
+                    ),
+                },
+            )
+        noise_variance = float(noise_result.variance)
+    else:
+        noise_variance = float(measurement_error_variance)
+
+    psd = repair_covariance_psd(
+        covariance_fit.values,
+        grid,
+        action=psd_action,
+        tolerance=psd_tolerance,
+    )
+    eigen = weighted_covariance_eigendecomposition(
+        psd.covariance,
+        grid,
+        n_components=n_components,
+        positive_tolerance=positive_eigen_tolerance,
+    )
+    scores = pace_scores(
+        trajectories.curve_ids,
+        trajectories.time,
+        curve_values,
+        evaluation_grid=grid,
+        fitted_mean=mean_fit.values,
+        fitted_covariance=psd.covariance,
+        eigenvalues=eigen.eigenvalues,
+        eigenfunctions=eigen.eigenfunctions,
+        noise_variance=noise_variance,
+        n_components=n_components,
+        score_ridge=score_ridge,
+        condition_limit=score_condition_limit,
+        min_score_samples=min_score_samples,
+        failure_action=score_failure_action,
+    )
+
+    covariance_diagnostics: dict[str, Any] = {
+        "requested_action": psd.audit.requested_action,
+        "applied_action": psd.audit.applied_action,
+        "tolerance": psd.audit.tolerance,
+        "pre_repair_operator_eigenvalues": (
+            psd.audit.pre_repair_operator_eigenvalues.tolist()
+        ),
+        "negative_eigenvalue_count": psd.audit.negative_eigenvalue_count,
+        "substantial_negative_eigenvalue_count": (
+            psd.audit.substantial_negative_eigenvalue_count
+        ),
+        "most_negative_eigenvalue": psd.audit.most_negative_eigenvalue,
+        "correction_frobenius_norm": psd.audit.correction_frobenius_norm,
+        "relative_correction_frobenius_norm": (
+            psd.audit.relative_correction_frobenius_norm
+        ),
+    }
+    sparse_provenance: dict[str, Any] = {
+        "backend": "native",
+        "dimension": dimension,
+        "n_components": n_components,
+        "mean_smoother": mean_smoother,
+        "covariance_smoother": covariance_smoother,
+        "kernel": kernel,
+        "mean_bandwidth": float(mean_bandwidth),
+        "covariance_bandwidth": float(covariance_bandwidth),
+        "noise_bandwidth": (
+            None if noise_bandwidth is None else float(noise_bandwidth)
+        ),
+        "noise_variance_method": noise_variance_method,
+        "noise_variance": noise_variance,
+        "evaluation_grid": grid.tolist(),
+        "psd_action": psd_action,
+        "psd_tolerance": float(psd_tolerance),
+        "positive_eigen_tolerance": float(positive_eigen_tolerance),
+        "score_method": "PACE",
+        "score_covariance_source": scores.covariance_source,
+        "score_ridge": float(score_ridge),
+        "score_condition_limit": float(score_condition_limit),
+        "min_score_samples": int(min_score_samples),
+        "score_failure_action": score_failure_action,
+        "mean_min_local_points": int(mean_min_local_points),
+        "covariance_min_local_pairs": int(covariance_min_local_pairs),
+        "noise_min_local_points": int(noise_min_local_points),
+        "sample_counts": trajectories.sample_counts.tolist(),
+        "raw_sparse_trajectory_interpolation_performed": False,
+        "population_function_evaluation_at_native_times": True,
+        "cross_channel_covariance_modeled": False,
+        "covariance_psd": covariance_diagnostics,
+    }
+    if measurement_error_variance is not None:
+        sparse_provenance["measurement_error_variance_supplied"] = float(
+            measurement_error_variance
+        )
+
+    return SparseFPCAResult(
+        scores=scores.scores,
+        eigenvalues=eigen.eigenvalues,
+        dimension=dimension,
+        curve_ids=trajectories.curve_ids,
+        metadata=trajectories.metadata.reset_index(drop=True),
+        coordinate_system=trajectories.coordinate_system,
+        time_unit=trajectories.time_unit,
+        n_components=n_components,
+        fit_method="native_covariance",
+        fit_smoothing="local_linear_epanechnikov",
+        score_method="PACE",
+        score_smoothing=None,
+        tolerance=float(positive_eigen_tolerance),
+        normalize=False,
+        provenance={
+            **dict(trajectories.provenance),
+            "sparse_fpca": sparse_provenance,
+        },
+        evaluation_grid=grid.copy(),
+        mean=mean_fit.values.copy(),
+        covariance=psd.covariance.copy(),
+        eigenfunctions=eigen.eigenfunctions.copy(),
+        noise_variance=noise_variance,
+        quadrature_weights=eigen.quadrature_weights.copy(),
+        score_diagnostics=scores.diagnostics.copy(),
+        covariance_diagnostics=covariance_diagnostics,
+        mean_support_counts=mean_fit.support_counts.copy(),
+        covariance_support_counts=covariance_fit.support_counts.copy(),
+        noise_raw_diagonal=(
+            None
+            if noise_result is None
+            else noise_result.raw_diagonal.copy()
+        ),
+        noise_diagonal_difference=(
+            None
+            if noise_result is None
+            else noise_result.diagonal_difference.copy()
+        ),
+    )

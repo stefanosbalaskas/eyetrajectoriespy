@@ -43,7 +43,7 @@ def test_version_and_public_symbols():
         "plot_fpca_subspace_stability","fpca_eigengap_reporting_text",
         "fpca_subspace_stability_reporting_text",
         "SparseFPCAResult","sparse_dimension_summary","to_fdapy_irregular",
-        "fit_sparse_fpca_fdapy","sparse_fpca_score_frame",
+        "fit_sparse_fpca","fit_sparse_fpca_fdapy","sparse_fpca_score_frame",
         "sparse_fpca_reporting_text","plot_sparse_irregular_dimension",
         "FunctionalMeanBandResult","multiplier_functional_mean_band",
         "functional_mean_band_frame","plot_functional_mean_band",
