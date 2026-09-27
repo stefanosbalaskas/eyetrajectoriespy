@@ -1,9 +1,6 @@
 name: release
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       target:
@@ -14,6 +11,7 @@ on:
         options:
           - build-only
           - testpypi
+          - production
 
 concurrency:
   group: release-${{ github.ref }}
@@ -41,7 +39,7 @@ jobs:
         id: version
         shell: bash
         run: |
-          if [[ "${GITHUB_EVENT_NAME}" == "push" && "${GITHUB_REF}" == "refs/heads/main" ]]; then
+          if [[ "${{ inputs.target }}" == "production" ]]; then
             VERSION="$(python scripts/verify_release_version.py --production)"
           else
             VERSION="$(python scripts/verify_release_version.py)"
@@ -130,7 +128,7 @@ jobs:
 
   production-governance:
     name: production-release-governance
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'production'
     needs: build-once
     runs-on: ubuntu-latest
     permissions:
@@ -153,7 +151,7 @@ jobs:
 
   github-release:
     name: create-github-release
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'production'
     needs:
       - build-once
       - production-governance
@@ -206,7 +204,7 @@ jobs:
 
   publish-pypi:
     name: publish-pypi
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'production'
     needs:
       - build-once
       - github-release
@@ -242,7 +240,7 @@ jobs:
 
   verify-pypi:
     name: verify-pypi-install
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'workflow_dispatch' && inputs.target == 'production'
     needs:
       - build-once
       - publish-pypi
