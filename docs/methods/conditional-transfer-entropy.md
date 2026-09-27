@@ -3,8 +3,8 @@
 Version 0.43 adds **discrete conditional transfer entropy (CTE)** as a narrow
 extension of the package's explicit 0.41 transfer-entropy contract.
 
-For source process \(X\), target process \(Y\), and an explicitly supplied
-conditioning process \(Z\), the estimand is
+For source process $X$, target process $Y$, and an explicitly supplied
+conditioning process $Z$, the estimand is
 
 $
 T_{X\rightarrow Y\mid Z}(k,l,m,d,c)
@@ -112,8 +112,8 @@ Z_t -> X_t
 Z_(t-1) -> Y_t
 ```
 
-pairwise \(T_{X\rightarrow Y}\) is large because \(X_{t-1}\) reveals the same
-driver that determines \(Y_t\). Conditioning on \(Z_{t-1}\) removes that
+pairwise $T_{X\rightarrow Y}$ is large because $X_{t-1}$ reveals the same
+driver that determines $Y_t$. Conditioning on $Z_{t-1}$ removes that
 redundant predictive contribution.
 
 This behavior must not be generalized into the rule that conditional TE is
