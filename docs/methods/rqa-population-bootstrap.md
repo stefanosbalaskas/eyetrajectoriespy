@@ -8,21 +8,21 @@ This is intentionally narrower than a generic "bootstrap RQA" claim.
 
 For source curve $i$, selected RQA metric $q$, and one fixed recurrence specification $\theta$,
 
-$
+$$
 M_{iq}=Q_q\{R_i(\theta)\}.
-$
+$$
 
 With independent curves, the target is the equal-weight mean of the curve-level summaries.
 
 With repeated trials nested within participant $p$, the package first computes
 
-$
+$$
 U_{pq}
 =
 \frac{1}{m_p}
 \sum_{j=1}^{m_p}
 M_{pjq},
-$
+$$
 
 then bootstraps the participant means. Participants therefore receive equal inferential weight even when trial counts differ.
 
@@ -144,22 +144,22 @@ A different scientifically justified specification must be declared explicitly.
 
 For bootstrap replicate $b$, if $I_1^{(b)},\dots,I_n^{(b)}$ are sampled independent-unit indices,
 
-$
+$$
 \bar U_q^{*(b)}
 =
 \frac{1}{n}
 \sum_{r=1}^{n}
 U_{I_r^{(b)}q}.
-$
+$$
 
 Version 0.28 reports a percentile interval,
 
-$
+$$
 \left[
 Q_{\alpha/2}(\bar U_q^*),
 Q_{1-\alpha/2}(\bar U_q^*)
 \right].
-$
+$$
 
 The result also retains bootstrap bias and bootstrap standard error.
 
