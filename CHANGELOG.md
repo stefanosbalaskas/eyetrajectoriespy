@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.0
+
+- First stable pre-1.0 public release.
+- Promote the fully qualified 0.9.0rc1 platform without adding a statistical estimator, observation family, or hidden analytical default.
+- Re-run the complete scientific, packaging, documentation, examples, optional-backend, performance and fresh-install release gates under the exact 0.9.0 version.
+- Publish a final GitHub Release `v0.9.0` first, then publish the identical checksum-verified wheel and sdist to production PyPI through OIDC Trusted Publishing.
+- Install normally with `pip install eyetrajectoriespy==0.9.0` or `pip install eyetrajectoriespy`.
+- Preserve `v0.9.0rc1` as the immutable prerelease history.
+
 ## 0.9.0rc1
 
 - First coordinated public release candidate.
