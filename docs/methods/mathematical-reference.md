@@ -250,16 +250,16 @@ distance contracts rather than adding another trajectory-distance metric.
 For specification $s$, let $D^{(s)}$ be the complete pairwise distance
 matrix and collect the unique unordered curve-pair distances as
 
-$
+$$
 \mathbf v^{(s)}
 =
 \{D_{ij}^{(s)}:1\le i<j\le n\}.
-$
+$$
 
 The first global diagnostic is the Spearman correlation of the pair-distance
 rankings,
 
-$
+$$
 \rho_S(s,r)
 =
 \operatorname{corr}
@@ -267,7 +267,7 @@ $
 \operatorname{rank}\mathbf v^{(s)},
 \operatorname{rank}\mathbf v^{(r)}
 \right).
-$
+$$
 
 Average ranks are used for ties. The implementation also retains the mean,
 median, and maximum absolute difference between pair-distance ranks. Raw-scale
@@ -278,7 +278,7 @@ Pearson correlation is reported only as a descriptive secondary quantity.
 For curve $i$, define its $k$-nearest-neighbor set under specification
 $s$ as $\mathcal N_k^{(s)}(i)$. The per-curve overlap is
 
-$
+$$
 J_k^{(s,r)}(i)
 =
 \frac{
@@ -286,13 +286,13 @@ J_k^{(s,r)}(i)
 }{
 |\mathcal N_k^{(s)}(i)\cup\mathcal N_k^{(r)}(i)|
 }.
-$
+$$
 
 The result stores both the per-curve Jaccard values and their specification-pair
 mean. It also reports the fraction of curves having exactly the same top-$k$
 neighbor set and the nearest-neighbor identity agreement
 
-$
+$$
 A_1^{(s,r)}
 =
 \frac{1}{n}
@@ -301,7 +301,7 @@ A_1^{(s,r)}
 \{
 \mathcal N_1^{(s)}(i)=\mathcal N_1^{(r)}(i)
 \}.
-$
+$$
 
 Neighbor ordering uses a stable deterministic curve-order tie break for
 reproducibility. If the $k$th and $(k+1)$th distances are tied at the
@@ -546,7 +546,7 @@ Version 0.36 introduces a deliberately narrow functional mixed-effects model
 for repeated common-grid trajectories. For participant $i$, trial $j$, and
 one selected response dimension,
 
-$
+$$
 Y_{ij}(t)
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t)
@@ -554,41 +554,41 @@ Y_{ij}(t)
 b_i(t)
 +
 \varepsilon_{ij}(t),
-$
+$$
 
 where the participant-specific functional random intercept is
 
-$
+$$
 b_i(t)
 =
 \mathbf B_r(t)^{\top}\mathbf u_i.
-$
+$$
 
 Each fixed coefficient function is represented in a declared clamped B-spline
 basis,
 
-$
+$$
 \beta_p(t)
 =
 \mathbf B_f(t)^{\top}\boldsymbol\theta_p.
-$
+$$
 
 The random basis coefficients follow
 
-$
+$$
 \mathbf u_i
 \sim
 N(\mathbf 0,\boldsymbol\Psi),
-$
+$$
 
 with one unstructured covariance matrix $\boldsymbol\Psi$ shared across
 participants. Conditional residual errors are
 
-$
+$$
 \varepsilon_{ij}(t_m)
 \sim
 N(0,\sigma^2),
-$
+$$
 
 independently over the stacked grid once the fixed and participant random
 effects are conditioned upon.
@@ -596,13 +596,13 @@ effects are conditioned upon.
 For the stacked observations of participant $i$, the marginal covariance
 under the implemented model is
 
-$
+$$
 \operatorname{Cov}(\mathbf Y_i\mid\mathbf X_i)
 =
 \mathbf Z_i\boldsymbol\Psi\mathbf Z_i^\top
 +
 \sigma^2\mathbf I.
-$
+$$
 
 The fixed-effect design is formed by tensoring each scalar design column with
 the fixed B-spline basis. The participant random-effect design uses the random
@@ -615,7 +615,7 @@ mixed-model fit at each time point.
 
 When explicitly requested, version 0.48 extends the conditional mean to
 
-$
+$$
 Y_{ij}(t)
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t)
@@ -625,16 +625,16 @@ b_i(t)
 u_{ij}(t)
 +
 \varepsilon_{ij}(t),
-$
+$$
 
 where
 
-$
+$$
 u_{ij}(t)=\mathbf B_u(t)^\top\mathbf v_{ij},
 \qquad
 \mathbf v_{ij}\sim
 N(\mathbf 0,\boldsymbol\Psi_{trial}).
-$
+$$
 
 One unstructured $\boldsymbol\Psi_{trial}$ is shared across nested trials.
 It is distinct from the participant covariance and is not replaced by an
@@ -642,7 +642,7 @@ independent scalar variance-component approximation.
 
 For participant $i$, the marginal covariance is
 
-$
+$$
 \mathbf V_i
 =
 \mathbf Z_i\boldsymbol\Psi_p\mathbf Z_i^\top
@@ -651,7 +651,7 @@ $
 \mathbf W_{ij}\boldsymbol\Psi_{trial}\mathbf W_{ij}^\top
 +
 \sigma^2\mathbf I.
-$
+$$
 
 The participant and trial covariance matrices are parameterized through
 Cholesky factors. For every covariance-parameter evaluation, the fixed B-spline
@@ -676,20 +676,20 @@ coefficients, and reconstructed trial functions are retained.
 Version 0.49 replaces the iid residual block only when an analyst explicitly
 declares a serial family. For each source curve/trial,
 
-$
+$$
 \boldsymbol\varepsilon_{ij}
 \sim
 N(\mathbf 0,\sigma^2\mathbf R_\theta).
-$
+$$
 
 The physical-time exponential family is
 
-$
+$$
 R_\phi(t,s)
 =
 \exp\!\left(-\frac{|t-s|}{\phi}\right),
 \qquad \phi>0,
-$
+$$
 
 with $\phi=\exp(\eta_\phi)$. The parameter $\phi$ is therefore in the same
 physical time unit as the trajectory grid and remains meaningful on an
@@ -697,13 +697,13 @@ unequally spaced common grid.
 
 For a verified equally spaced common grid, AR(1) is
 
-$
+$$
 R_{\rho,rs}
 =
 \rho^{|r-s|},
 \qquad
 -1<\rho<1,
-$
+$$
 
 with $\rho=\tanh(\eta_\rho)$. This is an index-step model. Negative
 $\rho$ is supported; continuous-time exponential correlation is not treated
@@ -711,7 +711,7 @@ as an equivalent parameterization when $\rho<0$.
 
 The participant marginal covariance becomes
 
-$
+$$
 \mathbf V_i
 =
 \mathbf Z_i\boldsymbol\Psi_P\mathbf Z_i^\top
@@ -720,7 +720,7 @@ $
 \mathbf W_{ij}\boldsymbol\Psi_T\mathbf W_{ij}^\top
 +
 \sigma^2\operatorname{blockdiag}_j\{\mathbf R_\theta\}.
-$
+$$
 
 Residual correlation therefore never crosses source-curve/trial boundaries.
 The trial term is omitted when no trial functional random effect is declared,
@@ -728,11 +728,11 @@ and $\mathbf R_\theta=\mathbf I$ under the iid model.
 
 For diagnostic whitening,
 
-$
+$$
 \sigma^2\mathbf R_\theta=\mathbf L\mathbf L^\top,
 \qquad
 \mathbf e_{ij}^{(w)}=\mathbf L^{-1}\mathbf e_{ij}.
-$
+$$
 
 A serial model is not judged by requiring the raw residual ACF to vanish:
 correlation is expected in the raw residual scale under the fitted model.
@@ -798,37 +798,37 @@ select a preferred model.
 
 For model $m$ relative to reference $r$,
 
-$
+$$
 \Delta\beta_m(t)
 =
 \widehat\beta_m(t)-\widehat\beta_r(t).
-$
+$$
 
 The two retained coefficient-robustness summaries are
 
-$
+$$
 D_{\infty,m}
 =
 \sup_t |\Delta\beta_m(t)|
-$
+$$
 
 and
 
-$
+$$
 D_{2,m}
 =
 \left[
 \int
 \{\Delta\beta_m(t)\}^2\,dt
 \right]^{1/2},
-$
+$$
 
 with the latter evaluated by trapezoidal integration on the observed time grid.
 
 Covariance matrices are also mapped back to interpretable functional scales.
 For the participant random intercept and optional trial random intercept,
 
-$
+$$
 v_{P0}(t)
 =
 \mathbf B_P(t)^\top
@@ -840,13 +840,13 @@ v_T(t)
 \mathbf B_T(t)^\top
 \boldsymbol\Psi_T
 \mathbf B_T(t),
-$
+$$
 
 while the pointwise residual marginal variance is
 
-$
+$$
 v_\varepsilon(t)=\sigma^2.
-$
+$$
 
 When a participant random slope is present, its variance function and the
 intercept/slope cross-covariance function are retained separately rather than
@@ -854,34 +854,34 @@ collapsed into one percentage.
 
 Information criteria are descriptive. Under ML,
 
-$
+$$
 k_{\mathrm{ML}}
 =
 k_{\mathrm{fixed}}+k_{\mathrm{covariance}},
-$
+$$
 
 whereas under REML with identical fixed design/basis the recorded restricted
 likelihood convention uses
 
-$
+$$
 k_{\mathrm{REML}}
 =
 k_{\mathrm{covariance}}.
-$
+$$
 
 The reported criteria are
 
-$
+$$
 \mathrm{AIC}_m=-2\ell_m+2k_m,
 \qquad
 \mathrm{BIC}_m=-2\ell_m+k_m\log n,
-$
+$$
 
 with the explicit BIC convention
 
-$
+$$
 n=n_{\mathrm{curves}}n_{\mathrm{time}}.
-$
+$$
 
 That observation count is a transparent calculation convention rather than a
 claim about a unique effective sample size for clustered functional data.
@@ -984,11 +984,11 @@ under the already-declared mixed-effects specification.
 
 For bootstrap replicate $b$,
 
-$
+$$
 I_1^{*(b)},\ldots,I_n^{*(b)}
 \overset{\mathrm{iid}}{\sim}
 \{1,\ldots,n\}.
-$
+$$
 
 Each occurrence of a sampled source participant receives a distinct bootstrap
 group identity. This prevents repeated draws of one participant from being
@@ -996,7 +996,7 @@ merged into one random-effect group by the mixed-model backend.
 
 The bootstrap sample is refitted to obtain
 
-$
+$$
 \mathcal D^{*(b)}
 \longrightarrow
 \left\{
@@ -1004,7 +1004,7 @@ $
 \widehat{\boldsymbol\Psi}^{*(b)},
 \widehat{\sigma}^{2*(b)}
 \right\}.
-$
+$$
 
 Thus, unlike the 0.44 fixed-covariance participant bootstrap, 0.46 re-estimates
 the complete random-effect covariance and residual variance in every replicate.
@@ -1016,7 +1016,7 @@ limit are not reselected.
 
 For direct sensitivity comparison,
 
-$
+$$
 R_p(t_m)
 =
 \frac{
@@ -1024,7 +1024,7 @@ W_{p,\mathrm{full}}(t_m)
 }{
 W_{p,\mathrm{fixed}}(t_m)
 },
-$
+$$
 
 where $W_{p,\mathrm{full}}(t_m)$ and
 $W_{p,\mathrm{fixed}}(t_m)$ are simultaneous-band widths at coefficient
@@ -1134,30 +1134,30 @@ Version 0.51 introduced repeated non-Gaussian functional responses through a
 population-averaged generalized estimating equation. For participant $i$,
 trial $j$, and observed time $t$,
 
-$
+$$
 g\{\mu_{ij}(t)\}
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t),
 \qquad
 \beta_k(t)=\mathbf B(t)^{\top}\boldsymbol\theta_k.
-$
+$$
 
 Bernoulli responses use the logit link and must be coded exactly as 0/1.
 Version 0.54 also permits an explicit grouped-binomial representation with
 integer success counts $S_{ij}(t)$ and strictly positive integer denominators
 $N_{ij}(t)$,
 
-$
+$$
 S_{ij}(t)\sim\operatorname{Binomial}\{N_{ij}(t),p_{ij}(t)\},
 \qquad
 0\le S_{ij}(t)\le N_{ij}(t),
-$
+$$
 
-$
+$$
 \operatorname{logit}p_{ij}(t)
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t).
-$
+$$
 
 The public observation contract is successes plus denominator, not an arbitrary
 proportion alone. Internally, the validated grouped response is represented as
@@ -1171,38 +1171,38 @@ Participants are the independent GEE clusters; trial-varying scalar predictors
 remain in the design. Working independence is fixed and inference uses the
 participant-cluster robust sandwich covariance,
 
-$
+$$
 \widehat{\operatorname{Var}}_{\mathrm{robust}}
 (\widehat{\boldsymbol\theta})
 =
 \mathbf A^{-1}\mathbf B_{\mathrm{sand}}\mathbf A^{-1}.
-$
+$$
 
 Version 0.53 adds an explicit **Poisson exposure** contract. When a strictly
 positive analyst-supplied exposure $E_{ij}(t)$ is present,
 
-$
+$$
 Y_{ij}(t)\sim\operatorname{Poisson}\{\mu_{ij}(t)\},
-$
+$$
 
-$
+$$
 \log\mu_{ij}(t)
 =
 \log E_{ij}(t)
 +
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t),
 \qquad E_{ij}(t)>0,
-$
+$$
 
 and therefore
 
-$
+$$
 \lambda_{ij}(t)
 =
 \frac{\mu_{ij}(t)}{E_{ij}(t)}
 =
 \exp\{\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\}.
-$
+$$
 
 Thus $\mathbf x_{ij}^{\top}\boldsymbol\beta(t)$ is the log-rate predictor,
 whereas $\log E_{ij}(t)+\mathbf x_{ij}^{\top}\boldsymbol\beta(t)$ is the
@@ -1226,7 +1226,7 @@ Exposure and denominators are treated as observed and fixed; their measurement
 uncertainty is not modeled. Coefficient simultaneous bands retain the existing
 observed-grid maximum standardized-deviation statistic,
 
-$
+$$
 M_k^{*(b)}
 =
 \max_m
@@ -1237,7 +1237,7 @@ M_k^{*(b)}
 \widehat{\mathrm{SE}}\{\widehat\beta_k(t_m)\}
 }
 \right|.
-$
+$$
 
 The estimand remains marginal / population averaged. No family, link, basis
 dimension, working correlation, denominator, exposure definition, smoothing
@@ -1254,37 +1254,37 @@ generalized_function_on_scalar_exposure_frame().
 For a fixed analyst-declared scalar predictor profile $\mathbf x_r$, an
 exposure-adjusted Poisson fit first defines the rate-scale linear predictor
 
-$
+$$
 \eta_r^{\mathrm{rate}}(t)
 =
 \mathbf x_r^\top\widehat{\boldsymbol\beta}(t)
-$
+$$
 
 and rate function
 
-$
+$$
 \lambda_r(t)
 =
 \exp\{\eta_r^{\mathrm{rate}}(t)\}.
-$
+$$
 
 A rate prediction is therefore independent of target exposure. If the analyst
 supplies a strictly positive target exposure $E_r(t)$, the expected-count
 function is
 
-$
+$$
 \mu_r(t)
 =
 E_r(t)\lambda_r(t)
-$
+$$
 
 with count-scale linear predictor
 
-$
+$$
 \eta_r^{\mathrm{count}}(t)
 =
 \log E_r(t)+\eta_r^{\mathrm{rate}}(t).
-$
+$$
 
 The package does not silently set $E_r(t)=1$ when expected counts are
 requested from an exposure-adjusted fit. Missing target exposure is an error
@@ -1294,13 +1294,13 @@ Let $\mathbf z_r(t)$ denote the profile-by-basis row and let
 $\widehat{\boldsymbol\Sigma}_\theta$ be the robust GEE covariance of the
 basis-coefficient vector. Because exposure is treated as fixed,
 
-$
+$$
 \widehat{\operatorname{Var}}\{\eta_r(t)\}
 =
 \mathbf z_r(t)^\top
 \widehat{\boldsymbol\Sigma}_\theta
 \mathbf z_r(t)
-$
+$$
 
 on either the rate or expected-count linear-predictor scale. Whole-participant
 bootstrap coefficient draws are projected through the same fixed profiles and,
@@ -1310,28 +1310,28 @@ and transformed through the monotone inverse link.
 
 Version 0.53 exposes one predeclared Poisson contrast scale at a time:
 
-$
+$$
 D_{ab}^{\mathrm{rate}}(t)
 =
 \lambda_a(t)-\lambda_b(t),
-$
+$$
 
-$
+$$
 RR_{ab}(t)
 =
 \frac{\lambda_a(t)}{\lambda_b(t)}
 =
 \exp\{(\mathbf x_a-\mathbf x_b)^\top
 \widehat{\boldsymbol\beta}(t)\},
-$
+$$
 
 or, when target exposures have been supplied,
 
-$
+$$
 D_{ab}^{\mathrm{count}}(t)
 =
 \mu_a(t)-\mu_b(t).
-$
+$$
 
 The rate-ratio simultaneous band is calibrated on
 $\log RR_{ab}(t)$ and then exponentiated, preserving positivity. The package
@@ -1352,32 +1352,32 @@ generalized_function_on_scalar_mean_difference_band().
 
 Let $Y_{id}(t_m)$ be functional response dimension $d$ for independent inference unit $i$, and let $\mathbf x_i$ contain an intercept and the analyst-declared scalar predictors. At each observed time and selected response dimension,
 
-$
+$$
 Y_{id}(t_m)
 =
 \mathbf x_i^\top\boldsymbol\beta_d(t_m)
 +
 \varepsilon_{id}(t_m).
-$
+$$
 
 Stacking inference units gives
 
-$
+$$
 \mathbf Y_d(t_m)
 =
 \mathbf X\boldsymbol\beta_d(t_m)
 +
 \boldsymbol\varepsilon_d(t_m),
-$
+$$
 
 with full-rank observed-grid OLS estimator
 
-$
+$$
 \widehat{\boldsymbol\beta}_d(t_m)
 =
 (\mathbf X^\top\mathbf X)^{-1}
 \mathbf X^\top\mathbf Y_d(t_m).
-$
+$$
 
 The package does not smooth the coefficient functions or expand them in a basis in version 0.35. Each coefficient curve is therefore the sequence of observed-grid OLS estimates under one shared design matrix.
 
@@ -1385,15 +1385,15 @@ The package does not smooth the coefficient functions or expand them in a basis 
 
 Let
 
-$
+$$
 \mathbf A
 =
 \mathbf X(\mathbf X^\top\mathbf X)^{-1},
-$
+$$
 
 and let $\widehat\varepsilon_{id}(t_m)$ be the fitted residual. For coefficient $j$, the diagonal HC1 variance estimate is
 
-$
+$$
 \widehat V_{j,d}(t_m)
 =
 \frac{n}{n-p}
@@ -1401,7 +1401,7 @@ $
 \left[
 A_{ij}\widehat\varepsilon_{id}(t_m)
 \right]^2,
-$
+$$
 
 where $p=\operatorname{rank}(\mathbf X)$. The reported pointwise standard error is $\sqrt{\widehat V_{j,d}(t_m)}$.
 
@@ -1409,19 +1409,19 @@ where $p=\operatorname{rank}(\mathbf X)$. The reported pointwise standard error 
 
 For bootstrap replicate $b$, one multiplier is drawn per independent inference unit and the complete residual function is multiplied as a unit:
 
-$
+$$
 Y_{id}^{*(b)}(t_m)
 =
 \widehat Y_{id}(t_m)
 +
 W_i^{(b)}\widehat\varepsilon_{id}(t_m).
-$
+$$
 
 Version 0.35 supports Rademacher or standard-normal multipliers. The design matrix is held fixed, so a declared full-rank design does not become rank deficient because of bootstrap row resampling.
 
 For coefficient-specific simultaneous calibration,
 
-$
+$$
 M_j^{*(b)}
 =
 \max_{m,d}
@@ -1434,16 +1434,16 @@ M_j^{*(b)}
 \widehat{\mathrm{SE}}\{\widehat\beta_{j,d}(t_m)\}
 }
 \right|.
-$
+$$
 
 If $c_{j,1-\alpha}$ is the empirical $(1-\alpha)$-quantile of these maxima, the observed-grid simultaneous band is
 
-$
+$$
 \widehat\beta_{j,d}(t_m)
 \pm
 c_{j,1-\alpha}
 \widehat{\mathrm{SE}}\{\widehat\beta_{j,d}(t_m)\}.
-$
+$$
 
 With `simultaneous_scope="family"`, one maximum is taken over coefficient, time, and selected functional dimensions, producing one shared critical value for the declared coefficient family.
 
@@ -1875,11 +1875,11 @@ system B. A joint recurrence plot instead asks whether all declared systems
 
 For binary auto-recurrence matrices $R^{(s)}$,
 
-$
+$$
 JR_{ij}
 =
 \prod_{s=1}^{S}R_{ij}^{(s)},
-$
+$$
 
 which is equivalent to an elementwise logical AND. Each subsystem may have its
 own state representation, dimension, metric, and threshold/radius policy.
@@ -1897,30 +1897,30 @@ harmonization is performed inside the joint-recurrence function.
 With $N_{\mathrm{eligible}}$ unique off-diagonal time pairs outside the
 shared Theiler window,
 
-$
+$$
 \mathrm{JRR}
 =
 \frac{\sum_{i<j}JR_{ij}}{N_{\mathrm{eligible}}}.
-$
+$$
 
 Line-based JRQA then applies the existing auto-RQA conventions to the joint
 matrix:
 
-$
+$$
 \mathrm{JDET}
 =
 \frac{\sum_{\ell\ge\ell_{\min}}\ell P_{d,J}(\ell)}
 {\sum_{\ell\ge1}\ell P_{d,J}(\ell)},
-$
+$$
 
 and
 
-$
+$$
 \mathrm{JLAM}
 =
 \frac{\sum_{v\ge v_{\min}}v P_{v,J}(v)}
 {\sum_{v\ge1}v P_{v,J}(v)}.
-$
+$$
 
 Because line statistics rely on comparable index increments, the same
 approximately regular-grid requirement used by `rqa_metrics()` applies to
@@ -1943,24 +1943,24 @@ Recurrence networks reinterpret one symmetric auto-recurrence plot as an
 undirected simple graph. Every recurrence-state/time index is a node and every
 retained off-diagonal recurrence pair is an edge:
 
-$
+$$
 A_{ij}=R_{ij},\quad i\ne j,\qquad A_{ii}=0.
-$
+$$
 
 Node degree is
 
-$
+$$
 k_i=\sum_j A_{ij},
-$
+$$
 
 with normalized degree $k_i/(N-1)$.
 
 If $T_i$ denotes the number of graph triangles incident to node $i$, local
 clustering is
 
-$
+$$
 C_i=\frac{2T_i}{k_i(k_i-1)}.
-$
+$$
 
 Version 0.40 uses the standard computational convention $C_i=0$ for nodes
 with degree below two. Mean local clustering averages those node-wise values
@@ -1968,9 +1968,9 @@ over all nodes.
 
 Global transitivity is
 
-$
+$$
 \mathcal T=\frac{3N_{\triangle}}{N_{\mathrm{triples}}},
-$
+$$
 
 where $N_{\mathrm{triples}}=\sum_i {k_i\choose2}$. If there are no connected
 triples, transitivity remains explicit `NaN` rather than being silently set to
@@ -1978,9 +1978,9 @@ zero.
 
 Standard graph density is
 
-$
+$$
 \rho_G=\frac{2E}{N(N-1)}.
-$
+$$
 
 This denominator includes all unordered node pairs. It is therefore distinct
 from the package recurrence-rate denominator when a Theiler exclusion removes
@@ -2009,22 +2009,22 @@ itself evidence of low-dimensional deterministic chaos.
 For discrete source states $X_t$ and target states $Y_t$, version 0.41
 implements the empirical plug-in conditional mutual information
 
-$
+$$
 T_{X\to Y}(k,l,d)
 =
 I\!\left(X_{t-d}^{(l)};Y_t\mid Y_{t-1}^{(k)}\right).
-$
+$$
 
 Equivalently,
 
-$
+$$
 T_{X\to Y}
 =
 \sum p(y_t,\mathbf y,\mathbf x)
 \log_2
 \frac{p(y_t\mid\mathbf y,\mathbf x)}
      {p(y_t\mid\mathbf y)}.
-$
+$$
 
 The state codes, target history $k$, source history $l$, and source lag
 $d$ are analyst supplied. The implementation uses base-2 logarithms and
@@ -2033,11 +2033,11 @@ not bin continuous observations or select history/lag values.
 
 For a declared set of $B$ circular source shifts, the package reports
 
-$
+$$
 p_+
 =
 \frac{1+\sum_{b=1}^{B}I(T_b^*\ge T_{obs})}{B+1}.
-$
+$$
 
 The circular-shift null preserves the source marginal and circular ordering but
 requires the analyst to defend wrap-around/stationarity. A positive TE estimate
@@ -2116,15 +2116,15 @@ Let $\mathcal K$, $\mathcal L$, and $\mathcal D$ be analyst-declared
 sets of target-history lengths, source-history lengths, and source lags. Version
 0.42 evaluates the complete Cartesian design
 
-$
+$$
 \Theta
 =
 \mathcal K\times\mathcal L\times\mathcal D.
-$
+$$
 
 For every $\theta=(k,l,d)\in\Theta$,
 
-$
+$$
 T_{\theta}
 =
 I\!\left(
@@ -2133,7 +2133,7 @@ Y_t
 \mid
 Y_{t-1}^{(k)}
 \right)
-$
+$$
 
 is estimated with the same empirical discrete-state plug-in contract as the
 0.41 base estimator.
@@ -2141,7 +2141,7 @@ is estimated with the same empirical discrete-state plug-in contract as the
 If one common set of $B$ circular source shifts is supplied, every
 specification additionally retains
 
-$
+$$
 \Delta T_{\theta}
 =
 T_{\theta,obs}
@@ -2149,7 +2149,7 @@ T_{\theta,obs}
 B^{-1}
 \sum_{b=1}^{B}
 T_{\theta,b}^{*}.
-$
+$$
 
 The table also retains finite empirical-support diagnostics for every
 specification. Invalid declared combinations abort the complete sensitivity
@@ -2214,27 +2214,27 @@ Under target-recurrence-rate mode, recurrence density is controlled by design an
 
 Let window $w$ span source samples from $t_{w,\mathrm{start}}$ to $t_{w,\mathrm{end}}$, with center
 
-$
+$$
 c_w=
 \frac{
 t_{w,\mathrm{start}}+t_{w,\mathrm{end}}
 }{2}.
-$
+$$
 
 For source curve $i$ and selected RQA metric $q$, the derived functional value is
 
-$
+$$
 F_{iq}(c_w)=M_q\left\{R_i^{(w)}\right\},
-$
+$$
 
 where $R_i^{(w)}$ is the recurrence matrix computed under the same declared recurrence contract inside window $w$.
 
 For window length $W$ samples and step $S$ samples, explicit source-sample overlap is
 
-$
+$$
 \omega=
 \frac{\max(0,W-S)}{W}.
-$
+$$
 
 This overlap is recorded as provenance. It is not converted into an independence assumption. Even when $\omega=0$, serial dependence in the source process may remain.
 
@@ -2328,33 +2328,33 @@ The fitted slope is a Kantz-style maximal-Lyapunov estimate. It is a conditional
 
 For simultaneously observed dimensions $k=1,\ldots,K$,
 
-$
+$$
 F_k(\omega)=A_k(\omega)e^{i\phi_k(\omega)}.
-$
+$$
 
 A multivariate surrogate should retain between-channel linear dependence rather
 than generate each channel independently. Relative to an explicitly declared
 reference dimension $r$,
 
-$
+$$
 \Delta\phi_{kr}(\omega)=\phi_k(\omega)-\phi_r(\omega).
-$
+$$
 
 During one Fourier-adjustment step, the current surrogate reference phase
 $\psi_r^*(\omega)$ is combined with the original phase offset,
 
-$
+$$
 F_k^*(\omega)
 =
 A_k(\omega)e^{i[\psi_r^*(\omega)+\Delta\phi_{kr}(\omega)]}.
-$
+$$
 
 This jointly targets each channel's original Fourier amplitude and the original
 complex cross-spectrum
 
-$
+$$
 C_{k\ell}(\omega)=F_k(\omega)F_\ell(\omega)^*.
-$
+$$
 
 The inverse transform is rank-remapped channel by channel to the exact observed
 empirical marginal distribution. The Fourier and rank constraints are iterated
@@ -2380,11 +2380,11 @@ It is never selected by the package.
 The same multichannel embedding and nonlinear statistic settings are used for
 the observed trajectory and all surrogates. For a greater-than alternative,
 
-$
+$$
 p
 =
 \frac{1+\sum_{b=1}^{B}\mathbb I(T_b^*\ge T_{\mathrm{obs}})}{B+1}.
-$
+$$
 
 The current public statistic is multichannel Rosenstein
 largest-Lyapunov estimation. Rejection is evidence against the declared
