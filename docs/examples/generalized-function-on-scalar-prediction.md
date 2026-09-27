@@ -117,10 +117,10 @@ plot_generalized_function_on_scalar_mean_difference(
 
 For a Bernoulli response this is the marginal probability difference
 
-\[
+$
 P(Y=1\mid\text{high})-
 P(Y=1\mid\text{low})
-\]
+$
 
 at each observed time point.
 
