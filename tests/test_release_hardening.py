@@ -1,4 +1,5 @@
 import importlib.util
+import urllib.error
 from pathlib import Path
 
 import pytest
@@ -118,9 +119,21 @@ def test_release_workflow_builds_once_and_reuses_exact_artifact():
 
     assert workflow.count("python -m build") == 1
     assert "name: release-build-once" in workflow
-    assert workflow.count("name: release-dist") >= 3
+    assert workflow.count("name: release-dist") >= 2
     assert "uses: pypa/gh-action-pypi-publish@release/v1" in workflow
     assert "environment: testpypi" in workflow
+    production_block = workflow.split("  publish-pypi:", 1)[1].split(
+        "  resume-pypi:", 1
+    )[0]
+    resume_block = workflow.split("  resume-pypi:", 1)[1].split(
+        "  verify-pypi:", 1
+    )[0]
+    assert "environment: pypi" in production_block
+    assert "environment: pypi" in resume_block
+    assert "PYPI_TRUSTED_PUBLISHING_CONFIGURED" in production_block
+    assert "PYPI_REQUIRED_REVIEWER_CONFIGURED" in production_block
+    assert "skip-existing: true" not in production_block
+    assert "skip-existing: true" in resume_block
     assert 'gh release download "v${VERSION}"' in workflow
     assert '--pattern "*.whl"' in workflow
     assert '--pattern "*.tar.gz"' in workflow
@@ -153,7 +166,11 @@ def test_production_release_requires_explicit_manual_target():
     assert "- build-only" in options
     assert "- testpypi" in options
     assert "- production" in options
+    assert "- resume-production" in options
     assert "inputs.target == 'production'" in workflow
+    assert "inputs.target == 'resume-production'" in workflow
+    assert "production-new-version-preflight" in workflow
+    assert "verify_pypi_version_unpublished.py" in workflow
 
 def test_release_governance_blocks_unarmed_readiness_manifest(monkeypatch):
     module = _load_script("verify_release_governance.py")
@@ -172,4 +189,91 @@ def test_release_governance_blocks_unarmed_readiness_manifest(monkeypatch):
             commit="a" * 40,
             token="token",
         )
+
+def test_production_path_fails_on_preexisting_release_or_version():
+    workflow = (
+        ROOT / ".github" / "workflows" / "release.yml"
+    ).read_text(encoding="utf-8")
+
+    production_preflight = workflow.split(
+        "  production-preflight:", 1
+    )[1].split("  github-release:", 1)[0]
+    assert 'gh release view "${TAG}"' in production_preflight
+    assert 'git ls-remote --exit-code --tags origin "refs/tags/${TAG}"' in (
+        production_preflight
+    )
+    assert "verify_pypi_version_unpublished.py" in production_preflight
+
+    github_release = workflow.split("  github-release:", 1)[1].split(
+        "  resume-release-preflight:", 1
+    )[0]
+    assert "already exists; retaining it" not in github_release
+    assert "gh release create" in github_release
+
+
+def test_resume_production_requires_existing_matching_release():
+    workflow = (
+        ROOT / ".github" / "workflows" / "release.yml"
+    ).read_text(encoding="utf-8")
+
+    resume_preflight = workflow.split(
+        "  resume-release-preflight:", 1
+    )[1].split("  publish-pypi:", 1)[0]
+    assert 'gh release view "${TAG}"' in resume_preflight
+    assert 'TARGET="$(git rev-list -n 1 "${TAG}")"' in resume_preflight
+    assert 'test "${TARGET}" = "${GITHUB_SHA}"' in resume_preflight
+
+
+def test_pypi_version_preflight_accepts_404(monkeypatch):
+    module = _load_script("verify_pypi_version_unpublished.py")
+
+    def fake_urlopen(request, timeout):
+        raise urllib.error.HTTPError(
+            request.full_url,
+            404,
+            "Not Found",
+            hdrs=None,
+            fp=None,
+        )
+
+    monkeypatch.setattr(module.urllib.request, "urlopen", fake_urlopen)
+    module.verify_version_unpublished("eyetrajectoriespy", "0.9.2")
+
+
+def test_pypi_version_preflight_rejects_existing_version(monkeypatch):
+    module = _load_script("verify_pypi_version_unpublished.py")
+
+    class Response:
+        status = 200
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+    monkeypatch.setattr(
+        module.urllib.request,
+        "urlopen",
+        lambda request, timeout: Response(),
+    )
+    with pytest.raises(RuntimeError, match="already exists on PyPI"):
+        module.verify_version_unpublished("eyetrajectoriespy", "0.9.0")
+
+
+def test_pypi_version_preflight_fails_closed_on_index_error(monkeypatch):
+    module = _load_script("verify_pypi_version_unpublished.py")
+
+    def fake_urlopen(request, timeout):
+        raise urllib.error.HTTPError(
+            request.full_url,
+            503,
+            "Unavailable",
+            hdrs=None,
+            fp=None,
+        )
+
+    monkeypatch.setattr(module.urllib.request, "urlopen", fake_urlopen)
+    with pytest.raises(RuntimeError, match="preflight failed"):
+        module.verify_version_unpublished("eyetrajectoriespy", "0.9.2")
 
