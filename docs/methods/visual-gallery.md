@@ -88,6 +88,28 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [Worked example](../examples/functional-mixed-effects-random-slope.md) · [Method guide](functional-mixed-effects-random-slope.md) · [Mathematics](mathematical-reference.md#functional-mixed-effects-random-slope)
 
+-   **Mixed-effects residual autocorrelation**
+
+    ![Overall functional mixed-effects residual autocorrelation](../assets/gallery/functional-mixed-effects-residual-acf.svg)
+
+    Conditional residual autocorrelation across declared index lags, summarized
+    without silently selecting a covariance model.
+
+    **API:** `functional_mixed_effects_residual_diagnostics()`, `plot_functional_mixed_effects_residual_acf()`
+
+    [Worked example](../examples/functional-mixed-effects-residual-diagnostics.md) · [Method guide](functional-mixed-effects-residual-diagnostics.md) · [Mathematics](mathematical-reference.md#functional-mixed-effects)
+
+-   **Mixed-effects residual variogram**
+
+    ![Overall functional mixed-effects residual empirical variogram](../assets/gallery/functional-mixed-effects-residual-variogram.svg)
+
+    Empirical residual semivariance over the same analyst-declared lag window,
+    shown as a diagnostic rather than an automatic covariance selector.
+
+    **API:** `functional_mixed_effects_residual_diagnostics()`, `plot_functional_mixed_effects_residual_variogram()`
+
+    [Worked example](../examples/functional-mixed-effects-residual-diagnostics.md) · [Method guide](functional-mixed-effects-residual-diagnostics.md)
+
 -   **Multivariate IAAFT preservation diagnostics**
 
     ![Per-surrogate power-spectrum and cross-spectrum mismatch diagnostics](../assets/gallery/multivariate-iaaft-diagnostics.svg)
@@ -158,6 +180,40 @@ These figures are regenerated from deterministic synthetic data during the docum
     **API:** `trajectory_distance_sensitivity()`, `plot_trajectory_distance_rank_correlations()`
 
     [Worked example](../examples/trajectory-distance-sensitivity.md) · [Method guide](trajectory-distance-sensitivity.md) · [Mathematics](mathematical-reference.md#trajectory-distance-sensitivity)
+
+-   **Embedding-delay diagnostics**
+
+    ![Average mutual information and autocorrelation over candidate delays](../assets/gallery/embedding-delay-diagnostics.svg)
+
+    Average mutual information and autocorrelation across a declared lag range.
+    The diagnostic marks evidence but does not silently choose the embedding delay.
+
+    **API:** `embedding_delay_diagnostics()`, `plot_embedding_delay_diagnostics()`
+
+    [Worked example](../examples/nonlinear-dynamics.md) · [Mathematics](mathematical-reference.md#delay-embedding)
+
+-   **Embedding-dimension diagnostics**
+
+    ![False-nearest-neighbor fraction over embedding dimensions](../assets/gallery/embedding-dimension-diagnostics.svg)
+
+    False-nearest-neighbor fraction across candidate embedding dimensions under
+    an explicit delay and Theiler window.
+
+    **API:** `embedding_dimension_diagnostics()`, `plot_embedding_dimension_diagnostics()`
+
+    [Worked example](../examples/nonlinear-dynamics.md) · [Mathematics](mathematical-reference.md#delay-embedding)
+
+-   **Transfer-entropy circular-shift test**
+
+    ![Transfer-entropy circular-shift null distribution](../assets/gallery/transfer-entropy-shift-test.svg)
+
+    Observed discrete transfer entropy against an analyst-declared circular-shift
+    null distribution. The figure is evidence about the declared surrogate null,
+    not a causal-effect plot.
+
+    **API:** `transfer_entropy_circular_shift_test()`, `plot_transfer_entropy_circular_shift_test()`
+
+    [Worked example](../examples/transfer-entropy.md) · [Method guide](transfer-entropy.md) · [Mathematics](mathematical-reference.md#discrete-transfer-entropy)
 
 -   **Sparse recurrence structure**
 
@@ -317,7 +373,7 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 === "DTW alignment"
 
-    `plot_dynamic_time_warping_alignment()` visualizes the selected monotone index path. For symmetric2, the raw path cost uses step weights 2 for diagonal moves and 1 for horizontal/vertical moves; the optional normalized distance divides the complete global cost by \(N+M\).
+    `plot_dynamic_time_warping_alignment()` visualizes the selected monotone index path. For symmetric2, the raw path cost uses step weights 2 for diagonal moves and 1 for horizontal/vertical moves; the optional normalized distance divides the complete global cost by $N+M$.
 
 === "Recurrence"
 
@@ -356,4 +412,4 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
 ## Gallery contract
 
-The docs workflow regenerates all twenty-five assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
+The docs workflow regenerates at least thirty assets before the strict MkDocs build and runs `scripts/validate_docs_contracts.py`. A missing image, stale generated equation index, broken nav target, undefined mathematical deep link, missing mathematical API contract, stale MathJax hook, or unresolved documented public symbol fails the documentation job.
