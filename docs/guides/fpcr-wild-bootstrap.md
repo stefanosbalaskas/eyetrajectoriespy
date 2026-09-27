@@ -59,7 +59,7 @@ Y_i^*
 \widehat\varepsilon_{i,k}W_i,
 $
 
-where \(W_i\) is a mean-zero, unit-variance multiplier.
+where $W_i$ is a mean-zero, unit-variance multiplier.
 
 The package supports:
 
