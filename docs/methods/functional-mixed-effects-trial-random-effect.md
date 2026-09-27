@@ -6,7 +6,7 @@ participant → trial → time model.
 
 For participant \(i\), trial \(j\), and observed time \(t\),
 
-\[
+$
 Y_{ij}(t)
 =
 \mathbf{x}_{ij}^{\top}\boldsymbol{\beta}(t)
@@ -16,23 +16,23 @@ b_i(t)
 u_{ij}(t)
 +
 \epsilon_{ij}(t).
-\]
+$
 
 The participant functional effect remains
 
-\[
+$
 b_i(t)=\mathbf B_b(t)^\top\mathbf a_i,
 \qquad
 \mathbf a_i\sim N(\mathbf 0,\boldsymbol\Psi_{\mathrm{participant}}).
-\]
+$
 
 The new trial functional intercept is
 
-\[
+$
 u_{ij}(t)=\mathbf B_u(t)^\top\mathbf v_{ij},
 \qquad
 \mathbf v_{ij}\sim N(\mathbf 0,\boldsymbol\Psi_{\mathrm{trial}}).
-\]
+$
 
 \(\boldsymbol\Psi_{\mathrm{trial}}\) is one shared unstructured covariance
 across trials. The implementation does **not** estimate one covariance per
@@ -43,7 +43,7 @@ scalar variance component.
 
 For all observations from participant \(i\),
 
-\[
+$
 \mathbf V_i
 =
 \mathbf Z_i
@@ -56,7 +56,7 @@ For all observations from participant \(i\),
 \mathbf W_{ij}^\top
 +
 \sigma^2\mathbf I.
-\]
+$
 
 Participant and trial covariance matrices are parameterized through their
 Cholesky factors. Fixed B-spline coefficients are profiled by generalized
