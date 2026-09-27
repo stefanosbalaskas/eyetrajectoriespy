@@ -6,7 +6,7 @@ This is intentionally narrower than a generic "bootstrap RQA" claim.
 
 ## Estimand
 
-For source curve \(i\), selected RQA metric \(q\), and one fixed recurrence specification \(\theta\),
+For source curve $i$, selected RQA metric $q$, and one fixed recurrence specification $\theta$,
 
 $
 M_{iq}=Q_q\{R_i(\theta)\}.
@@ -14,7 +14,7 @@ $
 
 With independent curves, the target is the equal-weight mean of the curve-level summaries.
 
-With repeated trials nested within participant \(p\), the package first computes
+With repeated trials nested within participant $p$, the package first computes
 
 $
 U_{pq}
@@ -142,7 +142,7 @@ A different scientifically justified specification must be declared explicitly.
 
 ## Interval
 
-For bootstrap replicate \(b\), if \(I_1^{(b)},\dots,I_n^{(b)}\) are sampled independent-unit indices,
+For bootstrap replicate $b$, if $I_1^{(b)},\dots,I_n^{(b)}$ are sampled independent-unit indices,
 
 $
 \bar U_q^{*(b)}
