@@ -125,6 +125,7 @@ def test_release_workflow_builds_once_and_reuses_exact_artifact():
     assert '--pattern "*.whl"' in workflow
     assert '--pattern "*.tar.gz"' in workflow
     assert "sha256sum -c dist/SHA256SUMS" in workflow
+    assert "rm dist/SHA256SUMS" in workflow
     assert "id-token: write" in workflow
     assert "needs:" in workflow
     assert "- github-release" in workflow
