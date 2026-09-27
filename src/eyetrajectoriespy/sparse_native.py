@@ -151,7 +151,7 @@ def fit_sparse_fpca(
     evaluation_grid: np.ndarray,
     mean_bandwidth: float,
     covariance_bandwidth: float,
-    noise_bandwidth: float,
+    noise_bandwidth: float | None = None,
     mean_smoother: str = "local_linear",
     covariance_smoother: str = "local_linear",
     kernel: str = "epanechnikov",
@@ -240,6 +240,11 @@ def fit_sparse_fpca(
 
     noise_result = None
     if noise_variance_method == "diagonal_difference":
+        if noise_bandwidth is None:
+            raise ValueError(
+                "noise_bandwidth is required when "
+                "noise_variance_method='diagonal_difference'"
+            )
         noise_result = estimate_noise_variance_diagonal_difference(
             trajectories.time,
             tuple(residuals),
@@ -321,7 +326,9 @@ def fit_sparse_fpca(
         "kernel": kernel,
         "mean_bandwidth": float(mean_bandwidth),
         "covariance_bandwidth": float(covariance_bandwidth),
-        "noise_bandwidth": float(noise_bandwidth),
+        "noise_bandwidth": (
+            None if noise_bandwidth is None else float(noise_bandwidth)
+        ),
         "noise_variance_method": noise_variance_method,
         "noise_variance": noise_variance,
         "evaluation_grid": grid.tolist(),
