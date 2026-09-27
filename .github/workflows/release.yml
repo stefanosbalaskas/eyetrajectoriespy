@@ -258,7 +258,7 @@ jobs:
           python -m venv .pypi-smoke
           .pypi-smoke/bin/python -m pip install -U pip
           for attempt in 1 2 3 4 5 6; do
-            if .pypi-smoke/bin/python -m pip install --pre "eyetrajectoriespy==${{ needs.build-once.outputs.version }}"; then
+            if .pypi-smoke/bin/python -m pip install "eyetrajectoriespy==${{ needs.build-once.outputs.version }}"; then
               break
             fi
             if [[ "${attempt}" == "6" ]]; then exit 1; fi

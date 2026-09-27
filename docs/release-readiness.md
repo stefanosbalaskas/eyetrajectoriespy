@@ -6,15 +6,15 @@ interpret a workflow.
 
 ## Repository policy
 
-Current observed repository state at the start of 0.55:
+Historical state at the start of 0.55 was an unprotected `main`. The current
+0.9 release state is different:
 
 - default branch: `main`;
-- `main` is **not protected**;
-- no repository ruleset targets `main`.
+- `main` is protected by the release-quality ruleset;
+- required pull-request/status-check protection is active;
+- issue #64 is closed.
 
-This is a release-readiness blocker, not a statistical-method defect.
-
-Tracked in [GitHub issue #64](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/64).
+This repository-policy gate is therefore satisfied for 0.9.0.
 
 ### Required target policy for `main`
 
@@ -128,25 +128,25 @@ requalification remains required after merge.
 - [x] `python -m build`, `twine check`, fresh wheel install, fresh sdist
       install and an installed-package canonical smoke test are encoded in both
       release automation and non-publishing release-readiness CI.
-- [x] Production publication is version-tag-only; manual dispatch cannot choose
-      production PyPI.
-- [x] Production creates the GitHub Release only after PyPI publication
-      succeeds.
+- [x] Production publication starts only from a qualified protected-`main` merge; manual dispatch cannot choose production PyPI.
+- [x] Production creates the GitHub Release first, then publishes the identical checksum-verified wheel/sdist to PyPI.
 - [x] PyPI publishing uses the OIDC Trusted Publishing action and no long-lived
       API token.
 - [x] TestPyPI rehearsal is supported through the same build artifact.
 - [x] Production checks live GitHub governance and exact-main CI before
       publishing.
 - [ ] TestPyPI Trusted Publisher/rehearsal remains available as an optional rehearsal.
-- [ ] Production PyPI Trusted Publisher is configured for environment `pypi`.
+- [x] Production PyPI Trusted Publishing/OIDC is operational and was proven by the successful 0.9.0rc1 publication.
 - [x] `pypi` GitHub environment has the intended required-reviewer protection.
 - [x] `main` is protected and issue #64 is closed.
-- [x] `RELEASE_READINESS.json` is armed for GitHub Release; PyPI trust remains independently fail-closed.
+- [x] `RELEASE_READINESS.json` is armed for the 0.9.0 final GitHub/PyPI ceremony.
 
-The first public prerelease is `0.9.0rc1`. GitHub Release creation now
-precedes PyPI publication. An unchecked PyPI Trusted Publisher item therefore
-does not block creation of the GitHub prerelease, but it does block the
-subsequent PyPI OIDC exchange.
+The first public prerelease `0.9.0rc1` successfully exercised GitHub-first
+publication followed by production PyPI OIDC publication and clean installation.
+Version `0.9.0` repeats the complete qualification under the final version
+rather than relabeling RC evidence. Issue #69 tracks migration of the working
+production Trusted Publisher claim from the GitHub environment named
+`testpypi` to the dedicated `pypi` environment before the next release.
 
 ## Release-candidate gate
 

@@ -1,134 +1,107 @@
 # Coordinated GitHub Release and PyPI publication
 
-Version 0.57 added the coordinated release machinery. The `0.9.0rc1`
-release branch now exercises that machinery under the exact prerelease version,
-but production publication remains fail-closed until branch protection,
-TestPyPI rehearsal and PyPI environment/Trusted Publishing configuration are
-complete.
+Version 0.9.0 uses the release machinery qualified during the 0.9.0rc1
+ceremony. The final release is a separate immutable version; the RC remains a
+prerelease record.
 
 ## One build, two publication surfaces
 
-`.github/workflows/release.yml` owns the coordinated release:
+`.github/workflows/release.yml` owns the final ceremony:
 
 ~~~text
-merge the qualified release-candidate PR to protected main
+merge the fully qualified 0.9.0 PR to protected main
         |
         v
 build wheel + sdist once
         |
         +--> twine check
-        +--> fresh-wheel smoke test
-        +--> fresh-sdist smoke test
+        +--> fresh-wheel install + smoke test
+        +--> fresh-sdist install + smoke test
         |
         v
-wait for exact-main required checks
+wait for every exact-main required check
         |
         v
-create annotated version tag + GitHub prerelease
-attach the exact wheel + sdist + SHA256SUMS
+create annotated tag v0.9.0
+create final GitHub Release
+attach wheel + sdist + SHA256SUMS
         |
         v
-manual approval through pypi environment
+download those exact GitHub Release assets
+verify SHA256SUMS
+remove checksum manifest from upload directory
         |
         v
-publish the SAME wheel + sdist to PyPI through OIDC
+publish the SAME wheel + sdist to production PyPI through OIDC
         |
         v
-install exact PyPI version and run smoke test
+install eyetrajectoriespy==0.9.0 from production PyPI
+run installed-package smoke test
 ~~~
 
-The distributions are never rebuilt separately for GitHub and PyPI.
+The wheel and sdist are never rebuilt separately for GitHub and PyPI.
 
 ## Production trigger
 
-Production publication has **no manual workflow-dispatch path**. It starts from
-the protected `main` push created by merging the qualified release-candidate
-PR. The workflow waits for the exact-main required checks before creating the
-version tag and GitHub Release.
+Production publication has no manual-dispatch path. It starts only from the
+protected-`main` push produced by merging the fully qualified final-release
+pull request.
 
-Before publication, the workflow requires:
+The workflow verifies:
 
-1. tag/version agreement across `pyproject.toml`, package `__version__`,
-   `CITATION.cff`, canonical/validation/tolerance/performance manifests and
-   the status roadmap;
-2. a non-development production/prerelease version;
-3. `main` reported protected by GitHub;
-4. issue #64 closed;
-5. the release commit to equal current `main`;
-6. the full exact-main required check set to have completed successfully;
-7. creation of an annotated version tag at that exact commit;
-8. the `pypi` environment to expose explicit acknowledgements that Trusted
-   Publishing and the required-reviewer gate are configured before PyPI
-   publication.
+1. all current version declarations agree on `0.9.0`;
+2. the version is not a development release;
+3. GitHub reports `main` protected;
+4. governance issue #64 is closed;
+5. the release commit is current `main`;
+6. all required exact-main scientific, packaging, documentation, examples,
+   optional-backend, performance and release-readiness checks have completed
+   successfully.
 
-The `pypi` publishing job receives `id-token: write` and no stored PyPI API
-token.
+Only then is the annotated final tag and GitHub Release created.
+
+## Production PyPI
+
+The PyPI job has `id-token: write` and uses
+`pypa/gh-action-pypi-publish`; no long-lived PyPI API token is stored.
+
+The successful 0.9.0rc1 ceremony proved the production Trusted Publishing/OIDC
+path and production-PyPI clean-install verification. For the 0.9.0 final
+release, the same registered publisher claim is retained so the final ceremony
+can reproduce the proven path.
+
+At present the working production Trusted Publisher claim is bound to the
+GitHub environment named `testpypi`. This naming is not ideal and is tracked
+in issue #69. It does not change the destination: the production job publishes
+to `https://upload.pypi.org/legacy/`. Before a later release, migrate that
+publisher claim to the dedicated protected `pypi` environment and update the
+workflow/acknowledgement variables together.
 
 ## Optional TestPyPI rehearsal
 
-Manual dispatch supports only:
+Manual workflow dispatch remains available for:
 
 - `build-only`;
 - `testpypi`.
 
-The TestPyPI path downloads the same `release-dist` artifact, publishes through
-OIDC, installs the exact TestPyPI version while allowing dependencies from
-normal PyPI, and runs the installed-package smoke test.
+TestPyPI is optional for the final 0.9.0 ceremony because the RC already
+exercised the complete production PyPI path successfully. It remains useful for
+future publisher/environment migrations.
 
-Before using it, configure a TestPyPI Trusted Publisher for:
+## Final 0.9.0 ceremony
 
-~~~text
-Owner:       stefanosbalaskas
-Repository:  eyetrajectoriespy
-Workflow:    release.yml
-Environment: testpypi
-~~~
+1. Align package, citation, validation, workflow and documentation versions to
+   `0.9.0`.
+2. Archive the qualified RC performance snapshot.
+3. Qualify a fresh `0.9.0` performance envelope.
+4. Pass the complete pull-request matrix.
+5. Merge to protected `main`.
+6. Pass the complete exact-main matrix.
+7. Create annotated tag `v0.9.0` and final GitHub Release.
+8. Attach the exact wheel, sdist and `SHA256SUMS`.
+9. Download and checksum-verify those exact release assets.
+10. Publish only the wheel and sdist to production PyPI through OIDC.
+11. Install exactly `eyetrajectoriespy==0.9.0` from production PyPI.
+12. Run the installed-package canonical smoke test.
 
-and set the environment variable
-`TESTPYPI_TRUSTED_PUBLISHING_CONFIGURED=true`.
-
-## Production environment
-
-For production PyPI, configure the Trusted Publisher as:
-
-~~~text
-Owner:       stefanosbalaskas
-Repository:  eyetrajectoriespy
-Workflow:    release.yml
-Environment: pypi
-~~~
-
-The `pypi` GitHub environment should require a reviewer before deployment.
-After configuration, set these environment variables:
-
-~~~text
-PYPI_TRUSTED_PUBLISHING_CONFIGURED=true
-PYPI_REQUIRED_REVIEWER_CONFIGURED=true
-~~~
-
-These acknowledgements are not substitutes for the environment protection; they
-make the intended configuration fail-closed and auditable from the workflow.
-
-## First public release ceremony
-
-For `0.9.0rc1`:
-
-1. verify the active `main` ruleset and close issue #64;
-2. configure the protected `pypi` environment and production Trusted
-   Publisher;
-3. keep `RELEASE_READINESS.json` truthful about GitHub-release and PyPI state;
-4. align all release-version declarations to `0.9.0rc1`;
-5. merge the release PR only after the complete PR-head matrix passes;
-6. let the `main` push run `release.yml`;
-7. wait for all exact-main required checks;
-8. create annotated tag `v0.9.0rc1` and the GitHub prerelease first;
-9. approve the protected `pypi` environment;
-10. publish the exact same distributions to PyPI through OIDC;
-11. verify installation of exactly `eyetrajectoriespy==0.9.0rc1`.
-
-A TestPyPI rehearsal remains available but is not required for this GitHub-first
-release sequence.
-
-Because `0.9.0rc1` is a prerelease, ordinary dependency resolution should not
-be described as equivalent to a final stable release. The verification command
-uses `--pre` explicitly.
+The ceremony is complete only after step 12 succeeds.

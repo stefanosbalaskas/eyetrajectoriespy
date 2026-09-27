@@ -16,24 +16,24 @@ def _load_script(name):
     return module
 
 
-def test_release_version_contract_agrees_for_rc1():
+def test_release_version_contract_agrees_for_final():
     module = _load_script("verify_release_version.py")
-    assert module.verify_version_contract() == "0.9.0rc1"
+    assert module.verify_version_contract() == "0.9.0"
 
 
-def test_production_release_accepts_rc_on_exact_main_before_tag_creation():
+def test_production_release_accepts_final_on_exact_main_before_tag_creation():
     module = _load_script("verify_release_version.py")
     assert module.verify_version_contract(
         production=True,
-    ) == "0.9.0rc1"
+    ) == "0.9.0"
 
 
-def test_production_release_accepts_matching_rc_tag():
+def test_production_release_accepts_matching_final_tag():
     module = _load_script("verify_release_version.py")
     assert module.verify_version_contract(
-        tag="v0.9.0rc1",
+        tag="v0.9.0",
         production=True,
-    ) == "0.9.0rc1"
+    ) == "0.9.0"
 
 
 def test_release_governance_happy_path_requires_all_quality_gates(monkeypatch):
