@@ -6,7 +6,7 @@ Version 0.53 adds explicit rate versus expected-count semantics for
 exposure-adjusted Poisson fits. Version 0.54 keeps grouped-binomial prediction
 on the marginal success-probability scale.
 
-For a predeclared scalar predictor profile \(\mathbf x_r\),
+For a predeclared scalar predictor profile $\mathbf x_r$,
 
 $
 \eta_r^{\mathrm{rate}}(t)
@@ -22,7 +22,7 @@ $
 \exp\{\eta_r^{\mathrm{rate}}(t)\}
 $
 
-is the exposure-adjusted rate. If an explicit target exposure \(E_r(t)>0\) is
+is the exposure-adjusted rate. If an explicit target exposure $E_r(t)>0$ is
 supplied,
 
 $
@@ -104,7 +104,7 @@ expected_count_prediction = generalized_function_on_scalar_predict(
 `(n_profiles,)`; the latter is explicitly expanded over time. Every value must
 be finite and strictly positive. If a model was fitted with exposure and
 expected-count prediction is requested without target exposure, the function
-fails rather than silently assuming \(E=1\). Conversely, target exposure is not
+fails rather than silently assuming $E=1$. Conversely, target exposure is not
 accepted for a rate prediction.
 
 The result retains the selected response scale together with
@@ -113,8 +113,8 @@ The result retains the selected response scale together with
 
 ## Prediction uncertainty
 
-Let \(\widehat{\boldsymbol\Sigma}_\theta\) be the robust covariance of the
-B-spline coefficient vector and let \(\mathbf z_r(t)\) be the expanded
+Let $\widehat{\boldsymbol\Sigma}_\theta$ be the robust covariance of the
+B-spline coefficient vector and let $\mathbf z_r(t)$ be the expanded
 profile-by-basis design row. Then
 
 $
@@ -125,7 +125,7 @@ $
 \mathbf z_r(t).
 $
 
-Because exposure is treated as fixed, adding \(\log E_r(t)\) changes the
+Because exposure is treated as fixed, adding $\log E_r(t)$ changes the
 linear-predictor location but not this coefficient-estimation variance.
 Response-scale pointwise standard errors use the inverse-link delta method.
 
@@ -187,7 +187,7 @@ prediction_band = generalized_function_on_scalar_prediction_bands(
 )
 ~~~
 
-For profile \(r\), bootstrap replicate \(b\), and observed grid point \(t_m\),
+For profile $r$, bootstrap replicate $b$, and observed grid point $t_m$,
 
 $
 M_r^{*(b)}
@@ -207,7 +207,7 @@ critical value. With `simultaneous_scope="family"`, one maximum is taken over
 all declared profiles and observed time points.
 
 The calibrated linear-predictor endpoints are transformed through the monotone
-inverse link. Bernoulli probability bands therefore remain in \((0,1)\), and
+inverse link. Bernoulli probability bands therefore remain in $(0,1)$, and
 Poisson rate or expected-count bands remain positive without clipping. The
 coverage claim is over the observed grid only.
 
