@@ -25,15 +25,15 @@ All require a complete planar trajectory. Differential quantities require at lea
 
 ## Heading
 
-For \(G(t)=[x(t),y(t)]^\top\),
+For $G(t)=[x(t),y(t)]^\top$,
 
 $
 \theta(t)=\operatorname{atan2}\{y'(t),x'(t)\}.
 $
 
-The returned angle is wrapped to \([-\pi,\pi]\). The package does **not** unwrap it automatically.
+The returned angle is wrapped to $[-\pi,\pi]$. The package does **not** unwrap it automatically.
 
-This matters for FDA: two directions near \(+\pi\) and \(-\pi\) are geometrically close but numerically far apart. Do not feed wrapped heading directly into ordinary Euclidean FPCA without an explicit circular or unwrapping strategy.
+This matters for FDA: two directions near $+\pi$ and $-\pi$ are geometrically close but numerically far apart. Do not feed wrapped heading directly into ordinary Euclidean FPCA without an explicit circular or unwrapping strategy.
 
 ## Signed curvature
 
@@ -46,7 +46,7 @@ $
 
 Curvature is positive or negative according to the orientation of the supplied coordinate axes.
 
-The package does not assume that screen \(y\) points upward. If your tracker reports pixel \(y\) increasing downward, the **visual** interpretation of the sign is reversed relative to a conventional Cartesian plot.
+The package does not assume that screen $y$ points upward. If your tracker reports pixel $y$ increasing downward, the **visual** interpretation of the sign is reversed relative to a conventional Cartesian plot.
 
 ## Turning rate
 
@@ -59,7 +59,7 @@ $
 \kappa(t)\|G'(t)\|.
 $
 
-The implementation computes this directly from the derivatives. It does not differentiate the wrapped heading function, so artificial jumps at the \(\pm\pi\) branch cut do not create turning-rate spikes.
+The implementation computes this directly from the derivatives. It does not differentiate the wrapped heading function, so artificial jumps at the $\pm\pi$ branch cut do not create turning-rate spikes.
 
 ## Low-speed contract
 
@@ -113,7 +113,7 @@ Derivative noise therefore remains visible. If smoothing is scientifically justi
 
 Curvature and tortuosity are Euclidean geometric quantities. Their interpretation assumes the two selected axes are in commensurate spatial units.
 
-This is especially important for coordinates normalized separately to screen width and height. A movement of \(0.1\) on normalized \(x\) and \(0.1\) on normalized \(y\) need not represent the same physical or visual-angle displacement on a non-square display.
+This is especially important for coordinates normalized separately to screen width and height. A movement of $0.1$ on normalized $x$ and $0.1$ on normalized $y$ need not represent the same physical or visual-angle displacement on a non-square display.
 
 If geometric interpretation matters, use an isotropic coordinate representation such as calibrated pixels with known geometry or degrees of visual angle.
 
@@ -128,7 +128,7 @@ T
 {\text{endpoint displacement}}.
 $
 
-A straight trajectory has \(T=1\); more circuitous open paths have \(T>1\).
+A straight trajectory has $T=1$; more circuitous open paths have $T>1$.
 
 A closed path has zero endpoint displacement and therefore undefined tortuosity under this definition. The package does not add an epsilon or return infinity silently. Use `undefined_policy="nan"` or `"raise"` explicitly.
 
@@ -146,7 +146,7 @@ Report:
 
 - selected planar dimensions;
 - coordinate system and whether horizontal/vertical units are commensurate;
-- screen \(y\)-axis orientation if sign is interpreted visually;
+- screen $y$-axis orientation if sign is interpreted visually;
 - preprocessing and any upstream smoothing;
 - derivative method;
 - `min_speed`;
