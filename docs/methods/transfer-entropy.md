@@ -5,7 +5,7 @@ Transfer entropy (TE) is an **experimental directed-dependence diagnostic** in
 prediction of the next target state beyond the information already present in
 the target's own history.
 
-For discrete source states \(X_t\) and target states \(Y_t\), the package
+For discrete source states $X_t$ and target states $Y_t$, the package
 estimates
 
 $
@@ -13,8 +13,8 @@ T_{X\rightarrow Y}(k,l,d)
 = I\!\left(X_{t-d}^{(l)};Y_t\mid Y_{t-1}^{(k)}\right),
 $
 
-where \(k\) is the target-history length, \(l\) is the source-history length,
-and \(d\ge1\) is the source lag in sample-index units. The empirical plug-in
+where $k$ is the target-history length, $l$ is the source-history length,
+and $d\ge1$ is the source lag in sample-index units. The empirical plug-in
 estimate is reported in bits.
 
 ## Explicit state representation
@@ -33,7 +33,7 @@ support is exposed instead of hidden.
 
 ## Histories and lag
 
-With `target_history=k`, the target history at index \(t\) is
+With `target_history=k`, the target history at index $t$ is
 
 $
 (Y_{t-1},\ldots,Y_{t-k}),
@@ -72,7 +72,7 @@ p_{+}=\frac{1+\sum_b I(T_b^*\ge T_{obs})}{B+1},
 $
 
 plus the surrogate mean and the surrogate-centered difference
-\(T_{obs}-\bar T^*\).
+$T_{obs}-\bar T^*$.
 
 Circular shifts preserve the source marginal exactly and retain its circular
 ordering while changing source-target alignment. They are appropriate only
@@ -105,8 +105,8 @@ specific surrogate contract.
 
 ## Reporting minimum
 
-Report at least the source/target state definitions, sampling unit, \(k\),
-\(l\), \(d\), effective transitions, empirical TE in bits, joint-history
+Report at least the source/target state definitions, sampling unit, $k$,
+$l$, $d$, effective transitions, empirical TE in bits, joint-history
 support diagnostics, and—if surrogate testing is used—the complete shift
 rule/set, number of shifts, surrogate mean, plus-one p-value, and attainable
 resolution.
