@@ -67,13 +67,14 @@ def version_contract() -> dict[str, str]:
     roadmap = (ROOT / "docs/methods/status-roadmap.md").read_text(
         encoding="utf-8"
     )
-    expected_line = (
-        f"The current development line is **{project_version}**."
+    expected_lines = (
+        f"The current development line is **{project_version}**.",
+        f"The current stable pre-1.0 line is **{project_version}**.",
     )
-    if expected_line not in roadmap:
+    if not any(line in roadmap for line in expected_lines):
         raise RuntimeError(
             "status roadmap does not declare the pyproject version as the "
-            "current development line"
+            "current package line"
         )
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     if project_version not in readme:
