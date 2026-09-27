@@ -149,7 +149,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current development line is **0.9.0rc1**. The package remains pre-release while scientific contracts, optional-backend validation, documentation, and cross-platform qualification continue to mature.
+The current stable pre-1.0 line is **0.9.0**. Scientific contracts, optional-backend validation, documentation, and cross-platform qualification remain active release-quality surfaces.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
@@ -453,10 +453,11 @@ are part of ordinary CI.
 
 Release hardening is split into two workflows. `release-readiness` continuously
 tests version consistency, build/twine checks, fresh wheel and sdist installs
-and the installed-package smoke test without publishing. `release.yml` is
-isolated and owns coordinated TestPyPI/PyPI/GitHub publication. Production is
-tag-only, builds distributions once, uses OIDC Trusted Publishing, creates the
-GitHub Release only after PyPI succeeds and attaches the identical wheel/sdist.
+and the installed-package smoke test without publishing. `release.yml` owns
+the coordinated publication ceremony: after a qualified protected-`main`
+merge it builds once, waits for exact-main qualification, creates the GitHub
+Release, then publishes those same checksum-verified wheel/sdist artifacts to
+PyPI through OIDC Trusted Publishing.
 
 Production publication remains deliberately blocked while repository governance
 is incomplete. The planned first public release is **0.9.0rc1**, but only after
@@ -481,6 +482,28 @@ the required-reviewer protection.
 The release-candidate phase is for defect correction, installation feedback,
 documentation clarity and reproducibility verification. It is not a return to
 feature expansion.
+
+### 0.9.0 final release
+
+Version **0.9.0** promotes the qualified 0.9.0rc1 platform to the first stable
+pre-1.0 release. It introduces no new statistical estimator, observation family
+or hidden analytical default.
+
+The final release is independently qualified under the exact `0.9.0` version:
+the complete cross-platform core matrix, package build, documentation, five
+canonical examples, specialist optional backends, release-readiness
+wheel/sdist installation checks, and the non-comparative performance envelope
+must all pass before protected `main` publication proceeds.
+
+Publication is GitHub-first. The release workflow creates annotated tag
+`v0.9.0` and the non-prerelease GitHub Release from one build, then downloads
+and checksum-verifies those exact release assets before sending only the wheel
+and sdist to production PyPI through OIDC. A clean production-PyPI install and
+canonical smoke test close the ceremony.
+
+The 0.9.x line should prioritize defects, compatibility, reproducibility,
+documentation and independent scientific validation. Broad estimator expansion
+remains outside the default stabilization path.
 
 ### After 0.9.0rc1
 
