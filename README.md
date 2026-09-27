@@ -1,5 +1,10 @@
 # eyetrajectoriespy
 
+[![PyPI version](https://img.shields.io/pypi/v/eyetrajectoriespy.svg)](https://pypi.org/project/eyetrajectoriespy/)
+[![GitHub Release](https://img.shields.io/github/v/release/stefanosbalaskas/eyetrajectoriespy)](https://github.com/stefanosbalaskas/eyetrajectoriespy/releases)
+[![Python](https://img.shields.io/pypi/pyversions/eyetrajectoriespy.svg)](https://pypi.org/project/eyetrajectoriespy/)
+[![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://stefanosbalaskas.github.io/eyetrajectoriespy/)
+
 **Functional and continuous trajectory analysis for eye-tracking data in Python.**
 
 `eyetrajectoriespy` treats gaze as a function of trial time rather than immediately reducing it to fixation counts, dwell summaries, or symbolic scanpaths. It supports continuous planar paths
@@ -10,7 +15,7 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** release candidate (`0.9.0rc1`). The scientific platform, reference-validation layer, reproducibility contracts, packaging checks, and canonical workflows are qualified; prerelease feedback and release-candidate defect correction remain active.
+> **Status:** stable pre-1.0 release (`0.9.0`). The scientific platform, reference-validation layer, reproducibility contracts, packaging checks, and five canonical workflows are qualified.
 
 ## What scientific problem does this solve?
 
@@ -62,10 +67,16 @@ The README is intentionally no longer the exhaustive function catalogue.
 
 ## Install
 
-Release candidate:
+Stable release:
 
 ```bash
-pip install --pre eyetrajectoriespy==0.9.0rc1
+pip install eyetrajectoriespy==0.9.0
+```
+
+Or install the current stable release:
+
+```bash
+pip install eyetrajectoriespy
 ```
 
 Development checkout:
@@ -139,9 +150,10 @@ Version 0.55 began the stabilization line; version 0.56 added
 evidence-typed independent/reference validation, an explicit numerical-tolerance
 policy, and a repeated runtime/peak-memory reference envelope. Version 0.57 adds
 portable scientific-result snapshots, explicit environment capture, five
-qualified canonical end-to-end examples, and coordinated TestPyPI/PyPI/GitHub
-release machinery without publishing the development version. Scientific
-product qualification remains more important than estimator count. See the
+qualified canonical end-to-end examples, and coordinated GitHub/PyPI release
+machinery. Version 0.9.0 is the first stable pre-1.0 release after the qualified
+0.9.0rc1 publication. Scientific product qualification remains more important
+than estimator count. See the
 [release-readiness checklist](https://stefanosbalaskas.github.io/eyetrajectoriespy/release-readiness/).
 
 - [Portable scientific results](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/portable-results/)
