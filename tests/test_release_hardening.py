@@ -124,7 +124,7 @@ def test_release_workflow_builds_once_and_reuses_exact_artifact():
     assert 'gh release download "v${VERSION}"' in workflow
     assert '--pattern "*.whl"' in workflow
     assert '--pattern "*.tar.gz"' in workflow
-    assert "sha256sum -c SHA256SUMS" in workflow
+    assert "sha256sum -c dist/SHA256SUMS" in workflow
     assert "id-token: write" in workflow
     assert "needs:" in workflow
     assert "- github-release" in workflow
@@ -135,6 +135,8 @@ def test_release_workflow_builds_once_and_reuses_exact_artifact():
     )
     assert "--verify-tag" in workflow
     assert "verify-pypi-install" in workflow
+    verify_block = workflow.split("  verify-pypi:", 1)[1]
+    assert "- publish-pypi" in verify_block
 
 
 def test_production_release_has_no_manual_dispatch_path():
