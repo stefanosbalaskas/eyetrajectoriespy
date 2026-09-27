@@ -87,14 +87,14 @@ def main() -> None:
         in_fence = False
         display_delimiters = 0
         for line_number, line in enumerate(source.splitlines(), start=1):
-            if re.match(r"^\\s*(?:```|~~~)", line):
+            if re.match(r"^\s*(?:\`\`\`|~~~)", line):
                 in_fence = not in_fence
                 continue
             if in_fence:
                 continue
-            without_code = re.sub(r"`[^`]*`", "", line)
+            without_code = re.sub(r"\`[^\`]*\`", "", line)
             stripped = without_code.strip()
-            if stripped in {"$", r"\\[", r"\\]"}:
+            if stripped in {"$", r"\[", r"\]"}:
                 invalid_math_delimiters.append(
                     (
                         str(markdown_path.relative_to(ROOT)),
@@ -102,28 +102,28 @@ def main() -> None:
                         stripped,
                     )
                 )
-            if r"\\(" in without_code or r"\\)" in without_code:
+            if r"\(" in without_code or r"\)" in without_code:
                 invalid_math_delimiters.append(
                     (
                         str(markdown_path.relative_to(ROOT)),
                         line_number,
-                        "inline \\(...\\) delimiter",
+                        r"inline \(...\) delimiter",
                     )
                 )
-            display_delimiters += without_code.count("$")
+            display_delimiters += without_code.count("$$")
         if display_delimiters % 2:
             unbalanced_display_math.append(
                 str(markdown_path.relative_to(ROOT))
             )
     if invalid_math_delimiters:
         raise RuntimeError(
-            "Documentation must use $...$ for inline math and $...$ for "
+            "Documentation must use $...$ for inline math and $$...$$ for "
             "display math; incompatible delimiters remain: "
             f"{invalid_math_delimiters}"
         )
     if unbalanced_display_math:
         raise RuntimeError(
-            "Documentation contains unbalanced $ display-math delimiters: "
+            "Documentation contains unbalanced $$ display-math delimiters: "
             f"{sorted(unbalanced_display_math)}"
         )
 
