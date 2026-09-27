@@ -718,7 +718,7 @@ When continuous geometry is reported, state:
 
 - selected planar dimensions and coordinate system;
 - whether the two axes use the same spatial scale;
-- screen \(y\)-axis orientation if curvature/turning sign is interpreted visually;
+- screen $y$-axis orientation if curvature/turning sign is interpreted visually;
 - preprocessing and any explicit smoothing performed upstream;
 - derivative method and observed time unit;
 - `min_speed` and `undefined_policy`;
@@ -855,7 +855,7 @@ If latency or physical traversal timing is scientifically meaningful, report the
 ## Discrete transfer entropy
 
 Report the discrete source/target state definitions, sampling unit, direction,
-target history \(k\), source history \(l\), source lag \(d\), effective
+target history $k$, source history $l$, source lag $d$, effective
 transition count, TE in bits, and empirical history-support diagnostics. State
 explicitly how any continuous signal was converted to states upstream.
 
@@ -1004,7 +1004,7 @@ For a 0.50 mixed-effects covariance sensitivity analysis, report:
   diagnostics;
 - log likelihood, total free parameters, the exact information-criterion
   parameter count, AIC/BIC, and the BIC convention
-  \(n=n_{\mathrm{curves}}n_{\mathrm{time}}\);
+  $n=n_{\mathrm{curves}}n_{\mathrm{time}}$;
 - that information criteria and residual diagnostics were descriptive and no
   covariance structure was automatically selected;
 - that no naive likelihood-ratio p-values were computed.
@@ -1080,7 +1080,7 @@ report:
 - for a rate ratio, that calibration occurred on the log-rate-ratio scale before
   exponentiation;
 - for a Bernoulli difference, whether the interval exceeded the logical
-  \([-1,1]\) range;
+  $[-1,1]$ range;
 - that no profile or contrast was selected automatically and no
   multiple-contrast family adjustment is implied.
 
