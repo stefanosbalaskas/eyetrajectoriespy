@@ -379,17 +379,17 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
     `plot_recurrence()` visualizes sparse entries satisfying
 
-    $
+    $$
     R_{ij}=\mathbb I\{\|\mathbf z_i-\mathbf z_j\|_p\le\varepsilon\}.
-    $
+    $$
 
 === "Local divergence"
 
     `plot_local_divergence()` visualizes
 
-    $
+    $$
     D(k)=\frac{1}{N_k}\sum_i\log d_i(k),
-    $
+    $$
 
     with the analyst-declared LLE fit interval when an estimate is supplied.
 
@@ -397,10 +397,10 @@ The generator uses the package itself, fixed random seeds, the non-interactive M
 
     `plot_poincare_return_map()` visualizes successive crossings under
 
-    $
+    $$
     \mathbf z_{n+1}\approx
     \mathbf a+\mathbf J(\mathbf z_n-\mathbf z_0).
-    $
+    $$
 
 === "Monte Carlo precision"
 
