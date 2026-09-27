@@ -1,4 +1,4 @@
-"""Optional sparse functional PCA interoperability through FDApy."""
+"""Transitional sparse-FPCA compatibility/reference interoperability through FDApy."""
 
 from __future__ import annotations
 
@@ -132,7 +132,9 @@ def fit_sparse_fpca_fdapy(
 ) -> SparseFPCAResult:
     """Fit univariate sparse FPCA and recover scores with FDApy PACE.
 
-    The estimator uses FDApy's covariance-operator UFPCA path and PACE
+    This is the explicitly backend-named compatibility/reference path retained
+    during the transition to the planned native 0.10 sparse FPCA + PACE
+    estimator. It uses FDApy's covariance-operator UFPCA path and PACE
     conditional-expectation scoring. No common-grid interpolation is performed.
     """
 
