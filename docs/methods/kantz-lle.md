@@ -20,7 +20,7 @@ j:
 \right\}.
 $
 
-At forward horizon \(k\), the mean distance within each surviving reference
+At forward horizon $k$, the mean distance within each surviving reference
 neighborhood is computed first, then logged:
 
 $
