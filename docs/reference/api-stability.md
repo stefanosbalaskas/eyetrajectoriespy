@@ -87,6 +87,25 @@ Deprecation is not an excuse to reinterpret an existing result object silently.
 Changes to estimands, units, resampling units, clustering, denominator/exposure
 semantics or uncertainty definitions require a new explicit contract.
 
+## 0.9.1 / 0.10 development boundary
+
+The 0.9.1 line is reserved for maintenance and consolidation. Major estimator
+additions belong to a later minor development line.
+
+The planned 0.10 sparse API follows a replacement-by-addition strategy:
+
+- keep `fit_sparse_fpca_fdapy()` available as the explicit compatibility
+  backend;
+- introduce a separate native `fit_sparse_fpca()` only after its scientific
+  contract and validation evidence are complete;
+- do not implement the native function as a hidden call into FDApy;
+- do not deprecate the FDApy-specific wrapper merely because the native path is
+  introduced;
+- apply the normal pre-1.0 deprecation window before any later removal.
+
+This preserves existing users while allowing the canonical sparse workflow to
+become backend-independent.
+
 ## Argument consistency
 
 0.55 audits but does not globally reorder historical signatures. New APIs

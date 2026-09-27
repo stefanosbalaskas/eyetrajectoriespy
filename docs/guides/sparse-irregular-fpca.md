@@ -1,5 +1,12 @@
 # Sparse irregular FPCA with PACE
 
+!!! note "Current backend and native roadmap"
+    In 0.9.1, `fit_sparse_fpca_fdapy()` is an explicitly backend-named
+    compatibility path. FDApy is not a core dependency and is now treated as a
+    validation/reference implementation for the planned native 0.10.0 sparse
+    FPCA + PACE estimator. See the [0.10 development contract](../development/native-sparse-fpca.md).
+
+
 Irregular sampling and sparse sampling are related but different problems.
 
 A trajectory can be **irregular but dense**: many observations are available, but their exact times differ across curves.
@@ -37,9 +44,9 @@ PACE-style FPCA estimates population mean/covariance structure from pooled irreg
 
 The original sparse-FDA framework is designed for irregularly spaced longitudinal observations with relatively few repeated measurements per observational unit and explicitly models measurement error.
 
-## eyetrajectoriespy 0.6: optional FDApy PACE interoperability
+## Current 0.9.1 compatibility backend: FDApy PACE interoperability
 
-The public sparse workflow is intentionally narrow:
+The currently released backend-specific sparse workflow is intentionally narrow:
 
 - source object: `IrregularTrajectorySet`;
 - one explicitly named functional dimension at a time;
@@ -61,7 +68,7 @@ The eyetrajectoriespy core supports Python 3.11–3.13. The current FDApy 1.0.3 
 
 Use a Python 3.11 or 3.12 environment for the `sparse` extra until the backend dependency line supports Python 3.13.
 
-This restriction applies only to the optional FDApy interoperability layer; native irregular objects and the rest of eyetrajectoriespy remain available on Python 3.13.
+This restriction applies only to the optional FDApy interoperability layer; native irregular objects and the rest of eyetrajectoriespy remain available on Python 3.13. The planned native 0.10 sparse estimator is specifically intended to remove this backend constraint from the canonical sparse workflow.
 
 ## Inspect sparse sampling first
 

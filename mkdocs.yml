@@ -169,10 +169,14 @@ nav:
           - References: methods/references.md
       - Validation & qualification:
           - Capability status & roadmap: methods/status-roadmap.md
+          - External reference policy: validation/external-reference-policy.md
           - Release readiness: release-readiness.md
           - Independent-reference validation ledger: validation/reference-validation-ledger.md
           - Numerical tolerance policy: validation/numerical-tolerance-policy.md
           - Performance envelope: validation/performance-envelope.md
+      - Development roadmap:
+          - Native sparse FPCA + PACE (0.10): development/native-sparse-fpca.md
+          - Native functional simulation (0.11 candidate): development/simulation-framework.md
       - Reproducibility & release:
           - Portable scientific results: reproducibility/portable-results.md
           - Reproducibility bundle checklist: reproducibility/checklist.md
