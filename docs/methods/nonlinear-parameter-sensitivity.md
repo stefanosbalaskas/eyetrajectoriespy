@@ -27,25 +27,25 @@ $$
 
 Likewise, a Rosenstein slope is conditional on reconstruction, temporal exclusion, and the fitted divergence interval,
 
-$
+$$
 \widehat\lambda_{\max}^{(R)}
 =
 \widehat\lambda_{\max}^{(R)}
 \left(
 m,\tau,w,[t_a,t_b]
 \right).
-$
+$$
 
 For Kantz, the fixed neighborhood radius and minimum-neighbor rule are additional declared analysis dimensions,
 
-$
+$$
 \widehat\lambda_{\max}^{(K)}
 =
 \widehat\lambda_{\max}^{(K)}
 \left(
 m,\tau,\varepsilon,n_{\min},w,[t_a,t_b]
 \right).
-$
+$$
 
 The base APIs already preserve those choices. Version 0.26 adds a structured way to evaluate a predeclared neighborhood of choices without turning the package into a parameter optimizer.
 
