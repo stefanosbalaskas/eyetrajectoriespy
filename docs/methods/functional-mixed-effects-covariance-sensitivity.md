@@ -132,7 +132,7 @@ failed replicate invalidates the requested bootstrap calculation.
 
 ## Fixed coefficient sensitivity
 
-For model \(m\) relative to declared reference \(r\),
+For model $m$ relative to declared reference $r$,
 
 $
 \Delta\beta_m(t)
@@ -195,7 +195,7 @@ If simultaneous-band objects are supplied, they must:
 This paired-resampling requirement prevents Monte Carlo draw differences from
 being confounded with covariance-structure sensitivity.
 
-For model \(m\),
+For model $m$,
 
 $
 w_m(t)=U_m(t)-L_m(t),
@@ -299,7 +299,7 @@ Each successful model is diagnosed on both scales:
 - global residual RMS;
 - retained pair counts.
 
-For positive lags \(h=1,\ldots,H\), 0.50 also records
+For positive lags $h=1,\ldots,H$, 0.50 also records
 
 $
 \max_{1\le h\le H}
@@ -377,7 +377,7 @@ claim that clustered functional data have an uncontroversial philosophical
 effective sample size.
 
 Every model is compared with the declared reference through
-\(\Delta\ell\), \(\Delta\mathrm{AIC}\), and \(\Delta\mathrm{BIC}\). Models are
+$\Delta\ell$, $\Delta\mathrm{AIC}$, and $\Delta\mathrm{BIC}$. Models are
 not sorted by these quantities.
 
 ## No naive likelihood-ratio testing
@@ -403,10 +403,10 @@ $
 
 For example, compare a trial+iid model with a trial+exponential model using:
 
-- \(\operatorname{tr}(\widehat\Psi_T)\);
-- the full \(v_T(t)\) curve;
-- \(\widehat\phi\);
-- \(\widehat\sigma^2\);
+- $\operatorname{tr}(\widehat\Psi_T)$;
+- the full $v_T(t)$ curve;
+- $\widehat\phi$;
+- $\widehat\sigma^2$;
 - trial covariance eigenvalues, condition number, and boundary diagnostics;
 - raw and whitened residual dependence.
 
