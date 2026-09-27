@@ -267,10 +267,9 @@ def main() -> None:
         )
 
     readiness_gates = release_readiness.get("gates", {})
-    if readiness_gates.get("pypi_trusted_publishing_configured") is not False:
+    if readiness_gates.get("pypi_trusted_publishing_configured") is not True:
         raise RuntimeError(
-            "0.9.1.dev0 must keep the dedicated pypi publisher gate false "
-            "until issue #69 is completed"
+            "dedicated pypi Trusted Publisher must remain recorded as configured"
         )
 
     release_workflow = (

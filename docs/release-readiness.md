@@ -138,7 +138,7 @@ requalification remains required after merge.
 - [x] Production checks live GitHub governance and exact-main CI before
       publishing.
 - [ ] TestPyPI Trusted Publisher/rehearsal remains available as an optional rehearsal.
-- [ ] Dedicated production PyPI Trusted Publisher is configured for GitHub environment `pypi` (mandatory before the next release; issue #69).
+- [x] Dedicated production PyPI Trusted Publisher is configured for GitHub environment `pypi`.
 - [x] `pypi` GitHub environment has the intended required-reviewer protection.
 - [x] `main` is protected and issue #64 is closed.
 - [x] `RELEASE_READINESS.json` was armed for 0.9.0; it is deliberately disarmed again on `0.9.1.dev0`.
@@ -173,3 +173,12 @@ maintenance merges cannot trigger a production upload. Before the next release,
 the version and readiness manifests must be deliberately armed through a
 reviewed pull request, and issue #69 should be resolved by migrating the
 production Trusted Publisher claim to the dedicated `pypi` environment.
+
+
+### Remaining publisher cleanup
+
+Production authority is now correctly registered for GitHub environment
+`pypi`. PyPI still shows the older production publisher claim bound to
+`testpypi`; remove that obsolete publisher before the next public release so
+the dedicated `pypi` environment is the only production publishing authority.
+Issue #69 tracks that final cleanup.

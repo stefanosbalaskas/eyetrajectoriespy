@@ -12,15 +12,15 @@
     "testpypi_rehearsal_completed": false,
     "main_protected": true,
     "issue_64_closed": true,
-    "pypi_trusted_publishing_configured": false,
+    "pypi_trusted_publishing_configured": true,
     "pypi_environment_required_reviewer": true,
     "exact_main_ci_required": true
   },
   "notes": [
     "0.9.0 is the current stable pre-1.0 GitHub/PyPI release.",
-    "0.9.1.dev0 is the active maintenance/hardening development line and is intentionally not armed for publication.",
-    "Normal production now requires a previously unpublished GitHub/PyPI version; recovery is isolated behind resume-production.",
-    "Production workflow authority has moved to the dedicated pypi GitHub environment. Issue #69 is mandatory before the next public release because the matching production PyPI Trusted Publisher must be migrated to environment pypi."
+    "0.9.1.dev0 is the active maintenance/hardening development line and remains intentionally disarmed for publication.",
+    "The dedicated production PyPI Trusted Publisher for GitHub environment pypi is now configured.",
+    "An obsolete production publisher claim bound to GitHub environment testpypi is still present on PyPI and should be removed before the next public release; issue #69 tracks that cleanup."
   ],
   "github_release_ready": false
 }
