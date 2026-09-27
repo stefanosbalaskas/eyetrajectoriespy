@@ -189,7 +189,7 @@ The covariance estimator must be chosen explicitly as <code>"empirical"</code> o
 
 ### Marginal conformal p-values
 
-For each target score \(s(X^*)\),
+For each target score $s(X^*)$,
 
 $
 \hat p(X^*) =
