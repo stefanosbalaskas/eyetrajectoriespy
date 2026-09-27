@@ -4,7 +4,7 @@ This worked example uses a quarter circle so the expected geometry is known anal
 
 ## Build a quarter-circle trajectory
 
-For \(R=5\) degrees of visual angle,
+For $R=5$ degrees of visual angle,
 
 $
 x(t)=R\cos t,\qquad y(t)=R\sin t,\qquad 0\le t\le \pi/2.
