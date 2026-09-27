@@ -4,7 +4,7 @@ Version 0.48 extends the Gaussian functional mixed-effects layer from a
 participant-only covariance hierarchy to an explicitly nested
 participant → trial → time model.
 
-For participant \(i\), trial \(j\), and observed time \(t\),
+For participant $i$, trial $j$, and observed time $t$,
 
 $
 Y_{ij}(t)
@@ -34,14 +34,14 @@ u_{ij}(t)=\mathbf B_u(t)^\top\mathbf v_{ij},
 \mathbf v_{ij}\sim N(\mathbf 0,\boldsymbol\Psi_{\mathrm{trial}}).
 $
 
-\(\boldsymbol\Psi_{\mathrm{trial}}\) is one shared unstructured covariance
+$\boldsymbol\Psi_{\mathrm{trial}}$ is one shared unstructured covariance
 across trials. The implementation does **not** estimate one covariance per
 trial and does not replace the functional covariance with an independent
 scalar variance component.
 
 ## Marginal covariance
 
-For all observations from participant \(i\),
+For all observations from participant $i$,
 
 $
 \mathbf V_i
@@ -103,8 +103,8 @@ The model fails closed when:
 - any participant contributes fewer than two observed trials;
 - the trial basis is rank deficient on the observed grid;
 - the number of observed nested trials does not exceed
-  \(q_u(q_u+1)/2\), the number of free parameters in the unstructured
-  \(q_u\times q_u\) trial covariance;
+  $q_u(q_u+1)/2$, the number of free parameters in the unstructured
+  $q_u\times q_u$ trial covariance;
 - optimization fails to converge.
 
 The trial-count rule is a **minimum covariance-complexity guard**, not a theorem
@@ -173,9 +173,9 @@ Both existing participant-level bootstrap contracts remain participant-level.
 The fixed-covariance bootstrap resamples whole participants and carries all
 their trials. It re-estimates fixed coefficients by GLS while conditioning on:
 
-- \(\widehat{\boldsymbol\Psi}_{\mathrm{participant}}\);
-- \(\widehat{\boldsymbol\Psi}_{\mathrm{trial}}\);
-- \(\widehat{\sigma}^2\);
+- $\widehat{\boldsymbol\Psi}_{\mathrm{participant}}$;
+- $\widehat{\boldsymbol\Psi}_{\mathrm{trial}}$;
+- $\widehat{\sigma}^2$;
 - the declared bases and model structure.
 
 The full-refit bootstrap also resamples whole participants. Every sampled
