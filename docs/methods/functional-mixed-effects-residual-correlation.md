@@ -5,8 +5,8 @@ Gaussian functional mixed-effects model. The covariance family is always
 declared by the analyst; the package does not choose among iid, exponential,
 or AR(1) residuals from the observed result.
 
-With participant effect \(b_i(t)\), optional trial functional effect
-\(u_{ij}(t)\), and fixed coefficient functions \(\boldsymbol\beta(t)\),
+With participant effect $b_i(t)$, optional trial functional effect
+$u_{ij}(t)$, and fixed coefficient functions $\boldsymbol\beta(t)$,
 
 $
 Y_{ij}(t)
@@ -70,10 +70,10 @@ fit at or extremely near a numerical bound sets
 `residual_correlation_boundary_fit=True`; it is not silently regularized or
 replaced.
 
-Because the kernel uses actual elapsed separation \(|t-s|\), it remains
+Because the kernel uses actual elapsed separation $|t-s|$, it remains
 meaningful on an unequally spaced common time grid.
 
-The iid model is the limit \(\phi\to0\). On a finite observed grid the
+The iid model is the limit $\phi\to0$. On a finite observed grid the
 likelihood can become essentially flat before the numerical lower optimizer
 bound is reached. Version 0.49 therefore also records
 `residual_correlation_independence_limit_fit=True` when the fitted exponential
@@ -100,7 +100,7 @@ $
 \rho=\tanh(\eta_\rho).
 $
 
-Negative \(\rho\) is allowed. On a regular grid with spacing \(\Delta\), a
+Negative $\rho$ is allowed. On a regular grid with spacing $\Delta$, a
 positive AR(1) can be related to an exponential process through
 
 $
@@ -112,7 +112,7 @@ families therefore remain distinct.
 
 ## Marginal covariance
 
-For all observations from participant \(i\),
+For all observations from participant $i$,
 
 $
 \mathbf V_i
@@ -205,7 +205,7 @@ whitened residuals are independent observations with known parameters.
 
 A smooth long-range residual process can compete with a smooth trial functional
 random effect. A large fitted exponential range, an ill-conditioned
-\(\boldsymbol\Psi_{\mathrm T}\), a trial covariance approaching a boundary, or
+$\boldsymbol\Psi_{\mathrm T}$, a trial covariance approaching a boundary, or
 large shifts in the trial covariance after adding serial correlation should be
 treated as covariance-decomposition diagnostics—not automatic evidence that
 one component should be deleted.
@@ -218,7 +218,7 @@ for already fitted, predeclared models without automatic selection.
 The fixed-covariance participant bootstrap conditions on the fitted participant
 covariance, optional trial covariance, residual variance, and fitted serial
 parameter. The full-refit participant bootstrap re-estimates every declared
-covariance parameter in each replicate, including \(\phi\) or \(\rho\).
+covariance parameter in each replicate, including $\phi$ or $\rho$.
 
 `functional_mixed_effects_variance_bootstrap_frame()` exposes the bootstrap
 serial parameter, residual-correlation condition number, and boundary flag
