@@ -11,7 +11,7 @@ $
 \Theta=\mathcal K\times\mathcal L\times\mathcal D,
 $
 
-and, for every \(\theta=(k,l,d)\in\Theta\), computes
+and, for every $\theta=(k,l,d)\in\Theta$, computes
 
 $
 T_{\theta}
