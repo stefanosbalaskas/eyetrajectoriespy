@@ -28,13 +28,13 @@ serial_fit = fit_functional_mixed_effects_regression(
 
 The residual model is
 
-\[
+$
 \operatorname{Cov}
 \left[\epsilon_{ij}(t),\epsilon_{ij}(s)\right]
 =
 \sigma^2
 \exp\!\left(-\frac{|t-s|}{\phi}\right).
-\]
+$
 
 `serial_fit.residual_correlation_parameter` is \(\widehat\phi\), in the same
 physical time unit recorded by the trajectories.
