@@ -391,6 +391,7 @@ from .sparse import (
     sparse_fpca_score_frame,
     to_fdapy_irregular,
 )
+from .sparse_native import fit_sparse_fpca
 from .subspace import (
     bootstrap_fpca_subspace_stability,
     compare_fpca_subspaces,
@@ -850,6 +851,7 @@ __all__ = [
     "SparseFPCAResult",
     "sparse_dimension_summary",
     "to_fdapy_irregular",
+    "fit_sparse_fpca",
     "fit_sparse_fpca_fdapy",
     "sparse_fpca_score_frame",
     "sparse_fpca_reporting_text",
