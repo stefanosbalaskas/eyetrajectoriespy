@@ -266,6 +266,29 @@ def main() -> None:
             "development lines must not remain armed for GitHub release"
         )
 
+    readiness_gates = release_readiness.get("gates", {})
+    if readiness_gates.get("pypi_trusted_publishing_configured") is not False:
+        raise RuntimeError(
+            "0.9.1.dev0 must keep the dedicated pypi publisher gate false "
+            "until issue #69 is completed"
+        )
+
+    release_workflow = (
+        ROOT / ".github" / "workflows" / "release.yml"
+    ).read_text(encoding="utf-8")
+    production_block = release_workflow.split(
+        "  publish-pypi:", 1
+    )[1].split("  resume-pypi:", 1)[0]
+    resume_block = release_workflow.split(
+        "  resume-pypi:", 1
+    )[1].split("  verify-pypi:", 1)[0]
+    if "environment: pypi" not in production_block:
+        raise RuntimeError("production PyPI job must use dedicated pypi environment")
+    if "skip-existing: true" in production_block:
+        raise RuntimeError("ordinary production must fail on existing PyPI files")
+    if "skip-existing: true" not in resume_block:
+        raise RuntimeError("resume-production must retain explicit recovery semantics")
+
     public_api = (ROOT / "src" / "eyetrajectoriespy" / "__init__.py").read_text(
         encoding="utf-8"
     )
