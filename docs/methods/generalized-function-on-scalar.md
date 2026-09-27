@@ -6,7 +6,7 @@ adds an explicit Poisson exposure/rate observation contract, and version 0.54
 adds explicit grouped-binomial success/denominator observations without
 changing the marginal GEE estimand.
 
-For participant \(i\), trial \(j\), and observed time \(t\),
+For participant $i$, trial $j$, and observed time $t$,
 
 $
 g\{\mu_{ij}(t)\}
@@ -111,14 +111,14 @@ $
 x_{ijk}B_r(t),
 $
 
-so each scalar coefficient receives its own \(q\)-dimensional basis coefficient
+so each scalar coefficient receives its own $q$-dimensional basis coefficient
 vector.
 
 The expanded design must be full rank.
 
 ## Cluster-count guard
 
-If there are \(K\) scalar coefficients including the intercept and \(q\)
+If there are $K$ scalar coefficients including the intercept and $q$
 B-spline functions per coefficient, the expanded coefficient vector has
 
 $
@@ -151,8 +151,8 @@ Aggregated proportions are not treated as Bernoulli observations and trial
 denominators are never inferred silently.
 
 For grouped binomial data, version 0.54 requires an integer success-count
-trajectory \(S_{ij}(t)\) and an explicit positive integer denominator
-\(N_{ij}(t)\),
+trajectory $S_{ij}(t)$ and an explicit positive integer denominator
+$N_{ij}(t)$,
 
 $
 0\le S_{ij}(t)\le N_{ij}(t),
@@ -191,7 +191,7 @@ corresponding denominator.
 The public API intentionally does **not** accept arbitrary proportions as a
 substitute. A value such as `0.67` is scientifically ambiguous because 2/3 and
 670/1000 carry very different information. Internally, after validation, the
-backend receives \(S/N\) as the binomial response and \(N\) as the GEE
+backend receives $S/N$ as the binomial response and $N$ as the GEE
 observation weight. The package retains the original successes, denominators,
 observed proportions, and fitted denominator-specific expected successes.
 
@@ -225,7 +225,7 @@ $
 
 Without an exposure argument, this remains the 0.51/0.52 expected-count model.
 
-With a scientifically meaningful exposure \(E_{ij}(t)>0\), version 0.53 fits
+With a scientifically meaningful exposure $E_{ij}(t)>0$, version 0.53 fits
 
 $
 \log \mu_{ij}(t)
@@ -269,7 +269,7 @@ rate_fit = fit_generalized_function_on_scalar_regression(
 
 The package never infers exposure from grid spacing, trial duration, sample
 counts, or metadata. The scientific assumption is substantive:
-\(E[Y\mid x,E]=E\lambda(x)\), so expected counts are assumed to scale
+$E[Y\mid x,E]=E\lambda(x)$, so expected counts are assumed to scale
 proportionally with the declared opportunity/time denominator.
 
 ## Robust covariance
@@ -289,7 +289,7 @@ $
 where the middle empirical term accumulates cluster-level score contributions.
 
 The package reports coefficient-function pointwise standard errors obtained by
-mapping the robust basis-parameter covariance back through \(\mathbf B(t)\).
+mapping the robust basis-parameter covariance back through $\mathbf B(t)$.
 
 Naive working-correlation standard errors are not exposed in 0.51.
 
@@ -334,8 +334,8 @@ band = generalized_function_on_scalar_simultaneous_bands(
 )
 ~~~
 
-For coefficient \(k\), bootstrap replicate \(b\), and observed grid point
-\(t_m\),
+For coefficient $k$, bootstrap replicate $b$, and observed grid point
+$t_m$,
 
 $
 M_k^{*(b)}
@@ -415,15 +415,15 @@ print(
 
 ## Interpretation
 
-For a Bernoulli/logit model, \(\beta_k(t)\) is a time-varying marginal
+For a Bernoulli/logit model, $\beta_k(t)$ is a time-varying marginal
 log-odds coefficient.
 
-For a Poisson/log model **without exposure**, \(\beta_k(t)\) remains a
+For a Poisson/log model **without exposure**, $\beta_k(t)$ remains a
 time-varying marginal log-mean-count coefficient.
 
-For a Poisson/log model **with explicit exposure**, \(\beta_k(t)\) is a
+For a Poisson/log model **with explicit exposure**, $\beta_k(t)$ is a
 time-varying marginal log-rate coefficient and
-\(\exp\{\beta_k(t)\}\) is a multiplicative rate ratio for a one-unit predictor
+$\exp\{\beta_k(t)\}$ is a multiplicative rate ratio for a one-unit predictor
 change, holding exposure fixed.
 
 These coefficients are not subject-specific effects conditional on functional
