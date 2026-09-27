@@ -759,3 +759,10 @@
     transition: none;
   }
 }
+
+
+/* The landing page has its own release/navigation context; suppress the
+   redundant one-item "Home" breadcrumb only there. */
+body:has(.et-releasebar) .md-path {
+  display: none;
+}
