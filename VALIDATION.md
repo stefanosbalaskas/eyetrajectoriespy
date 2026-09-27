@@ -4,10 +4,10 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-Final publication requires the complete 0.9.0 PR-head and exact-main qualification matrix; RC1 evidence is retained but is not silently relabeled as final-version evidence.
+The stable 0.9.0 release remains immutable. The 0.9.1.dev0 line must generate its own qualification evidence before any future release candidate or final publication.
 
-- Package line: `0.9.0`.
-- Release phase: 0.9.0 final qualification of the already stabilized scientific platform; no new statistical family or estimator is introduced.
+- Package line: `0.9.1.dev0`.
+- Development phase: post-0.9.0 maintenance and validation hardening on `0.9.1.dev0`; production release is deliberately disarmed and no new statistical family or estimator is implied by the version bump.
 - Canonical routes: FPCA/exploration, experimental functional regression, repeated-trial functional mixed effects, generalized binary/count responses, and nonlinear/recurrence analysis.
 - Generalized observation-family expansion is paused after the 0.51-0.54 Bernoulli/grouped-binomial/Poisson contracts.
 - Coverage floor remains **90%**. Stabilization prioritizes independent-reference validation quality, cross-platform reproducibility and practical performance qualification rather than increasing coverage percentage for its own sake.

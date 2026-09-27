@@ -16,24 +16,24 @@ def _load_script(name):
     return module
 
 
-def test_release_version_contract_agrees_for_final():
+def test_release_version_contract_agrees_for_development_line():
     module = _load_script("verify_release_version.py")
-    assert module.verify_version_contract() == "0.9.0"
+    assert module.verify_version_contract() == "0.9.1.dev0"
 
 
-def test_production_release_accepts_final_on_exact_main_before_tag_creation():
+def test_production_release_rejects_development_line():
     module = _load_script("verify_release_version.py")
-    assert module.verify_version_contract(
-        production=True,
-    ) == "0.9.0"
+    with pytest.raises(RuntimeError, match="development versions"):
+        module.verify_version_contract(production=True)
 
 
-def test_production_release_accepts_matching_final_tag():
+def test_production_release_rejects_development_tag():
     module = _load_script("verify_release_version.py")
-    assert module.verify_version_contract(
-        tag="v0.9.0",
-        production=True,
-    ) == "0.9.0"
+    with pytest.raises(RuntimeError, match="development versions"):
+        module.verify_version_contract(
+            tag="v0.9.1.dev0",
+            production=True,
+        )
 
 
 def test_release_governance_happy_path_requires_all_quality_gates(monkeypatch):
@@ -140,18 +140,20 @@ def test_release_workflow_builds_once_and_reuses_exact_artifact():
     assert "- publish-pypi" in verify_block
 
 
-def test_production_release_has_no_manual_dispatch_path():
+def test_production_release_requires_explicit_manual_target():
     workflow = (
         ROOT / ".github" / "workflows" / "release.yml"
     ).read_text(encoding="utf-8")
 
     assert "publish-pypi:" in workflow
-    assert "github.event_name == 'push'" in workflow
-    assert "github.ref == 'refs/heads/main'" in workflow
-    assert "inputs.target == 'testpypi'" in workflow
-    assert "production" not in workflow.split("options:", 1)[1].split(
-        "concurrency:", 1
-    )[0]
+    trigger_block = workflow.split("on:", 1)[1].split("jobs:", 1)[0]
+    assert "push:" not in trigger_block
+    assert "workflow_dispatch:" in trigger_block
+    options = workflow.split("options:", 1)[1].split("concurrency:", 1)[0]
+    assert "- build-only" in options
+    assert "- testpypi" in options
+    assert "- production" in options
+    assert "inputs.target == 'production'" in workflow
 
 def test_release_governance_blocks_unarmed_readiness_manifest(monkeypatch):
     module = _load_script("verify_release_governance.py")

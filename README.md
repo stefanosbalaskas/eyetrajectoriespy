@@ -16,6 +16,8 @@ G_i(t) = [x_i(t), y_i(t)]^T
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
 > **Status:** stable pre-1.0 release (`0.9.0`). The scientific platform, reference-validation layer, reproducibility contracts, packaging checks, and five canonical workflows are qualified.
+>
+> **Development line:** `0.9.1.dev0`. Development builds are not armed for GitHub/PyPI publication; production releases require an explicit qualified release dispatch.
 
 ## What scientific problem does this solve?
 
