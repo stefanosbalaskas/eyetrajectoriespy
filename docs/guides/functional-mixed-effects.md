@@ -94,7 +94,7 @@ b_i(t)
 \varepsilon_{ij}(t),
 $$
 
-the treatment indicator can vary across \(j\) within participant \(i\).
+the treatment indicator can vary across $j$ within participant $i$.
 
 That is precisely the design that the 0.35 participant-aggregation function
 rejects.
