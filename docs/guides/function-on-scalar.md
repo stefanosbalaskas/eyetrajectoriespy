@@ -218,11 +218,11 @@ Do not apply the Gaussian observed-grid OLS contract to Bernoulli or count
 trajectories merely for convenience. Version 0.51 provides a distinct marginal
 model:
 
-$
+$$
 g\{E[Y_{ij}(t)\mid x_{ij}]\}
 =
 x_{ij}^{\top}\beta(t),
-$
+$$
 
 with Bernoulli/logit or Poisson/log family, participant clusters, explicit
 B-spline coefficient functions, working independence and robust sandwich

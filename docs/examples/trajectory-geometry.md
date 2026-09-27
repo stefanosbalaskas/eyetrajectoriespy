@@ -6,9 +6,9 @@ This worked example uses a quarter circle so the expected geometry is known anal
 
 For $R=5$ degrees of visual angle,
 
-$
+$$
 x(t)=R\cos t,\qquad y(t)=R\sin t,\qquad 0\le t\le \pi/2.
-$
+$$
 
 ~~~python
 import numpy as np
@@ -46,15 +46,15 @@ turning = turning_rate_function(gaze, min_speed=0.0)
 
 For this path,
 
-$
+$$
 \kappa(t)=1/R=0.2\ \text{degree}^{-1},
-$
+$$
 
 while
 
-$
+$$
 \omega(t)=1\ \text{rad/s}
-$
+$$
 
 because the time parameter is also the angular phase.
 
@@ -78,14 +78,14 @@ print(summary)
 
 For the continuous quarter circle,
 
-$
+$$
 T
 =
 \frac{R\pi/2}{R\sqrt 2}
 =
 \frac{\pi}{2\sqrt 2}
 \approx 1.111.
-$
+$$
 
 The implementation uses the observed polyline path length, so the numerical value approaches this limit as the grid becomes dense.
 

@@ -32,11 +32,11 @@ The 2026 wild-bootstrap construction distinguishes three truncation levels:
 
 The 0.16 API follows the practical contract
 
-$
+$$
 g=k,
 \qquad
 h\ge g.
-$
+$$
 
 through:
 
@@ -51,13 +51,13 @@ First fit the k-component Gaussian score regression and obtain residuals.
 
 For each bootstrap replicate,
 
-$
+$$
 Y_i^*
 =
 \widehat Y_{i,k}
 +
 \widehat\varepsilon_{i,k}W_i,
-$
+$$
 
 where $W_i$ is a mean-zero, unit-variance multiplier.
 
@@ -78,7 +78,7 @@ The same construction is repeated using each pseudo-fit residual vector.
 
 The bootstrap root is therefore
 
-$
+$$
 T_0^*
 =
 \frac{
@@ -88,7 +88,7 @@ T_0^*
 }{
 \widehat{\mathrm{SE}}_0^*
 }.
-$
+$$
 
 The symmetrized target-wise interval uses the requested quantile of the absolute bootstrap roots multiplied by the full-sample heteroscedastic SE.
 

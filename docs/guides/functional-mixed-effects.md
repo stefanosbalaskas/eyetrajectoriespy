@@ -148,9 +148,9 @@ model.
 If the shared random basis has size (q), the intercept+slope random vector has
 dimension (2q), giving
 
-$
+$$
 \frac{(2q)(2q+1)}{2}
-$
+$$
 
 free covariance parameters under the 0.45 unstructured covariance. The package
 requires the participant count to exceed that covariance-parameter count before

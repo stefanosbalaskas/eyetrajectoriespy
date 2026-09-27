@@ -21,9 +21,9 @@ convert the estimated warpings to a functional object:
 
 For displacement functions,
 
-$
+$$
 D_i(t)=h_i(t)-t,
-$
+$$
 
 positive and negative values indicate how the source time differs from the reference time across the trial.
 

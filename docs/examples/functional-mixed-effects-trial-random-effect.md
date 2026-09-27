@@ -30,7 +30,7 @@ fit = fit_functional_mixed_effects_regression(
 
 The fitted model is
 
-$
+$$
 Y_{ij}(t)
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t)
@@ -40,7 +40,7 @@ b_i(t)
 u_{ij}(t)
 +
 \epsilon_{ij}(t).
-$
+$$
 
 The participant and trial covariance matrices are estimated separately.
 

@@ -2,7 +2,7 @@
 
 Repeated experiments naturally have participant → trial → time structure:
 
-$
+$$
 \mathbf G_{ij}(t)
 =
 \boldsymbol\mu(t)
@@ -10,7 +10,7 @@ $
 \mathbf U_i(t)
 +
 \mathbf V_{ij}(t).
-$
+$$
 
 `U_i(t)` represents participant-level deviation and `V_{ij}(t)` within-participant trial deviation.
 

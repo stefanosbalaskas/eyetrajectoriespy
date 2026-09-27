@@ -7,19 +7,19 @@ non-Gaussian functional response.
 
 Suppose every trial contains a binary trajectory
 
-$
+$$
 Y_{ij}(t)\in\{0,1\},
-$
+$$
 
 where 1 means that the gaze sample belongs to the target AOI. The marginal
 model is
 
-$
+$$
 \operatorname{logit}
 \Pr\{Y_{ij}(t)=1\mid x_{ij}\}
 =
 \beta_0(t)+x_{ij}\beta_1(t).
-$
+$$
 
 ## Fit
 

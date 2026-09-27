@@ -2,11 +2,11 @@
 
 At each time point, AOI probabilities satisfy
 
-$
+$$
 p_k(t)\ge 0,
 \qquad
 \sum_{k=1}^{K}p_k(t)=1.
-$
+$$
 
 That constraint means the channels are not ordinary unconstrained Euclidean variables.
 
