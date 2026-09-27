@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.9.1.dev0
+
+- Open the post-0.9.0 maintenance/hardening development line.
+- Preserve 0.9.0 as the stable public GitHub/PyPI release.
+- Archive the exact 0.9.0 performance qualification before collecting new development evidence.
+- Change production release automation from every protected-main push to explicit manual `target=production` dispatch.
+- Keep development versions fail-closed for production publication.
+- Keep issue #69 open for migration of the production Trusted Publisher claim to the dedicated `pypi` environment.
+
 ## 0.9.0
 
 - First stable pre-1.0 public release.
