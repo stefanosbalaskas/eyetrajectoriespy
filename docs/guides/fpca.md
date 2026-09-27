@@ -4,7 +4,7 @@ Functional PCA finds dominant modes of variation in curves rather than isolated 
 
 ## Multivariate planar gaze
 
-For \(G_i(t)=[x_i(t),y_i(t)]^\top\):
+For $G_i(t)=[x_i(t),y_i(t)]^\top$:
 
 ```python
 fit = fit_mfpca(gaze, n_components=0.95, scaling="dimension_sd")
@@ -35,7 +35,7 @@ Inspect mean ± one or two score-SD component trajectories. For planar gaze, int
 
 ## Mathematical contract
 
-The implementation performs PCA after quadrature weighting the centered functional observations. With optional dimension scaling \(s_d\), the weighted representation is
+The implementation performs PCA after quadrature weighting the centered functional observations. With optional dimension scaling $s_d$, the weighted representation is
 
 $$
 Z_{i,m,d}
@@ -43,7 +43,7 @@ Z_{i,m,d}
 \frac{G_{id}(t_m)-\widehat\mu_d(t_m)}{s_d}\sqrt{w_m}.
 $$
 
-Reconstruction with \(K\) retained FPCs is
+Reconstruction with $K$ retained FPCs is
 
 $$
 \widehat{\mathbf G}^{(K)}_i(t)
