@@ -23,7 +23,7 @@ c_{1-\alpha}
 \, \widehat{\operatorname{SE}}\{\hat\mu(t,d)\},
 $
 
-where \(c_{1-\alpha}\) is the multiplier quantile of the gridwise maximum statistic.
+where $c_{1-\alpha}$ is the multiplier quantile of the gridwise maximum statistic.
 
 This is not the same as drawing independent 95% intervals at every time point.
 
