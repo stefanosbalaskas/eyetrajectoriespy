@@ -33,7 +33,7 @@ which refits the mixed model in every participant bootstrap sample.
 
 Participants are the independent bootstrap units.
 
-For bootstrap replicate \(b\),
+For bootstrap replicate $b$,
 
 $$
 I_1^{*(b)},\ldots,I_n^{*(b)}
