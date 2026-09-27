@@ -92,7 +92,7 @@ def main() -> None:
                 continue
             if in_fence:
                 continue
-            without_code = re.sub(r"\`[^\`]*\`", "", line)
+            without_code = re.sub(r"`[^`]*`", "", line)
             stripped = without_code.strip()
             if stripped in {"$", r"\[", r"\]"}:
                 invalid_math_delimiters.append(
