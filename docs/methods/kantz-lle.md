@@ -10,7 +10,7 @@ Rosenstein-style divergence follows one nearest temporally separated neighbor pe
 
 Kantz-style divergence uses a fixed-radius neighborhood:
 
-\[
+$
 \mathcal N_i(\varepsilon)
 =
 \left\{
@@ -18,12 +18,12 @@ j:
 \lVert\mathbf z_i-\mathbf z_j\rVert_2\le\varepsilon,\ 
 |i-j|>w
 \right\}.
-\]
+$
 
 At forward horizon \(k\), the mean distance within each surviving reference
 neighborhood is computed first, then logged:
 
-\[
+$
 S(\varepsilon,k)
 =
 \frac{1}{N_k}
@@ -33,15 +33,15 @@ S(\varepsilon,k)
 \sum_{j\in\mathcal N_i(k)}
 \lVert\mathbf z_{i+k}-\mathbf z_{j+k}\rVert_2
 \right].
-\]
+$
 
 A declared linear segment is then fitted as
 
-\[
+$
 S(\varepsilon,k)
 \approx
 a+\lambda_{\max}k\Delta t.
-\]
+$
 
 ## API
 
