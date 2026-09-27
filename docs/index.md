@@ -1,5 +1,7 @@
 ---
 title: Functional gaze trajectories, without hidden analytical decisions
+hide:
+  - toc
 ---
 
 <div class="et-releasebar">
@@ -15,7 +17,7 @@ title: Functional gaze trajectories, without hidden analytical decisions
   </div>
 </div>
 
-<section class="et-hero-v2">
+<section class="et-hero-v2" markdown>
   <div class="et-hero-v2__copy" markdown>
     <div class="et-eyebrow">FUNCTIONAL EYE-TRACKING ANALYSIS · PYTHON</div>
 
