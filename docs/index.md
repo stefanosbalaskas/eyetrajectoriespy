@@ -1,6 +1,7 @@
 ---
 title: Functional gaze trajectories, without hidden analytical decisions
 hide:
+  - navigation
   - toc
 ---
 
