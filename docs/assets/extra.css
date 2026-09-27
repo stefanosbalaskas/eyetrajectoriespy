@@ -761,8 +761,42 @@
 }
 
 
-/* The landing page has its own release/navigation context; suppress the
-   redundant one-item "Home" breadcrumb only there. */
-body:has(.et-releasebar) .md-path {
+/* Landing-page shell: the homepage is intentionally full-width inside the
+   site grid and does not use Material's page sidebars. */
+.md-main__inner:has(.et-releasebar) {
+  display: block;
+  width: 100%;
+  max-width: 1380px;
+  margin-inline: auto;
+}
+
+.md-content:has(.et-releasebar) {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+}
+
+.md-content:has(.et-releasebar) .md-content__inner {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.md-main__inner:has(.et-releasebar) > .md-sidebar,
+.md-content:has(.et-releasebar) .md-path {
   display: none;
+}
+
+.et-releasebar,
+.et-hero-v2,
+.et-trust-strip,
+.et-workflow-grid,
+.et-process-grid,
+.et-split-section,
+.et-proof-grid,
+.et-link-grid,
+.et-home-footer {
+  width: 100%;
+  box-sizing: border-box;
 }
