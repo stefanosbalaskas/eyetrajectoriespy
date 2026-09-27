@@ -676,20 +676,20 @@ coefficients, and reconstructed trial functions are retained.
 Version 0.49 replaces the iid residual block only when an analyst explicitly
 declares a serial family. For each source curve/trial,
 
-\[
+$
 \boldsymbol\varepsilon_{ij}
 \sim
 N(\mathbf 0,\sigma^2\mathbf R_\theta).
-\]
+$
 
 The physical-time exponential family is
 
-\[
+$
 R_\phi(t,s)
 =
 \exp\!\left(-\frac{|t-s|}{\phi}\right),
 \qquad \phi>0,
-\]
+$
 
 with \(\phi=\exp(\eta_\phi)\). The parameter \(\phi\) is therefore in the same
 physical time unit as the trajectory grid and remains meaningful on an
@@ -697,13 +697,13 @@ unequally spaced common grid.
 
 For a verified equally spaced common grid, AR(1) is
 
-\[
+$
 R_{\rho,rs}
 =
 \rho^{|r-s|},
 \qquad
 -1<\rho<1,
-\]
+$
 
 with \(\rho=\tanh(\eta_\rho)\). This is an index-step model. Negative
 \(\rho\) is supported; continuous-time exponential correlation is not treated
@@ -711,7 +711,7 @@ as an equivalent parameterization when \(\rho<0\).
 
 The participant marginal covariance becomes
 
-\[
+$
 \mathbf V_i
 =
 \mathbf Z_i\boldsymbol\Psi_P\mathbf Z_i^\top
@@ -720,7 +720,7 @@ The participant marginal covariance becomes
 \mathbf W_{ij}\boldsymbol\Psi_T\mathbf W_{ij}^\top
 +
 \sigma^2\operatorname{blockdiag}_j\{\mathbf R_\theta\}.
-\]
+$
 
 Residual correlation therefore never crosses source-curve/trial boundaries.
 The trial term is omitted when no trial functional random effect is declared,
@@ -728,11 +728,11 @@ and \(\mathbf R_\theta=\mathbf I\) under the iid model.
 
 For diagnostic whitening,
 
-\[
+$
 \sigma^2\mathbf R_\theta=\mathbf L\mathbf L^\top,
 \qquad
 \mathbf e_{ij}^{(w)}=\mathbf L^{-1}\mathbf e_{ij}.
-\]
+$
 
 A serial model is not judged by requiring the raw residual ACF to vanish:
 correlation is expected in the raw residual scale under the fitted model.
@@ -798,37 +798,37 @@ select a preferred model.
 
 For model \(m\) relative to reference \(r\),
 
-\[
+$
 \Delta\beta_m(t)
 =
 \widehat\beta_m(t)-\widehat\beta_r(t).
-\]
+$
 
 The two retained coefficient-robustness summaries are
 
-\[
+$
 D_{\infty,m}
 =
 \sup_t |\Delta\beta_m(t)|
-\]
+$
 
 and
 
-\[
+$
 D_{2,m}
 =
 \left[
 \int
 \{\Delta\beta_m(t)\}^2\,dt
 \right]^{1/2},
-\]
+$
 
 with the latter evaluated by trapezoidal integration on the observed time grid.
 
 Covariance matrices are also mapped back to interpretable functional scales.
 For the participant random intercept and optional trial random intercept,
 
-\[
+$
 v_{P0}(t)
 =
 \mathbf B_P(t)^\top
@@ -840,13 +840,13 @@ v_T(t)
 \mathbf B_T(t)^\top
 \boldsymbol\Psi_T
 \mathbf B_T(t),
-\]
+$
 
 while the pointwise residual marginal variance is
 
-\[
+$
 v_\varepsilon(t)=\sigma^2.
-\]
+$
 
 When a participant random slope is present, its variance function and the
 intercept/slope cross-covariance function are retained separately rather than
@@ -854,34 +854,34 @@ collapsed into one percentage.
 
 Information criteria are descriptive. Under ML,
 
-\[
+$
 k_{\mathrm{ML}}
 =
 k_{\mathrm{fixed}}+k_{\mathrm{covariance}},
-\]
+$
 
 whereas under REML with identical fixed design/basis the recorded restricted
 likelihood convention uses
 
-\[
+$
 k_{\mathrm{REML}}
 =
 k_{\mathrm{covariance}}.
-\]
+$
 
 The reported criteria are
 
-\[
+$
 \mathrm{AIC}_m=-2\ell_m+2k_m,
 \qquad
 \mathrm{BIC}_m=-2\ell_m+k_m\log n,
-\]
+$
 
 with the explicit BIC convention
 
-\[
+$
 n=n_{\mathrm{curves}}n_{\mathrm{time}}.
-\]
+$
 
 That observation count is a transparent calculation convention rather than a
 claim about a unique effective sample size for clustered functional data.
@@ -1134,30 +1134,30 @@ Version 0.51 introduced repeated non-Gaussian functional responses through a
 population-averaged generalized estimating equation. For participant \(i\),
 trial \(j\), and observed time \(t\),
 
-\[
+$
 g\{\mu_{ij}(t)\}
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t),
 \qquad
 \beta_k(t)=\mathbf B(t)^{\top}\boldsymbol\theta_k.
-\]
+$
 
 Bernoulli responses use the logit link and must be coded exactly as 0/1.
 Version 0.54 also permits an explicit grouped-binomial representation with
 integer success counts \(S_{ij}(t)\) and strictly positive integer denominators
 \(N_{ij}(t)\),
 
-\[
+$
 S_{ij}(t)\sim\operatorname{Binomial}\{N_{ij}(t),p_{ij}(t)\},
 \qquad
 0\le S_{ij}(t)\le N_{ij}(t),
-\]
+$
 
-\[
+$
 \operatorname{logit}p_{ij}(t)
 =
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t).
-\]
+$
 
 The public observation contract is successes plus denominator, not an arbitrary
 proportion alone. Internally, the validated grouped response is represented as
@@ -1171,38 +1171,38 @@ Participants are the independent GEE clusters; trial-varying scalar predictors
 remain in the design. Working independence is fixed and inference uses the
 participant-cluster robust sandwich covariance,
 
-\[
+$
 \widehat{\operatorname{Var}}_{\mathrm{robust}}
 (\widehat{\boldsymbol\theta})
 =
 \mathbf A^{-1}\mathbf B_{\mathrm{sand}}\mathbf A^{-1}.
-\]
+$
 
 Version 0.53 adds an explicit **Poisson exposure** contract. When a strictly
 positive analyst-supplied exposure \(E_{ij}(t)\) is present,
 
-\[
+$
 Y_{ij}(t)\sim\operatorname{Poisson}\{\mu_{ij}(t)\},
-\]
+$
 
-\[
+$
 \log\mu_{ij}(t)
 =
 \log E_{ij}(t)
 +
 \mathbf x_{ij}^{\top}\boldsymbol\beta(t),
 \qquad E_{ij}(t)>0,
-\]
+$
 
 and therefore
 
-\[
+$
 \lambda_{ij}(t)
 =
 \frac{\mu_{ij}(t)}{E_{ij}(t)}
 =
 \exp\{\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\}.
-\]
+$
 
 Thus \(\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\) is the log-rate predictor,
 whereas \(\log E_{ij}(t)+\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\) is the
@@ -1226,7 +1226,7 @@ Exposure and denominators are treated as observed and fixed; their measurement
 uncertainty is not modeled. Coefficient simultaneous bands retain the existing
 observed-grid maximum standardized-deviation statistic,
 
-\[
+$
 M_k^{*(b)}
 =
 \max_m
@@ -1237,7 +1237,7 @@ M_k^{*(b)}
 \widehat{\mathrm{SE}}\{\widehat\beta_k(t_m)\}
 }
 \right|.
-\]
+$
 
 The estimand remains marginal / population averaged. No family, link, basis
 dimension, working correlation, denominator, exposure definition, smoothing
@@ -1254,37 +1254,37 @@ generalized_function_on_scalar_exposure_frame().
 For a fixed analyst-declared scalar predictor profile \(\mathbf x_r\), an
 exposure-adjusted Poisson fit first defines the rate-scale linear predictor
 
-\[
+$
 \eta_r^{\mathrm{rate}}(t)
 =
 \mathbf x_r^\top\widehat{\boldsymbol\beta}(t)
-\]
+$
 
 and rate function
 
-\[
+$
 \lambda_r(t)
 =
 \exp\{\eta_r^{\mathrm{rate}}(t)\}.
-\]
+$
 
 A rate prediction is therefore independent of target exposure. If the analyst
 supplies a strictly positive target exposure \(E_r(t)\), the expected-count
 function is
 
-\[
+$
 \mu_r(t)
 =
 E_r(t)\lambda_r(t)
-\]
+$
 
 with count-scale linear predictor
 
-\[
+$
 \eta_r^{\mathrm{count}}(t)
 =
 \log E_r(t)+\eta_r^{\mathrm{rate}}(t).
-\]
+$
 
 The package does not silently set \(E_r(t)=1\) when expected counts are
 requested from an exposure-adjusted fit. Missing target exposure is an error
@@ -1294,13 +1294,13 @@ Let \(\mathbf z_r(t)\) denote the profile-by-basis row and let
 \(\widehat{\boldsymbol\Sigma}_\theta\) be the robust GEE covariance of the
 basis-coefficient vector. Because exposure is treated as fixed,
 
-\[
+$
 \widehat{\operatorname{Var}}\{\eta_r(t)\}
 =
 \mathbf z_r(t)^\top
 \widehat{\boldsymbol\Sigma}_\theta
 \mathbf z_r(t)
-\]
+$
 
 on either the rate or expected-count linear-predictor scale. Whole-participant
 bootstrap coefficient draws are projected through the same fixed profiles and,
@@ -1310,28 +1310,28 @@ and transformed through the monotone inverse link.
 
 Version 0.53 exposes one predeclared Poisson contrast scale at a time:
 
-\[
+$
 D_{ab}^{\mathrm{rate}}(t)
 =
 \lambda_a(t)-\lambda_b(t),
-\]
+$
 
-\[
+$
 RR_{ab}(t)
 =
 \frac{\lambda_a(t)}{\lambda_b(t)}
 =
 \exp\{(\mathbf x_a-\mathbf x_b)^\top
 \widehat{\boldsymbol\beta}(t)\},
-\]
+$
 
 or, when target exposures have been supplied,
 
-\[
+$
 D_{ab}^{\mathrm{count}}(t)
 =
 \mu_a(t)-\mu_b(t).
-\]
+$
 
 The rate-ratio simultaneous band is calibrated on
 \(\log RR_{ab}(t)\) and then exponentiated, preserving positivity. The package
