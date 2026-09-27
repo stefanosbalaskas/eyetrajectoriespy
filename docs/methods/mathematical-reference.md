@@ -9,18 +9,18 @@ Need a concise function-level lookup instead of the expanded derivation? Use the
 This page records the equations implemented by `eyetrajectoriespy`. It is a **software contract reference**: each equation is paired with the public API that implements it and with the scope limits that matter for interpretation.
 
 !!! note "Notation"
-    \(i\) indexes trajectories or independent units, \(t_m\) the observed common grid, \(d\) functional dimensions, and \(k\) retained functional principal components. Bold symbols denote vectors or matrices.
+    $i$ indexes trajectories or independent units, $t_m$ the observed common grid, $d$ functional dimensions, and $k$ retained functional principal components. Bold symbols denote vectors or matrices.
 
 ## Quadrature on the observed grid { #quadrature }
 
-For strictly increasing grid points \(t_1,\ldots,t_M\), `functional_trapezoid_weights()` uses trapezoidal weights
+For strictly increasing grid points $t_1,\ldots,t_M$, `functional_trapezoid_weights()` uses trapezoidal weights
 
 $$
 w_1=\frac{t_2-t_1}{2},\qquad
 w_M=\frac{t_M-t_{M-1}}{2},
 $$
 
-and for \(m=2,\ldots,M-1\),
+and for $m=2,\ldots,M-1$,
 
 $$
 w_m=\frac{(t_m-t_{m-1})+(t_{m+1}-t_m)}{2}.
@@ -36,7 +36,7 @@ $$
 
 ## Quadrature-weighted FPCA / MFPCA { #fpca }
 
-Let \(\mathbf G_i(t_m)\in\mathbb R^D\) and
+Let $\mathbf G_i(t_m)\in\mathbb R^D$ and
 
 $$
 \widehat{\boldsymbol\mu}(t_m)
@@ -44,7 +44,7 @@ $$
 \frac{1}{n}\sum_{i=1}^{n}\mathbf G_i(t_m).
 $$
 
-With `scaling="dimension_sd"`, dimension \(d\) is scaled by the square root of its mean integrated variance,
+With `scaling="dimension_sd"`, dimension $d$ is scaled by the square root of its mean integrated variance,
 
 $$
 s_d
@@ -60,7 +60,7 @@ w_m
 \right]^{1/2}.
 $$
 
-For `scaling="none"`, \(s_d=1\).
+For `scaling="none"`, $s_d=1$.
 
 The implementation forms the weighted Euclidean representation
 
@@ -70,7 +70,7 @@ Z_{i,m,d}
 \frac{G_{id}(t_m)-\widehat\mu_d(t_m)}{s_d}\sqrt{w_m},
 $$
 
-fits ordinary PCA to the flattened \(Z_i\), and maps the Euclidean loading vector back to the functional component
+fits ordinary PCA to the flattened $Z_i$, and maps the Euclidean loading vector back to the functional component
 
 $$
 \widehat\phi_{k,d}(t_m)
@@ -78,7 +78,7 @@ $$
 \frac{v_{k,m,d}}{\sqrt{w_m}}\,s_d.
 $$
 
-For a compatible target trajectory \(\mathbf G\), the stored score projection is
+For a compatible target trajectory $\mathbf G$, the stored score projection is
 
 $$
 \widehat\xi_k
@@ -89,7 +89,7 @@ $$
 v_{k,m,d}.
 $$
 
-Reconstruction with \(K\) components is
+Reconstruction with $K$ components is
 
 $$
 \widehat{\mathbf G}^{(K)}_i(t_m)
@@ -108,13 +108,13 @@ a\sqrt{\widehat\lambda_k}\,
 \widehat{\boldsymbol\phi}_k(t),
 $$
 
-where \(a\) is an analyst-selected score-SD multiplier.
+where $a$ is an analyst-selected score-SD multiplier.
 
 **API:** `fit_fpca()`, `fit_mfpca()`, `transform_fpca()`, `reconstruct_fpca()`, `component_trajectories()`.
 
-## Integrated functional \(L^2\) distance { #functional-l2 }
+## Integrated functional $L^2$ distance { #functional-l2 }
 
-For two complete multivariate trajectories \(\mathbf a,\mathbf b\) and optional non-negative dimension weights \(\omega_d\),
+For two complete multivariate trajectories $\mathbf a,\mathbf b$ and optional non-negative dimension weights $\omega_d$,
 
 $$
 d_{L^2}(\mathbf a,\mathbf b)
@@ -132,7 +132,7 @@ $$
 
 ## Discrete Fréchet trajectory distance { #discrete-frechet }
 
-For ordered point sequences \(P=(p_1,\ldots,p_m)\) and \(Q=(q_1,\ldots,q_n)\), define the optional weighted Euclidean local distance
+For ordered point sequences $P=(p_1,\ldots,p_m)$ and $Q=(q_1,\ldots,q_n)$, define the optional weighted Euclidean local distance
 
 $$
 d_w(\mathbf p_i,\mathbf q_j)
@@ -167,7 +167,7 @@ When an audit result is requested, the package returns one deterministic optimal
 
 ## Dynamic time warping trajectory distance { #dynamic-time-warping }
 
-For complete ordered point sequences \(P=(p_1,\ldots,p_m)\) and \(Q=(q_1,\ldots,q_n)\), the implementation uses weighted Euclidean local cost
+For complete ordered point sequences $P=(p_1,\ldots,p_m)$ and $Q=(q_1,\ldots,q_n)$, the implementation uses weighted Euclidean local cost
 
 $$
 d_w(\mathbf p_i,\mathbf q_j)
@@ -177,7 +177,7 @@ d_w(\mathbf p_i,\mathbf q_j)
 \right]^{1/2},
 $$
 
-where all \(\omega_r\ge 0\) and at least one dimension weight is positive.
+where all $\omega_r\ge 0$ and at least one dimension weight is positive.
 
 ### symmetric1: preserved 0.33 raw-cost contract
 
@@ -196,7 +196,7 @@ C_{i,j-1}
 \right).
 $$
 
-Every visited point contributes one local-distance unit. This pattern is retained so existing 0.33 calls keep the same numerical meaning. It does not have the path-independent \(m+n\) normalization used by symmetric2, so normalize=True is rejected rather than inventing a denominator.
+Every visited point contributes one local-distance unit. This pattern is retained so existing 0.33 calls keep the same numerical meaning. It does not have the path-independent $m+n$ normalization used by symmetric2, so normalize=True is rejected rather than inventing a denominator.
 
 ### symmetric2: normalizable symmetric weighting
 
@@ -213,7 +213,7 @@ C_{i,j-1}+d_w(\mathbf p_i,\mathbf q_j)
 \right\}.
 $$
 
-The initial point has weight two, so for a complete global alignment the total step weight has the path-independent denominator \(m+n\). The normalized distance is therefore
+The initial point has weight two, so for a complete global alignment the total step weight has the path-independent denominator $m+n$. The normalized distance is therefore
 
 $$
 d^{(s2)}_{\mathrm{norm}}(P,Q)
@@ -225,7 +225,7 @@ The audit result retains the raw cumulative distance, the normalized symmetric2 
 
 ### Sakoe-Chiba sample-index constraint
 
-With an explicit non-negative radius \(w\), only cells satisfying
+With an explicit non-negative radius $w$, only cells satisfying
 
 $$
 |i-j|\le w
@@ -247,7 +247,7 @@ Version 0.34 does not interpolate, resample, smooth, normalize coordinates, simp
 Version 0.38 compares the same trajectories under multiple **declared**
 distance contracts rather than adding another trajectory-distance metric.
 
-For specification \(s\), let \(D^{(s)}\) be the complete pairwise distance
+For specification $s$, let $D^{(s)}$ be the complete pairwise distance
 matrix and collect the unique unordered curve-pair distances as
 
 $
@@ -275,8 +275,8 @@ Pearson correlation is reported only as a descriptive secondary quantity.
 
 ### Local neighborhood agreement
 
-For curve \(i\), define its \(k\)-nearest-neighbor set under specification
-\(s\) as \(\mathcal N_k^{(s)}(i)\). The per-curve overlap is
+For curve $i$, define its $k$-nearest-neighbor set under specification
+$s$ as $\mathcal N_k^{(s)}(i)$. The per-curve overlap is
 
 $
 J_k^{(s,r)}(i)
@@ -289,7 +289,7 @@ J_k^{(s,r)}(i)
 $
 
 The result stores both the per-curve Jaccard values and their specification-pair
-mean. It also reports the fraction of curves having exactly the same top-\(k\)
+mean. It also reports the fraction of curves having exactly the same top-$k$
 neighbor set and the nearest-neighbor identity agreement
 
 $
@@ -304,7 +304,7 @@ A_1^{(s,r)}
 $
 
 Neighbor ordering uses a stable deterministic curve-order tie break for
-reproducibility. If the \(k\)th and \((k+1)\)th distances are tied at the
+reproducibility. If the $k$th and $(k+1)$th distances are tied at the
 selection boundary, that fact is flagged so a deterministic ordering is not
 mistaken for uniquely identified neighbors.
 
@@ -393,7 +393,7 @@ $$
 v_{\min},
 $$
 
-where `min_speed` is an explicit analysis parameter. The default \(v_{\min}=0\) masks only mathematically stationary samples; a positive threshold must be chosen explicitly if near-zero velocity is scientifically regarded as unstable. Under `undefined_policy="nan"`, undefined samples remain missing rather than being changed to zero. Under `undefined_policy="raise"`, any such sample aborts the calculation.
+where `min_speed` is an explicit analysis parameter. The default $v_{\min}=0$ masks only mathematically stationary samples; a positive threshold must be chosen explicitly if near-zero velocity is scientifically regarded as unstable. Under `undefined_policy="nan"`, undefined samples remain missing rather than being changed to zero. Under `undefined_policy="raise"`, any such sample aborts the calculation.
 
 For a complete observed path, tortuosity is defined as
 
@@ -412,15 +412,15 @@ T
 }.
 $$
 
-A straight path has \(T=1\). If endpoint displacement is at or below the declared `min_displacement`, the ratio is undefined; the same explicit `nan` versus `raise` policy applies.
+A straight path has $T=1$. If endpoint displacement is at or below the declared `min_displacement`, the ratio is undefined; the same explicit `nan` versus `raise` policy applies.
 
-These quantities depend on the **metric and orientation of the supplied coordinates**. Separately normalized screen axes can distort Euclidean geometry if horizontal and vertical units are not commensurate. Likewise, if recorded screen \(y\) increases downward, the visual interpretation of curvature/turning sign is reversed relative to a conventional Cartesian \(y\)-up display. The package does not guess or silently flip either axis.
+These quantities depend on the **metric and orientation of the supplied coordinates**. Separately normalized screen axes can distort Euclidean geometry if horizontal and vertical units are not commensurate. Likewise, if recorded screen $y$ increases downward, the visual interpretation of curvature/turning sign is reversed relative to a conventional Cartesian $y$-up display. The package does not guess or silently flip either axis.
 
 **API:** `heading_function()`, `signed_curvature_function()`, `turning_rate_function()`, and `trajectory_tortuosity()`.
 
 ## Two-level functional decomposition { #multilevel }
 
-For participant \(i\), trial \(j\), the implemented transparent functional-ANOVA decomposition is
+For participant $i$, trial $j$, the implemented transparent functional-ANOVA decomposition is
 
 $$
 \mathbf G_{ij}(t)
@@ -444,7 +444,7 @@ $$
 \mathbf G_{ij}(t)-\overline{\mathbf G}_{i\cdot}(t).
 $$
 
-Separate FPCAs are then fit to \(\mathbf U_i\) and \(\mathbf V_{ij}\).
+Separate FPCAs are then fit to $\mathbf U_i$ and $\mathbf V_{ij}$.
 
 **API:** `fit_multilevel_fpca()`.
 
@@ -457,7 +457,7 @@ p_k(t)\ge 0,\qquad
 \sum_{k=1}^{K}p_k(t)=1.
 $$
 
-After explicit zero replacement \(p_k^\epsilon(t)=\max\{p_k(t),\epsilon\}\) and renormalization, the additive log-ratio coordinate relative to reference component \(r\) is
+After explicit zero replacement $p_k^\epsilon(t)=\max\{p_k(t),\epsilon\}$ and renormalization, the additive log-ratio coordinate relative to reference component $r$ is
 
 $$
 z_k(t)
@@ -466,7 +466,7 @@ z_k(t)
 \qquad k\ne r.
 $$
 
-For inverse ALR, define \(q_r(t)=1\) and \(q_k(t)=\exp\{z_k(t)\}\) for \(k\ne r\); then
+For inverse ALR, define $q_r(t)=1$ and $q_k(t)=\exp\{z_k(t)\}$ for $k\ne r$; then
 
 $$
 p_k(t)=\frac{q_k(t)}{\sum_{\ell=1}^{K}q_\ell(t)}.
@@ -476,7 +476,7 @@ $$
 
 ## Landmark registration { #registration }
 
-For curve \(i\), `register_to_landmarks()` constructs a monotone piecewise-linear warp \(h_i(t)\) that maps reference landmark times to observed landmark times and evaluates
+For curve $i$, `register_to_landmarks()` constructs a monotone piecewise-linear warp $h_i(t)$ that maps reference landmark times to observed landmark times and evaluates
 
 $$
 \mathbf G_i^{\mathrm{reg}}(t)
@@ -494,7 +494,7 @@ $$
 
 ## Simultaneous functional mean band { #mean-band }
 
-Let \(\mathbf X_i(t_m)\) denote the independent inferential units: either curves or equal-weight participant-average curves. The mean and pointwise standard error are
+Let $\mathbf X_i(t_m)$ denote the independent inferential units: either curves or equal-weight participant-average curves. The mean and pointwise standard error are
 
 $$
 \overline{\mathbf X}(t_m)
@@ -506,7 +506,7 @@ $$
 \frac{\widehat\sigma_d(t_m)}{\sqrt n}.
 $$
 
-For multiplier replicate \(b\), with \(e_i^{(b)}\stackrel{\mathrm{iid}}{\sim}N(0,1)\),
+For multiplier replicate $b$, with $e_i^{(b)}\stackrel{\mathrm{iid}}{\sim}N(0,1)$,
 
 $$
 Z_d^{(b)}(t_m)
@@ -530,7 +530,7 @@ M^{(b)}
 \left|Z_d^{(b)}(t_m)\right|.
 $$
 
-With \(c_{1-\alpha}\) the empirical \((1-\alpha)\)-quantile of \(M^{(b)}\), the observed-grid simultaneous band is
+With $c_{1-\alpha}$ the empirical $(1-\alpha)$-quantile of $M^{(b)}$, the observed-grid simultaneous band is
 
 $$
 \overline X_d(t_m)
@@ -543,7 +543,7 @@ $$
 ## Functional mixed-effects regression { #functional-mixed-effects }
 
 Version 0.36 introduces a deliberately narrow functional mixed-effects model
-for repeated common-grid trajectories. For participant \(i\), trial \(j\), and
+for repeated common-grid trajectories. For participant $i$, trial $j$, and
 one selected response dimension,
 
 $
@@ -581,7 +581,7 @@ $
 N(\mathbf 0,\boldsymbol\Psi),
 $
 
-with one unstructured covariance matrix \(\boldsymbol\Psi\) shared across
+with one unstructured covariance matrix $\boldsymbol\Psi$ shared across
 participants. Conditional residual errors are
 
 $
@@ -593,7 +593,7 @@ $
 independently over the stacked grid once the fixed and participant random
 effects are conditioned upon.
 
-For the stacked observations of participant \(i\), the marginal covariance
+For the stacked observations of participant $i$, the marginal covariance
 under the implemented model is
 
 $
@@ -636,11 +636,11 @@ u_{ij}(t)=\mathbf B_u(t)^\top\mathbf v_{ij},
 N(\mathbf 0,\boldsymbol\Psi_{trial}).
 $
 
-One unstructured \(\boldsymbol\Psi_{trial}\) is shared across nested trials.
+One unstructured $\boldsymbol\Psi_{trial}$ is shared across nested trials.
 It is distinct from the participant covariance and is not replaced by an
 independent scalar variance-component approximation.
 
-For participant \(i\), the marginal covariance is
+For participant $i$, the marginal covariance is
 
 $
 \mathbf V_i
@@ -691,7 +691,7 @@ R_\phi(t,s)
 \qquad \phi>0,
 $
 
-with \(\phi=\exp(\eta_\phi)\). The parameter \(\phi\) is therefore in the same
+with $\phi=\exp(\eta_\phi)$. The parameter $\phi$ is therefore in the same
 physical time unit as the trajectory grid and remains meaningful on an
 unequally spaced common grid.
 
@@ -705,9 +705,9 @@ R_{\rho,rs}
 -1<\rho<1,
 $
 
-with \(\rho=\tanh(\eta_\rho)\). This is an index-step model. Negative
-\(\rho\) is supported; continuous-time exponential correlation is not treated
-as an equivalent parameterization when \(\rho<0\).
+with $\rho=\tanh(\eta_\rho)$. This is an index-step model. Negative
+$\rho$ is supported; continuous-time exponential correlation is not treated
+as an equivalent parameterization when $\rho<0$.
 
 The participant marginal covariance becomes
 
@@ -724,7 +724,7 @@ $
 
 Residual correlation therefore never crosses source-curve/trial boundaries.
 The trial term is omitted when no trial functional random effect is declared,
-and \(\mathbf R_\theta=\mathbf I\) under the iid model.
+and $\mathbf R_\theta=\mathbf I$ under the iid model.
 
 For diagnostic whitening,
 
@@ -744,8 +744,8 @@ optimizer bounds and boundary proximity are retained rather than hidden.
 
 Unlike the 0.35 participant-aggregation route, trial-varying scalar predictors
 are allowed because all trials remain in the stacked likelihood and
-participant clustering is represented by \(b_i(t)\). Thus a within-participant
-condition can enter \(\mathbf x_{ij}\) directly.
+participant clustering is represented by $b_i(t)$. Thus a within-participant
+condition can enter $\mathbf x_{ij}$ directly.
 
 ### Basis and covariance boundary
 
@@ -796,7 +796,7 @@ Version 0.50 compares already fitted, predeclared covariance structures against
 one analyst-declared reference. It does not fit covariance combinations or
 select a preferred model.
 
-For model \(m\) relative to reference \(r\),
+For model $m$ relative to reference $r$,
 
 $
 \Delta\beta_m(t)
@@ -982,7 +982,7 @@ refit variance components.
 Version 0.46 adds whole-participant resampling with complete parameter refitting
 under the already-declared mixed-effects specification.
 
-For bootstrap replicate \(b\),
+For bootstrap replicate $b$,
 
 $
 I_1^{*(b)},\ldots,I_n^{*(b)}
@@ -1026,9 +1026,9 @@ W_{p,\mathrm{fixed}}(t_m)
 },
 $
 
-where \(W_{p,\mathrm{full}}(t_m)\) and
-\(W_{p,\mathrm{fixed}}(t_m)\) are simultaneous-band widths at coefficient
-\(p\) and observed time \(t_m\).
+where $W_{p,\mathrm{full}}(t_m)$ and
+$W_{p,\mathrm{fixed}}(t_m)$ are simultaneous-band widths at coefficient
+$p$ and observed time $t_m$.
 
 Values substantially different from one indicate that variance-component
 re-estimation changes fixed-effect uncertainty under the declared model. The
@@ -1049,7 +1049,7 @@ bootstrap participant IDs.
 Version 0.44 adds whole-function observed-grid inference for the fixed
 coefficient functions from the 0.36 joint functional mixed-effects model.
 
-For participant \(i\), the fitted marginal covariance is
+For participant $i$, the fitted marginal covariance is
 
 $$
 \mathbf V_i
@@ -1059,8 +1059,8 @@ $$
 \widehat\sigma^2\mathbf I.
 $$
 
-With participant-level fixed-effect design \(\mathbf X_i\) and stacked
-functional response \(\mathbf y_i\), define
+With participant-level fixed-effect design $\mathbf X_i$ and stacked
+functional response $\mathbf y_i$, define
 
 $$
 \mathbf A_i
@@ -1072,8 +1072,8 @@ $$
 \mathbf X_i^\top\mathbf V_i^{-1}\mathbf y_i.
 $$
 
-A bootstrap replicate samples \(n\) participant indices with replacement,
-\(I_1^{(b)},\ldots,I_n^{(b)}\). Every selected participant contributes the
+A bootstrap replicate samples $n$ participant indices with replacement,
+$I_1^{(b)},\ldots,I_n^{(b)}$. Every selected participant contributes the
 complete set of that participant's trial-by-time observations. The fixed basis
 coefficients are then re-estimated conditionally on the fitted covariance model:
 
@@ -1088,7 +1088,7 @@ $$
 \mathbf s_{I_r^{(b)}}.
 $$
 
-For coefficient \(p\), the bootstrap pointwise standard deviation is used to
+For coefficient $p$, the bootstrap pointwise standard deviation is used to
 studentize the centered bootstrap coefficient process,
 
 $$
@@ -1106,7 +1106,7 @@ M_p^{*(b)}
 \right|.
 $$
 
-The empirical \(1-\alpha\) quantile \(c_{p,1-\alpha}\) gives
+The empirical $1-\alpha$ quantile $c_{p,1-\alpha}$ gives
 
 $$
 \widehat\beta_p(t_m)
@@ -1120,7 +1120,7 @@ all fixed coefficients and observed time points before calibration.
 
 This is a **participant-cluster case bootstrap conditional on the fitted
 covariance model and declared bases**. It does not refit
-\(\widehat{\boldsymbol\Psi}\), \(\widehat\sigma^2\), basis sizes, spline
+$\widehat{\boldsymbol\Psi}$, $\widehat\sigma^2$, basis sizes, spline
 degree, preprocessing, or model specification inside resamples. The coverage
 claim is simultaneous over the observed time grid only, not every point of the
 continuous B-spline domain.
@@ -1131,8 +1131,8 @@ continuous B-spline domain.
 ## Marginal generalized function-on-scalar regression { #generalized-function-on-scalar }
 
 Version 0.51 introduced repeated non-Gaussian functional responses through a
-population-averaged generalized estimating equation. For participant \(i\),
-trial \(j\), and observed time \(t\),
+population-averaged generalized estimating equation. For participant $i$,
+trial $j$, and observed time $t$,
 
 $
 g\{\mu_{ij}(t)\}
@@ -1144,8 +1144,8 @@ $
 
 Bernoulli responses use the logit link and must be coded exactly as 0/1.
 Version 0.54 also permits an explicit grouped-binomial representation with
-integer success counts \(S_{ij}(t)\) and strictly positive integer denominators
-\(N_{ij}(t)\),
+integer success counts $S_{ij}(t)$ and strictly positive integer denominators
+$N_{ij}(t)$,
 
 $
 S_{ij}(t)\sim\operatorname{Binomial}\{N_{ij}(t),p_{ij}(t)\},
@@ -1161,7 +1161,7 @@ $
 
 The public observation contract is successes plus denominator, not an arbitrary
 proportion alone. Internally, the validated grouped response is represented as
-\(S_{ij}(t)/N_{ij}(t)\) with \(N_{ij}(t)\) supplied to the GEE estimating
+$S_{ij}(t)/N_{ij}(t)$ with $N_{ij}(t)$ supplied to the GEE estimating
 equations as an observation weight. This representation is validated against
 the equivalent row-expanded Bernoulli fit under working independence, including
 the participant-cluster robust sandwich covariance.
@@ -1179,7 +1179,7 @@ $
 $
 
 Version 0.53 adds an explicit **Poisson exposure** contract. When a strictly
-positive analyst-supplied exposure \(E_{ij}(t)\) is present,
+positive analyst-supplied exposure $E_{ij}(t)$ is present,
 
 $
 Y_{ij}(t)\sim\operatorname{Poisson}\{\mu_{ij}(t)\},
@@ -1204,10 +1204,10 @@ $
 \exp\{\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\}.
 $
 
-Thus \(\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\) is the log-rate predictor,
-whereas \(\log E_{ij}(t)+\mathbf x_{ij}^{\top}\boldsymbol\beta(t)\) is the
-log-expected-count predictor. For coefficient \(k\),
-\(\exp\{\beta_k(t)\}\) is the time-varying multiplicative rate ratio for a
+Thus $\mathbf x_{ij}^{\top}\boldsymbol\beta(t)$ is the log-rate predictor,
+whereas $\log E_{ij}(t)+\mathbf x_{ij}^{\top}\boldsymbol\beta(t)$ is the
+log-expected-count predictor. For coefficient $k$,
+$\exp\{\beta_k(t)\}$ is the time-varying multiplicative rate ratio for a
 one-unit predictor change, holding exposure fixed.
 
 Exposure is part of the observation contract rather than a generic
@@ -1251,7 +1251,7 @@ generalized_function_on_scalar_exposure_frame().
 
 ## Fixed-profile marginal prediction and explicit contrasts { #generalized-function-on-scalar-prediction }
 
-For a fixed analyst-declared scalar predictor profile \(\mathbf x_r\), an
+For a fixed analyst-declared scalar predictor profile $\mathbf x_r$, an
 exposure-adjusted Poisson fit first defines the rate-scale linear predictor
 
 $
@@ -1269,7 +1269,7 @@ $
 $
 
 A rate prediction is therefore independent of target exposure. If the analyst
-supplies a strictly positive target exposure \(E_r(t)\), the expected-count
+supplies a strictly positive target exposure $E_r(t)$, the expected-count
 function is
 
 $
@@ -1286,12 +1286,12 @@ $
 \log E_r(t)+\eta_r^{\mathrm{rate}}(t).
 $
 
-The package does not silently set \(E_r(t)=1\) when expected counts are
+The package does not silently set $E_r(t)=1$ when expected counts are
 requested from an exposure-adjusted fit. Missing target exposure is an error
 for that prediction scale.
 
-Let \(\mathbf z_r(t)\) denote the profile-by-basis row and let
-\(\widehat{\boldsymbol\Sigma}_\theta\) be the robust GEE covariance of the
+Let $\mathbf z_r(t)$ denote the profile-by-basis row and let
+$\widehat{\boldsymbol\Sigma}_\theta$ be the robust GEE covariance of the
 basis-coefficient vector. Because exposure is treated as fixed,
 
 $
@@ -1334,7 +1334,7 @@ D_{ab}^{\mathrm{count}}(t)
 $
 
 The rate-ratio simultaneous band is calibrated on
-\(\log RR_{ab}(t)\) and then exponentiated, preserving positivity. The package
+$\log RR_{ab}(t)$ and then exponentiated, preserving positivity. The package
 does not automatically generate all contrast scales, search across profile
 pairs, or claim multiple-contrast family adjustment. Bernoulli prediction and
 probability-difference behavior from 0.52 is unchanged.
@@ -1350,7 +1350,7 @@ generalized_function_on_scalar_mean_difference_band().
 
 ## Function-on-scalar regression { #function-on-scalar }
 
-Let \(Y_{id}(t_m)\) be functional response dimension \(d\) for independent inference unit \(i\), and let \(\mathbf x_i\) contain an intercept and the analyst-declared scalar predictors. At each observed time and selected response dimension,
+Let $Y_{id}(t_m)$ be functional response dimension $d$ for independent inference unit $i$, and let $\mathbf x_i$ contain an intercept and the analyst-declared scalar predictors. At each observed time and selected response dimension,
 
 $
 Y_{id}(t_m)
@@ -1391,7 +1391,7 @@ $
 \mathbf X(\mathbf X^\top\mathbf X)^{-1},
 $
 
-and let \(\widehat\varepsilon_{id}(t_m)\) be the fitted residual. For coefficient \(j\), the diagonal HC1 variance estimate is
+and let $\widehat\varepsilon_{id}(t_m)$ be the fitted residual. For coefficient $j$, the diagonal HC1 variance estimate is
 
 $
 \widehat V_{j,d}(t_m)
@@ -1403,11 +1403,11 @@ A_{ij}\widehat\varepsilon_{id}(t_m)
 \right]^2,
 $
 
-where \(p=\operatorname{rank}(\mathbf X)\). The reported pointwise standard error is \(\sqrt{\widehat V_{j,d}(t_m)}\).
+where $p=\operatorname{rank}(\mathbf X)$. The reported pointwise standard error is $\sqrt{\widehat V_{j,d}(t_m)}$.
 
 ### Fixed-design wild bootstrap
 
-For bootstrap replicate \(b\), one multiplier is drawn per independent inference unit and the complete residual function is multiplied as a unit:
+For bootstrap replicate $b$, one multiplier is drawn per independent inference unit and the complete residual function is multiplied as a unit:
 
 $
 Y_{id}^{*(b)}(t_m)
@@ -1436,7 +1436,7 @@ M_j^{*(b)}
 \right|.
 $
 
-If \(c_{j,1-\alpha}\) is the empirical \((1-\alpha)\)-quantile of these maxima, the observed-grid simultaneous band is
+If $c_{j,1-\alpha}$ is the empirical $(1-\alpha)$-quantile of these maxima, the observed-grid simultaneous band is
 
 $
 \widehat\beta_{j,d}(t_m)
@@ -1487,15 +1487,15 @@ $$
 
 ## Heteroscedastic Gaussian FPCR wild bootstrap { #wild-bootstrap }
 
-For retained score matrix \(\boldsymbol\Xi_h\), the fitted score regression uses
+For retained score matrix $\boldsymbol\Xi_h$, the fitted score regression uses
 
 $$
 \mathbf X_h=[\mathbf 1,\boldsymbol\Xi_h].
 $$
 
-Residual estimation uses \(k\) components, the bootstrap pseudo-truth uses \(g=k\), and inference uses \(h\ge g\).
+Residual estimation uses $k$ components, the bootstrap pseudo-truth uses $g=k$, and inference uses $h\ge g$.
 
-For replicate \(b\),
+For replicate $b$,
 
 $$
 Y_i^{*(b)}
@@ -1505,9 +1505,9 @@ Y_i^{*(b)}
 \widehat\varepsilon_{i,k}W_i^{(b)},
 $$
 
-where \(W_i\) is either standard normal or the implemented mean-zero, unit-variance Mammen two-point multiplier.
+where $W_i$ is either standard normal or the implemented mean-zero, unit-variance Mammen two-point multiplier.
 
-For the \(h\)-score covariance,
+For the $h$-score covariance,
 
 $$
 \widehat{\boldsymbol\Gamma}_h
@@ -1517,8 +1517,8 @@ $$
 $$
 
 Writing
-\(\mathbf q_i=\boldsymbol\xi_{i,h}\widehat\varepsilon_{i,k}\) and
-\(\overline{\mathbf q}=n^{-1}\sum_i\mathbf q_i\), the heteroscedastic score-residual covariance is
+$\mathbf q_i=\boldsymbol\xi_{i,h}\widehat\varepsilon_{i,k}$ and
+$\overline{\mathbf q}=n^{-1}\sum_i\mathbf q_i$, the heteroscedastic score-residual covariance is
 
 $$
 \widehat{\boldsymbol\Lambda}_h
@@ -1529,7 +1529,7 @@ $$
 (\mathbf q_i-\overline{\mathbf q})^\top.
 $$
 
-For fixed target score vector \(\boldsymbol\xi_{0,h}\), define
+For fixed target score vector $\boldsymbol\xi_{0,h}$, define
 
 $$
 \mathbf d_0
@@ -1580,7 +1580,7 @@ T_0^{*(b)}
 }.
 $$
 
-If \(c_{0,1-\alpha}\) is the empirical quantile of \(|T_0^{*(b)}|\), the target-wise interval is
+If $c_{0,1-\alpha}$ is the empirical quantile of $|T_0^{*(b)}|$, the target-wise interval is
 
 $$
 \widehat\theta_{0,h}
@@ -1592,7 +1592,7 @@ $$
 
 ## Simultaneous fixed-target calibration { #simultaneous-wild-bootstrap }
 
-For a predeclared family \(j=1,\ldots,J\), each replicate contributes
+For a predeclared family $j=1,\ldots,J$, each replicate contributes
 
 $$
 M^{*(b)}
@@ -1601,13 +1601,13 @@ M^{*(b)}
 |T_j^{*(b)}|.
 $$
 
-A single empirical quantile of \(M^{*(b)}\) calibrates all fixed targets.
+A single empirical quantile of $M^{*(b)}$ calibrates all fixed targets.
 
 **API:** `fpca_wild_bootstrap_projection_simultaneous_interval()`.
 
 ## Fixed-family wild-bootstrap tests { #family-tests }
 
-For supplied null value \(\theta_{0j}\),
+For supplied null value $\theta_{0j}$,
 
 $$
 T_j
@@ -1635,7 +1635,7 @@ p_j
 \frac{r_j+1}{B+1}.
 $$
 
-For single-step max-\(|t|\) adjustment,
+For single-step max-$|t|$ adjustment,
 
 $$
 r_j^{\max}
@@ -1662,7 +1662,7 @@ $$
 
 ## Finite-bootstrap Monte Carlo precision { #monte-carlo }
 
-For any retained exceedance count \(r\) out of \(B\),
+For any retained exceedance count $r$ out of $B$,
 
 $$
 \widehat q=\frac{r}{B},
@@ -1674,7 +1674,7 @@ $$
 }.
 $$
 
-The exact Clopper-Pearson interval at diagnostic level \(1-\gamma\) is
+The exact Clopper-Pearson interval at diagnostic level $1-\gamma$ is
 
 $$
 L=
@@ -1704,7 +1704,7 @@ These limits quantify **simulation precision of the bootstrap tail probability**
 
 ## Split-conformal FPCA anomaly review { #conformal }
 
-Let \(A_1,\ldots,A_m\) be calibration nonconformity scores and \(A_\mathrm{new}\) the target score. The implemented conservative p-value is
+Let $A_1,\ldots,A_m$ be calibration nonconformity scores and $A_\mathrm{new}$ the target score. The implemented conservative p-value is
 
 $$
 p_{\mathrm{conf}}
@@ -1743,16 +1743,16 @@ The equations above describe what the software computes; they do not enlarge the
 
 - observed-grid bands do not imply continuous-domain coverage between grid points;
 - fixed-target wild bootstrap currently requires independent curve rows;
-- the single-step max-\(|t|\) layer does not claim strong FWER for arbitrary subset nulls without additional theory;
+- the single-step max-$|t|$ layer does not claim strong FWER for arbitrary subset nulls without additional theory;
 - finite-bootstrap precision intervals are Monte Carlo diagnostics, not effect-size confidence intervals;
 - multilevel FPCA is the explicit two-level decomposition above, not a full likelihood/Bayesian functional mixed model;
-- compositional FPCA is performed in ALR coordinates and depends on the declared reference component and zero-replacement \(\epsilon\).
+- compositional FPCA is performed in ALR coordinates and depends on the declared reference component and zero-replacement $\epsilon$.
 
 See the [assumptions](assumptions.md), [limitations](limitations.md), and [API reference](../reference/api.md) for the operational contracts.
 
 ## Delay-coordinate reconstruction and embedding diagnostics { #delay-embedding }
 
-For a multivariate gaze state \(\mathbf G(t)\), embedding dimension \(m\), and delay \(\tau\),
+For a multivariate gaze state $\mathbf G(t)$, embedding dimension $m$, and delay $\tau$,
 
 $$
 \mathbf z_t=
@@ -1764,7 +1764,7 @@ $$
 ].
 $$
 
-The package does not choose \(m\) or \(\tau\) silently. `embedding_delay_diagnostics()` reports autocorrelation and Fraser–Swinney-style average mutual information,
+The package does not choose $m$ or $\tau$ silently. `embedding_delay_diagnostics()` reports autocorrelation and Fraser–Swinney-style average mutual information,
 
 $$
 I(\tau)
@@ -1785,7 +1785,7 @@ while `embedding_dimension_diagnostics()` reports Kennel-style false-nearest-nei
 
 ## Sparse recurrence and recurrence quantification { #recurrence }
 
-For observed or reconstructed state vectors and a declared \(p\)-norm radius \(\varepsilon\),
+For observed or reconstructed state vectors and a declared $p$-norm radius $\varepsilon$,
 
 $$
 R_{ij}
@@ -1798,7 +1798,7 @@ R_{ij}
 \right].
 $$
 
-For auto-recurrence, the line of identity and every pair within the declared Theiler window are excluded. With \(N_{\mathrm{eligible}}\) eligible unordered pairs,
+For auto-recurrence, the line of identity and every pair within the declared Theiler window are excluded. With $N_{\mathrm{eligible}}$ eligible unordered pairs,
 
 $$
 \mathrm{RR}
@@ -1810,7 +1810,7 @@ N_{\mathrm{eligible}}
 }.
 $$
 
-If \(P_d(\ell)\) denotes the number of diagonal recurrence lines of length \(\ell\),
+If $P_d(\ell)$ denotes the number of diagonal recurrence lines of length $\ell$,
 
 $$
 \mathrm{DET}
@@ -1862,7 +1862,7 @@ $$
 }.
 $$
 
-The matrix is stored sparsely. Exactly one radius policy is allowed: a fixed \(\varepsilon\), or an explicit target recurrence rate from which \(\varepsilon\) is solved numerically.
+The matrix is stored sparsely. Exactly one radius policy is allowed: a fixed $\varepsilon$, or an explicit target recurrence rate from which $\varepsilon$ is solved numerically.
 
 **API:** `recurrence_matrix()`, `recurrence_radius_profile()`, `rqa_metrics()`, `rqa_parameter_sensitivity()`, `windowed_rqa()`, `cross_recurrence_matrix()`, `cross_rqa_metrics()`. The radius-profile API evaluates the same RR equation over a declared radius grid, while the sensitivity API evaluates the broader recurrence/RQA contract over a predeclared parameter grid without automatic selection.
 
@@ -1873,7 +1873,7 @@ cross-recurrence plot asks whether a state of system A resembles a state of
 system B. A joint recurrence plot instead asks whether all declared systems
 **individually recur at the same pair of time indices**.
 
-For binary auto-recurrence matrices \(R^{(s)}\),
+For binary auto-recurrence matrices $R^{(s)}$,
 
 $
 JR_{ij}
@@ -1894,7 +1894,7 @@ Version 0.39 requires all component recurrence matrices to have:
 No lag shifting, synchronization, interpolation, resampling, or threshold
 harmonization is performed inside the joint-recurrence function.
 
-With \(N_{\mathrm{eligible}}\) unique off-diagonal time pairs outside the
+With $N_{\mathrm{eligible}}$ unique off-diagonal time pairs outside the
 shared Theiler window,
 
 $
@@ -1953,16 +1953,16 @@ $
 k_i=\sum_j A_{ij},
 $
 
-with normalized degree \(k_i/(N-1)\).
+with normalized degree $k_i/(N-1)$.
 
-If \(T_i\) denotes the number of graph triangles incident to node \(i\), local
+If $T_i$ denotes the number of graph triangles incident to node $i$, local
 clustering is
 
 $
 C_i=\frac{2T_i}{k_i(k_i-1)}.
 $
 
-Version 0.40 uses the standard computational convention \(C_i=0\) for nodes
+Version 0.40 uses the standard computational convention $C_i=0$ for nodes
 with degree below two. Mean local clustering averages those node-wise values
 over all nodes.
 
@@ -1972,7 +1972,7 @@ $
 \mathcal T=\frac{3N_{\triangle}}{N_{\mathrm{triples}}},
 $
 
-where \(N_{\mathrm{triples}}=\sum_i {k_i\choose2}\). If there are no connected
+where $N_{\mathrm{triples}}=\sum_i {k_i\choose2}$. If there are no connected
 triples, transitivity remains explicit `NaN` rather than being silently set to
 zero.
 
@@ -2006,7 +2006,7 @@ itself evidence of low-dimensional deterministic chaos.
 
 ## Discrete transfer entropy and circular-shift surrogate testing { #discrete-transfer-entropy }
 
-For discrete source states \(X_t\) and target states \(Y_t\), version 0.41
+For discrete source states $X_t$ and target states $Y_t$, version 0.41
 implements the empirical plug-in conditional mutual information
 
 $
@@ -2026,12 +2026,12 @@ T_{X\to Y}
      {p(y_t\mid\mathbf y)}.
 $
 
-The state codes, target history \(k\), source history \(l\), and source lag
-\(d\) are analyst supplied. The implementation uses base-2 logarithms and
+The state codes, target history $k$, source history $l$, and source lag
+$d$ are analyst supplied. The implementation uses base-2 logarithms and
 returns local contributions plus observed-history support diagnostics. It does
 not bin continuous observations or select history/lag values.
 
-For a declared set of \(B\) circular source shifts, the package reports
+For a declared set of $B$ circular source shifts, the package reports
 
 $
 p_+
@@ -2049,8 +2049,8 @@ or a small surrogate p-value is not treated as standalone causal evidence.
 
 ## Conditional transfer entropy and source-shift surrogate testing { #conditional-transfer-entropy }
 
-For source \(X\), target \(Y\), and explicitly supplied conditioning process
-\(Z\), the 0.43 estimand is
+For source $X$, target $Y$, and explicitly supplied conditioning process
+$Z$, the 0.43 estimand is
 
 $$
 T_{X\to Y\mid Z}(k,l,m,d,c)
@@ -2065,9 +2065,9 @@ Z_{t-c}^{(m)}
 $$
 
 For observed histories
-\(\mathbf y=Y_{t-1}^{(k)}\),
-\(\mathbf x=X_{t-d}^{(l)}\), and
-\(\mathbf z=Z_{t-c}^{(m)}\),
+$\mathbf y=Y_{t-1}^{(k)}$,
+$\mathbf x=X_{t-d}^{(l)}$, and
+$\mathbf z=Z_{t-c}^{(m)}$,
 
 $$
 T_{X\to Y\mid Z}
@@ -2086,7 +2086,7 @@ The empirical implementation uses observed contingency counts and reports the
 mean local log-ratio over the exact effective transitions implied by the five
 declared history/lag settings.
 
-For \(B\) analyst-declared circular shifts of the source only,
+For $B$ analyst-declared circular shifts of the source only,
 
 $$
 p_+
@@ -2112,7 +2112,7 @@ adjustment for unmeasured common drivers.
 
 ## Transfer-entropy specification sensitivity { #transfer-entropy-sensitivity }
 
-Let \(\mathcal K\), \(\mathcal L\), and \(\mathcal D\) be analyst-declared
+Let $\mathcal K$, $\mathcal L$, and $\mathcal D$ be analyst-declared
 sets of target-history lengths, source-history lengths, and source lags. Version
 0.42 evaluates the complete Cartesian design
 
@@ -2122,7 +2122,7 @@ $
 \mathcal K\times\mathcal L\times\mathcal D.
 $
 
-For every \(\theta=(k,l,d)\in\Theta\),
+For every $\theta=(k,l,d)\in\Theta$,
 
 $
 T_{\theta}
@@ -2138,7 +2138,7 @@ $
 is estimated with the same empirical discrete-state plug-in contract as the
 0.41 base estimator.
 
-If one common set of \(B\) circular source shifts is supplied, every
+If one common set of $B$ circular source shifts is supplied, every
 specification additionally retains
 
 $
@@ -2153,7 +2153,7 @@ $
 
 The table also retains finite empirical-support diagnostics for every
 specification. Invalid declared combinations abort the complete sensitivity
-analysis. The summaries are descriptive across \(\Theta\): no parameter
+analysis. The summaries are descriptive across $\Theta$: no parameter
 ranking, winner selection, hidden averaging, posterior interpretation, or
 causal identification is introduced.
 
@@ -2243,7 +2243,7 @@ When target recurrence rate determines the radius, RR is controlled by construct
 **API:** `windowed_rqa_trajectory_set()`, `windowed_rqa_sensitivity()`, `plot_windowed_rqa_trajectories()`, `plot_windowed_rqa_sensitivity()`, `windowed_rqa_functional_reporting_text()`, and `windowed_rqa_sensitivity_reporting_text()`. The sensitivity API evaluates the same functionalization contract across a predeclared window/step grid without automatic selection or interpolation.
 ## Rosenstein local divergence and largest Lyapunov estimate { #local-divergence }
 
-For reconstructed state \(i\), let \(j(i)\) be its nearest positive-distance neighbor outside the declared Theiler window. Forward separation is
+For reconstructed state $i$, let $j(i)$ be its nearest positive-distance neighbor outside the declared Theiler window. Forward separation is
 
 $$
 d_i(k)
@@ -2326,7 +2326,7 @@ The fitted slope is a Kantz-style maximal-Lyapunov estimate. It is a conditional
 
 ## Multivariate IAAFT surrogates { #multivariate-iaaft }
 
-For simultaneously observed dimensions \(k=1,\ldots,K\),
+For simultaneously observed dimensions $k=1,\ldots,K$,
 
 $
 F_k(\omega)=A_k(\omega)e^{i\phi_k(\omega)}.
@@ -2334,14 +2334,14 @@ $
 
 A multivariate surrogate should retain between-channel linear dependence rather
 than generate each channel independently. Relative to an explicitly declared
-reference dimension \(r\),
+reference dimension $r$,
 
 $
 \Delta\phi_{kr}(\omega)=\phi_k(\omega)-\phi_r(\omega).
 $
 
 During one Fourier-adjustment step, the current surrogate reference phase
-\(\psi_r^*(\omega)\) is combined with the original phase offset,
+$\psi_r^*(\omega)$ is combined with the original phase offset,
 
 $
 F_k^*(\omega)
@@ -2461,9 +2461,9 @@ $$
 |.
 $$
 
-With tolerance \(\delta\), the package labels \(\rho<1-\delta\) as contracting, \(\rho>1+\delta\) as expanding, and values inside the tolerance band as near-neutral.
+With tolerance $\delta$, the package labels $\rho<1-\delta$ as contracting, $\rho>1+\delta$ as expanding, and values inside the tolerance band as near-neutral.
 
 **API:** `poincare_crossings()`, `fit_local_return_map()`, `return_map_stability()`.
 
 !!! warning "Not Floquet analysis"
-    The fitted \(\mathbf J\) is an empirical local return-map Jacobian. It is not obtained by integrating variational equations around a known periodic orbit, so it must not be reported as a classical monodromy matrix or as a Floquet-multiplier calculation. Classical model-based Floquet and numerical-continuation APIs remain outside the 0.23 raw-gaze contract.
+    The fitted $\mathbf J$ is an empirical local return-map Jacobian. It is not obtained by integrating variational equations around a known periodic orbit, so it must not be reported as a classical monodromy matrix or as a Floquet-multiplier calculation. Classical model-based Floquet and numerical-continuation APIs remain outside the 0.23 raw-gaze contract.
