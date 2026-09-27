@@ -191,11 +191,11 @@ The covariance estimator must be chosen explicitly as <code>"empirical"</code> o
 
 For each target score \(s(X^*)\),
 
-\[
+$
 \hat p(X^*) =
 \frac{1 + |\{i \in I_{\mathrm{calib}}: s(X_i) \ge s(X^*)\}|}
 {n_{\mathrm{calib}}+1}.
-\]
+$
 
 The minimum attainable p-value is therefore (1/(n_{calib}+1)).
 
