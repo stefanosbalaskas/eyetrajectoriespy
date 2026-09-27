@@ -17,7 +17,7 @@ derived univariate functions, compositional AOI-probability trajectories, repeat
 
 > **Status:** stable pre-1.0 release (`0.9.0`). The scientific platform, reference-validation layer, reproducibility contracts, packaging checks, and five canonical workflows are qualified.
 >
-> **Development line:** `0.9.1.dev0`. Development builds are not armed for GitHub/PyPI publication; production releases require an explicit qualified release dispatch.
+> **Development line:** `0.9.1.dev0`. This line is maintenance/consolidation only: defects, docs, compatibility, UX, validation, performance and release hardening. The next planned estimator tranche is **0.10.0: native sparse/irregular FPCA + PACE**.
 
 ## What scientific problem does this solve?
 
@@ -97,11 +97,11 @@ Optional interoperability:
 
 ```bash
 pip install -e ".[fda]"       # scikit-fda
-pip install -e ".[sparse]"    # FDApy sparse/PACE FPCA; Python 3.11–3.12
+pip install -e ".[sparse]"    # transitional FDApy sparse/PACE compatibility backend
 pip install -e ".[elastic]"   # fdasrsf
 ```
 
-The core package remains Python 3.11–3.13. The current FDApy 1.0.3 sparse backend is qualified separately on Python 3.11–3.12 because FDApy pins NumPy <2.0, while NumPy 1.26.x does not support Python 3.13.
+The core package remains Python 3.11–3.13. The current FDApy 1.0.3 sparse backend is qualified separately on Python 3.11–3.12 because FDApy pins NumPy <2.0, while NumPy 1.26.x does not support Python 3.13. FDApy is not a core runtime dependency; the 0.10 roadmap replaces the canonical sparse computation with a native implementation while retaining FDApy as a compatibility/validation reference during the migration.
 
 ## Quick start
 
