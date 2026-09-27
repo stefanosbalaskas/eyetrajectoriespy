@@ -47,7 +47,7 @@ def simulate_sparse_functional_truth(
 
     def phi2(t: np.ndarray) -> np.ndarray:
         t = np.asarray(t, dtype=float)
-        return np.sqrt(2.0) * np.cos(2.0 * np.pi * t)
+        return np.sqrt(2.0) * np.sin(2.0 * np.pi * t)
 
     eigenvalues = np.array([1.0, 0.35], dtype=float)
     scores = rng.normal(size=(n_curves, 2)) * np.sqrt(eigenvalues)[None, :]
