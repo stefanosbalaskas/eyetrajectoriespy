@@ -144,7 +144,7 @@ result.coefficient_summary
 ~~~
 
 For each fixed coefficient, this reports the observed-grid supremum and
-integrated \(L_2\) difference from M1.
+integrated $L_2$ difference from M1.
 
 ~~~python
 from eyetrajectoriespy import (
