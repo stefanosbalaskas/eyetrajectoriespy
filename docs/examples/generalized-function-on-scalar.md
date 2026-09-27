@@ -104,7 +104,7 @@ plot_generalized_function_on_scalar_coefficients(
 )
 ~~~
 
-A positive condition coefficient at time \(t\) indicates larger marginal
+A positive condition coefficient at time $t$ indicates larger marginal
 log-odds of target-AOI occupancy at that time, holding the other declared
 predictors fixed.
 
