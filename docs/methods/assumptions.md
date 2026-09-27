@@ -562,9 +562,9 @@ not a formal test that the covariance structure is correct.
 
 Version 0.51 targets the marginal mean
 
-$
+$$
 g\{E[Y_{ij}(t)\mid x_{ij}]\}=x_{ij}^{\top}\beta(t).
-$
+$$
 
 Participants are assumed independent across clusters. Dependence among trials and time points within participant may be misspecified by the working independence structure; the robust sandwich covariance is used for coefficient uncertainty.
 
