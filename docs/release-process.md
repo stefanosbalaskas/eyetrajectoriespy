@@ -1,5 +1,42 @@
 # Coordinated GitHub Release and PyPI publication
 
+## 0.10.0rc1 qualification
+
+The next publication candidate is `0.10.0rc1`. It contains the native
+sparse/irregular FPCA + PACE tranche already integrated into protected
+`main`. Release-candidate qualification must not introduce a new scientific
+estimator or hidden analytical default.
+
+The qualification sequence is:
+
+~~~text
+align all version declarations to 0.10.0rc1
+        |
+        v
+archive the 0.10.0.dev0 performance snapshot
+        |
+        v
+generate a fresh 0.10.0rc1 performance envelope
+        |
+        v
+pass the complete pull-request matrix
+        |
+        v
+merge through protected main
+        |
+        v
+pass the complete exact-main matrix
+        |
+        v
+arm release readiness in a reviewed change
+        |
+        v
+manual target=production dispatch only
+~~~
+
+The qualification branch and its pull request do not publish anything. A
+production dispatch remains a separate deliberate action.
+
 Version 0.9.0 uses the release machinery qualified during the 0.9.0rc1
 ceremony. The final release is a separate immutable version; the RC remains a
 prerelease record.
@@ -94,8 +131,8 @@ PYPI_REQUIRED_REVIEWER_CONFIGURED
 ~~~
 
 The `testpypi` environment is no longer accepted as production authority.
-Issue #69 is therefore a mandatory pre-release blocker until the production
-PyPI Trusted Publisher is registered with:
+Issue #69 is closed: the obsolete production-publisher cleanup was completed,
+and the dedicated production PyPI Trusted Publisher is registered with:
 
 ~~~text
 Owner:       stefanosbalaskas
@@ -105,8 +142,8 @@ Environment: pypi
 ~~~
 
 The successful 0.9.0rc1/0.9.0 OIDC publications remain historical evidence that
-Trusted Publishing works, but they do not count as evidence that the dedicated
-`pypi` publisher claim has been migrated.
+Trusted Publishing works. The dedicated `pypi` publisher claim is now the
+production authority for the 0.10 release-candidate path.
 
 ## Optional TestPyPI rehearsal
 
