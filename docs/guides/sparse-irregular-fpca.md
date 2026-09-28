@@ -2,9 +2,10 @@
 
 !!! note "Current backend and native roadmap"
     In 0.9.1, `fit_sparse_fpca_fdapy()` is an explicitly backend-named
-    compatibility path. FDApy is not a core dependency and is now treated as a
-    validation/reference implementation for the planned native 0.10.0 sparse
-    FPCA + PACE estimator. See the [0.10 development contract](../development/native-sparse-fpca.md).
+    compatibility path. FDApy is not a core dependency. The 0.10 development
+    branch now contains the native `fit_sparse_fpca()` estimator, while FDApy
+    remains a validation/reference implementation. See the
+    [0.10 development contract](../development/native-sparse-fpca.md).
 
 
 Irregular sampling and sparse sampling are related but different problems.
@@ -44,6 +45,86 @@ PACE-style FPCA estimates population mean/covariance structure from pooled irreg
 
 The original sparse-FDA framework is designed for irregularly spaced longitudinal observations with relatively few repeated measurements per observational unit and explicitly models measurement error.
 
+## Native 0.10 development estimator
+
+The 0.10 development branch contains a native univariate sparse FPCA + PACE
+estimator whose statistical and numerical choices are explicit rather than
+delegated to an external backend.
+
+```python
+import numpy as np
+
+from eyetrajectoriespy import fit_sparse_fpca
+
+result = fit_sparse_fpca(
+    irregular,
+    dimension="x",
+    n_components=2,
+    evaluation_grid=np.linspace(0.0, 1.0, 41),
+    mean_bandwidth=0.24,
+    covariance_bandwidth=0.34,
+    noise_variance_method="diagonal_difference",
+    noise_bandwidth=0.24,
+    noise_support=(0.20, 0.80),
+    psd_action="project",
+    score_ridge=0.0,
+)
+```
+
+The native estimator smooths the pooled mean directly from irregular
+observations, constructs off-diagonal within-curve covariance products,
+smooths the latent covariance surface, audits positive-semidefinite repair on
+the quadrature-weighted operator, and computes PACE scores from the **full
+fitted covariance surface** rather than a covariance reconstructed from only
+the retained components.
+
+The evaluation-grid endpoints define the analysis support. Observations outside
+that interval cause an error by default. They are excluded only when
+`analysis_support_action="restrict"` is supplied explicitly, with exclusion
+counts retained in provenance.
+
+When diagonal-difference noise estimation is used, `noise_support=` is
+mandatory. This prevents the package from silently treating the whole fitted
+domain as the preferred noise-estimation interval.
+
+### Native diagnostic plots
+
+```python
+from eyetrajectoriespy import (
+    plot_sparse_fpca_component,
+    plot_sparse_fpca_covariance,
+    plot_sparse_fpca_score_diagnostics,
+)
+
+plot_sparse_fpca_component(result, component=0)
+plot_sparse_fpca_covariance(result)
+plot_sparse_fpca_score_diagnostics(result)
+```
+
+The component plot shows the fitted mean and a declared multiple of the
+retained eigenfunction mode. The covariance plot displays the fitted latent
+covariance surface. The score diagnostic shows each PACE conditional
+covariance condition number against the number of native observations used.
+
+### Validation interpretation
+
+The 0.10 stress matrix distinguishes population-subspace recovery from
+individual-score recovery. In the qualified very-sparse 2–4 sample regime,
+the leading two-dimensional functional subspace remained reasonably aligned
+with truth while one component's individual PACE-score correlation could be
+weak. In the well-powered low-noise regime, subspace and score recovery were
+strong and eigenvalue error decreased substantially.
+
+Therefore, recovering the population subspace does **not** by itself guarantee
+precise individual PACE scores for extremely sparse curves.
+
+A deliberately too-narrow bandwidth regime fails closed when local support is
+insufficient rather than silently extrapolating or dropping unsupported grid
+locations.
+
+See [native sparse FPCA/PACE validation](../validation/sparse-fpca-validation.md)
+for the evidence classes, stress design, FDApy comparison boundary, and
+performance envelope.
 ## Current 0.9.1 compatibility backend: FDApy PACE interoperability
 
 The currently released backend-specific sparse workflow is intentionally narrow:
@@ -52,7 +133,8 @@ The currently released backend-specific sparse workflow is intentionally narrow:
 - one explicitly named functional dimension at a time;
 - FDApy covariance-operator `UFPCA`;
 - PACE conditional-expectation score recovery;
-- no common-grid interpolation before estimation;
+- eyetrajectoriespy does not pre-interpolate raw curves before backend fitting;
+- FDApy's irregular PACE score path may smooth/interpolate internally;
 - explicit fit smoothing, score smoothing, PACE tolerance, and normalization settings;
 - original curve IDs, metadata, coordinate system, time unit, sample counts, and backend version retained in the result.
 
@@ -68,7 +150,10 @@ The eyetrajectoriespy core supports Python 3.11–3.13. The current FDApy 1.0.3 
 
 Use a Python 3.11 or 3.12 environment for the `sparse` extra until the backend dependency line supports Python 3.13.
 
-This restriction applies only to the optional FDApy interoperability layer; native irregular objects and the rest of eyetrajectoriespy remain available on Python 3.13. The planned native 0.10 sparse estimator is specifically intended to remove this backend constraint from the canonical sparse workflow.
+This restriction applies only to the optional FDApy interoperability layer.
+Native irregular objects, the native 0.10 sparse estimator, and the rest of
+eyetrajectoriespy remain available on Python 3.13; the canonical native sparse
+workflow therefore does not inherit FDApy's NumPy/Python version constraint.
 
 ## Inspect sparse sampling first
 
@@ -181,11 +266,17 @@ If an explicit `evaluation_grid` is supplied, it must be finite, strictly increa
 
 ## Component count
 
-`n_components` is explicit and cannot exceed the non-zero centered sample rank, `n_curves - 1`.
+For the native 0.10 estimator, `n_components` is not capped automatically at
+`n_curves - 1`. The smoothed irregular covariance surface is not the ordinary
+centered empirical covariance matrix of fully observed curves. Availability is
+instead governed by the positive spectrum of the fitted quadrature-weighted
+covariance operator above the declared `positive_eigen_tolerance`.
 
-Do not transfer a component count selected from interpolated dense FPCA automatically to sparse PACE. The estimand and score-recovery mechanism differ.
+For the FDApy 1.0.x compatibility path, backend-specific rank and component
+constraints still apply.
 
-Component-number selection for sparse FPCA should be justified using the sparse estimator's own diagnostics/model-selection strategy.
+Do not transfer a component count selected from interpolated dense FPCA
+automatically to sparse PACE. The estimand and score-recovery mechanism differ.
 
 ## Interpretation
 
@@ -197,7 +288,7 @@ It is not the same object as a numerical-integration score computed from a dense
 
 ## Reporting example
 
-> Horizontal gaze trajectories were analyzed as sparsely observed functions without common-grid interpolation. Native curve-specific observation times were retained in an `IrregularTrajectorySet`. Univariate sparse FPCA was fitted using FDApy's covariance-operator UFPCA implementation with P-spline smoothing of the fitted functional structure. Individual scores were estimated using PACE conditional expectation with tolerance 1×10⁻⁴ and local-polynomial score smoothing. Three components were retained. Per-curve observation counts ranged from 8 to 15. Sensitivity analyses varied the smoothing configuration and retained dimension.
+> Horizontal gaze trajectories were supplied to the sparse FDApy backend on their native curve-specific observation grids without an eyetrajectoriespy preprocessing step that interpolated raw curves to a common grid. FDApy's irregular PACE implementation may smooth/interpolate internally as part of its score path. Univariate sparse FPCA used FDApy's covariance-operator UFPCA implementation with P-spline fitting smoothness. Individual scores were estimated using PACE conditional expectation with tolerance 1×10⁻⁴ and local-polynomial score smoothing. Three components were retained. Per-curve observation counts ranged from 8 to 15. Sensitivity analyses varied the smoothing configuration and retained dimension.
 
 Use `sparse_fpca_reporting_text()` as a reproducible starting point.
 
@@ -217,8 +308,12 @@ The current adapter does not:
 - `sparse_dimension_summary()`
 - `plot_sparse_irregular_dimension()`
 - `to_fdapy_irregular()`
+- `fit_sparse_fpca()`
 - `fit_sparse_fpca_fdapy()`
 - `sparse_fpca_score_frame()`
+- `plot_sparse_fpca_component()`
+- `plot_sparse_fpca_covariance()`
+- `plot_sparse_fpca_score_diagnostics()`
 - `sparse_fpca_reporting_text()`
 - `SparseFPCAResult`
 
