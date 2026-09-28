@@ -302,6 +302,90 @@ in tidy form. Qualification thresholds remain the responsibility of the
 validation design; the scenario framework does not invent universal pass/fail
 cutoffs.
 
+## First-class recovery metrics
+
+Known-truth recovery is represented by semantic metric definitions rather than
+anonymous numbers:
+
+```python
+from eyetrajectoriespy import (
+    evaluate_fpca_recovery,
+    functional_recovery_assessment_frame,
+    functional_recovery_metric_catalog_frame,
+)
+
+catalog = functional_recovery_metric_catalog_frame()
+assessment = evaluate_fpca_recovery(fitted_fpca, sim.truth)
+recovery = functional_recovery_assessment_frame(assessment)
+```
+
+Each metric records its quantity, direction, units, and scope. Dense FPCA/MFPCA
+recovery includes mean/covariance ISE, relative eigenvalue error,
+sign-invariant component similarity, principal subspace geometry, score
+correlation/RMSE, and reconstruction ISE.
+
+For sparse PACE, `evaluate_sparse_fpca_recovery()` additionally audits score
+failure, score-system condition numbers, PSD-repair magnitude, and
+measurement-noise recovery. The covariance metric uses the **full fitted
+covariance surface**. Fixed supplied noise and estimated noise are retained as
+different estimator contracts.
+
+`evaluate_functional_mixed_effects_recovery()` compares the fitted intercept
+and participant/trial variance functions against time-domain truth. It does not
+compare spline covariance entries directly with KL eigenvalues.
+
+`evaluate_registration_recovery()` compares registration warps with the
+inverse simulator warp. If simulation uses $Y_i(t)=X_i(w_i(t))$, registration
+must recover $w_i^{-1}(t)$.
+
+## Qualification and stress suites
+
+```python
+from eyetrajectoriespy import (
+    functional_recovery_qualification_scenarios,
+    functional_recovery_stress_scenarios,
+    functional_recovery_scenario_catalog_frame,
+)
+
+qualification = functional_recovery_qualification_scenarios()
+stress = functional_recovery_stress_scenarios()
+catalog = functional_recovery_scenario_catalog_frame()
+```
+
+Qualification is deliberately small and deterministic. Its thresholds are
+predeclared CI integration guards.
+
+Stress scenarios are named descriptive regimes rather than a giant factorial:
+very sparse sampling, unequal sample counts, clustered/boundary-poor times,
+high noise, near-tied eigenvalues, heavy-tailed scores, participant/trial-heavy
+hierarchy, phase variation, MCAR/block missingness, and correlated
+multichannel noise. They carry no automatic pass/fail interpretation.
+
+## Monte Carlo aggregation and explicit failures
+
+`run_functional_recovery_scenarios()` remains fail-fast by default. A stress
+study can explicitly request `failure_action="record"`; failed simulation,
+fit, and recovery replicates then remain in the denominator.
+
+```python
+from eyetrajectoriespy import (
+    functional_recovery_failure_frame,
+    functional_recovery_summary_frame,
+    plot_functional_recovery_summary,
+)
+
+summary = functional_recovery_summary_frame(result)
+failures = functional_recovery_failure_frame(result)
+plot_functional_recovery_summary(
+    summary,
+    metric="score_rmse",
+)
+```
+
+The summary retains mean, median, SD, IQR, 5th/25th/75th/95th percentiles, MCSE
+of the mean, failure proportion, and failure-rate MCSE. These summaries are
+descriptive; they do not invent universal method-success boundaries.
+
 ## Validation use
 
 The 0.11 qualification harness uses the **public** simulator to test recovery
