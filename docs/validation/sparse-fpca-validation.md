@@ -159,9 +159,9 @@ diagonalizes the regular-grid covariance matrix and applies its own grid-step
 normalization, whereas eyetrajectoriespy solves the trapezoidal
 quadrature-weighted operator problem
 
-$
+$$
 W^{1/2}\widehat G W^{1/2}.
-$
+$$
 
 The R implementation also constructs a fitted covariance from its retained
 positive eigensystem before conditional-expectation scoring. Those differences
