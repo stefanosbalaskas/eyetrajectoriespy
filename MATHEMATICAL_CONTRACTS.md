@@ -38,34 +38,34 @@ Implemented by `fit_fpca()`, `fit_mfpca()`, `transform_fpca()`, and `reconstruct
 
 For irregular observations at curve-specific times,
 
-$
+$$
 Y_{ij}=X_i(t_{ij})+\epsilon_{ij}.
-$
+$$
 
 The latent covariance eigenfunctions satisfy
 
-$
+$$
 \int G(s,t)\phi_k(s)\,ds=\lambda_k\phi_k(t).
-$
+$$
 
 For curve $i$, native PACE scoring uses
 
-$
+$$
 \widehat\Sigma_i
 =
 \widehat G(T_i,T_i)
 +\widehat\sigma_\epsilon^2I
 +\gamma I,
-$
+$$
 
-$
+$$
 \widehat\xi_{ik}
 =
 \widehat\lambda_k
 \widehat\phi_k(T_i)^\top
 \widehat\Sigma_i^{-1}
 \{Y_i-\widehat\mu(T_i)\}.
-$
+$$
 
 The score system uses the full fitted covariance surface. Retained component
 count controls the returned eigenfunctions/scores rather than truncating
@@ -74,6 +74,7 @@ objects are evaluated at native observation times; raw sparse trajectories
 are not silently interpolated to a dense common grid.
 
 Implemented by `fit_sparse_fpca()`.
+
 ## Functional distance
 
 $$
