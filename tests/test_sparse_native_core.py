@@ -319,7 +319,6 @@ def test_private_sparse_truth_recovers_latent_eigenspace():
         pooled_value,
         grid,
         bandwidth=0.20,
-        noise_support=(0.15, 0.85),
         min_local_points=8,
     )
 
@@ -381,6 +380,7 @@ def test_private_sparse_truth_recovers_latent_eigenspace():
         grid,
         covariance_fit.values,
         bandwidth=0.20,
+        noise_support=(0.15, 0.85),
         min_local_points=8,
     )
     assert np.isfinite(noise.variance)
