@@ -305,13 +305,14 @@ def main() -> None:
         raise RuntimeError("release-readiness development version is stale")
     if release_readiness.get("first_public_release_target") != "0.9.0":
         raise RuntimeError("first stable public release target must remain explicit")
-    if release_readiness.get("production_release_ready") is not False:
+    release_flags = (
+        release_readiness.get("production_release_ready"),
+        release_readiness.get("github_release_ready"),
+    )
+    if release_flags not in {(False, False), (True, True)}:
         raise RuntimeError(
-            "development lines must not remain armed for production release"
-        )
-    if release_readiness.get("github_release_ready") is not False:
-        raise RuntimeError(
-            "development lines must not remain armed for GitHub release"
+            "production and GitHub release readiness must be jointly "
+            "disarmed or jointly armed"
         )
 
     readiness_gates = release_readiness.get("gates", {})
