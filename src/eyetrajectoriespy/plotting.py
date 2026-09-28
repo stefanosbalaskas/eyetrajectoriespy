@@ -41,6 +41,7 @@ from .types import (
     DynamicTimeWarpingResult,
     FunctionalOutlierResult,
     RegistrationResult,
+    SparseFPCAResult,
     TrajectoryDistanceSensitivityResult,
     TrajectorySet,
 )
@@ -1345,6 +1346,152 @@ def plot_fpca_subspace_stability(
     ax.set_title(f"FPCA subspace stability: FPC{start}–FPC{end}")
     return ax
 
+
+
+def _require_sparse_population_objects(
+    result: SparseFPCAResult,
+) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """Validate that a sparse result contains fitted population objects."""
+
+    if not isinstance(result, SparseFPCAResult):
+        raise TypeError("result must be a SparseFPCAResult")
+    if result.evaluation_grid is None:
+        raise ValueError("result does not contain an evaluation grid")
+    if result.mean is None:
+        raise ValueError("result does not contain a fitted mean")
+    if result.covariance is None:
+        raise ValueError("result does not contain a fitted covariance")
+    if result.eigenfunctions is None:
+        raise ValueError("result does not contain fitted eigenfunctions")
+    return (
+        np.asarray(result.evaluation_grid, dtype=float),
+        np.asarray(result.mean, dtype=float),
+        np.asarray(result.covariance, dtype=float),
+        np.asarray(result.eigenfunctions, dtype=float),
+    )
+
+
+def plot_sparse_fpca_component(
+    result: SparseFPCAResult,
+    *,
+    component: int = 0,
+    sd_multiplier: float = 2.0,
+    ax=None,
+):
+    """Plot the sparse fitted mean and one eigenfunction perturbation."""
+
+    grid, mean, _, eigenfunctions = _require_sparse_population_objects(result)
+    if isinstance(component, bool) or not isinstance(
+        component,
+        (int, np.integer),
+    ):
+        raise TypeError("component must be an integer")
+    component = int(component)
+    if component < 0 or component >= result.n_components:
+        raise IndexError("component is outside the fitted range")
+    if not np.isfinite(sd_multiplier) or sd_multiplier <= 0:
+        raise ValueError("sd_multiplier must be finite and positive")
+    if ax is None:
+        _, ax = plt.subplots()
+
+    amplitude = (
+        float(sd_multiplier)
+        * np.sqrt(float(result.eigenvalues[component]))
+        * eigenfunctions[component]
+    )
+    ax.plot(grid, mean, label="fitted mean")
+    ax.plot(
+        grid,
+        mean - amplitude,
+        label=f"-{sd_multiplier:g} SD",
+    )
+    ax.plot(
+        grid,
+        mean + amplitude,
+        label=f"+{sd_multiplier:g} SD",
+    )
+    ax.set_xlabel(f"Time ({result.time_unit})")
+    ax.set_ylabel(result.dimension)
+    ax.set_title(
+        f"Sparse FPC{component + 1}: {result.dimension}(t)"
+    )
+    ax.legend()
+    return ax
+
+
+def plot_sparse_fpca_covariance(
+    result: SparseFPCAResult,
+    *,
+    ax=None,
+):
+    """Plot the fitted latent covariance surface on its evaluation grid."""
+
+    grid, _, covariance, _ = _require_sparse_population_objects(result)
+    if ax is None:
+        _, ax = plt.subplots()
+    image = ax.imshow(
+        covariance,
+        origin="lower",
+        aspect="auto",
+        extent=(grid[0], grid[-1], grid[0], grid[-1]),
+    )
+    ax.set_xlabel(f"Time s ({result.time_unit})")
+    ax.set_ylabel(f"Time t ({result.time_unit})")
+    ax.set_title("Sparse FPCA fitted latent covariance")
+    ax.figure.colorbar(image, ax=ax, label="Latent covariance")
+    return ax
+
+
+def plot_sparse_fpca_score_diagnostics(
+    result: SparseFPCAResult,
+    *,
+    ax=None,
+):
+    """Plot per-curve PACE-system conditioning against sparse sample count."""
+
+    if not isinstance(result, SparseFPCAResult):
+        raise TypeError("result must be a SparseFPCAResult")
+    diagnostics = result.score_diagnostics
+    required = {"n_samples", "condition_number", "status_code"}
+    if diagnostics.empty or not required <= set(diagnostics.columns):
+        raise ValueError(
+            "result does not contain complete PACE score diagnostics"
+        )
+    if ax is None:
+        _, ax = plt.subplots()
+
+    n_samples = diagnostics["n_samples"].to_numpy(dtype=float)
+    condition = diagnostics["condition_number"].to_numpy(dtype=float)
+    status = diagnostics["status_code"].astype(str).to_numpy()
+    finite = np.isfinite(condition) & (condition > 0)
+    ok = finite & (status == "ok")
+    failed = finite & (status != "ok")
+
+    if np.any(ok):
+        ax.scatter(
+            n_samples[ok],
+            condition[ok],
+            marker="o",
+            label="score system ok",
+        )
+    if np.any(failed):
+        ax.scatter(
+            n_samples[failed],
+            condition[failed],
+            marker="x",
+            label="flagged/failed score system",
+        )
+    if not np.any(finite):
+        raise ValueError(
+            "score diagnostics do not contain positive finite condition numbers"
+        )
+    ax.set_yscale("log")
+    ax.set_xlabel("Observed samples used for PACE score")
+    ax.set_ylabel("Conditional covariance condition number")
+    ax.set_title("Sparse PACE score-system conditioning")
+    if np.any(failed):
+        ax.legend()
+    return ax
 
 
 def plot_sparse_irregular_dimension(
