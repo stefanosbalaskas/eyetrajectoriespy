@@ -58,6 +58,30 @@ _CONTRACTS = (
         scope="Common-grid functional PCA with explicit channel scaling; retained-component interpretation is conditional on the fitted basis.",
     ),
     MathematicalContract(
+        key="sparse-fpca-pace",
+        title="Native sparse FPCA / PACE",
+        public_api=("fit_sparse_fpca",),
+        equations=(
+            r"Y_{ij}=X_i(t_{ij})+\epsilon_{ij}",
+            r"\int G(s,t)\phi_k(s)\,ds=\lambda_k\phi_k(t)",
+            r"\widehat\Sigma_i=\widehat G(T_i,T_i)+"
+            r"\widehat\sigma_\epsilon^2 I+\gamma I",
+            r"\widehat\xi_{ik}=\widehat\lambda_k"
+            r"\widehat\phi_k(T_i)^\top\widehat\Sigma_i^{-1}"
+            r"\{Y_i-\widehat\mu(T_i)\}",
+        ),
+        site_anchor="sparse-fpca-pace",
+        scope=(
+            "Univariate sparse/irregular functional observations with explicit "
+            "mean/covariance smoothing, analysis support, measurement-noise "
+            "handling, PSD policy, retained component count, and score ridge. "
+            "PACE evaluates fitted population objects at native observation "
+            "times and uses the full fitted covariance-plus-noise system; no "
+            "raw common-grid interpolation, automatic bandwidth selection, "
+            "joint multivariate PACE, or silent score-system repair is implied."
+        ),
+    ),
+    MathematicalContract(
         key="functional-l2",
         title="Integrated functional L2 distance",
         public_api=("functional_l2_distance", "pairwise_functional_distances"),
