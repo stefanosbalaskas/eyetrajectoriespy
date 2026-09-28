@@ -152,19 +152,19 @@ The public scenario catalog is available through
 
 The orchestration preserves the sequence
 
-$
+$$
 (\text{observations},\text{declared scenario})
 \longrightarrow
 \text{fit},
-$
+$$
 
 followed only afterward by
 
-$
+$$
 (\text{fit},\text{latent truth})
 \longrightarrow
 \text{recovery assessment}.
-$
+$$
 
 A recovery evaluator therefore cannot become a hidden estimator-tuning input.
 The evaluators also fail closed on grid mismatches rather than silently
@@ -189,11 +189,11 @@ mean. Explicit recorded failures remain in the scenario denominator.
 For failure proportion $\hat p$ over $R$ replicates, the reported Monte Carlo
 standard error is
 
-$
+$$
 \operatorname{MCSE}(\hat p)
 =
 \sqrt{\frac{\hat p(1-\hat p)}{R}}.
-$
+$$
 
 The default qualification runner remains fail-fast. Broader stress studies may
 explicitly use `failure_action="record"` so simulation, fit, or recovery
