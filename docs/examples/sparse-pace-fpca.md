@@ -1,8 +1,10 @@
-# Worked example: sparse PACE FPCA without interpolation
+# Worked example: sparse PACE FPCA from native irregular observations
 
 This example uses synthetic sparse observations with a different native time grid for every curve.
 
-The goal is to estimate variation in the latent x(t) process **without first interpolating every curve to a shared grid**.
+The goal is to estimate variation in the latent x(t) process without an
+eyetrajectoriespy preprocessing step that first fabricates dense raw curves on
+a shared grid.
 
 ## Generate sparse irregular trajectories
 
@@ -184,7 +186,9 @@ The function:
 6. preserves estimator settings and sample counts in provenance;
 7. stores the FDApy model, sparse backend data, and reconstructed backend object.
 
-No interpolation-to-common-grid step is inserted.
+eyetrajectoriespy does not insert a raw common-grid interpolation step before
+calling FDApy. FDApy's irregular PACE implementation may smooth/interpolate
+internally as part of its backend scoring path.
 
 ## Join scores to study metadata
 
@@ -215,7 +219,8 @@ The helper explicitly records:
 - observation-count range;
 - retained eigenvalues;
 - tolerance;
-- absence of common-grid interpolation.
+- absence of eyetrajectoriespy raw common-grid pre-interpolation;
+- FDApy internal irregular-PACE smoothing/interpolation boundary.
 
 ## Sensitivity analysis
 
