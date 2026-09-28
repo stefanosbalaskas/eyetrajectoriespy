@@ -1,0 +1,44 @@
+name: sparse-noise-investigation
+
+on:
+  push:
+    branches:
+      - investigate/0.10-noise-variance-recovery
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  diagonal-difference-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+      - name: Run controlled diagonal-difference investigation
+        run: |
+          python scripts/investigate_sparse_noise_variance.py \
+            --replicates 5 \
+            --output-json sparse-noise-variance-investigation.json \
+            --output-csv sparse-noise-variance-investigation.csv
+      - name: Upload diagnostic evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: sparse-noise-variance-investigation
+          path: |
+            sparse-noise-variance-investigation.json
+            sparse-noise-variance-investigation.csv
