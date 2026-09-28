@@ -501,6 +501,7 @@ def _population_values(
     weights: np.ndarray,
     truth: FunctionalSimulationTruth,
     reconstructed: np.ndarray,
+    estimated_covariance: np.ndarray | None = None,
 ) -> tuple[tuple[FunctionalRecoveryValue, ...], _Alignment]:
     estimated_mean = np.asarray(estimated_mean, dtype=float)
     estimated_components = np.asarray(estimated_components, dtype=float)
@@ -550,18 +551,31 @@ def _population_values(
         )
     ]
 
-    estimated_covariance = _covariance_from_modes(
-        estimated_eigenvalues, estimated_components
-    )
+    if estimated_covariance is None:
+        covariance_estimate = _covariance_from_modes(
+            estimated_eigenvalues,
+            estimated_components,
+        )
+    else:
+        covariance_estimate = np.asarray(
+            estimated_covariance,
+            dtype=float,
+        )
     true_covariance = _covariance_from_modes(
-        truth.eigenvalues, truth_components
+        truth.eigenvalues,
+        truth_components,
     )
+    if covariance_estimate.shape != true_covariance.shape:
+        raise ValueError(
+            "fitted covariance and generating covariance must have "
+            "identical flattened geometry"
+        )
     covariance_weights = np.outer(flat_weights, flat_weights)
     values.append(
         _value(
             "covariance_ise",
             np.sum(
-                (estimated_covariance - true_covariance) ** 2
+                (covariance_estimate - true_covariance) ** 2
                 * covariance_weights
             ),
         )
@@ -814,6 +828,10 @@ def evaluate_sparse_fpca_recovery(
         weights=weights,
         truth=truth_one,
         reconstructed=reconstruction,
+        estimated_covariance=np.asarray(
+            result.covariance,
+            dtype=float,
+        ),
     )
     values = list(values)
 
