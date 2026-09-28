@@ -674,3 +674,73 @@ def test_recovery_result_rejects_duplicate_metric_definitions():
             records=(record,),
             metric_definitions=(metric, metric),
         )
+
+
+def test_stress_runner_records_simulation_and_recovery_failures():
+    scenario = _base_scenario(replicates=1, seed_start=2100)
+
+    def failing_mean(time):
+        raise RuntimeError("declared simulation failure")
+
+    simulation_failure = run_functional_recovery_scenarios(
+        [scenario],
+        mean=failing_mean,
+        eigenfunctions=(_phi1,),
+        estimator=lambda observations, declared: observations,
+        recovery=lambda fitted, truth, declared: {"ok": 1.0},
+        failure_action="record",
+    )
+    simulation_record = simulation_failure.records[0]
+    assert simulation_record.status == "simulation_failed"
+    assert simulation_record.error_type == "RuntimeError"
+    assert simulation_record.error_message == "declared simulation failure"
+
+    def failing_recovery(fitted, truth, declared):
+        raise RuntimeError("declared recovery failure")
+
+    recovery_failure = run_functional_recovery_scenarios(
+        [scenario],
+        mean=_mean,
+        eigenfunctions=(_phi1,),
+        estimator=lambda observations, declared: observations,
+        recovery=failing_recovery,
+        failure_action="record",
+    )
+    recovery_record = recovery_failure.records[0]
+    assert recovery_record.status == "recovery_failed"
+    assert recovery_record.error_type == "RuntimeError"
+    assert recovery_record.error_message == "declared recovery failure"
+
+    failure_frame = functional_recovery_failure_frame(
+        recovery_failure
+    ).iloc[0]
+    assert failure_frame["n_failed"] == 1
+    assert failure_frame["failure_proportion"] == pytest.approx(1.0)
+
+
+def test_stress_runner_fail_fast_preserves_simulation_and_recovery_errors():
+    scenario = _base_scenario(replicates=1, seed_start=2200)
+
+    def failing_mean(time):
+        raise RuntimeError("simulation fail-fast")
+
+    with pytest.raises(RuntimeError, match="simulation fail-fast"):
+        run_functional_recovery_scenarios(
+            [scenario],
+            mean=failing_mean,
+            eigenfunctions=(_phi1,),
+            estimator=lambda observations, declared: observations,
+            recovery=lambda fitted, truth, declared: {"ok": 1.0},
+        )
+
+    def failing_recovery(fitted, truth, declared):
+        raise RuntimeError("recovery fail-fast")
+
+    with pytest.raises(RuntimeError, match="recovery fail-fast"):
+        run_functional_recovery_scenarios(
+            [scenario],
+            mean=_mean,
+            eigenfunctions=(_phi1,),
+            estimator=lambda observations, declared: observations,
+            recovery=failing_recovery,
+        )
