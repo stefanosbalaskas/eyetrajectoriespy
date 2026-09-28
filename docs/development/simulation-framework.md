@@ -56,10 +56,26 @@ and interpolating or subsampling it behind the user's back.
 
 ### Stage 2 — hierarchy and observation mechanisms
 
-Only after the private core is qualified should the tranche add participant
-and trial effects, explicit missingness mechanisms, phase/time warps, and
-multichannel covariance/noise structures. Each realized mechanism must remain
-recoverable from the truth object.
+After Stage 1 qualification, the private core adds explicit:
+
+- participant-level component-score variance, retained separately from
+  curve-level scores;
+- trial-level component-score variance, retained separately from participant
+  and curve variation;
+- total realized component scores as the exact sum of those sources;
+- MCAR and contiguous-block missingness mechanisms with the pre-missing
+  schedule, mask, and observed values retained;
+- fail-closed behavior when irregular missingness leaves fewer than two
+  observations;
+- monotone endpoint-preserving power time warps with every realized warp
+  retained on the truth grid and observation schedules;
+- positive-semidefinite cross-channel measurement-noise covariance;
+- vector-valued functional modes that can induce latent cross-channel
+  covariance independently of measurement noise.
+
+The simulator does not silently repair an invalid measurement-noise covariance,
+resample a curve after excessive missingness, or collapse participant/trial
+effects into a single unlabeled score source.
 
 ### Stage 3 — public composition
 
