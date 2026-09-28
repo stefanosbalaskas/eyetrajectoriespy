@@ -2,7 +2,7 @@
   "schema_version": 1,
   "current_development_version": "0.10.0rc1",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": false,
+  "production_release_ready": true,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -17,11 +17,12 @@
     "exact_main_ci_required": true
   },
   "notes": [
-    "0.9.0 remains the current stable pre-1.0 GitHub/PyPI release.",
-    "0.10.0rc1 is the qualified-release-candidate target for the native sparse-FPCA/PACE tranche; publication remains deliberately disarmed during qualification.",
-    "The dedicated production PyPI Trusted Publisher for GitHub environment pypi is configured.",
+    "0.9.0 remains the current stable pre-1.0 GitHub/PyPI release until 0.10.0rc1 is deliberately published.",
+    "0.10.0rc1 is the qualified release candidate for the native sparse-FPCA/PACE tranche.",
+    "The 0.10.0rc1 qualification PR and exact protected-main commit 77cd15107b4a3d2f91bee07dcb4e498023b1ed6a completed the required tests, docs, examples, optional FDA backends, sparse-native validation, performance qualification, and release-readiness checks successfully.",
+    "The dedicated production PyPI Trusted Publisher for GitHub environment pypi is configured and the pypi environment retains its required-reviewer gate.",
     "Issue #69 is closed; the obsolete testpypi production publisher cleanup was completed before this release-candidate qualification.",
-    "A fresh 0.10.0rc1 performance envelope and complete PR/exact-main qualification are required before release readiness can be armed."
+    "Release readiness is deliberately armed for 0.10.0rc1. Publication still requires an explicit manual release.yml dispatch with target=production from exact protected main."
   ],
-  "github_release_ready": false
+  "github_release_ready": true
 }
