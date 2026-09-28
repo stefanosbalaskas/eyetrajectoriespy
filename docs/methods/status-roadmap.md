@@ -157,15 +157,33 @@ internally.
 See the [native sparse/PACE development contract](../development/native-sparse-fpca.md)
 and the [external reference implementation policy](../validation/external-reference-policy.md).
 
-### 0.11.0 candidate — native functional simulation
+### 0.11.0 candidate — known-truth recovery laboratory
 
-After native sparse FPCA/PACE is stable, the preferred next infrastructure
-tranche is a richer native functional simulation framework with explicit truth
-for eigenfunctions, eigenvalues, scores, hierarchy, measurement noise,
-irregular sampling, sparsity, missingness, channel correlation, and phase
-variation.
+The isolated 0.11 research line now treats native simulation as a validation
+laboratory rather than a synthetic-data helper. Implemented infrastructure
+includes explicit latent truth, declared finite-sample scenarios, a strict
+observations/scenario → fit → post-fit truth/recovery boundary, semantic
+recovery metrics, deterministic qualification scenarios, named descriptive
+stress regimes, explicit failure retention, and Monte Carlo aggregation.
 
-See the [simulation framework roadmap](../development/simulation-framework.md).
+The first-class recovery targets are deliberately concentrated on methods with
+clear known-truth estimands: FPCA/MFPCA, native sparse FPCA/PACE,
+participant/trial functional mixed-effects variance, and registration/phase.
+Nonlinear methods are not forced through the KL simulator; dedicated dynamical
+generators remain a separate future validation problem.
+
+Qualification and stress evidence remain different artifacts. Qualification
+uses small seeded scenarios with predeclared CI guards. Stress scenarios report
+finite-sample evidence without automatic pass/fail labels. Scientific recovery
+and runtime/RSS performance also remain separate ledgers; performance does not
+change the scientific recovery status of an estimator.
+
+The 0.11 line remains intentionally isolated from the 0.10 release line. It
+should be reconciled onto the final stable 0.10.0 state only when 0.11
+integration is prepared, not merely to make branch history look tidy.
+
+See the [simulation framework roadmap](../development/simulation-framework.md)
+and [functional simulation validation](../validation/functional-simulation-validation.md).
 
 ## Research/development candidates
 

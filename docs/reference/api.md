@@ -3,10 +3,13 @@
 For mathematical definitions of the main estimands, transformations, studentization rules, and calibration statistics, see the [function → equation index](function-equation-index.md) and [implementation-matched mathematical reference](../methods/mathematical-reference.md). For decision flow, use the [workflow atlas](../methods/workflow-atlas.md); for representative rendered outputs, see the [visual gallery](../methods/visual-gallery.md).
 
 
-## Native functional simulation
+## Native functional simulation and recovery
 ::: eyetrajectoriespy.FunctionalSimulationResult
 ::: eyetrajectoriespy.FunctionalSimulationTruth
 ::: eyetrajectoriespy.FunctionalSimulationScenario
+::: eyetrajectoriespy.FunctionalRecoveryMetric
+::: eyetrajectoriespy.FunctionalRecoveryValue
+::: eyetrajectoriespy.FunctionalRecoveryAssessment
 ::: eyetrajectoriespy.FunctionalRecoveryRecord
 ::: eyetrajectoriespy.FunctionalRecoveryResult
 ::: eyetrajectoriespy.simulate_functional_process
@@ -15,6 +18,21 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.run_functional_recovery_scenarios
 ::: eyetrajectoriespy.functional_simulation_scenario_frame
 ::: eyetrajectoriespy.functional_recovery_frame
+::: eyetrajectoriespy.functional_recovery_failure_frame
+::: eyetrajectoriespy.functional_recovery_summary_frame
+::: eyetrajectoriespy.functional_recovery_metric_catalog
+::: eyetrajectoriespy.functional_recovery_metric_catalog_frame
+::: eyetrajectoriespy.functional_recovery_assessment_frame
+::: eyetrajectoriespy.evaluate_fpca_recovery
+::: eyetrajectoriespy.evaluate_sparse_fpca_recovery
+::: eyetrajectoriespy.evaluate_functional_mixed_effects_recovery
+::: eyetrajectoriespy.evaluate_registration_recovery
+::: eyetrajectoriespy.evaluate_hierarchy_truth_recovery
+::: eyetrajectoriespy.functional_recovery_qualification_scenarios
+::: eyetrajectoriespy.functional_recovery_stress_scenarios
+::: eyetrajectoriespy.functional_recovery_scenario_catalog_frame
+::: eyetrajectoriespy.functional_recovery_reporting_text
+::: eyetrajectoriespy.plot_functional_recovery_summary
 ::: eyetrajectoriespy.functional_simulation_truth_frame
 ::: eyetrajectoriespy.functional_simulation_reporting_text
 ::: eyetrajectoriespy.plot_functional_simulation_curve

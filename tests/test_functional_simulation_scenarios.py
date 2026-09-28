@@ -2,11 +2,16 @@ import numpy as np
 import pytest
 
 from eyetrajectoriespy import (
+    FunctionalRecoveryAssessment,
     FunctionalRecoveryRecord,
     FunctionalRecoveryResult,
+    FunctionalRecoveryValue,
     FunctionalSimulationScenario,
     expand_functional_simulation_scenarios,
+    functional_recovery_failure_frame,
     functional_recovery_frame,
+    functional_recovery_metric_catalog,
+    functional_recovery_summary_frame,
     functional_simulation_scenario_frame,
     run_functional_recovery_scenarios,
     simulate_aoi_probability_trajectories,
@@ -497,4 +502,245 @@ def test_public_functional_simulator_fail_closed_paths(updates, message):
     with pytest.raises((TypeError, ValueError), match=message):
         simulate_functional_process(
             **_public_simulation_kwargs(**updates)
+        )
+
+
+def test_recovery_runner_accepts_structured_semantic_assessment():
+    scenario = _base_scenario(replicates=2, seed_start=1700)
+    metric = next(
+        metric
+        for metric in functional_recovery_metric_catalog()
+        if metric.name == "mean_ise"
+    )
+
+    def estimator(observations, declared_scenario):
+        return float(np.mean(observations.values))
+
+    def recovery(fitted, truth, declared_scenario):
+        return FunctionalRecoveryAssessment(
+            values=(
+                FunctionalRecoveryValue(
+                    metric=metric,
+                    value=abs(
+                        fitted
+                        - float(np.mean(truth.latent_on_truth_grid))
+                    ),
+                ),
+            ),
+            provenance={"evaluator": "structured-test"},
+        )
+
+    result = run_functional_recovery_scenarios(
+        [scenario],
+        mean=_mean,
+        eigenfunctions=(_phi1,),
+        estimator=estimator,
+        recovery=recovery,
+    )
+    assert len(result.metric_definitions) == 1
+    frame = functional_recovery_frame(result)
+    assert set(frame["metric"]) == {"mean_ise"}
+    assert set(frame["direction"]) == {"lower_is_better"}
+    assert set(frame["quantity"]) == {"population mean function"}
+    assert all(record.status == "ok" for record in result.records)
+    assert all(
+        record.assessment_provenance["evaluator"]
+        == "structured-test"
+        for record in result.records
+    )
+
+
+def test_stress_failure_recording_is_explicit_and_has_mcse():
+    scenario = _base_scenario(replicates=4, seed_start=1800)
+
+    def failing_estimator(observations, declared_scenario):
+        if declared_scenario.name == "dense":
+            raise RuntimeError("declared stress failure")
+        return observations
+
+    result = run_functional_recovery_scenarios(
+        [scenario],
+        mean=_mean,
+        eigenfunctions=(_phi1,),
+        estimator=failing_estimator,
+        recovery=lambda fitted, truth, declared: {"ok": 1.0},
+        failure_action="record",
+    )
+
+    assert all(record.status == "fit_failed" for record in result.records)
+    assert functional_recovery_frame(result).empty
+    failure = functional_recovery_failure_frame(result).iloc[0]
+    assert failure["n_total"] == 4
+    assert failure["n_failed"] == 4
+    assert failure["failure_proportion"] == pytest.approx(1.0)
+    assert failure["failure_mcse"] == pytest.approx(0.0)
+
+    with pytest.raises(RuntimeError, match="declared stress failure"):
+        run_functional_recovery_scenarios(
+            [scenario],
+            mean=_mean,
+            eigenfunctions=(_phi1,),
+            estimator=failing_estimator,
+            recovery=lambda fitted, truth, declared: {"ok": 1.0},
+        )
+
+
+def test_recovery_summary_retains_distribution_and_failure_statistics():
+    metric = next(
+        metric
+        for metric in functional_recovery_metric_catalog()
+        if metric.name == "score_rmse"
+    )
+    records = tuple(
+        FunctionalRecoveryRecord(
+            scenario_name="summary",
+            replicate=index,
+            seed=2000 + index,
+            metrics={f"score_rmse.component_1": value},
+            metric_values=(
+                FunctionalRecoveryValue(
+                    metric=metric,
+                    value=value,
+                    component=0,
+                ),
+            ),
+        )
+        for index, value in enumerate((1.0, 2.0, 3.0, 4.0))
+    )
+    result = FunctionalRecoveryResult(
+        records=records,
+        metric_definitions=(metric,),
+    )
+    summary = functional_recovery_summary_frame(result).iloc[0]
+    assert summary["n"] == 4
+    assert summary["mean"] == pytest.approx(2.5)
+    assert summary["median"] == pytest.approx(2.5)
+    assert summary["sd"] == pytest.approx(np.std([1, 2, 3, 4], ddof=1))
+    assert summary["iqr"] == pytest.approx(1.5)
+    assert summary["mcse_mean"] == pytest.approx(
+        np.std([1, 2, 3, 4], ddof=1) / 2.0
+    )
+    assert summary["failure_proportion"] == pytest.approx(0.0)
+
+
+def test_recovery_record_failure_contracts_and_action_validation():
+    with pytest.raises(ValueError, match="unknown"):
+        FunctionalRecoveryRecord(
+            scenario_name="bad",
+            replicate=0,
+            seed=1,
+            metrics={"x": 1.0},
+            status="mystery",
+        )
+    with pytest.raises(ValueError, match="must not contain"):
+        FunctionalRecoveryRecord(
+            scenario_name="bad",
+            replicate=0,
+            seed=1,
+            metrics={"x": 1.0},
+            status="fit_failed",
+            error_type="RuntimeError",
+            error_message="failure",
+        )
+    with pytest.raises(ValueError, match="require error"):
+        FunctionalRecoveryRecord(
+            scenario_name="bad",
+            replicate=0,
+            seed=1,
+            metrics={},
+            status="fit_failed",
+        )
+    with pytest.raises(ValueError, match="failure_action"):
+        run_functional_recovery_scenarios(
+            [_base_scenario(replicates=1)],
+            mean=_mean,
+            eigenfunctions=(_phi1,),
+            estimator=lambda observations, declared: observations,
+            recovery=lambda fitted, truth, declared: {"ok": 1.0},
+            failure_action="ignore",
+        )
+
+
+def test_recovery_result_rejects_duplicate_metric_definitions():
+    metric = next(iter(functional_recovery_metric_catalog()))
+    record = FunctionalRecoveryRecord(
+        scenario_name="x",
+        replicate=0,
+        seed=1,
+        metrics={"x": 1.0},
+    )
+    with pytest.raises(ValueError, match="unique"):
+        FunctionalRecoveryResult(
+            records=(record,),
+            metric_definitions=(metric, metric),
+        )
+
+
+def test_stress_runner_records_simulation_and_recovery_failures():
+    scenario = _base_scenario(replicates=1, seed_start=2100)
+
+    def failing_mean(time):
+        raise RuntimeError("declared simulation failure")
+
+    simulation_failure = run_functional_recovery_scenarios(
+        [scenario],
+        mean=failing_mean,
+        eigenfunctions=(_phi1,),
+        estimator=lambda observations, declared: observations,
+        recovery=lambda fitted, truth, declared: {"ok": 1.0},
+        failure_action="record",
+    )
+    simulation_record = simulation_failure.records[0]
+    assert simulation_record.status == "simulation_failed"
+    assert simulation_record.error_type == "RuntimeError"
+    assert simulation_record.error_message == "declared simulation failure"
+
+    def failing_recovery(fitted, truth, declared):
+        raise RuntimeError("declared recovery failure")
+
+    recovery_failure = run_functional_recovery_scenarios(
+        [scenario],
+        mean=_mean,
+        eigenfunctions=(_phi1,),
+        estimator=lambda observations, declared: observations,
+        recovery=failing_recovery,
+        failure_action="record",
+    )
+    recovery_record = recovery_failure.records[0]
+    assert recovery_record.status == "recovery_failed"
+    assert recovery_record.error_type == "RuntimeError"
+    assert recovery_record.error_message == "declared recovery failure"
+
+    failure_frame = functional_recovery_failure_frame(
+        recovery_failure
+    ).iloc[0]
+    assert failure_frame["n_failed"] == 1
+    assert failure_frame["failure_proportion"] == pytest.approx(1.0)
+
+
+def test_stress_runner_fail_fast_preserves_simulation_and_recovery_errors():
+    scenario = _base_scenario(replicates=1, seed_start=2200)
+
+    def failing_mean(time):
+        raise RuntimeError("simulation fail-fast")
+
+    with pytest.raises(RuntimeError, match="simulation fail-fast"):
+        run_functional_recovery_scenarios(
+            [scenario],
+            mean=failing_mean,
+            eigenfunctions=(_phi1,),
+            estimator=lambda observations, declared: observations,
+            recovery=lambda fitted, truth, declared: {"ok": 1.0},
+        )
+
+    def failing_recovery(fitted, truth, declared):
+        raise RuntimeError("recovery fail-fast")
+
+    with pytest.raises(RuntimeError, match="recovery fail-fast"):
+        run_functional_recovery_scenarios(
+            [scenario],
+            mean=_mean,
+            eigenfunctions=(_phi1,),
+            estimator=lambda observations, declared: observations,
+            recovery=failing_recovery,
         )
