@@ -1,6 +1,6 @@
 # Performance envelope
 
-Version 0.56 introduced a reproducible **single-package performance envelope**. Version 0.57 requalified it after release hardening, 0.9.0rc1 qualified the prerelease, 0.9.0 qualified the first stable pre-1.0 release, 0.9.1.dev0 qualified the maintenance line, and 0.10.0.dev0 independently requalifies the same declared CI-sized workloads after native sparse-FPCA/PACE integration. It is
+Version 0.56 introduced a reproducible **single-package performance envelope**. Version 0.57 requalified it after release hardening, 0.9.0rc1 qualified the prerelease, 0.9.0 qualified the first stable pre-1.0 release, 0.9.1.dev0 qualified the maintenance line, 0.10.0.dev0 requalified the integrated native sparse-FPCA/PACE development line, and 0.10.0rc1 now requalifies the release-candidate version independently. It is
 not a comparative benchmark and does not claim that eyetrajectoriespy is faster
 than another package.
 
@@ -43,25 +43,25 @@ The qualification harness measures these expensive routes separately:
 The committed workload profile is intentionally CI-sized and is a **reference
 envelope**, not a universal workstation capacity claim.
 
-The current 0.10.0.dev0 development reference snapshot was measured from
-source commit `80fbe8ba91b32443635a1d3fbaefd0cea2170b3b` in GitHub Actions run
-`36401211457` on Linux/Python 3.12.14, an AMD EPYC 7763 runner with four
+The current 0.10.0rc1 release-candidate reference snapshot was measured from
+source commit `a38326dcd961e49a88f8a64e1b97d735d55721f2` in GitHub Actions run
+`36411617058` on Linux/Python 3.12.14, an AMD EPYC 7763 runner with four
 logical CPUs visible to the job. NumPy/SciPy/statsmodels numerical thread
 limits were fixed to one thread. Dependency versions and the synthetic workflow
 scales are retained in `PERFORMANCE_ENVELOPE.json`.
 
 | Workflow | Qualified scale | Median runtime (IQR), s | Peak RSS median / max, MiB |
 |---|---|---:|---:|
-| FPCA + participant bootstrap | 10 participants × 3 trials × 41 times; q=3; 20 bootstraps | 2.081 (2.061–2.933) | 223.61 / 227.72 |
-| Full-refit mixed-effects bootstrap | 12 × 3 × 6; q=2; 20 bootstraps | 3.035 (3.025–3.042) | 227.32 / 227.36 |
-| Nested participant/trial mixed fit | 8 × 3 × 5; q=2 | 2.740 (2.739–2.746) | 226.66 / 226.78 |
-| Exposure-adjusted GEE + bootstrap | 8 × 2 × 5; q=2; 100 bootstraps | 2.372 (2.368–2.391) | 225.64 / 225.78 |
-| Recurrence + RQA | 1 trajectory; 800 times | 2.259 (2.253–2.288) | 228.12 / 228.12 |
-| RQA sensitivity grid | 1 trajectory; 300 times; 16 specifications | 2.412 (2.411–2.414) | 223.18 / 223.41 |
+| FPCA + participant bootstrap | 10 participants × 3 trials × 41 times; q=3; 20 bootstraps | 1.927 (1.920–2.412) | 223.67 / 227.77 |
+| Full-refit mixed-effects bootstrap | 12 × 3 × 6; q=2; 20 bootstraps | 2.889 (2.875–2.905) | 227.11 / 227.40 |
+| Nested participant/trial mixed fit | 8 × 3 × 5; q=2 | 2.608 (2.603–2.617) | 226.81 / 227.00 |
+| Exposure-adjusted GEE + bootstrap | 8 × 2 × 5; q=2; 100 bootstraps | 2.183 (2.181–2.186) | 225.98 / 226.10 |
+| Recurrence + RQA | 1 trajectory; 800 times | 2.065 (2.059–2.069) | 228.38 / 228.44 |
+| RQA sensitivity grid | 1 trajectory; 300 times; 16 specifications | 2.250 (2.242–2.262) | 223.05 / 223.19 |
 
 These measurements describe only this CI-sized workload and runner. The ledger
 retains every repetition and reports an interval rather than only a fastest
-timing. Qualified 0.56, 0.57, 0.9.0rc1, 0.9.0, and 0.9.1.dev0 snapshots remain archived
+timing. Qualified 0.56, 0.57, 0.9.0rc1, 0.9.0, 0.9.1.dev0, and 0.10.0.dev0 snapshots remain archived
 under `validation/performance/` rather than being overwritten or silently
 relabeled.
 
@@ -91,6 +91,6 @@ may be described as practical at a scale only when repeated qualification
 supports that statement on a named reference environment. Optimizer-heavy and
 bootstrap-heavy operations should not be summarized from a single fastest run.
 
-No runtime threshold is used as a scientific pass/fail criterion in 0.10.0.dev0.
+No runtime threshold is used as a scientific pass/fail criterion in 0.10.0rc1.
 Execution failure is a qualification failure; speed is an observed property to
 document, not a target to game.

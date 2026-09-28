@@ -21,7 +21,7 @@ pip install eyetrajectoriespy
 [View on GitHub](https://github.com/stefanosbalaskas/eyetrajectoriespy){ .md-button }
 
 !!! info "Documentation version"
-    **Stable PyPI:** `0.9.0` · **Development docs:** `0.10.0.dev0`
+    **Stable PyPI:** `0.9.0` · **Release-candidate docs:** `0.10.0rc1`
 
     Use the [0.9.0 release notes](releases/0.9.0.md) or the
     [frozen 0.9.0 documentation source](https://github.com/stefanosbalaskas/eyetrajectoriespy/tree/v0.9.0/docs)
@@ -218,7 +218,7 @@ print(fit.explained_variance_ratio)
 
 ---
 
-**Stable release:** `0.9.0` · **Development line:** `0.10.0.dev0`
+**Stable release:** `0.9.0` · **Release-candidate line:** `0.10.0rc1`
 
 [PyPI](https://pypi.org/project/eyetrajectoriespy/) ·
 [0.9.0 release notes](releases/0.9.0.md) ·

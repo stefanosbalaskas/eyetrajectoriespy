@@ -4,13 +4,13 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-The stable 0.9.0 release remains immutable. The 0.10.0.dev0 line contains the
-qualified native sparse/irregular FPCA + PACE estimator and must retain its own
+The stable 0.9.0 release remains immutable. The 0.10.0rc1 release-candidate
+line contains the qualified native sparse/irregular FPCA + PACE estimator and must retain its own
 exact-version qualification evidence before any future release candidate or
 final publication.
 
-- Package line: `0.10.0.dev0`.
-- Development phase: protected-main integration of the native sparse-FPCA/PACE tranche after separate contract-hardening, stress/reference validation, performance, documentation, and plotting qualification; production release remains deliberately disarmed.
+- Package line: `0.10.0rc1`.
+- Release phase: `0.10.0rc1` qualification after protected-main integration of the native sparse-FPCA/PACE tranche; production publication remains deliberately disarmed.
 - Canonical routes: FPCA/exploration, experimental functional regression, repeated-trial functional mixed effects, generalized binary/count responses, and nonlinear/recurrence analysis.
 - Generalized observation-family expansion is paused after the 0.51-0.54 Bernoulli/grouped-binomial/Poisson contracts.
 - Coverage floor remains **90%**. Stabilization prioritizes independent-reference validation quality, cross-platform reproducibility and practical performance qualification rather than increasing coverage percentage for its own sake.
