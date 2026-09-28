@@ -304,12 +304,12 @@ def main():
     parser.add_argument(
         "--output-json",
         type=Path,
-        default=Path("sparse-noise-variance-investigation.json"),
+        default=Path("sparse-noise-variance-validation.json"),
     )
     parser.add_argument(
         "--output-csv",
         type=Path,
-        default=Path("sparse-noise-variance-investigation.csv"),
+        default=Path("sparse-noise-variance-validation.csv"),
     )
     args = parser.parse_args()
     if args.replicates < 1:
@@ -346,7 +346,7 @@ def main():
     payload = {
         "schema_version": 1,
         "kind": "sparse diagonal-difference noise-variance validation",
-        "estimator_modified": False,
+        "estimator_numerical_behavior_changed_from_0.10.0rc1": True,
         "automatic_tuning": False,
         "baseline_seed_reuse_across_regimes": True,
         "replicates_per_regime": args.replicates,
