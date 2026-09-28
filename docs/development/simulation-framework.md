@@ -25,6 +25,47 @@ $$
 The simulation system should make the data-generating mechanism inspectable and
 return both observations and truth.
 
+## Implementation staging
+
+The 0.11 research tranche follows the same qualification discipline used for
+native sparse FPCA/PACE.
+
+### Stage 1 — private deterministic core
+
+The first implementation stage is intentionally private. It provides:
+
+- analyst-supplied mean and eigenfunction callables;
+- explicit descending positive eigenvalues;
+- trapezoidal-grid orthonormality validation without silent normalization;
+- deterministic Gaussian latent scores;
+- dense or curve-specific irregular observation schedules;
+- explicit sparse sample-count and irregular-time designs;
+- scalar or per-dimension measurement-noise standard deviations;
+- direct evaluation of latent population functions on each declared
+  observation schedule;
+- `TrajectorySet` or `IrregularTrajectorySet` output without hidden
+  representation conversion;
+- a structured truth record containing latent curves, realized scores,
+  observation schedules, measurement-noise realizations, and provenance.
+
+No public `simulate_functional_process()` API is exposed at this stage.
+
+A critical contract is that irregular observations are simulated **directly at
+their declared times**. They are not created by simulating a dense trajectory
+and interpolating or subsampling it behind the user's back.
+
+### Stage 2 — hierarchy and observation mechanisms
+
+Only after the private core is qualified should the tranche add participant
+and trial effects, explicit missingness mechanisms, phase/time warps, and
+multichannel covariance/noise structures. Each realized mechanism must remain
+recoverable from the truth object.
+
+### Stage 3 — public composition
+
+The public API is introduced only after deterministic replay, exact
+decomposition, dense/irregular schedule equivalence, and truth-accountability
+tests pass.
 ## Candidate capabilities
 
 A native simulator should allow analyst-declared:
