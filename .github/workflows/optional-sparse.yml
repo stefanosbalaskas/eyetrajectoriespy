@@ -32,5 +32,7 @@ jobs:
         run: python -m pytest tests/test_sparse_pace_contracts.py -q
       - name: Run real FDApy sparse integration
         run: python -m pytest tests/test_fdapy_sparse_optional.py -q
+      - name: Run native/FDApy validation and sensitivity checks
+        run: python -m pytest tests/test_sparse_native_fdapy_sensitivity.py -q
       - name: Run sparse PACE example
         run: python examples/sparse_pace_fpca.py

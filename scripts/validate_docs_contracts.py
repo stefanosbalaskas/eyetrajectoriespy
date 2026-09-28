@@ -249,6 +249,7 @@ def main() -> None:
         "analytical_truth",
         "independent_implementation_equivalence",
         "simulation_recovery",
+        "cross_implementation_sensitivity",
     }:
         raise RuntimeError("reference validation evidence types are incomplete")
     if performance_ledger.get("status") != "qualified":

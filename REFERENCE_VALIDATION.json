@@ -4,7 +4,8 @@
   "evidence_types": {
     "analytical_truth": "Exact or hand-computable scientific quantity from a small declared problem.",
     "independent_implementation_equivalence": "Same estimand/specification represented or fitted independently from the package code path.",
-    "simulation_recovery": "Known data-generating parameters assessed for recovery under finite stochastic sampling."
+    "simulation_recovery": "Known data-generating parameters assessed for recovery under finite stochastic sampling.",
+    "cross_implementation_sensitivity": "Related external implementation used to assess sensitivity when smoothing, discretization, covariance, scoring, or other contracts cannot be made exactly equivalent."
   },
   "entries": [
     {
@@ -205,6 +206,85 @@
       "ci_test": "test_poisson_generalized_fosr_recovers_log_scale_coefficients",
       "status": "qualified",
       "limitations": "Seeded finite-sample recovery, not an external implementation comparison."
+    },
+    {
+      "id": "sparse-native-weighted-eigensystem-analytical",
+      "method": "Native sparse FPCA numerical core",
+      "scientific_quantity": [
+        "quadrature-weighted covariance eigenvalues",
+        "weighted eigenfunction subspace",
+        "weighted orthonormality"
+      ],
+      "reference_source": "analytically constructed rank-two quadrature-weighted covariance operator",
+      "reference_type": "analytical_truth",
+      "dataset_problem": "Known rank-two covariance assembled from weighted-orthonormal functions on a finite quadrature grid.",
+      "expected_result": "Recovered eigenvalues equal the generating values and absolute weighted component similarity/orthonormality equal one up to numerical precision.",
+      "comparison_metric": "eigenvalue allclose, sign-invariant weighted similarity, weighted Gram matrix",
+      "tolerance_class": "linear_algebra_invariant",
+      "tolerance": "rtol=1e-10 and atol between 1e-10 and 1e-12 as encoded in test",
+      "platforms": "core CI matrix",
+      "ci_test": "test_weighted_eigensolver_recovers_known_operator",
+      "status": "qualified",
+      "limitations": "Validates weighted eigendecomposition independently of mean/covariance smoothing and PACE score recovery."
+    },
+    {
+      "id": "sparse-native-full-estimator-simulation",
+      "method": "Native sparse FPCA + PACE",
+      "scientific_quantity": [
+        "leading sparse functional subspace",
+        "PACE score correlation",
+        "measurement-noise contract",
+        "native-time score evaluation"
+      ],
+      "reference_source": "private known-truth two-component sparse functional generator",
+      "reference_type": "simulation_recovery",
+      "dataset_problem": "Irregularly sampled curves generated from known mean, two eigenfunctions/eigenvalues, latent scores, and Gaussian measurement noise.",
+      "expected_result": "Recovered functional subspace and latent scores meet predeclared finite-sample recovery thresholds while raw sparse trajectories remain uninterpolated.",
+      "comparison_metric": "weighted component/subspace similarity, score correlation, finite score diagnostics",
+      "tolerance_class": "simulation_recovery",
+      "tolerance": "weighted similarities >0.80; score correlations >0.75 and >0.55 in the seeded baseline test",
+      "platforms": "core CI matrix",
+      "ci_test": "test_native_sparse_fit_recovers_components_and_pace_scores",
+      "status": "qualified",
+      "limitations": "Favorable seeded recovery case; broader stress/failure evidence is generated separately by the sparse-native-validation workflow."
+    },
+    {
+      "id": "sparse-mean-fdapy-local-linear-equivalence",
+      "method": "Native pooled sparse mean smoother",
+      "scientific_quantity": [
+        "local-linear Epanechnikov fitted mean values"
+      ],
+      "reference_source": "FDApy 1.0.x LocalPolynomial degree-1 Epanechnikov implementation",
+      "reference_type": "independent_implementation_equivalence",
+      "dataset_problem": "Same finite pooled x/y observations, evaluation points, degree, kernel, and numerical bandwidth supplied to both local-linear smoothers.",
+      "expected_result": "Matched one-dimensional local-linear fitted values agree to tight floating-point tolerance.",
+      "comparison_metric": "pointwise allclose",
+      "tolerance_class": "external_backend_equivalence",
+      "tolerance": "rtol=1e-9, atol=1e-10",
+      "platforms": "optional FDApy sparse CI on Python 3.11-3.12",
+      "ci_test": "test_native_local_linear_mean_matches_fdapy_local_polynomial",
+      "status": "qualified",
+      "limitations": "Primitive smoother equivalence only; it does not imply equivalence of the full covariance or PACE estimator."
+    },
+    {
+      "id": "sparse-fdapy-whole-estimator-sensitivity",
+      "method": "Native sparse FPCA + PACE",
+      "scientific_quantity": [
+        "leading sparse functional subspace",
+        "retained eigenvalues",
+        "PACE score association"
+      ],
+      "reference_source": "FDApy 1.0.x UFPCA covariance + PACE implementation",
+      "reference_type": "cross_implementation_sensitivity",
+      "dataset_problem": "Same sparse observations and shared evaluation grid with aligned local-polynomial bandwidth/kernel/degree where possible.",
+      "expected_result": "No exact equality claim; broad invariant guards should exclude catastrophic cross-implementation disagreement.",
+      "comparison_metric": "principal cosines, absolute weighted component similarity, finite relative eigenvalue differences, sign-aligned score correlation/RMSE",
+      "tolerance_class": "cross_implementation_sensitivity",
+      "tolerance": "minimum principal cosine >0.60, component similarity >0.45, score correlation >0.35; eigenvalue differences/RMSE must be finite",
+      "platforms": "optional FDApy sparse CI on Python 3.11-3.12",
+      "ci_test": "test_fdapy_is_cross_implementation_sensitivity_not_exact_equivalence",
+      "status": "qualified",
+      "limitations": "Not equivalence. FDApy uses radial 2-D LP covariance smoothing, its own noise rule, interpolation before irregular PACE, and a covariance reconstructed from retained eigencomponents; native eyetrajectoriespy uses a product kernel, explicit noise contract, native observation times, and the full fitted covariance surface."
     }
   ]
 }

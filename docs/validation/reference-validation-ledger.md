@@ -21,6 +21,12 @@ Data are generated from known parameters and recovery is assessed under a
 finite stochastic sample. This is useful scientific evidence but weaker than an
 exact truth or independent-equivalence case.
 
+**Cross-implementation sensitivity**  
+Two implementations address closely related scientific quantities, but their
+smoothing, discretization, covariance, scoring, or other contracts cannot be
+made identical. Comparisons use invariant quantities and broad predeclared
+guards, and must not be described as equivalence.
+
 ## Qualified 0.56 reference cases
 
 | Method | Scientific quantity | Reference type | Reference | CI gate |
@@ -37,6 +43,23 @@ exact truth or independent-equivalence case.
 The ledger also records selected existing **simulation-recovery** evidence for
 mixed effects and Poisson generalized FoSR. Those rows remain labeled as
 simulation recovery rather than being promoted to stronger evidence.
+
+
+## Native sparse FPCA/PACE evidence
+
+The 0.10 development branch adds four deliberately distinct rows:
+
+| Method | Scientific quantity | Reference type | Reference |
+|---|---|---|---|
+| Native sparse weighted eigensolver | eigenvalues, weighted subspace, orthonormality | analytical truth | constructed rank-two weighted covariance operator |
+| Native sparse FPCA + PACE | subspace and conditional scores | simulation recovery | known-truth irregular two-component generator |
+| Pooled local-linear mean smoother | fitted mean values | independent implementation equivalence | FDApy 1.0.x `LocalPolynomial` with matched degree/kernel/bandwidth |
+| Whole sparse estimator | eigenstructure and score association | cross-implementation sensitivity | FDApy 1.0.x UFPCA/PACE |
+
+The FDApy whole-estimator row is explicitly not equivalence. FDApy and the
+native implementation differ in 2-D kernel geometry, noise handling, irregular
+PACE interpolation, and the covariance object used in conditional scoring.
+See [native sparse FPCA/PACE validation](sparse-fpca-validation.md).
 
 ## Interpretation boundaries
 
