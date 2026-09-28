@@ -116,23 +116,23 @@ where $a$ is an analyst-selected score-SD multiplier.
 
 For curve $i$ observed at curve-specific times $T_i=(t_{i1},\ldots,t_{iN_i})$,
 
-$
+$$
 Y_{ij}=X_i(t_{ij})+\epsilon_{ij},
-$
+$$
 
 with pooled latent mean $\mu(t)=E\{X(t)\}$ and covariance
 
-$
+$$
 G(s,t)=\operatorname{Cov}\{X(s),X(t)\}.
-$
+$$
 
 The retained covariance eigenfunctions solve
 
-$
+$$
 \int G(s,t)\phi_k(s)\,ds
 =
 \lambda_k\phi_k(t).
-$
+$$
 
 On the declared evaluation grid, the native implementation diagonalizes the
 quadrature-weighted covariance operator $W^{1/2}\widehat G W^{1/2}$ and
@@ -140,7 +140,7 @@ maps the eigenvectors back to functions on the original grid.
 
 For each curve, PACE conditional-expectation scoring uses
 
-$
+$$
 \widehat\Sigma_i
 =
 \widehat G(T_i,T_i)
@@ -148,16 +148,16 @@ $
 \widehat\sigma_\epsilon^2 I
 +
 \gamma I,
-$
+$$
 
-$
+$$
 \widehat\xi_{ik}
 =
 \widehat\lambda_k
 \widehat\phi_k(T_i)^\top
 \widehat\Sigma_i^{-1}
 \left\{Y_i-\widehat\mu(T_i)\right\}.
-$
+$$
 
 Here $\gamma\ge0$ is the explicitly declared `score_ridge`; it changes the
 estimator and is retained in provenance. The conditional covariance uses
@@ -183,6 +183,7 @@ support/noise contracts, PSD policy, retained component count, score ridge,
 and fail-closed score diagnostics. Separate x/y fits do not model
 cross-channel covariance; automatic CV/GCV and sparse MFPCA are outside the
 0.10 contract.
+
 ## Integrated functional $L^2$ distance { #functional-l2 }
 
 For two complete multivariate trajectories $\mathbf a,\mathbf b$ and optional non-negative dimension weights $\omega_d$,
