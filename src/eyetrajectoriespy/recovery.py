@@ -17,7 +17,12 @@ from scipy.optimize import linear_sum_assignment
 
 from ._functional_simulation import FunctionalSimulationTruth
 from .fpca import functional_trapezoid_weights
-from .types import FPCAResult, RegistrationResult, SparseFPCAResult
+from .types import (
+    FPCAResult,
+    FunctionalMixedEffectsResult,
+    RegistrationResult,
+    SparseFPCAResult,
+)
 
 
 RecoveryDirection = Literal["higher_is_better", "lower_is_better"]
@@ -260,6 +265,38 @@ _METRICS = {
             "relative",
             "measurement_error",
             "Absolute measurement-noise variance error divided by true variance.",
+        ),
+        _metric(
+            "coefficient_function_ise",
+            "functional mixed-effects coefficient function",
+            "lower_is_better",
+            "squared signal × time",
+            "mixed_effects",
+            "Integrated squared error of a matched coefficient function.",
+        ),
+        _metric(
+            "source_variance_function_ise",
+            "functional random-effect variance function",
+            "lower_is_better",
+            "variance² × time",
+            "mixed_effects",
+            "Integrated squared error of participant/trial variance functions.",
+        ),
+        _metric(
+            "source_integrated_variance_absolute_error",
+            "integrated functional random-effect variance",
+            "lower_is_better",
+            "signal variance × time",
+            "mixed_effects",
+            "Absolute integrated participant/trial variance error.",
+        ),
+        _metric(
+            "source_integrated_variance_relative_error",
+            "integrated functional random-effect variance",
+            "lower_is_better",
+            "relative",
+            "mixed_effects",
+            "Relative integrated participant/trial variance error.",
         ),
         _metric(
             "phase_warp_ise",
@@ -1073,5 +1110,217 @@ def evaluate_registration_recovery(
             "truth_grid_match": "exact",
             "truth_target": "inverse_phase_warp",
             "simulator_phase_relation": "observed(t)=latent(w(t))",
+        },
+    )
+
+
+def evaluate_functional_mixed_effects_recovery(
+    result: FunctionalMixedEffectsResult,
+    truth: FunctionalSimulationTruth,
+    *,
+    intercept_name: str = "Intercept",
+) -> FunctionalRecoveryAssessment:
+    """Evaluate intercept and participant/trial variance functions.
+
+    The comparison is performed in the observed time domain. Spline-basis
+    covariance parameters are not compared directly with simulator KL
+    eigenvalues because those parameterizations are basis-dependent.
+    Curve-level KL variation and scalar residual variance are deliberately not
+    equated: the current simulator's curve-level functional process is not the
+    same estimand as an iid scalar residual variance.
+    """
+
+    if not isinstance(result, FunctionalMixedEffectsResult):
+        raise TypeError(
+            "result must be a FunctionalMixedEffectsResult"
+        )
+    if not isinstance(truth, FunctionalSimulationTruth):
+        raise TypeError(
+            "truth must be a FunctionalSimulationTruth"
+        )
+    _require_truth_grid(result.time, truth)
+    if result.random_slope_predictor is not None:
+        raise ValueError(
+            "mixed-effects recovery currently supports participant/trial "
+            "functional intercepts only; random-slope truth is not declared "
+            "by FunctionalSimulationScenario"
+        )
+    try:
+        dimension_index = truth.dimension_names.index(
+            result.dimension_name
+        )
+    except ValueError as exc:
+        raise ValueError(
+            "mixed-effects response dimension is absent from generating truth"
+        ) from exc
+    try:
+        coefficient_index = result.coefficient_names.index(
+            intercept_name
+        )
+    except ValueError as exc:
+        raise ValueError(
+            f"coefficient {intercept_name!r} is absent from the fitted model"
+        ) from exc
+
+    grid = np.asarray(truth.truth_grid, dtype=float)
+    weights = functional_trapezoid_weights(grid)
+    true_mean = np.asarray(
+        truth.mean[:, dimension_index],
+        dtype=float,
+    )
+    fitted_intercept = np.asarray(
+        result.coefficient_functions[coefficient_index],
+        dtype=float,
+    )
+    if fitted_intercept.shape != true_mean.shape:
+        raise ValueError(
+            "mixed-effects coefficient and truth mean grids do not match"
+        )
+
+    values: list[FunctionalRecoveryValue] = [
+        _value(
+            "coefficient_function_ise",
+            np.sum(
+                (fitted_intercept - true_mean) ** 2
+                * weights
+            ),
+            source="intercept",
+        )
+    ]
+
+    truth_modes = np.asarray(
+        truth.eigenfunctions[:, :, dimension_index],
+        dtype=float,
+    )
+
+    def score_source(
+        source: str,
+        fitted_variance: np.ndarray,
+        declared_eigenvalues: np.ndarray,
+    ) -> None:
+        declared = np.asarray(
+            declared_eigenvalues,
+            dtype=float,
+        )
+        true_variance = np.sum(
+            declared[:, None] * truth_modes**2,
+            axis=0,
+        )
+        fitted_variance = np.asarray(
+            fitted_variance,
+            dtype=float,
+        )
+        if fitted_variance.shape != true_variance.shape:
+            raise ValueError(
+                f"{source} fitted and truth variance functions do not match"
+            )
+        values.append(
+            _value(
+                "source_variance_function_ise",
+                np.sum(
+                    (fitted_variance - true_variance) ** 2
+                    * weights
+                ),
+                source=source,
+            )
+        )
+        fitted_integrated = float(
+            np.sum(fitted_variance * weights)
+        )
+        true_integrated = float(
+            np.sum(true_variance * weights)
+        )
+        absolute = abs(
+            fitted_integrated - true_integrated
+        )
+        values.append(
+            _value(
+                "source_integrated_variance_absolute_error",
+                absolute,
+                source=source,
+            )
+        )
+        if true_integrated > 0:
+            values.append(
+                _value(
+                    "source_integrated_variance_relative_error",
+                    absolute / true_integrated,
+                    source=source,
+                )
+            )
+
+    participant_basis = np.asarray(
+        result.random_basis,
+        dtype=float,
+    )
+    participant_variance = np.einsum(
+        "ti,ij,tj->t",
+        participant_basis,
+        np.asarray(
+            result.random_intercept_covariance,
+            dtype=float,
+        ),
+        participant_basis,
+        optimize=True,
+    )
+    score_source(
+        "participant",
+        participant_variance,
+        truth.participant_eigenvalues,
+    )
+
+    has_declared_trial_variance = bool(
+        np.any(
+            np.asarray(
+                truth.trial_eigenvalues,
+                dtype=float,
+            )
+            > 0
+        )
+    )
+    if result.trial_random_effect == "functional_intercept":
+        if (
+            result.trial_random_basis is None
+            or result.trial_random_effect_covariance is None
+        ):
+            raise ValueError(
+                "trial random-effect fit is missing its basis/covariance"
+            )
+        trial_basis = np.asarray(
+            result.trial_random_basis,
+            dtype=float,
+        )
+        trial_variance = np.einsum(
+            "ti,ij,tj->t",
+            trial_basis,
+            np.asarray(
+                result.trial_random_effect_covariance,
+                dtype=float,
+            ),
+            trial_basis,
+            optimize=True,
+        )
+        score_source(
+            "trial",
+            trial_variance,
+            truth.trial_eigenvalues,
+        )
+    elif has_declared_trial_variance:
+        raise ValueError(
+            "generating truth contains trial functional variance but the "
+            "fitted model does not contain a trial functional random intercept"
+        )
+
+    return FunctionalRecoveryAssessment(
+        values=tuple(values),
+        provenance={
+            "estimator": "functional_mixed_effects",
+            "truth_grid_match": "exact",
+            "dimension": result.dimension_name,
+            "intercept_name": intercept_name,
+            "participant_variance_target": "time_domain_variance_function",
+            "trial_variance_target": "time_domain_variance_function",
+            "basis_covariance_compared_directly_to_kl_eigenvalues": False,
+            "curve_level_kl_variance_scored_as_scalar_residual": False,
         },
     )
