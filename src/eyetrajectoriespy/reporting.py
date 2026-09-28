@@ -63,7 +63,7 @@ def functional_simulation_truth_frame(
         [len(time) for time in truth.pre_missing_observation_times],
         dtype=int,
     )
-    final_counts = np.asarray(
+    output_schedule_counts = np.asarray(
         [len(time) for time in truth.observation_times],
         dtype=int,
     )
@@ -71,6 +71,7 @@ def functional_simulation_truth_frame(
         [np.count_nonzero(mask) for mask in truth.missingness_mask],
         dtype=int,
     )
+    observed_counts = pre_counts - missing_counts
     displacement = np.max(
         np.abs(
             truth.phase_warps_on_truth_grid
@@ -79,7 +80,8 @@ def functional_simulation_truth_frame(
         axis=1,
     )
     frame["n_pre_missing_samples"] = pre_counts
-    frame["n_observed_samples"] = final_counts
+    frame["n_output_schedule_samples"] = output_schedule_counts
+    frame["n_observed_samples"] = observed_counts
     frame["n_missing_by_design"] = missing_counts
     frame["max_phase_displacement"] = displacement
 
@@ -123,13 +125,22 @@ def functional_simulation_reporting_text(
     n_curves = len(result.observations.curve_ids)
     n_dimensions = len(truth.dimension_names)
     n_components = truth.eigenvalues.size
-    counts = np.asarray(
-        [len(time) for time in truth.observation_times],
+    missing_counts = np.asarray(
+        [np.count_nonzero(mask) for mask in truth.missingness_mask],
         dtype=int,
     )
-    missing = int(
-        sum(np.count_nonzero(mask) for mask in truth.missingness_mask)
+    counts = np.asarray(
+        [
+            len(time) - missing_count
+            for time, missing_count in zip(
+                truth.pre_missing_observation_times,
+                missing_counts,
+                strict=True,
+            )
+        ],
+        dtype=int,
     )
+    missing = int(np.sum(missing_counts))
     eigen = ", ".join(
         f"{value:.{digits}g}" for value in truth.eigenvalues
     )
