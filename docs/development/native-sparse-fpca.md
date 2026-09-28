@@ -241,10 +241,18 @@ problem.
 ### 5. Estimate measurement-error variance
 
 With `noise_variance_method="diagonal_difference"`, the analyst must declare
-both `noise_bandwidth` and `noise_support=(a,b)`. The raw-minus-latent
-diagonal difference is averaged only over that declared interval. The package
-does not silently assume that the whole fitted support is the appropriate
-noise-estimation domain.
+both `noise_bandwidth` and `noise_support=(a,b)`. The observed/raw diagonal
+is smoothed separately with `noise_bandwidth`. The latent diagonal used for
+measurement-error estimation is obtained from off-diagonal covariance pairs
+with a 45-degree rotated local-polynomial fit: locally linear along the
+diagonal and quadratic perpendicular to it, using the declared
+`covariance_bandwidth`. This diagonal-specific fit is deliberately separate
+from the generic local-linear covariance surface used for the FPCA operator.
+
+The raw-minus-latent diagonal difference is averaged only over the declared
+`noise_support`. A non-positive estimate fails closed as
+`noise_variance_invalid`; the package does not silently clip it to zero or a
+small positive constant.
 
 Alternatively, `noise_variance_method="fixed"` accepts an explicitly supplied
 non-negative measurement-error variance.
