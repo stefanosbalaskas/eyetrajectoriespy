@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.10.0rc2 (unreleased)
+
+- Correct the diagonal-difference measurement-noise estimator to use a dedicated 45-degree rotated covariance-diagonal fit instead of the diagonal of the generic local-linear covariance surface.
+- Keep the generic fitted covariance surface unchanged for FPCA eigendecomposition and full-covariance PACE score recovery; only the latent diagonal used for measurement-error estimation changes.
+- Use the declared covariance bandwidth for the rotated latent-diagonal fit and retain the separately declared noise bandwidth for smoothing the observed/raw diagonal.
+- Preserve explicit `noise_support` averaging and fail closed on non-positive measurement-noise estimates rather than clipping them to zero or a small positive floor.
+- Add signed known-truth noise-variance recovery across support, bandwidth, sample-size, sampling-density, and noise-level regimes; retain failure frequency as scientific evidence rather than widening thresholds.
+- This numerical correction was identified by the 0.11 recovery laboratory after publication of immutable `0.10.0rc1`; final 0.10.0 therefore requires a separately qualified `0.10.0rc2`.
+
 ## 0.10.0rc1
 
 - First release candidate for the native sparse/irregular FPCA + PACE tranche.
