@@ -36,6 +36,22 @@ SCENARIOS = (
         "min_score_correlation": 0.45,
     },
     {
+        "name": "well_powered_low_noise",
+        "n_curves": 160,
+        "samples_per_curve": (10, 14),
+        "noise_sd": 0.05,
+        "eigenvalues": (1.0, 0.35),
+        "observation_design": "uniform",
+        "grid": (0.0, 1.0, 25),
+        "mean_bandwidth": 0.18,
+        "covariance_bandwidth": 0.25,
+        "noise_method": "fixed",
+        "required_successes": 3,
+        "min_subspace_cosine": 0.90,
+        "min_score_correlation": 0.85,
+        "max_median_eigenvalue_relative_error": 0.35,
+    },
+    {
         "name": "very_sparse_2_4",
         "n_curves": 60,
         "samples_per_curve": (2, 4),
@@ -301,6 +317,13 @@ def _scenario_summary(scenario, replicates):
                 for row in successes
             )
         )
+        maximum_eigenvalue_errors = [
+            max(row["metrics"]["eigenvalue_relative_error"])
+            for row in successes
+        ]
+        summary["median_max_eigenvalue_relative_error"] = float(
+            np.median(maximum_eigenvalue_errors)
+        )
     return summary
 
 
@@ -328,6 +351,18 @@ def _check_predeclared_gates(scenario, summary):
             raise RuntimeError(
                 f"{scenario['name']} minimum score correlation {observed} "
                 f"is below predeclared {minimum_score:.3f}"
+            )
+
+    maximum_eigenvalue_error = scenario.get(
+        "max_median_eigenvalue_relative_error"
+    )
+    if maximum_eigenvalue_error is not None and summary["n_success"]:
+        observed = summary["median_max_eigenvalue_relative_error"]
+        if observed > maximum_eigenvalue_error:
+            raise RuntimeError(
+                f"{scenario['name']} median worst-component eigenvalue "
+                f"relative error {observed:.3f} exceeds predeclared "
+                f"{maximum_eigenvalue_error:.3f}"
             )
 
 
