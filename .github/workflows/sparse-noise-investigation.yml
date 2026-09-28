@@ -29,6 +29,23 @@ jobs:
         run: |
           python -m pip install -U pip
           python -m pip install -e ".[dev]"
+      - name: Run native sparse unit and fit tests
+        run: |
+          python -m pytest -q \
+            tests/test_sparse_native_core.py \
+            tests/test_sparse_native_fit.py
+      - name: Ruff touched scientific code
+        run: |
+          python -m ruff check \
+            src/eyetrajectoriespy/_sparse_native.py \
+            src/eyetrajectoriespy/sparse_native.py \
+            tests/test_sparse_native_core.py \
+            scripts/investigate_sparse_noise_variance.py
+      - name: Run existing sparse recovery stress matrix
+        run: |
+          python scripts/run_sparse_fpca_stress_validation.py \
+            --replicates 3 \
+            --output sparse-fpca-stress-validation.json
       - name: Run controlled diagonal-difference investigation
         run: |
           python scripts/investigate_sparse_noise_variance.py \
@@ -42,3 +59,4 @@ jobs:
           path: |
             sparse-noise-variance-investigation.json
             sparse-noise-variance-investigation.csv
+            sparse-fpca-stress-validation.json
