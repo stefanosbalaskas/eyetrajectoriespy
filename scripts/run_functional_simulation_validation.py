@@ -293,6 +293,15 @@ def main():
             scenario.name,
             records,
         )
+        print(
+            json.dumps(
+                {
+                    "qualification_summary": summary,
+                    "scenario": scenario.name,
+                },
+                sort_keys=True,
+            )
+        )
         _check(scenario.name, spec, summary)
 
         scenarios.append(
