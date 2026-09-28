@@ -354,7 +354,7 @@ def fit_sparse_fpca(
         noise_diagonal_fit = rotated_local_quadratic_covariance_diagonal(
             pairs,
             grid,
-            bandwidth=noise_bandwidth,
+            bandwidth=covariance_bandwidth,
             min_local_pairs=covariance_min_local_pairs,
         )
         noise_result = estimate_noise_variance_diagonal_difference(
@@ -456,6 +456,11 @@ def fit_sparse_fpca(
             None
             if noise_result is None
             else "rotated_local_quadratic_offdiagonal"
+        ),
+        "noise_latent_diagonal_bandwidth": (
+            None
+            if noise_result is None
+            else float(covariance_bandwidth)
         ),
         "noise_support": (
             None
