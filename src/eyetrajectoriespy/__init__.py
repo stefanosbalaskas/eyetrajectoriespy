@@ -404,6 +404,8 @@ from .recovery import (
     functional_recovery_assessment_frame,
     functional_recovery_metric_catalog,
     functional_recovery_metric_catalog_frame,
+    functional_recovery_reporting_text,
+    plot_functional_recovery_summary,
 )
 from .recovery_scenarios import (
     functional_recovery_qualification_scenarios,
@@ -848,6 +850,8 @@ __all__ = [
     "functional_recovery_summary_frame",
     "functional_recovery_metric_catalog",
     "functional_recovery_metric_catalog_frame",
+    "functional_recovery_reporting_text",
+    "plot_functional_recovery_summary",
     "functional_recovery_assessment_frame",
     "evaluate_fpca_recovery",
     "evaluate_functional_mixed_effects_recovery",
