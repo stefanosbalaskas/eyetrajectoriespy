@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -25,11 +25,23 @@ class FunctionalSimulationTruth:
     eigenfunctions: np.ndarray
     eigenvalues: np.ndarray
     scores: np.ndarray
+    curve_scores: np.ndarray
+    participant_scores: np.ndarray
+    trial_scores: np.ndarray
+    participant_eigenvalues: np.ndarray
+    trial_eigenvalues: np.ndarray
     latent_on_truth_grid: np.ndarray
+    phase_warps_on_truth_grid: np.ndarray
+    pre_missing_observation_times: tuple[np.ndarray, ...]
+    warped_pre_missing_observation_times: tuple[np.ndarray, ...]
     observation_times: tuple[np.ndarray, ...]
+    warped_observation_times: tuple[np.ndarray, ...]
+    latent_at_pre_missing_times: tuple[np.ndarray, ...]
     latent_at_observation_times: tuple[np.ndarray, ...]
     measurement_noise: tuple[np.ndarray, ...]
+    measurement_noise_covariance: np.ndarray
     observed_pre_missing: tuple[np.ndarray, ...]
+    missingness_mask: tuple[np.ndarray, ...]
     metadata: pd.DataFrame
     dimension_names: tuple[str, ...]
     coordinate_system: str
@@ -160,23 +172,83 @@ def _validate_modes(
     return modes, values
 
 
-def _resolve_noise_sd(
-    measurement_noise_sd: float | Sequence[float],
+def _resolve_hierarchy_variances(
+    values: Sequence[float] | None,
+    *,
+    n_components: int,
+    name: str,
+) -> np.ndarray:
+    if values is None:
+        return np.zeros(n_components, dtype=float)
+    array = np.asarray(values, dtype=float)
+    if array.shape != (n_components,):
+        raise ValueError(
+            f"{name} must contain exactly one value per functional component"
+        )
+    if not np.all(np.isfinite(array)) or np.any(array < 0):
+        raise ValueError(f"{name} must contain finite non-negative values")
+    return array
+
+
+def _resolve_noise_covariance(
+    measurement_noise_sd: float | Sequence[float] | None,
+    measurement_noise_covariance: np.ndarray | None,
     *,
     n_dimensions: int,
-) -> np.ndarray:
-    values = np.asarray(measurement_noise_sd, dtype=float)
-    if values.ndim == 0:
-        values = np.full(n_dimensions, float(values), dtype=float)
-    if values.shape != (n_dimensions,):
+) -> tuple[np.ndarray, np.ndarray]:
+    if measurement_noise_sd is None:
+        noise_sd = np.zeros(n_dimensions, dtype=float)
+    else:
+        noise_sd = np.asarray(measurement_noise_sd, dtype=float)
+        if noise_sd.ndim == 0:
+            noise_sd = np.full(
+                n_dimensions,
+                float(noise_sd),
+                dtype=float,
+            )
+        if noise_sd.shape != (n_dimensions,):
+            raise ValueError(
+                "measurement_noise_sd must be a scalar or one value "
+                "per dimension"
+            )
+        if not np.all(np.isfinite(noise_sd)) or np.any(noise_sd < 0):
+            raise ValueError(
+                "measurement_noise_sd values must be finite and non-negative"
+            )
+
+    if measurement_noise_covariance is None:
+        covariance = np.diag(noise_sd**2)
+        return noise_sd, covariance
+
+    covariance = np.asarray(
+        measurement_noise_covariance,
+        dtype=float,
+    )
+    if covariance.shape != (n_dimensions, n_dimensions):
         raise ValueError(
-            "measurement_noise_sd must be a scalar or one value per dimension"
+            "measurement_noise_covariance must have shape "
+            f"({n_dimensions}, {n_dimensions})"
         )
-    if not np.all(np.isfinite(values)) or np.any(values < 0):
+    if not np.all(np.isfinite(covariance)):
         raise ValueError(
-            "measurement_noise_sd values must be finite and non-negative"
+            "measurement_noise_covariance must contain only finite values"
         )
-    return values
+    if not np.allclose(covariance, covariance.T, rtol=0.0, atol=1e-12):
+        raise ValueError(
+            "measurement_noise_covariance must be symmetric"
+        )
+    eigenvalues = np.linalg.eigvalsh(covariance)
+    if np.min(eigenvalues) < -1e-12:
+        raise ValueError(
+            "measurement_noise_covariance must be positive semidefinite"
+        )
+    if np.any(noise_sd > 0):
+        raise ValueError(
+            "measurement_noise_sd and measurement_noise_covariance "
+            "cannot both specify non-zero measurement noise"
+        )
+    noise_sd = np.sqrt(np.maximum(np.diag(covariance), 0.0))
+    return noise_sd, covariance
 
 
 def _resolve_sample_counts(
@@ -280,21 +352,147 @@ def _curve_metadata(
     *,
     n_participants: int,
     trials_per_participant: int,
-) -> tuple[tuple[str, ...], pd.DataFrame]:
+) -> tuple[tuple[str, ...], pd.DataFrame, np.ndarray]:
     ids: list[str] = []
     rows: list[dict[str, Any]] = []
+    participant_index: list[int] = []
     for participant in range(n_participants):
         participant_id = f"P{participant + 1:03d}"
         for trial in range(trials_per_participant):
             trial_id = trial + 1
             ids.append(f"{participant_id}|T{trial_id:02d}")
+            participant_index.append(participant)
             rows.append(
                 {
                     "participant_id": participant_id,
                     "trial_id": trial_id,
                 }
             )
-    return tuple(ids), pd.DataFrame(rows)
+    return (
+        tuple(ids),
+        pd.DataFrame(rows),
+        np.asarray(participant_index, dtype=int),
+    )
+
+
+def _resolve_phase_variation(
+    phase_variation: Mapping[str, Any] | None,
+    *,
+    n_curves: int,
+    rng: np.random.Generator,
+) -> tuple[str, np.ndarray]:
+    if phase_variation is None:
+        return "none", np.ones(n_curves, dtype=float)
+    if not isinstance(phase_variation, Mapping):
+        raise TypeError("phase_variation must be a mapping or None")
+    kind = str(phase_variation.get("kind", ""))
+    if kind != "power":
+        raise ValueError(
+            "phase_variation currently supports only kind='power'"
+        )
+    sd = float(phase_variation.get("sd", np.nan))
+    if not np.isfinite(sd) or sd < 0:
+        raise ValueError(
+            "phase_variation['sd'] must be finite and non-negative"
+        )
+    exponents = np.exp(rng.normal(0.0, sd, size=n_curves))
+    return kind, exponents
+
+
+def _apply_power_warp(
+    time: np.ndarray,
+    *,
+    domain: tuple[float, float],
+    exponent: float,
+) -> np.ndarray:
+    start, end = domain
+    unit = (np.asarray(time, dtype=float) - start) / (end - start)
+    warped = start + (end - start) * np.power(unit, exponent)
+    warped[0] = start if np.isclose(time[0], start) else warped[0]
+    warped[-1] = end if np.isclose(time[-1], end) else warped[-1]
+    return warped
+
+
+def _missingness_mask(
+    n_samples: int,
+    missingness: Mapping[str, Any] | None,
+    *,
+    rng: np.random.Generator,
+) -> tuple[str, np.ndarray]:
+    if missingness is None:
+        return "none", np.zeros(n_samples, dtype=bool)
+    if not isinstance(missingness, Mapping):
+        raise TypeError("missingness must be a mapping or None")
+    kind = str(missingness.get("kind", ""))
+    if kind == "mcar":
+        probability = float(missingness.get("probability", np.nan))
+        if (
+            not np.isfinite(probability)
+            or probability < 0
+            or probability >= 1
+        ):
+            raise ValueError(
+                "missingness['probability'] must be in [0, 1)"
+            )
+        return kind, rng.random(n_samples) < probability
+    if kind == "block":
+        fraction = float(missingness.get("fraction", np.nan))
+        if (
+            not np.isfinite(fraction)
+            or fraction < 0
+            or fraction >= 1
+        ):
+            raise ValueError(
+                "missingness['fraction'] must be in [0, 1)"
+            )
+        mask = np.zeros(n_samples, dtype=bool)
+        block_size = int(np.floor(fraction * n_samples))
+        if fraction > 0 and block_size == 0:
+            block_size = 1
+        if block_size:
+            start = int(rng.integers(0, n_samples - block_size + 1))
+            mask[start : start + block_size] = True
+        return kind, mask
+    raise ValueError(
+        "missingness currently supports kind='mcar' or kind='block'"
+    )
+
+
+def _evaluate_latent(
+    *,
+    mean: FunctionalCallable,
+    eigenfunctions: Sequence[FunctionalCallable],
+    scores: np.ndarray,
+    warped_time: np.ndarray,
+    n_dimensions: int,
+) -> np.ndarray:
+    mean_at_time = _evaluate_function(
+        mean,
+        warped_time,
+        n_dimensions=n_dimensions,
+        name="mean",
+    )
+    modes_at_time = np.stack(
+        [
+            _evaluate_function(
+                function,
+                warped_time,
+                n_dimensions=n_dimensions,
+                name=f"eigenfunctions[{component}]",
+            )
+            for component, function in enumerate(eigenfunctions)
+        ],
+        axis=0,
+    )
+    return (
+        mean_at_time
+        + np.einsum(
+            "k,ktd->td",
+            scores,
+            modes_at_time,
+            optimize=True,
+        )
+    )
 
 
 def simulate_functional_process_core(
@@ -312,16 +510,22 @@ def simulate_functional_process_core(
     observation_times: Sequence[np.ndarray] | None = None,
     samples_per_curve: int | tuple[int, int] | None = None,
     irregular_time_design: str = "uniform",
-    measurement_noise_sd: float | Sequence[float] = 0.0,
+    participant_eigenvalues: Sequence[float] | None = None,
+    trial_eigenvalues: Sequence[float] | None = None,
+    measurement_noise_sd: float | Sequence[float] | None = 0.0,
+    measurement_noise_covariance: np.ndarray | None = None,
+    missingness: Mapping[str, Any] | None = None,
+    phase_variation: Mapping[str, Any] | None = None,
     orthonormal_tolerance: float = 1e-6,
     random_state: int | None = 42,
 ) -> FunctionalSimulationCoreResult:
-    """Generate deterministic KL-process observations plus complete truth.
+    """Generate deterministic functional observations plus accountable truth.
 
-    This function is private while the 0.11 simulation contract is being
-    qualified. Raw observations are generated directly on their declared
-    schedules. Irregular observations are not constructed by interpolating
-    simulated dense trajectories.
+    This function remains private while the 0.11 simulation contract is being
+    qualified. Irregular observations are generated directly on their declared
+    schedules. Missingness, hierarchy, measurement noise, and phase variation
+    are retained as separate truth components rather than folded into one
+    opaque synthetic trajectory.
     """
 
     if (
@@ -345,6 +549,7 @@ def simulate_functional_process_core(
     n_dimensions = len(names)
 
     grid = _validate_truth_grid(truth_grid)
+    domain = (float(grid[0]), float(grid[-1]))
     mean_grid = _evaluate_function(
         mean,
         grid,
@@ -358,29 +563,45 @@ def simulate_functional_process_core(
         n_dimensions=n_dimensions,
         orthonormal_tolerance=orthonormal_tolerance,
     )
-    noise_sd = _resolve_noise_sd(
+    participant_variances = _resolve_hierarchy_variances(
+        participant_eigenvalues,
+        n_components=eigenvalue_array.size,
+        name="participant_eigenvalues",
+    )
+    trial_variances = _resolve_hierarchy_variances(
+        trial_eigenvalues,
+        n_components=eigenvalue_array.size,
+        name="trial_eigenvalues",
+    )
+    noise_sd, noise_covariance = _resolve_noise_covariance(
         measurement_noise_sd,
+        measurement_noise_covariance,
         n_dimensions=n_dimensions,
     )
 
     n_curves = n_participants * trials_per_participant
-    curve_ids, metadata = _curve_metadata(
+    curve_ids, metadata, participant_index = _curve_metadata(
         n_participants=n_participants,
         trials_per_participant=trials_per_participant,
     )
     rng = np.random.default_rng(random_state)
-    scores = (
+
+    curve_scores = (
         rng.normal(size=(n_curves, eigenvalue_array.size))
         * np.sqrt(eigenvalue_array)[None, :]
     )
-    latent_grid = (
-        mean_grid[None, :, :]
-        + np.einsum(
-            "ik,ktd->itd",
-            scores,
-            mode_grid,
-            optimize=True,
-        )
+    participant_scores = (
+        rng.normal(size=(n_participants, eigenvalue_array.size))
+        * np.sqrt(participant_variances)[None, :]
+    )
+    trial_scores = (
+        rng.normal(size=(n_curves, eigenvalue_array.size))
+        * np.sqrt(trial_variances)[None, :]
+    )
+    scores = (
+        curve_scores
+        + participant_scores[participant_index]
+        + trial_scores
     )
 
     if observation_design == "dense":
@@ -400,7 +621,7 @@ def simulate_functional_process_core(
             schedules = _validate_explicit_observation_times(
                 observation_times,
                 n_curves=n_curves,
-                domain=(float(grid[0]), float(grid[-1])),
+                domain=domain,
             )
         else:
             if samples_per_curve is None:
@@ -415,7 +636,7 @@ def simulate_functional_process_core(
             )
             schedules = tuple(
                 _sample_irregular_times(
-                    domain=(float(grid[0]), float(grid[-1])),
+                    domain=domain,
                     n_samples=int(count),
                     design=irregular_time_design,
                     rng=rng,
@@ -427,45 +648,105 @@ def simulate_functional_process_core(
             "observation_design must be 'dense' or 'irregular'"
         )
 
-    latent_observed: list[np.ndarray] = []
-    noise_realizations: list[np.ndarray] = []
-    observed_values: list[np.ndarray] = []
-    for curve, time in enumerate(schedules):
-        mean_at_time = _evaluate_function(
-            mean,
-            time,
-            n_dimensions=n_dimensions,
-            name="mean",
-        )
-        modes_at_time = np.stack(
-            [
-                _evaluate_function(
-                    function,
-                    time,
-                    n_dimensions=n_dimensions,
-                    name=f"eigenfunctions[{component}]",
-                )
-                for component, function in enumerate(eigenfunctions)
-            ],
-            axis=0,
-        )
-        latent = (
-            mean_at_time
-            + np.einsum(
-                "k,ktd->td",
-                scores[curve],
-                modes_at_time,
-                optimize=True,
+    phase_kind, phase_exponents = _resolve_phase_variation(
+        phase_variation,
+        n_curves=n_curves,
+        rng=rng,
+    )
+    phase_warps_grid = np.stack(
+        [
+            _apply_power_warp(
+                grid,
+                domain=domain,
+                exponent=float(exponent),
             )
+            for exponent in phase_exponents
+        ],
+        axis=0,
+    )
+
+    latent_grid = np.stack(
+        [
+            _evaluate_latent(
+                mean=mean,
+                eigenfunctions=eigenfunctions,
+                scores=scores[curve],
+                warped_time=phase_warps_grid[curve],
+                n_dimensions=n_dimensions,
+            )
+            for curve in range(n_curves)
+        ],
+        axis=0,
+    )
+
+    warped_pre_missing: list[np.ndarray] = []
+    latent_pre_missing: list[np.ndarray] = []
+    noise_realizations: list[np.ndarray] = []
+    observed_pre_missing: list[np.ndarray] = []
+    missing_masks: list[np.ndarray] = []
+    final_times: list[np.ndarray] = []
+    final_warped_times: list[np.ndarray] = []
+    final_latent: list[np.ndarray] = []
+    final_values: list[np.ndarray] = []
+
+    missingness_kind = "none"
+    for curve, time in enumerate(schedules):
+        warped_time = _apply_power_warp(
+            time,
+            domain=domain,
+            exponent=float(phase_exponents[curve]),
         )
-        noise = rng.normal(
-            loc=0.0,
-            scale=noise_sd,
-            size=latent.shape,
+        latent = _evaluate_latent(
+            mean=mean,
+            eigenfunctions=eigenfunctions,
+            scores=scores[curve],
+            warped_time=warped_time,
+            n_dimensions=n_dimensions,
         )
-        latent_observed.append(latent)
+        if np.allclose(noise_covariance, 0.0):
+            noise = np.zeros_like(latent)
+        else:
+            noise = rng.multivariate_normal(
+                mean=np.zeros(n_dimensions, dtype=float),
+                cov=noise_covariance,
+                size=len(time),
+                check_valid="raise",
+            )
+            if n_dimensions == 1:
+                noise = np.asarray(noise, dtype=float).reshape(-1, 1)
+        observed = latent + noise
+        current_kind, mask = _missingness_mask(
+            len(time),
+            missingness,
+            rng=rng,
+        )
+        missingness_kind = current_kind
+
+        warped_pre_missing.append(warped_time)
+        latent_pre_missing.append(latent)
         noise_realizations.append(noise)
-        observed_values.append(latent + noise)
+        observed_pre_missing.append(observed)
+        missing_masks.append(mask)
+
+        if observation_design == "dense":
+            output = observed.copy()
+            output[mask, :] = np.nan
+            final_times.append(time.copy())
+            final_warped_times.append(warped_time.copy())
+            final_latent.append(latent.copy())
+            final_values.append(output)
+        else:
+            keep = ~mask
+            if np.count_nonzero(keep) < 2:
+                raise ValueError(
+                    "missingness left fewer than two irregular observations "
+                    f"for curve {curve}; the simulator does not silently "
+                    "resample or override the declared missingness mechanism"
+                )
+            final_times.append(time[keep].copy())
+            final_warped_times.append(warped_time[keep].copy())
+            final_latent.append(latent[keep].copy())
+            final_values.append(observed[keep].copy())
 
     provenance = {
         "source": "simulate_functional_process_core",
@@ -480,16 +761,24 @@ def simulate_functional_process_core(
             else None
         ),
         "measurement_noise_sd": noise_sd.tolist(),
+        "measurement_noise_covariance": noise_covariance.tolist(),
+        "participant_eigenvalues": participant_variances.tolist(),
+        "trial_eigenvalues": trial_variances.tolist(),
+        "phase_variation_kind": phase_kind,
+        "phase_exponents": phase_exponents.tolist(),
+        "missingness_kind": missingness_kind,
+        "missingness_specification": (
+            None if missingness is None else dict(missingness)
+        ),
         "n_components": int(eigenvalue_array.size),
         "truth_grid": grid.tolist(),
         "raw_dense_to_irregular_interpolation_performed": False,
     }
 
     if observation_design == "dense":
-        dense_values = np.stack(observed_values, axis=0)
         observations: TrajectorySet | IrregularTrajectorySet = TrajectorySet(
             time=grid.copy(),
-            values=dense_values,
+            values=np.stack(final_values, axis=0),
             curve_ids=curve_ids,
             dimension_names=names,
             metadata=metadata.copy(),
@@ -499,8 +788,8 @@ def simulate_functional_process_core(
         )
     else:
         observations = IrregularTrajectorySet(
-            time=tuple(time.copy() for time in schedules),
-            values=tuple(value.copy() for value in observed_values),
+            time=tuple(time.copy() for time in final_times),
+            values=tuple(value.copy() for value in final_values),
             curve_ids=curve_ids,
             dimension_names=names,
             metadata=metadata.copy(),
@@ -515,16 +804,40 @@ def simulate_functional_process_core(
         eigenfunctions=mode_grid.copy(),
         eigenvalues=eigenvalue_array.copy(),
         scores=scores.copy(),
+        curve_scores=curve_scores.copy(),
+        participant_scores=participant_scores.copy(),
+        trial_scores=trial_scores.copy(),
+        participant_eigenvalues=participant_variances.copy(),
+        trial_eigenvalues=trial_variances.copy(),
         latent_on_truth_grid=latent_grid.copy(),
-        observation_times=tuple(time.copy() for time in schedules),
+        phase_warps_on_truth_grid=phase_warps_grid.copy(),
+        pre_missing_observation_times=tuple(
+            time.copy() for time in schedules
+        ),
+        warped_pre_missing_observation_times=tuple(
+            time.copy() for time in warped_pre_missing
+        ),
+        observation_times=tuple(
+            time.copy() for time in final_times
+        ),
+        warped_observation_times=tuple(
+            time.copy() for time in final_warped_times
+        ),
+        latent_at_pre_missing_times=tuple(
+            value.copy() for value in latent_pre_missing
+        ),
         latent_at_observation_times=tuple(
-            value.copy() for value in latent_observed
+            value.copy() for value in final_latent
         ),
         measurement_noise=tuple(
             value.copy() for value in noise_realizations
         ),
+        measurement_noise_covariance=noise_covariance.copy(),
         observed_pre_missing=tuple(
-            value.copy() for value in observed_values
+            value.copy() for value in observed_pre_missing
+        ),
+        missingness_mask=tuple(
+            mask.copy() for mask in missing_masks
         ),
         metadata=metadata.copy(),
         dimension_names=names,
