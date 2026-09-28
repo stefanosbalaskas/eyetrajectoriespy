@@ -185,7 +185,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 The current stable pre-1.0 release is **0.9.0**. The current development line is **0.10.0.dev0**. Scientific contracts, optional-backend validation, documentation, and cross-platform qualification remain active release-quality surfaces.
 
-The 0.10 development line contains the native sparse/irregular FPCA + PACE tranche after separate contract, validation/stress, performance, and documentation qualification. Normal merges to `main` do not trigger production publication; a future public release still requires an explicit release workflow dispatch after version/readiness qualification.
+The 0.10 development line contains the native sparse/irregular FPCA + PACE tranche after separate contract, validation/stress, performance, documentation, and protected-main integration qualification. Normal merges to `main` do not trigger production publication; a future public release still requires an explicit release workflow dispatch after version/readiness qualification.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
