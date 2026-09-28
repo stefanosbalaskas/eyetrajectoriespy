@@ -500,7 +500,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.9.1.dev0"
+__version__ = "0.10.0.dev0"
 
 __all__ = [
     "PortableScientificResultSnapshot",
