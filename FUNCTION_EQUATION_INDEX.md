@@ -36,25 +36,26 @@ Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods
 
 **Functions:** `fit_sparse_fpca()`
 
-$
+$$
 Y_{ij}=X_i(t_{ij})+\epsilon_{ij}
-$
+$$
 
-$
+$$
 \int G(s,t)\phi_k(s)\,ds=\lambda_k\phi_k(t)
-$
+$$
 
-$
+$$
 \widehat\Sigma_i=\widehat G(T_i,T_i)+\widehat\sigma_\epsilon^2 I+\gamma I
-$
+$$
 
-$
+$$
 \widehat\xi_{ik}=\widehat\lambda_k\widehat\phi_k(T_i)^\top\widehat\Sigma_i^{-1}\{Y_i-\widehat\mu(T_i)\}
-$
+$$
 
 **Scope:** Univariate sparse/irregular functional observations with explicit mean/covariance smoothing, analysis support, measurement-noise handling, PSD policy, retained component count, and score ridge. PACE evaluates fitted population objects at native observation times and uses the full fitted covariance-plus-noise system; no raw common-grid interpolation, automatic bandwidth selection, joint multivariate PACE, or silent score-system repair is implied.
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#sparse-fpca-pace
+
 ## Integrated functional L2 distance
 
 **Functions:** `functional_l2_distance()`, `pairwise_functional_distances()`
