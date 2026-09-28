@@ -4,6 +4,7 @@ import pytest
 
 from eyetrajectoriespy import (
     FPCAResult,
+    FunctionalMixedEffectsResult,
     FunctionalRecoveryAssessment,
     FunctionalRecoveryMetric,
     FunctionalRecoveryValue,
@@ -11,6 +12,7 @@ from eyetrajectoriespy import (
     RegistrationResult,
     SparseFPCAResult,
     evaluate_fpca_recovery,
+    evaluate_functional_mixed_effects_recovery,
     evaluate_hierarchy_truth_recovery,
     evaluate_registration_recovery,
     evaluate_sparse_fpca_recovery,
@@ -452,3 +454,119 @@ def test_registration_recovery_targets_inverse_simulator_warp():
     }
     np.testing.assert_allclose(frame["value"], 0.0, atol=1e-12)
     assert assessment.provenance["truth_target"] == "inverse_phase_warp"
+
+
+def _exact_mixed_effects_result(truth, *, include_trial=True):
+    result = object.__new__(FunctionalMixedEffectsResult)
+    object.__setattr__(result, "time", truth.truth_grid.copy())
+    object.__setattr__(result, "dimension_name", "value")
+    object.__setattr__(result, "coefficient_names", ("Intercept",))
+    object.__setattr__(
+        result,
+        "coefficient_functions",
+        truth.mean[:, 0][None, :].copy(),
+    )
+    basis = truth.eigenfunctions[:, :, 0].T.copy()
+    object.__setattr__(result, "random_basis", basis)
+    object.__setattr__(
+        result,
+        "random_intercept_covariance",
+        np.diag(truth.participant_eigenvalues),
+    )
+    object.__setattr__(result, "random_slope_predictor", None)
+    object.__setattr__(
+        result,
+        "trial_random_effect",
+        "functional_intercept" if include_trial else None,
+    )
+    object.__setattr__(
+        result,
+        "trial_random_basis",
+        basis if include_trial else None,
+    )
+    object.__setattr__(
+        result,
+        "trial_random_effect_covariance",
+        (
+            np.diag(truth.trial_eigenvalues)
+            if include_trial
+            else None
+        ),
+    )
+    return result
+
+
+def test_mixed_effects_recovery_compares_time_domain_variance_functions():
+    scenario = FunctionalSimulationScenario(
+        name="mixed-truth",
+        truth_grid=np.linspace(0.0, 1.0, 81),
+        eigenvalues=(1.0, 0.35),
+        n_participants=20,
+        trials_per_participant=3,
+        participant_eigenvalues=(0.20, 0.08),
+        trial_eigenvalues=(0.10, 0.04),
+        measurement_noise_sd=0.0,
+        replicates=1,
+        seed_start=991,
+    )
+    simulation = simulate_functional_scenario(
+        scenario,
+        mean=_mean,
+        eigenfunctions=(_phi1, _phi2),
+    )
+    fitted = _exact_mixed_effects_result(
+        simulation.truth,
+        include_trial=True,
+    )
+    assessment = evaluate_functional_mixed_effects_recovery(
+        fitted,
+        simulation.truth,
+    )
+    frame = functional_recovery_assessment_frame(assessment)
+    assert {
+        "coefficient_function_ise",
+        "source_variance_function_ise",
+        "source_integrated_variance_absolute_error",
+        "source_integrated_variance_relative_error",
+    } <= set(frame["metric"])
+    assert set(frame["source"]) == {
+        "intercept",
+        "participant",
+        "trial",
+    }
+    np.testing.assert_allclose(frame["value"], 0.0, atol=1e-12)
+    assert (
+        assessment.provenance[
+            "basis_covariance_compared_directly_to_kl_eigenvalues"
+        ]
+        is False
+    )
+
+
+def test_mixed_effects_recovery_rejects_missing_declared_trial_level():
+    scenario = FunctionalSimulationScenario(
+        name="mixed-trial-truth",
+        truth_grid=np.linspace(0.0, 1.0, 41),
+        eigenvalues=(1.0,),
+        n_participants=10,
+        trials_per_participant=2,
+        participant_eigenvalues=(0.2,),
+        trial_eigenvalues=(0.1,),
+        measurement_noise_sd=0.0,
+        replicates=1,
+        seed_start=992,
+    )
+    simulation = simulate_functional_scenario(
+        scenario,
+        mean=_mean,
+        eigenfunctions=(_phi1,),
+    )
+    fitted = _exact_mixed_effects_result(
+        simulation.truth,
+        include_trial=False,
+    )
+    with pytest.raises(ValueError, match="trial functional variance"):
+        evaluate_functional_mixed_effects_recovery(
+            fitted,
+            simulation.truth,
+        )
