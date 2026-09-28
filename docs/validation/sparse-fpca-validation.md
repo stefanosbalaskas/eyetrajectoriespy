@@ -151,12 +151,28 @@ cross-implementation sensitivity evidence, not proof of numerical equivalence.
 
 ## Cross-language comparison
 
-A cross-language row will be added only if an R implementation can be
-configured to match the estimand closely enough: mean smoother, covariance
-smoother, support, noise treatment, and conditional-score definition must all
-be documented. If no such configuration is available, the validation record
-will state **no defensible exact equivalence case** rather than manufacture an
-equivalence claim.
+The current CRAN `fdapace` implementation was inspected as the most relevant
+R reference candidate. Its `FPCA()` interface can accept user-supplied mean,
+covariance, and measurement-error variance, which is useful for controlled
+cross-language sensitivity work. However, its current eigenanalysis
+diagonalizes the regular-grid covariance matrix and applies its own grid-step
+normalization, whereas eyetrajectoriespy solves the trapezoidal
+quadrature-weighted operator problem
+
+$
+W^{1/2}\widehat G W^{1/2}.
+$
+
+The R implementation also constructs a fitted covariance from its retained
+positive eigensystem before conditional-expectation scoring. Those differences
+mean there is currently **no defensible exact R equivalence case** for the full
+native estimator.
+
+A future R comparison may still be added as explicitly labeled
+cross-implementation sensitivity, especially by supplying the same fitted
+population mean/covariance/noise inputs, but it must not be promoted to
+equivalence unless the discretized operator and PACE covariance contracts can
+also be matched.
 
 ## Sparse-specific performance characterization
 
