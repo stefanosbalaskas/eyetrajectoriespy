@@ -114,3 +114,25 @@ def test_functional_simulation_diagnostic_plots_render_truth_objects():
     assert "variance audit" in ax.get_title().lower()
     assert len(ax.patches) == 12
     plt.close(ax.figure)
+
+
+def test_dense_truth_frame_distinguishes_schedule_from_observed_count():
+    result = simulate_functional_process(
+        mean=_mean,
+        eigenfunctions=(_phi1, _phi2),
+        eigenvalues=(1.0, 0.3),
+        truth_grid=np.linspace(0.0, 1.0, 41),
+        n_participants=6,
+        measurement_noise_sd=0.0,
+        missingness={"kind": "mcar", "probability": 0.20},
+        random_state=822,
+    )
+    frame = functional_simulation_truth_frame(result)
+
+    assert np.all(frame["n_output_schedule_samples"] == 41)
+    assert np.all(frame["n_pre_missing_samples"] == 41)
+    np.testing.assert_array_equal(
+        frame["n_observed_samples"].to_numpy(),
+        41 - frame["n_missing_by_design"].to_numpy(),
+    )
+    assert np.any(frame["n_observed_samples"] < 41)
