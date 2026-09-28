@@ -178,6 +178,26 @@ def test_native_sparse_fit_retains_explicit_psd_correction_audit():
     assert isinstance(audit["pre_repair_operator_eigenvalues"], list)
 
 
+def test_native_sparse_fit_requires_explicit_noise_support_when_estimated():
+    gaze, _ = _truth_dataset(
+        n_curves=12,
+        samples_per_curve=8,
+        random_state=8,
+    )
+    with pytest.raises(ValueError, match="noise_support"):
+        fit_sparse_fpca(
+            gaze,
+            dimension="x",
+            n_components=2,
+            evaluation_grid=np.linspace(0.0, 1.0, 13),
+            mean_bandwidth=0.30,
+            covariance_bandwidth=0.40,
+            noise_bandwidth=0.30,
+            noise_variance_method="diagonal_difference",
+            psd_action="project",
+        )
+
+
 def test_native_sparse_fit_requires_explicit_noise_bandwidth_when_estimated():
     gaze, _ = _truth_dataset(
         n_curves=12,
