@@ -216,6 +216,70 @@ def _scenario_variances(
     return tuple(float(value) for value in array)
 
 
+def _scenario_noise(
+    noise_sd: float | Sequence[float] | None,
+    covariance: np.ndarray | None,
+    *,
+    n_dimensions: int,
+) -> tuple[float | tuple[float, ...] | None, np.ndarray | None]:
+    if noise_sd is None:
+        sd_array = np.zeros(n_dimensions, dtype=float)
+        stored_sd = None
+    else:
+        sd_array = np.asarray(noise_sd, dtype=float)
+        if sd_array.ndim == 0:
+            scalar = float(sd_array)
+            if not np.isfinite(scalar) or scalar < 0:
+                raise ValueError(
+                    "measurement_noise_sd must be finite and non-negative"
+                )
+            sd_array = np.full(n_dimensions, scalar, dtype=float)
+            stored_sd = scalar
+        else:
+            if sd_array.shape != (n_dimensions,):
+                raise ValueError(
+                    "measurement_noise_sd must be scalar or one value "
+                    "per dimension"
+                )
+            if not np.all(np.isfinite(sd_array)) or np.any(sd_array < 0):
+                raise ValueError(
+                    "measurement_noise_sd must be finite and non-negative"
+                )
+            stored_sd = tuple(float(value) for value in sd_array)
+
+    if covariance is None:
+        return stored_sd, None
+
+    covariance_array = np.asarray(covariance, dtype=float)
+    if covariance_array.shape != (n_dimensions, n_dimensions):
+        raise ValueError(
+            "measurement_noise_covariance must match the number of dimensions"
+        )
+    if not np.all(np.isfinite(covariance_array)):
+        raise ValueError(
+            "measurement_noise_covariance must contain finite values"
+        )
+    if not np.allclose(
+        covariance_array,
+        covariance_array.T,
+        rtol=0.0,
+        atol=1e-12,
+    ):
+        raise ValueError(
+            "measurement_noise_covariance must be symmetric"
+        )
+    if np.min(np.linalg.eigvalsh(covariance_array)) < -1e-12:
+        raise ValueError(
+            "measurement_noise_covariance must be positive semidefinite"
+        )
+    if np.any(sd_array > 0):
+        raise ValueError(
+            "measurement_noise_sd and measurement_noise_covariance "
+            "cannot both specify non-zero noise"
+        )
+    return stored_sd, covariance_array.copy()
+
+
 def _scenario_samples(
     value: int | tuple[int, int] | None,
 ) -> int | tuple[int, int] | None:
@@ -334,6 +398,11 @@ class FunctionalSimulationScenario:
             n_components=eigenvalues.size,
             name="trial_eigenvalues",
         )
+        noise_sd, noise_covariance = _scenario_noise(
+            self.measurement_noise_sd,
+            self.measurement_noise_covariance,
+            n_dimensions=len(dimensions),
+        )
 
         if self.score_distribution not in {"normal", "student_t"}:
             raise ValueError(
@@ -382,6 +451,16 @@ class FunctionalSimulationScenario:
             participant,
         )
         object.__setattr__(self, "trial_eigenvalues", trial)
+        object.__setattr__(
+            self,
+            "measurement_noise_sd",
+            noise_sd,
+        )
+        object.__setattr__(
+            self,
+            "measurement_noise_covariance",
+            noise_covariance,
+        )
         object.__setattr__(
             self,
             "missingness",
@@ -667,6 +746,27 @@ def functional_simulation_scenario_frame(
                 "irregular_time_design": (
                     scenario.irregular_time_design
                 ),
+                "participant_eigenvalues": json.dumps(
+                    scenario.participant_eigenvalues
+                ),
+                "trial_eigenvalues": json.dumps(
+                    scenario.trial_eigenvalues
+                ),
+                "measurement_noise_sd": json.dumps(
+                    scenario.measurement_noise_sd
+                ),
+                "measurement_noise_covariance": (
+                    None
+                    if scenario.measurement_noise_covariance is None
+                    else json.dumps(
+                        np.asarray(
+                            scenario.measurement_noise_covariance,
+                            dtype=float,
+                        ).tolist()
+                    )
+                ),
+                "coordinate_system": scenario.coordinate_system,
+                "time_unit": scenario.time_unit,
                 "missingness": (
                     None
                     if scenario.missingness is None
