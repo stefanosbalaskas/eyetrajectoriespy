@@ -74,12 +74,12 @@ def _validate_evaluation_grid(
     scale = max(1.0, abs(pooled_start), abs(pooled_end))
     tolerance = 1e-12 * scale
     if (
-        abs(float(grid[0]) - pooled_start) > tolerance
-        or abs(float(grid[-1]) - pooled_end) > tolerance
+        float(grid[0]) < pooled_start - tolerance
+        or float(grid[-1]) > pooled_end + tolerance
     ):
         raise SparseNativeError(
-            "evaluation_grid_support_mismatch",
-            "evaluation_grid must span the complete pooled observed support",
+            "evaluation_grid_outside_pooled_support",
+            "evaluation_grid must lie within the pooled observed support",
             details={
                 "pooled_start": pooled_start,
                 "pooled_end": pooled_end,
@@ -89,26 +89,99 @@ def _validate_evaluation_grid(
         )
     return grid
 
+def _analysis_support_views(
+    trajectories: IrregularTrajectorySet,
+    curve_values: tuple[np.ndarray, ...],
+    grid: np.ndarray,
+    *,
+    action: str,
+) -> tuple[tuple[np.ndarray, ...], tuple[np.ndarray, ...], dict[str, Any]]:
+    """Apply an explicitly declared analysis-support policy."""
+
+    if action not in {"error", "restrict"}:
+        raise ValueError(
+            "analysis_support_action must be 'error' or 'restrict'"
+        )
+    start = float(grid[0])
+    end = float(grid[-1])
+    effective_times: list[np.ndarray] = []
+    effective_values: list[np.ndarray] = []
+    outside_counts: list[int] = []
+    in_support_counts: list[int] = []
+
+    for time, observed in zip(
+        trajectories.time, curve_values, strict=True
+    ):
+        time_array = np.asarray(time, dtype=float)
+        value_array = np.asarray(observed, dtype=float)
+        mask = (time_array >= start) & (time_array <= end)
+        outside_counts.append(int(np.count_nonzero(~mask)))
+        in_support_counts.append(int(np.count_nonzero(mask)))
+        if action == "restrict":
+            effective_times.append(time_array[mask].copy())
+            effective_values.append(value_array[mask].copy())
+        else:
+            effective_times.append(time_array.copy())
+            effective_values.append(value_array.copy())
+
+    outside_total = int(np.sum(outside_counts))
+    curves_with_outside = int(
+        np.count_nonzero(np.asarray(outside_counts) > 0)
+    )
+    curves_without_support = int(
+        np.count_nonzero(np.asarray(in_support_counts) == 0)
+    )
+    if action == "error" and outside_total:
+        raise SparseNativeError(
+            "observations_outside_analysis_support",
+            "observations lie outside the declared evaluation-grid support",
+            details={
+                "analysis_support": [start, end],
+                "outside_observation_count": outside_total,
+                "curves_with_outside_observations": curves_with_outside,
+                "outside_counts_by_curve": outside_counts,
+            },
+        )
+
+    total_in_support = int(np.sum(in_support_counts))
+    if total_in_support < 3:
+        raise SparseNativeError(
+            "insufficient_pooled_support",
+            "fewer than three observations remain on declared support",
+            details={
+                "analysis_support": [start, end],
+                "in_support_observation_count": total_in_support,
+                "in_support_counts_by_curve": in_support_counts,
+            },
+        )
+
+    diagnostics = {
+        "analysis_support": [start, end],
+        "analysis_support_action": action,
+        "outside_observation_count": outside_total,
+        "curves_with_outside_observations": curves_with_outside,
+        "curves_without_in_support_observations": curves_without_support,
+        "outside_counts_by_curve": outside_counts,
+        "original_sample_counts": trajectories.sample_counts.tolist(),
+        "analysis_sample_counts": in_support_counts,
+    }
+    return tuple(effective_times), tuple(effective_values), diagnostics
+
 
 def _validate_native_sparse_settings(
     *,
     n_components: int,
-    n_curves: int,
     mean_smoother: str,
     covariance_smoother: str,
     kernel: str,
     noise_variance_method: str,
     measurement_error_variance: float | None,
+    noise_support: tuple[float, float] | None,
 ) -> None:
     if isinstance(n_components, bool) or not isinstance(n_components, int):
         raise TypeError("n_components must be an integer")
     if n_components < 1:
         raise ValueError("n_components must be positive")
-    if n_components > n_curves - 1:
-        raise ValueError(
-            "n_components cannot exceed the centered curve-count rank "
-            f"(n_curves - 1 = {n_curves - 1})"
-        )
     if mean_smoother != "local_linear":
         raise ValueError(
             "mean_smoother must be 'local_linear' in the first native tranche"
@@ -136,11 +209,22 @@ def _validate_native_sparse_settings(
             raise ValueError(
                 "measurement_error_variance must be finite and non-negative"
             )
-    elif measurement_error_variance is not None:
-        raise ValueError(
-            "measurement_error_variance must be None when "
-            "noise_variance_method='diagonal_difference'"
-        )
+        if noise_support is not None:
+            raise ValueError(
+                "noise_support must be None when "
+                "noise_variance_method='fixed'"
+            )
+    else:
+        if measurement_error_variance is not None:
+            raise ValueError(
+                "measurement_error_variance must be None when "
+                "noise_variance_method='diagonal_difference'"
+            )
+        if noise_support is None:
+            raise ValueError(
+                "noise_support is required when "
+                "noise_variance_method='diagonal_difference'"
+            )
 
 
 def fit_sparse_fpca(
@@ -152,6 +236,8 @@ def fit_sparse_fpca(
     mean_bandwidth: float,
     covariance_bandwidth: float,
     noise_bandwidth: float | None = None,
+    noise_support: tuple[float, float] | None = None,
+    analysis_support_action: str = "error",
     mean_smoother: str = "local_linear",
     covariance_smoother: str = "local_linear",
     kernel: str = "epanechnikov",
@@ -188,19 +274,25 @@ def fit_sparse_fpca(
     grid = _validate_evaluation_grid(trajectories, evaluation_grid)
     _validate_native_sparse_settings(
         n_components=n_components,
-        n_curves=trajectories.n_curves,
         mean_smoother=mean_smoother,
         covariance_smoother=covariance_smoother,
         kernel=kernel,
         noise_variance_method=noise_variance_method,
         measurement_error_variance=measurement_error_variance,
+        noise_support=noise_support,
     )
 
-    pooled_time = np.concatenate(trajectories.time)
-    curve_values = tuple(
+    original_curve_values = tuple(
         np.asarray(values[:, index], dtype=float)
         for values in trajectories.values
     )
+    curve_times, curve_values, support_diagnostics = _analysis_support_views(
+        trajectories,
+        original_curve_values,
+        grid,
+        action=analysis_support_action,
+    )
+    pooled_time = np.concatenate(curve_times)
     pooled_values = np.concatenate(curve_values)
 
     mean_fit = local_linear_smooth_1d(
@@ -213,10 +305,13 @@ def fit_sparse_fpca(
 
     residuals: list[np.ndarray] = []
     for time, observed in zip(
-        trajectories.time,
+        curve_times,
         curve_values,
         strict=True,
     ):
+        if len(time) == 0:
+            residuals.append(np.asarray([], dtype=float))
+            continue
         mean_at_native = local_linear_smooth_1d(
             pooled_time,
             pooled_values,
@@ -227,7 +322,7 @@ def fit_sparse_fpca(
         residuals.append(observed - mean_at_native)
 
     pairs = raw_offdiagonal_covariance_pairs(
-        trajectories.time,
+        curve_times,
         tuple(residuals),
         include_mirror=True,
     )
@@ -246,11 +341,12 @@ def fit_sparse_fpca(
                 "noise_variance_method='diagonal_difference'"
             )
         noise_result = estimate_noise_variance_diagonal_difference(
-            trajectories.time,
+            curve_times,
             tuple(residuals),
             grid,
             covariance_fit.values,
             bandwidth=noise_bandwidth,
+            noise_support=noise_support,
             min_local_points=noise_min_local_points,
         )
         if noise_result.status_code != "ok":
@@ -285,7 +381,7 @@ def fit_sparse_fpca(
     )
     scores = pace_scores(
         trajectories.curve_ids,
-        trajectories.time,
+        curve_times,
         curve_values,
         evaluation_grid=grid,
         fitted_mean=mean_fit.values,
