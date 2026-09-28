@@ -288,7 +288,7 @@ def main() -> None:
         "FUNCTION_EQUATION_INDEX.md",
         "WORKFLOW_ATLAS.md",
         "Visual gallery",
-        "0.10.0.dev0",
+        "0.10.0rc1",
         "Which workflow do I need?",
         "Where is the full advanced API?",
         "Reference validation & performance envelope",
