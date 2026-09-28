@@ -10,7 +10,7 @@ This page distinguishes implemented scientific contracts from optional interoper
 |---|---|---|
 | Common-grid functional gaze objects | implemented | `TrajectorySet` |
 | Native curve-specific time grids | implemented | `IrregularTrajectorySet` |
-| Sparse univariate covariance FPCA + PACE scores | implemented compatibility/reference backend; native estimator planned for 0.10.0 | `fit_sparse_fpca_fdapy()` today; planned `fit_sparse_fpca()` |
+| Sparse univariate covariance FPCA + PACE scores | implemented and qualified natively in 0.10; FDApy retained as compatibility/reference backend | `fit_sparse_fpca()`; optional `fit_sparse_fpca_fdapy()` |
 | Simultaneous functional mean band | implemented | `multiplier_functional_mean_band()` |
 | Function-on-scalar regression | implemented; observed-grid OLS with explicit design and HC1 standard errors | `fit_function_on_scalar_regression()` |
 | Function-on-scalar simultaneous coefficient bands | implemented; fixed-design wild bootstrap with coefficient/family scope | `function_on_scalar_simultaneous_bands()` |
@@ -183,9 +183,9 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current stable pre-1.0 release is **0.9.0**. The current development line is **0.9.1.dev0**. Scientific contracts, optional-backend validation, documentation, and cross-platform qualification remain active release-quality surfaces.
+The current stable pre-1.0 release is **0.9.0**. The current development line is **0.10.0.dev0**. Scientific contracts, optional-backend validation, documentation, and cross-platform qualification remain active release-quality surfaces.
 
-The 0.9.1 development line is a maintenance/hardening line by policy; major new estimators are reserved for the next minor development tranche. Normal merges to `main` do not trigger production publication; a future release requires an explicit release workflow dispatch after version/readiness qualification.
+The 0.10 development line contains the native sparse/irregular FPCA + PACE tranche after separate contract, validation/stress, performance, and documentation qualification. Normal merges to `main` do not trigger production publication; a future public release still requires an explicit release workflow dispatch after version/readiness qualification.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
