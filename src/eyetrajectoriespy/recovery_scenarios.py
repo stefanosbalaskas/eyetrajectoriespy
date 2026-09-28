@@ -105,6 +105,27 @@ def functional_recovery_qualification_scenarios(
             ),
         ),
         FunctionalSimulationScenario(
+            name="native_sparse_estimated_noise",
+            truth_grid=np.linspace(0.0, 1.0, 31),
+            eigenvalues=(1.0, 0.35),
+            n_participants=120,
+            observation_design="irregular",
+            samples_per_curve=(10, 14),
+            irregular_time_design="uniform",
+            measurement_noise_sd=0.10,
+            replicates=replicates,
+            seed_start=seed_start + 300,
+            labels=_labels(
+                role="qualification",
+                target="sparse_fpca_pace_estimated_noise",
+                description=(
+                    "Native sparse FPCA/PACE recovery when measurement-noise "
+                    "variance is estimated by diagonal difference rather than "
+                    "supplied to the estimator."
+                ),
+            ),
+        ),
+        FunctionalSimulationScenario(
             name="hierarchy_sources",
             truth_grid=np.linspace(0.0, 1.0, 31),
             eigenvalues=(1.0, 0.35),
@@ -114,7 +135,7 @@ def functional_recovery_qualification_scenarios(
             trial_eigenvalues=(0.10, 0.04),
             measurement_noise_sd=0.0,
             replicates=replicates,
-            seed_start=seed_start + 300,
+            seed_start=seed_start + 400,
             labels=_labels(
                 role="qualification",
                 target="hierarchy_truth",
