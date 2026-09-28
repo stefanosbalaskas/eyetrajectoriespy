@@ -1,3 +1,7 @@
+import matplotlib
+matplotlib.use("Agg")
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pytest
@@ -19,7 +23,9 @@ from eyetrajectoriespy import (
     functional_recovery_assessment_frame,
     functional_recovery_metric_catalog,
     functional_recovery_metric_catalog_frame,
+    functional_recovery_reporting_text,
     functional_trapezoid_weights,
+    plot_functional_recovery_summary,
     simulate_functional_scenario,
 )
 
@@ -569,4 +575,39 @@ def test_mixed_effects_recovery_rejects_missing_declared_trial_level():
         evaluate_functional_mixed_effects_recovery(
             fitted,
             simulation.truth,
+        )
+
+
+def test_recovery_reporting_and_summary_plot_are_descriptive():
+    simulation = _simulation()
+    assessment = evaluate_fpca_recovery(
+        _exact_fpca_result(simulation),
+        simulation.truth,
+    )
+    text = functional_recovery_reporting_text(assessment)
+    assert "truth is an evaluation input only" in text
+    assert "FPCA" in text
+
+    summary = pd.DataFrame(
+        {
+            "scenario": ["a", "b"],
+            "metric": ["score_rmse", "score_rmse"],
+            "component": [1, 1],
+            "source": [None, None],
+            "median": [0.1, 0.2],
+            "q25": [0.08, 0.15],
+            "q75": [0.12, 0.25],
+        }
+    )
+    ax = plot_functional_recovery_summary(
+        summary,
+        metric="score_rmse",
+    )
+    assert "score rmse" in ax.get_title().lower()
+    plt.close(ax.figure)
+
+    with pytest.raises(ValueError, match="absent"):
+        plot_functional_recovery_summary(
+            summary,
+            metric="not_present",
         )
