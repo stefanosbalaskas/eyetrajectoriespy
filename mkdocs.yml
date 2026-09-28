@@ -26,6 +26,7 @@ nav:
           - Preparing trajectories: guides/preprocessing.md
           - Native irregular trajectories: guides/irregular-trajectories.md
           - Sparse irregular / PACE FPCA: guides/sparse-irregular-fpca.md
+          - Native functional simulation: guides/functional-simulation.md
           - Basis representations: guides/basis-representations.md
           - Derived continuous functions: guides/derived-functions.md
       - FPCA, uncertainty & review:
@@ -93,6 +94,7 @@ nav:
           - Native irregular sampling: examples/native-irregular.md
           - Irregular sampling & gaps: examples/irregular-data.md
           - Sparse PACE FPCA: examples/sparse-pace-fpca.md
+          - Native functional simulation: examples/functional-simulation.md
           - Compositional AOI trajectories: examples/compositional.md
           - Repeated-trial multilevel FPCA: examples/multilevel.md
           - Phase FPCA: examples/phase-fpca.md
@@ -173,6 +175,7 @@ nav:
           - Release readiness: release-readiness.md
           - Independent-reference validation ledger: validation/reference-validation-ledger.md
           - Native sparse FPCA validation: validation/sparse-fpca-validation.md
+          - Functional simulation validation: validation/functional-simulation-validation.md
           - Numerical tolerance policy: validation/numerical-tolerance-policy.md
           - Performance envelope: validation/performance-envelope.md
       - Development roadmap:
