@@ -172,14 +172,11 @@ candidate line is `0.10.0rc1`, containing the qualified native sparse-FPCA/PACE
 estimator. Release automation is manual-dispatch only, so ordinary merges
 cannot trigger a production upload. Before any public 0.10 release, the version
 and readiness manifests must be deliberately armed through a reviewed pull
-request, and issue #69 should be resolved if the obsolete publisher claim is
-still present.
+request after release-candidate qualification and exact-main checks.
 
+### Production publisher authority
 
-### Remaining publisher cleanup
-
-Production authority is now correctly registered for GitHub environment
-`pypi`. PyPI still shows the older production publisher claim bound to
-`testpypi`; remove that obsolete publisher before the next public release so
-the dedicated `pypi` environment is the only production publishing authority.
-Issue #69 tracks that final cleanup.
+Production authority is registered for GitHub environment `pypi`, and issue
+#69 is closed after removal of the obsolete production publisher claim tied to
+`testpypi`. The dedicated `pypi` environment is therefore the intended
+production publishing authority for the 0.10 release path.
