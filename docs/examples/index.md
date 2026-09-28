@@ -11,7 +11,9 @@ to diagnostics, interpretation limits, and the corresponding method contract.
 ## Foundations & representation
 
 Examples for native trajectories, irregular sampling, sparse data, multilevel
-structure, AOI compositions, and phase.
+structure, AOI compositions, phase, and
+[native functional simulation](functional-simulation.md) with exact retained
+truth for recovery studies.
 
 ## FPCA & uncertainty
 

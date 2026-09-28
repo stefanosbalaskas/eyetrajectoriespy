@@ -7,6 +7,11 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.FunctionalSimulationResult
 ::: eyetrajectoriespy.FunctionalSimulationTruth
 ::: eyetrajectoriespy.simulate_functional_process
+::: eyetrajectoriespy.functional_simulation_truth_frame
+::: eyetrajectoriespy.functional_simulation_reporting_text
+::: eyetrajectoriespy.plot_functional_simulation_curve
+::: eyetrajectoriespy.plot_functional_simulation_phase_warps
+::: eyetrajectoriespy.plot_functional_simulation_score_variances
 
 
 ## Multivariate surrogate testing

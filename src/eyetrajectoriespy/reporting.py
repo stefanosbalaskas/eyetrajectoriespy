@@ -5,6 +5,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from ._functional_simulation import FunctionalSimulationResult
 from .prediction import select_fpca_regression_components, summarise_fpca_regression_cv
 from .selection import select_fpca_components_cv, summarise_fpca_cross_validation
 from .subspace import fpca_eigenvalue_gap_table, summarise_fpca_subspace_stability
@@ -43,6 +44,155 @@ from .types import (
     TrajectoryDistanceSensitivityResult,
     TrajectorySet,
 )
+
+
+
+def functional_simulation_truth_frame(
+    result: FunctionalSimulationResult,
+) -> pd.DataFrame:
+    """Return one auditable row per simulated curve and score source."""
+
+    if not isinstance(result, FunctionalSimulationResult):
+        raise TypeError("result must be a FunctionalSimulationResult")
+    truth = result.truth
+    observations = result.observations
+    frame = truth.metadata.reset_index(drop=True).copy()
+    frame.insert(0, "curve_id", observations.curve_ids)
+
+    pre_counts = np.asarray(
+        [len(time) for time in truth.pre_missing_observation_times],
+        dtype=int,
+    )
+    output_schedule_counts = np.asarray(
+        [len(time) for time in truth.observation_times],
+        dtype=int,
+    )
+    missing_counts = np.asarray(
+        [np.count_nonzero(mask) for mask in truth.missingness_mask],
+        dtype=int,
+    )
+    observed_counts = pre_counts - missing_counts
+    displacement = np.max(
+        np.abs(
+            truth.phase_warps_on_truth_grid
+            - truth.truth_grid[None, :]
+        ),
+        axis=1,
+    )
+    frame["n_pre_missing_samples"] = pre_counts
+    frame["n_output_schedule_samples"] = output_schedule_counts
+    frame["n_observed_samples"] = observed_counts
+    frame["n_missing_by_design"] = missing_counts
+    frame["max_phase_displacement"] = displacement
+
+    participant_codes = None
+    if "participant_id" in frame.columns:
+        participant_codes, _ = pd.factorize(
+            frame["participant_id"],
+            sort=False,
+        )
+
+    for component in range(truth.eigenvalues.size):
+        suffix = component + 1
+        frame[f"score_total_{suffix}"] = truth.scores[:, component]
+        frame[f"score_curve_{suffix}"] = truth.curve_scores[:, component]
+        frame[f"score_trial_{suffix}"] = truth.trial_scores[:, component]
+        if participant_codes is not None:
+            frame[f"score_participant_{suffix}"] = (
+                truth.participant_scores[
+                    participant_codes,
+                    component,
+                ]
+            )
+    return frame
+
+
+def functional_simulation_reporting_text(
+    result: FunctionalSimulationResult,
+    *,
+    digits: int = 3,
+) -> str:
+    """Generate manuscript-oriented wording for one functional simulation."""
+
+    if not isinstance(result, FunctionalSimulationResult):
+        raise TypeError("result must be a FunctionalSimulationResult")
+    if isinstance(digits, bool) or not isinstance(digits, (int, np.integer)):
+        raise TypeError("digits must be an integer")
+    if digits < 0:
+        raise ValueError("digits must be non-negative")
+
+    truth = result.truth
+    n_curves = len(result.observations.curve_ids)
+    n_dimensions = len(truth.dimension_names)
+    n_components = truth.eigenvalues.size
+    missing_counts = np.asarray(
+        [np.count_nonzero(mask) for mask in truth.missingness_mask],
+        dtype=int,
+    )
+    counts = np.asarray(
+        [
+            len(time) - missing_count
+            for time, missing_count in zip(
+                truth.pre_missing_observation_times,
+                missing_counts,
+                strict=True,
+            )
+        ],
+        dtype=int,
+    )
+    missing = int(np.sum(missing_counts))
+    eigen = ", ".join(
+        f"{value:.{digits}g}" for value in truth.eigenvalues
+    )
+    participant = ", ".join(
+        f"{value:.{digits}g}"
+        for value in truth.participant_eigenvalues
+    )
+    trial = ", ".join(
+        f"{value:.{digits}g}" for value in truth.trial_eigenvalues
+    )
+    noise_diag = np.diag(truth.measurement_noise_covariance)
+    noise = ", ".join(
+        f"{value:.{digits}g}" for value in noise_diag
+    )
+    score_detail = truth.score_distribution
+    if truth.score_distribution == "student_t":
+        score_detail += (
+            f" (df={truth.score_distribution_parameters['df']:.{digits}g})"
+        )
+
+    provenance = truth.provenance
+    phase_kind = provenance.get("phase_variation_kind", "none")
+    missingness_kind = provenance.get("missingness_kind", "none")
+    interpolation = provenance.get(
+        "raw_dense_to_irregular_interpolation_performed",
+        None,
+    )
+    interpolation_text = (
+        " No dense-to-irregular raw-trajectory interpolation was performed."
+        if interpolation is False
+        else ""
+    )
+
+    return (
+        f"Functional data were generated natively for {n_curves} curves "
+        f"across {n_dimensions} dimension(s) "
+        f"({', '.join(truth.dimension_names)}) using "
+        f"{n_components} declared orthonormal functional mode(s) with "
+        f"curve-level variances [{eigen}]. Curve-level component scores "
+        f"followed {score_detail}; declared participant-level variances were "
+        f"[{participant}] and trial-level variances were [{trial}]. "
+        f"The observation design was {truth.observation_design!r}, with "
+        f"{int(np.min(counts))}–{int(np.max(counts))} retained samples per "
+        f"curve after the declared missingness mechanism "
+        f"({missingness_kind!r}; {missing} samples removed in total). "
+        f"Phase variation used {phase_kind!r}. Measurement-noise marginal "
+        f"variances were [{noise}], with the full covariance retained in the "
+        f"truth object. The random state was {truth.random_state!r}."
+        f"{interpolation_text} Exact latent curves, score sources, phase "
+        "warps, pre-missing observations, missingness masks, and measurement "
+        "noise were retained for audit and estimator-recovery analysis."
+    )
 
 
 def trajectory_distance_sensitivity_reporting_text(

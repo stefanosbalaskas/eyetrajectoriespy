@@ -54,6 +54,27 @@ When native irregular trajectories were present, additionally report:
 - maximum bridged gap;
 - residual missingness after projection.
 
+## Functional simulation
+
+If simulated functional data are used for method validation or examples, report:
+
+- the mean function and functional modes;
+- declared curve-level component variances;
+- curve-level score distribution and its parameters;
+- participant/trial component variances when hierarchical variation is used;
+- dense or irregular observation design and sample-count rule;
+- missingness mechanism;
+- phase-variation mechanism;
+- measurement-noise standard deviations or covariance;
+- dimension names, coordinate system and time unit;
+- random state;
+- whether irregular observations were evaluated directly at native times;
+- which exact truth objects were used for recovery metrics;
+- the downstream estimator specification and recovery metric, separately from
+  the simulation specification.
+
+Do not tune a downstream estimator using latent truth and then present the same
+simulation as an independent recovery check.
 ## Sparse irregular / PACE FPCA
 
 If sparse FPCA was used, report:
