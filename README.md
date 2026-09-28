@@ -17,7 +17,7 @@ derived univariate functions, compositional AOI-probability trajectories, repeat
 
 > **Status:** stable pre-1.0 release (`0.9.0`). The scientific platform, reference-validation layer, reproducibility contracts, packaging checks, and five canonical workflows are qualified.
 >
-> **Development line:** `0.10.0.dev0`. This line contains the qualified native univariate sparse/irregular FPCA + PACE estimator, with explicit smoothing/support/noise/PSD/score contracts and FDApy retained only as an optional compatibility/reference backend. Protected-main integration is complete; production publication remains disarmed until an explicit release qualification and dispatch.
+> **Release-candidate line:** `0.10.0rc1` is being qualified from protected `main`. It contains the native univariate sparse/irregular FPCA + PACE estimator, with explicit smoothing/support/noise/PSD/score contracts and FDApy retained only as an optional compatibility/reference backend. Publication remains disarmed until release qualification is complete and production is deliberately dispatched.
 
 ## What scientific problem does this solve?
 
