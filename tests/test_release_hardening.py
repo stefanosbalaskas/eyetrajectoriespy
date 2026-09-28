@@ -19,7 +19,7 @@ def _load_script(name):
 
 def test_release_version_contract_agrees_for_development_line():
     module = _load_script("verify_release_version.py")
-    assert module.verify_version_contract() == "0.9.1.dev0"
+    assert module.verify_version_contract() == "0.10.0.dev0"
 
 
 def test_production_release_rejects_development_line():
@@ -32,7 +32,7 @@ def test_production_release_rejects_development_tag():
     module = _load_script("verify_release_version.py")
     with pytest.raises(RuntimeError, match="development versions"):
         module.verify_version_contract(
-            tag="v0.9.1.dev0",
+            tag="v0.10.0.dev0",
             production=True,
         )
 
