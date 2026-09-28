@@ -80,6 +80,25 @@ finite-sample variances for each score source with their generating values.
 This validates the simulator's decomposition. It is not a claim that a mixed
 effects estimator can always recover those variances at the same accuracy.
 
+## Declared scenario contract
+
+The recovery workflow now expresses each finite-sample data-generating design
+through `FunctionalSimulationScenario`. The same scenario object carries the
+sample size, truth grid, component variances, dense/irregular observation
+design, sparse sample-count contract, measurement noise, hierarchy,
+distribution, deterministic seed, and provenance labels.
+
+This separation is intentional: scenario specification controls **data
+generation**, while estimator settings remain declared in the estimator
+portion of the validation script. The estimator is not given the latent truth
+or allowed to choose smoothing, component count, regularization, or other
+settings by inspecting recovery performance.
+
+The reusable scenario layer can therefore support broader matrices over
+participant/trial counts, sampling density, noise, sparsity, missingness,
+eigenvalue separation, and phase variation without changing estimator
+contracts.
+
 ## Reproducible qualification artifact
 
 The dedicated workflow runs:
