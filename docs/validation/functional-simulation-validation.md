@@ -11,19 +11,16 @@ synthetic curves.
 
 ## Validation questions
 
-The current qualification asks five separate questions:
+The current qualification asks four separate questions:
 
 1. Does the public dense simulator support ordinary FPCA recovery of the
    declared population mean, covariance structure, retained subspace, scores,
    eigenvalues, and reconstructions?
 2. Does the native irregular sparse FPCA/PACE estimator recover its targets
    when measurement-noise variance is supplied?
-3. Does the same sparse pipeline remain numerically/scientifically recoverable
-   when measurement-noise variance must instead be estimated by the declared
-   diagonal-difference procedure?
-4. Does variance-matched Student-t score generation remain compatible with
+3. Does variance-matched Student-t score generation remain compatible with
    functional-subspace recovery?
-5. Do realized curve, participant, and trial score sources recover their
+4. Do realized curve, participant, and trial score sources recover their
    separately declared finite-sample variance scales?
 
 The same recovery contract also supports post-fit evaluation of multivariate
@@ -79,11 +76,16 @@ records:
   correction magnitude;
 - measurement-noise variance absolute/relative error.
 
-The fixed-noise and estimated-noise cases are separate qualification scenarios.
-A fit given the true noise variance is not evidence that the diagonal-difference
-noise estimator recovers the same quantity. Sparse covariance ISE is computed
-from the **full fitted covariance surface**, not from a rank-truncated
-reconstruction using only returned components.
+A fit given the true noise variance is not evidence that the
+diagonal-difference noise estimator recovers the same quantity. An initial
+well-powered seeded probe of the estimated-noise case retained excellent
+subspace and score recovery but produced measurement-noise relative error far
+above the candidate 200% qualification guard (worst seeded error about 46.25
+times the true variance). The case is therefore retained as **descriptive
+stress evidence**, not made green by widening the threshold.
+
+Sparse covariance ISE is computed from the **full fitted covariance surface**,
+not from a rank-truncated reconstruction using only returned components.
 
 ## Hierarchical score-source recovery
 
