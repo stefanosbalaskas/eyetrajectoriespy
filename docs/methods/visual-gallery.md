@@ -38,6 +38,35 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [FPCA guide](../guides/fpca.md) · [Function → equation index](../reference/function-equation-index.md)
 
+-   **Functional simulation truth audit**
+
+    ![Observed simulated curve against exact latent truth](../assets/gallery/functional-simulation-truth-audit.svg)
+
+    One irregular synthetic curve compared with its retained latent truth; samples removed by the declared missingness mechanism remain auditable.
+
+    **API:** `simulate_functional_process()`, `plot_functional_simulation_curve()`
+
+    [Simulation guide](../guides/functional-simulation.md) · [Worked example](../examples/functional-simulation.md)
+
+-   **Functional simulation phase warps**
+
+    ![Retained functional simulation phase warps](../assets/gallery/functional-simulation-phase-warps.svg)
+
+    Endpoint-preserving realized time warps against the identity map.
+
+    **API:** `plot_functional_simulation_phase_warps()`
+
+    [Simulation guide](../guides/functional-simulation.md) · [Validation](../validation/functional-simulation-validation.md)
+
+-   **Functional simulation score-source variances**
+
+    ![Declared and realized simulation score variances](../assets/gallery/functional-simulation-score-variances.svg)
+
+    Declared versus finite-sample realized curve, participant, and trial score variances by functional component.
+
+    **API:** `plot_functional_simulation_score_variances()`
+
+    [Simulation guide](../guides/functional-simulation.md) · [Validation](../validation/functional-simulation-validation.md)
 -   **Native sparse FPCA component mode**
 
     ![Native sparse FPCA first component](../assets/gallery/sparse-fpca-component.svg)
