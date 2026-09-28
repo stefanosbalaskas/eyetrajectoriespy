@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from eyetrajectoriespy._sparse_native import (
+    RawCovariancePairs,
     SparseNativeError,
     estimate_noise_variance_diagonal_difference,
     evaluate_fitted_covariance,
@@ -11,6 +12,7 @@ from eyetrajectoriespy._sparse_native import (
     pace_scores,
     raw_offdiagonal_covariance_pairs,
     repair_covariance_psd,
+    rotated_local_quadratic_covariance_diagonal,
     weighted_covariance_eigendecomposition,
 )
 from eyetrajectoriespy._sparse_truth import simulate_sparse_functional_truth
@@ -419,3 +421,47 @@ def test_covariance_surface_is_symmetric_and_tracks_local_support():
     assert result.support_counts.shape == (11, 11)
     assert np.allclose(result.values, result.values.T)
     assert np.min(result.support_counts) >= 6
+
+
+def test_rotated_covariance_diagonal_recovers_exact_local_model():
+    base = np.linspace(0.0, 1.0, 11)
+    s_values = []
+    t_values = []
+    products = []
+    curve_index = []
+    root_two = np.sqrt(2.0)
+
+    for left, s in enumerate(base):
+        for right, t in enumerate(base):
+            if left == right:
+                continue
+            along = (s + t) / root_two
+            perpendicular = (-s + t) / root_two
+            s_values.append(s)
+            t_values.append(t)
+            products.append(
+                1.25 + 0.40 * along - 0.30 * perpendicular**2
+            )
+            curve_index.append(0)
+
+    pairs = RawCovariancePairs(
+        s=np.asarray(s_values, dtype=float),
+        t=np.asarray(t_values, dtype=float),
+        products=np.asarray(products, dtype=float),
+        curve_index=np.asarray(curve_index, dtype=int),
+        mirrored=True,
+    )
+    grid = np.array([0.25, 0.50, 0.75])
+    result = rotated_local_quadratic_covariance_diagonal(
+        pairs,
+        grid,
+        bandwidth=0.55,
+        min_local_pairs=6,
+    )
+
+    expected = 1.25 + 0.40 * root_two * grid
+    assert np.allclose(result.values, expected, rtol=1e-11, atol=1e-11)
+    assert np.min(result.support_counts) >= 6
+    assert result.rotation == (
+        "45_degrees_linear_along_diagonal_quadratic_perpendicular"
+    )
