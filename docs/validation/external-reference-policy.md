@@ -26,10 +26,10 @@ FDApy currently has two roles:
 
 1. a public, explicitly backend-named sparse/PACE compatibility path through
    `fit_sparse_fpca_fdapy()`;
-2. an external numerical reference for the planned native 0.10 sparse
+2. an external numerical reference/sensitivity comparator for the native 0.10 sparse
    FPCA/PACE implementation.
 
-It is **not** a core dependency. The canonical 0.10 estimator must not call
+It is **not** a core dependency. The canonical 0.10 estimator does not call
 FDApy internally.
 
 The existing optional wrapper is retained during the transition because it is
