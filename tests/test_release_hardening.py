@@ -22,6 +22,17 @@ def test_release_version_contract_agrees_for_development_line():
     assert module.verify_version_contract() == "0.10.0rc1"
 
 
+def test_release_candidate_version_contract_is_production_eligible():
+    module = _load_script("verify_release_version.py")
+    assert (
+        module.verify_version_contract(
+            tag="v0.10.0rc1",
+            production=True,
+        )
+        == "0.10.0rc1"
+    )
+
+
 def test_production_release_rejects_development_line():
     module = _load_script("verify_release_version.py")
     with pytest.raises(RuntimeError, match="development versions"):
