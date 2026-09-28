@@ -3,6 +3,12 @@
 For mathematical definitions of the main estimands, transformations, studentization rules, and calibration statistics, see the [function → equation index](function-equation-index.md) and [implementation-matched mathematical reference](../methods/mathematical-reference.md). For decision flow, use the [workflow atlas](../methods/workflow-atlas.md); for representative rendered outputs, see the [visual gallery](../methods/visual-gallery.md).
 
 
+## Native functional simulation
+::: eyetrajectoriespy.FunctionalSimulationResult
+::: eyetrajectoriespy.FunctionalSimulationTruth
+::: eyetrajectoriespy.simulate_functional_process
+
+
 ## Multivariate surrogate testing
 ::: eyetrajectoriespy.MultivariateIAAFTResult
 ::: eyetrajectoriespy.MultivariateSurrogateNonlinearityResult
