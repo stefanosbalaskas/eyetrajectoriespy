@@ -1,6 +1,12 @@
 {
+  "schema_version": 1,
+  "package_version": "0.10.0rc1",
   "benchmark_kind": "single-package performance envelope",
   "comparative_benchmark": false,
+  "profile": "ci-qualification",
+  "status": "qualified",
+  "qualification_commit": "a38326dcd961e49a88f8a64e1b97d735d55721f2",
+  "qualification_run_id": "36411617058",
   "environment": {
     "cpu_model": "AMD EPYC 7763 64-Core Processor",
     "github_run_id": "36411617058",
@@ -30,8 +36,6 @@
     },
     "workflow_commit": "b60da2d917a974aa2f00ac17d5011b1799db138b"
   },
-  "interpretation": "Observed runtime and process peak RSS on the recorded environment. No cross-package speed claim and no universal workstation claim.",
-  "profile": "ci-qualification",
   "results": [
     {
       "case": "fpca_bootstrap",
@@ -224,5 +228,5 @@
       }
     }
   ],
-  "schema_version": 1
+  "interpretation": "Observed runtime and process peak RSS on the recorded environment. No cross-package speed claim and no universal workstation claim."
 }
