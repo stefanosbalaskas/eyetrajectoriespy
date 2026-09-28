@@ -148,6 +148,26 @@ def test_recovery_runner_keeps_truth_out_of_estimator_callback():
     assert frame.shape[0] == 4
 
 
+
+def test_scenario_rejects_conflicting_or_invalid_noise_declarations():
+    with pytest.raises(ValueError, match="cannot both specify non-zero noise"):
+        _base_scenario(
+            measurement_noise_sd=0.1,
+            measurement_noise_covariance=np.array([[0.04]]),
+        )
+    with pytest.raises(ValueError, match="positive semidefinite"):
+        FunctionalSimulationScenario(
+            name="bad-covariance",
+            truth_grid=np.linspace(0.0, 1.0, 21),
+            eigenvalues=(1.0,),
+            n_participants=4,
+            dimension_names=("x", "y"),
+            measurement_noise_sd=None,
+            measurement_noise_covariance=np.array(
+                [[1.0, 2.0], [2.0, 1.0]]
+            ),
+        )
+
 def test_recovery_metrics_fail_closed_on_nonfinite_values():
     with pytest.raises(ValueError, match="finite"):
         FunctionalRecoveryRecord(
