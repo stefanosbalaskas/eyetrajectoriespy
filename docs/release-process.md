@@ -1,6 +1,6 @@
 # Coordinated GitHub Release and PyPI publication
 
-## 0.10.0rc1 qualification
+## 0.10.0rc1 qualification and publication
 
 The next publication candidate is `0.10.0rc1`. It contains the native
 sparse/irregular FPCA + PACE tranche already integrated into protected
@@ -36,6 +36,13 @@ manual target=production dispatch only
 
 The qualification branch and its pull request do not publish anything. A
 production dispatch remains a separate deliberate action.
+
+For the current 0.10.0rc1 candidate, the fresh performance envelope, complete
+pull-request matrix, protected-main merge, and complete exact-main matrix have
+all passed. Release readiness is now jointly armed for GitHub and production
+publication through a reviewed change. The remaining publication action is the
+explicit manual `release.yml` dispatch with `target=production`; ordinary
+pushes and merges remain non-publishing.
 
 Version 0.9.0 uses the release machinery qualified during the 0.9.0rc1
 ceremony. The final release is a separate immutable version; the RC remains a
