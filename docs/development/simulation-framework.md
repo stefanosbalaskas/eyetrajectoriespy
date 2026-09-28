@@ -79,9 +79,23 @@ effects into a single unlabeled score source.
 
 ### Stage 3 — public composition
 
-The public API is introduced only after deterministic replay, exact
-decomposition, dense/irregular schedule equivalence, and truth-accountability
-tests pass.
+After Stages 1–2 qualification, the public composition layer exposes:
+
+- `simulate_functional_process(...)`;
+- `FunctionalSimulationResult`, containing observations plus truth;
+- `FunctionalSimulationTruth`, retaining the complete realized generating
+  mechanism;
+- variance-matched normal or Student-t curve-level score distributions;
+- the dense/irregular, hierarchy, noise, missingness and phase contracts from
+  the qualified private core.
+
+Student-t scores require more than two degrees of freedom so the declared
+component variance exists. Participant/trial score effects remain Gaussian
+and are retained separately.
+
+The public function remains a thin composition layer over the qualified native
+core; it does not delegate scientific generation to FDApy or another FDA
+library.
 ## Candidate capabilities
 
 A native simulator should allow analyst-declared:

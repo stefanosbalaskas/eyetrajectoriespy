@@ -47,16 +47,21 @@ class FunctionalSimulationTruth:
     coordinate_system: str
     time_unit: str
     observation_design: str
+    score_distribution: str
+    score_distribution_parameters: dict[str, Any]
     random_state: int | None
     provenance: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
-class FunctionalSimulationCoreResult:
-    """Private simulation result containing observations and exact truth."""
+class FunctionalSimulationResult:
+    """Functional simulation observations together with exact generating truth."""
 
     observations: TrajectorySet | IrregularTrajectorySet
     truth: FunctionalSimulationTruth
+
+
+FunctionalSimulationCoreResult = FunctionalSimulationResult
 
 
 def _validate_truth_grid(truth_grid: np.ndarray) -> np.ndarray:
@@ -170,6 +175,43 @@ def _validate_modes(
             "does not silently normalize or orthogonalize supplied modes"
         )
     return modes, values
+
+
+
+def _sample_curve_scores(
+    *,
+    rng: np.random.Generator,
+    n_curves: int,
+    eigenvalues: np.ndarray,
+    score_distribution: str,
+    score_df: float,
+) -> tuple[np.ndarray, dict[str, Any]]:
+    """Draw curve-level scores with the declared component variances."""
+
+    if score_distribution == "normal":
+        scores = (
+            rng.normal(size=(n_curves, eigenvalues.size))
+            * np.sqrt(eigenvalues)[None, :]
+        )
+        return scores, {"kind": "normal"}
+
+    if score_distribution == "student_t":
+        df = float(score_df)
+        if not np.isfinite(df) or df <= 2:
+            raise ValueError(
+                "score_df must be finite and greater than 2 for "
+                "score_distribution='student_t'"
+            )
+        variance_scale = (df - 2.0) / df
+        scores = (
+            rng.standard_t(df, size=(n_curves, eigenvalues.size))
+            * np.sqrt(eigenvalues * variance_scale)[None, :]
+        )
+        return scores, {"kind": "student_t", "df": df}
+
+    raise ValueError(
+        "score_distribution must be 'normal' or 'student_t'"
+    )
 
 
 def _resolve_hierarchy_variances(
@@ -516,9 +558,11 @@ def simulate_functional_process_core(
     measurement_noise_covariance: np.ndarray | None = None,
     missingness: Mapping[str, Any] | None = None,
     phase_variation: Mapping[str, Any] | None = None,
+    score_distribution: str = "normal",
+    score_df: float = 5.0,
     orthonormal_tolerance: float = 1e-6,
     random_state: int | None = 42,
-) -> FunctionalSimulationCoreResult:
+) -> FunctionalSimulationResult:
     """Generate deterministic functional observations plus accountable truth.
 
     This function remains private while the 0.11 simulation contract is being
@@ -586,9 +630,12 @@ def simulate_functional_process_core(
     )
     rng = np.random.default_rng(random_state)
 
-    curve_scores = (
-        rng.normal(size=(n_curves, eigenvalue_array.size))
-        * np.sqrt(eigenvalue_array)[None, :]
+    curve_scores, score_distribution_parameters = _sample_curve_scores(
+        rng=rng,
+        n_curves=n_curves,
+        eigenvalues=eigenvalue_array,
+        score_distribution=score_distribution,
+        score_df=score_df,
     )
     participant_scores = (
         rng.normal(size=(n_participants, eigenvalue_array.size))
@@ -771,6 +818,8 @@ def simulate_functional_process_core(
             None if missingness is None else dict(missingness)
         ),
         "n_components": int(eigenvalue_array.size),
+        "score_distribution": score_distribution,
+        "score_distribution_parameters": score_distribution_parameters,
         "truth_grid": grid.tolist(),
         "raw_dense_to_irregular_interpolation_performed": False,
     }
@@ -844,10 +893,14 @@ def simulate_functional_process_core(
         coordinate_system=coordinate_system,
         time_unit=time_unit,
         observation_design=observation_design,
+        score_distribution=score_distribution,
+        score_distribution_parameters=dict(
+            score_distribution_parameters
+        ),
         random_state=random_state,
         provenance=provenance.copy(),
     )
-    return FunctionalSimulationCoreResult(
+    return FunctionalSimulationResult(
         observations=observations,
         truth=truth,
     )

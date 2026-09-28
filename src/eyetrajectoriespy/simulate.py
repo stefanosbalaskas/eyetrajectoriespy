@@ -2,11 +2,86 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable, Mapping, Sequence
+from typing import Any
+
 import numpy as np
 import pandas as pd
 
+from ._functional_simulation import (
+    FunctionalSimulationResult,
+    FunctionalSimulationTruth,
+    simulate_functional_process_core,
+)
 from .types import TrajectorySet
 
+def simulate_functional_process(
+    *,
+    mean: Callable[[np.ndarray], np.ndarray],
+    eigenfunctions: Sequence[Callable[[np.ndarray], np.ndarray]],
+    eigenvalues: Sequence[float],
+    truth_grid: np.ndarray,
+    n_participants: int,
+    trials_per_participant: int = 1,
+    dimension_names: Sequence[str] = ("value",),
+    coordinate_system: str = "arbitrary",
+    time_unit: str = "normalized",
+    observation_design: str = "dense",
+    observation_times: Sequence[np.ndarray] | None = None,
+    samples_per_curve: int | tuple[int, int] | None = None,
+    irregular_time_design: str = "uniform",
+    participant_eigenvalues: Sequence[float] | None = None,
+    trial_eigenvalues: Sequence[float] | None = None,
+    measurement_noise_sd: float | Sequence[float] | None = 0.0,
+    measurement_noise_covariance: np.ndarray | None = None,
+    missingness: Mapping[str, Any] | None = None,
+    phase_variation: Mapping[str, Any] | None = None,
+    score_distribution: str = "normal",
+    score_df: float = 5.0,
+    orthonormal_tolerance: float = 1e-6,
+    random_state: int | None = 42,
+) -> FunctionalSimulationResult:
+    """Simulate dense or irregular functional trajectories with exact truth.
+
+    Mean and vector-valued functional modes are evaluated directly on each
+    observation schedule. Irregular observations are never created by silently
+    interpolating a dense raw trajectory.
+
+    The returned FunctionalSimulationResult contains both the observed
+    TrajectorySet or IrregularTrajectorySet and a complete
+    FunctionalSimulationTruth record with realized scores, hierarchy, phase
+    warps, measurement noise, missingness and pre-missing schedules.
+
+    Curve-level scores may follow a variance-matched normal or Student-t
+    distribution. Participant/trial score effects remain Gaussian and are
+    retained separately in truth.
+    """
+
+    return simulate_functional_process_core(
+        mean=mean,
+        eigenfunctions=eigenfunctions,
+        eigenvalues=eigenvalues,
+        truth_grid=truth_grid,
+        n_participants=n_participants,
+        trials_per_participant=trials_per_participant,
+        dimension_names=dimension_names,
+        coordinate_system=coordinate_system,
+        time_unit=time_unit,
+        observation_design=observation_design,
+        observation_times=observation_times,
+        samples_per_curve=samples_per_curve,
+        irregular_time_design=irregular_time_design,
+        participant_eigenvalues=participant_eigenvalues,
+        trial_eigenvalues=trial_eigenvalues,
+        measurement_noise_sd=measurement_noise_sd,
+        measurement_noise_covariance=measurement_noise_covariance,
+        missingness=missingness,
+        phase_variation=phase_variation,
+        score_distribution=score_distribution,
+        score_df=score_df,
+        orthonormal_tolerance=orthonormal_tolerance,
+        random_state=random_state,
+    )
 
 def simulate_planar_trajectories(
     *,
