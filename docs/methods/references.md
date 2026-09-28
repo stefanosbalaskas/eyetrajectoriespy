@@ -82,7 +82,7 @@ Stewart GW, Sun J-G. *Matrix Perturbation Theory*. Academic Press; 1990.
 
 ## Software backends
 
-`scikit-fda` provides general Python functional-data representations and estimators. `FDApy` provides dense/irregular functional representations, covariance-UFPCA/PACE methods, and currently serves both as the explicitly optional sparse compatibility backend and as an independent numerical reference for the planned native sparse implementation. `fdasrsf` provides elastic registration and SRVF curve statistics. `eyetrajectoriespy` adds eye-tracking-specific contracts, representations, safeguards, and workflows.
+`scikit-fda` provides general Python functional-data representations and estimators. `FDApy` provides dense/irregular functional representations and covariance-UFPCA/PACE methods. In eyetrajectoriespy 0.10 it remains an explicitly optional sparse compatibility backend and an independent reference/sensitivity comparator; the canonical sparse estimator is implemented natively. `fdasrsf` provides elastic registration and SRVF curve statistics. `eyetrajectoriespy` adds eye-tracking-specific contracts, representations, safeguards, and workflows.
 
 
 ## Additional functional-data software

@@ -172,6 +172,7 @@ nav:
           - External reference policy: validation/external-reference-policy.md
           - Release readiness: release-readiness.md
           - Independent-reference validation ledger: validation/reference-validation-ledger.md
+          - Native sparse FPCA validation: validation/sparse-fpca-validation.md
           - Numerical tolerance policy: validation/numerical-tolerance-policy.md
           - Performance envelope: validation/performance-envelope.md
       - Development roadmap:

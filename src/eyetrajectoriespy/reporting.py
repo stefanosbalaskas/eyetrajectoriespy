@@ -788,30 +788,123 @@ def sparse_fpca_reporting_text(
 ) -> str:
     """Generate manuscript-oriented wording for sparse PACE FPCA."""
 
-    sample_counts = result.provenance.get("sparse_fpca", {}).get("sample_counts", [])
+    sparse = result.provenance.get("sparse_fpca", {})
+    sample_counts = sparse.get("sample_counts", [])
     if sample_counts:
         sample_range = f"{min(sample_counts)}–{max(sample_counts)}"
     else:
         sample_range = "not recorded"
-    eigen = ", ".join(f"{value:.{digits}f}" for value in result.eigenvalues)
-    sparse = result.provenance.get("sparse_fpca", {})
+    eigen = ", ".join(
+        f"{value:.{digits}f}"
+        for value in result.eigenvalues
+    )
     grid = sparse.get("evaluation_grid")
     if grid:
         grid_text = f"{len(grid)} points over [{grid[0]:g}, {grid[-1]:g}]"
     else:
         grid_text = "backend-default evaluation points"
-    custom = bool(sparse.get("kwargs_mean") or sparse.get("kwargs_covariance"))
-    custom_text = " Custom mean/covariance smoothing parameters were supplied." if custom else ""
+
+    if sparse.get("backend") == "native":
+        psd = sparse.get("covariance_psd", {})
+        correction = psd.get("applied_action", "unknown")
+        relative_operator_correction = psd.get(
+            "relative_operator_correction_frobenius_norm"
+        )
+        noise_method = sparse.get("noise_variance_method", "unknown")
+        noise_support = sparse.get("noise_support")
+        ridge = sparse.get("score_ridge", 0.0)
+        analysis_support = sparse.get("analysis_support")
+        support_action = sparse.get("analysis_support_action", "unknown")
+        outside_count = sparse.get("outside_observation_count", 0)
+
+        support_text = ""
+        if analysis_support is not None and len(analysis_support) == 2:
+            support_text = (
+                f" The declared analysis support was "
+                f"[{analysis_support[0]:g}, {analysis_support[1]:g}] with "
+                f"support action {support_action!r}; "
+                f"{int(outside_count)} observations lay outside it."
+            )
+        noise_text = ""
+        if noise_support is not None and len(noise_support) == 2:
+            noise_text = (
+                f" Diagonal-difference noise estimation used support "
+                f"[{noise_support[0]:g}, {noise_support[1]:g}]."
+            )
+        psd_text = ""
+        if relative_operator_correction is not None:
+            psd_text = (
+                " The relative quadrature-weighted PSD-repair magnitude was "
+                f"{float(relative_operator_correction):.{digits}g}."
+            )
+
+        score_text = ""
+        if not result.score_diagnostics.empty:
+            diagnostics = result.score_diagnostics
+            if "status_code" in diagnostics.columns:
+                failed = int(
+                    np.sum(
+                        diagnostics["status_code"].astype(str).to_numpy()
+                        != "ok"
+                    )
+                )
+                score_text += (
+                    f" PACE scoring returned {failed} non-ok systems among "
+                    f"{len(diagnostics)} curves."
+                )
+            if "condition_number" in diagnostics.columns:
+                condition = diagnostics["condition_number"].to_numpy(
+                    dtype=float
+                )
+                finite = condition[
+                    np.isfinite(condition) & (condition > 0)
+                ]
+                if finite.size:
+                    score_text += (
+                        " The median finite conditional covariance condition "
+                        f"number was {np.median(finite):.{digits}g}."
+                    )
+
+        return (
+            f"Sparse univariate FPCA was fitted natively to the "
+            f"{result.dimension!r} trajectory dimension using explicit "
+            f"local-linear pooled mean and covariance smoothing "
+            f"({result.n_components} components; per-curve sample-count "
+            f"range={sample_range}; retained eigenvalues={eigen}). "
+            "Raw sparse trajectories were not interpolated to a common grid. "
+            f"Population functions were represented on {grid_text} and "
+            "evaluated at each curve's native observation times for PACE "
+            "scoring. The conditional score system used the full fitted "
+            "covariance surface plus measurement-error variance rather than "
+            "the retained-rank covariance reconstruction."
+            f"{support_text} Measurement-error variance used "
+            f"{noise_method!r}.{noise_text} Covariance PSD handling applied "
+            f"{correction!r}; the declared score ridge was "
+            f"{float(ridge):g}.{psd_text}{score_text} The analysis was "
+            "univariate and did not model cross-channel covariance."
+        )
+
+    custom = bool(
+        sparse.get("kwargs_mean")
+        or sparse.get("kwargs_covariance")
+    )
+    custom_text = (
+        " Custom mean/covariance smoothing parameters were supplied."
+        if custom
+        else ""
+    )
     return (
-        f"Sparse univariate FPCA was fitted to the {result.dimension!r} trajectory "
-        f"dimension using FDApy's covariance-operator estimator, with "
-        f"{result.fit_smoothing!r} fitting smoothness and PACE "
+        f"Sparse univariate FPCA was fitted to the {result.dimension!r} "
+        "trajectory dimension using FDApy's covariance-operator estimator, "
+        f"with {result.fit_smoothing!r} fitting smoothness and PACE "
         f"conditional-expectation scores ({result.n_components} components; "
-        f"per-curve sample-count range={sample_range}; retained eigenvalues={eigen}). "
-        "No common-grid interpolation was performed before sparse FPCA. "
-        f"Eigenfunctions/covariance were evaluated on {grid_text}. "
-        f"PACE tolerance was {result.tolerance:g} and score smoothing was "
-        f"{result.score_smoothing!r}.{custom_text}"
+        f"per-curve sample-count range={sample_range}; retained "
+        f"eigenvalues={eigen}). eyetrajectoriespy did not pre-interpolate "
+        f"raw sparse curves before passing them to FDApy; the FDApy irregular "
+        f"PACE backend may smooth/interpolate internally as part of its score "
+        f"path. Eigenfunctions/covariance were evaluated on "
+        f"{grid_text}. PACE tolerance was {result.tolerance:g} and score "
+        f"smoothing was {result.score_smoothing!r}.{custom_text}"
     )
 
 

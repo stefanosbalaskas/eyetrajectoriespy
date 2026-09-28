@@ -171,12 +171,16 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.normalize_coordinates
 ::: eyetrajectoriespy.center_on_landmark
 
-## Sparse irregular PACE FPCA
+## Sparse irregular FPCA / PACE
 ::: eyetrajectoriespy.sparse_dimension_summary
+::: eyetrajectoriespy.fit_sparse_fpca
 ::: eyetrajectoriespy.to_fdapy_irregular
 ::: eyetrajectoriespy.fit_sparse_fpca_fdapy
 ::: eyetrajectoriespy.sparse_fpca_score_frame
 ::: eyetrajectoriespy.plot_sparse_irregular_dimension
+::: eyetrajectoriespy.plot_sparse_fpca_component
+::: eyetrajectoriespy.plot_sparse_fpca_covariance
+::: eyetrajectoriespy.plot_sparse_fpca_score_diagnostics
 ::: eyetrajectoriespy.sparse_fpca_reporting_text
 
 ## Functional mean inference

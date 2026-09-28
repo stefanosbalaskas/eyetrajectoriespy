@@ -28,6 +28,7 @@ def test_reference_validation_ledger_has_explicit_evidence_strengths():
         "analytical_truth",
         "independent_implementation_equivalence",
         "simulation_recovery",
+        "cross_implementation_sensitivity",
     }
 
     tolerance_ids = {item["id"] for item in tolerances["classes"]}
@@ -73,6 +74,8 @@ def test_tolerance_policy_does_not_use_one_universal_threshold():
     assert classes["exact_combinatorial"]["default_rtol"] == 0.0
     assert classes["external_backend_equivalence"]["default_rtol"] is None
     assert classes["simulation_recovery"]["default_atol"] is None
+    assert classes["cross_implementation_sensitivity"]["default_rtol"] is None
+    assert "Do not label" in classes["cross_implementation_sensitivity"]["policy"]
     assert "subspaces" in classes["linear_algebra_invariant"]["policy"]
 
 

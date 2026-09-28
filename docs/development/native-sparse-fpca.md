@@ -4,19 +4,19 @@ title: Native sparse / irregular FPCA + PACE roadmap
 
 # Native sparse / irregular FPCA + PACE roadmap
 
-This page defines the **0.10.0 scientific development tranche**. It is a design
-and validation contract, not an implementation claim for the current 0.9.1
-maintenance line.
+This page defines the **0.10.0 scientific development tranche**. It is a design,
+implementation, and validation contract for the dedicated 0.10 development branch;
+it is not an implementation claim for the 0.9.1 maintenance line.
 
 ## Release boundary
 
 - **0.9.1** remains maintenance/consolidation only: defects, documentation,
   compatibility, UX, validation, performance, and release hardening.
-- **0.10.0** is the planned native sparse/irregular FPCA + PACE tranche.
-- the existing `fit_sparse_fpca_fdapy()` API remains available during the
-  transition as an explicitly backend-named compatibility/reference path;
-- FDApy is not a required core dependency and is not the implementation target
-  for the canonical 0.10 estimator.
+- **0.10.0** is the native sparse/irregular FPCA + PACE tranche.
+- `fit_sparse_fpca_fdapy()` remains an explicitly backend-named compatibility
+  and external-reference path during migration.
+- FDApy is not a required core dependency and is not the implementation
+  underneath the canonical native estimator.
 
 The architectural rule is:
 
@@ -28,86 +28,115 @@ $$
 
 ## Statistical target
 
-For curve $i$ observed at subject-specific times $t_{ij}$,
+For curve $i$ observed at curve-specific times $t_{ij}$,
 
 $$
 Y_{ij}=X_i(t_{ij})+\epsilon_{ij},
 $$
 
-with a latent smooth process
+with latent process
 
 $$
 X_i(t)=\mu(t)+\sum_{k=1}^{K}\xi_{ik}\phi_k(t).
 $$
 
-The native sparse pipeline should estimate the population mean
+The native pipeline estimates the population mean
 
 $$
 \mu(t)=E\{X(t)\},
 $$
 
-then the latent covariance surface
+and latent covariance surface
 
 $$
 G(s,t)=\operatorname{Cov}\{X(s),X(t)\},
 $$
 
-while treating the measurement-error contribution on the raw covariance
-diagonal separately from the smooth latent covariance.
+while treating measurement-error variance separately from the smooth latent
+covariance diagonal.
 
-The eigenfunctions then satisfy
+The covariance eigenfunctions satisfy
 
 $$
 \int G(s,t)\phi_k(s)\,ds
 =
-\lambda_k\phi_k(t),
+\lambda_k\phi_k(t).
 $$
 
-and subject-specific sparse scores are recovered by conditional expectation
-(PACE):
+PACE scores use conditional expectation:
 
 $$
 \widehat{\xi}_{ik}
 =
-\lambda_k
-\phi_{ik}^{\top}
-\Sigma_i^{-1}
-\left(Y_i-\widehat{\mu}_i\right),
+\widehat\lambda_k
+\widehat\phi_k(T_i)^{\top}
+\widehat\Sigma_i^{-1}
+\left\{Y_i-\widehat\mu(T_i)\right\},
 $$
 
-where $\phi_{ik}$ evaluates eigenfunction $k$ at curve $i$'s observed times and
-$\Sigma_i$ is the fitted covariance-plus-measurement-error matrix on those
-times.
+with
+
+$$
+\widehat\Sigma_i
+=
+\widehat G(T_i,T_i)
++
+\widehat\sigma_\epsilon^2 I
++
+\gamma I.
+$$
+
+The conditional score system uses the **full fitted covariance surface**.
+Retaining $K$ components controls which $(\lambda_k,\phi_k)$ and scores are
+returned; it does not replace $\widehat G(T_i,T_i)$ by a rank-$K$
+reconstruction. The declared ridge $\gamma$ changes the estimator and is
+therefore recorded as part of the statistical/numerical specification.
+
+## Model evaluation is not raw-data interpolation
+
+Evaluating $\widehat\mu(t)$, $\widehat G(s,t)$, or
+$\widehat\phi_k(t)$ at a curve\'s native observation times is evaluation of
+a fitted population object. It does **not** create a dense version of the raw
+sparse trajectory.
+
+The native implementation records both facts explicitly:
+
+```text
+raw_sparse_trajectory_interpolation_performed = False
+population_function_evaluation_at_native_times = True
+```
 
 ## Non-negotiable scientific choices
 
-The implementation must keep these choices explicit and recorded in provenance:
+The implementation keeps these choices explicit and retains them in provenance:
 
-- mean smoother and its bandwidth/penalty;
-- covariance smoother and its bandwidth/penalty;
-- evaluation grid;
+- mean smoother and bandwidth/penalty;
+- covariance smoother and bandwidth/penalty;
+- evaluation grid and declared analysis support;
+- explicit handling of observations outside that support;
 - covariance-diagonal handling;
-- measurement-noise variance estimator;
-- any positive-semidefinite covariance repair;
+- measurement-noise estimator and its averaging support;
+- positive-semidefinite covariance policy and tolerance;
 - number of retained components;
-- PACE score estimator;
-- linear-system tolerance / regularization;
-- support/domain restrictions;
-- any exclusion criterion for extremely sparse curves.
+- PACE score system and conditioning threshold;
+- score ridge / regularization;
+- failure behavior for sparse or ill-conditioned curves;
+- any support/domain restriction.
 
 The package must not silently:
 
 - interpolate sparse curves to a dense common grid;
 - convert absent observations to zeros;
-- select smoothing parameters from downstream outcome effects;
-- choose component count without an explicit rule;
-- clip negative covariance eigenvalues without recording the correction;
-- drop singular/ill-conditioned subject score systems;
+- choose smoothing parameters;
+- choose component count;
+- clip a materially indefinite covariance without recording it;
+- drop singular or ill-conditioned score systems;
+- restrict observations to an analysis interval;
 - call separate univariate $x(t)$ and $y(t)$ fits “multivariate PACE”.
 
-## Proposed 0.10 public API
+## Public 0.10 estimator contract
 
-The canonical entry point should be native and backend-independent:
+The canonical native entry point is:
 
 ```python
 fit_sparse_fpca(
@@ -116,19 +145,21 @@ fit_sparse_fpca(
     dimension,
     n_components,
     evaluation_grid,
-    mean_smoother,
-    covariance_smoother,
-    mean_bandwidth=None,
-    covariance_bandwidth=None,
+    mean_bandwidth,
+    covariance_bandwidth,
+    noise_bandwidth=None,
+    noise_support=None,
+    analysis_support_action="error",
     noise_variance_method="diagonal_difference",
-    score_method="PACE",
-    score_tolerance=1e-8,
-    covariance_psd_action="error",
+    measurement_error_variance=None,
+    psd_action="error",
+    psd_tolerance=1e-8,
+    positive_eigen_tolerance=1e-10,
+    score_ridge=0.0,
+    score_condition_limit=1e12,
+    score_failure_action="error",
 )
 ```
-
-Exact argument names may change during implementation, but the scientific
-choices above may not disappear behind automatic defaults.
 
 The existing compatibility function remains explicitly backend-named:
 
@@ -136,20 +167,39 @@ The existing compatibility function remains explicitly backend-named:
 fit_sparse_fpca_fdapy(...)
 ```
 
-It should not become the implementation underneath `fit_sparse_fpca()`.
+It must not become the implementation underneath `fit_sparse_fpca()`.
+
+## Analysis support
+
+The evaluation-grid endpoints define the declared analysis interval
+$[a,b]\subseteq[\min T,\max T]$. A grid need not extend to the two most
+extreme pooled observations.
+
+If samples fall outside $[a,b]$, the default behavior is to fail. Samples are
+excluded only when the analyst explicitly requests
+`analysis_support_action="restrict"`. In that case the result retains:
+
+- total observations outside the support;
+- number of affected curves;
+- per-curve outside counts;
+- original sample counts;
+- effective in-support sample counts;
+- number of curves with no in-support observations.
+
+There is no automatic trimming.
 
 ## Native implementation stages
 
 ### 1. Validate native irregular observations
 
 Input remains `IrregularTrajectorySet`. Absence is represented by absence of a
-sample, not by NaN placeholders. The selected dimension, time support, per-curve
-sample counts, and duplicate-time rules are validated before estimation.
+sample rather than NaN/Inf placeholders in the selected dimension.
 
 ### 2. Estimate the pooled mean
 
-Estimate $\widehat{\mu}(t)$ directly from the pooled irregular observations.
-The smoother and tuning parameter remain explicit.
+Estimate $\widehat\mu(t)$ directly from pooled irregular observations on the
+declared analysis support. The initial 0.10 implementation uses explicitly
+declared local-linear / Epanechnikov smoothing.
 
 ### 3. Construct raw covariance pairs
 
@@ -162,117 +212,178 @@ C_{ijl}
 \left(Y_{il}-\widehat\mu(t_{il})\right).
 $$
 
-Off-diagonal pairs provide information about the latent covariance surface
-without directly adding measurement-error variance.
+Off-diagonal pairs inform the latent covariance without directly adding
+measurement-error variance.
 
-### 4. Smooth the covariance surface
+### 4. Smooth and audit the covariance surface
 
-Estimate $\widehat G(s,t)$ on an explicit evaluation grid. Symmetry must be
-enforced transparently. Any positive-semidefinite correction must be reported
-as a numerical/statistical operation, not hidden.
+Estimate $\widehat G(s,t)$ on the declared evaluation grid and enforce
+symmetry transparently. PSD inspection is performed on the quadrature-weighted
+operator $W^{1/2}\widehat G W^{1/2}$.
+
+PSD diagnostics retain the pre-repair spectrum, negative-eigenvalue counts,
+the ordinary grid-matrix correction norm, and the operator-scale quantity
+
+$$
+\left\|
+W^{1/2}
+\left(
+\widehat G_{\mathrm{repaired}}-\widehat G
+\right)
+W^{1/2}
+\right\|_F,
+$$
+
+plus its relative version. A tiny numerical negative and a materially
+indefinite estimated covariance are therefore not represented as the same
+problem.
 
 ### 5. Estimate measurement-error variance
 
-Use an explicit estimator based on the raw diagonal versus the fitted smooth
-latent diagonal, or another separately documented method. Retain the estimate
-and diagnostics in the result.
+With `noise_variance_method="diagonal_difference"`, the analyst must declare
+both `noise_bandwidth` and `noise_support=(a,b)`. The raw-minus-latent
+diagonal difference is averaged only over that declared interval. The package
+does not silently assume that the whole fitted support is the appropriate
+noise-estimation domain.
+
+Alternatively, `noise_variance_method="fixed"` accepts an explicitly supplied
+non-negative measurement-error variance.
 
 ### 6. Solve the covariance eigenproblem
 
-Use quadrature weights on the declared grid, return eigenvalues/eigenfunctions,
-and apply deterministic sign conventions only for reproducibility—not as a
-scientific identification claim.
+The eigensolver uses quadrature weights and deterministic sign conventions for
+reproducibility only.
+
+The requested component count is **not** capped at `n_curves - 1`. A covariance
+surface obtained by smoothing irregular pairwise products is not the ordinary
+centered empirical covariance matrix of fully observed curves. Component
+availability is therefore determined by the number of eigenvalues of the
+fitted weighted operator above `positive_eigen_tolerance`.
 
 ### 7. Recover PACE scores
 
-For each curve, evaluate the fitted mean/eigenfunctions on its own native
-sampling times, construct $\widehat\Sigma_i$, and solve the conditional-score
-system. Ill-conditioning, numerical regularization, or failed solves must be
-visible in diagnostics.
+For each curve, evaluate the fitted mean, covariance, and retained
+eigenfunctions at its native in-support observation times and solve the full
+covariance-plus-noise conditional system. Per-curve diagnostics retain sample
+count, condition number, smallest/largest system eigenvalue, ridge, solve
+status, and structured failure code.
+
+## Failure/status distinctions
+
+The native layer distinguishes failure modes including:
+
+```text
+insufficient_pooled_support
+insufficient_mean_local_support
+insufficient_within_curve_covariance_pairs
+insufficient_covariance_local_support
+insufficient_noise_support
+noise_variance_invalid
+covariance_psd_failure
+insufficient_positive_components
+native_time_outside_fitted_support
+curve_too_sparse_for_score_system
+score_covariance_not_positive_definite
+score_covariance_ill_conditioned
+nonfinite_sparse_observation
+evaluation_grid_outside_pooled_support
+observations_outside_analysis_support
+```
 
 ## Result contract
 
-The native sparse result should retain at least:
+The native result retains at least:
 
-- evaluation grid;
-- fitted mean;
-- fitted latent covariance;
-- estimated measurement-noise variance;
-- eigenvalues;
-- eigenfunctions;
+- evaluation grid and declared analysis support;
+- fitted mean and full fitted/repaired latent covariance;
+- measurement-noise estimate and declared noise support;
+- eigenvalues/eigenfunctions and quadrature weights;
 - PACE scores;
-- curve IDs and metadata;
-- time/coordinate units;
-- smoother specifications;
-- component-count rule;
-- score-system conditioning diagnostics;
-- covariance-repair diagnostics;
-- complete provenance.
+- per-curve score-system diagnostics;
+- local mean/covariance support counts;
+- PSD pre-repair spectrum and both grid/operator correction norms;
+- curve IDs, metadata, time/coordinate units, and complete provenance.
 
-Opaque backend objects are not part of the canonical native result contract.
+## Evaluation-grid convergence
+
+PACE scores inherit numerical error from representing fitted population
+objects on a finite grid. Qualification therefore includes refinement checks
+at $G=21,41,81$ grid points and evaluates:
+
+- relative retained-eigenvalue change;
+- sign/subspace-invariant eigenfunction agreement;
+- principal-angle / principal-cosine stability;
+- PACE score correlation under refinement.
+
+The intended claim is stabilization under grid refinement, not that one
+particular grid is intrinsically correct.
 
 ## Validation plan
 
-0.10 is not complete when the code merely runs. Qualification requires four
-evidence layers.
+0.10 is not complete merely because the estimator runs.
 
 ### Analytical / controlled truth
 
-Use simple covariance models where numerical eigenstructure is known or can be
-computed to high precision independently.
+Use covariance models where numerical eigenstructure is known or can be
+computed independently to high precision.
 
 ### Simulation recovery
 
-Generate latent functional processes with known mean, eigenfunctions,
-eigenvalues, scores, noise variance, irregular sampling, and sparsity. Assess
-recovery of population structure and conditional scores across declared
-sampling regimes.
+Use known mean, eigenfunctions, eigenvalues, latent scores, measurement noise,
+irregular sampling, and sparsity. Evaluate mean/covariance error, eigenvalue
+error, subspace error, PACE score accuracy, and failure frequency.
 
 ### FDApy comparison
 
-Use FDApy only as an **independent numerical comparator** on matched synthetic
-datasets/specifications. Align component sign/order before comparing and report
-tolerance rules. The comparison is validation evidence, not delegated
-computation.
+Use FDApy as an **independent numerical comparator** only where specifications
+can be aligned. Where smoothing, covariance reconstruction, interpolation, or
+PACE score-system definitions differ, label the exercise
+**cross-implementation sensitivity**, not equivalence.
 
 ### Cross-language reference where feasible
 
-Add an R-based reference comparison when a sufficiently matched sparse-FPCA /
-PACE contract can be specified. A comparison is only meaningful when the
-smoother, grid, noise assumptions, and scoring definition are genuinely
-comparable.
+Use an R comparison only when mean smoothing, covariance smoothing, noise
+treatment, evaluation support, and score definitions can be matched
+defensibly. “No defensible exact equivalence case” is preferable to a forced
+comparison with different estimands.
 
-## Migration path
+## Bandwidth selection is deferred
 
-```text
-0.9.1
-native eyetrajectoriespy core
-+ optional fit_sparse_fpca_fdapy() compatibility backend
+0.10 requires explicit numeric smoothing bandwidths. Automatic CV/GCV is not
+part of the release-completion path. A later opt-in selector would need to
+declare the resampling unit, search grid, criterion, selected value, and
+failures; observation-level and curve-level CV are not interchangeable for
+sparse repeated measurements.
 
-        ↓
-
-0.10.0
-native fit_sparse_fpca()
-+ native PACE scoring
-+ FDApy used for reference validation / compatibility
-
-        ↓
-
-later
-deprecate backend-specific runtime workflow only after
-native validation and the documented deprecation window
-```
-
-No FDApy-specific API is removed as part of introducing the native estimator.
-The package's pre-1.0 deprecation policy still applies.
-
-## Explicitly out of scope for the first 0.10 tranche
+## Explicitly out of scope for 0.10
 
 - joint sparse multivariate PACE;
-- automatic smoothing selection based on downstream effects;
+- automatic bandwidth selection;
 - sparse functional mixed effects;
 - full downstream propagation of sparse-FPCA estimation uncertainty;
 - a generic all-purpose FDA object hierarchy.
 
-The first target is a defensible **univariate native sparse FPCA + PACE**
-implementation that preserves gaze-specific data/provenance contracts.
+Separate sparse fits for `x(t)` and `y(t)` remain two univariate
+decompositions and do not model cross-channel covariance.
+
+## Migration path
+
+```text
+0.9.1 maintenance main
++ optional fit_sparse_fpca_fdapy() compatibility backend
+
+        ↓
+
+0.10 development branch
++ native fit_sparse_fpca()
++ native PACE scoring
++ independent validation / stress testing
+
+        ↓
+
+full qualification
++ PR into protected main
+```
+
+No FDApy-specific API is removed simply because the native estimator exists.
+The normal pre-1.0 deprecation policy continues to apply.

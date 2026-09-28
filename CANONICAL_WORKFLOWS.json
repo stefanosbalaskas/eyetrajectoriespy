@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package_version": "0.9.1.dev0",
+  "package_version": "0.10.0.dev0",
   "policy": {
     "canonical": "recommended default route for a common scientific question",
     "advanced": "supported capability requiring a more specific scientific reason",
@@ -21,6 +21,7 @@
         "fpca_reporting_text"
       ],
       "advanced_branches": [
+        "fit_sparse_fpca",
         "fit_sparse_fpca_fdapy",
         "fit_phase_fpca",
         "fit_compositional_fpca"

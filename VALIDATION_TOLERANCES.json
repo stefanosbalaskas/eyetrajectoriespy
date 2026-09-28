@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package_version": "0.9.1.dev0",
+  "package_version": "0.10.0.dev0",
   "classes": [
     {
       "id": "exact_combinatorial",
@@ -77,6 +77,16 @@
       "policy": "For reproducibility under identical stored draws/seeds, compare deterministically where appropriate. For statistical agreement across independent draws, base acceptance on Monte Carlo error rather than arbitrary decimal-place matching.",
       "default_rtol": null,
       "default_atol": null
+    },
+    {
+      "id": "cross_implementation_sensitivity",
+      "applies_to": [
+        "scientific libraries with related estimands but non-identical smoothing, discretization, covariance, or scoring contracts"
+      ],
+      "policy": "Do not label the comparison equivalence. Compare invariant quantities with broad predeclared guards that detect catastrophic disagreement, document every known contract mismatch, and interpret agreement only as sensitivity evidence.",
+      "default_rtol": null,
+      "default_atol": null,
+      "notes": "This class is weaker than independent implementation equivalence because the compared implementations do not share an identical estimand/specification."
     }
   ]
 }

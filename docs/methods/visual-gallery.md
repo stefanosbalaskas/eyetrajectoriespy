@@ -38,6 +38,35 @@ These figures are regenerated from deterministic synthetic data during the docum
 
     [FPCA guide](../guides/fpca.md) · [Function → equation index](../reference/function-equation-index.md)
 
+-   **Native sparse FPCA component mode**
+
+    ![Native sparse FPCA first component](../assets/gallery/sparse-fpca-component.svg)
+
+    Fitted sparse population mean with the first retained latent variation mode.
+
+    **API:** `fit_sparse_fpca()`, `plot_sparse_fpca_component()`
+
+    [Sparse FPCA guide](../guides/sparse-irregular-fpca.md) · [Validation](../validation/sparse-fpca-validation.md)
+
+-   **Native sparse latent covariance**
+
+    ![Native sparse FPCA latent covariance](../assets/gallery/sparse-fpca-covariance.svg)
+
+    Smoothed latent covariance surface after the declared PSD policy.
+
+    **API:** `fit_sparse_fpca()`, `plot_sparse_fpca_covariance()`
+
+    [Sparse FPCA guide](../guides/sparse-irregular-fpca.md) · [Validation](../validation/sparse-fpca-validation.md)
+
+-   **PACE score-system conditioning**
+
+    ![PACE conditional covariance conditioning](../assets/gallery/sparse-fpca-score-conditioning.svg)
+
+    Per-curve conditional covariance condition number against the number of native observations used for scoring.
+
+    **API:** `plot_sparse_fpca_score_diagnostics()`
+
+    [Sparse FPCA guide](../guides/sparse-irregular-fpca.md) · [Validation](../validation/sparse-fpca-validation.md)
 -   **Registration displacement**
 
     ![Landmark registration warping displacement](../assets/gallery/registration-warping.svg)

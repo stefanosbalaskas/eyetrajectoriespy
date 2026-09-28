@@ -133,8 +133,8 @@ def fit_sparse_fpca_fdapy(
     """Fit univariate sparse FPCA and recover scores with FDApy PACE.
 
     This is the explicitly backend-named compatibility/reference path retained
-    during the transition to the planned native 0.10 sparse FPCA + PACE
-    estimator. It uses FDApy's covariance-operator UFPCA path and PACE
+    alongside the native 0.10 sparse FPCA + PACE estimator. It uses FDApy's
+    covariance-operator UFPCA path and PACE
     conditional-expectation scoring. No common-grid interpolation is performed.
     """
 

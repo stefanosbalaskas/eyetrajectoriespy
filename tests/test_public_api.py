@@ -1,7 +1,7 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.9.1.dev0"
+    assert et.__version__=="0.10.0.dev0"
     required={
         "GeneralizedFunctionOnScalarPredictionResult","GeneralizedFunctionOnScalarPredictionBootstrapResult","GeneralizedFunctionOnScalarPredictionBandResult","GeneralizedFunctionOnScalarMeanDifferenceResult","generalized_function_on_scalar_predict","bootstrap_generalized_function_on_scalar_predictions","generalized_function_on_scalar_prediction_bands","generalized_function_on_scalar_mean_difference_band","generalized_function_on_scalar_prediction_frame","generalized_function_on_scalar_mean_difference_frame","plot_generalized_function_on_scalar_predictions","plot_generalized_function_on_scalar_mean_difference","generalized_function_on_scalar_prediction_reporting_text","generalized_function_on_scalar_mean_difference_reporting_text",
         "GeneralizedFunctionOnScalarResult","GeneralizedFunctionOnScalarBootstrapResult","GeneralizedFunctionOnScalarBandResult","fit_generalized_function_on_scalar_regression","bootstrap_generalized_function_on_scalar_coefficients","generalized_function_on_scalar_simultaneous_bands","generalized_function_on_scalar_coefficient_frame","generalized_function_on_scalar_exposure_frame","plot_generalized_function_on_scalar_coefficients","generalized_function_on_scalar_reporting_text",
@@ -43,8 +43,10 @@ def test_version_and_public_symbols():
         "plot_fpca_subspace_stability","fpca_eigengap_reporting_text",
         "fpca_subspace_stability_reporting_text",
         "SparseFPCAResult","sparse_dimension_summary","to_fdapy_irregular",
-        "fit_sparse_fpca_fdapy","sparse_fpca_score_frame",
+        "fit_sparse_fpca","fit_sparse_fpca_fdapy","sparse_fpca_score_frame",
         "sparse_fpca_reporting_text","plot_sparse_irregular_dimension",
+        "plot_sparse_fpca_component","plot_sparse_fpca_covariance",
+        "plot_sparse_fpca_score_diagnostics",
         "FunctionalMeanBandResult","multiplier_functional_mean_band",
         "functional_mean_band_frame","plot_functional_mean_band",
         "functional_mean_band_reporting_text","bootstrap_fpca_score_uncertainty","fpca_score_uncertainty_frame","plot_fpca_score_uncertainty","fpca_score_uncertainty_reporting_text","bootstrap_fpca_spectrum_uncertainty","fpca_spectrum_uncertainty_frame","plot_fpca_spectrum_uncertainty","fpca_spectrum_uncertainty_reporting_text",

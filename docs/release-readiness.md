@@ -141,7 +141,7 @@ requalification remains required after merge.
 - [x] Dedicated production PyPI Trusted Publisher is configured for GitHub environment `pypi`.
 - [x] `pypi` GitHub environment has the intended required-reviewer protection.
 - [x] `main` is protected and issue #64 is closed.
-- [x] `RELEASE_READINESS.json` was armed for 0.9.0; it is deliberately disarmed again on `0.9.1.dev0`.
+- [x] `RELEASE_READINESS.json` was armed for 0.9.0; it is deliberately disarmed on the `0.10.0.dev0` development line.
 
 The first public prerelease `0.9.0rc1` successfully exercised GitHub-first
 publication followed by production PyPI OIDC publication and clean installation.
@@ -168,11 +168,12 @@ Do not enter a 0.9-style release-candidate phase until:
 ## Post-0.9.0 state
 
 Stable release `0.9.0` is immutable on GitHub and PyPI. The active development
-line is `0.9.1.dev0`. Release automation is manual-dispatch only, so ordinary
-maintenance merges cannot trigger a production upload. Before the next release,
-the version and readiness manifests must be deliberately armed through a
-reviewed pull request, and issue #69 should be resolved by migrating the
-production Trusted Publisher claim to the dedicated `pypi` environment.
+line is `0.10.0.dev0`, containing the qualified native sparse-FPCA/PACE
+estimator. Release automation is manual-dispatch only, so ordinary merges
+cannot trigger a production upload. Before any public 0.10 release, the version
+and readiness manifests must be deliberately armed through a reviewed pull
+request, and issue #69 should be resolved if the obsolete publisher claim is
+still present.
 
 
 ### Remaining publisher cleanup

@@ -191,7 +191,8 @@ def test_sparse_pace_fit_contract_and_provenance(monkeypatch):
     ]
     text = sparse_fpca_reporting_text(result)
     assert "PACE conditional-expectation scores" in text
-    assert "No common-grid interpolation" in text
+    assert "did not pre-interpolate" in text
+    assert "FDApy irregular PACE backend may smooth/interpolate internally" in text
 
 
 def test_sparse_contract_errors_precede_backend_import():

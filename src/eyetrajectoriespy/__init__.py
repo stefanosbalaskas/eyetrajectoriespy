@@ -304,6 +304,9 @@ from .plotting import (
     plot_fpca_stability,
     plot_fpca_subspace_stability,
     plot_sparse_irregular_dimension,
+    plot_sparse_fpca_component,
+    plot_sparse_fpca_covariance,
+    plot_sparse_fpca_score_diagnostics,
     plot_fpca_variance,
     plot_fpca_score_uncertainty,
     plot_fpca_spectrum_uncertainty,
@@ -391,6 +394,7 @@ from .sparse import (
     sparse_fpca_score_frame,
     to_fdapy_irregular,
 )
+from .sparse_native import fit_sparse_fpca
 from .subspace import (
     bootstrap_fpca_subspace_stability,
     compare_fpca_subspaces,
@@ -496,7 +500,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.9.1.dev0"
+__version__ = "0.10.0.dev0"
 
 __all__ = [
     "PortableScientificResultSnapshot",
@@ -850,10 +854,14 @@ __all__ = [
     "SparseFPCAResult",
     "sparse_dimension_summary",
     "to_fdapy_irregular",
+    "fit_sparse_fpca",
     "fit_sparse_fpca_fdapy",
     "sparse_fpca_score_frame",
     "sparse_fpca_reporting_text",
     "plot_sparse_irregular_dimension",
+    "plot_sparse_fpca_score_diagnostics",
+    "plot_sparse_fpca_covariance",
+    "plot_sparse_fpca_component",
     "FPCARegressionCVResult",
     "FPCARegressionPredictionIntervalResult",
     "FPCARegressionSlopeBandResult",
