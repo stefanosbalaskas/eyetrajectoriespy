@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_development_version": "0.10.0.dev0",
+  "current_development_version": "0.10.0rc1",
   "first_public_release_target": "0.9.0",
   "production_release_ready": false,
   "gates": {
@@ -17,10 +17,11 @@
     "exact_main_ci_required": true
   },
   "notes": [
-    "0.9.0 is the current stable pre-1.0 GitHub/PyPI release.",
-    "0.10.0.dev0 is the active native sparse-FPCA/PACE development line and remains intentionally disarmed for publication while protected-main integration is qualified.",
-    "The dedicated production PyPI Trusted Publisher for GitHub environment pypi is now configured.",
-    "An obsolete production publisher claim bound to GitHub environment testpypi is still present on PyPI and should be removed before the next public release; issue #69 tracks that cleanup."
+    "0.9.0 remains the current stable pre-1.0 GitHub/PyPI release.",
+    "0.10.0rc1 is the qualified-release-candidate target for the native sparse-FPCA/PACE tranche; publication remains deliberately disarmed during qualification.",
+    "The dedicated production PyPI Trusted Publisher for GitHub environment pypi is configured.",
+    "Issue #69 is closed; the obsolete testpypi production publisher cleanup was completed before this release-candidate qualification.",
+    "A fresh 0.10.0rc1 performance envelope and complete PR/exact-main qualification are required before release readiness can be armed."
   ],
   "github_release_ready": false
 }
