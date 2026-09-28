@@ -92,12 +92,13 @@ semantics or uncertainty definitions require a new explicit contract.
 The 0.9.1 line is reserved for maintenance and consolidation. Major estimator
 additions belong to a later minor development line.
 
-The planned 0.10 sparse API follows a replacement-by-addition strategy:
+The qualified 0.10 sparse API follows a replacement-by-addition strategy:
 
 - keep `fit_sparse_fpca_fdapy()` available as the explicit compatibility
   backend;
-- introduce a separate native `fit_sparse_fpca()` only after its scientific
-  contract and validation evidence are complete;
+- introduce the separate native `fit_sparse_fpca()` after its scientific
+  contract and validation evidence are complete; this condition is now met on
+  the 0.10 development line;
 - do not implement the native function as a hidden call into FDApy;
 - do not deprecate the FDApy-specific wrapper merely because the native path is
   introduced;
