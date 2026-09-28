@@ -85,7 +85,7 @@ from this inventory.
 | Elastic sequence-index similarity | explicit symmetric1 raw or symmetric2/N+M-normalized DTW alignment cost | `dynamic_time_warping_distance()` / `pairwise_dynamic_time_warping_distances()` |
 | Similarity robustness across defensible distance contracts | descriptive pair-rank and local-neighbor agreement across declared L2 / Fréchet / DTW specifications | `trajectory_distance_sensitivity()` |
 | Native irregular gaze | curve-specific time grids | `from_irregular_long_dataframe_native()` |
-| Genuinely sparse univariate gaze | covariance UFPCA + PACE scores | `fit_sparse_fpca_fdapy()` |
+| Genuinely sparse univariate gaze | native pooled mean/covariance FPCA + PACE scores with explicit support/noise/PSD/conditioning contracts | `fit_sparse_fpca()` (canonical native); `fit_sparse_fpca_fdapy()` (optional compatibility/reference) |
 | One derived continuous outcome | `X(t)` | `fit_fpca()` |
 | Repeated participant trials | `G_ij(t)` | `fit_multilevel_fpca()` |
 | AOI probabilities | simplex-valued `P(t)` | `fit_compositional_fpca()` |
