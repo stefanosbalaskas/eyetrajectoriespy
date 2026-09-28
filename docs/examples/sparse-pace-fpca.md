@@ -86,6 +86,67 @@ Before fitting, check:
 
 A sparse estimator is not permission to ignore poor or systematically missing observation designs.
 
+## Fit the native 0.10 sparse FPCA + PACE estimator
+
+The native estimator keeps smoothing, support, noise, PSD handling, and score
+regularization explicit:
+
+```python
+from eyetrajectoriespy import fit_sparse_fpca
+
+native = fit_sparse_fpca(
+    gaze,
+    dimension="x",
+    n_components=2,
+    evaluation_grid=np.linspace(0.0, 1.0, 41),
+    mean_bandwidth=0.24,
+    covariance_bandwidth=0.34,
+    noise_variance_method="fixed",
+    measurement_error_variance=0.05**2,
+    psd_action="project",
+)
+```
+
+For data where measurement noise must be estimated instead, declare both the
+noise smoother and the interval used for diagonal-difference averaging:
+
+```python
+native = fit_sparse_fpca(
+    gaze,
+    dimension="x",
+    n_components=2,
+    evaluation_grid=np.linspace(0.0, 1.0, 41),
+    mean_bandwidth=0.24,
+    covariance_bandwidth=0.34,
+    noise_bandwidth=0.24,
+    noise_support=(0.20, 0.80),
+    noise_variance_method="diagonal_difference",
+    psd_action="project",
+)
+```
+
+Raw sparse trajectories are not interpolated. The fitted population mean,
+covariance, and eigenfunctions are evaluated at each curve's native
+observation times when constructing the PACE score system.
+
+### Inspect fitted population structure and score conditioning
+
+```python
+from eyetrajectoriespy import (
+    plot_sparse_fpca_component,
+    plot_sparse_fpca_covariance,
+    plot_sparse_fpca_score_diagnostics,
+)
+
+plot_sparse_fpca_component(native, component=0)
+plot_sparse_fpca_covariance(native)
+plot_sparse_fpca_score_diagnostics(native)
+```
+
+The score diagnostic is especially important when some curves contain only a
+few observations. The 0.10 validation shows that a population subspace can be
+recoverable even when individual PACE scores are weak in extremely sparse
+2–4 sample regimes.
 ## Fit FDApy UFPCA and recover PACE scores
 
 Install the optional dependency:
