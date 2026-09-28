@@ -150,7 +150,10 @@ The eyetrajectoriespy core supports Python 3.11–3.13. The current FDApy 1.0.3 
 
 Use a Python 3.11 or 3.12 environment for the `sparse` extra until the backend dependency line supports Python 3.13.
 
-This restriction applies only to the optional FDApy interoperability layer; native irregular objects and the rest of eyetrajectoriespy remain available on Python 3.13. The planned native 0.10 sparse estimator is specifically intended to remove this backend constraint from the canonical sparse workflow.
+This restriction applies only to the optional FDApy interoperability layer.
+Native irregular objects, the native 0.10 sparse estimator, and the rest of
+eyetrajectoriespy remain available on Python 3.13; the canonical native sparse
+workflow therefore does not inherit FDApy's NumPy/Python version constraint.
 
 ## Inspect sparse sampling first
 
