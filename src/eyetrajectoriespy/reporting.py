@@ -899,8 +899,10 @@ def sparse_fpca_reporting_text(
         f"with {result.fit_smoothing!r} fitting smoothness and PACE "
         f"conditional-expectation scores ({result.n_components} components; "
         f"per-curve sample-count range={sample_range}; retained "
-        f"eigenvalues={eigen}). No common-grid interpolation was performed "
-        f"before sparse FPCA. Eigenfunctions/covariance were evaluated on "
+        f"eigenvalues={eigen}). eyetrajectoriespy did not pre-interpolate "
+        f"raw sparse curves before passing them to FDApy; the FDApy irregular "
+        f"PACE backend may smooth/interpolate internally as part of its score "
+        f"path. Eigenfunctions/covariance were evaluated on "
         f"{grid_text}. PACE tolerance was {result.tolerance:g} and score "
         f"smoothing was {result.score_smoothing!r}.{custom_text}"
     )
