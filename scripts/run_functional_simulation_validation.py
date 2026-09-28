@@ -322,7 +322,7 @@ def main():
     for scenario_index, (name, spec) in enumerate(SCENARIOS.items()):
         rows = [
             spec["runner"](
-                202800 + 100 * scenario_index + replicate
+                seed=202800 + 100 * scenario_index + replicate
             )
             for replicate in range(args.replicates)
         ]
