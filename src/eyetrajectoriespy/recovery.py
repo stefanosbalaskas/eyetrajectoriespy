@@ -17,7 +17,7 @@ from scipy.optimize import linear_sum_assignment
 
 from ._functional_simulation import FunctionalSimulationTruth
 from .fpca import functional_trapezoid_weights
-from .types import FPCAResult, SparseFPCAResult
+from .types import FPCAResult, RegistrationResult, SparseFPCAResult
 
 
 RecoveryDirection = Literal["higher_is_better", "lower_is_better"]
@@ -260,6 +260,22 @@ _METRICS = {
             "relative",
             "measurement_error",
             "Absolute measurement-noise variance error divided by true variance.",
+        ),
+        _metric(
+            "phase_warp_ise",
+            "registration inverse phase warp",
+            "lower_is_better",
+            "time² × time",
+            "registration",
+            "Mean integrated squared error of recovered inverse phase warps.",
+        ),
+        _metric(
+            "phase_warp_max_absolute_error",
+            "registration inverse phase warp",
+            "lower_is_better",
+            "time",
+            "registration",
+            "Maximum absolute recovered inverse-warp error across curves/time.",
         ),
         _metric(
             "source_variance_absolute_error",
@@ -996,5 +1012,66 @@ def evaluate_hierarchy_truth_recovery(
             "estimator": "none",
             "purpose": "simulation_source_variance_audit",
             "ddof": 0,
+        },
+    )
+
+
+def evaluate_registration_recovery(
+    result: RegistrationResult,
+    truth: FunctionalSimulationTruth,
+) -> FunctionalRecoveryAssessment:
+    """Evaluate registered phase warps against exact inverse simulator warps.
+
+    Simulation evaluates latent functions at w_i(t). Landmark registration
+    stores h_i(t), the reference-to-observed mapping used in G_i(h_i(t)).
+    Therefore the known-truth registration target is h_i = w_i^{-1}.
+    """
+
+    if not isinstance(result, RegistrationResult):
+        raise TypeError("result must be a RegistrationResult")
+    if not isinstance(truth, FunctionalSimulationTruth):
+        raise TypeError("truth must be a FunctionalSimulationTruth")
+    _require_truth_grid(result.original.time, truth)
+    estimated = np.asarray(result.warping_functions, dtype=float)
+    generated = np.asarray(
+        truth.phase_warps_on_truth_grid,
+        dtype=float,
+    )
+    if estimated.shape != generated.shape:
+        raise ValueError(
+            "registration warps and generating phase warps must have "
+            "identical curve/time geometry"
+        )
+
+    grid = np.asarray(truth.truth_grid, dtype=float)
+    true_inverse = np.stack(
+        [
+            np.interp(grid, generated[curve], grid)
+            for curve in range(generated.shape[0])
+        ],
+        axis=0,
+    )
+    difference = estimated - true_inverse
+    weights = functional_trapezoid_weights(grid)
+    curve_ise = np.sum(
+        difference**2 * weights[None, :],
+        axis=1,
+    )
+    return FunctionalRecoveryAssessment(
+        values=(
+            _value(
+                "phase_warp_ise",
+                float(np.mean(curve_ise)),
+            ),
+            _value(
+                "phase_warp_max_absolute_error",
+                float(np.max(np.abs(difference))),
+            ),
+        ),
+        provenance={
+            "estimator": "landmark_registration",
+            "truth_grid_match": "exact",
+            "truth_target": "inverse_phase_warp",
+            "simulator_phase_relation": "observed(t)=latent(w(t))",
         },
     )
