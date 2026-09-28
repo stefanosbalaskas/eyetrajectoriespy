@@ -24,7 +24,7 @@ def simulate_functional_process(
     n_participants: int,
     trials_per_participant: int = 1,
     dimension_names: Sequence[str] = ("value",),
-    coordinate_system: str = "arbitrary",
+    coordinate_system: str = "unknown",
     time_unit: str = "normalized",
     observation_design: str = "dense",
     observation_times: Sequence[np.ndarray] | None = None,
