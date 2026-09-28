@@ -9,6 +9,7 @@ from eyetrajectoriespy import (
     sparse_fpca_score_frame,
 )
 from eyetrajectoriespy._sparse_native import SparseNativeError
+from eyetrajectoriespy.sparse_native import _validate_native_sparse_settings
 from eyetrajectoriespy._sparse_truth import simulate_sparse_functional_truth
 
 
@@ -133,6 +134,7 @@ def test_native_diagonal_difference_noise_is_audited_without_clipping():
         mean_bandwidth=0.22,
         covariance_bandwidth=0.30,
         noise_bandwidth=0.22,
+        noise_support=(0.15, 0.85),
         noise_variance_method="diagonal_difference",
         psd_action="project",
     )
@@ -144,6 +146,7 @@ def test_native_diagonal_difference_noise_is_audited_without_clipping():
         result.provenance["sparse_fpca"]["noise_variance_method"]
         == "diagonal_difference"
     )
+    assert result.provenance["sparse_fpca"]["noise_support"] == [0.15, 0.85]
 
 
 def test_native_sparse_fit_retains_explicit_psd_correction_audit():
@@ -170,7 +173,29 @@ def test_native_sparse_fit_retains_explicit_psd_correction_audit():
     assert audit["substantial_negative_eigenvalue_count"] >= 0
     assert audit["correction_frobenius_norm"] >= 0
     assert audit["relative_correction_frobenius_norm"] >= 0
+    assert audit["operator_correction_frobenius_norm"] >= 0
+    assert audit["relative_operator_correction_frobenius_norm"] >= 0
     assert isinstance(audit["pre_repair_operator_eigenvalues"], list)
+
+
+def test_native_sparse_fit_requires_explicit_noise_support_when_estimated():
+    gaze, _ = _truth_dataset(
+        n_curves=12,
+        samples_per_curve=8,
+        random_state=8,
+    )
+    with pytest.raises(ValueError, match="noise_support"):
+        fit_sparse_fpca(
+            gaze,
+            dimension="x",
+            n_components=2,
+            evaluation_grid=np.linspace(0.0, 1.0, 13),
+            mean_bandwidth=0.30,
+            covariance_bandwidth=0.40,
+            noise_bandwidth=0.30,
+            noise_variance_method="diagonal_difference",
+            psd_action="project",
+        )
 
 
 def test_native_sparse_fit_requires_explicit_noise_bandwidth_when_estimated():
@@ -187,6 +212,7 @@ def test_native_sparse_fit_requires_explicit_noise_bandwidth_when_estimated():
             evaluation_grid=np.linspace(0.0, 1.0, 13),
             mean_bandwidth=0.30,
             covariance_bandwidth=0.40,
+            noise_support=(0.15, 0.85),
             noise_variance_method="diagonal_difference",
             psd_action="project",
         )
@@ -257,25 +283,57 @@ def test_native_sparse_fit_rejects_nonfinite_observed_placeholders():
     assert exc.value.code == "nonfinite_sparse_observation"
 
 
-def test_native_sparse_fit_requires_grid_to_span_pooled_support():
+def test_native_sparse_fit_requires_explicit_support_restriction():
     gaze, truth = _truth_dataset(
         n_curves=12,
         samples_per_curve=8,
         random_state=41,
     )
+    grid = np.linspace(0.1, 0.9, 13)
     with pytest.raises(SparseNativeError) as exc:
         fit_sparse_fpca(
             gaze,
             dimension="x",
             n_components=2,
-            evaluation_grid=np.linspace(0.1, 0.9, 13),
+            evaluation_grid=grid,
             mean_bandwidth=0.30,
             covariance_bandwidth=0.40,
             noise_variance_method="fixed",
             measurement_error_variance=truth.noise_sd**2,
             psd_action="project",
         )
-    assert exc.value.code == "evaluation_grid_support_mismatch"
+    assert exc.value.code == "observations_outside_analysis_support"
+
+    result = fit_sparse_fpca(
+        gaze,
+        dimension="x",
+        n_components=2,
+        evaluation_grid=grid,
+        mean_bandwidth=0.30,
+        covariance_bandwidth=0.40,
+        noise_variance_method="fixed",
+        measurement_error_variance=truth.noise_sd**2,
+        analysis_support_action="restrict",
+        psd_action="project",
+    )
+    sparse = result.provenance["sparse_fpca"]
+    assert sparse["analysis_support"] == [0.1, 0.9]
+    assert sparse["analysis_support_action"] == "restrict"
+    assert sparse["outside_observation_count"] > 0
+    assert sparse["curves_with_outside_observations"] > 0
+    assert sparse["original_sample_counts"] != sparse["analysis_sample_counts"]
+
+
+def test_native_component_count_is_not_capped_by_dense_n_minus_one_rule():
+    _validate_native_sparse_settings(
+        n_components=7,
+        mean_smoother="local_linear",
+        covariance_smoother="local_linear",
+        kernel="epanechnikov",
+        noise_variance_method="fixed",
+        measurement_error_variance=0.01,
+        noise_support=None,
+    )
 
 
 def test_two_univariate_fits_do_not_claim_sparse_multivariate_pace():
