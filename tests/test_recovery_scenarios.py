@@ -17,6 +17,7 @@ def test_qualification_suite_is_small_deterministic_and_gated_by_role():
         "dense_gaussian",
         "dense_student_t",
         "native_sparse",
+        "native_sparse_estimated_noise",
         "hierarchy_sources",
     ]
     assert all(scenario.replicates == 3 for scenario in scenarios)
@@ -25,6 +26,7 @@ def test_qualification_suite_is_small_deterministic_and_gated_by_role():
         5100,
         5200,
         5300,
+        5400,
     ]
     assert all(
         dict(scenario.labels)["matrix_role"] == "qualification"
