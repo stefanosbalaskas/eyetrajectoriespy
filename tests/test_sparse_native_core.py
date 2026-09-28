@@ -88,6 +88,8 @@ def test_psd_policy_distinguishes_failure_from_projection():
     assert audit.most_negative_eigenvalue < 0
     assert audit.correction_frobenius_norm > 0
     assert audit.relative_correction_frobenius_norm > 0
+    assert audit.operator_correction_frobenius_norm > 0
+    assert audit.relative_operator_correction_frobenius_norm > 0
 
     weights = functional_trapezoid_weights(grid)
     operator = (
@@ -317,6 +319,7 @@ def test_private_sparse_truth_recovers_latent_eigenspace():
         pooled_value,
         grid,
         bandwidth=0.20,
+        noise_support=(0.15, 0.85),
         min_local_points=8,
     )
 
