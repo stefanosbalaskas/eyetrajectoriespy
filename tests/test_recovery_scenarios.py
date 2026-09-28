@@ -17,7 +17,6 @@ def test_qualification_suite_is_small_deterministic_and_gated_by_role():
         "dense_gaussian",
         "dense_student_t",
         "native_sparse",
-        "native_sparse_estimated_noise",
         "hierarchy_sources",
     ]
     assert all(scenario.replicates == 3 for scenario in scenarios)
@@ -26,7 +25,6 @@ def test_qualification_suite_is_small_deterministic_and_gated_by_role():
         5100,
         5200,
         5300,
-        5400,
     ]
     assert all(
         dict(scenario.labels)["matrix_role"] == "qualification"
@@ -49,6 +47,7 @@ def test_stress_suite_is_named_descriptive_and_not_ci_thresholded():
         "stress_unequal_sample_counts",
         "stress_center_clustered_times",
         "stress_boundary_poor_times",
+        "stress_estimated_noise_diagonal_difference",
         "stress_high_measurement_noise",
         "stress_nearly_tied_eigenvalues",
         "stress_heavy_tailed_scores",
