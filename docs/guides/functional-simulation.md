@@ -234,6 +234,74 @@ The first plot compares retained observations with exact latent truth. The
 second audits realized phase warps. The third compares declared and realized
 score-source variances.
 
+## Declared scenario matrices and recovery
+
+For repeated recovery studies, define the data-generating design once with
+`FunctionalSimulationScenario` rather than reconstructing simulator keyword
+arguments inside every estimator-specific script.
+
+```python
+from eyetrajectoriespy import (
+    FunctionalSimulationScenario,
+    expand_functional_simulation_scenarios,
+    functional_simulation_scenario_frame,
+)
+
+base = FunctionalSimulationScenario(
+    name="sparse-recovery",
+    truth_grid=np.linspace(0.0, 1.0, 41),
+    eigenvalues=(1.0, 0.35),
+    n_participants=80,
+    observation_design="irregular",
+    samples_per_curve=(8, 12),
+    measurement_noise_sd=0.05,
+    replicates=5,
+    seed_start=1200,
+)
+
+scenarios = expand_functional_simulation_scenarios(
+    base,
+    {
+        "n_participants": (80, 160),
+        "measurement_noise_sd": (0.05, 0.10),
+        "samples_per_curve": ((8, 12), (5, 8)),
+    },
+    seed_policy="shared",
+)
+
+design_table = functional_simulation_scenario_frame(scenarios)
+```
+
+The Cartesian expansion is explicit. With `seed_policy="shared"`, matching
+replicates use the same seeds across scenarios, which supports paired
+common-random-number comparisons. With `seed_policy="disjoint"`, each
+scenario receives a non-overlapping seed block. The framework never chooses a
+seed policy silently.
+
+Use `run_functional_recovery_scenarios()` when a common estimator/scorer pair
+can be applied across the matrix. Its callback boundary is deliberate:
+
+```text
+scenario
+   |
+   v
+simulate -> observations --------> estimator
+   |                                  |
+   +--> exact latent truth             v
+                     recovery scorer <- fitted result
+```
+
+The estimator callback receives **observations and the declared scenario, but
+not the latent truth**. Truth is supplied only after fitting to the recovery
+scorer. This makes it possible to calculate bias, score recovery, subspace
+recovery, coverage, failure frequency, or other declared metrics without
+using truth to tune the estimator.
+
+`functional_recovery_frame()` returns the resulting replicate-level metrics
+in tidy form. Qualification thresholds remain the responsibility of the
+validation design; the scenario framework does not invent universal pass/fail
+cutoffs.
+
 ## Validation use
 
 The 0.11 qualification harness uses the **public** simulator to test recovery

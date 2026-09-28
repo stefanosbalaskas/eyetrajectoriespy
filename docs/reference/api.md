@@ -6,7 +6,15 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ## Native functional simulation
 ::: eyetrajectoriespy.FunctionalSimulationResult
 ::: eyetrajectoriespy.FunctionalSimulationTruth
+::: eyetrajectoriespy.FunctionalSimulationScenario
+::: eyetrajectoriespy.FunctionalRecoveryRecord
+::: eyetrajectoriespy.FunctionalRecoveryResult
 ::: eyetrajectoriespy.simulate_functional_process
+::: eyetrajectoriespy.simulate_functional_scenario
+::: eyetrajectoriespy.expand_functional_simulation_scenarios
+::: eyetrajectoriespy.run_functional_recovery_scenarios
+::: eyetrajectoriespy.functional_simulation_scenario_frame
+::: eyetrajectoriespy.functional_recovery_frame
 ::: eyetrajectoriespy.functional_simulation_truth_frame
 ::: eyetrajectoriespy.functional_simulation_reporting_text
 ::: eyetrajectoriespy.plot_functional_simulation_curve

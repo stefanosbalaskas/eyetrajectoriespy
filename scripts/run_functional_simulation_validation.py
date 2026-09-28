@@ -15,9 +15,10 @@ from pathlib import Path
 import numpy as np
 
 from eyetrajectoriespy import (
+    FunctionalSimulationScenario,
     fit_fpca,
     fit_sparse_fpca,
-    simulate_functional_process,
+    simulate_functional_scenario,
 )
 
 
@@ -96,16 +97,22 @@ def _component_metrics(
 
 def _dense_case(*, seed, score_distribution="normal"):
     grid = np.linspace(0.0, 1.0, 81)
-    simulation = simulate_functional_process(
-        mean=_mean,
-        eigenfunctions=(_phi1, _phi2),
-        eigenvalues=(1.0, 0.35),
+    scenario = FunctionalSimulationScenario(
+        name=f"dense_{score_distribution}",
         truth_grid=grid,
+        eigenvalues=(1.0, 0.35),
         n_participants=200,
         score_distribution=score_distribution,
         score_df=6.0,
         measurement_noise_sd=0.05,
-        random_state=seed,
+        replicates=1,
+        seed_start=seed,
+        labels={"validation_family": "dense_fpca"},
+    )
+    simulation = simulate_functional_scenario(
+        scenario,
+        mean=_mean,
+        eigenfunctions=(_phi1, _phi2),
     )
     fitted = fit_fpca(
         simulation.observations,
@@ -134,17 +141,23 @@ def _dense_case(*, seed, score_distribution="normal"):
 
 def _sparse_case(*, seed):
     grid = np.linspace(0.0, 1.0, 31)
-    simulation = simulate_functional_process(
-        mean=_mean,
-        eigenfunctions=(_phi1, _phi2),
-        eigenvalues=(1.0, 0.35),
+    scenario = FunctionalSimulationScenario(
+        name="native_sparse",
         truth_grid=grid,
+        eigenvalues=(1.0, 0.35),
         n_participants=64,
         observation_design="irregular",
         samples_per_curve=(8, 12),
         irregular_time_design="uniform",
         measurement_noise_sd=0.08,
-        random_state=seed,
+        replicates=1,
+        seed_start=seed,
+        labels={"validation_family": "sparse_fpca_pace"},
+    )
+    simulation = simulate_functional_scenario(
+        scenario,
+        mean=_mean,
+        eigenfunctions=(_phi1, _phi2),
     )
     fitted = fit_sparse_fpca(
         simulation.observations,
@@ -175,17 +188,23 @@ def _sparse_case(*, seed):
 
 
 def _hierarchy_case(*, seed):
-    simulation = simulate_functional_process(
-        mean=_mean,
-        eigenfunctions=(_phi1, _phi2),
-        eigenvalues=(1.0, 0.35),
+    scenario = FunctionalSimulationScenario(
+        name="hierarchy_sources",
         truth_grid=np.linspace(0.0, 1.0, 31),
+        eigenvalues=(1.0, 0.35),
         n_participants=300,
         trials_per_participant=2,
         participant_eigenvalues=(0.20, 0.08),
         trial_eigenvalues=(0.10, 0.04),
         measurement_noise_sd=0.0,
-        random_state=seed,
+        replicates=1,
+        seed_start=seed,
+        labels={"validation_family": "hierarchy_variance"},
+    )
+    simulation = simulate_functional_scenario(
+        scenario,
+        mean=_mean,
+        eigenfunctions=(_phi1, _phi2),
     )
     truth = simulation.truth
     empirical = {
