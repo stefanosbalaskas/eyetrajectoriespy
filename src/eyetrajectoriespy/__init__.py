@@ -387,7 +387,13 @@ from .selection import (
     select_fpca_components_cv,
     summarise_fpca_cross_validation,
 )
-from .simulate import simulate_aoi_probability_trajectories, simulate_planar_trajectories
+from .simulate import (
+    FunctionalSimulationResult,
+    FunctionalSimulationTruth,
+    simulate_aoi_probability_trajectories,
+    simulate_functional_process,
+    simulate_planar_trajectories,
+)
 from .sparse import (
     fit_sparse_fpca_fdapy,
     sparse_dimension_summary,
@@ -792,6 +798,9 @@ __all__ = [
     "summarise_fpca_stability",
     "reconstruction_error_by_curve",
     "fpca_reconstruction_curve",
+    "FunctionalSimulationResult",
+    "FunctionalSimulationTruth",
+    "simulate_functional_process",
     "simulate_planar_trajectories",
     "simulate_aoi_probability_trajectories",
     "summarise_trajectory_set",
