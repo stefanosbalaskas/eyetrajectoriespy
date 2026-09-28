@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.10.0rc1
+
+- First release candidate for the native sparse/irregular FPCA + PACE tranche.
+- Promote the already-qualified `fit_sparse_fpca()` estimator from protected `main` without adding a new estimator or silent analytical default.
+- Preserve explicit mean/covariance bandwidths, analyst-declared analysis support, explicit measurement-error treatment, PSD policy, full-covariance PACE scoring, score ridge, conditioning diagnostics, and structured fail-closed status codes.
+- Retain FDApy only as an optional compatibility/reference backend; whole-estimator FDApy evidence remains cross-implementation sensitivity rather than exact equivalence.
+- Carry forward analytical weighted-operator truth, known-truth sparse simulation recovery, evaluation-grid convergence, difficult-regime failure characterization, and sparse-specific runtime/peak-memory qualification.
+- Include native sparse component/covariance/score-conditioning plots, manuscript reporting, worked examples, mathematical contracts, and validation documentation.
+- Archive the qualified `0.10.0.dev0` performance snapshot and require a fresh `0.10.0rc1` performance envelope rather than relabeling development measurements.
+- Keep production publication manual and fail-closed; this qualification PR does not itself publish to GitHub or PyPI.
+- After publication, install explicitly with `pip install --pre eyetrajectoriespy==0.10.0rc1`.
+
 ## 0.9.1.dev0
 
 - Open the post-0.9.0 maintenance/hardening development line.
