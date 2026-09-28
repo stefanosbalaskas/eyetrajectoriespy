@@ -45,6 +45,8 @@ def test_version_and_public_symbols():
         "SparseFPCAResult","sparse_dimension_summary","to_fdapy_irregular",
         "fit_sparse_fpca","fit_sparse_fpca_fdapy","sparse_fpca_score_frame",
         "sparse_fpca_reporting_text","plot_sparse_irregular_dimension",
+        "plot_sparse_fpca_component","plot_sparse_fpca_covariance",
+        "plot_sparse_fpca_score_diagnostics",
         "FunctionalMeanBandResult","multiplier_functional_mean_band",
         "functional_mean_band_frame","plot_functional_mean_band",
         "functional_mean_band_reporting_text","bootstrap_fpca_score_uncertainty","fpca_score_uncertainty_frame","plot_fpca_score_uncertainty","fpca_score_uncertainty_reporting_text","bootstrap_fpca_spectrum_uncertainty","fpca_spectrum_uncertainty_frame","plot_fpca_spectrum_uncertainty","fpca_spectrum_uncertainty_reporting_text",
