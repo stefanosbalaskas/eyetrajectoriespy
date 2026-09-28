@@ -18,6 +18,12 @@ from ._functional_simulation import (
     FunctionalSimulationTruth,
     simulate_functional_process_core,
 )
+from .recovery import (
+    FunctionalRecoveryAssessment,
+    FunctionalRecoveryMetric,
+    FunctionalRecoveryValue,
+    functional_recovery_value_key,
+)
 from .types import IrregularTrajectorySet, TrajectorySet
 
 def simulate_functional_process(
@@ -186,7 +192,7 @@ FunctionalEstimator = Callable[
 ]
 FunctionalRecoveryScorer = Callable[
     [Any, FunctionalSimulationTruth, "FunctionalSimulationScenario"],
-    Mapping[str, float],
+    Mapping[str, float] | FunctionalRecoveryAssessment,
 ]
 
 
@@ -536,16 +542,29 @@ class FunctionalSimulationScenario:
 
 @dataclass(frozen=True)
 class FunctionalRecoveryRecord:
-    """Recovery metrics for one declared scenario replicate."""
+    """Recovery evidence for one declared scenario replicate."""
 
     scenario_name: str
     replicate: int
     seed: int
     metrics: Mapping[str, float]
+    metric_values: tuple[FunctionalRecoveryValue, ...] = ()
+    status: str = "ok"
+    error_type: str | None = None
+    error_message: str | None = None
+    assessment_provenance: Mapping[str, Any] = field(
+        default_factory=dict
+    )
 
     def __post_init__(self) -> None:
-        if not self.metrics:
-            raise ValueError("recovery metrics must be non-empty")
+        if self.status not in {
+            "ok",
+            "simulation_failed",
+            "fit_failed",
+            "recovery_failed",
+        }:
+            raise ValueError("unknown functional recovery record status")
+
         clean = {}
         for key, value in self.metrics.items():
             name = str(key).strip()
@@ -555,10 +574,55 @@ class FunctionalRecoveryRecord:
                     "recovery metrics require names and finite values"
                 )
             clean[name] = scalar
+
+        if self.status == "ok" and not clean:
+            raise ValueError(
+                "successful recovery records require non-empty metrics"
+            )
+        if self.status != "ok" and clean:
+            raise ValueError(
+                "failed recovery records must not contain metric values"
+            )
+
+        metric_values = tuple(self.metric_values)
+        if metric_values:
+            flattened = {
+                functional_recovery_value_key(value): value.value
+                for value in metric_values
+            }
+            if flattened != clean:
+                raise ValueError(
+                    "structured recovery values and flat metrics disagree"
+                )
+
+        error_type = (
+            None
+            if self.error_type is None
+            else str(self.error_type).strip()
+        )
+        error_message = (
+            None
+            if self.error_message is None
+            else str(self.error_message).strip()
+        )
+        if self.status == "ok":
+            if error_type is not None or error_message is not None:
+                raise ValueError(
+                    "successful recovery records cannot contain errors"
+                )
+        elif not error_type or not error_message:
+            raise ValueError(
+                "failed recovery records require error type and message"
+            )
+
+        object.__setattr__(self, "metrics", MappingProxyType(clean))
+        object.__setattr__(self, "metric_values", metric_values)
+        object.__setattr__(self, "error_type", error_type)
+        object.__setattr__(self, "error_message", error_message)
         object.__setattr__(
             self,
-            "metrics",
-            MappingProxyType(clean),
+            "assessment_provenance",
+            MappingProxyType(dict(self.assessment_provenance)),
         )
 
 
@@ -567,11 +631,20 @@ class FunctionalRecoveryResult:
     """Collection of finite-sample recovery records."""
 
     records: tuple[FunctionalRecoveryRecord, ...]
+    metric_definitions: tuple[FunctionalRecoveryMetric, ...] = ()
 
     def __post_init__(self) -> None:
         if not self.records:
             raise ValueError(
                 "recovery result must contain at least one record"
+            )
+        names = [
+            definition.name
+            for definition in self.metric_definitions
+        ]
+        if len(names) != len(set(names)):
+            raise ValueError(
+                "metric definitions must have unique names"
             )
 
 
@@ -617,6 +690,25 @@ def simulate_functional_scenario(
     )
 
 
+def _recovery_failure_record(
+    *,
+    scenario: FunctionalSimulationScenario,
+    replicate: int,
+    seed: int,
+    status: str,
+    error: Exception,
+) -> FunctionalRecoveryRecord:
+    return FunctionalRecoveryRecord(
+        scenario_name=scenario.name,
+        replicate=replicate,
+        seed=seed,
+        metrics={},
+        status=status,
+        error_type=type(error).__name__,
+        error_message=str(error),
+    )
+
+
 def run_functional_recovery_scenarios(
     scenarios: Sequence[FunctionalSimulationScenario],
     *,
@@ -624,13 +716,14 @@ def run_functional_recovery_scenarios(
     eigenfunctions: Sequence[Callable[[np.ndarray], np.ndarray]],
     estimator: FunctionalEstimator,
     recovery: FunctionalRecoveryScorer,
+    failure_action: Literal["raise", "record"] = "raise",
 ) -> FunctionalRecoveryResult:
     """Fit and score scenarios without passing truth to the estimator.
 
     The estimator receives observations and the declared scenario only.
-    The recovery callback runs afterward and receives the fitted object
-    plus exact truth. This function performs no automatic tuning and
-    applies no package-chosen qualification threshold.
+    Exact truth is supplied only after fitting to the recovery callback.
+    With failure_action="raise" any failure stops qualification. With
+    failure_action="record", stress studies retain explicit failed replicates.
     """
 
     scenarios = tuple(scenarios)
@@ -640,8 +733,13 @@ def run_functional_recovery_scenarios(
         raise TypeError(
             "estimator and recovery must be callable"
         )
+    if failure_action not in {"raise", "record"}:
+        raise ValueError(
+            "failure_action must be 'raise' or 'record'"
+        )
 
     records = []
+    definitions: dict[str, FunctionalRecoveryMetric] = {}
     for scenario in scenarios:
         if not isinstance(
             scenario,
@@ -651,44 +749,148 @@ def run_functional_recovery_scenarios(
                 "every scenario must be a FunctionalSimulationScenario"
             )
         for replicate, seed in enumerate(scenario.seeds()):
-            simulation = simulate_functional_scenario(
-                scenario,
-                mean=mean,
-                eigenfunctions=eigenfunctions,
-                replicate=replicate,
-            )
-            fitted = estimator(
-                simulation.observations,
-                scenario,
-            )
-            metrics = recovery(
-                fitted,
-                simulation.truth,
-                scenario,
-            )
+            try:
+                simulation = simulate_functional_scenario(
+                    scenario,
+                    mean=mean,
+                    eigenfunctions=eigenfunctions,
+                    replicate=replicate,
+                )
+            except Exception as exc:
+                if failure_action == "raise":
+                    raise
+                records.append(
+                    _recovery_failure_record(
+                        scenario=scenario,
+                        replicate=replicate,
+                        seed=seed,
+                        status="simulation_failed",
+                        error=exc,
+                    )
+                )
+                continue
+
+            try:
+                fitted = estimator(
+                    simulation.observations,
+                    scenario,
+                )
+            except Exception as exc:
+                if failure_action == "raise":
+                    raise
+                records.append(
+                    _recovery_failure_record(
+                        scenario=scenario,
+                        replicate=replicate,
+                        seed=seed,
+                        status="fit_failed",
+                        error=exc,
+                    )
+                )
+                continue
+
+            try:
+                recovered = recovery(
+                    fitted,
+                    simulation.truth,
+                    scenario,
+                )
+            except Exception as exc:
+                if failure_action == "raise":
+                    raise
+                records.append(
+                    _recovery_failure_record(
+                        scenario=scenario,
+                        replicate=replicate,
+                        seed=seed,
+                        status="recovery_failed",
+                        error=exc,
+                    )
+                )
+                continue
+
+            if isinstance(
+                recovered,
+                FunctionalRecoveryAssessment,
+            ):
+                metrics = dict(recovered.as_mapping())
+                metric_values = recovered.values
+                assessment_provenance = recovered.provenance
+                for value in recovered.values:
+                    definition = value.metric
+                    previous = definitions.get(definition.name)
+                    if (
+                        previous is not None
+                        and previous != definition
+                    ):
+                        raise ValueError(
+                            "recovery metric definitions are inconsistent "
+                            f"for {definition.name!r}"
+                        )
+                    definitions[definition.name] = definition
+            else:
+                metrics = recovered
+                metric_values = ()
+                assessment_provenance = {}
+
             records.append(
                 FunctionalRecoveryRecord(
                     scenario_name=scenario.name,
                     replicate=replicate,
                     seed=seed,
                     metrics=metrics,
+                    metric_values=metric_values,
+                    assessment_provenance=assessment_provenance,
                 )
             )
-    return FunctionalRecoveryResult(records=tuple(records))
+    return FunctionalRecoveryResult(
+        records=tuple(records),
+        metric_definitions=tuple(definitions.values()),
+    )
 
 
 def functional_recovery_frame(
     result: FunctionalRecoveryResult,
 ) -> pd.DataFrame:
-    """Return one tidy row per scenario replicate and metric."""
+    """Return one tidy row per successful scenario replicate and metric."""
 
     if not isinstance(result, FunctionalRecoveryResult):
         raise TypeError(
             "result must be a FunctionalRecoveryResult"
         )
+    definitions = {
+        definition.name: definition
+        for definition in result.metric_definitions
+    }
     rows = []
     for record in result.records:
+        if record.status != "ok":
+            continue
+        if record.metric_values:
+            for value in record.metric_values:
+                rows.append(
+                    {
+                        "scenario": record.scenario_name,
+                        "replicate": record.replicate,
+                        "seed": record.seed,
+                        "metric": value.metric.name,
+                        "value": value.value,
+                        "component": (
+                            None
+                            if value.component is None
+                            else value.component + 1
+                        ),
+                        "source": value.source,
+                        "quantity": value.metric.quantity,
+                        "direction": value.metric.direction,
+                        "units": value.metric.units,
+                        "scope": value.metric.scope,
+                    }
+                )
+            continue
+
         for metric, value in record.metrics.items():
+            definition = definitions.get(metric)
             rows.append(
                 {
                     "scenario": record.scenario_name,
@@ -696,9 +898,162 @@ def functional_recovery_frame(
                     "seed": record.seed,
                     "metric": metric,
                     "value": value,
+                    "component": None,
+                    "source": None,
+                    "quantity": (
+                        None
+                        if definition is None
+                        else definition.quantity
+                    ),
+                    "direction": (
+                        None
+                        if definition is None
+                        else definition.direction
+                    ),
+                    "units": (
+                        None
+                        if definition is None
+                        else definition.units
+                    ),
+                    "scope": (
+                        None
+                        if definition is None
+                        else definition.scope
+                    ),
                 }
             )
     return pd.DataFrame(rows)
+
+
+def functional_recovery_failure_frame(
+    result: FunctionalRecoveryResult,
+) -> pd.DataFrame:
+    """Summarize explicit replicate failures and binomial MCSE."""
+
+    if not isinstance(result, FunctionalRecoveryResult):
+        raise TypeError(
+            "result must be a FunctionalRecoveryResult"
+        )
+    rows = []
+    scenarios = sorted(
+        {record.scenario_name for record in result.records}
+    )
+    for scenario in scenarios:
+        records = [
+            record
+            for record in result.records
+            if record.scenario_name == scenario
+        ]
+        total = len(records)
+        successful = sum(
+            record.status == "ok"
+            for record in records
+        )
+        failed = total - successful
+        proportion = failed / total
+        rows.append(
+            {
+                "scenario": scenario,
+                "n_total": total,
+                "n_success": successful,
+                "n_failed": failed,
+                "failure_proportion": proportion,
+                "failure_mcse": float(
+                    np.sqrt(
+                        proportion
+                        * (1.0 - proportion)
+                        / total
+                    )
+                ),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def functional_recovery_summary_frame(
+    result: FunctionalRecoveryResult,
+) -> pd.DataFrame:
+    """Monte Carlo summaries without imposing qualification thresholds.
+
+    The table retains mean, median, SD, IQR, selected quantiles, the Monte
+    Carlo standard error of the mean, and scenario-level failure frequency.
+    """
+
+    values = functional_recovery_frame(result)
+    failures = functional_recovery_failure_frame(result)
+    if values.empty:
+        return pd.DataFrame(
+            columns=[
+                "scenario",
+                "metric",
+                "component",
+                "source",
+                "n",
+                "mean",
+                "sd",
+                "median",
+                "iqr",
+                "q05",
+                "q25",
+                "q75",
+                "q95",
+                "mcse_mean",
+                "n_total",
+                "n_success",
+                "n_failed",
+                "failure_proportion",
+                "failure_mcse",
+            ]
+        )
+
+    group_columns = [
+        "scenario",
+        "metric",
+        "component",
+        "source",
+        "quantity",
+        "direction",
+        "units",
+        "scope",
+    ]
+    rows = []
+    for keys, group in values.groupby(
+        group_columns,
+        dropna=False,
+        sort=True,
+    ):
+        array = group["value"].to_numpy(dtype=float)
+        n = len(array)
+        sd = float(np.std(array, ddof=1)) if n > 1 else 0.0
+        q05, q25, median, q75, q95 = np.quantile(
+            array,
+            [0.05, 0.25, 0.50, 0.75, 0.95],
+        )
+        row = dict(zip(group_columns, keys, strict=True))
+        row.update(
+            {
+                "n": n,
+                "mean": float(np.mean(array)),
+                "sd": sd,
+                "median": float(median),
+                "iqr": float(q75 - q25),
+                "q05": float(q05),
+                "q25": float(q25),
+                "q75": float(q75),
+                "q95": float(q95),
+                "mcse_mean": float(sd / np.sqrt(n)),
+            }
+        )
+        rows.append(row)
+
+    summary = pd.DataFrame(rows)
+    return summary.merge(
+        failures,
+        on="scenario",
+        how="left",
+        validate="many_to_one",
+    )
+
 
 
 def functional_simulation_scenario_frame(
