@@ -140,7 +140,7 @@ def _replicate(spec, seed):
     rotated_diagonal = rotated_local_quadratic_covariance_diagonal(
         pairs,
         grid,
-        bandwidth=spec["noise_bandwidth"],
+        bandwidth=spec["covariance_bandwidth"],
         min_local_pairs=6,
     )
     noise = estimate_noise_variance_diagonal_difference(
@@ -210,22 +210,30 @@ def _replicate(spec, seed):
 
 
 def _aggregate(name, spec, rows):
-    successful = [row for row in rows if row["status"] == "ok"]
-    if not successful:
+    evaluated = [
+        row for row in rows
+        if "estimated_noise_variance" in row
+    ]
+    positive = [row for row in evaluated if row["status"] == "ok"]
+    if not evaluated:
         return {
             "regime": name,
             "n_replicates": len(rows),
-            "n_ok": 0,
+            "n_evaluated": 0,
+            "n_positive": 0,
+            "positive_rate": 0.0,
             "true_noise_variance": float(spec["noise_sd"] ** 2),
         }
 
     def values(key):
-        return np.asarray([row[key] for row in successful], dtype=float)
+        return np.asarray([row[key] for row in evaluated], dtype=float)
 
     return {
         "regime": name,
         "n_replicates": len(rows),
-        "n_ok": len(successful),
+        "n_evaluated": len(evaluated),
+        "n_positive": len(positive),
+        "positive_rate": len(positive) / len(evaluated),
         "true_noise_variance": float(spec["noise_sd"] ** 2),
         "estimated_noise_median": float(np.median(values("estimated_noise_variance"))),
         "generic_surface_noise_median": float(
@@ -261,6 +269,8 @@ def _aggregate(name, spec, rows):
 def _print_table(summaries):
     columns = (
         "regime",
+        "n_positive",
+        "positive_rate",
         "true_noise_variance",
         "estimated_noise_median",
         "generic_surface_noise_median",
@@ -345,6 +355,7 @@ def main():
             "45-degree rotated local linear along diagonal + "
             "local quadratic perpendicular to diagonal"
         ),
+        "candidate_latent_diagonal_bandwidth_source": "covariance_bandwidth",
         "identity": (
             "noise estimation error = raw-diagonal smoothing bias "
             "- covariance-diagonal smoothing bias"
