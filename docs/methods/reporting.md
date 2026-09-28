@@ -62,23 +62,29 @@ If sparse FPCA was used, report:
 - per-curve observation-count distribution or range;
 - native observation-time support;
 - whether non-finite tracker samples were removed before constructing the sparse object;
-- sparse backend and version;
-- covariance-operator versus other fitting method;
-- mean/covariance smoothing configuration and any backend keyword parameters;
-- evaluation grid used for estimated mean/covariance/eigenfunctions, or that backend defaults were retained; if explicit, confirm it remained within pooled observed support;
-- PACE score-recovery method and tolerance;
-- score-smoothing configuration;
-- normalization setting;
+- sparse implementation/backend and version;
+- mean/covariance smoothing configuration;
+- evaluation grid used for fitted population objects;
+- declared analysis support and whether any observations were explicitly restricted from it;
+- measurement-error variance method and, for diagonal-difference estimation, the declared noise-support interval;
+- PSD policy and both ordinary-grid and quadrature-weighted operator repair magnitudes when repair occurred;
+- PACE score-recovery method;
+- score ridge, condition threshold, and any non-ok per-curve score systems;
 - retained component count and eigenvalues;
-- sensitivity to smoothing and component-count choices.
+- evaluation-grid, smoothing, support, and component-count sensitivity.
 
-State explicitly that no common-grid interpolation preceded the sparse PACE analysis.
+For the native 0.10 estimator, state that raw sparse trajectories were not
+interpolated to a common grid and that fitted population objects were evaluated
+at native observation times for PACE scoring.
+
+For the FDApy compatibility backend, state instead that eyetrajectoriespy did
+not pre-interpolate raw curves before backend fitting; FDApy's irregular PACE
+path may smooth/interpolate internally. Do not describe the backend path as
+globally interpolation-free.
 
 Do not describe separate x(t) and y(t) UFPCA fits as joint multivariate FPCA.
 
 ## Component stability
-
-If bootstrap stability was evaluated, report:
 
 - bootstrap resampling unit;
 - number of replicates;
