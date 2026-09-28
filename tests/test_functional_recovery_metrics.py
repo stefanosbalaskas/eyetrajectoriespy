@@ -8,9 +8,11 @@ from eyetrajectoriespy import (
     FunctionalRecoveryMetric,
     FunctionalRecoveryValue,
     FunctionalSimulationScenario,
+    RegistrationResult,
     SparseFPCAResult,
     evaluate_fpca_recovery,
     evaluate_hierarchy_truth_recovery,
+    evaluate_registration_recovery,
     evaluate_sparse_fpca_recovery,
     functional_recovery_assessment_frame,
     functional_recovery_metric_catalog,
@@ -404,3 +406,49 @@ def test_hierarchy_truth_recovery_keeps_sources_separate():
         "source_variance_absolute_error",
         "source_variance_relative_error",
     }
+
+
+def test_registration_recovery_targets_inverse_simulator_warp():
+    scenario = FunctionalSimulationScenario(
+        name="phase-truth",
+        truth_grid=np.linspace(0.0, 1.0, 81),
+        eigenvalues=(1.0,),
+        n_participants=12,
+        measurement_noise_sd=0.0,
+        phase_variation={"kind": "power", "sd": 0.20},
+        replicates=1,
+        seed_start=812,
+    )
+    simulation = simulate_functional_scenario(
+        scenario,
+        mean=_mean,
+        eigenfunctions=(_phi1,),
+    )
+    grid = simulation.truth.truth_grid
+    generated = simulation.truth.phase_warps_on_truth_grid
+    inverse = np.stack(
+        [
+            np.interp(grid, generated[curve], grid)
+            for curve in range(generated.shape[0])
+        ],
+        axis=0,
+    )
+    result = RegistrationResult(
+        registered=simulation.observations,
+        original=simulation.observations,
+        warping_functions=inverse,
+        reference_landmarks=np.array([0.5]),
+        observed_landmarks=inverse[:, [len(grid) // 2]],
+        method="known_truth_test",
+    )
+    assessment = evaluate_registration_recovery(
+        result,
+        simulation.truth,
+    )
+    frame = functional_recovery_assessment_frame(assessment)
+    assert set(frame["metric"]) == {
+        "phase_warp_ise",
+        "phase_warp_max_absolute_error",
+    }
+    np.testing.assert_allclose(frame["value"], 0.0, atol=1e-12)
+    assert assessment.provenance["truth_target"] == "inverse_phase_warp"
