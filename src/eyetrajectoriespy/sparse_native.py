@@ -258,13 +258,23 @@ def fit_sparse_fpca(
 
     Sparse raw trajectories remain on their native grids. Population mean,
     covariance, and eigenfunctions are smooth fitted objects that may be
-    evaluated at those native observation times; this is model evaluation, not
-    interpolation of the raw sparse trajectories.
+    evaluated at native observation times; this is model evaluation, not
+    interpolation of raw sparse trajectories.
+
+    The evaluation-grid endpoints define the analysis support. The grid may be
+    a strict subinterval of pooled observed time. Observations outside that
+    support raise an error by default and are only excluded when
+    analysis_support_action="restrict" is explicitly requested and audited.
 
     The PACE conditional covariance system uses the complete fitted/repaired
     covariance surface plus measurement-error variance. n_components controls
-    the returned eigenfunctions and scores, not the rank of that conditional
-    covariance system.
+    returned eigenfunctions and scores, not the rank of that conditional
+    covariance system. Component availability is determined by the positive
+    spectrum of the fitted covariance operator rather than a dense-data
+    n_curves - 1 rank rule.
+
+    Bandwidths are declared numerically in this tranche. No automatic CV/GCV
+    bandwidth selection is performed.
     """
 
     index = _validate_native_sparse_dimension(
@@ -412,11 +422,18 @@ def fit_sparse_fpca(
         "relative_correction_frobenius_norm": (
             psd.audit.relative_correction_frobenius_norm
         ),
+        "operator_correction_frobenius_norm": (
+            psd.audit.operator_correction_frobenius_norm
+        ),
+        "relative_operator_correction_frobenius_norm": (
+            psd.audit.relative_operator_correction_frobenius_norm
+        ),
     }
     sparse_provenance: dict[str, Any] = {
         "backend": "native",
         "dimension": dimension,
         "n_components": n_components,
+        "component_rank_rule": "positive_fitted_operator_spectrum",
         "mean_smoother": mean_smoother,
         "covariance_smoother": covariance_smoother,
         "kernel": kernel,
@@ -427,7 +444,13 @@ def fit_sparse_fpca(
         ),
         "noise_variance_method": noise_variance_method,
         "noise_variance": noise_variance,
+        "noise_support": (
+            None
+            if noise_result is None
+            else list(noise_result.support_interval)
+        ),
         "evaluation_grid": grid.tolist(),
+        **support_diagnostics,
         "psd_action": psd_action,
         "psd_tolerance": float(psd_tolerance),
         "positive_eigen_tolerance": float(positive_eigen_tolerance),
@@ -440,10 +463,11 @@ def fit_sparse_fpca(
         "mean_min_local_points": int(mean_min_local_points),
         "covariance_min_local_pairs": int(covariance_min_local_pairs),
         "noise_min_local_points": int(noise_min_local_points),
-        "sample_counts": trajectories.sample_counts.tolist(),
+        "sample_counts": [int(len(time)) for time in curve_times],
         "raw_sparse_trajectory_interpolation_performed": False,
         "population_function_evaluation_at_native_times": True,
         "cross_channel_covariance_modeled": False,
+        "automatic_bandwidth_selection_performed": False,
         "covariance_psd": covariance_diagnostics,
     }
     if measurement_error_variance is not None:
