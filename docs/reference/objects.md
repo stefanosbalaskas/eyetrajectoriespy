@@ -3,6 +3,29 @@
 The result objects below preserve the numerical outputs and provenance of the package contracts. Their corresponding equations are collected in the [mathematical reference](../methods/mathematical-reference.md), and representative plotting outputs are shown in the [visual gallery](../methods/visual-gallery.md).
 
 
+## `FunctionalSimulationScenario`
+
+Immutable declaration of one finite-sample simulation design. It retains the
+truth grid, component variances, participant/trial counts, dense or irregular
+observation design, sparse sample-count contract, hierarchy variances,
+measurement-noise specification, missingness, phase mechanism, score
+distribution, replicate count, deterministic seed start, units/coordinates,
+and analyst labels.
+
+The scenario does not contain fitted results and does not choose estimator
+settings. Its replicate seeds are deterministic and auditable.
+
+## `FunctionalRecoveryRecord` and `FunctionalRecoveryResult`
+
+`FunctionalRecoveryRecord` stores one scenario replicate, its seed, and
+finite scalar recovery metrics. `FunctionalRecoveryResult` is the immutable
+collection returned by `run_functional_recovery_scenarios()`.
+
+The recovery runner gives the estimator observations plus the declared
+scenario only. Exact latent truth is provided afterward to the recovery
+scorer. This separation is designed to prevent truth from becoming a hidden
+estimator-tuning input.
+
 ## `MathematicalContract`
 
 Immutable metadata linking one scientific contract to a stable key, title, registered public functions, one or more LaTeX equation bodies, an explicit mathematical-reference anchor, and a short scope boundary.
