@@ -393,10 +393,18 @@ from .selection import (
     summarise_fpca_cross_validation,
 )
 from .simulate import (
+    FunctionalRecoveryRecord,
+    FunctionalRecoveryResult,
     FunctionalSimulationResult,
+    FunctionalSimulationScenario,
     FunctionalSimulationTruth,
+    expand_functional_simulation_scenarios,
+    functional_recovery_frame,
+    functional_simulation_scenario_frame,
+    run_functional_recovery_scenarios,
     simulate_aoi_probability_trajectories,
     simulate_functional_process,
+    simulate_functional_scenario,
     simulate_planar_trajectories,
 )
 from .sparse import (
