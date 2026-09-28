@@ -1,7 +1,7 @@
 """Native sparse-FPCA numerical building blocks for the 0.10 research branch.
 
-This module is intentionally private while the estimator contract is being
-validated. It does not expose a public fit_sparse_fpca API yet.
+This private module contains the validated numerical machinery used by the
+public :func:`eyetrajectoriespy.fit_sparse_fpca` composition layer.
 """
 
 from __future__ import annotations
@@ -76,6 +76,8 @@ class NoiseVarianceResult:
     diagonal_difference: np.ndarray
     status_code: str
     bandwidth: float
+    support_interval: tuple[float, float]
+    support_mask: np.ndarray
 
 
 @dataclass(frozen=True)
@@ -91,6 +93,8 @@ class CovariancePSDAudit:
     most_negative_eigenvalue: float
     correction_frobenius_norm: float
     relative_correction_frobenius_norm: float
+    operator_correction_frobenius_norm: float
+    relative_operator_correction_frobenius_norm: float
 
 
 @dataclass(frozen=True)
@@ -358,6 +362,7 @@ def estimate_noise_variance_diagonal_difference(
     latent_covariance: np.ndarray,
     *,
     bandwidth: float,
+    noise_support: tuple[float, float],
     min_local_points: int = 3,
 ) -> NoiseVarianceResult:
     """Estimate measurement-error variance from raw versus latent diagonals.
@@ -388,10 +393,48 @@ def estimate_noise_variance_diagonal_difference(
         bandwidth=bandwidth,
         min_local_points=min_local_points,
     )
+    if (
+        not isinstance(noise_support, tuple)
+        or len(noise_support) != 2
+    ):
+        raise TypeError("noise_support must be a (start, end) tuple")
+    support_start = float(noise_support[0])
+    support_end = float(noise_support[1])
+    if (
+        not np.isfinite(support_start)
+        or not np.isfinite(support_end)
+        or support_end <= support_start
+    ):
+        raise ValueError(
+            "noise_support must contain finite values with end > start"
+        )
+    if support_start < grid[0] or support_end > grid[-1]:
+        raise ValueError(
+            "noise_support must lie within the evaluation-grid support"
+        )
+
     latent_diagonal = np.diag(covariance).copy()
     difference = diagonal_fit.values - latent_diagonal
-    weights = functional_trapezoid_weights(grid)
-    variance = float(np.sum(weights * difference) / np.sum(weights))
+    support_mask = (
+        (grid >= support_start)
+        & (grid <= support_end)
+    )
+    support_grid = grid[support_mask]
+    if support_grid.size < 2:
+        raise SparseNativeError(
+            "insufficient_noise_support",
+            "noise_support contains fewer than two evaluation-grid points",
+            details={
+                "noise_support": [support_start, support_end],
+                "n_grid_points": int(support_grid.size),
+            },
+        )
+    support_weights = functional_trapezoid_weights(support_grid)
+    support_difference = difference[support_mask]
+    variance = float(
+        np.sum(support_weights * support_difference)
+        / np.sum(support_weights)
+    )
     status = (
         "ok"
         if np.isfinite(variance) and variance > 0
@@ -404,6 +447,8 @@ def estimate_noise_variance_diagonal_difference(
         diagonal_difference=difference,
         status_code=status,
         bandwidth=float(bandwidth),
+        support_interval=(support_start, support_end),
+        support_mask=support_mask,
     )
 
 
@@ -481,6 +526,22 @@ def repair_covariance_psd(
     relative_norm = (
         0.0 if baseline_norm == 0 else correction_norm / baseline_norm
     )
+    operator_correction = (
+        sqrt_weights[:, None]
+        * correction
+        * sqrt_weights[None, :]
+    )
+    operator_correction_norm = float(
+        np.linalg.norm(operator_correction, ord="fro")
+    )
+    operator_baseline_norm = float(
+        np.linalg.norm(weighted_operator, ord="fro")
+    )
+    relative_operator_norm = (
+        0.0
+        if operator_baseline_norm == 0
+        else operator_correction_norm / operator_baseline_norm
+    )
     audit = CovariancePSDAudit(
         requested_action=action,
         applied_action=applied_action,
@@ -491,6 +552,8 @@ def repair_covariance_psd(
         most_negative_eigenvalue=most_negative,
         correction_frobenius_norm=correction_norm,
         relative_correction_frobenius_norm=relative_norm,
+        operator_correction_frobenius_norm=operator_correction_norm,
+        relative_operator_correction_frobenius_norm=relative_operator_norm,
     )
     return CovariancePSDResult(covariance=repaired, audit=audit)
 
