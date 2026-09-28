@@ -13,6 +13,7 @@ import numpy as np
 import pandas as pd
 
 from eyetrajectoriespy import (
+    IrregularTrajectorySet,
     TrajectorySet,
     bootstrap_function_on_scalar_coefficients,
     bootstrap_functional_mixed_effects_coefficients,
@@ -29,6 +30,7 @@ from eyetrajectoriespy import (
     functional_mixed_effects_residual_diagnostics,
     fit_local_return_map,
     fit_mfpca,
+    fit_sparse_fpca,
     fpca_wild_bootstrap_family_test_monte_carlo_diagnostics,
     fpca_wild_bootstrap_projection_family_test,
     kantz_divergence_curve,
@@ -55,6 +57,9 @@ from eyetrajectoriespy import (
     plot_local_divergence,
     plot_multivariate_iaaft_diagnostics,
     plot_planar_trajectories,
+    plot_sparse_fpca_component,
+    plot_sparse_fpca_covariance,
+    plot_sparse_fpca_score_diagnostics,
     plot_trajectory_distance_rank_correlations,
     plot_trajectory_overlay,
     plot_poincare_return_map,
@@ -121,6 +126,58 @@ def main() -> None:
 
     ax = plot_fpca_variance(fpca, cumulative=True)
     _save(ax, "fpca-variance.svg")
+
+    sparse_rng = np.random.default_rng(2116)
+    sparse_times = []
+    sparse_values = []
+    sparse_ids = []
+    sparse_participants = []
+    for index in range(36):
+        interior = np.sort(
+            sparse_rng.uniform(0.02, 0.98, size=8)
+        )
+        time = np.concatenate(([0.0], interior, [1.0]))
+        score1 = sparse_rng.normal(scale=1.0)
+        score2 = sparse_rng.normal(scale=np.sqrt(0.35))
+        value = (
+            0.3
+            + 0.4 * time
+            + score1 * np.sqrt(2.0) * np.sin(np.pi * time)
+            + score2 * np.sqrt(2.0) * np.sin(2.0 * np.pi * time)
+            + sparse_rng.normal(0.0, 0.08, size=time.size)
+        )
+        sparse_times.append(time)
+        sparse_values.append(value[:, None])
+        sparse_ids.append(f"SP{index + 1:02d}|1")
+        sparse_participants.append(f"SP{index + 1:02d}")
+    sparse_gaze = IrregularTrajectorySet(
+        time=tuple(sparse_times),
+        values=tuple(sparse_values),
+        curve_ids=tuple(sparse_ids),
+        dimension_names=("x",),
+        metadata=pd.DataFrame(
+            {"participant_id": sparse_participants}
+        ),
+        coordinate_system="normalized",
+        time_unit="s",
+    )
+    sparse_fit = fit_sparse_fpca(
+        sparse_gaze,
+        dimension="x",
+        n_components=2,
+        evaluation_grid=np.linspace(0.0, 1.0, 31),
+        mean_bandwidth=0.24,
+        covariance_bandwidth=0.34,
+        noise_variance_method="fixed",
+        measurement_error_variance=0.08**2,
+        psd_action="project",
+    )
+    ax = plot_sparse_fpca_component(sparse_fit, component=0)
+    _save(ax, "sparse-fpca-component.svg")
+    ax = plot_sparse_fpca_covariance(sparse_fit)
+    _save(ax, "sparse-fpca-covariance.svg")
+    ax = plot_sparse_fpca_score_diagnostics(sparse_fit)
+    _save(ax, "sparse-fpca-score-conditioning.svg")
 
     geometry_time = np.linspace(0.0, 2.5, 241)
     geometry_values = np.column_stack(
@@ -747,6 +804,9 @@ def main() -> None:
         "function-on-scalar-coefficient.svg",
         "fpca-component.svg",
         "fpca-variance.svg",
+        "sparse-fpca-component.svg",
+        "sparse-fpca-covariance.svg",
+        "sparse-fpca-score-conditioning.svg",
         "trajectory-curvature.svg",
         "registration-warping.svg",
         "functional-mean-band.svg",
