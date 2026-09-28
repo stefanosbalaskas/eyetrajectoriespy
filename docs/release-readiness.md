@@ -7,14 +7,14 @@ interpret a workflow.
 ## Repository policy
 
 Historical state at the start of 0.55 was an unprotected `main`. The current
-0.9 release state is different:
+0.10 release-candidate qualification state is different:
 
 - default branch: `main`;
 - `main` is protected by the release-quality ruleset;
 - required pull-request/status-check protection is active;
 - issue #64 is closed.
 
-This repository-policy gate is therefore satisfied for 0.9.0.
+This repository-policy gate is therefore satisfied for the 0.10.0rc1 qualification path.
 
 ### Required target policy for `main`
 
@@ -141,14 +141,14 @@ requalification remains required after merge.
 - [x] Dedicated production PyPI Trusted Publisher is configured for GitHub environment `pypi`.
 - [x] `pypi` GitHub environment has the intended required-reviewer protection.
 - [x] `main` is protected and issue #64 is closed.
-- [x] `RELEASE_READINESS.json` was armed for 0.9.0; it is deliberately disarmed on the `0.10.0.dev0` development line.
+- [x] `RELEASE_READINESS.json` was armed for 0.9.0; it remains deliberately disarmed while `0.10.0rc1` is being qualified.
 
 The first public prerelease `0.9.0rc1` successfully exercised GitHub-first
 publication followed by production PyPI OIDC publication and clean installation.
-Version `0.9.0` repeats the complete qualification under the final version
+Version `0.9.0` repeated the complete qualification under the final version
 rather than relabeling RC evidence. Production workflow authority now points
-only at the dedicated `pypi` environment. Issue #69 is a mandatory blocker until
-the matching PyPI Trusted Publisher claim is migrated there.
+only at the dedicated `pypi` environment. Issue #69 is closed and the obsolete
+production publisher cleanup is complete before 0.10.0rc1 qualification.
 
 ## Release-candidate gate
 
@@ -167,8 +167,8 @@ Do not enter a 0.9-style release-candidate phase until:
 
 ## Post-0.9.0 state
 
-Stable release `0.9.0` is immutable on GitHub and PyPI. The active development
-line is `0.10.0.dev0`, containing the qualified native sparse-FPCA/PACE
+Stable release `0.9.0` is immutable on GitHub and PyPI. The active release-
+candidate line is `0.10.0rc1`, containing the qualified native sparse-FPCA/PACE
 estimator. Release automation is manual-dispatch only, so ordinary merges
 cannot trigger a production upload. Before any public 0.10 release, the version
 and readiness manifests must be deliberately armed through a reviewed pull
