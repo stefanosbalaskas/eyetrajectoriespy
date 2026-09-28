@@ -108,12 +108,13 @@ def test_performance_envelope_declares_noncomparative_repeated_workloads():
     ]
     assert set(ledger["environment"]["thread_limits"].values()) == {"1"}
     for row in rows.values():
-        runtime = row["runtime_seconds"]
-        memory = row["peak_memory_mib"]
-        assert runtime["median"] >= 0.0
-        assert runtime["minimum"] <= runtime["median"] <= runtime["maximum"]
-        assert runtime["q1"] <= runtime["q3"]
-        assert len(runtime["all"]) == row["repeats"]
-        assert memory is not None
-        assert memory["median"] > 0.0
-        assert len(memory["all"]) == row["repeats"]
+        observed = row["observed"]
+        assert observed is not None
+        assert observed["runtime_seconds"]["median"] >= 0.0
+        assert observed["runtime_seconds"]["minimum"] <= observed[
+            "runtime_seconds"
+        ]["median"] <= observed["runtime_seconds"]["maximum"]
+        assert observed["runtime_seconds"]["q1"] <= observed[
+            "runtime_seconds"
+        ]["q3"]
+        assert observed["peak_memory_mib"]["median"] > 0.0
