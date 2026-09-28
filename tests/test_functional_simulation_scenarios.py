@@ -10,6 +10,7 @@ from eyetrajectoriespy import (
     functional_simulation_scenario_frame,
     run_functional_recovery_scenarios,
     simulate_aoi_probability_trajectories,
+    simulate_functional_process,
     simulate_functional_scenario,
     simulate_planar_trajectories,
 )
@@ -413,3 +414,87 @@ def test_existing_synthetic_generators_fail_closed_on_invalid_sizes():
         simulate_planar_trajectories(n_participants=1)
     with pytest.raises(ValueError, match="at least 2 curves"):
         simulate_aoi_probability_trajectories(n_curves=1)
+
+
+def _public_simulation_kwargs(**updates):
+    values = {
+        "mean": _mean,
+        "eigenfunctions": (_phi1,),
+        "eigenvalues": (1.0,),
+        "truth_grid": np.linspace(0.0, 1.0, 21),
+        "n_participants": 4,
+        "measurement_noise_sd": 0.0,
+        "random_state": 19,
+    }
+    values.update(updates)
+    return values
+
+
+def test_scenario_additional_noise_and_tuple_audit_paths():
+    with pytest.raises(ValueError, match="finite and non-negative"):
+        _base_scenario(measurement_noise_sd=-0.1)
+
+    multichannel = FunctionalSimulationScenario(
+        name="vector-noise",
+        truth_grid=np.linspace(0.0, 1.0, 21),
+        eigenvalues=(1.0,),
+        n_participants=4,
+        dimension_names=("x", "y"),
+        measurement_noise_sd=(0.1, 0.2),
+    )
+    assert multichannel.measurement_noise_sd == (0.1, 0.2)
+
+    irregular = _base_scenario(
+        name="irregular-range",
+        observation_design="irregular",
+        samples_per_curve=(5, 8),
+    )
+    frame = functional_simulation_scenario_frame([irregular])
+    assert frame.loc[0, "samples_per_curve_min"] == 5
+    assert frame.loc[0, "samples_per_curve_max"] == 8
+
+
+@pytest.mark.parametrize(
+    ("updates", "message"),
+    [
+        ({"n_participants": 0}, "n_participants"),
+        ({"trials_per_participant": 0}, "trials_per_participant"),
+        ({"dimension_names": ("value", "value")}, "dimension_names"),
+        (
+            {"observation_design": "dense", "samples_per_curve": 5},
+            "dense observation_design",
+        ),
+        (
+            {
+                "observation_design": "irregular",
+                "observation_times": (
+                    np.array([0.0, 0.5, 1.0]),
+                ) * 4,
+                "samples_per_curve": 3,
+            },
+            "specify observation_times or samples_per_curve",
+        ),
+        ({"observation_design": "unsupported"}, "observation_design"),
+        ({"phase_variation": "bad"}, "phase_variation"),
+        ({"phase_variation": {"kind": "unknown"}}, "supports only"),
+        (
+            {"phase_variation": {"kind": "power", "sd": -0.1}},
+            "finite and non-negative",
+        ),
+        ({"missingness": "bad"}, "missingness"),
+        (
+            {"missingness": {"kind": "mcar", "probability": 1.0}},
+            "probability",
+        ),
+        (
+            {"missingness": {"kind": "block", "fraction": 1.0}},
+            "fraction",
+        ),
+        ({"missingness": {"kind": "unknown"}}, "supports"),
+    ],
+)
+def test_public_functional_simulator_fail_closed_paths(updates, message):
+    with pytest.raises((TypeError, ValueError), match=message):
+        simulate_functional_process(
+            **_public_simulation_kwargs(**updates)
+        )
