@@ -25,6 +25,7 @@ from eyetrajectoriespy._sparse_native import (
     local_linear_covariance_surface,
     local_linear_smooth_1d,
     raw_offdiagonal_covariance_pairs,
+    rotated_local_quadratic_covariance_diagonal,
 )
 from eyetrajectoriespy._sparse_truth import simulate_sparse_functional_truth
 from eyetrajectoriespy.fpca import functional_trapezoid_weights
@@ -127,11 +128,27 @@ def _replicate(spec, seed):
         bandwidth=spec["covariance_bandwidth"],
         min_local_pairs=6,
     )
+    generic_noise = estimate_noise_variance_diagonal_difference(
+        times,
+        tuple(residuals),
+        grid,
+        covariance_fit.values,
+        bandwidth=spec["noise_bandwidth"],
+        noise_support=spec["noise_support"],
+        min_local_points=3,
+    )
+    rotated_diagonal = rotated_local_quadratic_covariance_diagonal(
+        pairs,
+        grid,
+        bandwidth=spec["noise_bandwidth"],
+        min_local_pairs=6,
+    )
     noise = estimate_noise_variance_diagonal_difference(
         times,
         tuple(residuals),
         grid,
         covariance_fit.values,
+        latent_diagonal=rotated_diagonal.values,
         bandwidth=spec["noise_bandwidth"],
         noise_support=spec["noise_support"],
         min_local_points=3,
@@ -157,6 +174,10 @@ def _replicate(spec, seed):
         "status": noise.status_code,
         "true_noise_variance": true_noise,
         "estimated_noise_variance": float(noise.variance),
+        "generic_surface_noise_variance": float(generic_noise.variance),
+        "generic_surface_relative_error": float(
+            abs(generic_noise.variance - true_noise) / true_noise
+        ),
         "estimate_to_truth_ratio": estimate_to_truth_ratio,
         "noise_variance_relative_error": float(relative_error),
         "raw_diagonal_support_average": raw_average,
@@ -170,6 +191,9 @@ def _replicate(spec, seed):
         "bias_identity_residual": float(estimate_error - (raw_bias - covariance_bias)),
         "minimum_mean_support": int(np.min(mean_fit.support_counts)),
         "minimum_covariance_support": int(np.min(covariance_fit.support_counts)),
+        "minimum_rotated_diagonal_support": int(
+            np.min(rotated_diagonal.support_counts)
+        ),
         "minimum_noise_support": int(
             np.min(
                 local_linear_smooth_1d(
@@ -204,6 +228,12 @@ def _aggregate(name, spec, rows):
         "n_ok": len(successful),
         "true_noise_variance": float(spec["noise_sd"] ** 2),
         "estimated_noise_median": float(np.median(values("estimated_noise_variance"))),
+        "generic_surface_noise_median": float(
+            np.median(values("generic_surface_noise_variance"))
+        ),
+        "generic_surface_relative_error_median": float(
+            np.median(values("generic_surface_relative_error"))
+        ),
         "estimated_noise_min": float(np.min(values("estimated_noise_variance"))),
         "estimated_noise_max": float(np.max(values("estimated_noise_variance"))),
         "relative_error_median": float(np.median(values("noise_variance_relative_error"))),
@@ -215,6 +245,9 @@ def _aggregate(name, spec, rows):
         "minimum_mean_support": int(np.min(values("minimum_mean_support"))),
         "minimum_covariance_support": int(np.min(values("minimum_covariance_support"))),
         "minimum_noise_support": int(np.min(values("minimum_noise_support"))),
+        "minimum_rotated_diagonal_support": int(
+            np.min(values("minimum_rotated_diagonal_support"))
+        ),
         "mean_bandwidth": float(spec["mean_bandwidth"]),
         "covariance_bandwidth": float(spec["covariance_bandwidth"]),
         "noise_bandwidth": float(spec["noise_bandwidth"]),
@@ -230,6 +263,8 @@ def _print_table(summaries):
         "regime",
         "true_noise_variance",
         "estimated_noise_median",
+        "generic_surface_noise_median",
+        "generic_surface_relative_error_median",
         "relative_error_median",
         "relative_error_max",
         "estimate_to_truth_ratio_median",
@@ -306,6 +341,10 @@ def main():
         "automatic_tuning": False,
         "baseline_seed_reuse_across_regimes": True,
         "replicates_per_regime": args.replicates,
+        "candidate_latent_diagonal_method": (
+            "45-degree rotated local linear along diagonal + "
+            "local quadratic perpendicular to diagonal"
+        ),
         "identity": (
             "noise estimation error = raw-diagonal smoothing bias "
             "- covariance-diagonal smoothing bias"
