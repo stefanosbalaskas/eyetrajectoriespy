@@ -124,11 +124,6 @@ def _match_components(native, fdapy, grid):
     signs = np.sign(signed[np.arange(len(column)), column])
     signs[signs == 0] = 1.0
 
-    cross = (
-        native_phi.T * np.sqrt(weights)[:, None]
-    ).T @ (
-        fdapy_phi[column].T * np.sqrt(weights)[:, None]
-    )
     # Use QR-based principal cosines rather than individual signs/order.
     native_q, _ = np.linalg.qr(
         native_phi.T * np.sqrt(weights)[:, None]
