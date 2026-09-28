@@ -1324,3 +1324,90 @@ def evaluate_functional_mixed_effects_recovery(
             "curve_level_kl_variance_scored_as_scalar_residual": False,
         },
     )
+
+
+def functional_recovery_reporting_text(
+    assessment: FunctionalRecoveryAssessment,
+) -> str:
+    """Return compact reporting text for one semantic recovery assessment."""
+
+    if not isinstance(assessment, FunctionalRecoveryAssessment):
+        raise TypeError(
+            "assessment must be a FunctionalRecoveryAssessment"
+        )
+    frame = functional_recovery_assessment_frame(assessment)
+    metric_names = ", ".join(sorted(frame["metric"].unique()))
+    estimator = dict(assessment.provenance).get(
+        "estimator",
+        "unspecified",
+    )
+    return (
+        f"Known-truth recovery was evaluated after fitting for estimator "
+        f"{estimator!r}. Recorded metric families: {metric_names}. "
+        "Metric direction, units, scope, and component/source labels are "
+        "retained explicitly. Recovery truth is an evaluation input only "
+        "and is not an estimator-tuning input."
+    )
+
+
+def plot_functional_recovery_summary(
+    summary: pd.DataFrame,
+    *,
+    metric: str,
+    statistic: str = "median",
+):
+    """Plot one recovery metric across declared scenarios.
+
+    Interquartile ranges are shown when statistic="median"; otherwise the
+    requested scalar summary column is plotted without an invented interval.
+    This is descriptive and performs no pass/fail interpretation.
+    """
+
+    import matplotlib.pyplot as plt
+
+    if not isinstance(summary, pd.DataFrame):
+        raise TypeError("summary must be a pandas DataFrame")
+    required = {"scenario", "metric", statistic}
+    missing = required - set(summary.columns)
+    if missing:
+        raise ValueError(
+            f"summary is missing required columns: {sorted(missing)}"
+        )
+    selected = summary.loc[
+        summary["metric"] == metric
+    ].copy()
+    if selected.empty:
+        raise ValueError(
+            f"metric {metric!r} is absent from the recovery summary"
+        )
+    labels = []
+    for row in selected.itertuples(index=False):
+        label = str(row.scenario)
+        component = getattr(row, "component", None)
+        source = getattr(row, "source", None)
+        if pd.notna(source):
+            label += f" / {source}"
+        if pd.notna(component):
+            label += f" / C{int(component)}"
+        labels.append(label)
+
+    x = np.arange(len(selected))
+    y = selected[statistic].to_numpy(dtype=float)
+    fig, ax = plt.subplots()
+    if statistic == "median" and {"q25", "q75"} <= set(selected.columns):
+        lower = y - selected["q25"].to_numpy(dtype=float)
+        upper = selected["q75"].to_numpy(dtype=float) - y
+        ax.errorbar(
+            x,
+            y,
+            yerr=np.vstack([lower, upper]),
+            fmt="o",
+            capsize=3,
+        )
+    else:
+        ax.plot(x, y, "o")
+    ax.set_xticks(x, labels, rotation=45, ha="right")
+    ax.set_ylabel(statistic.replace("_", " "))
+    ax.set_title(metric.replace("_", " "))
+    fig.tight_layout()
+    return ax
