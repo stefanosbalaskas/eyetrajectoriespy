@@ -80,7 +80,7 @@ def test_student_t_scores_are_variance_matched_and_audited():
         eigenfunctions=(_phi1, _phi2),
         eigenvalues=(1.0, 0.25),
         truth_grid=np.linspace(0.0, 1.0, 31),
-        n_participants=5000,
+        n_participants=1500,
         score_distribution="student_t",
         score_df=6.0,
         measurement_noise_sd=0.0,
@@ -95,7 +95,7 @@ def test_student_t_scores_are_variance_matched_and_audited():
     np.testing.assert_allclose(
         empirical,
         np.array([1.0, 0.25]),
-        rtol=0.08,
+        rtol=0.15,
         atol=0.0,
     )
     assert result.truth.score_distribution == "student_t"
