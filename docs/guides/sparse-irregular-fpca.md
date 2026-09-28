@@ -2,9 +2,10 @@
 
 !!! note "Current backend and native roadmap"
     In 0.9.1, `fit_sparse_fpca_fdapy()` is an explicitly backend-named
-    compatibility path. FDApy is not a core dependency and is now treated as a
-    validation/reference implementation for the planned native 0.10.0 sparse
-    FPCA + PACE estimator. See the [0.10 development contract](../development/native-sparse-fpca.md).
+    compatibility path. FDApy is not a core dependency. The 0.10 development
+    branch now contains the native `fit_sparse_fpca()` estimator, while FDApy
+    remains a validation/reference implementation. See the
+    [0.10 development contract](../development/native-sparse-fpca.md).
 
 
 Irregular sampling and sparse sampling are related but different problems.
@@ -132,7 +133,8 @@ The currently released backend-specific sparse workflow is intentionally narrow:
 - one explicitly named functional dimension at a time;
 - FDApy covariance-operator `UFPCA`;
 - PACE conditional-expectation score recovery;
-- no common-grid interpolation before estimation;
+- eyetrajectoriespy does not pre-interpolate raw curves before backend fitting;
+- FDApy's irregular PACE score path may smooth/interpolate internally;
 - explicit fit smoothing, score smoothing, PACE tolerance, and normalization settings;
 - original curve IDs, metadata, coordinate system, time unit, sample counts, and backend version retained in the result.
 
@@ -283,7 +285,7 @@ It is not the same object as a numerical-integration score computed from a dense
 
 ## Reporting example
 
-> Horizontal gaze trajectories were analyzed as sparsely observed functions without common-grid interpolation. Native curve-specific observation times were retained in an `IrregularTrajectorySet`. Univariate sparse FPCA was fitted using FDApy's covariance-operator UFPCA implementation with P-spline smoothing of the fitted functional structure. Individual scores were estimated using PACE conditional expectation with tolerance 1×10⁻⁴ and local-polynomial score smoothing. Three components were retained. Per-curve observation counts ranged from 8 to 15. Sensitivity analyses varied the smoothing configuration and retained dimension.
+> Horizontal gaze trajectories were supplied to the sparse FDApy backend on their native curve-specific observation grids without an eyetrajectoriespy preprocessing step that interpolated raw curves to a common grid. FDApy's irregular PACE implementation may smooth/interpolate internally as part of its score path. Univariate sparse FPCA used FDApy's covariance-operator UFPCA implementation with P-spline fitting smoothness. Individual scores were estimated using PACE conditional expectation with tolerance 1×10⁻⁴ and local-polynomial score smoothing. Three components were retained. Per-curve observation counts ranged from 8 to 15. Sensitivity analyses varied the smoothing configuration and retained dimension.
 
 Use `sparse_fpca_reporting_text()` as a reproducible starting point.
 
