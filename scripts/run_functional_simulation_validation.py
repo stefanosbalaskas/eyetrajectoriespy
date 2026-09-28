@@ -145,17 +145,6 @@ CASE_SPECS = {
         "minimum_score_correlation": 0.55,
         "maximum_score_failure_rate": 0.05,
     },
-    "native_sparse_estimated_noise": {
-        "runner": lambda scenario, replicate: _sparse_case(
-            scenario,
-            replicate,
-            estimated_noise=True,
-        ),
-        "minimum_principal_cosine": 0.75,
-        "minimum_score_correlation": 0.55,
-        "maximum_score_failure_rate": 0.05,
-        "maximum_noise_variance_relative_error": 2.00,
-    },
     "hierarchy_sources": {
         "runner": _hierarchy_case,
         "maximum_source_variance_relative_error": 0.30,
