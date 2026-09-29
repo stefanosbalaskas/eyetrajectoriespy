@@ -12,7 +12,7 @@ This file records qualification evidence separately from implementation status. 
 - Development stabilization: PR #110 aligned `0.11.0.dev0`, archived final 0.10 performance evidence, generated a fresh 0.11 development performance envelope, froze the feature surface, and passed the complete nine-workflow matrix.
 - Stress evidence: PR #111 added a separate threshold-free stress runner/workflow. Exact post-merge run `36559953858` on commit `f6bacfe64cd8639d365137f9c251b1c967aa78b5` executed all 14 declared stress regimes with three replicates each and retained failures in the denominator.
 - Estimated-noise stress remains difficult by evidence, not by label: 2/3 seeded diagonal-difference fits failed closed with `noise_variance_invalid`; the one successful seed retained strong subspace/score recovery but large measurement-noise relative error. No clipping or threshold widening was introduced.
-- The immutable `0.11.0.dev0` performance snapshot is archived. rc1 requires a new exact-version performance envelope.
+- The immutable `0.11.0.dev0` performance snapshot is archived. Fresh `0.11.0rc1` performance qualification passed from source commit `f37941710eba6e7d50806c60490d00492f98e1ff` in run `36560873074`, and the canonical performance ledger records that exact RC evidence.
 - The 0.11 feature surface remains frozen. Sparse multivariate FPCA, sparse multilevel decomposition, Bayesian sparse FDA, additional generalized families, new nonlinear simulation ecosystems, and signal-dependent missingness are not part of rc1.
 - Existing tests, coverage thresholds, scientific validation rules, fail-closed sparse/PACE behavior, and publication protections remain unchanged.
 
