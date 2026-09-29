@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — 0.11.0.dev0 stabilization
+
+- Reconcile the published stable `0.10.0` baseline into the isolated 0.11 simulation/recovery line through PR #109 after the combined nine-workflow matrix passed.
+- Freeze the 0.11 feature surface around the known-truth simulation/recovery laboratory: no sparse multivariate FPCA, sparse multilevel decomposition, Bayesian subsystem, generalized-family expansion, or new nonlinear simulation ecosystem is added in 0.11.
+- Requalify recovery and descriptive stress evidence after reconciliation, collect a fresh 0.11 performance envelope, and stabilize public simulation/recovery APIs, documentation, reporting, plots, and provenance before `0.11.0rc1`.
+- Keep scientific recovery status separate from stress characterization and runtime/RSS performance evidence.
+- Order post-0.11 research around a package-wide recovery audit, external eye-tracking/compositional validation, native sparse multivariate FPCA, later sparse participant/trial decomposition, and signal-dependent observation/missingness stress scenarios.
+- Keep GitHub/PyPI publication readiness fail-closed and disarmed throughout development.
+
 ## 0.10.0 — 2026-09-29
 
 - Promote the corrected and publicly qualified `0.10.0rc2` scientific code to the final 0.10 line without adding a new estimator, numerical method, observation family, API contract, or hidden analytical default.
