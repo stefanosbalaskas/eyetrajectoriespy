@@ -35,6 +35,8 @@ and a fresh eyetrajectoriespy==0.10.0 production-PyPI install
 
 The rc1 and rc2 tags, GitHub Releases, PyPI files, checksums and performance evidence remain immutable. Final qualification must create new exact-version evidence rather than relabeling either release candidate.
 
+Final exact-version qualification is complete: PR #106 exact head `3c24ba411700ebc1199057537056c411944071cd` passed all eight pull-request workflow groups, and protected-main commit `b9172a578a07e433cce6cb9ec53825ccbd5d2d04` passed all seven main-push qualification groups. Release readiness is now armed through this separate governance-only change. The only remaining production action is an explicit manual `release.yml` dispatch with `target=production`.
+
 ## 0.10.0rc2 qualification
 
 Published `0.10.0rc1` remains immutable. Recovery validation subsequently
