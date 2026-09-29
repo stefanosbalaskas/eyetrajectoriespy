@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.11.0 (unreleased)
+## 0.11.0 — 2026-09-29
 
 - Promote the publicly qualified `0.11.0rc1` simulation/recovery laboratory to final `0.11.0` without adding an estimator, numerical method, generalized family, API expansion, hidden analytical default, or post-0.11 research feature.
 - Re-run the complete exact-version qualification under `0.11.0` rather than relabeling release-candidate evidence.
@@ -9,7 +9,8 @@
 - Carry forward production-installed rc1 observation evidence: Python 3.11–3.13 exact PyPI installation, dense FPCA recovery, mixed-effects recovery, registration recovery, portable export/load, and 42-record threshold-free stress retention.
 - Archive the immutable `0.11.0rc1` performance snapshot and require a fresh exact-version `0.11.0` performance envelope before final qualification.
 - Preserve `v0.11.0rc1` and its GitHub/PyPI artifacts as immutable prerelease history.
-- After publication, install normally with `pip install eyetrajectoriespy==0.11.0` or `pip install eyetrajectoriespy`.
+- Published from exact protected-main commit `2616675ad2dfc095bf17a442c1d350ba88fd030a` through production release workflow #13; GitHub Release creation, PyPI OIDC Trusted Publishing with digital attestations, and a fresh production-PyPI installation smoke test all completed successfully.
+- Install normally with `pip install eyetrajectoriespy==0.11.0` or `pip install eyetrajectoriespy`.
 
 ## 0.11.0rc1 — 2026-09-29
 
