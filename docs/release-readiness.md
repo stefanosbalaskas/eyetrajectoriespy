@@ -156,8 +156,8 @@ production publisher cleanup remains complete for final 0.10.0 qualification.
 
 ## 0.11.0rc1 published state
 
-The current stable release remains `0.10.0`. The active release-candidate
-qualification target is `0.11.0rc1`.
+The current stable release remains `0.10.0`. The latest published prerelease is
+`0.11.0rc1`, available from both GitHub Releases and production PyPI.
 
 Pre-RC stabilization is complete:
 
@@ -169,14 +169,17 @@ Pre-RC stabilization is complete:
   diagonal-difference regime rather than clipping non-positive estimates or
   widening thresholds.
 
-The rc1 qualification and expanded exact-main matrix are complete. Protected-main
-commit `4be7d13186dbef7487a03e3d81c05e0eefb751e0` passed all ten workflow
+The rc1 qualification and expanded exact-main matrix completed before
+publication. The final release dispatch used exact protected-main commit
+`af86a96bfafe3838ac8bd27818c164418b981fc5`, which passed all ten workflow
 groups, including functional recovery, threshold-free stress, native sparse/PACE
 validation, and package + Ubuntu/macOS/Windows × Python 3.11–3.13.
 
-This separate governance-only change arms both GitHub and production readiness.
-Publication remains an explicit manual production action; ordinary pushes and
-merges do not publish.
+Production workflow #12 created GitHub prerelease `v0.11.0rc1`, published the
+checksum-verified wheel and sdist to production PyPI through OIDC Trusted
+Publishing, and completed the fresh production-PyPI installation smoke test on
+its second attempt after normal index propagation. Ordinary pushes and merges
+remain non-publishing.
 
 ## Release-candidate gate
 
