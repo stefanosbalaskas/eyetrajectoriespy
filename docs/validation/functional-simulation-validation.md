@@ -213,6 +213,37 @@ thresholds, semantic per-replicate metrics, evaluator provenance, qualification
 extrema, and Monte Carlo distribution summaries. Stress matrices are kept
 separate from this CI-gating artifact.
 
+## Reproducible descriptive stress artifact
+
+The separate stress workflow runs:
+
+```bash
+python scripts/run_functional_simulation_stress.py \
+  --replicates 3 \
+  --output functional-simulation-stress.json
+```
+
+This artifact is deliberately **threshold-free**. It records the complete named
+stress catalog, every replicate seed/status, Monte Carlo summaries, and explicit
+failure proportions. Failed simulation, fit, or recovery replicates remain in
+the denominator.
+
+Stress evidence is target-aware without pretending every scenario estimates the
+same quantity:
+
+- dense FPCA and multivariate FPCA regimes use post-fit known-truth recovery;
+- sparse regimes use native sparse FPCA/PACE recovery, with the
+  diagonal-difference case kept distinct from fixed-noise fits;
+- participant-heavy and trial-heavy hierarchy regimes use a simulator
+  score-source variance audit rather than being mislabeled as mixed-model
+  estimator recovery;
+- phase and missingness regimes report explicit observation-mechanism
+  diagnostics rather than using latent truth to manufacture estimator inputs.
+
+A successful workflow means the declared stress study executed and retained its
+evidence. It is **not** a claim that every scientific metric is acceptable in
+every stress regime.
+
 ## What the thresholds mean
 
 The thresholds in the validation script are **qualification guards for the
