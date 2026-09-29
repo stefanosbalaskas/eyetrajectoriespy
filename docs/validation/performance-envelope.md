@@ -1,6 +1,6 @@
 # Performance envelope
 
-Version 0.56 introduced a reproducible **single-package performance envelope**. Version 0.57 requalified it after release hardening, 0.9.0rc1 qualified the prerelease, 0.9.0 qualified the first stable pre-1.0 release, 0.9.1.dev0 qualified the maintenance line, 0.10.0.dev0 requalified the integrated native sparse-FPCA/PACE development line, and 0.10.0rc1 now requalifies the release-candidate version independently. It is
+Version 0.56 introduced a reproducible **single-package performance envelope**. Version 0.57 requalified it after release hardening, 0.9.0rc1 qualified the prerelease, 0.9.0 qualified the first stable pre-1.0 release, 0.9.1.dev0 qualified the maintenance line, 0.10.0.dev0 requalified the integrated native sparse-FPCA/PACE development line, and 0.10.0rc1 independently qualified the first release candidate. A fresh 0.10.0rc2 envelope is required and is not obtained by relabeling rc1 evidence. It is
 not a comparative benchmark and does not claim that eyetrajectoriespy is faster
 than another package.
 
@@ -43,7 +43,7 @@ The qualification harness measures these expensive routes separately:
 The committed workload profile is intentionally CI-sized and is a **reference
 envelope**, not a universal workstation capacity claim.
 
-The current 0.10.0rc1 release-candidate reference snapshot was measured from
+The archived 0.10.0rc1 release-candidate reference snapshot was measured from
 source commit `a38326dcd961e49a88f8a64e1b97d735d55721f2` in GitHub Actions run
 `36411617058` on Linux/Python 3.12.14, an AMD EPYC 7763 runner with four
 logical CPUs visible to the job. NumPy/SciPy/statsmodels numerical thread
@@ -91,6 +91,6 @@ may be described as practical at a scale only when repeated qualification
 supports that statement on a named reference environment. Optimizer-heavy and
 bootstrap-heavy operations should not be summarized from a single fastest run.
 
-No runtime threshold is used as a scientific pass/fail criterion in 0.10.0rc1.
+No runtime threshold is used as a scientific pass/fail criterion. The rc2 candidate must generate a fresh exact-version snapshot before qualification completes.
 Execution failure is a qualification failure; speed is an observed property to
 document, not a target to game.
