@@ -17,22 +17,51 @@ def _load_script(name):
     return module
 
 
-def test_release_version_contract_agrees_for_development_line():
+def test_release_version_contract_agrees_for_release_candidate():
     module = _load_script("verify_release_version.py")
-    assert module.verify_version_contract() == "0.10.0.dev0"
+    assert module.verify_version_contract() == "0.10.0"
 
 
-def test_production_release_rejects_development_line():
+def test_release_candidate_version_contract_is_production_eligible():
     module = _load_script("verify_release_version.py")
+    assert (
+        module.verify_version_contract(
+            tag="v0.10.0",
+            production=True,
+        )
+        == "0.10.0"
+    )
+
+
+def test_production_release_rejects_development_line(monkeypatch):
+    module = _load_script("verify_release_version.py")
+    monkeypatch.setattr(
+        module,
+        "version_contract",
+        lambda: {
+            "pyproject.toml": "0.10.1.dev0",
+            "package __version__": "0.10.1.dev0",
+            "CITATION.cff": "0.10.1.dev0",
+        },
+    )
     with pytest.raises(RuntimeError, match="development versions"):
         module.verify_version_contract(production=True)
 
 
-def test_production_release_rejects_development_tag():
+def test_production_release_rejects_development_tag(monkeypatch):
     module = _load_script("verify_release_version.py")
+    monkeypatch.setattr(
+        module,
+        "version_contract",
+        lambda: {
+            "pyproject.toml": "0.10.1.dev0",
+            "package __version__": "0.10.1.dev0",
+            "CITATION.cff": "0.10.1.dev0",
+        },
+    )
     with pytest.raises(RuntimeError, match="development versions"):
         module.verify_version_contract(
-            tag="v0.10.0.dev0",
+            tag="v0.10.1.dev0",
             production=True,
         )
 

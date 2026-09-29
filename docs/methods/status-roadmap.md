@@ -201,9 +201,9 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current stable pre-1.0 release is **0.9.0**. The current development line is **0.10.0.dev0**. Scientific contracts, optional-backend validation, documentation, and cross-platform qualification remain active release-quality surfaces.
+The current stable pre-1.0 line is **0.10.0**. It was published on GitHub and PyPI on 29 September 2026. Published **0.9.0**, **0.10.0rc1**, and **0.10.0rc2** remain immutable historical release records. Final 0.10.0 promotes the corrected rc2 native sparse/irregular FPCA + PACE tranche without adding estimator surface or changing analytical defaults.
 
-The 0.10 development line contains the native sparse/irregular FPCA + PACE tranche after separate contract, validation/stress, performance, documentation, and protected-main integration qualification. Normal merges to `main` do not trigger production publication; a future public release still requires an explicit release workflow dispatch after version/readiness qualification.
+The final version was independently qualified under the exact `0.10.0` package identity. Its fresh performance envelope, complete pull-request matrix, post-arming exact protected-main matrix, GitHub Release publication, PyPI Trusted Publishing, and fresh production-PyPI installation all passed. Post-release publication readiness is disarmed to prevent accidental republication of the existing version.
 
 
 ### 0.47 residual / within-trial dependence diagnostics

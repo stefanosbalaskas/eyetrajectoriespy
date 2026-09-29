@@ -147,6 +147,13 @@ def test_native_diagonal_difference_noise_is_audited_without_clipping():
         == "diagonal_difference"
     )
     assert result.provenance["sparse_fpca"]["noise_support"] == [0.15, 0.85]
+    assert (
+        result.provenance["sparse_fpca"]["noise_latent_diagonal_method"]
+        == "rotated_local_quadratic_offdiagonal"
+    )
+    assert result.provenance["sparse_fpca"][
+        "noise_latent_diagonal_bandwidth"
+    ] == pytest.approx(0.30)
 
 
 def test_native_sparse_fit_retains_explicit_psd_correction_audit():

@@ -1,5 +1,35 @@
 # Changelog
 
+## 0.10.0 — 2026-09-29
+
+- Promote the corrected and publicly qualified `0.10.0rc2` scientific code to the final 0.10 line without adding a new estimator, numerical method, observation family, API contract, or hidden analytical default.
+- Retain the source-faithful PACE diagonal-difference measurement-noise correction introduced in rc2, including the dedicated 45-degree rotated latent-diagonal smoother, explicit support/bandwidth contracts, and fail-closed non-positive variance behavior.
+- Preserve the generic fitted covariance surface for FPCA eigendecomposition and full-covariance PACE scoring.
+- Re-run the complete cross-platform, optional-backend, sparse-native, documentation, examples, performance, build/fresh-install and release-readiness qualification under the exact `0.10.0` version rather than relabeling rc2 evidence.
+- Preserve `v0.10.0rc1` and `v0.10.0rc2` and their PyPI artifacts as immutable prerelease history.
+- Install normally with `pip install eyetrajectoriespy==0.10.0` or `pip install eyetrajectoriespy`.
+
+## 0.10.0rc2 — 2026-09-29
+
+- Correct the diagonal-difference measurement-noise estimator to use a dedicated 45-degree rotated covariance-diagonal fit instead of the diagonal of the generic local-linear covariance surface.
+- Keep the generic fitted covariance surface unchanged for FPCA eigendecomposition and full-covariance PACE score recovery; only the latent diagonal used for measurement-error estimation changes.
+- Use the declared covariance bandwidth for the rotated latent-diagonal fit and retain the separately declared noise bandwidth for smoothing the observed/raw diagonal.
+- Preserve explicit `noise_support` averaging and fail closed on non-positive measurement-noise estimates rather than clipping them to zero or a small positive floor.
+- Add signed known-truth noise-variance recovery across support, bandwidth, sample-size, sampling-density, and noise-level regimes; retain failure frequency as scientific evidence rather than widening thresholds.
+- This numerical correction was identified by the 0.11 recovery laboratory after publication of immutable `0.10.0rc1`; final 0.10.0 therefore requires a separately qualified `0.10.0rc2`.
+
+## 0.10.0rc1
+
+- First release candidate for the native sparse/irregular FPCA + PACE tranche.
+- Promote the already-qualified `fit_sparse_fpca()` estimator from protected `main` without adding a new estimator or silent analytical default.
+- Preserve explicit mean/covariance bandwidths, analyst-declared analysis support, explicit measurement-error treatment, PSD policy, full-covariance PACE scoring, score ridge, conditioning diagnostics, and structured fail-closed status codes.
+- Retain FDApy only as an optional compatibility/reference backend; whole-estimator FDApy evidence remains cross-implementation sensitivity rather than exact equivalence.
+- Carry forward analytical weighted-operator truth, known-truth sparse simulation recovery, evaluation-grid convergence, difficult-regime failure characterization, and sparse-specific runtime/peak-memory qualification.
+- Include native sparse component/covariance/score-conditioning plots, manuscript reporting, worked examples, mathematical contracts, and validation documentation.
+- Archive the qualified `0.10.0.dev0` performance snapshot and require a fresh `0.10.0rc1` performance envelope rather than relabeling development measurements.
+- Keep production publication manual and fail-closed; this qualification PR does not itself publish to GitHub or PyPI.
+- After publication, install explicitly with `pip install --pre eyetrajectoriespy==0.10.0rc1`.
+
 ## 0.9.1.dev0
 
 - Open the post-0.9.0 maintenance/hardening development line.

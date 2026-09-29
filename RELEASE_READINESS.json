@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_development_version": "0.10.0.dev0",
+  "current_development_version": "0.10.0",
   "first_public_release_target": "0.9.0",
   "production_release_ready": false,
   "gates": {
@@ -17,10 +17,14 @@
     "exact_main_ci_required": true
   },
   "notes": [
-    "0.9.0 is the current stable pre-1.0 GitHub/PyPI release.",
-    "0.10.0.dev0 is the active native sparse-FPCA/PACE development line and remains intentionally disarmed for publication while protected-main integration is qualified.",
-    "The dedicated production PyPI Trusted Publisher for GitHub environment pypi is now configured.",
-    "An obsolete production publisher claim bound to GitHub environment testpypi is still present on PyPI and should be removed before the next public release; issue #69 tracks that cleanup."
+    "0.10.0 is the current stable pre-1.0 release. It promotes the corrected 0.10.0rc2 scientific code without estimator, numerical-method, API, threshold, or hidden-default expansion.",
+    "PR #106 exact head 3c24ba411700ebc1199057537056c411944071cd passed the complete eight-workflow final-version qualification matrix.",
+    "Protected-main commit b9172a578a07e433cce6cb9ec53825ccbd5d2d04 passed the complete exact-main matrix before the governance-only arming change.",
+    "PR #107 armed publication; exact protected-main commit 1a14f2f6544b18740e73729ebe193ed348cb23bc then passed the complete seven-workflow post-arming main matrix.",
+    "Production release workflow #11, GitHub Actions run 36550274400, published v0.10.0 from exact main commit 1a14f2f6544b18740e73729ebe193ed348cb23bc. GitHub Release creation, checksum-verified PyPI Trusted Publishing, digital attestations, and the fresh production-PyPI installation smoke test passed.",
+    "Published 0.10.0rc1 and 0.10.0rc2 remain immutable prerelease records; published 0.9.0 remains immutable historical stable-release evidence.",
+    "Post-release GitHub and production readiness are deliberately disarmed so an ordinary future production dispatch cannot republish 0.10.0. A future release requires a new reviewed version/readiness cycle.",
+    "The dedicated production PyPI Trusted Publisher for GitHub environment pypi remains configured and the pypi environment retains its required-reviewer gate."
   ],
   "github_release_ready": false
 }

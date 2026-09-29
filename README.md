@@ -15,9 +15,9 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** stable pre-1.0 release (`0.9.0`). The scientific platform, reference-validation layer, reproducibility contracts, packaging checks, and five canonical workflows are qualified.
+> **Status:** `0.10.0` is the current stable pre-1.0 release, published to GitHub and PyPI on 29 September 2026 from exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc`. Release workflow #11 completed the build-once, governance, GitHub Release, PyPI Trusted Publishing, and fresh production-PyPI installation checks successfully.
 >
-> **Development line:** `0.10.0.dev0`. This line contains the qualified native univariate sparse/irregular FPCA + PACE estimator, with explicit smoothing/support/noise/PSD/score contracts and FDApy retained only as an optional compatibility/reference backend. Protected-main integration is complete; production publication remains disarmed until an explicit release qualification and dispatch.
+> **Immutable prerelease history:** `0.10.0rc1` and `0.10.0rc2` remain unchanged. Final `0.10.0` promotes the corrected rc2 scientific code without adding an estimator, numerical method, API contract, or hidden analytical default.
 
 ## What scientific problem does this solve?
 
@@ -72,7 +72,7 @@ The README is intentionally no longer the exhaustive function catalogue.
 Stable release:
 
 ```bash
-pip install eyetrajectoriespy==0.9.0
+pip install eyetrajectoriespy==0.10.0
 ```
 
 Or install the current stable release:
@@ -153,9 +153,7 @@ evidence-typed independent/reference validation, an explicit numerical-tolerance
 policy, and a repeated runtime/peak-memory reference envelope. Version 0.57 adds
 portable scientific-result snapshots, explicit environment capture, five
 qualified canonical end-to-end examples, and coordinated GitHub/PyPI release
-machinery. Version 0.9.0 is the first stable pre-1.0 release after the qualified
-0.9.0rc1 publication. Scientific product qualification remains more important
-than estimator count. See the
+machinery. Version 0.9.0 is the first stable pre-1.0 release. The 0.10 line adds the native sparse/irregular FPCA + PACE tranche; rc2 corrects the diagonal-difference measurement-noise estimator, and final 0.10.0 promotes that corrected candidate only after exact-version requalification. Scientific product qualification remains more important than estimator count. See the
 [release-readiness checklist](https://stefanosbalaskas.github.io/eyetrajectoriespy/release-readiness/).
 
 - [Portable scientific results](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/portable-results/)
@@ -164,7 +162,7 @@ than estimator count. See the
 
 ## Validation
 
-Current local/CI qualification status and the exact pending re-check list are maintained in [VALIDATION.md](VALIDATION.md).
+Current qualification, release, and public-artifact evidence are maintained in [VALIDATION.md](VALIDATION.md).
 
 ```bash
 python -m pytest --cov=eyetrajectoriespy

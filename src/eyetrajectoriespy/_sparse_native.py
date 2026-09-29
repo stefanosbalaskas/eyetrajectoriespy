@@ -67,6 +67,17 @@ class LocalLinear2DResult:
 
 
 @dataclass(frozen=True)
+class RotatedCovarianceDiagonalResult:
+    """Diagonal-specific covariance smoother in 45-degree rotated coordinates."""
+
+    values: np.ndarray
+    support_counts: np.ndarray
+    bandwidth: float
+    kernel: str
+    rotation: str
+
+
+@dataclass(frozen=True)
 class NoiseVarianceResult:
     """Diagonal-difference measurement-noise estimate without silent clipping."""
 
@@ -355,12 +366,102 @@ def local_linear_covariance_surface(
     )
 
 
+def rotated_local_quadratic_covariance_diagonal(
+    pairs: RawCovariancePairs,
+    evaluation_grid: np.ndarray,
+    *,
+    bandwidth: float,
+    min_local_pairs: int = 6,
+) -> RotatedCovarianceDiagonalResult:
+    """Estimate the latent covariance diagonal with the PACE rotated smoother.
+
+    The off-diagonal covariance pairs are rotated by 45 degrees. At each
+    diagonal target, the local model is linear along the diagonal direction
+    and quadratic in the direction perpendicular to the diagonal. This is
+    deliberately separate from the generic local-linear covariance-surface
+    smoother used for the FPCA operator itself.
+    """
+
+    grid = _validate_grid(evaluation_grid, name="evaluation_grid")
+    bandwidth = _positive_finite(bandwidth, name="bandwidth")
+    if isinstance(min_local_pairs, bool) or not isinstance(min_local_pairs, int):
+        raise TypeError("min_local_pairs must be an integer")
+    if min_local_pairs < 3:
+        raise ValueError("min_local_pairs must be at least 3")
+
+    root_two = np.sqrt(2.0)
+    along = (pairs.s + pairs.t) / root_two
+    perpendicular = (-pairs.s + pairs.t) / root_two
+
+    fitted = np.empty(grid.size, dtype=float)
+    support = np.empty(grid.size, dtype=int)
+    for index, point in enumerate(grid):
+        target_along = root_two * point
+        delta_along = along - target_along
+        delta_perpendicular = perpendicular
+        weights = (
+            epanechnikov_kernel(delta_along / bandwidth)
+            * epanechnikov_kernel(delta_perpendicular / bandwidth)
+        )
+        mask = weights > 0
+        support[index] = int(np.count_nonzero(mask))
+        if support[index] < min_local_pairs:
+            raise SparseNativeError(
+                "insufficient_noise_diagonal_local_support",
+                "rotated covariance-diagonal smoothing has too few off-diagonal pairs",
+                details={
+                    "evaluation_point": float(point),
+                    "support_count": int(support[index]),
+                    "required_count": int(min_local_pairs),
+                    "bandwidth": bandwidth,
+                },
+            )
+
+        local_along = delta_along[mask]
+        local_perpendicular = delta_perpendicular[mask]
+        design = np.column_stack(
+            [
+                np.ones(support[index], dtype=float),
+                local_along,
+                local_perpendicular**2,
+            ]
+        )
+        local_weights = weights[mask]
+        weighted_design = design * np.sqrt(local_weights)[:, None]
+        if np.linalg.matrix_rank(weighted_design) < 3:
+            raise SparseNativeError(
+                "insufficient_noise_diagonal_local_support",
+                "rotated covariance-diagonal design is rank deficient",
+                details={
+                    "evaluation_point": float(point),
+                    "support_count": int(support[index]),
+                    "bandwidth": bandwidth,
+                },
+            )
+        weighted_product = pairs.products[mask] * np.sqrt(local_weights)
+        beta, *_ = np.linalg.lstsq(
+            weighted_design,
+            weighted_product,
+            rcond=None,
+        )
+        fitted[index] = beta[0]
+
+    return RotatedCovarianceDiagonalResult(
+        values=fitted,
+        support_counts=support,
+        bandwidth=bandwidth,
+        kernel="rotated_product_epanechnikov",
+        rotation="45_degrees_linear_along_diagonal_quadratic_perpendicular",
+    )
+
+
 def estimate_noise_variance_diagonal_difference(
     observation_times: Sequence[np.ndarray],
     residuals: Sequence[np.ndarray],
     evaluation_grid: np.ndarray,
     latent_covariance: np.ndarray,
     *,
+    latent_diagonal: np.ndarray | None = None,
     bandwidth: float,
     noise_support: tuple[float, float],
     min_local_points: int = 3,
@@ -413,8 +514,19 @@ def estimate_noise_variance_diagonal_difference(
             "noise_support must lie within the evaluation-grid support"
         )
 
-    latent_diagonal = np.diag(covariance).copy()
-    difference = diagonal_fit.values - latent_diagonal
+    if latent_diagonal is None:
+        effective_latent_diagonal = np.diag(covariance).copy()
+    else:
+        effective_latent_diagonal = np.asarray(latent_diagonal, dtype=float)
+        if effective_latent_diagonal.shape != (grid.size,):
+            raise ValueError(
+                "latent_diagonal must have shape "
+                f"({grid.size},)"
+            )
+        if not np.all(np.isfinite(effective_latent_diagonal)):
+            raise ValueError("latent_diagonal must contain only finite values")
+        effective_latent_diagonal = effective_latent_diagonal.copy()
+    difference = diagonal_fit.values - effective_latent_diagonal
     support_mask = (
         (grid >= support_start)
         & (grid <= support_end)
@@ -443,7 +555,7 @@ def estimate_noise_variance_diagonal_difference(
     return NoiseVarianceResult(
         variance=variance,
         raw_diagonal=diagonal_fit.values,
-        latent_diagonal=latent_diagonal,
+        latent_diagonal=effective_latent_diagonal,
         diagonal_difference=difference,
         status_code=status,
         bandwidth=float(bandwidth),

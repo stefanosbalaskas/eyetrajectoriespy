@@ -7,14 +7,14 @@ interpret a workflow.
 ## Repository policy
 
 Historical state at the start of 0.55 was an unprotected `main`. The current
-0.9 release state is different:
+0.10 final-release qualification state is different:
 
 - default branch: `main`;
 - `main` is protected by the release-quality ruleset;
 - required pull-request/status-check protection is active;
 - issue #64 is closed.
 
-This repository-policy gate is therefore satisfied for 0.9.0.
+This repository-policy gate is therefore satisfied for the final 0.10.0 qualification path.
 
 ### Required target policy for `main`
 
@@ -141,14 +141,16 @@ requalification remains required after merge.
 - [x] Dedicated production PyPI Trusted Publisher is configured for GitHub environment `pypi`.
 - [x] `pypi` GitHub environment has the intended required-reviewer protection.
 - [x] `main` is protected and issue #64 is closed.
-- [x] `RELEASE_READINESS.json` was armed for 0.9.0; it is deliberately disarmed on the `0.10.0.dev0` development line.
+- [x] Final `0.10.0` was armed only after PR #106 and exact protected-main qualification passed.
+- [x] Production workflow #11 published `v0.10.0` from exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc`, and the fresh production-PyPI install check passed.
+- [x] `RELEASE_READINESS.json` is jointly disarmed after publication to prevent accidental republication of `0.10.0`.
 
 The first public prerelease `0.9.0rc1` successfully exercised GitHub-first
 publication followed by production PyPI OIDC publication and clean installation.
-Version `0.9.0` repeats the complete qualification under the final version
+Version `0.9.0` repeated the complete qualification under the final version
 rather than relabeling RC evidence. Production workflow authority now points
-only at the dedicated `pypi` environment. Issue #69 is a mandatory blocker until
-the matching PyPI Trusted Publisher claim is migrated there.
+only at the dedicated `pypi` environment. Issue #69 is closed and the obsolete
+production publisher cleanup remains complete for final 0.10.0 qualification.
 
 ## Release-candidate gate
 
@@ -167,19 +169,13 @@ Do not enter a 0.9-style release-candidate phase until:
 
 ## Post-0.9.0 state
 
-Stable release `0.9.0` is immutable on GitHub and PyPI. The active development
-line is `0.10.0.dev0`, containing the qualified native sparse-FPCA/PACE
-estimator. Release automation is manual-dispatch only, so ordinary merges
-cannot trigger a production upload. Before any public 0.10 release, the version
-and readiness manifests must be deliberately armed through a reviewed pull
-request, and issue #69 should be resolved if the obsolete publisher claim is
-still present.
+`0.10.0` is the current stable release. Stable `0.9.0` and prereleases `0.10.0rc1` and `0.10.0rc2` remain immutable historical records. Production workflow #11 published final `0.10.0` through GitHub-first release creation and checksum-verified PyPI OIDC Trusted Publishing from exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc`; the fresh production-PyPI installation smoke test passed.
 
+Final `0.10.0` promotes the corrected rc2 code without scientific/API expansion. The package identity, validation manifests, documentation contracts, fresh performance envelope, complete pull-request matrix, post-arming exact-main matrix, and public-artifact verification all completed successfully. Publication readiness is now deliberately disarmed; ordinary merges remain non-publishing, and a future release must begin a new reviewed version/readiness cycle.
 
-### Remaining publisher cleanup
+### Production publisher authority
 
-Production authority is now correctly registered for GitHub environment
-`pypi`. PyPI still shows the older production publisher claim bound to
-`testpypi`; remove that obsolete publisher before the next public release so
-the dedicated `pypi` environment is the only production publishing authority.
-Issue #69 tracks that final cleanup.
+Production authority is registered for GitHub environment `pypi`, and issue
+#69 is closed after removal of the obsolete production publisher claim tied to
+`testpypi`. The dedicated `pypi` environment is therefore the intended
+production publishing authority for the 0.10 release path.

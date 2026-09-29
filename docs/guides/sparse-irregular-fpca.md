@@ -85,7 +85,18 @@ counts retained in provenance.
 
 When diagonal-difference noise estimation is used, `noise_support=` is
 mandatory. This prevents the package from silently treating the whole fitted
-domain as the preferred noise-estimation interval.
+domain as the preferred noise-estimation interval. The raw diagonal is
+smoothed with `noise_bandwidth`, while the latent covariance diagonal used in
+the subtraction is estimated separately from off-diagonal covariance pairs
+after a 45-degree rotation, with a local linear term along the diagonal and a
+quadratic term perpendicular to it using `covariance_bandwidth`.
+
+This estimator can be sensitive when measurement-error variance is small
+relative to latent functional variance. Inspect recovery/sensitivity evidence
+and treat `noise_variance_invalid` as a real failure rather than replacing a
+non-positive estimate silently. If a defensible external or design-based
+measurement-error variance is available, `noise_variance_method="fixed"`
+remains the explicit alternative.
 
 ### Native diagnostic plots
 

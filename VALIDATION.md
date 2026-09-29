@@ -4,20 +4,17 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-The stable 0.9.0 release remains immutable. The 0.10.0.dev0 line contains the
-qualified native sparse/irregular FPCA + PACE estimator and must retain its own
-exact-version qualification evidence before any future release candidate or
-final publication.
+`0.10.0` is the current stable pre-1.0 release. Published `0.9.0`, `0.10.0rc1`, and `0.10.0rc2` remain immutable historical records. Final `0.10.0` promotes the corrected rc2 scientific code without adding an estimator or changing analytical defaults, and exact-version qualification was repeated rather than relabeling rc2 evidence.
 
-- Package line: `0.10.0.dev0`.
-- Development phase: protected-main integration of the native sparse-FPCA/PACE tranche after separate contract-hardening, stress/reference validation, performance, documentation, and plotting qualification; production release remains deliberately disarmed.
+- Package line: `0.10.0`.
+- Release phase: **published and verified**. PR #106 exact head `3c24ba411700ebc1199057537056c411944071cd` passed the complete eight-workflow qualification matrix; protected-main commit `b9172a578a07e433cce6cb9ec53825ccbd5d2d04` passed the first final-version exact-main matrix; PR #107 then armed publication, and exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc` passed the complete post-arming main matrix.
+- Public-artifact evidence: production release workflow #11 (run `36550274400`) published final `0.10.0` from exact main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc`. The GitHub Release, checksum-bearing wheel/sdist, PyPI Trusted Publishing step, digital attestations, and fresh `eyetrajectoriespy==0.10.0` production-PyPI installation smoke test all passed. Release workflow #10 remains the immutable rc2 publication record.
 - Canonical routes: FPCA/exploration, experimental functional regression, repeated-trial functional mixed effects, generalized binary/count responses, and nonlinear/recurrence analysis.
 - Generalized observation-family expansion is paused after the 0.51-0.54 Bernoulli/grouped-binomial/Poisson contracts.
 - Coverage floor remains **90%**. Stabilization prioritizes independent-reference validation quality, cross-platform reproducibility and practical performance qualification rather than increasing coverage percentage for its own sake.
-- Hosted CI qualification and repository governance are reported separately. At the start of 0.55, GitHub reports `main` as unprotected and no repository ruleset is active; this is tracked as a release-readiness blocker rather than hidden behind successful CI.
+- Hosted CI qualification and repository governance are reported separately.
 - Existing tests, coverage thresholds, mathematical contracts, documentation checks and scientific validation rules have not been weakened or bypassed.
-- 0.56 adds evidence-typed independent-reference validation, a numerical-tolerance policy, and repeated runtime/peak-memory qualification without using performance as a scientific pass/fail shortcut.
-- 0.57 adds explicit JSON+NPZ portable scientific snapshots, software/environment capture, coordinated build-once release automation, fresh-install wheel/sdist smoke qualification, and one executable realistic example for each canonical workflow.
+- Final `0.10.0` preserves rc2's fail-closed sparse/PACE contracts, including non-positive measurement-noise failure behavior.
 
 See `docs/release-readiness.md` for the pre-1.0 gate and
 `docs/validation/reference-validation-ledger.md` for independent-reference
