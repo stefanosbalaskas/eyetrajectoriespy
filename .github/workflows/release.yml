@@ -21,16 +21,16 @@ concurrency:
 jobs:
   build-once:
     name: release-build-once
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
@@ -66,7 +66,7 @@ jobs:
           .release-sdist/bin/python -m pip install dist/*.tar.gz
           .release-sdist/bin/python scripts/release_smoke_test.py --expected-version "${{ steps.version.outputs.version }}"
       - name: Upload immutable release distributions
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-dist
           if-no-files-found: error
@@ -79,7 +79,7 @@ jobs:
     name: publish-testpypi
     if: github.event_name == 'workflow_dispatch' && inputs.target == 'testpypi'
     needs: build-once
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: testpypi
     permissions:
       contents: read
@@ -92,7 +92,7 @@ jobs:
           test "${TRUSTED}" = "true" || {
             echo "Set TESTPYPI_TRUSTED_PUBLISHING_CONFIGURED=true in the testpypi environment."; exit 1;
           }
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: release-dist
           path: dist
@@ -108,10 +108,10 @@ jobs:
     needs:
       - build-once
       - publish-testpypi
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Install exact TestPyPI version and smoke test
@@ -119,15 +119,19 @@ jobs:
         run: |
           python -m venv .testpypi-smoke
           .testpypi-smoke/bin/python -m pip install -U pip
-          for attempt in 1 2 3 4 5; do
-            if .testpypi-smoke/bin/python -m pip install --pre \
+          for attempt in $(seq 1 20); do
+            echo "TestPyPI visibility/install attempt ${attempt}/20"
+            if .testpypi-smoke/bin/python -m pip install --pre --no-cache-dir \
               --index-url https://test.pypi.org/simple/ \
               --extra-index-url https://pypi.org/simple \
               "eyetrajectoriespy==${{ needs.build-once.outputs.version }}"; then
               break
             fi
-            if [[ "${attempt}" == "5" ]]; then exit 1; fi
-            sleep 15
+            if [[ "${attempt}" == "20" ]]; then
+              echo "Exact TestPyPI version did not become installable within the bounded propagation window."
+              exit 1
+            fi
+            sleep 20
           done
           .testpypi-smoke/bin/python scripts/release_smoke_test.py \
             --expected-version "${{ needs.build-once.outputs.version }}"
@@ -138,13 +142,13 @@ jobs:
       github.event_name == 'workflow_dispatch' &&
       (inputs.target == 'production' || inputs.target == 'resume-production')
     needs: build-once
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       checks: read
       issues: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Require protected exact main and complete exact-main CI
@@ -163,11 +167,11 @@ jobs:
     needs:
       - build-once
       - production-governance
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Require unpublished GitHub and PyPI version
@@ -195,14 +199,14 @@ jobs:
     needs:
       - build-once
       - production-preflight
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: release-dist
           path: dist
@@ -241,11 +245,11 @@ jobs:
     needs:
       - build-once
       - production-governance
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Require matching existing GitHub Release
@@ -269,7 +273,7 @@ jobs:
     needs:
       - build-once
       - github-release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: pypi
     permissions:
       contents: read
@@ -308,7 +312,7 @@ jobs:
     needs:
       - build-once
       - resume-release-preflight
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: pypi
     permissions:
       contents: read
@@ -348,10 +352,10 @@ jobs:
     needs:
       - build-once
       - publish-pypi
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Install exact production version and smoke test
@@ -359,12 +363,16 @@ jobs:
         run: |
           python -m venv .pypi-smoke
           .pypi-smoke/bin/python -m pip install -U pip
-          for attempt in 1 2 3 4 5 6; do
-            if .pypi-smoke/bin/python -m pip install \
+          for attempt in $(seq 1 30); do
+            echo "PyPI visibility/install attempt ${attempt}/30"
+            if .pypi-smoke/bin/python -m pip install --no-cache-dir \
               "eyetrajectoriespy==${{ needs.build-once.outputs.version }}"; then
               break
             fi
-            if [[ "${attempt}" == "6" ]]; then exit 1; fi
+            if [[ "${attempt}" == "30" ]]; then
+              echo "Exact PyPI version did not become installable within the bounded propagation window."
+              exit 1
+            fi
             sleep 20
           done
           .pypi-smoke/bin/python scripts/release_smoke_test.py \
@@ -376,10 +384,10 @@ jobs:
     needs:
       - build-once
       - resume-pypi
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
       - name: Verify recovered production installation
@@ -387,12 +395,16 @@ jobs:
         run: |
           python -m venv .pypi-resume-smoke
           .pypi-resume-smoke/bin/python -m pip install -U pip
-          for attempt in 1 2 3 4 5 6; do
-            if .pypi-resume-smoke/bin/python -m pip install \
+          for attempt in $(seq 1 30); do
+            echo "Recovered PyPI visibility/install attempt ${attempt}/30"
+            if .pypi-resume-smoke/bin/python -m pip install --no-cache-dir \
               "eyetrajectoriespy==${{ needs.build-once.outputs.version }}"; then
               break
             fi
-            if [[ "${attempt}" == "6" ]]; then exit 1; fi
+            if [[ "${attempt}" == "30" ]]; then
+              echo "Exact PyPI version did not become installable within the bounded propagation window."
+              exit 1
+            fi
             sleep 20
           done
           .pypi-resume-smoke/bin/python scripts/release_smoke_test.py \
