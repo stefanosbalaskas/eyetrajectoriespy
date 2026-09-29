@@ -138,6 +138,7 @@ requalification remains required after merge.
 - [x] Production checks live GitHub governance and exact-main CI before
       publishing.
 - [x] For the 0.11 release line, exact-main governance additionally requires the `recovery` functional-simulation qualification check and the threshold-free `stress-evidence` check; both workflows run on `main` as well as the isolated 0.11 release branch.
+- [x] Exact-main governance also requires native sparse/PACE `sparse-performance`, `stress-recovery`, and `noise-variance-recovery`; `sparse-native-validation` runs on `main` and the active 0.11 release branch.
 - [ ] TestPyPI Trusted Publisher/rehearsal remains available as an optional rehearsal.
 - [x] Dedicated production PyPI Trusted Publisher is configured for GitHub environment `pypi`.
 - [x] `pypi` GitHub environment has the intended required-reviewer protection.
