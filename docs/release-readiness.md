@@ -141,7 +141,7 @@ requalification remains required after merge.
 - [x] Dedicated production PyPI Trusted Publisher is configured for GitHub environment `pypi`.
 - [x] `pypi` GitHub environment has the intended required-reviewer protection.
 - [x] `main` is protected and issue #64 is closed.
-- [ ] `RELEASE_READINESS.json` is deliberately disarmed while `0.10.0rc2` is being qualified; it may be armed only after the fresh rc2 PR and exact-main matrices pass.
+- [x] `RELEASE_READINESS.json` is jointly armed for GitHub and production publication of the fully qualified `0.10.0rc2` release candidate.
 
 The first public prerelease `0.9.0rc1` successfully exercised GitHub-first
 publication followed by production PyPI OIDC publication and clean installation.
@@ -169,10 +169,10 @@ Do not enter a 0.9-style release-candidate phase until:
 
 Stable release `0.9.0` and published prerelease `0.10.0rc1` are immutable.
 The active release-candidate line is `0.10.0rc2`, containing the corrected
-native sparse-FPCA/PACE diagonal-difference noise estimator. Release automation
-is manual-dispatch only, so ordinary merges cannot trigger a production upload.
-The rc2 readiness manifest is deliberately disarmed until fresh rc2 performance,
-pull-request and exact-main qualification have all completed.
+native sparse-FPCA/PACE diagonal-difference noise estimator. Pull-request and
+exact-main qualification have completed successfully. The rc2 readiness manifest
+is jointly armed through a reviewed change, while publication remains a separate
+explicit manual production dispatch and cannot be triggered by an ordinary merge.
 
 ### Production publisher authority
 
