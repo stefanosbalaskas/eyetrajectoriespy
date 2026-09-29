@@ -17,20 +17,18 @@ def _load_script(name):
     return module
 
 
-def test_release_version_contract_agrees_for_release_candidate():
+def test_release_version_contract_agrees_for_development_line():
     module = _load_script("verify_release_version.py")
-    assert module.verify_version_contract() == "0.10.0"
+    assert module.verify_version_contract() == "0.11.0.dev0"
 
 
-def test_release_candidate_version_contract_is_production_eligible():
+def test_development_version_contract_is_not_production_eligible():
     module = _load_script("verify_release_version.py")
-    assert (
+    with pytest.raises(RuntimeError, match="development versions"):
         module.verify_version_contract(
-            tag="v0.10.0",
+            tag="v0.11.0.dev0",
             production=True,
         )
-        == "0.10.0"
-    )
 
 
 def test_production_release_rejects_development_line(monkeypatch):
