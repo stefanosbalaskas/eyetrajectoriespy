@@ -180,7 +180,7 @@ nav:
           - Performance envelope: validation/performance-envelope.md
       - Development roadmap:
           - Native sparse FPCA + PACE (0.10): development/native-sparse-fpca.md
-          - Native functional simulation (0.11 candidate): development/simulation-framework.md
+          - Native functional simulation (0.11): development/simulation-framework.md
       - Reproducibility & release:
           - Portable scientific results: reproducibility/portable-results.md
           - Reproducibility bundle checklist: reproducibility/checklist.md
@@ -193,6 +193,7 @@ nav:
       - Function → equation index: reference/function-equation-index.md
       - Object contracts: reference/objects.md
   - Releases:
+      - 0.11.0rc1: releases/0.11.0rc1.md
       - 0.10.0: releases/0.10.0.md
       - 0.10.0rc2: releases/0.10.0rc2.md
       - 0.10.0rc1: releases/0.10.0rc1.md

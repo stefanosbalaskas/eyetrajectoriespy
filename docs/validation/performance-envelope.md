@@ -1,6 +1,6 @@
 # Performance envelope
 
-Version 0.56 introduced a reproducible **single-package performance envelope**. Version 0.57 requalified it after release hardening, 0.9.0rc1 qualified the prerelease, 0.9.0 qualified the first stable pre-1.0 release, 0.9.1.dev0 qualified the maintenance line, 0.10.0.dev0 requalified the integrated native sparse-FPCA/PACE development line, and 0.10.0rc1 independently qualified the first release candidate. `0.10.0rc2` received its own fresh qualified envelope, final `0.10.0` was independently requalified and archived, and the reconciled `0.11.0.dev0` stabilization line now has its own fresh envelope. Evidence is never relabeled across package versions. It is
+Version 0.56 introduced a reproducible **single-package performance envelope**. Version 0.57 requalified it after release hardening, 0.9.0rc1 qualified the prerelease, 0.9.0 qualified the first stable pre-1.0 release, 0.9.1.dev0 qualified the maintenance line, 0.10.0.dev0 requalified the integrated native sparse-FPCA/PACE development line, and 0.10.0rc1 independently qualified the first release candidate. `0.10.0rc2` received its own fresh qualified envelope, final `0.10.0` was independently requalified and archived, and the reconciled `0.11.0.dev0` stabilization line received its own fresh envelope. That development snapshot is now archived. `0.11.0rc1` has its own fresh exact-version envelope and does not relabel development evidence. Evidence is never relabeled across package versions. It is
 not a comparative benchmark and does not claim that eyetrajectoriespy is faster
 than another package.
 
@@ -43,7 +43,7 @@ The qualification harness measures these expensive routes separately:
 The committed workload profile is intentionally CI-sized and is a **reference
 envelope**, not a universal workstation capacity claim.
 
-The `0.11.0.dev0` stabilization reference snapshot was measured from source commit `9d191c6975e8a4fc31d2434266d9b34801426c17` in GitHub Actions run `36555745875` on Linux/Python 3.12.14, an AMD EPYC 7763 runner with four logical CPUs visible to the job. NumPy/SciPy/statsmodels numerical thread limits were fixed to one thread. Dependency versions and the synthetic workflow scales are retained in `PERFORMANCE_ENVELOPE.json`.
+The archived `0.11.0.dev0` stabilization snapshot was measured from source commit `9d191c6975e8a4fc31d2434266d9b34801426c17` in GitHub Actions run `36555745875`. The fresh `0.11.0rc1` snapshot was then generated from source commit `f37941710eba6e7d50806c60490d00492f98e1ff` in GitHub Actions run `36560873074` on Linux/Python 3.12.14, an AMD EPYC 9V45 runner with four logical CPUs visible to the job. Numerical thread limits were fixed to one. The development snapshot remains archived under `validation/performance/`; the canonical ledger now records the rc1 run.
 
 | Workflow | Qualified scale | Median runtime (IQR), s | Peak RSS median / max, MiB |
 |---|---|---:|---:|
@@ -56,7 +56,7 @@ The `0.11.0.dev0` stabilization reference snapshot was measured from source comm
 
 These measurements describe only this CI-sized workload and runner. The ledger
 retains every repetition and reports an interval rather than only a fastest
-timing. Qualified 0.56, 0.57, 0.9.0rc1, 0.9.0, 0.9.1.dev0, 0.10.0.dev0, 0.10.0rc1, 0.10.0rc2, and final 0.10.0 snapshots remain archived
+timing. Qualified 0.56, 0.57, 0.9.0rc1, 0.9.0, 0.9.1.dev0, 0.10.0.dev0, 0.10.0rc1, 0.10.0rc2, final 0.10.0, and 0.11.0.dev0 snapshots remain archived
 under `validation/performance/` rather than being overwritten or silently
 relabeled.
 
@@ -86,6 +86,8 @@ may be described as practical at a scale only when repeated qualification
 supports that statement on a named reference environment. Optimizer-heavy and
 bootstrap-heavy operations should not be summarized from a single fastest run.
 
-No runtime threshold is used as a scientific pass/fail criterion in 0.11.0.dev0. Execution failure is a qualification failure; speed is an observed property to document, not a target to game.
+No runtime threshold is used as a scientific pass/fail criterion in 0.11.0rc1. Execution failure is a qualification failure; speed is an observed property to document, not a target to game.
+
+For the fresh rc1 run, median runtimes were 1.338 s (FPCA bootstrap), 1.773 s (mixed full-refit bootstrap), 1.640 s (nested mixed fit), 1.447 s (generalized GEE bootstrap), 1.457 s (recurrence/RQA), and 1.601 s (nonlinear sensitivity). Median process peak RSS ranged from 222.46 to 230.07 MiB across these synthetic workloads. These values describe only the recorded GitHub-hosted environment.
 Execution failure is a qualification failure; speed is an observed property to
 document, not a target to game.
