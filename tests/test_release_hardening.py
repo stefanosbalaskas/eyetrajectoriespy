@@ -141,6 +141,35 @@ def test_release_governance_blocks_unprotected_main(monkeypatch):
         )
 
 
+def test_release_governance_requires_exact_main_simulation_evidence():
+    module = _load_script("verify_release_governance.py")
+    assert "recovery" in module.REQUIRED_CHECKS
+    assert "stress-evidence" in module.REQUIRED_CHECKS
+    assert (
+        "functional_simulation_qualification_qualified"
+        in module._GITHUB_RELEASE_DECLARATIONS
+    )
+    assert (
+        "functional_simulation_stress_recorded"
+        in module._GITHUB_RELEASE_DECLARATIONS
+    )
+
+    validation_workflow = (
+        ROOT
+        / ".github"
+        / "workflows"
+        / "functional-simulation-validation.yml"
+    ).read_text(encoding="utf-8")
+    stress_workflow = (
+        ROOT
+        / ".github"
+        / "workflows"
+        / "functional-simulation-stress.yml"
+    ).read_text(encoding="utf-8")
+    assert "- main" in validation_workflow
+    assert "- main" in stress_workflow
+
+
 def test_release_workflow_builds_once_and_reuses_exact_artifact():
     workflow = (
         ROOT / ".github" / "workflows" / "release.yml"
