@@ -1,5 +1,61 @@
 # Coordinated GitHub Release and PyPI publication
 
+## Final 0.11.0 qualification and publication
+
+Published `0.11.0rc1` is the feature-frozen public scientific candidate.
+Final `0.11.0` is a version-only promotion of that surface: no estimator,
+numerical method, generalized family, public API expansion, or hidden
+analytical default may be added during final qualification.
+
+Before final-version promotion, the production-installed rc1 artifact was
+exercised outside the repository checkout. Exact protected-main commit
+`a37214653c2f72839e356d603c4f87a514f01056` passed all eleven workflow
+groups, including `installed-rc-qualification` run `36622305877`. That run
+verified exact production-PyPI installation on Python 3.11–3.13, retained all
+42 threshold-free stress replicate records, and exercised deterministic
+scenario replay, dense FPCA recovery, mixed-effects recovery, registration
+recovery, portable result round trips, reporting, and plotting.
+
+The final sequence is:
+
+~~~text
+archive immutable 0.11.0rc1 performance evidence
+        |
+        v
+align package/citation/validation/docs contracts to exact 0.11.0
+and deliberately disarm publication readiness
+        |
+        v
+generate a fresh 0.11.0 performance envelope
+        |
+        v
+pass the complete pull-request qualification matrix
+        |
+        v
+merge through protected main
+        |
+        v
+pass the complete exact-main 0.11.0 matrix
+        |
+        v
+arm release readiness in a separate reviewed governance-only change
+        |
+        v
+manual target=production dispatch only
+        |
+        v
+verify GitHub Release, checksums/attestations, PyPI publication,
+and a fresh eyetrajectoriespy==0.11.0 production-PyPI install
+~~~
+
+The rc1 tag, GitHub Release, wheel, sdist, checksums, attestations, installed-RC
+evidence, and performance snapshot remain immutable. Final qualification must
+create new exact-version evidence rather than relabeling rc1 evidence.
+
+The threshold-free stress evidence remains descriptive. The known
+estimated-noise diagonal-difference failures remain in the denominator and are
+not converted to successful estimates by clipping or threshold widening.
+
 ## 0.11.0rc1 qualification
 
 Stable `0.10.0` remains the current public release. `0.11.0rc1` promotes the

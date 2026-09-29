@@ -275,11 +275,11 @@ every later tranche.
 
 ## Development status
 
-The current stable pre-1.0 line is **0.10.0**. It was published on GitHub and PyPI on 29 September 2026. Published **0.9.0**, **0.10.0rc1**, and **0.10.0rc2** remain immutable historical release records. Final 0.10.0 promotes the corrected rc2 native sparse/irregular FPCA + PACE tranche without adding estimator surface or changing analytical defaults.
+The current stable pre-1.0 line is **0.11.0**. This is the final exact-version qualification identity; public publication remains pending until those final gates pass. Published stable **0.10.0** and prereleases **0.10.0rc1**, **0.10.0rc2**, and **0.11.0rc1** remain immutable release records.
 
-The current release-candidate line is **0.11.0rc1**. It is the feature-frozen, fully qualified candidate for the known-truth simulation/recovery laboratory reconciled onto stable 0.10.0. The RC and expanded exact-main matrices passed; publication readiness is armed through a separate governance-only change, while publication itself remains manual.
+Final 0.11.0 promotes the feature-frozen known-truth simulation/recovery laboratory from published `0.11.0rc1` without adding estimator surface, changing analytical defaults, or introducing post-0.11 methodology. Production-installed RC observation on exact protected-main commit `a37214653c2f72839e356d603c4f87a514f01056` passed on Python 3.11–3.13 and retained the known fail-closed estimated-noise stress behavior as evidence rather than repairing it silently.
 
-The final version was independently qualified under the exact `0.10.0` package identity. Its fresh performance envelope, complete pull-request matrix, post-arming exact protected-main matrix, GitHub Release publication, PyPI Trusted Publishing, and fresh production-PyPI installation all passed. Post-release publication readiness is disarmed to prevent accidental republication of the existing version.
+The final version is now being independently requalified under the exact `0.11.0` package identity. A fresh final-version performance envelope, complete pull-request matrix, protected-main exact-version matrix, and separate reviewed publication-arming change are required before production publication can occur.
 
 
 ### 0.47 residual / within-trial dependence diagnostics

@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "current_development_version": "0.11.0rc1",
+  "current_development_version": "0.11.0",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": true,
+  "production_release_ready": false,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -20,18 +20,16 @@
     "sparse_native_validation_qualified": true
   },
   "notes": [
-    "0.10.0 remains the current published stable pre-1.0 release and remains immutable.",
-    "0.11.0rc1 promotes the feature-frozen known-truth simulation/recovery laboratory from qualified 0.11.0.dev0 without adding an estimator, numerical method, generalized family, hidden default, or post-0.11 research feature.",
-    "Stable 0.10.0 was reconciled into the 0.11 line through PR #109; 0.11.0.dev0 stabilization PR #110 passed the complete nine-workflow matrix and was merged to release/0.11-native-simulation.",
-    "Threshold-free stress evidence was added through PR #111. Exact post-merge stress run 36559953858 on commit f6bacfe64cd8639d365137f9c251b1c967aa78b5 executed all 14 declared stress regimes with three replicates each and retained failures in the denominator.",
-    "In that exact stress run, 13 of 14 regimes had zero execution failures. The estimated-noise diagonal-difference stress regime retained 2/3 fail-closed noise_variance_invalid fits; the one successful replicate showed strong subspace/score recovery but large measurement-noise relative error. No clipping or threshold widening was introduced.",
-    "The immutable 0.11.0.dev0 performance envelope is archived. Fresh 0.11.0rc1 performance qualification passed from source commit f37941710eba6e7d50806c60490d00492f98e1ff in GitHub Actions run 36560873074; canonical PERFORMANCE_ENVELOPE.json records that exact RC evidence.",
-    "0.11.0rc1 qualification is complete: PR #112 exact RC qualification passed; PR #113 integrated the qualified candidate into main; PR #114 strengthened exact-main release governance; protected-main commit 4be7d13186dbef7487a03e3d81c05e0eefb751e0 then passed the complete expanded ten-workflow exact-main matrix.",
-    "GitHub and production publication readiness are now armed through this separate governance-only reviewed change. Publication still requires the explicit manual production release dispatch; ordinary pushes cannot publish.",
-    "For 0.11.0rc1 and later release ceremonies, exact-main governance now requires the functional-simulation `recovery` check and threshold-free `stress-evidence` check in addition to the legacy package/docs/examples/optional-backend/performance/readiness checks.",
-    "Exact-main release governance also requires native sparse/PACE `sparse-performance`, `stress-recovery`, and `noise-variance-recovery` checks; the workflow now runs on main and the active 0.11 release branch while retaining the historical 0.10 branch trigger.",
-    "Exact protected-main commit 4be7d13186dbef7487a03e3d81c05e0eefb751e0 passed tests, docs, examples, optional scikit-fda, optional FDApy sparse, performance, release-readiness, functional-simulation recovery, threshold-free functional-simulation stress, and native sparse/PACE validation; package + Ubuntu/macOS/Windows × Python 3.11–3.13 all passed.",
-    "Post-0.11 research remains deferred: package-wide recovery/external validation first, then native sparse multivariate FPCA, later sparse participant/trial decomposition, and signal-dependent observation/missingness as validation stress work."
+    "0.10.0 remains the current published stable pre-1.0 release until final 0.11.0 publication; published 0.11.0rc1 remains immutable.",
+    "Final 0.11.0 is a version-only promotion of the feature-frozen 0.11.0rc1 scientific surface. No estimator, numerical method, generalized family, hidden analytical default, or post-0.11 research feature is added during final qualification.",
+    "The immutable 0.11.0rc1 performance envelope from GitHub Actions run 36560873074 is archived under validation/performance/PERFORMANCE_ENVELOPE-0.11.0rc1.json and must not be relabeled as final-version evidence.",
+    "Production-installed RC observation was merged through PR #119. Exact protected-main commit a37214653c2f72839e356d603c4f87a514f01056 passed all eleven workflow groups, including installed-rc-qualification run 36622305877.",
+    "That exact-main installed-artifact run verified production-PyPI 0.11.0rc1 on Python 3.11, 3.12, and 3.13 outside the source checkout; retained 42/42 declared stress replicate records; exercised deterministic scenario replay, dense FPCA recovery, mixed-effects recovery, registration recovery, portable export/load, reporting, and plotting; and retained the known 2/3 fail-closed estimated-noise diagonal-difference stress failures without clipping or threshold widening.",
+    "Exact-main installed observation artifact 11059511070 has digest sha256:a01bddd0818c09b298d93596a5698f6f8f835a6e3cde9735857780c2167f289e and records GitHub runner image ubuntu24 / 20260927.320.1 for the deep Python 3.12 observation job.",
+    "No result-changing or public-API defect was identified by the RC observation tranche. The first PR observation attempt deliberately remains in history: an ill-conditioned rank-one mixed-effects truth scenario failed closed; only the qualification design was corrected to full-rank basis-matched truth, with no estimator fallback or threshold change.",
+    "Final 0.11.0 must now generate a fresh exact-version performance envelope, pass the complete pull-request matrix, merge through protected main, and pass the complete exact-main matrix before publication readiness is armed again.",
+    "Publication is deliberately disarmed during final qualification. A later reviewed governance-only change may arm GitHub/PyPI release readiness only after exact-main 0.11.0 qualification passes.",
+    "Post-0.11 methodology remains deferred until after final publication and a package-wide recovery audit."
   ],
-  "github_release_ready": true
+  "github_release_ready": false
 }

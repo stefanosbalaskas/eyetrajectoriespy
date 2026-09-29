@@ -181,6 +181,46 @@ Publishing, and completed the fresh production-PyPI installation smoke test on
 its second attempt after normal index propagation. Ordinary pushes and merges
 remain non-publishing.
 
+## Final 0.11.0 qualification state
+
+Final `0.11.0` is now the exact-version qualification target. The public
+stable release remains `0.10.0` until final publication, and published
+`0.11.0rc1` remains immutable.
+
+The decision to promote rc1 rather than create rc2 is supported by an
+external-consumer observation tranche:
+
+- PR #119 added production-installed RC qualification without changing package
+  implementation;
+- protected-main commit
+  `a37214653c2f72839e356d603c4f87a514f01056` passed the complete eleven-workflow
+  exact-main matrix;
+- installed-RC workflow run `36622305877` verified exact production-PyPI
+  `0.11.0rc1` installation on Python 3.11–3.13 outside the source checkout;
+- the deep observation retained all 42 declared stress replicate records,
+  including 2/3 fail-closed `noise_variance_invalid` outcomes in the known
+  estimated-noise diagonal-difference stress regime;
+- deterministic simulation replay, dense FPCA recovery, functional mixed-effects
+  recovery, registration recovery, portable export/load, reporting, plotting,
+  and environment capture completed successfully;
+- exact-main evidence artifact `11059511070` has digest
+  `sha256:a01bddd0818c09b298d93596a5698f6f8f835a6e3cde9735857780c2167f289e`;
+- the deep job recorded GitHub runner image `ubuntu24`,
+  image version `20260927.320.1`.
+
+No result-changing or public-API defect was identified. The initial PR
+observation's mixed-effects non-convergence came from an intentionally retained
+ill-conditioned qualification workload with effectively rank-one participant
+truth and a two-dimensional unstructured covariance. Only that new workload was
+revised to full-rank basis-matched truth; no estimator, fallback policy, or
+scientific threshold changed.
+
+Publication readiness is deliberately disarmed for the final-version
+qualification branch. Final 0.11.0 requires a fresh exact-version performance
+envelope, the complete pull-request matrix, the complete protected-main matrix,
+and a separate reviewed publication-arming change before any production
+dispatch.
+
 ## Release-candidate gate
 
 Do not enter a 0.9-style release-candidate phase until:
