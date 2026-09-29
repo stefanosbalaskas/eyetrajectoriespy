@@ -275,7 +275,7 @@ every later tranche.
 
 ## Development status
 
-The current stable pre-1.0 line is **0.11.0** for final exact-version qualification; public publication remains pending until those final gates pass. Published stable **0.10.0** and prereleases **0.10.0rc1**, **0.10.0rc2**, and **0.11.0rc1** remain immutable release records.
+The current stable pre-1.0 line is **0.11.0**. This is the final exact-version qualification identity; public publication remains pending until those final gates pass. Published stable **0.10.0** and prereleases **0.10.0rc1**, **0.10.0rc2**, and **0.11.0rc1** remain immutable release records.
 
 Final 0.11.0 promotes the feature-frozen known-truth simulation/recovery laboratory from published `0.11.0rc1` without adding estimator surface, changing analytical defaults, or introducing post-0.11 methodology. Production-installed RC observation on exact protected-main commit `a37214653c2f72839e356d603c4f87a514f01056` passed on Python 3.11–3.13 and retained the known fail-closed estimated-noise stress behavior as evidence rather than repairing it silently.
 
