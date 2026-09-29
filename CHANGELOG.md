@@ -6,6 +6,7 @@
 - Freeze the 0.11 feature surface around the known-truth simulation/recovery laboratory: no sparse multivariate FPCA, sparse multilevel decomposition, Bayesian subsystem, generalized-family expansion, or new nonlinear simulation ecosystem is added in 0.11.
 - Requalify recovery and descriptive stress evidence after reconciliation, collect a fresh 0.11 performance envelope, and stabilize public simulation/recovery APIs, documentation, reporting, plots, and provenance before `0.11.0rc1`.
 - Keep scientific recovery status separate from stress characterization and runtime/RSS performance evidence.
+- Add a separate reproducible, threshold-free functional stress workflow that records post-fit recovery where appropriate, truth/design audits where an estimator comparison would be misleading, and explicit failed-replicate proportions without silently dropping difficult cases.
 - Order post-0.11 research around a package-wide recovery audit, external eye-tracking/compositional validation, native sparse multivariate FPCA, later sparse participant/trial decomposition, and signal-dependent observation/missingness stress scenarios.
 - Keep GitHub/PyPI publication readiness fail-closed and disarmed throughout development.
 
