@@ -141,7 +141,7 @@ requalification remains required after merge.
 - [x] Dedicated production PyPI Trusted Publisher is configured for GitHub environment `pypi`.
 - [x] `pypi` GitHub environment has the intended required-reviewer protection.
 - [x] `main` is protected and issue #64 is closed.
-- [ ] `RELEASE_READINESS.json` remains deliberately disarmed during exact-version `0.10.0` qualification and will be armed only after the complete PR and exact-main matrices pass.
+- [x] `RELEASE_READINESS.json` is jointly armed for final `0.10.0` only after PR #106 and the exact protected-main qualification matrix passed.
 
 The first public prerelease `0.9.0rc1` successfully exercised GitHub-first
 publication followed by production PyPI OIDC publication and clean installation.
@@ -169,7 +169,7 @@ Do not enter a 0.9-style release-candidate phase until:
 
 Stable release `0.9.0` and published prereleases `0.10.0rc1` and `0.10.0rc2` are immutable. Production workflow #10 successfully published the corrected rc2 candidate through GitHub-first release creation and PyPI OIDC Trusted Publishing, and the fresh production-PyPI installation smoke test passed.
 
-The active target is final `0.10.0`. It promotes the corrected rc2 code without scientific/API expansion. The final package identity, validation manifests, documentation contracts, fresh performance envelope, complete pull-request matrix and exact protected-main matrix must all qualify independently before readiness is re-armed. Ordinary merges remain non-publishing.
+Final `0.10.0` promotes the corrected rc2 code without scientific/API expansion. The final package identity, validation manifests, documentation contracts, fresh performance envelope, complete pull-request matrix and exact protected-main matrix have qualified independently. Release readiness is armed; ordinary merges remain non-publishing and production still requires an explicit manual release-workflow dispatch.
 
 ### Production publisher authority
 
