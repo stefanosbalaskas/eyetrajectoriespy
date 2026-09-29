@@ -23,7 +23,7 @@ pip install eyetrajectoriespy
 !!! info "Documentation version"
     **Final qualification target:** `0.10.0` · **Published stable:** `0.9.0` · **Published qualified RC:** `0.10.0rc2`
 
-    Use the [0.9.0 release notes](releases/0.9.0.md) or the
+    Use the [0.10.0 release notes](releases/0.10.0.md) or the
     [frozen 0.9.0 documentation source](https://github.com/stefanosbalaskas/eyetrajectoriespy/tree/v0.9.0/docs)
     when you need documentation tied exactly to the published release.
 
@@ -218,7 +218,7 @@ print(fit.explained_variance_ratio)
 
 ---
 
-**Stable release:** `0.9.0` · **Release-candidate line:** `0.10.0rc2`
+**Final qualification target:** `0.10.0` · **Published stable:** `0.9.0` · **Published qualified RC:** `0.10.0rc2`
 
 [PyPI](https://pypi.org/project/eyetrajectoriespy/) ·
 [0.9.0 release notes](releases/0.9.0.md) ·
