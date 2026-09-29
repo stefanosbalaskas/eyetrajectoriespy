@@ -14,7 +14,9 @@
     "issue_64_closed": true,
     "pypi_trusted_publishing_configured": true,
     "pypi_environment_required_reviewer": true,
-    "exact_main_ci_required": true
+    "exact_main_ci_required": true,
+    "functional_simulation_qualification_qualified": true,
+    "functional_simulation_stress_recorded": true
   },
   "notes": [
     "0.10.0 remains the current published stable pre-1.0 release and remains immutable.",
@@ -25,6 +27,7 @@
     "The immutable 0.11.0.dev0 performance envelope is archived. Fresh 0.11.0rc1 performance qualification passed from source commit f37941710eba6e7d50806c60490d00492f98e1ff in GitHub Actions run 36560873074; canonical PERFORMANCE_ENVELOPE.json records that exact RC evidence.",
     "Before publication, 0.11.0rc1 must pass the full pull-request matrix, exact release-branch/main qualification appropriate to the release ceremony, build/fresh-install checks, functional-simulation qualification, threshold-free stress execution, and release-readiness checks.",
     "GitHub and production publication readiness remain deliberately disarmed during rc1 qualification. A separate reviewed arming change is required after exact-version qualification passes.",
+    "For 0.11.0rc1 and later release ceremonies, exact-main governance now requires the functional-simulation `recovery` check and threshold-free `stress-evidence` check in addition to the legacy package/docs/examples/optional-backend/performance/readiness checks.",
     "Post-0.11 research remains deferred: package-wide recovery/external validation first, then native sparse multivariate FPCA, later sparse participant/trial decomposition, and signal-dependent observation/missingness as validation stress work."
   ],
   "github_release_ready": false
