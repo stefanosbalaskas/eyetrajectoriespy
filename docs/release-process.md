@@ -1,5 +1,40 @@
 # Coordinated GitHub Release and PyPI publication
 
+## Final 0.10.0 qualification and publication
+
+Published `0.10.0rc2` is the corrected public scientific candidate. Final `0.10.0` is a promotion of that code line only: no estimator, numerical method, API contract, or hidden analytical default may be added during final qualification.
+
+The final sequence is:
+
+~~~text
+align all active version declarations to 0.10.0
+archive the immutable 0.10.0rc2 performance snapshot
+        |
+        v
+generate a fresh 0.10.0 performance envelope
+        |
+        v
+pass the complete pull-request matrix
+        |
+        v
+merge through protected main
+        |
+        v
+pass the complete exact-main matrix
+        |
+        v
+arm release readiness in a separate reviewed change
+        |
+        v
+manual target=production dispatch only
+        |
+        v
+verify GitHub Release, PyPI artifacts, checksums/attestations,
+and a fresh eyetrajectoriespy==0.10.0 production-PyPI install
+~~~
+
+The rc1 and rc2 tags, GitHub Releases, PyPI files, checksums and performance evidence remain immutable. Final qualification must create new exact-version evidence rather than relabeling either release candidate.
+
 ## 0.10.0rc2 qualification
 
 Published `0.10.0rc1` remains immutable. Recovery validation subsequently
@@ -36,7 +71,7 @@ arm release readiness in a separate reviewed change
 manual target=production dispatch only
 ~~~
 
-The rc1 artifacts, tag and PyPI files remain immutable and must not be changed or replaced. The rc2 pull-request and exact-main qualification matrices have passed. Release readiness is now jointly armed for GitHub and production publication through a reviewed change. The remaining publication action is the explicit manual `release.yml` dispatch with `target=production`; ordinary pushes and merges remain non-publishing.
+The rc1 artifacts, tag and PyPI files remain immutable. The rc2 pull-request and exact-main qualification matrices passed, and production release workflow #10 subsequently published rc2 to GitHub and PyPI and verified a fresh production-PyPI installation. rc2 is therefore the immutable public candidate used as the scientific basis for final 0.10.0 promotion.
 
 ## Historical 0.10.0rc1 qualification and publication
 

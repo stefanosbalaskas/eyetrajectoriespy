@@ -1,6 +1,15 @@
 # Changelog
 
-## 0.10.0rc2 (unreleased)
+## 0.10.0 (unreleased)
+
+- Promote the corrected and publicly qualified `0.10.0rc2` scientific code to the final 0.10 line without adding a new estimator, numerical method, observation family, API contract, or hidden analytical default.
+- Retain the source-faithful PACE diagonal-difference measurement-noise correction introduced in rc2, including the dedicated 45-degree rotated latent-diagonal smoother, explicit support/bandwidth contracts, and fail-closed non-positive variance behavior.
+- Preserve the generic fitted covariance surface for FPCA eigendecomposition and full-covariance PACE scoring.
+- Re-run the complete cross-platform, optional-backend, sparse-native, documentation, examples, performance, build/fresh-install and release-readiness qualification under the exact `0.10.0` version rather than relabeling rc2 evidence.
+- Preserve `v0.10.0rc1` and `v0.10.0rc2` and their PyPI artifacts as immutable prerelease history.
+- After publication, install normally with `pip install eyetrajectoriespy==0.10.0` or `pip install eyetrajectoriespy`.
+
+## 0.10.0rc2 — 2026-09-29
 
 - Correct the diagonal-difference measurement-noise estimator to use a dedicated 45-degree rotated covariance-diagonal fit instead of the diagonal of the generic local-linear covariance surface.
 - Keep the generic fitted covariance surface unchanged for FPCA eigendecomposition and full-covariance PACE score recovery; only the latent diagonal used for measurement-error estimation changes.

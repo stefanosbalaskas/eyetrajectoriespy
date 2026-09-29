@@ -4,19 +4,17 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-The stable 0.9.0 release and published 0.10.0rc1 prerelease remain immutable. The 0.10.0rc2 release-candidate\nline contains the corrected native sparse/irregular FPCA + PACE estimator and must retain its own
-exact-version qualification evidence before any future release candidate or
-final publication.
+Published `0.9.0`, `0.10.0rc1`, and `0.10.0rc2` remain immutable. The final `0.10.0` line promotes the corrected rc2 scientific code without adding an estimator or changing analytical defaults. Exact-version qualification is repeated rather than relabeling rc2 evidence.
 
-- Package line: `0.10.0rc2`.
-- Release phase: `0.10.0rc2` has completed pull-request and exact protected-main qualification after the PACE diagonal-difference measurement-noise correction; release readiness is armed, while publication still requires a deliberate manual production dispatch.
+- Package line: `0.10.0`.
+- Release phase: final exact-version qualification. Release readiness is deliberately disarmed until the complete pull-request matrix, fresh `0.10.0` performance envelope, and exact protected-main matrix pass.
+- Public-artifact evidence: production release workflow #10 published `0.10.0rc2` from exact main commit `b85d610612bf72d632f6c827f94371d4e17f8d50`; GitHub/PyPI publication and the fresh production-PyPI installation smoke test passed.
 - Canonical routes: FPCA/exploration, experimental functional regression, repeated-trial functional mixed effects, generalized binary/count responses, and nonlinear/recurrence analysis.
 - Generalized observation-family expansion is paused after the 0.51-0.54 Bernoulli/grouped-binomial/Poisson contracts.
 - Coverage floor remains **90%**. Stabilization prioritizes independent-reference validation quality, cross-platform reproducibility and practical performance qualification rather than increasing coverage percentage for its own sake.
-- Hosted CI qualification and repository governance are reported separately. At the start of 0.55, GitHub reports `main` as unprotected and no repository ruleset is active; this is tracked as a release-readiness blocker rather than hidden behind successful CI.
+- Hosted CI qualification and repository governance are reported separately.
 - Existing tests, coverage thresholds, mathematical contracts, documentation checks and scientific validation rules have not been weakened or bypassed.
-- 0.56 adds evidence-typed independent-reference validation, a numerical-tolerance policy, and repeated runtime/peak-memory qualification without using performance as a scientific pass/fail shortcut.
-- 0.57 adds explicit JSON+NPZ portable scientific snapshots, software/environment capture, coordinated build-once release automation, fresh-install wheel/sdist smoke qualification, and one executable realistic example for each canonical workflow.
+- Final 0.10.0 must preserve rc2's fail-closed sparse/PACE contracts, including non-positive measurement-noise failure behavior.
 
 See `docs/release-readiness.md` for the pre-1.0 gate and
 `docs/validation/reference-validation-ledger.md` for independent-reference

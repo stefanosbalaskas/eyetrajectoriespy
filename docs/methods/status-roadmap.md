@@ -183,9 +183,9 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-The current stable pre-1.0 release is **0.9.0**. Published **0.10.0rc1** remains an immutable prerelease record. The current release-candidate line is **0.10.0rc2**. Scientific contracts, optional-backend validation, documentation, and cross-platform qualification remain active release-quality surfaces.
+The current stable pre-1.0 line is **0.10.0**. Public publication remains pending until the final exact-version gates pass. Published **0.9.0**, **0.10.0rc1**, and **0.10.0rc2** remain immutable release records. Final 0.10.0 promotes the corrected rc2 native sparse/irregular FPCA + PACE tranche without adding estimator surface or changing analytical defaults.
 
-The 0.10 release-candidate line contains the native sparse/irregular FPCA + PACE tranche. `0.10.0rc2` corrects the diagonal-difference measurement-noise diagonal exposed by recovery validation; it adds no estimator surface. Pull-request and exact-main qualification are complete and release readiness is explicitly armed through a reviewed change; production still requires a deliberate manual release-workflow dispatch.
+The final version is being independently requalified under the exact `0.10.0` package identity. A fresh performance envelope, complete pull-request matrix, and exact protected-main matrix are required before release readiness can be armed and production publication dispatched.
 
 
 ### 0.47 residual / within-trial dependence diagnostics
