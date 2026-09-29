@@ -35,7 +35,7 @@ and a fresh eyetrajectoriespy==0.10.0 production-PyPI install
 
 The rc1 and rc2 tags, GitHub Releases, PyPI files, checksums and performance evidence remain immutable. Final qualification must create new exact-version evidence rather than relabeling either release candidate.
 
-Final exact-version qualification is complete: PR #106 exact head `3c24ba411700ebc1199057537056c411944071cd` passed all eight pull-request workflow groups, and protected-main commit `b9172a578a07e433cce6cb9ec53825ccbd5d2d04` passed all seven main-push qualification groups. Release readiness is now armed through this separate governance-only change. The only remaining production action is an explicit manual `release.yml` dispatch with `target=production`.
+Final exact-version qualification and publication are complete. PR #106 exact head `3c24ba411700ebc1199057537056c411944071cd` passed all eight pull-request workflow groups; protected-main commit `b9172a578a07e433cce6cb9ec53825ccbd5d2d04` passed the first final-version exact-main matrix; PR #107 armed publication; and exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc` passed the complete post-arming main matrix. Production release workflow #11 (run `36550274400`) then created `v0.10.0`, published the checksum-verified wheel and sdist to production PyPI through Trusted Publishing, generated digital attestations, and passed a fresh `eyetrajectoriespy==0.10.0` production-PyPI installation smoke test. Publication readiness is disarmed after release.
 
 ## 0.10.0rc2 qualification
 
@@ -223,9 +223,7 @@ Workflow:    release.yml
 Environment: pypi
 ~~~
 
-The successful 0.9.0rc1/0.9.0 OIDC publications remain historical evidence that
-Trusted Publishing works. The dedicated `pypi` publisher claim is now the
-production authority for the 0.10 release-candidate path.
+The successful 0.9.0rc1, 0.9.0, 0.10.0rc2, and 0.10.0 OIDC publications are historical evidence that Trusted Publishing works. The dedicated `pypi` publisher claim remains the production authority for future release ceremonies.
 
 ## Optional TestPyPI rehearsal
 
