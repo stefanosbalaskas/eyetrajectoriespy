@@ -4,10 +4,10 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-Published `0.9.0`, `0.10.0rc1`, and `0.10.0rc2` remain immutable. The final `0.10.0` line promotes the corrected rc2 scientific code without adding an estimator or changing analytical defaults. Exact-version qualification is repeated rather than relabeling rc2 evidence.
+Published `0.9.0`, `0.10.0rc1`, and `0.10.0rc2` remain immutable. The current stable pre-1.0 line is `0.10.0`, promoting the corrected rc2 scientific code without adding an estimator or changing analytical defaults. Exact-version qualification was repeated rather than relabeling rc2 evidence.
 
 - Package line: `0.10.0`.
-- Release phase: final exact-version qualification. Release readiness is deliberately disarmed until the complete pull-request matrix, fresh `0.10.0` performance envelope, and exact protected-main matrix pass.
+- Release phase: final `0.10.0` qualification is complete. PR #106 exact head `3c24ba411700ebc1199057537056c411944071cd` passed the complete eight-workflow matrix, and protected-main commit `b9172a578a07e433cce6cb9ec53825ccbd5d2d04` passed the complete exact-main matrix. Release readiness is armed for the explicit manual production publication.
 - Public-artifact evidence: production release workflow #10 published `0.10.0rc2` from exact main commit `b85d610612bf72d632f6c827f94371d4e17f8d50`; GitHub/PyPI publication and the fresh production-PyPI installation smoke test passed.
 - Canonical routes: FPCA/exploration, experimental functional regression, repeated-trial functional mixed effects, generalized binary/count responses, and nonlinear/recurrence analysis.
 - Generalized observation-family expansion is paused after the 0.51-0.54 Bernoulli/grouped-binomial/Poisson contracts.

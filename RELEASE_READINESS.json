@@ -2,7 +2,7 @@
   "schema_version": 1,
   "current_development_version": "0.10.0",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": false,
+  "production_release_ready": true,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -17,12 +17,13 @@
     "exact_main_ci_required": true
   },
   "notes": [
-    "0.10.0rc1 and 0.10.0rc2 remain immutable published prerelease records; 0.10.0rc2 is the corrected, publicly installed scientific candidate being promoted without estimator changes.",
-    "Production release workflow #10 published 0.10.0rc2 from exact main commit b85d610612bf72d632f6c827f94371d4e17f8d50 to GitHub and PyPI and the fresh production-PyPI installation smoke test passed.",
-    "Final 0.10.0 qualification must use the exact 0.10.0 version across package, citation, workflow, validation and documentation contracts and must generate a fresh performance envelope rather than relabel rc2 evidence.",
+    "Published 0.10.0rc1 and 0.10.0rc2 remain immutable prerelease records; final 0.10.0 promotes the corrected rc2 scientific code without estimator, numerical-method, or API expansion.",
+    "Production workflow #10 published 0.10.0rc2 from exact main commit b85d610612bf72d632f6c827f94371d4e17f8d50 to GitHub and PyPI, and the fresh production-PyPI installation smoke test passed.",
     "Fresh final 0.10.0 performance qualification passed on PR head 0651756f88e9c9e75cffb5d475fe444799d37a5e in GitHub Actions run 36544546500; canonical PERFORMANCE_ENVELOPE.json records that exact run.",
-    "Release readiness is deliberately disarmed during final 0.10.0 qualification. It may be armed only after the complete pull-request matrix and exact protected-main matrix pass for the final version.",
+    "PR #106 exact head 3c24ba411700ebc1199057537056c411944071cd passed tests, docs, examples, optional FDA backends, sparse-native validation, performance qualification, and release-readiness checks.",
+    "Protected-main commit b9172a578a07e433cce6cb9ec53825ccbd5d2d04 subsequently passed the complete exact-main tests, docs, examples, optional FDA backends, performance qualification, and release-readiness workflows.",
+    "Release readiness is deliberately armed for final 0.10.0. Publication remains an explicit manual release.yml dispatch with target=production from exact protected main.",
     "The dedicated production PyPI Trusted Publisher for GitHub environment pypi remains configured and the pypi environment retains its required-reviewer gate."
   ],
-  "github_release_ready": false
+  "github_release_ready": true
 }

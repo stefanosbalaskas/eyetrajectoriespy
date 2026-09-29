@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.10.0 (unreleased)
+## 0.10.0 — 2026-09-29
 
 - Promote the corrected and publicly qualified `0.10.0rc2` scientific code to the final 0.10 line without adding a new estimator, numerical method, observation family, API contract, or hidden analytical default.
 - Retain the source-faithful PACE diagonal-difference measurement-noise correction introduced in rc2, including the dedicated 45-degree rotated latent-diagonal smoother, explicit support/bandwidth contracts, and fail-closed non-positive variance behavior.
