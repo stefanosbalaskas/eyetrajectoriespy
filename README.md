@@ -15,9 +15,9 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Status:** stable pre-1.0 release line (`0.10.0`). Final `0.10.0` promotes the corrected and publicly qualified `0.10.0rc2` scientific code without adding an estimator, numerical method, API contract, or hidden analytical default. Full pull-request and exact protected-main qualification are complete; production publication is armed and remains an explicit manual release action.
+> **Status:** `0.10.0` is the current stable pre-1.0 release, published to GitHub and PyPI on 29 September 2026 from exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc`. Release workflow #11 completed the build-once, governance, GitHub Release, PyPI Trusted Publishing, and fresh production-PyPI installation checks successfully.
 >
-> **Immutable prerelease history:** `0.10.0rc1` and `0.10.0rc2` remain unchanged.
+> **Immutable prerelease history:** `0.10.0rc1` and `0.10.0rc2` remain unchanged. Final `0.10.0` promotes the corrected rc2 scientific code without adding an estimator, numerical method, API contract, or hidden analytical default.
 
 ## What scientific problem does this solve?
 
@@ -162,7 +162,7 @@ machinery. Version 0.9.0 is the first stable pre-1.0 release. The 0.10 line adds
 
 ## Validation
 
-Current local/CI qualification status and the exact pending re-check list are maintained in [VALIDATION.md](VALIDATION.md).
+Current qualification, release, and public-artifact evidence are maintained in [VALIDATION.md](VALIDATION.md).
 
 ```bash
 python -m pytest --cov=eyetrajectoriespy

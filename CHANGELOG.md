@@ -7,7 +7,7 @@
 - Preserve the generic fitted covariance surface for FPCA eigendecomposition and full-covariance PACE scoring.
 - Re-run the complete cross-platform, optional-backend, sparse-native, documentation, examples, performance, build/fresh-install and release-readiness qualification under the exact `0.10.0` version rather than relabeling rc2 evidence.
 - Preserve `v0.10.0rc1` and `v0.10.0rc2` and their PyPI artifacts as immutable prerelease history.
-- After publication, install normally with `pip install eyetrajectoriespy==0.10.0` or `pip install eyetrajectoriespy`.
+- Install normally with `pip install eyetrajectoriespy==0.10.0` or `pip install eyetrajectoriespy`.
 
 ## 0.10.0rc2 — 2026-09-29
 
