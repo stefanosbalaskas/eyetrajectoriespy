@@ -156,8 +156,9 @@ production publisher cleanup remains complete for final 0.10.0 qualification.
 
 ## 0.11.0rc1 published state
 
-The current stable release remains `0.10.0`. The latest published prerelease is
-`0.11.0rc1`, available from both GitHub Releases and production PyPI.
+At the time `0.11.0rc1` was published, the stable release remained `0.10.0`.
+The prerelease is still available from both GitHub Releases and production PyPI
+as an immutable historical record.
 
 Pre-RC stabilization is complete:
 
@@ -181,11 +182,10 @@ Publishing, and completed the fresh production-PyPI installation smoke test on
 its second attempt after normal index propagation. Ordinary pushes and merges
 remain non-publishing.
 
-## Final 0.11.0 qualification and publication readiness
+## Final 0.11.0 published state
 
-Final `0.11.0` is the exact-version release target. The public stable release
-remains `0.10.0` until the production publication ceremony completes, and
-published `0.11.0rc1` remains immutable.
+Final `0.11.0` is the current stable pre-1.0 release. Published
+`0.11.0rc1` remains an immutable prerelease record.
 
 The production-installed rc1 observation established the external-consumer
 basis for promotion:
@@ -205,22 +205,31 @@ basis for promotion:
 - exact-main evidence artifact `11059511070` has digest
   `sha256:a01bddd0818c09b298d93596a5698f6f8f835a6e3cde9735857780c2167f289e`.
 
-Final-version qualification was then repeated under package identity
-`0.11.0`. PR #120 merged as exact protected-main commit
-`f0b328dabd9d5050fa9988e3c157d034efb0ee7f`. That exact commit passed the
-complete final-version matrix: package construction; Ubuntu, Windows, and
-macOS on Python 3.11–3.13; docs; examples; optional scikit-fda; optional FDApy
-sparse; release-readiness; performance qualification; functional-simulation
-recovery; threshold-free functional-simulation stress; and native sparse/PACE
-validation. Exact-main performance qualification run `36625124460` also
-passed under the final `0.11.0` package identity.
+Final-version qualification was repeated under package identity `0.11.0`.
+PR #120 merged as exact protected-main commit
+`f0b328dabd9d5050fa9988e3c157d034efb0ee7f`, which passed the complete
+final-version matrix and fresh exact-version performance qualification. PR #121
+then armed publication without changing scientific code or API behavior.
+Its exact protected-main merge commit
+`2616675ad2dfc095bf17a442c1d350ba88fd030a` passed the complete post-arming
+matrix, including package construction, Ubuntu/macOS/Windows × Python 3.11–3.13,
+docs, examples, optional backends, release-readiness, performance,
+functional-simulation recovery/stress, and native sparse/PACE validation.
 
-This governance-only change jointly arms GitHub and production PyPI publication
-readiness. It changes no estimator, scientific API, numerical method, threshold,
-or published rc1 artifact. After this arming change itself is merged and passes
-the required exact-main checks, production publication still requires an
-explicit manual `release.yml` dispatch with `target=production`. Ordinary
-pushes and merges remain non-publishing.
+Production release workflow #13 (run `36628220308`) completed successfully on
+29 September 2026. It created annotated tag and GitHub Release `v0.11.0`,
+published the exact wheel and sdist to production PyPI through OIDC Trusted
+Publishing with digital attestations, and passed a fresh
+`eyetrajectoriespy==0.11.0` production-PyPI installation smoke test. The
+published GitHub Release asset digests are:
+
+- wheel: `sha256:7cba258531ae5f5a41e0a95dbfc1d0604c29456dd121c3a422adc9f576f2e481`;
+- sdist: `sha256:99b5285226a675f14a4f42369e6b4a696615b273cbd347c1716387f14250a4bc`.
+
+Post-publication GitHub/PyPI readiness is jointly disarmed again to prevent
+accidental republication of immutable `0.11.0`. Ordinary pushes and merges
+remain non-publishing; a future release must begin a new reviewed
+version/readiness cycle.
 
 ## Release-candidate gate
 
@@ -239,7 +248,7 @@ Do not enter a 0.9-style release-candidate phase until:
 
 ## Post-0.9.0 state
 
-`0.10.0` is the current stable release. Stable `0.9.0` and prereleases `0.10.0rc1` and `0.10.0rc2` remain immutable historical records. Production workflow #11 published final `0.10.0` through GitHub-first release creation and checksum-verified PyPI OIDC Trusted Publishing from exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc`; the fresh production-PyPI installation smoke test passed.
+`0.11.0` is the current stable release. Stable `0.9.0` and `0.10.0`, plus prereleases `0.10.0rc1`, `0.10.0rc2`, and `0.11.0rc1`, remain immutable historical records. Production workflow #11 published final `0.10.0` through GitHub-first release creation and checksum-verified PyPI OIDC Trusted Publishing from exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc`; the fresh production-PyPI installation smoke test passed.
 
 Final `0.10.0` promotes the corrected rc2 code without scientific/API expansion. The package identity, validation manifests, documentation contracts, fresh performance envelope, complete pull-request matrix, post-arming exact-main matrix, and public-artifact verification all completed successfully. Publication readiness is now deliberately disarmed; ordinary merges remain non-publishing, and a future release must begin a new reviewed version/readiness cycle.
 

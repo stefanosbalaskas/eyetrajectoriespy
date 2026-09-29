@@ -159,7 +159,7 @@ and the [external reference implementation policy](../validation/external-refere
 
 ### 0.11.0 — known-truth recovery laboratory
 
-The 0.11 research line is reconciled onto published stable `0.10.0` and is now cut as `0.11.0rc1` for exact-version qualification. Its feature surface is **frozen**. The release is a validation-infrastructure tranche, not another estimator catalogue.
+The 0.11 research line is published as stable `0.11.0`. Its feature surface is **frozen**. The release is a validation-infrastructure tranche, not another estimator catalogue.
 
 Implemented infrastructure includes explicit latent truth, declared
 finite-sample scenarios, a strict
@@ -183,7 +183,7 @@ recovery status.
 
 The pre-RC stabilization requirements are complete: stable 0.10 reconciliation, fresh recovery qualification, threshold-free stress evidence, fresh development performance evidence, API/documentation stabilization, and the complete cross-platform qualification matrix all passed before the rc1 cut.
 
-`0.11.0rc1` exact-version qualification is complete. Its fresh performance envelope, complete RC pull-request matrix, protected-main integration matrix, and expanded exact-main scientific release gates all passed. A separate governance-only change now arms GitHub/PyPI publication; the actual release remains an explicit manual production action. Final `0.11.0` remains a separate later exact-version qualification.
+`0.11.0rc1` exact-version qualification completed first, followed by independent final-version qualification under `0.11.0`. PR #120 merged the final package identity, PR #121 armed publication after the final exact-main matrix passed, and exact protected-main arming commit `2616675ad2dfc095bf17a442c1d350ba88fd030a` passed the complete post-arming matrix. Production release workflow #13 then published `v0.11.0` to GitHub and production PyPI and passed a fresh exact-version PyPI installation smoke test. Publication readiness is disarmed again after release.
 
 No sparse multivariate FPCA, sparse multilevel decomposition, Bayesian
 functional model, new generalized response family, or nonlinear simulation
@@ -275,11 +275,11 @@ every later tranche.
 
 ## Development status
 
-The current stable pre-1.0 line is **0.11.0**. This is the final exact-version qualification identity; public publication remains pending until those final gates pass. Published stable **0.10.0** and prereleases **0.10.0rc1**, **0.10.0rc2**, and **0.11.0rc1** remain immutable release records.
+The current stable pre-1.0 line is **0.11.0**. It was published on 29 September 2026. Stable **0.10.0** and prereleases **0.10.0rc1**, **0.10.0rc2**, and **0.11.0rc1** remain immutable historical release records.
 
 Final 0.11.0 promotes the feature-frozen known-truth simulation/recovery laboratory from published `0.11.0rc1` without adding estimator surface, changing analytical defaults, or introducing post-0.11 methodology. Production-installed RC observation on exact protected-main commit `a37214653c2f72839e356d603c4f87a514f01056` passed on Python 3.11–3.13 and retained the known fail-closed estimated-noise stress behavior as evidence rather than repairing it silently.
 
-The final version is now being independently requalified under the exact `0.11.0` package identity. A fresh final-version performance envelope, complete pull-request matrix, protected-main exact-version matrix, and separate reviewed publication-arming change are required before production publication can occur.
+The final version was independently requalified under the exact `0.11.0` package identity with a fresh performance envelope, complete pull-request matrix, protected-main exact-version matrix, and separate reviewed publication-arming change. Production workflow #13 completed GitHub-first release creation, checksum-verified PyPI OIDC publication with digital attestations, and fresh production-PyPI installation verification.
 
 
 ### 0.47 residual / within-trial dependence diagnostics

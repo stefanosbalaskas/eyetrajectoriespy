@@ -15,11 +15,11 @@ G_i(t) = [x_i(t), y_i(t)]^T
 
 derived univariate functions, compositional AOI-probability trajectories, repeated-trial multilevel decompositions, explicit registration, and optional elastic phase–amplitude analysis.
 
-> **Final 0.11.0 qualification:** `0.11.0` promotes the publicly qualified `0.11.0rc1` scientific surface without adding an estimator, numerical method, generalized family, API expansion, or hidden analytical default. The exact final version is being requalified before publication; release readiness is deliberately disarmed until the final pull-request and protected-main matrices pass.
+> **Current stable release:** `0.11.0` was published on 29 September 2026 from exact protected-main commit `2616675ad2dfc095bf17a442c1d350ba88fd030a`. Production release workflow #13 completed successfully, including GitHub Release creation, production PyPI Trusted Publishing, digital attestations, and a fresh `eyetrajectoriespy==0.11.0` production-PyPI installation smoke test.
 >
-> **Current stable release:** `0.10.0` remains the public stable pre-1.0 release during final 0.11 qualification. Published `0.11.0rc1` remains an immutable prerelease record.
+> **Scientific promotion boundary:** final `0.11.0` promotes the publicly qualified `0.11.0rc1` simulation/recovery laboratory without adding an estimator, numerical method, generalized family, API expansion, hidden analytical default, or post-0.11 research feature. Published `0.11.0rc1` remains an immutable prerelease record.
 >
-> **RC observation evidence:** the exact production-PyPI `0.11.0rc1` artifact was independently exercised outside the source checkout on Python 3.11–3.13. Exact protected-main observation commit `a37214653c2f72839e356d603c4f87a514f01056` passed deterministic simulation replay, recovery qualification, threshold-free stress retention, mixed-effects and registration recovery, portable export/load, reporting, and plotting.
+> **RC observation evidence:** before final promotion, the exact production-PyPI `0.11.0rc1` artifact was independently exercised outside the source checkout on Python 3.11–3.13. Exact protected-main observation commit `a37214653c2f72839e356d603c4f87a514f01056` passed deterministic simulation replay, recovery qualification, threshold-free stress retention, mixed-effects and registration recovery, portable export/load, reporting, and plotting.
 
 ## What scientific problem does this solve?
 
@@ -71,26 +71,20 @@ The README is intentionally no longer the exhaustive function catalogue.
 
 ## Install
 
-Current stable release while final 0.11.0 qualification is in progress:
-
-```bash
-pip install eyetrajectoriespy==0.10.0
-```
-
-Published qualified release candidate:
-
-```bash
-pip install --pre eyetrajectoriespy==0.11.0rc1
-```
-
-After final 0.11.0 publication, the normal stable install becomes:
+Current stable release:
 
 ```bash
 pip install eyetrajectoriespy==0.11.0
 # or: pip install eyetrajectoriespy
 ```
 
-The final `0.11.0` package identity is qualified independently before publication; the published rc1 artifacts are not relabeled.
+The immutable qualified release candidate remains available for reproducibility:
+
+```bash
+pip install --pre eyetrajectoriespy==0.11.0rc1
+```
+
+Final `0.11.0` was qualified independently under its own exact package identity; the published rc1 artifacts were not relabeled.
 
 Development checkout:
 
@@ -164,7 +158,7 @@ evidence-typed independent/reference validation, an explicit numerical-tolerance
 policy, and a repeated runtime/peak-memory reference envelope. Version 0.57 adds
 portable scientific-result snapshots, explicit environment capture, five
 qualified canonical end-to-end examples, and coordinated GitHub/PyPI release
-machinery. Version 0.9.0 is the first stable pre-1.0 release. The 0.10 line adds the native sparse/irregular FPCA + PACE tranche; rc2 corrects the diagonal-difference measurement-noise estimator, and final 0.10.0 promotes that corrected candidate after exact-version requalification. The 0.11 line adds the known-truth simulation/recovery laboratory. Published `0.11.0rc1` completed production-installed observation, and final `0.11.0` is being requalified under its own exact version without scientific/API expansion. Scientific product qualification remains more important than estimator count. See the
+machinery. Version 0.9.0 is the first stable pre-1.0 release. The 0.10 line adds the native sparse/irregular FPCA + PACE tranche; rc2 corrects the diagonal-difference measurement-noise estimator, and final 0.10.0 promotes that corrected candidate after exact-version requalification. The 0.11 line adds the known-truth simulation/recovery laboratory. Published `0.11.0rc1` completed production-installed observation, and final `0.11.0` was independently requalified and published without scientific/API expansion. Scientific product qualification remains more important than estimator count. See the
 [release-readiness checklist](https://stefanosbalaskas.github.io/eyetrajectoriespy/release-readiness/).
 
 - [Portable scientific results](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/portable-results/)
