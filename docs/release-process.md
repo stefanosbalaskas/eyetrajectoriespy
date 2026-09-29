@@ -225,7 +225,7 @@ resume-production
 2. the version must not be a development release;
 3. GitHub must report exact protected `main`;
 4. governance issue #64 must be closed;
-5. all required exact-main qualification checks must pass, including `recovery` and threshold-free `stress-evidence` for the 0.11 release line;
+5. all required exact-main qualification checks must pass, including `recovery`, threshold-free `stress-evidence`, and native sparse/PACE `sparse-performance`, `stress-recovery`, and `noise-variance-recovery` for the 0.11 release line;
 6. the target GitHub tag/release must not already exist;
 7. the target PyPI version must not already exist.
 
