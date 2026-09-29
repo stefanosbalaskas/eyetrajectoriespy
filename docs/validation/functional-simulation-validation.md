@@ -147,6 +147,38 @@ The declared stress catalog is part of 0.11 stabilization, but future signal-dep
 The public scenario catalog is available through
 `functional_recovery_scenario_catalog_frame()`.
 
+## Descriptive stress evidence artifact
+
+The dedicated `functional-simulation-stress` workflow executes the complete
+declared stress catalog separately from qualification:
+
+```bash
+python scripts/run_functional_simulation_stress.py \
+  --replicates 3 \
+  --output functional-simulation-stress-evidence.json
+```
+
+This artifact is deliberately **not** a green/red scientific gate. It records
+every declared replicate, successful recovery metrics, explicit simulation/fit/
+recovery failures, scenario-level failure proportions and Monte Carlo summaries.
+No recovery threshold is inferred from the observed results and no failed
+replicate is removed from the denominator.
+
+The runner uses fixed, predeclared analysis specifications. Sparse cases use
+the native sparse FPCA/PACE path, the near-tied/heavy-tailed and missing-data
+cases exercise dense FPCA, the participant-heavy/trial-heavy cases exercise the
+declared participant + trial functional mixed-effects model, and the correlated
+two-channel case exercises ordinary dense MFPCA with `scaling="none"`.
+
+The phase-variation stress case is intentionally generation-audited only in
+0.11. The frozen simulator does not expose observed landmark events. Constructing
+curve-specific observed landmarks from latent phase truth inside the estimator
+path would violate the package's post-fit truth boundary, so the stress artifact
+records that limitation rather than manufacturing registration recovery.
+
+Signal-dependent/informative missingness remains post-0.11 work and is not added
+to this runner.
+
 ## Post-fit truth boundary
 
 The orchestration preserves the sequence
