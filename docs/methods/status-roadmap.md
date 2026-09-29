@@ -289,6 +289,8 @@ every later tranche.
 
 The current stable pre-1.0 line is **0.10.0**. It was published on GitHub and PyPI on 29 September 2026. Published **0.9.0**, **0.10.0rc1**, and **0.10.0rc2** remain immutable historical release records. Final 0.10.0 promotes the corrected rc2 native sparse/irregular FPCA + PACE tranche without adding estimator surface or changing analytical defaults.
 
+The current development line is **0.11.0.dev0**. It is the feature-frozen stabilization line for the known-truth simulation/recovery laboratory reconciled onto stable 0.10.0. Publication readiness remains disarmed until a separately qualified release-candidate cycle.
+
 The final version was independently qualified under the exact `0.10.0` package identity. Its fresh performance envelope, complete pull-request matrix, post-arming exact protected-main matrix, GitHub Release publication, PyPI Trusted Publishing, and fresh production-PyPI installation all passed. Post-release publication readiness is disarmed to prevent accidental republication of the existing version.
 
 
