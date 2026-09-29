@@ -226,6 +226,47 @@ def test_release_workflow_builds_once_and_reuses_exact_artifact():
     assert "- publish-pypi" in verify_block
 
 
+def test_release_workflow_pins_runner_and_uses_node24_actions():
+    workflow = (
+        ROOT / ".github" / "workflows" / "release.yml"
+    ).read_text(encoding="utf-8")
+
+    assert "runs-on: ubuntu-latest" not in workflow
+    assert "runs-on: ubuntu-24.04" in workflow
+    assert "uses: actions/checkout@v7" in workflow
+    assert "uses: actions/setup-python@v7" in workflow
+    assert "uses: actions/upload-artifact@v7" in workflow
+    assert "uses: actions/download-artifact@v8" in workflow
+    assert "actions/checkout@v4" not in workflow
+    assert "actions/setup-python@v5" not in workflow
+    assert "actions/upload-artifact@v4" not in workflow
+    assert "actions/download-artifact@v4" not in workflow
+
+
+def test_release_install_verification_tolerates_index_propagation():
+    workflow = (
+        ROOT / ".github" / "workflows" / "release.yml"
+    ).read_text(encoding="utf-8")
+
+    testpypi_block = workflow.split(
+        "  verify-testpypi:", 1
+    )[1].split("  production-governance:", 1)[0]
+    production_block = workflow.split(
+        "  verify-pypi:", 1
+    )[1].split("  verify-resume-pypi:", 1)[0]
+    resume_block = workflow.split("  verify-resume-pypi:", 1)[1]
+
+    assert "seq 1 20" in testpypi_block
+    assert "--no-cache-dir" in testpypi_block
+    assert "sleep 20" in testpypi_block
+
+    for block in (production_block, resume_block):
+        assert "seq 1 30" in block
+        assert "--no-cache-dir" in block
+        assert "sleep 20" in block
+        assert "bounded propagation window" in block
+
+
 def test_production_release_requires_explicit_manual_target():
     workflow = (
         ROOT / ".github" / "workflows" / "release.yml"
