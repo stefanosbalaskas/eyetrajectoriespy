@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package_version": "0.11.0.dev0",
+  "package_version": "0.11.0rc1",
   "evidence_types": {
     "analytical_truth": "Exact or hand-computable scientific quantity from a small declared problem.",
     "independent_implementation_equivalence": "Same estimand/specification represented or fitted independently from the package code path.",
