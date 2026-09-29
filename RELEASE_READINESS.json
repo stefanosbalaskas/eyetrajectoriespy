@@ -20,6 +20,7 @@
     "0.10.0rc1 and 0.10.0rc2 remain immutable published prerelease records; 0.10.0rc2 is the corrected, publicly installed scientific candidate being promoted without estimator changes.",
     "Production release workflow #10 published 0.10.0rc2 from exact main commit b85d610612bf72d632f6c827f94371d4e17f8d50 to GitHub and PyPI and the fresh production-PyPI installation smoke test passed.",
     "Final 0.10.0 qualification must use the exact 0.10.0 version across package, citation, workflow, validation and documentation contracts and must generate a fresh performance envelope rather than relabel rc2 evidence.",
+    "Fresh final 0.10.0 performance qualification passed on PR head 0651756f88e9c9e75cffb5d475fe444799d37a5e in GitHub Actions run 36544546500; canonical PERFORMANCE_ENVELOPE.json records that exact run.",
     "Release readiness is deliberately disarmed during final 0.10.0 qualification. It may be armed only after the complete pull-request matrix and exact protected-main matrix pass for the final version.",
     "The dedicated production PyPI Trusted Publisher for GitHub environment pypi remains configured and the pypi environment retains its required-reviewer gate."
   ],
