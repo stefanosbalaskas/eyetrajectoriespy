@@ -40,9 +40,9 @@ Publication remains disarmed during qualification. The rc1 artifacts, tag and
 PyPI files must not be changed or replaced. If rc2 qualification fails, fix
 the candidate and requalify rather than widening scientific thresholds.
 
-## 0.10.0rc1 qualification and publication
+## Historical 0.10.0rc1 qualification and publication
 
-The next publication candidate is `0.10.0rc1`. It contains the native
+The first 0.10 publication candidate was `0.10.0rc1`. It contains the native
 sparse/irregular FPCA + PACE tranche already integrated into protected
 `main`. Release-candidate qualification must not introduce a new scientific
 estimator or hidden analytical default.
@@ -77,7 +77,7 @@ manual target=production dispatch only
 The qualification branch and its pull request do not publish anything. A
 production dispatch remains a separate deliberate action.
 
-For the current 0.10.0rc1 candidate, the fresh performance envelope, complete
+For the historical 0.10.0rc1 candidate, the fresh performance envelope, complete
 pull-request matrix, protected-main merge, and complete exact-main matrix have
 all passed. Release readiness is now jointly armed for GitHub and production
 publication through a reviewed change. The remaining publication action is the
