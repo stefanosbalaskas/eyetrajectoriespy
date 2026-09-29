@@ -43,8 +43,12 @@ utils::write.csv(
   file.path(output_dir, "mgsfpca_eigenvalues.csv"),
   row.names = FALSE
 )
+subject_ids <- unique(as.character(x$ID))
+if (length(subject_ids) != nrow(fit$scores)) {
+  stop("mGSFPCA score row count does not match fixture subject count")
+}
 utils::write.csv(
-  as.data.frame(fit$scores),
+  data.frame(ID = subject_ids, as.data.frame(fit$scores)),
   file.path(output_dir, "mgsfpca_scores.csv"),
   row.names = FALSE
 )
