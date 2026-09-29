@@ -14,7 +14,7 @@ Historical state at the start of 0.55 was an unprotected `main`. The current
 - required pull-request/status-check protection is active;
 - issue #64 is closed.
 
-This repository-policy gate is therefore satisfied for the 0.10.0rc1 qualification path.
+This repository-policy gate is therefore satisfied for the 0.10.0rc2 qualification path.
 
 ### Required target policy for `main`
 
@@ -141,14 +141,14 @@ requalification remains required after merge.
 - [x] Dedicated production PyPI Trusted Publisher is configured for GitHub environment `pypi`.
 - [x] `pypi` GitHub environment has the intended required-reviewer protection.
 - [x] `main` is protected and issue #64 is closed.
-- [x] `RELEASE_READINESS.json` is jointly armed for GitHub and production publication of the fully qualified `0.10.0rc1` release candidate.
+- [ ] `RELEASE_READINESS.json` is deliberately disarmed while `0.10.0rc2` is being qualified; it may be armed only after the fresh rc2 PR and exact-main matrices pass.
 
 The first public prerelease `0.9.0rc1` successfully exercised GitHub-first
 publication followed by production PyPI OIDC publication and clean installation.
 Version `0.9.0` repeated the complete qualification under the final version
 rather than relabeling RC evidence. Production workflow authority now points
 only at the dedicated `pypi` environment. Issue #69 is closed and the obsolete
-production publisher cleanup is complete before 0.10.0rc1 qualification.
+production publisher cleanup remains complete for 0.10.0rc2 qualification.
 
 ## Release-candidate gate
 
@@ -167,13 +167,12 @@ Do not enter a 0.9-style release-candidate phase until:
 
 ## Post-0.9.0 state
 
-Stable release `0.9.0` is immutable on GitHub and PyPI. The active release-
-candidate line is `0.10.0rc1`, containing the qualified native sparse-FPCA/PACE
-estimator. Release automation is manual-dispatch only, so ordinary merges
-cannot trigger a production upload. The `0.10.0rc1` version and readiness manifests are now deliberately armed
-through a reviewed pull request after release-candidate qualification and
-exact-main checks. Publication remains a separate explicit manual production
-dispatch and cannot be triggered by an ordinary merge.
+Stable release `0.9.0` and published prerelease `0.10.0rc1` are immutable.
+The active release-candidate line is `0.10.0rc2`, containing the corrected
+native sparse-FPCA/PACE diagonal-difference noise estimator. Release automation
+is manual-dispatch only, so ordinary merges cannot trigger a production upload.
+The rc2 readiness manifest is deliberately disarmed until fresh rc2 performance,
+pull-request and exact-main qualification have all completed.
 
 ### Production publisher authority
 
