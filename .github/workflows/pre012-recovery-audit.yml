@@ -1,0 +1,82 @@
+name: pre012-recovery-audit
+
+on:
+  pull_request:
+    paths:
+      - scripts/run_pre012_recovery_audit.py
+      - tests/test_pre012_recovery_audit.py
+      - validation/pre012/**
+      - docs/validation/pre-0.12-recovery-audit.md
+      - mkdocs.yml
+  push:
+    branches: [main]
+    paths:
+      - scripts/run_pre012_recovery_audit.py
+      - tests/test_pre012_recovery_audit.py
+      - validation/pre012/**
+      - docs/validation/pre-0.12-recovery-audit.md
+      - mkdocs.yml
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pre012-recovery-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: python -m pip install -U pip && python -m pip install -e ".[dev]"
+      - name: Validate audit contracts
+        run: python -m pytest -q tests/test_pre012_recovery_audit.py
+      - name: Run decision-oriented audit
+        run: python scripts/run_pre012_recovery_audit.py --output-dir pre012-audit
+      - name: Verify evidence bundle
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("pre012-audit")
+          required = {
+              "signal_dependent_missingness.csv",
+              "cross_channel_truth.csv",
+              "sparse_hierarchy_boundary.csv",
+              "external_fixture_x.csv",
+              "external_fixture_y.csv",
+              "external_fixture_truth.json",
+              "pre012_audit_summary.json",
+          }
+          missing = sorted(name for name in required if not (root / name).exists())
+          if missing:
+              raise SystemExit(f"missing pre-0.12 evidence files: {missing}")
+          payload = json.loads((root / "pre012_audit_summary.json").read_text())
+          questions = payload.get("questions", {})
+          if set(questions) != {
+              "signal_dependent_missingness",
+              "joint_vs_separate_xy",
+              "sparse_repeated_trial_hierarchy",
+              "external_comparison",
+          }:
+              raise SystemExit("pre-0.12 audit question set is incomplete")
+          if payload.get("package_version") != "0.11.0":
+              raise SystemExit("pre-0.12 audit must execute against stable 0.11.0")
+          PY
+      - name: Upload audit evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: pre012-recovery-audit
+          path: pre012-audit
+          if-no-files-found: error
