@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "current_development_version": "0.10.0rc2",
+  "current_development_version": "0.10.0",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": true,
+  "production_release_ready": false,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -17,12 +17,11 @@
     "exact_main_ci_required": true
   },
   "notes": [
-    "0.9.0 remains the current stable pre-1.0 GitHub/PyPI release; published 0.10.0rc1 remains an immutable prerelease record until 0.10.0rc2 is deliberately published.",
-    "0.10.0rc2 is the qualified corrective release candidate for the native sparse-FPCA/PACE tranche after the PACE-specific diagonal-difference measurement-noise correction.",
-    "PR #104 exact head 555dffcfedc5df50894d9a25b249ffb2fa35cb5a passed tests, docs, examples, optional FDA backends, sparse-native validation, performance qualification, and release-readiness checks.",
-    "Protected-main commit a0f564bcd4dfcac7eb44d97b3cb7f3575226dd77 subsequently passed the complete exact-main tests, docs, examples, optional FDA backends, performance qualification, and release-readiness workflows.",
-    "The dedicated production PyPI Trusted Publisher for GitHub environment pypi is configured and the pypi environment retains its required-reviewer gate.",
-    "Release readiness is deliberately armed for 0.10.0rc2. Publication still requires an explicit manual release.yml dispatch with target=production from exact protected main."
+    "0.10.0rc1 and 0.10.0rc2 remain immutable published prerelease records; 0.10.0rc2 is the corrected, publicly installed scientific candidate being promoted without estimator changes.",
+    "Production release workflow #10 published 0.10.0rc2 from exact main commit b85d610612bf72d632f6c827f94371d4e17f8d50 to GitHub and PyPI and the fresh production-PyPI installation smoke test passed.",
+    "Final 0.10.0 qualification must use the exact 0.10.0 version across package, citation, workflow, validation and documentation contracts and must generate a fresh performance envelope rather than relabel rc2 evidence.",
+    "Release readiness is deliberately disarmed during final 0.10.0 qualification. It may be armed only after the complete pull-request matrix and exact protected-main matrix pass for the final version.",
+    "The dedicated production PyPI Trusted Publisher for GitHub environment pypi remains configured and the pypi environment retains its required-reviewer gate."
   ],
-  "github_release_ready": true
+  "github_release_ready": false
 }
