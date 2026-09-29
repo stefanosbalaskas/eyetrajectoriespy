@@ -17,7 +17,7 @@ derived univariate functions, compositional AOI-probability trajectories, repeat
 
 > **Status:** stable pre-1.0 release (`0.9.0`). The scientific platform, reference-validation layer, reproducibility contracts, packaging checks, and five canonical workflows are qualified.
 >
-> **Release-candidate line:** `0.10.0rc2` is being qualified after correcting the diagonal-difference PACE measurement-noise estimator. Published `0.10.0rc1` remains an immutable prerelease record. The estimator retains explicit smoothing/support/noise/PSD/score contracts and FDApy remains only an optional compatibility/reference backend. Publication is deliberately disarmed until fresh rc2 qualification is complete.
+> **Release-candidate line:** `0.10.0rc2` has completed pull-request and exact protected-main qualification after correcting the diagonal-difference PACE measurement-noise estimator. Published `0.10.0rc1` remains an immutable prerelease record. Release readiness is armed through a reviewed change; publication still requires a deliberate manual production dispatch.
 
 ## What scientific problem does this solve?
 
