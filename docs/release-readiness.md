@@ -137,6 +137,7 @@ requalification remains required after merge.
 - [x] TestPyPI rehearsal is supported through the same build artifact.
 - [x] Production checks live GitHub governance and exact-main CI before
       publishing.
+- [x] For the 0.11 release line, exact-main governance additionally requires the `recovery` functional-simulation qualification check and the threshold-free `stress-evidence` check; both workflows run on `main` as well as the isolated 0.11 release branch.
 - [ ] TestPyPI Trusted Publisher/rehearsal remains available as an optional rehearsal.
 - [x] Dedicated production PyPI Trusted Publisher is configured for GitHub environment `pypi`.
 - [x] `pypi` GitHub environment has the intended required-reviewer protection.
