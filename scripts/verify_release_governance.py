@@ -21,6 +21,8 @@ _GITHUB_RELEASE_DECLARATIONS = {
     "main_protected",
     "issue_64_closed",
     "exact_main_ci_required",
+    "functional_simulation_qualification_qualified",
+    "functional_simulation_stress_recorded",
 }
 
 REQUIRED_CHECKS = {
@@ -41,6 +43,8 @@ REQUIRED_CHECKS = {
     "FDApy sparse / Python 3.12",
     "performance-envelope",
     "release-readiness",
+    "recovery",
+    "stress-evidence",
 }
 
 
