@@ -183,7 +183,7 @@ recovery status.
 
 The pre-RC stabilization requirements are complete: stable 0.10 reconciliation, fresh recovery qualification, threshold-free stress evidence, fresh development performance evidence, API/documentation stabilization, and the complete cross-platform qualification matrix all passed before the rc1 cut.
 
-During `0.11.0rc1` qualification the same scientific/package surfaces are rerun under the exact RC identity. A fresh rc1 performance envelope is required; development evidence is archived rather than relabeled. Only after the full RC matrix and exact release-state qualification pass may a separate reviewed change arm GitHub/PyPI publication. Final `0.11.0` remains a separate later exact-version qualification.
+`0.11.0rc1` exact-version qualification is complete. Its fresh performance envelope, complete RC pull-request matrix, protected-main integration matrix, and expanded exact-main scientific release gates all passed. A separate governance-only change now arms GitHub/PyPI publication; the actual release remains an explicit manual production action. Final `0.11.0` remains a separate later exact-version qualification.
 
 No sparse multivariate FPCA, sparse multilevel decomposition, Bayesian
 functional model, new generalized response family, or nonlinear simulation
@@ -277,7 +277,7 @@ every later tranche.
 
 The current stable pre-1.0 line is **0.10.0**. It was published on GitHub and PyPI on 29 September 2026. Published **0.9.0**, **0.10.0rc1**, and **0.10.0rc2** remain immutable historical release records. Final 0.10.0 promotes the corrected rc2 native sparse/irregular FPCA + PACE tranche without adding estimator surface or changing analytical defaults.
 
-The current release-candidate line is **0.11.0rc1**. It is the feature-frozen exact-version qualification candidate for the known-truth simulation/recovery laboratory reconciled onto stable 0.10.0. Publication readiness remains disarmed until the RC matrix passes and a separate reviewed arming change is merged.
+The current release-candidate line is **0.11.0rc1**. It is the feature-frozen, fully qualified candidate for the known-truth simulation/recovery laboratory reconciled onto stable 0.10.0. The RC and expanded exact-main matrices passed; publication readiness is armed through a separate governance-only change, while publication itself remains manual.
 
 The final version was independently qualified under the exact `0.10.0` package identity. Its fresh performance envelope, complete pull-request matrix, post-arming exact protected-main matrix, GitHub Release publication, PyPI Trusted Publishing, and fresh production-PyPI installation all passed. Post-release publication readiness is disarmed to prevent accidental republication of the existing version.
 
