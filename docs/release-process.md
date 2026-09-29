@@ -49,8 +49,18 @@ and a fresh eyetrajectoriespy==0.11.0 production-PyPI install
 ~~~
 
 The rc1 tag, GitHub Release, wheel, sdist, checksums, attestations, installed-RC
-evidence, and performance snapshot remain immutable. Final qualification must
-create new exact-version evidence rather than relabeling rc1 evidence.
+evidence, and performance snapshot remain immutable. Final qualification created
+new exact-version evidence rather than relabeling rc1 evidence.
+
+Final publication is complete. PR #121 armed publication only after the exact
+final-version matrix passed; its protected-main merge commit
+`2616675ad2dfc095bf17a442c1d350ba88fd030a` then passed the complete post-arming
+matrix. Production release workflow #13 (run `36628220308`) created annotated
+tag and GitHub Release `v0.11.0`, published the exact wheel and sdist to
+production PyPI through OIDC Trusted Publishing with digital attestations, and
+passed a fresh `eyetrajectoriespy==0.11.0` production-PyPI installation smoke
+test. Post-publication readiness is disarmed again so ordinary pushes and merges
+cannot republish the immutable release.
 
 The threshold-free stress evidence remains descriptive. The known
 estimated-noise diagonal-difference failures remain in the denominator and are
