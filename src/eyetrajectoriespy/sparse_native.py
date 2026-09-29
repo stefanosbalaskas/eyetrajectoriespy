@@ -14,6 +14,7 @@ from ._sparse_native import (
     pace_scores,
     raw_offdiagonal_covariance_pairs,
     repair_covariance_psd,
+    rotated_local_quadratic_covariance_diagonal,
     weighted_covariance_eigendecomposition,
 )
 from .types import IrregularTrajectorySet, SparseFPCAResult
@@ -350,11 +351,18 @@ def fit_sparse_fpca(
                 "noise_bandwidth is required when "
                 "noise_variance_method='diagonal_difference'"
             )
+        noise_diagonal_fit = rotated_local_quadratic_covariance_diagonal(
+            pairs,
+            grid,
+            bandwidth=covariance_bandwidth,
+            min_local_pairs=covariance_min_local_pairs,
+        )
         noise_result = estimate_noise_variance_diagonal_difference(
             curve_times,
             tuple(residuals),
             grid,
             covariance_fit.values,
+            latent_diagonal=noise_diagonal_fit.values,
             bandwidth=noise_bandwidth,
             noise_support=noise_support,
             min_local_points=noise_min_local_points,
@@ -444,6 +452,16 @@ def fit_sparse_fpca(
         ),
         "noise_variance_method": noise_variance_method,
         "noise_variance": noise_variance,
+        "noise_latent_diagonal_method": (
+            None
+            if noise_result is None
+            else "rotated_local_quadratic_offdiagonal"
+        ),
+        "noise_latent_diagonal_bandwidth": (
+            None
+            if noise_result is None
+            else float(covariance_bandwidth)
+        ),
         "noise_support": (
             None
             if noise_result is None
