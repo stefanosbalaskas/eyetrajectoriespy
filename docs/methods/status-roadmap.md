@@ -183,7 +183,7 @@ A candidate enters the public API only when it can preserve the package rules: e
 
 ## Development status
 
-Published **0.9.0**, **0.10.0rc1**, and **0.10.0rc2** are immutable release records. The active qualification target is final **0.10.0**, which promotes the corrected rc2 native sparse/irregular FPCA + PACE tranche without adding estimator surface or changing analytical defaults.
+The current stable pre-1.0 line is **0.10.0** for exact-version qualification; public publication remains pending until the final gates pass. Published **0.9.0**, **0.10.0rc1**, and **0.10.0rc2** remain immutable release records. Final 0.10.0 promotes the corrected rc2 native sparse/irregular FPCA + PACE tranche without adding estimator surface or changing analytical defaults.
 
 The final version is being independently requalified under the exact `0.10.0` package identity. A fresh performance envelope, complete pull-request matrix, and exact protected-main matrix are required before release readiness can be armed and production publication dispatched.
 
