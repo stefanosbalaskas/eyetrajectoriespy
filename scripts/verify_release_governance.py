@@ -23,6 +23,7 @@ _GITHUB_RELEASE_DECLARATIONS = {
     "exact_main_ci_required",
     "functional_simulation_qualification_qualified",
     "functional_simulation_stress_recorded",
+    "sparse_native_validation_qualified",
 }
 
 REQUIRED_CHECKS = {
@@ -45,6 +46,9 @@ REQUIRED_CHECKS = {
     "release-readiness",
     "recovery",
     "stress-evidence",
+    "sparse-performance",
+    "stress-recovery",
+    "noise-variance-recovery",
 }
 
 
