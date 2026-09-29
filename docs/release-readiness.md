@@ -181,45 +181,46 @@ Publishing, and completed the fresh production-PyPI installation smoke test on
 its second attempt after normal index propagation. Ordinary pushes and merges
 remain non-publishing.
 
-## Final 0.11.0 qualification state
+## Final 0.11.0 qualification and publication readiness
 
-Final `0.11.0` is now the exact-version qualification target. The public
-stable release remains `0.10.0` until final publication, and published
-`0.11.0rc1` remains immutable.
+Final `0.11.0` is the exact-version release target. The public stable release
+remains `0.10.0` until the production publication ceremony completes, and
+published `0.11.0rc1` remains immutable.
 
-The decision to promote rc1 rather than create rc2 is supported by an
-external-consumer observation tranche:
+The production-installed rc1 observation established the external-consumer
+basis for promotion:
 
-- PR #119 added production-installed RC qualification without changing package
-  implementation;
-- protected-main commit
-  `a37214653c2f72839e356d603c4f87a514f01056` passed the complete eleven-workflow
-  exact-main matrix;
-- installed-RC workflow run `36622305877` verified exact production-PyPI
-  `0.11.0rc1` installation on Python 3.11–3.13 outside the source checkout;
-- the deep observation retained all 42 declared stress replicate records,
-  including 2/3 fail-closed `noise_variance_invalid` outcomes in the known
-  estimated-noise diagonal-difference stress regime;
-- deterministic simulation replay, dense FPCA recovery, functional mixed-effects
-  recovery, registration recovery, portable export/load, reporting, plotting,
-  and environment capture completed successfully;
+- exact production-PyPI `0.11.0rc1` installed on Python 3.11–3.13 outside the
+  source checkout;
+- deterministic seeded simulation replay passed;
+- the established four-scenario recovery qualification passed from the
+  installed package;
+- all 42 declared stress-replicate records were retained;
+- the known estimated-noise diagonal-difference regime retained 2/3
+  fail-closed `noise_variance_invalid` fits rather than clipping or widening
+  thresholds;
+- mixed-effects recovery converged without a boundary fit;
+- registration recovery targeted the inverse simulator warp;
+- portable export/load, reporting, plotting, and environment capture passed;
 - exact-main evidence artifact `11059511070` has digest
-  `sha256:a01bddd0818c09b298d93596a5698f6f8f835a6e3cde9735857780c2167f289e`;
-- the deep job recorded GitHub runner image `ubuntu24`,
-  image version `20260927.320.1`.
+  `sha256:a01bddd0818c09b298d93596a5698f6f8f835a6e3cde9735857780c2167f289e`.
 
-No result-changing or public-API defect was identified. The initial PR
-observation's mixed-effects non-convergence came from an intentionally retained
-ill-conditioned qualification workload with effectively rank-one participant
-truth and a two-dimensional unstructured covariance. Only that new workload was
-revised to full-rank basis-matched truth; no estimator, fallback policy, or
-scientific threshold changed.
+Final-version qualification was then repeated under package identity
+`0.11.0`. PR #120 merged as exact protected-main commit
+`f0b328dabd9d5050fa9988e3c157d034efb0ee7f`. That exact commit passed the
+complete final-version matrix: package construction; Ubuntu, Windows, and
+macOS on Python 3.11–3.13; docs; examples; optional scikit-fda; optional FDApy
+sparse; release-readiness; performance qualification; functional-simulation
+recovery; threshold-free functional-simulation stress; and native sparse/PACE
+validation. Exact-main performance qualification run `36625124460` also
+passed under the final `0.11.0` package identity.
 
-Publication readiness is deliberately disarmed for the final-version
-qualification branch. Final 0.11.0 requires a fresh exact-version performance
-envelope, the complete pull-request matrix, the complete protected-main matrix,
-and a separate reviewed publication-arming change before any production
-dispatch.
+This governance-only change jointly arms GitHub and production PyPI publication
+readiness. It changes no estimator, scientific API, numerical method, threshold,
+or published rc1 artifact. After this arming change itself is merged and passes
+the required exact-main checks, production publication still requires an
+explicit manual `release.yml` dispatch with `target=production`. Ordinary
+pushes and merges remain non-publishing.
 
 ## Release-candidate gate
 

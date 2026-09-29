@@ -2,7 +2,7 @@
   "schema_version": 1,
   "current_development_version": "0.11.0",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": false,
+  "production_release_ready": true,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -29,7 +29,10 @@
     "No result-changing or public-API defect was identified by the RC observation tranche. The first PR observation attempt deliberately remains in history: an ill-conditioned rank-one mixed-effects truth scenario failed closed; only the qualification design was corrected to full-rank basis-matched truth, with no estimator fallback or threshold change.",
     "Final 0.11.0 must now generate a fresh exact-version performance envelope, pass the complete pull-request matrix, merge through protected main, and pass the complete exact-main matrix before publication readiness is armed again.",
     "Publication is deliberately disarmed during final qualification. A later reviewed governance-only change may arm GitHub/PyPI release readiness only after exact-main 0.11.0 qualification passes.",
-    "Post-0.11 methodology remains deferred until after final publication and a package-wide recovery audit."
+    "Post-0.11 methodology remains deferred until after final publication and a package-wide recovery audit.",
+    "Final 0.11.0 qualification PR #120 merged as exact protected-main commit f0b328dabd9d5050fa9988e3c157d034efb0ee7f. The complete exact-main final-version matrix passed: package plus Ubuntu/macOS/Windows × Python 3.11–3.13, docs, examples, optional scikit-fda, optional FDApy sparse, release-readiness, performance, functional-simulation recovery, threshold-free functional-simulation stress, and native sparse/PACE validation.",
+    "Exact-main final-version performance qualification run 36625124460 passed under package identity 0.11.0. The final version therefore has fresh performance evidence rather than relabelled 0.11.0rc1 measurements.",
+    "GitHub and production PyPI publication readiness are jointly armed only after the completed final-version qualification. Publication remains an explicit manual release.yml dispatch with target=production from the exact protected-main arming commit; ordinary pushes and merges remain non-publishing."
   ],
-  "github_release_ready": false
+  "github_release_ready": true
 }
