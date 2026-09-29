@@ -1,0 +1,217 @@
+name: installed-rc-qualification
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/installed-rc-qualification.yml"
+      - "scripts/run_installed_rc_observation.py"
+      - "scripts/run_functional_simulation_validation.py"
+      - "scripts/run_functional_simulation_stress.py"
+      - "scripts/release_smoke_test.py"
+      - "tests/test_installed_rc_qualification.py"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/installed-rc-qualification.yml"
+      - "scripts/run_installed_rc_observation.py"
+      - "scripts/run_functional_simulation_validation.py"
+      - "scripts/run_functional_simulation_stress.py"
+      - "scripts/release_smoke_test.py"
+      - "tests/test_installed_rc_qualification.py"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
+
+env:
+  RC_VERSION: "0.11.0rc1"
+
+jobs:
+  installed-version-matrix:
+    name: installed-pypi (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install exact production-PyPI release candidate
+        shell: bash
+        run: |
+          python -m venv "${RUNNER_TEMP}/rc-matrix"
+          "${RUNNER_TEMP}/rc-matrix/bin/python" -m pip install -U pip
+          "${RUNNER_TEMP}/rc-matrix/bin/python" -m pip install --no-cache-dir             "eyetrajectoriespy==${RC_VERSION}"
+          "${RUNNER_TEMP}/rc-matrix/bin/python" -m pip check
+      - name: Smoke test outside the repository working tree
+        shell: bash
+        run: |
+          mkdir -p "${RUNNER_TEMP}/rc-matrix-work"
+          cd "${RUNNER_TEMP}/rc-matrix-work"
+          "${RUNNER_TEMP}/rc-matrix/bin/python"             "${GITHUB_WORKSPACE}/scripts/release_smoke_test.py"             --expected-version "${RC_VERSION}"
+      - name: Capture installed-distribution and runner evidence
+        shell: bash
+        run: |
+          mkdir -p "${RUNNER_TEMP}/rc-matrix-evidence"
+          "${RUNNER_TEMP}/rc-matrix/bin/python" - <<'PY'             > "${RUNNER_TEMP}/rc-matrix-evidence/import-environment.json"
+          import importlib.metadata
+          import json
+          import os
+          from pathlib import Path
+          import platform
+          import eyetrajectoriespy as et
+
+          dist = importlib.metadata.distribution("eyetrajectoriespy")
+          root = Path(dist.locate_file("")).resolve()
+          module = Path(et.__file__).resolve()
+          workspace = Path(os.environ["GITHUB_WORKSPACE"]).resolve()
+          if module.is_relative_to(workspace):
+              raise RuntimeError("package imported from repository checkout")
+          if not module.is_relative_to(root):
+              raise RuntimeError("package import lies outside distribution root")
+          payload = {
+              "package_version": et.__version__,
+              "distribution_version": dist.version,
+              "module_path": str(module),
+              "distribution_root": str(root),
+              "python_version": platform.python_version(),
+              "runner": {
+                  key: os.environ.get(key)
+                  for key in (
+                      "RUNNER_OS",
+                      "RUNNER_ARCH",
+                      "RUNNER_NAME",
+                      "RUNNER_ENVIRONMENT",
+                      "ImageOS",
+                      "ImageVersion",
+                  )
+              },
+          }
+          print(json.dumps(payload, indent=2, sort_keys=True))
+          PY
+          "${RUNNER_TEMP}/rc-matrix/bin/python" -m pip freeze             > "${RUNNER_TEMP}/rc-matrix-evidence/pip-freeze.txt"
+      - name: Upload installed-version evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: installed-rc-python-${{ matrix.python-version }}
+          path: ${{ runner.temp }}/rc-matrix-evidence/
+          if-no-files-found: error
+
+  installed-recovery-observation:
+    name: installed recovery + stress + portability
+    needs: installed-version-matrix
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Install exact production-PyPI release candidate
+        shell: bash
+        run: |
+          python -m venv "${RUNNER_TEMP}/rc-observation"
+          "${RUNNER_TEMP}/rc-observation/bin/python" -m pip install -U pip
+          "${RUNNER_TEMP}/rc-observation/bin/python" -m pip install --no-cache-dir             "eyetrajectoriespy==${RC_VERSION}"
+          "${RUNNER_TEMP}/rc-observation/bin/python" -m pip check
+      - name: Run qualification from the installed package
+        shell: bash
+        run: |
+          mkdir -p "${RUNNER_TEMP}/rc-work/evidence"
+          cd "${RUNNER_TEMP}/rc-work"
+          "${RUNNER_TEMP}/rc-observation/bin/python"             "${GITHUB_WORKSPACE}/scripts/run_functional_simulation_validation.py"             --replicates 3             --output evidence/functional-simulation-validation.json
+      - name: Run threshold-free stress evidence from the installed package
+        shell: bash
+        run: |
+          cd "${RUNNER_TEMP}/rc-work"
+          "${RUNNER_TEMP}/rc-observation/bin/python"             "${GITHUB_WORKSPACE}/scripts/run_functional_simulation_stress.py"             --replicates 3             --seed-start 204000             --output evidence/functional-simulation-stress.json
+      - name: Run external-consumer observation harness
+        shell: bash
+        run: |
+          cd "${RUNNER_TEMP}/rc-work"
+          "${RUNNER_TEMP}/rc-observation/bin/python"             "${GITHUB_WORKSPACE}/scripts/run_installed_rc_observation.py"             --expected-version "${RC_VERSION}"             --output-dir evidence/installed-rc-observation
+      - name: Verify retained evidence contracts
+        shell: bash
+        run: |
+          cd "${RUNNER_TEMP}/rc-work"
+          "${RUNNER_TEMP}/rc-observation/bin/python" - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path("evidence")
+          qualification = json.loads(
+              (root / "functional-simulation-validation.json").read_text()
+          )
+          stress = json.loads(
+              (root / "functional-simulation-stress.json").read_text()
+          )
+          installed = json.loads(
+              (
+                  root
+                  / "installed-rc-observation"
+                  / "installed-rc-observation.json"
+              ).read_text()
+          )
+
+          if qualification["truth_available_to_estimator"] is not False:
+              raise RuntimeError("qualification leaked truth to estimators")
+          if len(qualification["scenarios"]) != 4:
+              raise RuntimeError("unexpected qualification scenario count")
+
+          if stress["automatic_pass_fail"] is not False:
+              raise RuntimeError("stress evidence acquired an automatic gate")
+          if stress["failure_action"] != "record":
+              raise RuntimeError("stress failures are not retained explicitly")
+          if len(stress["scenarios"]) != 14:
+              raise RuntimeError("unexpected stress scenario count")
+          expected_records = 14 * int(stress["replicates_per_scenario"])
+          if len(stress["replicates"]) != expected_records:
+              raise RuntimeError("stress replicate denominator is incomplete")
+
+          if installed["expected_version"] != os.environ["RC_VERSION"]:
+              raise RuntimeError("installed observation version mismatch")
+          if installed["source_checkout_imported"] is not False:
+              raise RuntimeError("installed observation imported source checkout")
+          if installed["scientific_thresholds_added"] is not False:
+              raise RuntimeError("installed observation invented new thresholds")
+          if not installed["determinism"][
+              "same_seed_observations_identical"
+          ]:
+              raise RuntimeError("deterministic replay contract failed")
+          if not installed["dense_fpca_recovery_and_portability"][
+              "portable_result"
+          ]["package_version_match"]:
+              raise RuntimeError("portable result version mismatch")
+          if not installed["mixed_effects_recovery"]["converged"]:
+              raise RuntimeError("installed mixed-effects fit did not converge")
+          print(
+              "installed RC evidence contracts passed: "
+              f"{expected_records} stress replicates retained"
+          )
+          PY
+      - name: Capture environment lock and evidence checksums
+        shell: bash
+        run: |
+          cd "${RUNNER_TEMP}/rc-work"
+          "${RUNNER_TEMP}/rc-observation/bin/python" -m pip freeze             > evidence/pip-freeze.txt
+          "${RUNNER_TEMP}/rc-observation/bin/python" -m pip show eyetrajectoriespy             > evidence/pip-show-eyetrajectoriespy.txt
+          find evidence -type f ! -name SHA256SUMS -print0             | sort -z             | xargs -0 sha256sum             > evidence/SHA256SUMS
+      - name: Upload production-installed RC evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: eyetrajectoriespy-${{ env.RC_VERSION }}-installed-observation
+          path: ${{ runner.temp }}/rc-work/evidence/
+          if-no-files-found: error
+          retention-days: 90
