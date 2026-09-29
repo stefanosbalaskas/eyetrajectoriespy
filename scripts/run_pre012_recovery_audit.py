@@ -878,8 +878,35 @@ def main() -> None:
         type=Path,
         default=Path("pre012-audit"),
     )
+    parser.add_argument(
+        "--external-fixture-only",
+        action="store_true",
+        help=(
+            "Generate only the frozen cross-language comparator fixture, "
+            "without rerunning the full audit."
+        ),
+    )
     args = parser.parse_args()
-    payload = run_audit(args.output_dir)
+    if args.external_fixture_only:
+        args.output_dir.mkdir(parents=True, exist_ok=True)
+        truth = _external_fixture(args.output_dir)
+        payload = {
+            "schema_version": 1,
+            "audit": "pre-0.12 external comparator fixture",
+            "package_version": importlib.metadata.version("eyetrajectoriespy"),
+            "environment": _environment(),
+            "external_comparison": {
+                "status": "fixture_prepared",
+                "primary_comparator": "mGSFPCA::spMultFPCA",
+                "truth_metrics": truth["joint_truth_metrics"],
+            },
+        }
+        (args.output_dir / "external_fixture_summary.json").write_text(
+            json.dumps(payload, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+    else:
+        payload = run_audit(args.output_dir)
     print(json.dumps(payload, indent=2, sort_keys=True))
 
 
