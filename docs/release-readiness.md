@@ -156,8 +156,9 @@ production publisher cleanup remains complete for final 0.10.0 qualification.
 
 ## 0.11.0rc1 published state
 
-The current stable release remains `0.10.0`. The latest published prerelease is
-`0.11.0rc1`, available from both GitHub Releases and production PyPI.
+At the time `0.11.0rc1` was published, the stable release remained `0.10.0`.
+The prerelease is still available from both GitHub Releases and production PyPI
+as an immutable historical record.
 
 Pre-RC stabilization is complete:
 
