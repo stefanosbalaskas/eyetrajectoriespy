@@ -1,6 +1,6 @@
 # Performance envelope
 
-Version 0.56 introduced a reproducible **single-package performance envelope**. Version 0.57 requalified it after release hardening, 0.9.0rc1 qualified the prerelease, 0.9.0 qualified the first stable pre-1.0 release, 0.9.1.dev0 qualified the maintenance line, 0.10.0.dev0 requalified the integrated native sparse-FPCA/PACE development line, and 0.10.0rc1 independently qualified the first release candidate. A fresh 0.10.0rc2 envelope is required and is not obtained by relabeling rc1 evidence. It is
+Version 0.56 introduced a reproducible **single-package performance envelope**. Version 0.57 requalified it after release hardening, 0.9.0rc1 qualified the prerelease, 0.9.0 qualified the first stable pre-1.0 release, 0.9.1.dev0 qualified the maintenance line, 0.10.0.dev0 requalified the integrated native sparse-FPCA/PACE development line, and 0.10.0rc1 independently qualified the first release candidate. `0.10.0rc2` received its own fresh qualified envelope and that snapshot is archived immutably. Final `0.10.0` requires another fresh envelope under the exact final version; rc2 evidence is not relabeled. It is
 not a comparative benchmark and does not claim that eyetrajectoriespy is faster
 than another package.
 
