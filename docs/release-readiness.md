@@ -7,14 +7,14 @@ interpret a workflow.
 ## Repository policy
 
 Historical state at the start of 0.55 was an unprotected `main`. The current
-0.10 release-candidate qualification state is different:
+0.10 final-release qualification state is different:
 
 - default branch: `main`;
 - `main` is protected by the release-quality ruleset;
 - required pull-request/status-check protection is active;
 - issue #64 is closed.
 
-This repository-policy gate is therefore satisfied for the 0.10.0rc2 qualification path.
+This repository-policy gate is therefore satisfied for the final 0.10.0 qualification path.
 
 ### Required target policy for `main`
 
@@ -141,14 +141,14 @@ requalification remains required after merge.
 - [x] Dedicated production PyPI Trusted Publisher is configured for GitHub environment `pypi`.
 - [x] `pypi` GitHub environment has the intended required-reviewer protection.
 - [x] `main` is protected and issue #64 is closed.
-- [x] `RELEASE_READINESS.json` is jointly armed for GitHub and production publication of the fully qualified `0.10.0rc2` release candidate.
+- [ ] `RELEASE_READINESS.json` remains deliberately disarmed during exact-version `0.10.0` qualification and will be armed only after the complete PR and exact-main matrices pass.
 
 The first public prerelease `0.9.0rc1` successfully exercised GitHub-first
 publication followed by production PyPI OIDC publication and clean installation.
 Version `0.9.0` repeated the complete qualification under the final version
 rather than relabeling RC evidence. Production workflow authority now points
 only at the dedicated `pypi` environment. Issue #69 is closed and the obsolete
-production publisher cleanup remains complete for 0.10.0rc2 qualification.
+production publisher cleanup remains complete for final 0.10.0 qualification.
 
 ## Release-candidate gate
 
@@ -167,12 +167,9 @@ Do not enter a 0.9-style release-candidate phase until:
 
 ## Post-0.9.0 state
 
-Stable release `0.9.0` and published prerelease `0.10.0rc1` are immutable.
-The active release-candidate line is `0.10.0rc2`, containing the corrected
-native sparse-FPCA/PACE diagonal-difference noise estimator. Pull-request and
-exact-main qualification have completed successfully. The rc2 readiness manifest
-is jointly armed through a reviewed change, while publication remains a separate
-explicit manual production dispatch and cannot be triggered by an ordinary merge.
+Stable release `0.9.0` and published prereleases `0.10.0rc1` and `0.10.0rc2` are immutable. Production workflow #10 successfully published the corrected rc2 candidate through GitHub-first release creation and PyPI OIDC Trusted Publishing, and the fresh production-PyPI installation smoke test passed.
+
+The active target is final `0.10.0`. It promotes the corrected rc2 code without scientific/API expansion. The final package identity, validation manifests, documentation contracts, fresh performance envelope, complete pull-request matrix and exact protected-main matrix must all qualify independently before readiness is re-armed. Ordinary merges remain non-publishing.
 
 ### Production publisher authority
 
