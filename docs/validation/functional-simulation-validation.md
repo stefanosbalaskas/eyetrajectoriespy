@@ -4,10 +4,7 @@ title: Functional simulation validation
 
 # Functional simulation validation
 
-This page records qualification evidence for the **0.11 native functional
-simulation research branch**. The simulator is intended to generate exact,
-inspectable truth for estimator-recovery studies rather than decorative
-synthetic curves.
+This page records qualification evidence for the **0.11 native functional simulation/recovery stabilization line**. Stable 0.10.0 has been reconciled into the branch and the 0.11 feature surface is frozen. The simulator generates exact, inspectable truth for estimator-recovery studies rather than decorative synthetic curves.
 
 ## Validation questions
 
@@ -144,6 +141,8 @@ measurement noise.
 Stress scenarios do **not** acquire automatic pass/fail thresholds merely
 because they are difficult. A poor result remains evidence about a declared
 regime and is retained in benchmark tables.
+
+The declared stress catalog is part of 0.11 stabilization, but future signal-dependent or informative observation/missingness mechanisms are **not** added to the 0.11 feature surface. Those belong to a post-0.11 validation extension after the current recovery laboratory is released.
 
 The public scenario catalog is available through
 `functional_recovery_scenario_catalog_frame()`.

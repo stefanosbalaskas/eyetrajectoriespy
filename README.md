@@ -18,6 +18,8 @@ derived univariate functions, compositional AOI-probability trajectories, repeat
 > **Status:** `0.10.0` is the current stable pre-1.0 release, published to GitHub and PyPI on 29 September 2026 from exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc`. Release workflow #11 completed the build-once, governance, GitHub Release, PyPI Trusted Publishing, and fresh production-PyPI installation checks successfully.
 >
 > **Immutable prerelease history:** `0.10.0rc1` and `0.10.0rc2` remain unchanged. Final `0.10.0` promotes the corrected rc2 scientific code without adding an estimator, numerical method, API contract, or hidden analytical default.
+>
+> **Development:** `0.11.0.dev0` is the active stabilization line for the known-truth functional simulation and recovery laboratory. Stable `0.10.0` has been reconciled into the 0.11 branch. The 0.11 feature surface is frozen: current work is recovery/stress/performance requalification, API/documentation stabilization, and release preparation—not new estimators. Publication readiness remains disarmed.
 
 ## What scientific problem does this solve?
 
@@ -153,7 +155,7 @@ evidence-typed independent/reference validation, an explicit numerical-tolerance
 policy, and a repeated runtime/peak-memory reference envelope. Version 0.57 adds
 portable scientific-result snapshots, explicit environment capture, five
 qualified canonical end-to-end examples, and coordinated GitHub/PyPI release
-machinery. Version 0.9.0 is the first stable pre-1.0 release. The 0.10 line adds the native sparse/irregular FPCA + PACE tranche; rc2 corrects the diagonal-difference measurement-noise estimator, and final 0.10.0 promotes that corrected candidate only after exact-version requalification. Scientific product qualification remains more important than estimator count. See the
+machinery. Version 0.9.0 is the first stable pre-1.0 release. The 0.10 line adds the native sparse/irregular FPCA + PACE tranche; rc2 corrects the diagonal-difference measurement-noise estimator, and final 0.10.0 promotes that corrected candidate after exact-version requalification. The active 0.11 development line adds the known-truth simulation/recovery laboratory and is now feature-frozen for stabilization. Scientific product qualification remains more important than estimator count. See the
 [release-readiness checklist](https://stefanosbalaskas.github.io/eyetrajectoriespy/release-readiness/).
 
 - [Portable scientific results](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/portable-results/)
