@@ -7,13 +7,14 @@ This file records qualification evidence separately from implementation status. 
 `0.10.0` is the current published stable pre-1.0 release. Published `0.9.0`, `0.10.0rc1`, and `0.10.0rc2` remain immutable historical records.
 
 - Package line: `0.11.0rc1`.
-- Release phase: exact release-candidate qualification for the feature-frozen known-truth simulation/recovery laboratory. Publication readiness is deliberately disarmed.
+- Release phase: `0.11.0rc1` exact-version qualification is complete. PR #112, main integration PR #113, governance hardening PR #114, and the expanded exact protected-main matrix all passed. Publication readiness is armed through a separate governance-only change; actual publication still requires an explicit manual production dispatch.
 - Stable-baseline reconciliation: PR #109 merged stable `0.10.0` into the isolated 0.11 line and the combined nine-workflow matrix passed.
 - Development stabilization: PR #110 aligned `0.11.0.dev0`, archived final 0.10 performance evidence, generated a fresh 0.11 development performance envelope, froze the feature surface, and passed the complete nine-workflow matrix.
 - Stress evidence: PR #111 added a separate threshold-free stress runner/workflow. Exact post-merge run `36559953858` on commit `f6bacfe64cd8639d365137f9c251b1c967aa78b5` executed all 14 declared stress regimes with three replicates each and retained failures in the denominator.
 - Estimated-noise stress remains difficult by evidence, not by label: 2/3 seeded diagonal-difference fits failed closed with `noise_variance_invalid`; the one successful seed retained strong subspace/score recovery but large measurement-noise relative error. No clipping or threshold widening was introduced.
 - The immutable `0.11.0.dev0` performance snapshot is archived. Fresh `0.11.0rc1` performance qualification passed from source commit `f37941710eba6e7d50806c60490d00492f98e1ff` in run `36560873074`, and the canonical performance ledger records that exact RC evidence.
 - The 0.11 feature surface remains frozen. Sparse multivariate FPCA, sparse multilevel decomposition, Bayesian sparse FDA, additional generalized families, new nonlinear simulation ecosystems, and signal-dependent missingness are not part of rc1.
+- Exact protected-main commit `4be7d13186dbef7487a03e3d81c05e0eefb751e0` passed all ten workflow groups: tests, docs, examples, optional scikit-fda, optional FDApy sparse, performance, release-readiness, functional-simulation validation, threshold-free functional-simulation stress, and native sparse/PACE validation. Package + Ubuntu/macOS/Windows × Python 3.11–3.13 all passed.
 - Existing tests, coverage thresholds, scientific validation rules, fail-closed sparse/PACE behavior, and publication protections remain unchanged.
 
 See `docs/release-readiness.md` for the release gate and
