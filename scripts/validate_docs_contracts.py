@@ -282,6 +282,33 @@ def main() -> None:
                 f"canonical realistic example is missing: {example_path}"
             )
 
+    workflow_atlas = (
+        ROOT / "docs" / "methods" / "workflow-atlas.md"
+    ).read_text(encoding="utf-8")
+    for unsafe_mermaid in (
+        "-->|Yes: E > 0|",
+        "-->|Yes: explicit N > 0|",
+        "I[Fixed-family max-|t| interval]",
+    ):
+        if unsafe_mermaid in workflow_atlas:
+            raise RuntimeError(
+                "workflow atlas contains Mermaid 11-unsafe syntax: "
+                f"{unsafe_mermaid!r}"
+            )
+    for required_mermaid_id in (
+        "P1[Scalar IAAFT]",
+        "Q1[Declare MIAAFT reference dimension]",
+        "R1[Multivariate IAAFT + cross-spectrum diagnostics]",
+        "P2[Declare Poincare section]",
+        "Q2[Interpolated crossings]",
+        "R2[Declare reference + neighborhood]",
+    ):
+        if required_mermaid_id not in workflow_atlas:
+            raise RuntimeError(
+                "workflow atlas nonlinear Mermaid IDs are stale: "
+                f"missing {required_mermaid_id!r}"
+            )
+
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     for required in (
         "MATHEMATICAL_CONTRACTS.md",
