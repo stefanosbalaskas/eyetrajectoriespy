@@ -36,9 +36,7 @@ arm release readiness in a separate reviewed change
 manual target=production dispatch only
 ~~~
 
-Publication remains disarmed during qualification. The rc1 artifacts, tag and
-PyPI files must not be changed or replaced. If rc2 qualification fails, fix
-the candidate and requalify rather than widening scientific thresholds.
+The rc1 artifacts, tag and PyPI files remain immutable and must not be changed or replaced. The rc2 pull-request and exact-main qualification matrices have passed. Release readiness is now jointly armed for GitHub and production publication through a reviewed change. The remaining publication action is the explicit manual `release.yml` dispatch with `target=production`; ordinary pushes and merges remain non-publishing.
 
 ## Historical 0.10.0rc1 qualification and publication
 
