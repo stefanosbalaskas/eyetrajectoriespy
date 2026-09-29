@@ -1,8 +1,48 @@
 # Coordinated GitHub Release and PyPI publication
 
-## 0.10.0rc1 qualification and publication
+## 0.10.0rc2 qualification
 
-The next publication candidate is `0.10.0rc1`. It contains the native
+Published `0.10.0rc1` remains immutable. Recovery validation subsequently
+identified a numerical defect in diagonal-difference measurement-noise
+estimation: the latent diagonal was taken from the generic local-linear
+covariance surface rather than the PACE-specific diagonal smoother.
+
+`0.10.0rc2` contains the correction only. It introduces no new estimator
+surface. The qualification sequence is:
+
+~~~text
+merge the source-faithful diagonal correction to protected main
+        |
+        v
+align all version declarations to 0.10.0rc2
+archive the immutable 0.10.0rc1 performance snapshot
+        |
+        v
+generate a fresh 0.10.0rc2 performance envelope
+        |
+        v
+pass the complete pull-request matrix
+        |
+        v
+merge through protected main
+        |
+        v
+pass the complete exact-main matrix
+        |
+        v
+arm release readiness in a separate reviewed change
+        |
+        v
+manual target=production dispatch only
+~~~
+
+Publication remains disarmed during qualification. The rc1 artifacts, tag and
+PyPI files must not be changed or replaced. If rc2 qualification fails, fix
+the candidate and requalify rather than widening scientific thresholds.
+
+## Historical 0.10.0rc1 qualification and publication
+
+The first 0.10 publication candidate was `0.10.0rc1`. It contains the native
 sparse/irregular FPCA + PACE tranche already integrated into protected
 `main`. Release-candidate qualification must not introduce a new scientific
 estimator or hidden analytical default.
@@ -37,7 +77,7 @@ manual target=production dispatch only
 The qualification branch and its pull request do not publish anything. A
 production dispatch remains a separate deliberate action.
 
-For the current 0.10.0rc1 candidate, the fresh performance envelope, complete
+For the historical 0.10.0rc1 candidate, the fresh performance envelope, complete
 pull-request matrix, protected-main merge, and complete exact-main matrix have
 all passed. Release readiness is now jointly armed for GitHub and production
 publication through a reviewed change. The remaining publication action is the

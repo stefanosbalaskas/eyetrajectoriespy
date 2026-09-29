@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "current_development_version": "0.10.0rc1",
+  "current_development_version": "0.10.0rc2",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": true,
+  "production_release_ready": false,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -17,12 +17,12 @@
     "exact_main_ci_required": true
   },
   "notes": [
-    "0.9.0 remains the current stable pre-1.0 GitHub/PyPI release until 0.10.0rc1 is deliberately published.",
-    "0.10.0rc1 is the qualified release candidate for the native sparse-FPCA/PACE tranche.",
-    "The 0.10.0rc1 qualification PR and exact protected-main commit 77cd15107b4a3d2f91bee07dcb4e498023b1ed6a completed the required tests, docs, examples, optional FDA backends, sparse-native validation, performance qualification, and release-readiness checks successfully.",
-    "The dedicated production PyPI Trusted Publisher for GitHub environment pypi is configured and the pypi environment retains its required-reviewer gate.",
-    "Issue #69 is closed; the obsolete testpypi production publisher cleanup was completed before this release-candidate qualification.",
-    "Release readiness is deliberately armed for 0.10.0rc1. Publication still requires an explicit manual release.yml dispatch with target=production from exact protected main."
+    "0.9.0 remains the current stable pre-1.0 GitHub/PyPI release; published 0.10.0rc1 remains an immutable prerelease record.",
+    "0.10.0rc2 is the qualification target after correcting the PACE diagonal-difference measurement-noise estimator exposed by the 0.11 recovery laboratory.",
+    "The correction replaces the generic covariance-surface diagonal in noise estimation with the source-faithful 45-degree rotated local linear/quadratic diagonal smoother while retaining explicit noise_support and fail-closed non-positive estimates.",
+    "A fresh 0.10.0rc2 performance envelope and complete pull-request plus exact-main qualification are required before release readiness can be armed.",
+    "The dedicated production PyPI Trusted Publisher for GitHub environment pypi remains configured with its required-reviewer gate.",
+    "Publication is deliberately disarmed during rc2 qualification."
   ],
-  "github_release_ready": true
+  "github_release_ready": false
 }
