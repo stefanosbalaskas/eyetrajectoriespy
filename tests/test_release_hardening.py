@@ -141,6 +141,50 @@ def test_release_governance_blocks_unprotected_main(monkeypatch):
         )
 
 
+def test_release_governance_requires_exact_main_simulation_evidence():
+    module = _load_script("verify_release_governance.py")
+    assert "recovery" in module.REQUIRED_CHECKS
+    assert "stress-evidence" in module.REQUIRED_CHECKS
+    assert "sparse-performance" in module.REQUIRED_CHECKS
+    assert "stress-recovery" in module.REQUIRED_CHECKS
+    assert "noise-variance-recovery" in module.REQUIRED_CHECKS
+    assert (
+        "functional_simulation_qualification_qualified"
+        in module._GITHUB_RELEASE_DECLARATIONS
+    )
+    assert (
+        "functional_simulation_stress_recorded"
+        in module._GITHUB_RELEASE_DECLARATIONS
+    )
+    assert (
+        "sparse_native_validation_qualified"
+        in module._GITHUB_RELEASE_DECLARATIONS
+    )
+
+    validation_workflow = (
+        ROOT
+        / ".github"
+        / "workflows"
+        / "functional-simulation-validation.yml"
+    ).read_text(encoding="utf-8")
+    stress_workflow = (
+        ROOT
+        / ".github"
+        / "workflows"
+        / "functional-simulation-stress.yml"
+    ).read_text(encoding="utf-8")
+    sparse_workflow = (
+        ROOT
+        / ".github"
+        / "workflows"
+        / "sparse-native-validation.yml"
+    ).read_text(encoding="utf-8")
+    assert "- main" in validation_workflow
+    assert "- main" in stress_workflow
+    assert "- main" in sparse_workflow
+    assert "- release/0.11-native-simulation" in sparse_workflow
+
+
 def test_release_workflow_builds_once_and_reuses_exact_artifact():
     workflow = (
         ROOT / ".github" / "workflows" / "release.yml"

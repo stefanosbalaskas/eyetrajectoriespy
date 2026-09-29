@@ -4,6 +4,7 @@ on:
   pull_request:
   push:
     branches:
+      - main
       - release/0.11-native-simulation
   workflow_dispatch:
 
