@@ -42,6 +42,30 @@ def _phi2(time):
     return np.sqrt(2.0) * np.sin(2.0 * np.pi * time)
 
 
+def _constant_mode(time):
+    time = np.asarray(time, dtype=float)
+    span = float(time[-1] - time[0])
+    if span <= 0:
+        raise ValueError("time support must be strictly increasing")
+    return np.ones_like(time) / np.sqrt(span)
+
+
+def _linear_mode(time):
+    time = np.asarray(time, dtype=float)
+    midpoint = 0.5 * float(time[0] + time[-1])
+    centered = time - midpoint
+    integral = float(
+        np.sum(
+            0.5
+            * (centered[:-1] ** 2 + centered[1:] ** 2)
+            * np.diff(time)
+        )
+    )
+    if integral <= 0:
+        raise ValueError("linear mode has non-positive trapezoid norm")
+    return centered / np.sqrt(integral)
+
+
 def _frame_records(frame: pd.DataFrame) -> list[dict[str, Any]]:
     clean = frame.replace({np.nan: None})
     records = clean.to_dict(orient="records")
@@ -343,21 +367,25 @@ def _registration_recovery() -> dict[str, Any]:
 
 
 def _mixed_effects_recovery() -> dict[str, Any]:
+    # Match the declared two-function degree-1 random-effect basis with
+    # full-rank participant truth. A rank-one truth process would place the
+    # unstructured two-dimensional covariance on its boundary and is not a
+    # suitable convergence qualification workload.
     scenario = et.FunctionalSimulationScenario(
         name="installed-rc-mixed-effects",
         truth_grid=np.linspace(0.0, 1.0, 13),
-        eigenvalues=(1e-6,),
-        n_participants=18,
+        eigenvalues=(1e-5, 1e-5),
+        n_participants=30,
         trials_per_participant=3,
-        participant_eigenvalues=(0.15,),
-        measurement_noise_sd=0.03,
+        participant_eigenvalues=(0.12, 0.06),
+        measurement_noise_sd=0.04,
         replicates=1,
         seed_start=91400,
     )
     simulation = et.simulate_functional_scenario(
         scenario,
         mean=_mean,
-        eigenfunctions=(_phi1,),
+        eigenfunctions=(_constant_mode, _linear_mode),
     )
     metadata = simulation.observations.metadata.reset_index(drop=True)
     trial_centered = (
