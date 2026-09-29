@@ -285,6 +285,25 @@
       "ci_test": "test_fdapy_is_cross_implementation_sensitivity_not_exact_equivalence",
       "status": "qualified",
       "limitations": "Not equivalence. FDApy uses radial 2-D LP covariance smoothing, its own noise rule, interpolation before irregular PACE, and a covariance reconstructed from retained eigencomponents; native eyetrajectoriespy uses a product kernel, explicit noise contract, native observation times, and the full fitted covariance surface."
+    },
+    {
+      "id": "sparse-noise-rotated-diagonal-analytical",
+      "method": "Native sparse FPCA/PACE measurement-noise diagonal",
+      "scientific_quantity": [
+        "latent covariance diagonal used for diagonal-difference measurement-noise estimation",
+        "45-degree rotated local polynomial intercept on the covariance diagonal"
+      ],
+      "reference_source": "Yao, Müller & Wang (2005) PACE diagonal construction plus an exactly representable rotated local-polynomial test surface",
+      "reference_type": "analytical_truth",
+      "dataset_problem": "Off-diagonal covariance products generated exactly from a function linear along the rotated diagonal coordinate and quadratic perpendicular to it.",
+      "expected_result": "The rotated covariance-diagonal smoother recovers the exact diagonal intercept function to numerical precision.",
+      "comparison_metric": "pointwise fitted diagonal versus exact analytical diagonal",
+      "tolerance_class": "linear_algebra_invariant",
+      "tolerance": "rtol=1e-11; atol=1e-11 in the exact local-polynomial test",
+      "platforms": "core CI matrix",
+      "ci_test": "test_rotated_covariance_diagonal_recovers_exact_local_model",
+      "status": "qualified",
+      "limitations": "Validates the source-faithful diagonal smoother algebra; it does not imply universal finite-sample accuracy of the difference-based measurement-noise variance estimator."
     }
   ]
 }
