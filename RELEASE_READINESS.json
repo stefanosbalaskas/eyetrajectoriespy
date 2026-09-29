@@ -2,7 +2,7 @@
   "schema_version": 1,
   "current_development_version": "0.11.0",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": true,
+  "production_release_ready": false,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -32,7 +32,11 @@
     "Post-0.11 methodology remains deferred until after final publication and a package-wide recovery audit.",
     "Final 0.11.0 qualification PR #120 merged as exact protected-main commit f0b328dabd9d5050fa9988e3c157d034efb0ee7f. The complete exact-main final-version matrix passed: package plus Ubuntu/macOS/Windows × Python 3.11–3.13, docs, examples, optional scikit-fda, optional FDApy sparse, release-readiness, performance, functional-simulation recovery, threshold-free functional-simulation stress, and native sparse/PACE validation.",
     "Exact-main final-version performance qualification run 36625124460 passed under package identity 0.11.0. The final version therefore has fresh performance evidence rather than relabelled 0.11.0rc1 measurements.",
-    "GitHub and production PyPI publication readiness are jointly armed only after the completed final-version qualification. Publication remains an explicit manual release.yml dispatch with target=production from the exact protected-main arming commit; ordinary pushes and merges remain non-publishing."
+    "GitHub and production PyPI publication readiness are jointly armed only after the completed final-version qualification. Publication remains an explicit manual release.yml dispatch with target=production from the exact protected-main arming commit; ordinary pushes and merges remain non-publishing.",
+    "Final 0.11.0 production release workflow #13 (run 36628220308) completed successfully from exact protected-main commit 2616675ad2dfc095bf17a442c1d350ba88fd030a.",
+    "Workflow #13 built the wheel and sdist once, passed production governance and unpublished-version preflight, created annotated tag v0.11.0 and the GitHub Release, published the exact release distributions to production PyPI through OIDC Trusted Publishing with digital attestations, and passed a fresh eyetrajectoriespy==0.11.0 production-PyPI installation smoke test.",
+    "Published GitHub Release assets are eyetrajectoriespy-0.11.0-py3-none-any.whl (sha256:7cba258531ae5f5a41e0a95dbfc1d0604c29456dd121c3a422adc9f576f2e481), eyetrajectoriespy-0.11.0.tar.gz (sha256:99b5285226a675f14a4f42369e6b4a696615b273cbd347c1716387f14250a4bc), and SHA256SUMS.",
+    "Post-publication readiness is jointly disarmed to prevent accidental republication of immutable 0.11.0. Ordinary pushes and merges remain non-publishing; a future release must begin a new reviewed version/readiness cycle."
   ],
-  "github_release_ready": true
+  "github_release_ready": false
 }
