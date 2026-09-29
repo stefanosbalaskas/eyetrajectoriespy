@@ -720,6 +720,8 @@ def _external_fixture(output_dir: Path) -> dict[str, object]:
             simulation.truth.eigenfunctions, dtype=float
         ).tolist(),
         "mean": np.asarray(simulation.truth.mean, dtype=float).tolist(),
+        "scores": np.asarray(simulation.truth.scores, dtype=float).tolist(),
+        "curve_ids": list(simulation.observations.curve_ids),
         "joint_truth_metrics": truth_metrics,
         "fixture_contract": {
             "columns": ["ID", "time", "value"],
