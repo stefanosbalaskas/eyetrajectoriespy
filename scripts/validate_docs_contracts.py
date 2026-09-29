@@ -242,7 +242,7 @@ def main() -> None:
         ("tolerance policy", tolerance_policy),
         ("performance envelope", performance_ledger),
     ):
-        if payload.get("package_version") != "0.10.0":
+        if payload.get("package_version") != "0.11.0rc1":
             raise RuntimeError(f"{name} package version is stale")
     evidence_types = set(reference_ledger.get("evidence_types", {}))
     if evidence_types != {
@@ -262,7 +262,7 @@ def main() -> None:
     manifest = json.loads(
         (ROOT / "CANONICAL_WORKFLOWS.json").read_text(encoding="utf-8")
     )
-    if manifest.get("package_version") != "0.10.0":
+    if manifest.get("package_version") != "0.11.0rc1":
         raise RuntimeError("canonical workflow manifest version is stale")
     workflows = manifest.get("workflows", [])
     if len(workflows) != 5:
@@ -289,6 +289,7 @@ def main() -> None:
         "WORKFLOW_ATLAS.md",
         "Visual gallery",
         "0.10.0",
+        "0.11.0rc1",
         "Which workflow do I need?",
         "Where is the full advanced API?",
         "Reference validation & performance envelope",
@@ -301,7 +302,7 @@ def main() -> None:
     release_readiness = json.loads(
         (ROOT / "RELEASE_READINESS.json").read_text(encoding="utf-8")
     )
-    if release_readiness.get("current_development_version") != "0.10.0":
+    if release_readiness.get("current_development_version") != "0.11.0rc1":
         raise RuntimeError("release-readiness development version is stale")
     if release_readiness.get("first_public_release_target") != "0.9.0":
         raise RuntimeError("first stable public release target must remain explicit")

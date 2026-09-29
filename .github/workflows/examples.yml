@@ -24,6 +24,7 @@ jobs:
       - name: Run synthetic examples
         run: |
           python examples/functional_gaze_workflow.py
+          python examples/functional_simulation.py
           python examples/multilevel_fpca.py
           python examples/compositional_aoi_fpca.py
           python examples/registration_phase_amplitude.py

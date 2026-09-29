@@ -52,6 +52,9 @@ from eyetrajectoriespy import (
     plot_functional_mixed_effects_residual_variogram,
     plot_functional_random_effects,
     plot_functional_mean_band,
+    plot_functional_simulation_curve,
+    plot_functional_simulation_phase_warps,
+    plot_functional_simulation_score_variances,
     plot_joint_recurrence,
     plot_kantz_sensitivity,
     plot_local_divergence,
@@ -81,6 +84,7 @@ from eyetrajectoriespy import (
     trajectory_distance_sensitivity,
     transfer_entropy_circular_shift_test,
     plot_transfer_entropy_circular_shift_test,
+    simulate_functional_process,
     simulate_planar_trajectories,
     wild_bootstrap_fpca_projection,
     windowed_rqa,
@@ -178,6 +182,50 @@ def main() -> None:
     _save(ax, "sparse-fpca-covariance.svg")
     ax = plot_sparse_fpca_score_diagnostics(sparse_fit)
     _save(ax, "sparse-fpca-score-conditioning.svg")
+
+    def simulation_mean(time):
+        time = np.asarray(time, dtype=float)
+        return 0.25 + 0.30 * time
+
+    def simulation_phi1(time):
+        time = np.asarray(time, dtype=float)
+        return np.sqrt(2.0) * np.sin(np.pi * time)
+
+    def simulation_phi2(time):
+        time = np.asarray(time, dtype=float)
+        return np.sqrt(2.0) * np.sin(2.0 * np.pi * time)
+
+    simulation = simulate_functional_process(
+        mean=simulation_mean,
+        eigenfunctions=(simulation_phi1, simulation_phi2),
+        eigenvalues=(1.0, 0.35),
+        truth_grid=np.linspace(0.0, 1.0, 81),
+        n_participants=18,
+        trials_per_participant=2,
+        observation_design="irregular",
+        samples_per_curve=(7, 11),
+        irregular_time_design="center_clustered",
+        participant_eigenvalues=(0.20, 0.05),
+        trial_eigenvalues=(0.10, 0.02),
+        measurement_noise_sd=0.05,
+        missingness={"kind": "mcar", "probability": 0.08},
+        phase_variation={"kind": "power", "sd": 0.12},
+        random_state=2117,
+    )
+    ax = plot_functional_simulation_curve(
+        simulation,
+        curve=0,
+        dimension="value",
+        show_pre_missing=True,
+    )
+    _save(ax, "functional-simulation-truth-audit.svg")
+    ax = plot_functional_simulation_phase_warps(
+        simulation,
+        max_curves=18,
+    )
+    _save(ax, "functional-simulation-phase-warps.svg")
+    ax = plot_functional_simulation_score_variances(simulation)
+    _save(ax, "functional-simulation-score-variances.svg")
 
     geometry_time = np.linspace(0.0, 2.5, 241)
     geometry_values = np.column_stack(
@@ -807,6 +855,9 @@ def main() -> None:
         "sparse-fpca-component.svg",
         "sparse-fpca-covariance.svg",
         "sparse-fpca-score-conditioning.svg",
+        "functional-simulation-score-variances.svg",
+        "functional-simulation-phase-warps.svg",
+        "functional-simulation-truth-audit.svg",
         "trajectory-curvature.svg",
         "registration-warping.svg",
         "functional-mean-band.svg",

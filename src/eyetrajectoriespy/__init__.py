@@ -278,6 +278,9 @@ from .phase import (
 )
 from .plotting import (
     plot_dynamic_time_warping_alignment,
+    plot_functional_simulation_curve,
+    plot_functional_simulation_phase_warps,
+    plot_functional_simulation_score_variances,
     plot_function_on_scalar_coefficients,
     plot_functional_mixed_effects_bootstrap_comparison,
     plot_functional_mixed_effects_coefficient,
@@ -368,6 +371,8 @@ from .reporting import (
     fpca_stability_reporting_text,
     fpca_subspace_stability_reporting_text,
     functional_mean_band_reporting_text,
+    functional_simulation_reporting_text,
+    functional_simulation_truth_frame,
     multilevel_fpca_reporting_text,
     sparse_fpca_reporting_text,
     registration_sensitivity_reporting_text,
@@ -387,7 +392,43 @@ from .selection import (
     select_fpca_components_cv,
     summarise_fpca_cross_validation,
 )
-from .simulate import simulate_aoi_probability_trajectories, simulate_planar_trajectories
+from .recovery import (
+    FunctionalRecoveryAssessment,
+    FunctionalRecoveryMetric,
+    FunctionalRecoveryValue,
+    evaluate_fpca_recovery,
+    evaluate_functional_mixed_effects_recovery,
+    evaluate_hierarchy_truth_recovery,
+    evaluate_registration_recovery,
+    evaluate_sparse_fpca_recovery,
+    functional_recovery_assessment_frame,
+    functional_recovery_metric_catalog,
+    functional_recovery_metric_catalog_frame,
+    functional_recovery_reporting_text,
+    plot_functional_recovery_summary,
+)
+from .recovery_scenarios import (
+    functional_recovery_qualification_scenarios,
+    functional_recovery_scenario_catalog_frame,
+    functional_recovery_stress_scenarios,
+)
+from .simulate import (
+    FunctionalRecoveryRecord,
+    FunctionalRecoveryResult,
+    FunctionalSimulationResult,
+    FunctionalSimulationScenario,
+    FunctionalSimulationTruth,
+    expand_functional_simulation_scenarios,
+    functional_recovery_failure_frame,
+    functional_recovery_frame,
+    functional_recovery_summary_frame,
+    functional_simulation_scenario_frame,
+    run_functional_recovery_scenarios,
+    simulate_aoi_probability_trajectories,
+    simulate_functional_process,
+    simulate_functional_scenario,
+    simulate_planar_trajectories,
+)
 from .sparse import (
     fit_sparse_fpca_fdapy,
     sparse_dimension_summary,
@@ -500,7 +541,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.10.0"
+__version__ = "0.11.0rc1"
 
 __all__ = [
     "PortableScientificResultSnapshot",
@@ -792,6 +833,40 @@ __all__ = [
     "summarise_fpca_stability",
     "reconstruction_error_by_curve",
     "fpca_reconstruction_curve",
+    "FunctionalSimulationResult",
+    "FunctionalSimulationTruth",
+    "FunctionalSimulationScenario",
+    "FunctionalRecoveryRecord",
+    "FunctionalRecoveryResult",
+    "FunctionalRecoveryMetric",
+    "FunctionalRecoveryValue",
+    "FunctionalRecoveryAssessment",
+    "simulate_functional_scenario",
+    "expand_functional_simulation_scenarios",
+    "run_functional_recovery_scenarios",
+    "functional_simulation_scenario_frame",
+    "functional_recovery_frame",
+    "functional_recovery_failure_frame",
+    "functional_recovery_summary_frame",
+    "functional_recovery_metric_catalog",
+    "functional_recovery_metric_catalog_frame",
+    "functional_recovery_reporting_text",
+    "plot_functional_recovery_summary",
+    "functional_recovery_assessment_frame",
+    "evaluate_fpca_recovery",
+    "evaluate_functional_mixed_effects_recovery",
+    "evaluate_sparse_fpca_recovery",
+    "evaluate_hierarchy_truth_recovery",
+    "evaluate_registration_recovery",
+    "functional_recovery_qualification_scenarios",
+    "functional_recovery_stress_scenarios",
+    "functional_recovery_scenario_catalog_frame",
+    "plot_functional_simulation_curve",
+    "plot_functional_simulation_phase_warps",
+    "plot_functional_simulation_score_variances",
+    "functional_simulation_reporting_text",
+    "functional_simulation_truth_frame",
+    "simulate_functional_process",
     "simulate_planar_trajectories",
     "simulate_aoi_probability_trajectories",
     "summarise_trajectory_set",

@@ -157,33 +157,127 @@ internally.
 See the [native sparse/PACE development contract](../development/native-sparse-fpca.md)
 and the [external reference implementation policy](../validation/external-reference-policy.md).
 
-### 0.11.0 candidate — native functional simulation
+### 0.11.0 — known-truth recovery laboratory
 
-After native sparse FPCA/PACE is stable, the preferred next infrastructure
-tranche is a richer native functional simulation framework with explicit truth
-for eigenfunctions, eigenvalues, scores, hierarchy, measurement noise,
-irregular sampling, sparsity, missingness, channel correlation, and phase
-variation.
+The 0.11 research line is reconciled onto published stable `0.10.0` and is now cut as `0.11.0rc1` for exact-version qualification. Its feature surface is **frozen**. The release is a validation-infrastructure tranche, not another estimator catalogue.
 
-See the [simulation framework roadmap](../development/simulation-framework.md).
+Implemented infrastructure includes explicit latent truth, declared
+finite-sample scenarios, a strict
 
-## Research/development candidates
+~~~text
+(observations, scenario) -> fit
+(fit, truth) -> recovery evidence
+~~~
 
-Future tranches may evaluate:
+boundary, semantic recovery metrics, deterministic qualification scenarios,
+named descriptive stress regimes, explicit failure retention, Monte Carlo
+aggregation, diagnostic/reporting helpers, and provenance-rich truth objects.
 
-- generalized functional-response extensions only when they answer a distinct validated scientific need beyond the closed 0.51–0.54 Bernoulli/grouped-binomial/Poisson contract;
-- richer sparse/irregular functional inference and external validation workflows;
-- richer multilevel functional mixed-effects backends only where they answer a distinct scientific need rather than adding another covariance knob;
-- explicit system-identification models for gaze dynamics;
-- model-based continuation / Floquet analysis only after a validated dynamical-system contract exists.
+The first-class recovery targets remain methods with clear known-truth
+estimands: FPCA/MFPCA, native sparse FPCA/PACE, participant/trial functional
+mixed-effects variance, and registration/phase recovery. Scientific recovery,
+descriptive stress evidence, and runtime/RSS performance remain separate
+ledgers. A difficult stress regime does not silently become a failed
+qualification case, and performance never changes an estimator's scientific
+recovery status.
 
-Classical `floquet_multipliers(gaze)`, monodromy matrices from raw observations, and `detect_bifurcation(gaze)` remain intentionally **not** implemented in 0.31.
+The pre-RC stabilization requirements are complete: stable 0.10 reconciliation, fresh recovery qualification, threshold-free stress evidence, fresh development performance evidence, API/documentation stabilization, and the complete cross-platform qualification matrix all passed before the rc1 cut.
 
-A candidate enters the public API only when it can preserve the package rules: explicit estimand, deterministic behavior or seed, provenance, failure diagnostics, synthetic truth tests, documentation, and runnable examples.
+During `0.11.0rc1` qualification the same scientific/package surfaces are rerun under the exact RC identity. A fresh rc1 performance envelope is required; development evidence is archived rather than relabeled. Only after the full RC matrix and exact release-state qualification pass may a separate reviewed change arm GitHub/PyPI publication. Final `0.11.0` remains a separate later exact-version qualification.
+
+No sparse multivariate FPCA, sparse multilevel decomposition, Bayesian
+functional model, new generalized response family, or nonlinear simulation
+ecosystem is part of 0.11.
+
+See the [simulation framework roadmap](../development/simulation-framework.md)
+and [functional simulation validation](../validation/functional-simulation-validation.md).
+
+## Post-0.11 research sequence
+
+The next methodological work is deliberately ordered rather than opened in
+parallel.
+
+**1. Package-wide recovery audit and external validation.** Use the 0.11
+laboratory to find weak existing estimators before adding methodology. Where
+feasible, add external eye-tracking benchmarks for compositional ROI
+trajectories and verify non-negativity, unit-sum reconstruction, component
+interpretation, and agreement/disagreement with published constrained
+multivariate analyses. This is validation work, not a reason to duplicate an
+external estimator.
+
+**2. 0.12 candidate — native sparse multivariate FPCA for planar gaze.** The
+scientific object is the joint process
+
+$$
+\mathbf G_i(t)=
+\begin{bmatrix}
+X_i(t)\\
+Y_i(t)
+\end{bmatrix},
+$$
+
+with block covariance
+
+$$
+\mathbf C(s,t)=
+\begin{bmatrix}
+C_{xx}(s,t) & C_{xy}(s,t)\\
+C_{yx}(s,t) & C_{yy}(s,t)
+\end{bmatrix}.
+$$
+
+A future `fit_sparse_mfpca(...)` must estimate genuine cross-channel
+covariance, state cross-channel measurement-error assumptions, derive the joint
+observation covariance and conditional score system, and validate recovery
+under sparse/irregular designs. Conditional expectation alone is not sufficient
+reason to label the method “multivariate PACE.”
+
+**3. Later candidate — sparse participant/trial functional decomposition.**
+Only after sparse multivariate recovery is understood should the package
+consider sparse irregular decomposition of
+
+$$
+G_{ij}(t)=\mu(t)+B_i(t)+U_{ij}(t)+\epsilon_{ij}(t).
+$$
+
+Its estimand is participant/trial dimension reduction and variance
+decomposition under sparse observation, distinct from the existing
+likelihood-based functional mixed-effects regression surface.
+
+**4. Validation extension — signal-dependent observation and missingness.**
+Post-0.11 simulation work may distinguish MCAR/block loss from explicit
+signal-dependent availability, for example where observation probability
+depends on latent position, velocity, phase, or another generated quantity.
+This should enter as a declared simulation/provenance mechanism and stress
+scenario before it is considered an estimator-correction problem.
+
+**Deferred.** Bayesian sparse MFPCA, additional generalized families, broad
+nonlinear simulation ecosystems, and further method-catalogue expansion remain
+research possibilities rather than scheduled releases. They require evidence
+of an unmet gaze-analysis problem and recovery targets that justify the added
+inferential/computational subsystem.
+
+The intended progression is therefore:
+
+~~~text
+dense functional gaze
+        ->
+sparse univariate gaze
+        ->
+sparse joint planar gaze
+        ->
+sparse hierarchical gaze
+~~~
+
+with the 0.11 recovery laboratory providing the validation infrastructure under
+every later tranche.
+
 
 ## Development status
 
 The current stable pre-1.0 line is **0.10.0**. It was published on GitHub and PyPI on 29 September 2026. Published **0.9.0**, **0.10.0rc1**, and **0.10.0rc2** remain immutable historical release records. Final 0.10.0 promotes the corrected rc2 native sparse/irregular FPCA + PACE tranche without adding estimator surface or changing analytical defaults.
+
+The current release-candidate line is **0.11.0rc1**. It is the feature-frozen exact-version qualification candidate for the known-truth simulation/recovery laboratory reconciled onto stable 0.10.0. Publication readiness remains disarmed until the RC matrix passes and a separate reviewed arming change is merged.
 
 The final version was independently qualified under the exact `0.10.0` package identity. Its fresh performance envelope, complete pull-request matrix, post-arming exact protected-main matrix, GitHub Release publication, PyPI Trusted Publishing, and fresh production-PyPI installation all passed. Post-release publication readiness is disarmed to prevent accidental republication of the existing version.
 

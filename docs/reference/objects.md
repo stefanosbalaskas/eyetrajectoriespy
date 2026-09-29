@@ -3,6 +3,60 @@
 The result objects below preserve the numerical outputs and provenance of the package contracts. Their corresponding equations are collected in the [mathematical reference](../methods/mathematical-reference.md), and representative plotting outputs are shown in the [visual gallery](../methods/visual-gallery.md).
 
 
+## `FunctionalSimulationScenario`
+
+Immutable declaration of one finite-sample simulation design. It retains the
+truth grid, component variances, participant/trial counts, dense or irregular
+observation design, sparse sample-count contract, hierarchy variances,
+measurement-noise specification, missingness, phase mechanism, score
+distribution, replicate count, deterministic seed start, units/coordinates,
+and analyst labels.
+
+The scenario does not contain fitted results and does not choose estimator
+settings. Its replicate seeds are deterministic and auditable.
+
+## Functional recovery objects
+
+`FunctionalRecoveryMetric` gives each known-truth quantity an explicit name,
+estimand, optimization direction, unit, scope, and description. Metrics are
+therefore not anonymous floats.
+
+`FunctionalRecoveryValue` binds one finite scalar value to a metric and,
+where relevant, a component or source label. `FunctionalRecoveryAssessment`
+is the structured result of one post-fit known-truth evaluation and retains
+evaluator provenance.
+
+`FunctionalRecoveryRecord` stores one scenario replicate. Successful records
+retain flat compatibility metrics plus any structured values; failed stress
+replicates retain an explicit status (`simulation_failed`, `fit_failed`, or
+`recovery_failed`) and the error rather than disappearing from the
+denominator. `FunctionalRecoveryResult` stores the records plus the semantic
+metric definitions used by that run.
+
+`run_functional_recovery_scenarios()` remains fail-fast by default for
+qualification. Descriptive stress studies may explicitly request
+`failure_action="record"`. The estimator receives observations plus the
+declared scenario only. Exact latent truth is supplied afterward to the
+recovery scorer.
+
+Monte Carlo summaries retain mean, median, SD, IQR, selected quantiles, MCSE
+of the mean, failure proportion, and the binomial failure-rate MCSE. These
+summaries do not define universal pass/fail thresholds.
+
+FPCA/MFPCA recovery uses quadrature-weighted matching, sign-invariant component
+similarity, principal subspace geometry, score recovery, mean/covariance ISE,
+and reconstruction ISE. Sparse PACE additionally records score conditioning,
+failure rate, PSD-repair evidence, and measurement-noise recovery. Sparse
+covariance recovery is evaluated from the **full fitted covariance surface**,
+not a rank-K reconstruction of returned components.
+
+Mixed-effects recovery compares coefficient and participant/trial variance
+functions in the time domain. Spline-basis covariance entries are not compared
+directly with simulator KL eigenvalues, and curve-level KL variation is not
+silently reinterpreted as scalar iid residual variance. Registration recovery
+targets the inverse simulator phase warp because generated observations obey
+`observed(t)=latent(w(t))`.
+
 ## `MathematicalContract`
 
 Immutable metadata linking one scientific contract to a stable key, title, registered public functions, one or more LaTeX equation bodies, an explicit mathematical-reference anchor, and a short scope boundary.

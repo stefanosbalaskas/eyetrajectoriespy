@@ -4,21 +4,20 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-`0.10.0` is the current stable pre-1.0 release. Published `0.9.0`, `0.10.0rc1`, and `0.10.0rc2` remain immutable historical records. Final `0.10.0` promotes the corrected rc2 scientific code without adding an estimator or changing analytical defaults, and exact-version qualification was repeated rather than relabeling rc2 evidence.
+`0.10.0` is the current published stable pre-1.0 release. Published `0.9.0`, `0.10.0rc1`, and `0.10.0rc2` remain immutable historical records.
 
-- Package line: `0.10.0`.
-- Release phase: **published and verified**. PR #106 exact head `3c24ba411700ebc1199057537056c411944071cd` passed the complete eight-workflow qualification matrix; protected-main commit `b9172a578a07e433cce6cb9ec53825ccbd5d2d04` passed the first final-version exact-main matrix; PR #107 then armed publication, and exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc` passed the complete post-arming main matrix.
-- Public-artifact evidence: production release workflow #11 (run `36550274400`) published final `0.10.0` from exact main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc`. The GitHub Release, checksum-bearing wheel/sdist, PyPI Trusted Publishing step, digital attestations, and fresh `eyetrajectoriespy==0.10.0` production-PyPI installation smoke test all passed. Release workflow #10 remains the immutable rc2 publication record.
-- Canonical routes: FPCA/exploration, experimental functional regression, repeated-trial functional mixed effects, generalized binary/count responses, and nonlinear/recurrence analysis.
-- Generalized observation-family expansion is paused after the 0.51-0.54 Bernoulli/grouped-binomial/Poisson contracts.
-- Coverage floor remains **90%**. Stabilization prioritizes independent-reference validation quality, cross-platform reproducibility and practical performance qualification rather than increasing coverage percentage for its own sake.
-- Hosted CI qualification and repository governance are reported separately.
-- Existing tests, coverage thresholds, mathematical contracts, documentation checks and scientific validation rules have not been weakened or bypassed.
-- Final `0.10.0` preserves rc2's fail-closed sparse/PACE contracts, including non-positive measurement-noise failure behavior.
+- Package line: `0.11.0rc1`.
+- Release phase: exact release-candidate qualification for the feature-frozen known-truth simulation/recovery laboratory. Publication readiness is deliberately disarmed.
+- Stable-baseline reconciliation: PR #109 merged stable `0.10.0` into the isolated 0.11 line and the combined nine-workflow matrix passed.
+- Development stabilization: PR #110 aligned `0.11.0.dev0`, archived final 0.10 performance evidence, generated a fresh 0.11 development performance envelope, froze the feature surface, and passed the complete nine-workflow matrix.
+- Stress evidence: PR #111 added a separate threshold-free stress runner/workflow. Exact post-merge run `36559953858` on commit `f6bacfe64cd8639d365137f9c251b1c967aa78b5` executed all 14 declared stress regimes with three replicates each and retained failures in the denominator.
+- Estimated-noise stress remains difficult by evidence, not by label: 2/3 seeded diagonal-difference fits failed closed with `noise_variance_invalid`; the one successful seed retained strong subspace/score recovery but large measurement-noise relative error. No clipping or threshold widening was introduced.
+- The immutable `0.11.0.dev0` performance snapshot is archived. Fresh `0.11.0rc1` performance qualification passed from source commit `f37941710eba6e7d50806c60490d00492f98e1ff` in run `36560873074`, and the canonical performance ledger records that exact RC evidence.
+- The 0.11 feature surface remains frozen. Sparse multivariate FPCA, sparse multilevel decomposition, Bayesian sparse FDA, additional generalized families, new nonlinear simulation ecosystems, and signal-dependent missingness are not part of rc1.
+- Existing tests, coverage thresholds, scientific validation rules, fail-closed sparse/PACE behavior, and publication protections remain unchanged.
 
-See `docs/release-readiness.md` for the pre-1.0 gate and
-`docs/validation/reference-validation-ledger.md` for independent-reference
-qualification.
+See `docs/release-readiness.md` for the release gate and
+`docs/validation/functional-simulation-validation.md` for recovery/stress evidence.
 
 ## Locally validated — 2026-09-19
 

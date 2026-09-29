@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from ._functional_simulation import FunctionalSimulationResult
 from .fpca import component_trajectories
 from .registration import warping_displacement
 from .prediction import summarise_fpca_regression_cv
@@ -45,6 +46,241 @@ from .types import (
     TrajectoryDistanceSensitivityResult,
     TrajectorySet,
 )
+
+
+
+def _simulation_curve_index(
+    result: FunctionalSimulationResult,
+    curve: int | str,
+) -> int:
+    """Resolve one simulated curve index without guessing identifiers."""
+
+    if not isinstance(result, FunctionalSimulationResult):
+        raise TypeError("result must be a FunctionalSimulationResult")
+    ids = result.observations.curve_ids
+    if isinstance(curve, str):
+        if curve not in ids:
+            raise KeyError(f"Unknown curve_id {curve!r}")
+        return ids.index(curve)
+    if isinstance(curve, bool) or not isinstance(curve, (int, np.integer)):
+        raise TypeError("curve must be a curve_id string or integer index")
+    index = int(curve)
+    if index < 0 or index >= len(ids):
+        raise IndexError("curve index is out of range")
+    return index
+
+
+def _simulation_dimension_index(
+    result: FunctionalSimulationResult,
+    dimension: int | str,
+) -> int:
+    """Resolve one simulated functional dimension."""
+
+    names = result.truth.dimension_names
+    if isinstance(dimension, str):
+        if dimension not in names:
+            raise KeyError(f"Unknown dimension {dimension!r}")
+        return names.index(dimension)
+    if isinstance(dimension, bool) or not isinstance(
+        dimension,
+        (int, np.integer),
+    ):
+        raise TypeError("dimension must be a name or integer index")
+    index = int(dimension)
+    if index < 0 or index >= len(names):
+        raise IndexError("dimension index is out of range")
+    return index
+
+
+def plot_functional_simulation_curve(
+    result: FunctionalSimulationResult,
+    *,
+    curve: int | str = 0,
+    dimension: int | str = 0,
+    show_pre_missing: bool = False,
+    ax=None,
+):
+    """Plot one simulated observed curve against its exact latent truth."""
+
+    curve_index = _simulation_curve_index(result, curve)
+    dimension_index = _simulation_dimension_index(result, dimension)
+    truth = result.truth
+    observations = result.observations
+
+    if ax is None:
+        _, ax = plt.subplots()
+
+    ax.plot(
+        truth.truth_grid,
+        truth.latent_on_truth_grid[curve_index, :, dimension_index],
+        label="latent truth",
+    )
+
+    observed_time = np.asarray(
+        truth.observation_times[curve_index],
+        dtype=float,
+    )
+    if isinstance(observations, TrajectorySet):
+        observed_value = np.asarray(
+            observations.values[curve_index, :, dimension_index],
+            dtype=float,
+        )
+        finite = np.isfinite(observed_value)
+        ax.scatter(
+            observed_time[finite],
+            observed_value[finite],
+            label="observed",
+        )
+    else:
+        observed_value = np.asarray(
+            observations.values[curve_index][:, dimension_index],
+            dtype=float,
+        )
+        ax.scatter(
+            observed_time,
+            observed_value,
+            label="observed",
+        )
+
+    if show_pre_missing:
+        pre_time = np.asarray(
+            truth.pre_missing_observation_times[curve_index],
+            dtype=float,
+        )
+        pre_observed = np.asarray(
+            truth.observed_pre_missing[curve_index][:, dimension_index],
+            dtype=float,
+        )
+        missing = np.asarray(
+            truth.missingness_mask[curve_index],
+            dtype=bool,
+        )
+        if np.any(missing):
+            ax.scatter(
+                pre_time[missing],
+                pre_observed[missing],
+                marker="x",
+                label="removed/missing by design",
+            )
+
+    name = truth.dimension_names[dimension_index]
+    ax.set_xlabel(f"Time ({truth.time_unit})")
+    ax.set_ylabel(name)
+    ax.set_title(
+        f"Functional simulation truth audit: "
+        f"{observations.curve_ids[curve_index]}"
+    )
+    ax.legend()
+    return ax
+
+
+def plot_functional_simulation_phase_warps(
+    result: FunctionalSimulationResult,
+    *,
+    max_curves: int | None = 20,
+    alpha: float = 0.35,
+    ax=None,
+):
+    """Plot retained phase-warp functions against the identity map."""
+
+    if not isinstance(result, FunctionalSimulationResult):
+        raise TypeError("result must be a FunctionalSimulationResult")
+    if max_curves is not None:
+        if isinstance(max_curves, bool) or not isinstance(
+            max_curves,
+            (int, np.integer),
+        ):
+            raise TypeError("max_curves must be an integer or None")
+        if max_curves < 1:
+            raise ValueError("max_curves must be positive")
+    if not np.isfinite(alpha) or not 0 < alpha <= 1:
+        raise ValueError("alpha must be in (0, 1]")
+
+    truth = result.truth
+    n_curves = truth.phase_warps_on_truth_grid.shape[0]
+    n_plot = n_curves if max_curves is None else min(n_curves, max_curves)
+    if ax is None:
+        _, ax = plt.subplots()
+
+    ax.plot(
+        truth.truth_grid,
+        truth.truth_grid,
+        linestyle="--",
+        label="identity warp",
+    )
+    for curve in range(n_plot):
+        ax.plot(
+            truth.truth_grid,
+            truth.phase_warps_on_truth_grid[curve],
+            alpha=alpha,
+        )
+    ax.set_xlabel(f"Observed time ({truth.time_unit})")
+    ax.set_ylabel(f"Latent/process time ({truth.time_unit})")
+    ax.set_title(f"Retained phase warps (n={n_plot})")
+    ax.legend()
+    return ax
+
+
+def plot_functional_simulation_score_variances(
+    result: FunctionalSimulationResult,
+    *,
+    ax=None,
+):
+    """Compare declared and realized score-source variances by component."""
+
+    if not isinstance(result, FunctionalSimulationResult):
+        raise TypeError("result must be a FunctionalSimulationResult")
+    truth = result.truth
+    n_components = truth.eigenvalues.size
+    positions = np.arange(n_components, dtype=float)
+    width = 0.18
+
+    declared = np.column_stack(
+        [
+            truth.eigenvalues,
+            truth.participant_eigenvalues,
+            truth.trial_eigenvalues,
+        ]
+    )
+    realized = np.column_stack(
+        [
+            np.var(truth.curve_scores, axis=0, ddof=0),
+            np.var(truth.participant_scores, axis=0, ddof=0),
+            np.var(truth.trial_scores, axis=0, ddof=0),
+        ]
+    )
+    labels = (
+        "curve declared",
+        "participant declared",
+        "trial declared",
+        "curve realized",
+        "participant realized",
+        "trial realized",
+    )
+
+    if ax is None:
+        _, ax = plt.subplots()
+    for source in range(3):
+        ax.bar(
+            positions + (source - 2.5) * width,
+            declared[:, source],
+            width=width,
+            label=labels[source],
+        )
+        ax.bar(
+            positions + (source + 0.5) * width,
+            realized[:, source],
+            width=width,
+            label=labels[source + 3],
+        )
+    ax.set_xticks(
+        positions,
+        labels=[f"component {index + 1}" for index in range(n_components)],
+    )
+    ax.set_ylabel("Score variance")
+    ax.set_title("Functional simulation score-source variance audit")
+    ax.legend()
+    return ax
 
 
 def plot_trajectory_distance_rank_correlations(

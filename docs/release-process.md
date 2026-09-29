@@ -1,5 +1,50 @@
 # Coordinated GitHub Release and PyPI publication
 
+## 0.11.0rc1 qualification
+
+Stable `0.10.0` remains the current public release. `0.11.0rc1` promotes the
+feature-frozen known-truth simulation/recovery laboratory from qualified
+`0.11.0.dev0` without adding a new estimator, numerical method, generalized
+family, hidden default, or post-0.11 research feature.
+
+The rc1 qualification sequence is:
+
+~~~text
+archive immutable 0.11.0.dev0 performance evidence
+        |
+        v
+align package/citation/validation/docs contracts to 0.11.0rc1
+        |
+        v
+generate a fresh 0.11.0rc1 performance envelope
+        |
+        v
+rerun functional-simulation qualification + threshold-free stress evidence
+        |
+        v
+pass tests/docs/examples/optional-backend/sparse-native/release-readiness matrix
+        |
+        v
+merge the exact qualified RC state
+        |
+        v
+rerun exact release-state qualification
+        |
+        v
+arm GitHub/PyPI publication in a separate reviewed change
+        |
+        v
+manual target=production release dispatch
+~~~
+
+The stress workflow has no scientific pass/fail thresholds. Its success means
+the declared stress study executed reproducibly and retained failed replicates;
+it does not relabel difficult regimes as scientifically successful.
+
+Publication is fail-closed throughout this qualification PR. No GitHub Release
+or PyPI upload occurs until a later reviewed arming change and explicit manual
+production dispatch.
+
 ## Final 0.10.0 qualification and publication
 
 Published `0.10.0rc2` is the corrected public scientific candidate. Final `0.10.0` is a promotion of that code line only: no estimator, numerical method, API contract, or hidden analytical default may be added during final qualification.

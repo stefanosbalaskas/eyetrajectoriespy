@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.11.0rc1 (unreleased)
+
+- Promote the feature-frozen 0.11 known-truth simulation/recovery laboratory from qualified `0.11.0.dev0` to the first release candidate without adding a new estimator, numerical method, generalized family, hidden default, or post-0.11 research feature.
+- Preserve the strict observations/scenario -> fit -> post-fit truth/recovery boundary, semantic recovery metrics, explicit failure retention, qualification/stress separation, Monte Carlo summaries, and provenance-rich truth objects.
+- Archive the immutable `0.11.0.dev0` performance snapshot and require a fresh exact-version rc1 performance envelope rather than relabeling development evidence.
+- Carry forward the separate threshold-free 14-regime stress workflow; workflow success denotes reproducible execution only, and failed replicates remain in the denominator.
+- Preserve the estimated-noise diagonal-difference stress evidence: non-positive estimates remain fail-closed and large noise-variance error is not hidden by clipping or threshold widening.
+- Keep GitHub/PyPI publication readiness disarmed until the complete rc1 qualification matrix passes and a separate reviewed arming change is merged.
+
+## Unreleased — 0.11.0.dev0 stabilization
+
+- Reconcile the published stable `0.10.0` baseline into the isolated 0.11 simulation/recovery line through PR #109 after the combined nine-workflow matrix passed.
+- Freeze the 0.11 feature surface around the known-truth simulation/recovery laboratory: no sparse multivariate FPCA, sparse multilevel decomposition, Bayesian subsystem, generalized-family expansion, or new nonlinear simulation ecosystem is added in 0.11.
+- Requalify recovery and descriptive stress evidence after reconciliation, collect a fresh 0.11 performance envelope, and stabilize public simulation/recovery APIs, documentation, reporting, plots, and provenance before `0.11.0rc1`.
+- Keep scientific recovery status separate from stress characterization and runtime/RSS performance evidence.
+- Add a separate reproducible, threshold-free functional stress workflow that records post-fit recovery where appropriate, truth/design audits where an estimator comparison would be misleading, and explicit failed-replicate proportions without silently dropping difficult cases.
+- Order post-0.11 research around a package-wide recovery audit, external eye-tracking/compositional validation, native sparse multivariate FPCA, later sparse participant/trial decomposition, and signal-dependent observation/missingness stress scenarios.
+- Keep GitHub/PyPI publication readiness fail-closed and disarmed throughout development.
+
 ## 0.10.0 — 2026-09-29
 
 - Promote the corrected and publicly qualified `0.10.0rc2` scientific code to the final 0.10 line without adding a new estimator, numerical method, observation family, API contract, or hidden analytical default.
