@@ -4,21 +4,26 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-`0.10.0` is the current published stable pre-1.0 release. Published `0.9.0`, `0.10.0rc1`, and `0.10.0rc2` remain immutable historical records.
+`0.10.0` is the current published stable pre-1.0 release. Published
+`0.11.0rc1` remains an immutable prerelease record while final `0.11.0`
+is qualified independently.
 
-- Package line: `0.11.0rc1`.
-- Release phase: `0.11.0rc1` exact-version qualification is complete. PR #112, main integration PR #113, governance hardening PR #114, and the expanded exact protected-main matrix all passed. Publication readiness is armed through a separate governance-only change; actual publication still requires an explicit manual production dispatch.
-- Stable-baseline reconciliation: PR #109 merged stable `0.10.0` into the isolated 0.11 line and the combined nine-workflow matrix passed.
-- Development stabilization: PR #110 aligned `0.11.0.dev0`, archived final 0.10 performance evidence, generated a fresh 0.11 development performance envelope, froze the feature surface, and passed the complete nine-workflow matrix.
-- Stress evidence: PR #111 added a separate threshold-free stress runner/workflow. Exact post-merge run `36559953858` on commit `f6bacfe64cd8639d365137f9c251b1c967aa78b5` executed all 14 declared stress regimes with three replicates each and retained failures in the denominator.
-- Estimated-noise stress remains difficult by evidence, not by label: 2/3 seeded diagonal-difference fits failed closed with `noise_variance_invalid`; the one successful seed retained strong subspace/score recovery but large measurement-noise relative error. No clipping or threshold widening was introduced.
-- The immutable `0.11.0.dev0` performance snapshot is archived. Fresh `0.11.0rc1` performance qualification passed from source commit `f37941710eba6e7d50806c60490d00492f98e1ff` in run `36560873074`, and the canonical performance ledger records that exact RC evidence.
-- The 0.11 feature surface remains frozen. Sparse multivariate FPCA, sparse multilevel decomposition, Bayesian sparse FDA, additional generalized families, new nonlinear simulation ecosystems, and signal-dependent missingness are not part of rc1.
-- Exact protected-main commit `4be7d13186dbef7487a03e3d81c05e0eefb751e0` passed all ten workflow groups: tests, docs, examples, optional scikit-fda, optional FDApy sparse, performance, release-readiness, functional-simulation validation, threshold-free functional-simulation stress, and native sparse/PACE validation. Package + Ubuntu/macOS/Windows × Python 3.11–3.13 all passed.
+- Package line: `0.11.0`.
+- Release phase: final exact-version qualification. Publication readiness is deliberately disarmed until the fresh final-version performance envelope, complete pull-request matrix, protected-main exact-version matrix, and a separate reviewed arming change are complete.
+- Scientific promotion boundary: final `0.11.0` promotes the feature-frozen `0.11.0rc1` simulation/recovery laboratory without adding an estimator, numerical method, generalized family, API expansion, hidden default, or post-0.11 research feature.
+- Production-installed RC observation: PR #119 added an external-consumer qualification workflow and merged as exact protected-main commit `a37214653c2f72839e356d603c4f87a514f01056`.
+- Exact-main installed-RC workflow run `36622305877` passed on Python 3.11–3.13 and produced deep evidence artifact `11059511070` with digest `sha256:a01bddd0818c09b298d93596a5698f6f8f835a6e3cde9735857780c2167f289e`.
+- The installed-artifact tranche verified import provenance outside the source checkout, deterministic scenario replay, dense FPCA recovery, actual functional mixed-effects recovery, actual registration recovery, portable export/load, reporting, plotting, and explicit environment capture.
+- Existing four-scenario recovery qualification passed against the production-installed rc1 artifact. The threshold-free stress run retained all 42 declared replicate records.
+- Estimated-noise diagonal-difference stress remained explicitly difficult: 2/3 seeded fits failed closed with `noise_variance_invalid`; the other 13 stress regimes had zero execution failures. No clipping or threshold widening was introduced.
+- An initial observation design with effectively rank-one participant truth caused the two-dimensional unstructured mixed-effects recovery fit to fail closed. Only the new qualification workload was corrected to full-rank basis-matched truth; the package estimator, optimizer policy, and scientific thresholds were unchanged.
+- The immutable `0.11.0rc1` performance snapshot from run `36560873074` is archived. Final `0.11.0` requires a fresh exact-version performance envelope rather than relabelled RC evidence.
+- The 0.11 feature surface remains frozen. Sparse multivariate FPCA, sparse multilevel decomposition, Bayesian sparse FDA, additional generalized families, a new nonlinear simulation ecosystem, and signal-dependent missingness remain post-0.11 work.
 - Existing tests, coverage thresholds, scientific validation rules, fail-closed sparse/PACE behavior, and publication protections remain unchanged.
 
 See `docs/release-readiness.md` for the release gate and
-`docs/validation/functional-simulation-validation.md` for recovery/stress evidence.
+`docs/validation/functional-simulation-validation.md` for recovery/stress
+evidence.
 
 ## Locally validated — 2026-09-19
 
