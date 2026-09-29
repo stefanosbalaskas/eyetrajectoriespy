@@ -141,7 +141,9 @@ requalification remains required after merge.
 - [x] Dedicated production PyPI Trusted Publisher is configured for GitHub environment `pypi`.
 - [x] `pypi` GitHub environment has the intended required-reviewer protection.
 - [x] `main` is protected and issue #64 is closed.
-- [x] `RELEASE_READINESS.json` is jointly armed for final `0.10.0` only after PR #106 and the exact protected-main qualification matrix passed.
+- [x] Final `0.10.0` was armed only after PR #106 and exact protected-main qualification passed.
+- [x] Production workflow #11 published `v0.10.0` from exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc`, and the fresh production-PyPI install check passed.
+- [x] `RELEASE_READINESS.json` is jointly disarmed after publication to prevent accidental republication of `0.10.0`.
 
 The first public prerelease `0.9.0rc1` successfully exercised GitHub-first
 publication followed by production PyPI OIDC publication and clean installation.
@@ -167,9 +169,9 @@ Do not enter a 0.9-style release-candidate phase until:
 
 ## Post-0.9.0 state
 
-Stable release `0.9.0` and published prereleases `0.10.0rc1` and `0.10.0rc2` are immutable. Production workflow #10 successfully published the corrected rc2 candidate through GitHub-first release creation and PyPI OIDC Trusted Publishing, and the fresh production-PyPI installation smoke test passed.
+`0.10.0` is the current stable release. Stable `0.9.0` and prereleases `0.10.0rc1` and `0.10.0rc2` remain immutable historical records. Production workflow #11 published final `0.10.0` through GitHub-first release creation and checksum-verified PyPI OIDC Trusted Publishing from exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc`; the fresh production-PyPI installation smoke test passed.
 
-Final `0.10.0` promotes the corrected rc2 code without scientific/API expansion. The final package identity, validation manifests, documentation contracts, fresh performance envelope, complete pull-request matrix and exact protected-main matrix have qualified independently. Release readiness is armed; ordinary merges remain non-publishing and production still requires an explicit manual release-workflow dispatch.
+Final `0.10.0` promotes the corrected rc2 code without scientific/API expansion. The package identity, validation manifests, documentation contracts, fresh performance envelope, complete pull-request matrix, post-arming exact-main matrix, and public-artifact verification all completed successfully. Publication readiness is now deliberately disarmed; ordinary merges remain non-publishing, and a future release must begin a new reviewed version/readiness cycle.
 
 ### Production publisher authority
 
