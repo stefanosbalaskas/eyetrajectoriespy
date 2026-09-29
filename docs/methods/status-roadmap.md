@@ -159,9 +159,7 @@ and the [external reference implementation policy](../validation/external-refere
 
 ### 0.11.0 — known-truth recovery laboratory
 
-The 0.11 research line is now reconciled onto published stable `0.10.0` and
-runs as `0.11.0.dev0`. Its feature surface is **frozen**. The release is a
-validation-infrastructure tranche, not another estimator catalogue.
+The 0.11 research line is reconciled onto published stable `0.10.0` and is now cut as `0.11.0rc1` for exact-version qualification. Its feature surface is **frozen**. The release is a validation-infrastructure tranche, not another estimator catalogue.
 
 Implemented infrastructure includes explicit latent truth, declared
 finite-sample scenarios, a strict
@@ -183,19 +181,9 @@ ledgers. A difficult stress regime does not silently become a failed
 qualification case, and performance never changes an estimator's scientific
 recovery status.
 
-Before `0.11.0rc1`, the required work is stabilization only:
+The pre-RC stabilization requirements are complete: stable 0.10 reconciliation, fresh recovery qualification, threshold-free stress evidence, fresh development performance evidence, API/documentation stabilization, and the complete cross-platform qualification matrix all passed before the rc1 cut.
 
-1. rerun recovery qualification after the stable-0.10 reconciliation;
-2. rerun declared stress matrices without widening thresholds to manufacture
-   success;
-3. collect a fresh exact-version `0.11.0.dev0` performance envelope;
-4. stabilize public simulation/recovery API names, result objects, provenance,
-   reporting and plotting contracts;
-5. reconcile documentation/examples with the frozen surface;
-6. pass the full cross-platform, optional-backend, sparse-native,
-   functional-simulation, performance and release-readiness matrices;
-7. only then cut `0.11.0rc1`, followed by a separately qualified final
-   `0.11.0`.
+During `0.11.0rc1` qualification the same scientific/package surfaces are rerun under the exact RC identity. A fresh rc1 performance envelope is required; development evidence is archived rather than relabeled. Only after the full RC matrix and exact release-state qualification pass may a separate reviewed change arm GitHub/PyPI publication. Final `0.11.0` remains a separate later exact-version qualification.
 
 No sparse multivariate FPCA, sparse multilevel decomposition, Bayesian
 functional model, new generalized response family, or nonlinear simulation
@@ -289,7 +277,7 @@ every later tranche.
 
 The current stable pre-1.0 line is **0.10.0**. It was published on GitHub and PyPI on 29 September 2026. Published **0.9.0**, **0.10.0rc1**, and **0.10.0rc2** remain immutable historical release records. Final 0.10.0 promotes the corrected rc2 native sparse/irregular FPCA + PACE tranche without adding estimator surface or changing analytical defaults.
 
-The current development line is **0.11.0.dev0**. It is the feature-frozen stabilization line for the known-truth simulation/recovery laboratory reconciled onto stable 0.10.0. Publication readiness remains disarmed until a separately qualified release-candidate cycle.
+The current release-candidate line is **0.11.0rc1**. It is the feature-frozen exact-version qualification candidate for the known-truth simulation/recovery laboratory reconciled onto stable 0.10.0. Publication readiness remains disarmed until the RC matrix passes and a separate reviewed arming change is merged.
 
 The final version was independently qualified under the exact `0.10.0` package identity. Its fresh performance envelope, complete pull-request matrix, post-arming exact protected-main matrix, GitHub Release publication, PyPI Trusted Publishing, and fresh production-PyPI installation all passed. Post-release publication readiness is disarmed to prevent accidental republication of the existing version.
 
