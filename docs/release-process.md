@@ -41,9 +41,7 @@ The stress workflow has no scientific pass/fail thresholds. Its success means
 the declared stress study executed reproducibly and retained failed replicates;
 it does not relabel difficult regimes as scientifically successful.
 
-Publication is fail-closed throughout this qualification PR. No GitHub Release
-or PyPI upload occurs until a later reviewed arming change and explicit manual
-production dispatch.
+The qualification and expanded exact-main gates are now complete. A separate reviewed governance-only change arms GitHub and production readiness. No GitHub Release or PyPI upload occurs until the explicit manual `target=production` dispatch.
 
 ## Final 0.10.0 qualification and publication
 

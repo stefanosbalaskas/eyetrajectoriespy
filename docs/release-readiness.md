@@ -169,10 +169,14 @@ Pre-RC stabilization is complete:
   diagonal-difference regime rather than clipping non-positive estimates or
   widening thresholds.
 
-During rc1 qualification, `RELEASE_READINESS.json` remains jointly disarmed.
-A fresh exact-version rc1 performance envelope and the full qualification matrix
-must pass before a separate reviewed arming change can set GitHub and production
-readiness to true.
+The rc1 qualification and expanded exact-main matrix are complete. Protected-main
+commit `4be7d13186dbef7487a03e3d81c05e0eefb751e0` passed all ten workflow
+groups, including functional recovery, threshold-free stress, native sparse/PACE
+validation, and package + Ubuntu/macOS/Windows × Python 3.11–3.13.
+
+This separate governance-only change arms both GitHub and production readiness.
+Publication remains an explicit manual production action; ordinary pushes and
+merges do not publish.
 
 ## Release-candidate gate
 
