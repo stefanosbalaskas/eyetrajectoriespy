@@ -81,11 +81,11 @@ flowchart LR
     B -->|Poisson counts| H[Marginal generalized FoSR: log]
     H --> X{Explicit exposure?}
     X -->|No: expected count| I[Participant GEE clusters + working independence]
-    X -->|Yes: E > 0| Y[0.53 log-rate estimand]
+    X -->|"Yes: E > 0"| Y[0.53 log-rate estimand]
     Y --> I
     G --> GB{Grouped successes?}
     GB -->|No: Bernoulli 0/1| I
-    GB -->|Yes: explicit N > 0| GX[0.54 grouped-binomial weights]
+    GB -->|"Yes: explicit N > 0"| GX[0.54 grouped-binomial weights]
     GX --> I
     I --> J[Robust sandwich covariance]
     J --> K[Whole-participant case bootstrap refits]
@@ -209,11 +209,11 @@ flowchart LR
     C --> E[Local divergence]
     E --> F[Rosenstein LLE]
     F --> G{Surrogate null}
-    G -->|Scalar| H[IAAFT]
-    G -->|Joint channels| I[Multivariate IAAFT + retained cross-spectrum diagnostics]
-    B --> H[Declared Poincare section]
-    H --> I[Empirical local return map]
-    I --> J[Experimental spectral-radius stability]
+    G -->|Scalar| H1[IAAFT]
+    G -->|Joint channels| I1[Multivariate IAAFT + retained cross-spectrum diagnostics]
+    B --> H2[Declared Poincare section]
+    H2 --> I2[Empirical local return map]
+    I2 --> J[Experimental spectral-radius stability]
 ```
 
 Overlapping RQA windows remain within-curve dependent summaries; the source curve/participant remains the downstream sampling unit. Classical Floquet/monodromy and continuation analysis are intentionally excluded from the raw-gaze pathway.

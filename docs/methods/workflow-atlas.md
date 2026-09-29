@@ -90,11 +90,11 @@ flowchart TD
     B -->|Poisson counts| H[Marginal generalized FoSR: log]
     H --> U{Explicit exposure?}
     U -->|No: expected count| I[Participant is independent GEE cluster]
-    U -->|Yes: E > 0| V[0.53 log-rate estimand]
+    U -->|"Yes: E > 0"| V[0.53 log-rate estimand]
     V --> I
     G --> GB{Grouped successes?}
     GB -->|No: Bernoulli 0/1| I
-    GB -->|Yes: explicit N > 0| GX[0.54 grouped-binomial weights]
+    GB -->|"Yes: explicit N > 0"| GX[0.54 grouped-binomial weights]
     GX --> I
     I --> J[Working independence]
     J --> K[Robust sandwich coefficient covariance]
@@ -190,7 +190,7 @@ flowchart TD
     C --> F[Observed-grid slope band]
     C --> G[Future-outcome interval]
     D --> H[Target-wise interval]
-    D --> I[Fixed-family max-|t| interval]
+    D --> I["Fixed-family max-|t| interval"]
     D --> J[Fixed-family tests]
     J --> K[Monte Carlo precision audit]
 ```
@@ -257,13 +257,13 @@ flowchart TD
     L --> M[Declare fit interval]
     M --> N[Rosenstein LLE]
     N --> O{Surrogate null}
-    O -->|One signal dimension| P[Scalar IAAFT]
-    O -->|Joint planar or multichannel structure| Q[Declare MIAAFT reference dimension]
-    Q --> R[Multivariate IAAFT + cross-spectrum diagnostics]
-    B -->|Repeated approximate cycle| P[Declare Poincare section]
-    P --> Q[Interpolated crossings]
-    Q --> R[Declare reference + neighborhood]
-    R --> S[Empirical local return map]
+    O -->|One signal dimension| P1[Scalar IAAFT]
+    O -->|Joint planar or multichannel structure| Q1[Declare MIAAFT reference dimension]
+    Q1 --> R1[Multivariate IAAFT + cross-spectrum diagnostics]
+    B -->|Repeated approximate cycle| P2[Declare Poincare section]
+    P2 --> Q2[Interpolated crossings]
+    Q2 --> R2[Declare reference + neighborhood]
+    R2 --> S[Empirical local return map]
     S --> T[Spectral radius]
     T --> U[Experimental contraction / expansion]
 ```
