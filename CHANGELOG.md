@@ -1,6 +1,17 @@
 # Changelog
 
-## 0.11.0rc1 (unreleased)
+## 0.11.0 (unreleased)
+
+- Promote the publicly qualified `0.11.0rc1` simulation/recovery laboratory to final `0.11.0` without adding an estimator, numerical method, generalized family, API expansion, hidden analytical default, or post-0.11 research feature.
+- Re-run the complete exact-version qualification under `0.11.0` rather than relabeling release-candidate evidence.
+- Preserve the strict observations/scenario → fit → post-fit truth/recovery boundary, deterministic scenario replay, semantic recovery metrics, explicit failure retention, Monte Carlo summaries, reporting, plotting, and provenance-rich truth objects.
+- Preserve the corrected native sparse/PACE measurement-noise behavior inherited from stable 0.10, including explicit fail-closed `noise_variance_invalid` outcomes rather than clipping.
+- Carry forward production-installed rc1 observation evidence: Python 3.11–3.13 exact PyPI installation, dense FPCA recovery, mixed-effects recovery, registration recovery, portable export/load, and 42-record threshold-free stress retention.
+- Archive the immutable `0.11.0rc1` performance snapshot and require a fresh exact-version `0.11.0` performance envelope before final qualification.
+- Preserve `v0.11.0rc1` and its GitHub/PyPI artifacts as immutable prerelease history.
+- After publication, install normally with `pip install eyetrajectoriespy==0.11.0` or `pip install eyetrajectoriespy`.
+
+## 0.11.0rc1 — 2026-09-29
 
 - Promote the feature-frozen 0.11 known-truth simulation/recovery laboratory from qualified `0.11.0.dev0` to the first release candidate without adding a new estimator, numerical method, generalized family, hidden default, or post-0.11 research feature.
 - Preserve the strict observations/scenario -> fit -> post-fit truth/recovery boundary, semantic recovery metrics, explicit failure retention, qualification/stress separation, Monte Carlo summaries, and provenance-rich truth objects.
