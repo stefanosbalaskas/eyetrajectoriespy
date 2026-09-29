@@ -5,6 +5,7 @@
 - Reconcile the published stable `0.10.0` baseline into the isolated 0.11 simulation/recovery line through PR #109 after the combined nine-workflow matrix passed.
 - Freeze the 0.11 feature surface around the known-truth simulation/recovery laboratory: no sparse multivariate FPCA, sparse multilevel decomposition, Bayesian subsystem, generalized-family expansion, or new nonlinear simulation ecosystem is added in 0.11.
 - Requalify recovery and descriptive stress evidence after reconciliation, collect a fresh 0.11 performance envelope, and stabilize public simulation/recovery APIs, documentation, reporting, plots, and provenance before `0.11.0rc1`.
+- Add a separate descriptive stress-evidence runner/workflow for the 14 already-declared stress regimes. It retains replicate failures and failure proportions, uses no automatic scientific thresholds, and keeps phase variation generation-only rather than leaking latent truth into landmark registration.
 - Keep scientific recovery status separate from stress characterization and runtime/RSS performance evidence.
 - Order post-0.11 research around a package-wide recovery audit, external eye-tracking/compositional validation, native sparse multivariate FPCA, later sparse participant/trial decomposition, and signal-dependent observation/missingness stress scenarios.
 - Keep GitHub/PyPI publication readiness fail-closed and disarmed throughout development.
