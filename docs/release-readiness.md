@@ -154,7 +154,7 @@ rather than relabeling RC evidence. Production workflow authority now points
 only at the dedicated `pypi` environment. Issue #69 is closed and the obsolete
 production publisher cleanup remains complete for final 0.10.0 qualification.
 
-## 0.11.0rc1 candidate state
+## 0.11.0rc1 published state
 
 The current stable release remains `0.10.0`. The active release-candidate
 qualification target is `0.11.0rc1`.
