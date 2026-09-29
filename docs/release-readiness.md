@@ -152,6 +152,26 @@ rather than relabeling RC evidence. Production workflow authority now points
 only at the dedicated `pypi` environment. Issue #69 is closed and the obsolete
 production publisher cleanup remains complete for final 0.10.0 qualification.
 
+## 0.11.0rc1 candidate state
+
+The current stable release remains `0.10.0`. The active release-candidate
+qualification target is `0.11.0rc1`.
+
+Pre-RC stabilization is complete:
+
+- stable 0.10.0 was reconciled into the isolated 0.11 line;
+- the feature surface is frozen around the known-truth simulation/recovery laboratory;
+- fresh recovery qualification and development performance evidence passed;
+- threshold-free stress evidence is reproducible and retains failed replicates;
+- the exact post-merge stress run retains the difficult estimated-noise
+  diagonal-difference regime rather than clipping non-positive estimates or
+  widening thresholds.
+
+During rc1 qualification, `RELEASE_READINESS.json` remains jointly disarmed.
+A fresh exact-version rc1 performance envelope and the full qualification matrix
+must pass before a separate reviewed arming change can set GitHub and production
+readiness to true.
+
 ## Release-candidate gate
 
 Do not enter a 0.9-style release-candidate phase until:
