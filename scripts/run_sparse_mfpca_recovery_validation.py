@@ -597,17 +597,25 @@ def ridge_sensitivity() -> pd.DataFrame:
 
 def run_validation(
     *,
-    include_sensitivity: bool = True,
+    mode: str = "all",
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    qualification = qualification_matrix()
+    if mode not in {"all", "qualification", "sensitivity"}:
+        raise ValueError(
+            "mode must be 'all', 'qualification', or 'sensitivity'"
+        )
+    qualification = (
+        qualification_matrix()
+        if mode in {"all", "qualification"}
+        else pd.DataFrame()
+    )
     grid = (
         grid_sensitivity()
-        if include_sensitivity
+        if mode in {"all", "sensitivity"}
         else pd.DataFrame()
     )
     ridge = (
         ridge_sensitivity()
-        if include_sensitivity
+        if mode in {"all", "sensitivity"}
         else pd.DataFrame()
     )
     return qualification, grid, ridge
@@ -632,25 +640,29 @@ def main() -> int:
         default="sparse-mfpca-ridge-sensitivity.csv",
     )
     parser.add_argument(
-        "--skip-sensitivity",
-        action="store_true",
+        "--mode",
+        choices=("all", "qualification", "sensitivity"),
+        default="all",
     )
     args = parser.parse_args()
 
-    qualification, grid, ridge = run_validation(
-        include_sensitivity=not args.skip_sensitivity
-    )
+    qualification, grid, ridge = run_validation(mode=args.mode)
     Path(args.qualification_csv).parent.mkdir(
         parents=True,
         exist_ok=True,
     )
-    qualification.to_csv(args.qualification_csv, index=False)
+    if len(qualification):
+        qualification.to_csv(args.qualification_csv, index=False)
     if len(grid):
         grid.to_csv(args.grid_csv, index=False)
     if len(ridge):
         ridge.to_csv(args.ridge_csv, index=False)
 
-    qualified = bool(qualification["qualified"].all())
+    qualified = (
+        bool(qualification["qualified"].all())
+        if len(qualification)
+        else None
+    )
     payload = {
         "evidence_type": "simulation_recovery",
         "estimator": "fit_sparse_mfpca",
@@ -673,7 +685,7 @@ def main() -> int:
         json.dumps(payload, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    if not qualified:
+    if len(qualification) and not qualified:
         failures = qualification.loc[
             ~qualification["qualified"],
             ["case", "guard_failures"],
