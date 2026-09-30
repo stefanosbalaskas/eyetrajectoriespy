@@ -61,6 +61,24 @@ native implementation differ in 2-D kernel geometry, noise handling, irregular
 PACE interpolation, and the covariance object used in conditional scoring.
 See [native sparse FPCA/PACE validation](sparse-fpca-validation.md).
 
+## Native sparse multivariate FPCA/PACE evidence
+
+PR D adds one simulation-recovery row for the direct planar estimator:
+
+| Method | Scientific quantity | Reference type | Reference |
+|---|---|---|---|
+| Native sparse MFPCA + joint PACE | vector mean, named covariance blocks, joint eigenspace, separated and tied score recovery, reconstruction | simulation recovery | deterministic irregular planar truth over five rho values plus asymmetric-Cxy and correlated-noise cases |
+
+The tied rho=0 truth is assessed as an eigenspace rather than by arbitrary
+component identity. Covariance recovery is assessed through named Cxx/Cxy/Cyx/Cyy
+blocks, avoiding storage-order ambiguity. The true measurement-error matrix is
+supplied to the estimator and is therefore an input-contract check rather than
+an estimated-noise recovery result.
+
+This row does not replace the still-separate two-stage and mGSFPCA
+cross-implementation sensitivity evidence. See
+[native sparse MFPCA recovery validation](sparse-mfpca-recovery.md).
+
 ## Interpretation boundaries
 
 The mixed-effects reference deliberately uses the same established statsmodels

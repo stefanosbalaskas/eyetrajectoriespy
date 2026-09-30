@@ -25,6 +25,7 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.functional_recovery_assessment_frame
 ::: eyetrajectoriespy.evaluate_fpca_recovery
 ::: eyetrajectoriespy.evaluate_sparse_fpca_recovery
+::: eyetrajectoriespy.evaluate_sparse_mfpca_recovery
 ::: eyetrajectoriespy.evaluate_functional_mixed_effects_recovery
 ::: eyetrajectoriespy.evaluate_registration_recovery
 ::: eyetrajectoriespy.evaluate_hierarchy_truth_recovery

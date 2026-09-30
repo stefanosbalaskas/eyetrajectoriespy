@@ -246,6 +246,18 @@ by convenience.
 
 See the [0.12 sparse multivariate FPCA design contract](../development/sparse-multivariate-fpca.md).
 
+The direct estimator, public composition, and native known-truth PR D recovery
+gate are now implemented. PR D qualifies the five-rho family including negative
+coupling, exact tied eigenspaces at rho=0, a directional asymmetric-Cxy truth,
+and a supplied correlated measurement-error matrix. Its covariance recovery is
+block-aware and its tied score recovery is Procrustes/subspace-aware. Grid and
+ridge checks are retained as descriptive sensitivity rather than parameter
+selection. The two-stage benchmark, mGSFPCA cross-implementation sensitivity,
+observation-process stress, and dedicated 0.12 performance evidence remain
+subsequent gates before an RC decision.
+
+See [native sparse MFPCA recovery validation](../validation/sparse-mfpca-recovery.md).
+
 **3. Later candidate — sparse participant/trial functional decomposition.**
 Only after sparse multivariate recovery is understood should the package
 consider sparse irregular decomposition of

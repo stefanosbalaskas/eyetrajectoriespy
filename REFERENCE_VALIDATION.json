@@ -304,6 +304,30 @@
       "ci_test": "test_rotated_covariance_diagonal_recovers_exact_local_model",
       "status": "qualified",
       "limitations": "Validates the source-faithful diagonal smoother algebra; it does not imply universal finite-sample accuracy of the difference-based measurement-noise variance estimator."
+    },
+    {
+      "id": "sparse-mfpca-native-known-truth-recovery",
+      "method": "Native sparse multivariate FPCA + joint PACE",
+      "scientific_quantity": [
+        "vector mean",
+        "named Cxx/Cxy/Cyx/Cyy covariance blocks",
+        "joint functional subspace",
+        "separated-component PACE scores",
+        "tied-eigenspace score subspace",
+        "latent planar reconstruction",
+        "correlated measurement-error input contract"
+      ],
+      "reference_source": "deterministic 0.12 FunctionalSimulationTruth planar qualification matrix",
+      "reference_type": "simulation_recovery",
+      "dataset_problem": "Irregular paired x/y trajectories from known vector means and vector-valued eigenfunctions over rho_xy=-0.6,0,0.3,0.6,0.9, plus one directional asymmetric-Cxy design and one correlated measurement-error design.",
+      "expected_result": "All seven native qualification cases satisfy the predeclared finite-sample guards; covariance is assessed by named blocks, rho_xy=0 is assessed with tied-eigenspace geometry and Procrustes-aligned scores, and supplied measurement error is not misreported as estimated recovery.",
+      "comparison_metric": "mean ISE relative to analytic finite-sample sampling reference; named covariance-block ISE; joint principal cosines/angles; separated score correlation/RMSE; tied-eigenspace Procrustes score RMSE; reconstruction ISE; score failure/conditioning; PSD correction",
+      "tolerance_class": "simulation_recovery",
+      "tolerance": "guards encoded in scripts/run_sparse_mfpca_recovery_validation.py; mean ISE scaled to sum(lambda)/n; sensitivity grids/ridges are descriptive and do not select tuning parameters",
+      "platforms": "dedicated Ubuntu Python 3.12 sparse-mfpca-recovery workflow plus core cross-platform unit tests",
+      "ci_test": "test_sparse_mfpca_recovery_is_block_aware_for_asymmetric_cross_covariance",
+      "status": "qualified",
+      "limitations": "Seeded finite-sample native recovery. The true measurement-error covariance is supplied to the estimator rather than estimated. Two-stage and mGSFPCA cross-implementation sensitivity, observation-loss stress, and 0.12 performance qualification are separate later evidence."
     }
   ]
 }
