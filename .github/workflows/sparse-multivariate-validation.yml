@@ -1,0 +1,93 @@
+name: sparse-multivariate-validation
+
+on:
+  pull_request:
+    paths:
+      - src/eyetrajectoriespy/_sparse_multivariate.py
+      - src/eyetrajectoriespy/_sparse_multivariate_truth.py
+      - src/eyetrajectoriespy/sparse_multivariate.py
+      - src/eyetrajectoriespy/types.py
+      - scripts/run_sparse_mfpca_recovery.py
+      - tests/test_sparse_multivariate.py
+      - docs/development/native-sparse-mfpca.md
+      - .github/workflows/sparse-multivariate-validation.yml
+  push:
+    branches: [main]
+    paths:
+      - src/eyetrajectoriespy/_sparse_multivariate.py
+      - src/eyetrajectoriespy/_sparse_multivariate_truth.py
+      - src/eyetrajectoriespy/sparse_multivariate.py
+      - src/eyetrajectoriespy/types.py
+      - scripts/run_sparse_mfpca_recovery.py
+      - tests/test_sparse_multivariate.py
+      - docs/development/native-sparse-mfpca.md
+      - .github/workflows/sparse-multivariate-validation.yml
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  known-truth-recovery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install package
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e .
+      - name: Run threshold-free known-truth recovery
+        run: |
+          python scripts/run_sparse_mfpca_recovery.py \
+            --output-dir sparse-mfpca-recovery
+      - name: Verify recovery evidence contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("sparse-mfpca-recovery")
+          required = {
+              "sparse_mfpca_recovery.csv",
+              "sparse_mfpca_recovery.json",
+          }
+          missing = sorted(
+              name for name in required if not (root / name).exists()
+          )
+          if missing:
+              raise SystemExit(f"missing sparse MFPCA evidence: {missing}")
+
+          payload = json.loads(
+              (root / "sparse_mfpca_recovery.json").read_text()
+          )
+          if payload.get("qualification_gate") is not False:
+              raise SystemExit(
+                  "first sparse MFPCA recovery pass must remain threshold-free"
+              )
+          scenarios = payload.get("scenarios", [])
+          rho = [row.get("rho_xy") for row in scenarios]
+          if rho != [0.0, 0.3, 0.6, 0.9]:
+              raise SystemExit(f"unexpected rho scenarios: {rho}")
+          for row in scenarios:
+              if row.get("score_failure_rate") != 0.0:
+                  raise SystemExit(
+                      "known-truth recovery produced a joint score failure"
+                  )
+          PY
+      - name: Upload recovery evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: sparse-multivariate-recovery
+          path: sparse-mfpca-recovery
+          if-no-files-found: error
