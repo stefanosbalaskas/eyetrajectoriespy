@@ -325,7 +325,7 @@
       "tolerance_class": "simulation_recovery",
       "tolerance": "guards encoded in scripts/run_sparse_mfpca_recovery_validation.py; mean ISE scaled to sum(lambda)/n; sensitivity grids/ridges are descriptive and do not select tuning parameters",
       "platforms": "dedicated Ubuntu Python 3.12 sparse-mfpca-recovery workflow plus core cross-platform unit tests",
-      "ci_test": "sparse-mfpca-recovery workflow; tests/test_sparse_mfpca_recovery.py; tests/test_sparse_mfpca_validation_runner.py",
+      "ci_test": "test_sparse_mfpca_recovery_is_block_aware_for_asymmetric_cross_covariance",
       "status": "qualified",
       "limitations": "Seeded finite-sample native recovery. The true measurement-error covariance is supplied to the estimator rather than estimated. Two-stage and mGSFPCA cross-implementation sensitivity, observation-loss stress, and 0.12 performance qualification are separate later evidence."
     }
