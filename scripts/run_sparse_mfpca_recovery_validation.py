@@ -685,6 +685,15 @@ def main() -> int:
         json.dumps(payload, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    if len(qualification):
+        print("QUALIFICATION_EVIDENCE")
+        print(qualification.to_string(index=False))
+    if len(grid):
+        print("GRID_SENSITIVITY_EVIDENCE")
+        print(grid.to_string(index=False))
+    if len(ridge):
+        print("RIDGE_SENSITIVITY_EVIDENCE")
+        print(ridge.to_string(index=False))
     if len(qualification) and not qualified:
         failures = qualification.loc[
             ~qualification["qualified"],
