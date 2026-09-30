@@ -448,6 +448,36 @@ It does not imply that the original sparse observations were interpolated to a
 common grid, and it does not represent joint multivariate x/y PACE.
 
 
+## SparseMFPCAResult
+
+`SparseMFPCAResult` is the public scientific result for native sparse
+multivariate FPCA with joint PACE scoring over two jointly observed planar
+coordinates. Public arrays follow the package trajectory convention:
+`mean` has shape `(n_grid, 2)`, `eigenfunctions` has shape
+`(n_components, n_grid, 2)`, and `scores` has shape
+`(n_curves, n_components)`.
+
+The result retains the directly smoothed Cxx/Cxy/Cyx/Cyy blocks separately
+from the covariance blocks actually used downstream after full-operator PSD
+handling. It also retains the declared measurement-error covariance, score
+diagnostics, mean and covariance support counts, covariance-pair counts,
+operator-repair diagnostics, curve IDs, metadata, units, and provenance.
+
+Cxy is directional and is not self-symmetrized. Cyx is defined as the
+transpose relation required by joint covariance symmetry. Same-time latent
+covariance products are excluded. Joint PACE uses the full fitted joint
+covariance plus the declared measurement-error covariance and optional score
+ridge; returned component count does not truncate the covariance used for the
+score solve.
+
+The first public contract requires explicit measurement-error information:
+`measurement_error="diagonal"` requires two supplied non-negative
+variances, while `measurement_error="fixed_matrix"` requires a supplied
+finite symmetric positive-semidefinite 2x2 matrix. It does not estimate
+cross-channel measurement error, select bandwidths or component count
+automatically, accept asynchronous coordinate-specific missingness, or apply
+channel weights.
+
 ## FunctionalMeanBandResult
 
 Stores the estimated functional mean, simultaneous lower/upper observed-grid

@@ -182,6 +182,7 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.FPCASubspaceComparisonResult
 ::: eyetrajectoriespy.FPCASubspaceStabilityResult
 ::: eyetrajectoriespy.SparseFPCAResult
+::: eyetrajectoriespy.SparseMFPCAResult
 ::: eyetrajectoriespy.FunctionalMeanBandResult
 ::: eyetrajectoriespy.FPCAInfluenceResult
 ::: eyetrajectoriespy.FunctionalOutlierResult
@@ -219,6 +220,11 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.plot_sparse_fpca_covariance
 ::: eyetrajectoriespy.plot_sparse_fpca_score_diagnostics
 ::: eyetrajectoriespy.sparse_fpca_reporting_text
+
+## Sparse multivariate FPCA / joint PACE
+::: eyetrajectoriespy.fit_sparse_mfpca
+::: eyetrajectoriespy.sparse_mfpca_score_frame
+::: eyetrajectoriespy.sparse_mfpca_reporting_text
 
 ## Functional mean inference
 ::: eyetrajectoriespy.multiplier_functional_mean_band
