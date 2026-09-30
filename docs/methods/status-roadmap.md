@@ -252,7 +252,20 @@ coupling, exact tied eigenspaces at rho=0, a directional asymmetric-Cxy truth,
 and a supplied correlated measurement-error matrix. Its covariance recovery is
 block-aware and its tied score recovery is Procrustes/subspace-aware. Grid and
 ridge checks are retained as descriptive sensitivity rather than parameter
-selection. PR E now also completes the declared two-stage marginal-basis and mGSFPCA 0.2.2 cross-implementation sensitivity gates. The two-stage evidence demonstrates strong truncation sensitivity at marginal rank 1 despite excellent retained-subspace alignment, while marginal rank 2 closely tracks the direct joint subspace and scores. The external comparator shows broad invariant functional/score compatibility without an equivalence claim. Observation-process stress and dedicated 0.12 performance evidence remain subsequent gates before an RC decision.
+selection. PR E now also completes the declared two-stage marginal-basis and
+mGSFPCA 0.2.2 cross-implementation sensitivity gates. The two-stage evidence
+demonstrates strong truncation sensitivity at marginal rank 1 despite excellent
+retained-subspace alignment, while marginal rank 2 closely tracks the direct
+joint subspace and scores. The external comparator shows broad invariant
+functional/score compatibility without an equivalence claim.
+
+The final pre-RC qualification tranche now adds the public estimator's
+row-level observation-process stress matrix and a dedicated non-comparative
+runtime/peak-memory envelope. Stress remains descriptive rather than a tuning or
+qualification threshold, and the performance envelope applies no speed target.
+Once these two jobs and the ordinary package/documentation/release-readiness
+matrix are green, the next step is an explicit 0.12 RC decision rather than
+further methodological expansion.
 
 See [native sparse MFPCA recovery validation](../validation/sparse-mfpca-recovery.md).
 
