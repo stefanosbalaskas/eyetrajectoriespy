@@ -179,6 +179,7 @@ nav:
           - Targeted pre-0.12 recovery audit: validation/pre-0.12-recovery-audit.md
           - Native sparse MFPCA recovery: validation/sparse-mfpca-recovery.md
           - Sparse MFPCA comparator sensitivity: validation/sparse-mfpca-comparator-sensitivity.md
+          - Sparse MFPCA stress and performance: validation/sparse-mfpca-observation-performance.md
           - Numerical tolerance policy: validation/numerical-tolerance-policy.md
           - Performance envelope: validation/performance-envelope.md
       - Development roadmap:

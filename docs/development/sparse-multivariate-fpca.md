@@ -394,6 +394,12 @@ Repeat recovery under MCAR and declared signal-dependent observation loss.
 Stress evidence remains separate from qualification thresholds unless a
 specific supported-contract defect is demonstrated.
 
+This final validation tranche runs the public `fit_sparse_mfpca()` estimator
+under the frozen row-level MCAR, signal-dependent x/y, eccentricity, velocity
+and phase loss mechanisms. Paired x/y native timestamps remain synchronized,
+and the workflow records recovery/conditioning changes descriptively with
+`threshold_gate_applied=false` and no parameter selection.
+
 ### 4. Direct versus two-stage sensitivity
 
 Compare direct block-covariance and two-stage benchmark routes using invariant
@@ -461,6 +467,12 @@ The tranche can move toward a 0.12 release candidate only after:
 6. observation-process stress is retained separately;
 7. documentation, serialization/provenance, examples, performance, and
    cross-platform CI are green.
+
+The dedicated final qualification workflow adds a sparse-MFPCA-specific
+single-package performance envelope with fresh-process repeated runtime and
+peak-RSS measurements. No comparative speed claim or release speed threshold is
+introduced. Completion of that workflow closes the planned evidence collection
+before an explicit 0.12 RC decision.
 
 Until then, 0.12 remains a research/development line rather than a stable
 release claim.

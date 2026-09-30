@@ -1,0 +1,138 @@
+name: sparse-mfpca-final-qualification
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  observation-process-stress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+      - name: Run public sparse MFPCA observation-process stress
+        run: |
+          python scripts/run_sparse_mfpca_observation_stress.py \
+            --output-dir sparse-mfpca-observation-stress
+      - name: Verify descriptive stress contract
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter
+          from pathlib import Path
+
+          root = Path("sparse-mfpca-observation-stress")
+          payload = json.loads((root / "observation_stress.json").read_text())
+          if payload.get("evidence_type") != "observation_process_stress":
+              raise SystemExit("unexpected observation-stress evidence type")
+          if payload.get("threshold_gate_applied") is not False:
+              raise SystemExit("stress evidence must not apply recovery thresholds")
+          if payload.get("parameter_selection_performed") is not False:
+              raise SystemExit("stress evidence must not select parameters")
+          rows = payload.get("rows", [])
+          mechanisms = payload.get("mechanisms", [])
+          expected = payload.get("replicates", 0)
+          counts = Counter(row.get("mechanism") for row in rows)
+          if set(counts) != set(mechanisms):
+              raise SystemExit("observation-stress mechanism coverage is incomplete")
+          if any(counts[name] != expected for name in mechanisms):
+              raise SystemExit("unexpected replicate count in observation-stress evidence")
+          baseline = [row for row in rows if row.get("mechanism") == "none"]
+          if not baseline or any(row.get("status") != "ok" for row in baseline):
+              raise SystemExit("unstressed baseline must fit successfully")
+          for name in mechanisms:
+              if not any(
+                  row.get("status") == "ok"
+                  for row in rows
+                  if row.get("mechanism") == name
+              ):
+                  raise SystemExit(f"no successful fit for stress mechanism {name}")
+          PY
+      - name: Upload observation-process stress evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: sparse-mfpca-observation-stress
+          path: sparse-mfpca-observation-stress
+          if-no-files-found: error
+
+  performance-envelope:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+      EYETRAJECTORIESPY_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+      - name: Run repeated sparse MFPCA performance envelope
+        run: |
+          python scripts/run_sparse_mfpca_performance.py \
+            --repeats 3 \
+            --output sparse-mfpca-performance.json
+      - name: Verify performance evidence contract
+        run: |
+          python - <<'PY'
+          import json
+          import math
+          from pathlib import Path
+
+          payload = json.loads(
+              Path("sparse-mfpca-performance.json").read_text()
+          )
+          if payload.get("comparative_benchmark") is not False:
+              raise SystemExit("performance evidence must remain non-comparative")
+          if payload.get("speed_threshold_applied") is not False:
+              raise SystemExit("performance evidence must not apply a speed threshold")
+          results = payload.get("results", [])
+          expected = {
+              "very_sparse_planar",
+              "moderate_planar",
+              "irregular_rich_planar",
+          }
+          if {row.get("case") for row in results} != expected:
+              raise SystemExit("unexpected sparse MFPCA performance cases")
+          for row in results:
+              if row.get("repeats") != 3:
+                  raise SystemExit("performance evidence must use three repeats")
+              runtime = row.get("runtime_seconds", {})
+              if not math.isfinite(runtime.get("median", float("nan"))):
+                  raise SystemExit("performance runtime median is not finite")
+              if runtime["median"] <= 0:
+                  raise SystemExit("performance runtime must be positive")
+          PY
+      - name: Upload sparse MFPCA performance evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: sparse-mfpca-performance
+          path: sparse-mfpca-performance.json
+          if-no-files-found: error

@@ -252,7 +252,24 @@ coupling, exact tied eigenspaces at rho=0, a directional asymmetric-Cxy truth,
 and a supplied correlated measurement-error matrix. Its covariance recovery is
 block-aware and its tied score recovery is Procrustes/subspace-aware. Grid and
 ridge checks are retained as descriptive sensitivity rather than parameter
-selection. PR E now also completes the declared two-stage marginal-basis and mGSFPCA 0.2.2 cross-implementation sensitivity gates. The two-stage evidence demonstrates strong truncation sensitivity at marginal rank 1 despite excellent retained-subspace alignment, while marginal rank 2 closely tracks the direct joint subspace and scores. The external comparator shows broad invariant functional/score compatibility without an equivalence claim. Observation-process stress and dedicated 0.12 performance evidence remain subsequent gates before an RC decision.
+selection. PR E now also completes the declared two-stage marginal-basis and
+mGSFPCA 0.2.2 cross-implementation sensitivity gates. The two-stage evidence
+demonstrates strong truncation sensitivity at marginal rank 1 despite excellent
+retained-subspace alignment, while marginal rank 2 closely tracks the direct
+joint subspace and scores. The external comparator shows broad invariant
+functional/score compatibility without an equivalence claim.
+
+The final pre-RC qualification tranche now completes the public estimator's
+row-level observation-process stress matrix and dedicated non-comparative
+runtime/peak-memory envelope. All 21 stressed fits completed with zero score
+failures; the evidence visibly distinguishes MCAR from stronger
+signal-/eccentricity-dependent recovery changes without turning those
+differences into tuning thresholds. The three declared performance workloads
+also completed with zero score failures under repeated fresh-process timing.
+Stress remains descriptive and the performance envelope applies no speed
+target. The methodological evidence collection is therefore complete; the next
+step is an explicit 0.12 release-candidate decision rather than further
+estimator expansion.
 
 See [native sparse MFPCA recovery validation](../validation/sparse-mfpca-recovery.md).
 
