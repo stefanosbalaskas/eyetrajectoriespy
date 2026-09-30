@@ -436,6 +436,11 @@ from .sparse import (
     to_fdapy_irregular,
 )
 from .sparse_native import fit_sparse_fpca
+from .sparse_multivariate import (
+    fit_sparse_mfpca,
+    sparse_mfpca_reporting_text,
+    sparse_mfpca_score_frame,
+)
 from .subspace import (
     bootstrap_fpca_subspace_stability,
     compare_fpca_subspaces,
@@ -505,6 +510,7 @@ from .types import (
     RegistrationResult,
     RegistrationSensitivityResult,
     SparseFPCAResult,
+    SparseMFPCAResult,
     TrajectoryDistanceSensitivityResult,
     TrajectorySet,
 )
@@ -927,6 +933,10 @@ __all__ = [
     "plot_functional_mean_band",
     "functional_mean_band_reporting_text",
     "SparseFPCAResult",
+    "SparseMFPCAResult",
+    "fit_sparse_mfpca",
+    "sparse_mfpca_score_frame",
+    "sparse_mfpca_reporting_text",
     "sparse_dimension_summary",
     "to_fdapy_irregular",
     "fit_sparse_fpca",
