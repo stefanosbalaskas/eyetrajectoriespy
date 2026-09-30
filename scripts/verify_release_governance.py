@@ -24,6 +24,9 @@ _GITHUB_RELEASE_DECLARATIONS = {
     "functional_simulation_qualification_qualified",
     "functional_simulation_stress_recorded",
     "sparse_native_validation_qualified",
+    "sparse_multivariate_validation_qualified",
+    "sparse_multivariate_external_sensitivity_recorded",
+    "sparse_multivariate_performance_recorded",
 }
 
 REQUIRED_CHECKS = {
@@ -49,6 +52,9 @@ REQUIRED_CHECKS = {
     "sparse-performance",
     "stress-recovery",
     "noise-variance-recovery",
+    "known-truth-recovery",
+    "resource-envelope",
+    "frozen-fixture-sensitivity",
 }
 
 
