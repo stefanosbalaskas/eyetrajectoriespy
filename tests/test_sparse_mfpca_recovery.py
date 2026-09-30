@@ -1,3 +1,5 @@
+from dataclasses import replace
+
 import numpy as np
 import pandas as pd
 import pytest
@@ -366,3 +368,181 @@ def test_sparse_mfpca_recovery_rejects_partial_tied_truth_eigenspace():
             partial,
             simulation.truth,
         )
+
+
+def test_sparse_mfpca_recovery_fails_closed_on_public_contract_mismatches():
+    simulation = _simulate(
+        (1.20, 0.45),
+        (_asym_plus, _asym_minus),
+    )
+    truth = simulation.truth
+    exact = _exact_result(simulation)
+
+    with pytest.raises(TypeError, match="SparseMFPCAResult"):
+        evaluate_sparse_mfpca_recovery(object(), truth)
+    with pytest.raises(TypeError, match="FunctionalSimulationTruth"):
+        evaluate_sparse_mfpca_recovery(exact, object())
+
+    with pytest.raises(ValueError, match="dimension names/order"):
+        evaluate_sparse_mfpca_recovery(
+            replace(exact, dimensions=("y", "x")),
+            truth,
+        )
+
+    one_dimension_truth = replace(
+        truth,
+        dimension_names=("x",),
+    )
+    with pytest.raises(ValueError, match="exactly two dimensions"):
+        evaluate_sparse_mfpca_recovery(
+            replace(exact, dimensions=("x",)),
+            one_dimension_truth,
+        )
+
+    with pytest.raises(ValueError, match="mean.*identical shape"):
+        evaluate_sparse_mfpca_recovery(
+            replace(exact, mean=exact.mean[:, :1]),
+            truth,
+        )
+
+    with pytest.raises(ValueError, match="eigenfunctions"):
+        evaluate_sparse_mfpca_recovery(
+            replace(
+                exact,
+                eigenfunctions=exact.eigenfunctions[:, :, :1],
+            ),
+            truth,
+        )
+
+    with pytest.raises(ValueError, match="eigenvalues"):
+        evaluate_sparse_mfpca_recovery(
+            replace(exact, eigenvalues=exact.eigenvalues[:1]),
+            truth,
+        )
+
+    with pytest.raises(ValueError, match="scores"):
+        evaluate_sparse_mfpca_recovery(
+            replace(exact, scores=exact.scores[:, :1]),
+            truth,
+        )
+
+    with pytest.raises(ValueError, match="quadrature weights"):
+        evaluate_sparse_mfpca_recovery(
+            replace(
+                exact,
+                quadrature_weights=2.0 * exact.quadrature_weights,
+            ),
+            truth,
+        )
+
+
+def test_sparse_mfpca_recovery_fails_closed_on_invalid_covariance_blocks():
+    simulation = _simulate(
+        (1.20, 0.45),
+        (_asym_plus, _asym_minus),
+    )
+    truth = simulation.truth
+    exact = _exact_result(simulation)
+
+    with pytest.raises(ValueError, match="match the truth-grid geometry"):
+        evaluate_sparse_mfpca_recovery(
+            replace(
+                exact,
+                covariance_cxy=exact.covariance_cxy[:-1, :],
+            ),
+            truth,
+        )
+
+    nonfinite = exact.covariance_cxy.copy()
+    nonfinite[0, 0] = np.nan
+    with pytest.raises(ValueError, match="must be finite"):
+        evaluate_sparse_mfpca_recovery(
+            replace(exact, covariance_cxy=nonfinite),
+            truth,
+        )
+
+
+def test_sparse_mfpca_recovery_handles_missing_optional_diagnostics_explicitly():
+    simulation = _simulate(
+        (1.20, 0.45),
+        (_asym_plus, _asym_minus),
+    )
+    exact = _exact_result(simulation)
+    result = replace(
+        exact,
+        score_diagnostics=pd.DataFrame(),
+        covariance_diagnostics={},
+    )
+    assessment = evaluate_sparse_mfpca_recovery(
+        result,
+        simulation.truth,
+    )
+    frame = functional_recovery_assessment_frame(assessment)
+
+    failure = frame.loc[
+        frame["metric"] == "score_failure_rate",
+        "value",
+    ].iloc[0]
+    assert failure == pytest.approx(0.0)
+    assert not (frame["metric"] == "psd_repair_applied").any()
+    assert not (
+        frame["metric"] == "psd_relative_operator_correction"
+    ).any()
+
+
+def test_tied_recovery_retains_subspace_when_scores_are_not_recoverable():
+    simulation = _simulate(
+        (1.0, 1.0),
+        (_axis_x, _axis_y),
+    )
+    exact = _exact_result(simulation)
+    sparse_scores = np.full_like(exact.scores, np.nan)
+    sparse_scores[0] = exact.scores[0]
+
+    assessment = evaluate_sparse_mfpca_recovery(
+        replace(exact, scores=sparse_scores),
+        simulation.truth,
+    )
+    frame = functional_recovery_assessment_frame(assessment)
+
+    assert not (
+        frame["metric"] == "score_subspace_procrustes_rmse"
+    ).any()
+    assert (
+        frame["metric"] == "subspace_principal_cosine"
+    ).any()
+    assert not (
+        frame["metric"] == "reconstruction_ise"
+    ).any()
+
+
+def test_measurement_error_truth_supplied_flag_can_be_false_without_fake_metric():
+    covariance = np.array(
+        [
+            [0.0009, 0.0003],
+            [0.0003, 0.0016],
+        ]
+    )
+    simulation = _simulate(
+        (1.20, 0.45),
+        (_asym_plus, _asym_minus),
+        noise_covariance=covariance,
+    )
+    exact = _exact_result(simulation)
+    assessment = evaluate_sparse_mfpca_recovery(
+        replace(
+            exact,
+            measurement_error_covariance=np.diag(
+                np.diag(covariance)
+            ),
+        ),
+        simulation.truth,
+    )
+    frame = functional_recovery_assessment_frame(assessment)
+
+    assert assessment.provenance[
+        "measurement_error_truth_supplied"
+    ] is False
+    assert not frame["metric"].str.startswith(
+        "noise_variance"
+    ).any()
