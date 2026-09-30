@@ -122,6 +122,22 @@ def _recovery_row(rho, seed):
         truth.joint_scores,
     )
 
+    signal_mask = (
+        truth.joint_eigenvalues
+        >= SIGNAL_RELATIVE_EIGENVALUE_FLOOR
+        * float(truth.joint_eigenvalues[0])
+    )
+    n_signal_components = int(np.count_nonzero(signal_mask))
+    signal_functional_cosines = _principal_cosines_functional(
+        fit.eigenfunctions[:n_signal_components],
+        true_functions[:n_signal_components],
+        grid,
+    )
+    signal_score_cosines = _principal_cosines_scores(
+        fit.scores[:, :n_signal_components],
+        truth.joint_scores[:, :n_signal_components],
+    )
+
     fitted_operator = _weighted_operator(fit.covariance, grid)
     true_operator = _weighted_operator(true_blocks, grid)
     full_covariance_relative_error = float(
@@ -173,15 +189,32 @@ def _recovery_row(rho, seed):
             cross_error_scaled_to_marginal
         ),
         "full_block_covariance_relative_error": full_covariance_relative_error,
+        "requested_component_count": int(len(truth.joint_eigenvalues)),
+        "signal_relative_eigenvalue_floor": (
+            SIGNAL_RELATIVE_EIGENVALUE_FLOOR
+        ),
+        "signal_component_count": n_signal_components,
         "functional_subspace_min_principal_cosine": float(
             np.min(functional_cosines)
         ),
         "functional_subspace_principal_cosines": [
             float(value) for value in functional_cosines
         ],
+        "signal_functional_subspace_min_principal_cosine": float(
+            np.min(signal_functional_cosines)
+        ),
+        "signal_functional_subspace_principal_cosines": [
+            float(value) for value in signal_functional_cosines
+        ],
         "score_subspace_min_principal_cosine": float(np.min(score_cosines)),
         "score_subspace_principal_cosines": [
             float(value) for value in score_cosines
+        ],
+        "signal_score_subspace_min_principal_cosine": float(
+            np.min(signal_score_cosines)
+        ),
+        "signal_score_subspace_principal_cosines": [
+            float(value) for value in signal_score_cosines
         ],
         "score_failure_rate": failure_rate,
         "estimated_eigenvalues": [
@@ -232,6 +265,18 @@ def main():
         "audit": "native sparse multivariate FPCA threshold-free recovery",
         "qualification_gate": False,
         "estimator": "fit_sparse_mfpca",
+        "pilot_role": (
+            "descriptive development evidence used to freeze the subsequent "
+            "independent qualification contract"
+        ),
+        "signal_subspace_contract": {
+            "relative_eigenvalue_floor": SIGNAL_RELATIVE_EIGENVALUE_FLOOR,
+            "definition": (
+                "truth eigenvalue >= relative_eigenvalue_floor times the "
+                "leading truth eigenvalue"
+            ),
+            "weak_tail_reporting": "retained separately; never deleted",
+        },
         "measurement_error_contract": "fixed_marginal_independent_cross_channel",
         "psd_action": "project",
         "scenarios": rows,
