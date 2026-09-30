@@ -9,9 +9,11 @@ before joint PACE scoring is added.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Sequence
+from typing import Any, Sequence
 
 import numpy as np
+import pandas as pd
+from scipy.interpolate import RegularGridInterpolator
 
 from ._sparse_native import (
     LocalLinear2DResult,
@@ -150,6 +152,26 @@ class SparsePlanarMeanCovarianceResult:
     operator_audit: PlanarCovarianceAudit
     curve_ids: tuple[str, ...]
     analysis_sample_counts: tuple[int, ...]
+    provenance: dict[str, object]
+
+
+@dataclass(frozen=True)
+class MeasurementErrorCovarianceResult:
+    """Resolved two-channel measurement-error covariance contract."""
+
+    mode: str
+    covariance: np.ndarray
+    eigenvalues: np.ndarray
+    symmetry_error: float
+
+
+@dataclass(frozen=True)
+class JointPACEScoreResult:
+    """Joint planar PACE scores and retained per-curve diagnostics."""
+
+    scores: np.ndarray
+    diagnostics: pd.DataFrame
+    measurement_error_covariance: np.ndarray
     provenance: dict[str, object]
 
 
@@ -930,6 +952,690 @@ def estimate_sparse_planar_mean_covariance(
             int(value)
             for value in support_diagnostics["analysis_sample_counts"]
         ),
+        provenance=provenance,
+    )
+
+
+
+def evaluate_fitted_surface(
+    evaluation_grid: np.ndarray,
+    fitted_surface: np.ndarray,
+    left_times: np.ndarray,
+    right_times: np.ndarray,
+) -> np.ndarray:
+    """Evaluate a fitted directional surface on two native-time vectors.
+
+    Unlike the scalar covariance evaluator, this helper performs no
+    self-symmetrization. It is therefore valid for directional Cxy(s, t).
+    """
+
+    grid = _validate_grid(evaluation_grid)
+    surface = np.asarray(fitted_surface, dtype=float)
+    left = np.asarray(left_times, dtype=float)
+    right = np.asarray(right_times, dtype=float)
+    if surface.shape != (grid.size, grid.size):
+        raise ValueError(
+            f"fitted_surface must have shape ({grid.size}, {grid.size})"
+        )
+    if not np.all(np.isfinite(surface)):
+        raise ValueError("fitted_surface must contain only finite values")
+    if left.ndim != 1 or right.ndim != 1:
+        raise ValueError(
+            "left_times and right_times must be one-dimensional arrays"
+        )
+    if not np.all(np.isfinite(left)) or not np.all(np.isfinite(right)):
+        raise ValueError("native evaluation times must be finite")
+    if left.size == 0 or right.size == 0:
+        return np.empty((left.size, right.size), dtype=float)
+
+    target_min = min(float(np.min(left)), float(np.min(right)))
+    target_max = max(float(np.max(left)), float(np.max(right)))
+    if target_min < grid[0] or target_max > grid[-1]:
+        raise SparseNativeError(
+            "native_time_outside_fitted_support",
+            "native observation times fall outside fitted surface support",
+            details={
+                "grid_start": float(grid[0]),
+                "grid_end": float(grid[-1]),
+                "target_min": target_min,
+                "target_max": target_max,
+            },
+        )
+
+    interpolator = RegularGridInterpolator(
+        (grid, grid),
+        surface,
+        method="linear",
+        bounds_error=True,
+    )
+    left_mesh, right_mesh = np.meshgrid(left, right, indexing="ij")
+    points = np.column_stack(
+        [left_mesh.ravel(), right_mesh.ravel()]
+    )
+    return np.asarray(
+        interpolator(points),
+        dtype=float,
+    ).reshape(left.size, right.size)
+
+
+def planar_channel_major_to_time_major_permutation(
+    n_time_points: int,
+) -> np.ndarray:
+    """Return indices mapping [x1..xm,y1..ym] to [x1,y1,...,xm,ym]."""
+
+    if isinstance(n_time_points, bool) or not isinstance(
+        n_time_points, int
+    ):
+        raise TypeError("n_time_points must be an integer")
+    if n_time_points < 1:
+        raise ValueError("n_time_points must be positive")
+    return np.arange(2 * n_time_points, dtype=int).reshape(
+        2, n_time_points
+    ).T.ravel()
+
+
+def permute_planar_channel_major_to_time_major(
+    values: np.ndarray,
+    *,
+    n_time_points: int,
+) -> np.ndarray:
+    """Apply the named channel-major to time-major planar permutation."""
+
+    array = np.asarray(values)
+    permutation = planar_channel_major_to_time_major_permutation(
+        n_time_points
+    )
+    expected = 2 * n_time_points
+    if array.ndim == 1:
+        if array.shape != (expected,):
+            raise ValueError(
+                f"one-dimensional input must have length {expected}"
+            )
+        return array[permutation].copy()
+    if array.ndim == 2:
+        if array.shape != (expected, expected):
+            raise ValueError(
+                f"matrix input must have shape ({expected}, {expected})"
+            )
+        return array[np.ix_(permutation, permutation)].copy()
+    raise ValueError("values must be a planar vector or square matrix")
+
+
+def stack_planar_observations(observed: np.ndarray) -> np.ndarray:
+    """Stack m x 2 planar observations in time-major interleaved order."""
+
+    values = np.asarray(observed, dtype=float)
+    if values.ndim != 2 or values.shape[1] != 2:
+        raise ValueError("observed must have shape (n_time_points, 2)")
+    if not np.all(np.isfinite(values)):
+        raise ValueError("observed planar values must be finite")
+    return values.reshape(-1).copy()
+
+
+def stack_planar_mean(
+    evaluation_grid: np.ndarray,
+    fitted_mean: np.ndarray,
+    times: np.ndarray,
+) -> np.ndarray:
+    """Evaluate and interleave the fitted x/y mean at native times."""
+
+    grid = _validate_grid(evaluation_grid)
+    mean = np.asarray(fitted_mean, dtype=float)
+    target = np.asarray(times, dtype=float)
+    if mean.shape != (2, grid.size):
+        raise ValueError(
+            f"fitted_mean must have shape (2, {grid.size})"
+        )
+    if target.ndim != 1 or not np.all(np.isfinite(target)):
+        raise ValueError("times must be a finite one-dimensional array")
+    if target.size == 0:
+        return np.asarray([], dtype=float)
+    if np.any(target < grid[0]) or np.any(target > grid[-1]):
+        raise SparseNativeError(
+            "native_time_outside_fitted_support",
+            "native observation times fall outside fitted mean support",
+            details={
+                "grid_start": float(grid[0]),
+                "grid_end": float(grid[-1]),
+                "target_min": float(np.min(target)),
+                "target_max": float(np.max(target)),
+            },
+        )
+    evaluated = np.column_stack(
+        [
+            np.interp(target, grid, mean[0]),
+            np.interp(target, grid, mean[1]),
+        ]
+    )
+    return evaluated.reshape(-1)
+
+
+def stack_planar_eigenfunctions(
+    evaluation_grid: np.ndarray,
+    eigenfunctions: np.ndarray,
+    times: np.ndarray,
+    *,
+    n_components: int,
+) -> np.ndarray:
+    """Evaluate vector eigenfunctions as a 2m x K time-major matrix."""
+
+    grid = _validate_grid(evaluation_grid)
+    functions = np.asarray(eigenfunctions, dtype=float)
+    target = np.asarray(times, dtype=float)
+    if (
+        functions.ndim != 3
+        or functions.shape[1] != 2
+        or functions.shape[2] != grid.size
+    ):
+        raise ValueError(
+            "eigenfunctions must have shape "
+            "(n_available_components, 2, n_grid)"
+        )
+    if isinstance(n_components, bool) or not isinstance(
+        n_components, int
+    ):
+        raise TypeError("n_components must be an integer")
+    if n_components < 1 or n_components > functions.shape[0]:
+        raise ValueError(
+            "n_components is outside the available eigenfunction range"
+        )
+    if target.ndim != 1 or not np.all(np.isfinite(target)):
+        raise ValueError("times must be a finite one-dimensional array")
+    if target.size == 0:
+        return np.empty((0, n_components), dtype=float)
+    if np.any(target < grid[0]) or np.any(target > grid[-1]):
+        raise SparseNativeError(
+            "native_time_outside_fitted_support",
+            "native observation times fall outside fitted eigenfunction support",
+            details={
+                "grid_start": float(grid[0]),
+                "grid_end": float(grid[-1]),
+                "target_min": float(np.min(target)),
+                "target_max": float(np.max(target)),
+            },
+        )
+
+    output = np.empty(
+        (2 * target.size, n_components),
+        dtype=float,
+    )
+    for component in range(n_components):
+        evaluated = np.column_stack(
+            [
+                np.interp(
+                    target,
+                    grid,
+                    functions[component, 0],
+                ),
+                np.interp(
+                    target,
+                    grid,
+                    functions[component, 1],
+                ),
+            ]
+        )
+        output[:, component] = evaluated.reshape(-1)
+    return output
+
+
+def evaluate_planar_covariance(
+    evaluation_grid: np.ndarray,
+    covariance_blocks: PlanarCovarianceBlocks,
+    times: np.ndarray,
+    *,
+    order: str = "time_major",
+) -> np.ndarray:
+    """Evaluate all planar covariance blocks on one native time vector.
+
+    Cxy is evaluated directionally. Cyx is defined as the transpose of that
+    evaluated directional surface, not fitted or self-symmetrized separately.
+    """
+
+    grid = _validate_grid(evaluation_grid)
+    target = np.asarray(times, dtype=float)
+    if target.ndim != 1 or not np.all(np.isfinite(target)):
+        raise ValueError("times must be a finite one-dimensional array")
+    if order not in {"channel_major", "time_major"}:
+        raise ValueError("order must be 'channel_major' or 'time_major'")
+    size = grid.size
+    cxx = _validate_block(
+        covariance_blocks.cxx,
+        grid_size=size,
+        name="cxx",
+    )
+    cxy = _validate_block(
+        covariance_blocks.cxy,
+        grid_size=size,
+        name="cxy",
+    )
+    cyy = _validate_block(
+        covariance_blocks.cyy,
+        grid_size=size,
+        name="cyy",
+    )
+
+    native_xx = evaluate_fitted_surface(
+        grid,
+        cxx,
+        target,
+        target,
+    )
+    native_xy = evaluate_fitted_surface(
+        grid,
+        cxy,
+        target,
+        target,
+    )
+    native_yy = evaluate_fitted_surface(
+        grid,
+        cyy,
+        target,
+        target,
+    )
+    channel_major = np.block(
+        [
+            [native_xx, native_xy],
+            [native_xy.T, native_yy],
+        ]
+    )
+    if order == "channel_major":
+        return channel_major
+    return permute_planar_channel_major_to_time_major(
+        channel_major,
+        n_time_points=target.size,
+    )
+
+
+def resolve_measurement_error_covariance(
+    mode: str,
+    *,
+    measurement_error_variance: Sequence[float] | None = None,
+    measurement_error_covariance: np.ndarray | None = None,
+    symmetry_tolerance: float = 1e-12,
+    psd_tolerance: float = 1e-12,
+) -> MeasurementErrorCovarianceResult:
+    """Resolve and strictly validate a two-channel measurement-error matrix."""
+
+    if mode not in {"diagonal", "fixed_matrix"}:
+        raise ValueError(
+            "mode must be 'diagonal' or 'fixed_matrix'"
+        )
+    symmetry_tolerance = float(symmetry_tolerance)
+    psd_tolerance = float(psd_tolerance)
+    if not np.isfinite(symmetry_tolerance) or symmetry_tolerance < 0:
+        raise ValueError(
+            "symmetry_tolerance must be finite and non-negative"
+        )
+    if not np.isfinite(psd_tolerance) or psd_tolerance < 0:
+        raise ValueError(
+            "psd_tolerance must be finite and non-negative"
+        )
+
+    if mode == "diagonal":
+        if measurement_error_covariance is not None:
+            raise ValueError(
+                "measurement_error_covariance is only valid for fixed_matrix"
+            )
+        if measurement_error_variance is None:
+            raise SparseNativeError(
+                "invalid_measurement_error_covariance",
+                "diagonal mode requires two declared variances",
+                details={"mode": mode},
+            )
+        variances = np.asarray(
+            measurement_error_variance,
+            dtype=float,
+        )
+        if (
+            variances.shape != (2,)
+            or not np.all(np.isfinite(variances))
+            or np.any(variances < 0)
+        ):
+            raise SparseNativeError(
+                "invalid_measurement_error_covariance",
+                "diagonal measurement-error variances must be two "
+                "finite non-negative values",
+                details={"mode": mode},
+            )
+        matrix = np.diag(variances)
+    else:
+        if measurement_error_variance is not None:
+            raise ValueError(
+                "measurement_error_variance is only valid for diagonal mode"
+            )
+        if measurement_error_covariance is None:
+            raise SparseNativeError(
+                "invalid_measurement_error_covariance",
+                "fixed_matrix mode requires a 2x2 covariance matrix",
+                details={"mode": mode},
+            )
+        matrix = np.asarray(
+            measurement_error_covariance,
+            dtype=float,
+        )
+        if matrix.shape != (2, 2) or not np.all(np.isfinite(matrix)):
+            raise SparseNativeError(
+                "invalid_measurement_error_covariance",
+                "measurement-error covariance must be a finite 2x2 matrix",
+                details={"mode": mode},
+            )
+
+    symmetry_error = float(
+        np.max(np.abs(matrix - matrix.T))
+    )
+    if symmetry_error > symmetry_tolerance:
+        raise SparseNativeError(
+            "invalid_measurement_error_covariance",
+            "measurement-error covariance is not symmetric",
+            details={
+                "mode": mode,
+                "symmetry_error": symmetry_error,
+                "symmetry_tolerance": symmetry_tolerance,
+            },
+        )
+    symmetric = 0.5 * (matrix + matrix.T)
+    eigenvalues = np.linalg.eigvalsh(symmetric)
+    minimum = float(np.min(eigenvalues))
+    if minimum < -psd_tolerance:
+        raise SparseNativeError(
+            "invalid_measurement_error_covariance",
+            "measurement-error covariance is not positive semidefinite",
+            details={
+                "mode": mode,
+                "minimum_eigenvalue": minimum,
+                "psd_tolerance": psd_tolerance,
+            },
+        )
+
+    return MeasurementErrorCovarianceResult(
+        mode=mode,
+        covariance=symmetric,
+        eigenvalues=eigenvalues,
+        symmetry_error=symmetry_error,
+    )
+
+
+def build_joint_score_covariance(
+    native_covariance_time_major: np.ndarray,
+    measurement_error_covariance: np.ndarray,
+    *,
+    score_ridge: float = 0.0,
+) -> np.ndarray:
+    """Build C_i + I_m kron R_epsilon + gamma I in time-major order."""
+
+    covariance = np.asarray(
+        native_covariance_time_major,
+        dtype=float,
+    )
+    if (
+        covariance.ndim != 2
+        or covariance.shape[0] != covariance.shape[1]
+        or covariance.shape[0] % 2 != 0
+        or covariance.shape[0] == 0
+    ):
+        raise ValueError(
+            "native_covariance_time_major must be a non-empty "
+            "square matrix of even dimension"
+        )
+    if not np.all(np.isfinite(covariance)):
+        raise ValueError(
+            "native covariance must contain only finite values"
+        )
+    resolved = resolve_measurement_error_covariance(
+        "fixed_matrix",
+        measurement_error_covariance=measurement_error_covariance,
+    )
+    score_ridge = float(score_ridge)
+    if not np.isfinite(score_ridge) or score_ridge < 0:
+        raise ValueError(
+            "score_ridge must be finite and non-negative"
+        )
+    n_time = covariance.shape[0] // 2
+    noise = np.kron(
+        np.eye(n_time, dtype=float),
+        resolved.covariance,
+    )
+    sigma = covariance + noise + score_ridge * np.eye(
+        2 * n_time,
+        dtype=float,
+    )
+    return 0.5 * (sigma + sigma.T)
+
+
+def joint_pace_scores(
+    curve_ids: Sequence[str],
+    curve_times: Sequence[np.ndarray],
+    curve_values: Sequence[np.ndarray],
+    *,
+    evaluation_grid: np.ndarray,
+    fitted_mean: np.ndarray,
+    covariance_blocks: PlanarCovarianceBlocks,
+    eigenvalues: np.ndarray,
+    eigenfunctions: np.ndarray,
+    measurement_error_covariance: np.ndarray,
+    n_components: int,
+    score_ridge: float = 0.0,
+    condition_limit: float = 1e12,
+    min_score_time_points: int = 2,
+    failure_action: str = "error",
+) -> JointPACEScoreResult:
+    """Recover joint PACE scores from the full fitted planar covariance.
+
+    n_components controls returned eigenfunctions/scores only. Every score
+    system uses the complete fitted joint covariance evaluated at native times,
+    plus the resolved measurement-error covariance and optional ridge.
+    """
+
+    if not (
+        len(curve_ids) == len(curve_times) == len(curve_values)
+    ):
+        raise ValueError(
+            "curve_ids, curve_times, and curve_values must have equal length"
+        )
+    grid = _validate_grid(evaluation_grid)
+    mean = np.asarray(fitted_mean, dtype=float)
+    values = np.asarray(eigenvalues, dtype=float)
+    functions = np.asarray(eigenfunctions, dtype=float)
+    if mean.shape != (2, grid.size):
+        raise ValueError(
+            f"fitted_mean must have shape (2, {grid.size})"
+        )
+    if (
+        functions.ndim != 3
+        or functions.shape[1] != 2
+        or functions.shape[2] != grid.size
+    ):
+        raise ValueError(
+            "eigenfunctions must have shape "
+            "(n_available_components, 2, n_grid)"
+        )
+    if values.ndim != 1 or values.size != functions.shape[0]:
+        raise ValueError(
+            "eigenvalues must align with eigenfunctions"
+        )
+    if isinstance(n_components, bool) or not isinstance(
+        n_components, int
+    ):
+        raise TypeError("n_components must be an integer")
+    if n_components < 1 or n_components > values.size:
+        raise ValueError(
+            "n_components is outside the available eigenfunction range"
+        )
+    score_ridge = float(score_ridge)
+    if not np.isfinite(score_ridge) or score_ridge < 0:
+        raise ValueError(
+            "score_ridge must be finite and non-negative"
+        )
+    condition_limit = float(condition_limit)
+    if not np.isfinite(condition_limit) or condition_limit <= 1:
+        raise ValueError(
+            "condition_limit must be finite and greater than 1"
+        )
+    if isinstance(min_score_time_points, bool) or not isinstance(
+        min_score_time_points, int
+    ):
+        raise TypeError(
+            "min_score_time_points must be an integer"
+        )
+    if min_score_time_points < 1:
+        raise ValueError(
+            "min_score_time_points must be positive"
+        )
+    if failure_action not in {"error", "retain_nan"}:
+        raise ValueError(
+            "failure_action must be 'error' or 'retain_nan'"
+        )
+
+    resolved_error = resolve_measurement_error_covariance(
+        "fixed_matrix",
+        measurement_error_covariance=measurement_error_covariance,
+    )
+    scores = np.full(
+        (len(curve_ids), n_components),
+        np.nan,
+        dtype=float,
+    )
+    rows: list[dict[str, Any]] = []
+    first_failure: tuple[str, str, dict[str, Any]] | None = None
+
+    for index, (curve_id, time, observed) in enumerate(
+        zip(curve_ids, curve_times, curve_values, strict=True)
+    ):
+        target = np.asarray(time, dtype=float)
+        planar = np.asarray(observed, dtype=float)
+        if (
+            target.ndim != 1
+            or planar.ndim != 2
+            or planar.shape != (target.size, 2)
+        ):
+            raise ValueError(
+                "each curve must provide time shape (m,) and values shape (m, 2)"
+            )
+        if not np.all(np.isfinite(target)) or not np.all(
+            np.isfinite(planar)
+        ):
+            raise ValueError(
+                "curve times and planar observed values must be finite"
+            )
+
+        status_code = "ok"
+        solve_status = "not_attempted"
+        condition_number = np.nan
+        minimum_eigenvalue = np.nan
+        maximum_eigenvalue = np.nan
+
+        if target.size < min_score_time_points:
+            status_code = "curve_too_sparse_for_joint_score_system"
+        else:
+            try:
+                native_covariance = evaluate_planar_covariance(
+                    grid,
+                    covariance_blocks,
+                    target,
+                    order="time_major",
+                )
+                sigma = build_joint_score_covariance(
+                    native_covariance,
+                    resolved_error.covariance,
+                    score_ridge=score_ridge,
+                )
+                sigma_eigenvalues = np.linalg.eigvalsh(sigma)
+                minimum_eigenvalue = float(
+                    np.min(sigma_eigenvalues)
+                )
+                maximum_eigenvalue = float(
+                    np.max(sigma_eigenvalues)
+                )
+                condition_number = (
+                    np.inf
+                    if minimum_eigenvalue <= 0
+                    else maximum_eigenvalue
+                    / minimum_eigenvalue
+                )
+                if minimum_eigenvalue <= 0:
+                    status_code = (
+                        "joint_score_covariance_not_positive_definite"
+                    )
+                elif condition_number > condition_limit:
+                    status_code = (
+                        "joint_score_covariance_ill_conditioned"
+                    )
+                else:
+                    centered = (
+                        stack_planar_observations(planar)
+                        - stack_planar_mean(
+                            grid,
+                            mean,
+                            target,
+                        )
+                    )
+                    phi_i = stack_planar_eigenfunctions(
+                        grid,
+                        functions,
+                        target,
+                        n_components=n_components,
+                    )
+                    solved = np.linalg.solve(sigma, centered)
+                    scores[index] = values[:n_components] * (
+                        phi_i.T @ solved
+                    )
+                    solve_status = "solved"
+            except SparseNativeError as exc:
+                status_code = exc.code
+
+        row = {
+            "curve_id": str(curve_id),
+            "n_time_points": int(target.size),
+            "n_planar_observations": int(2 * target.size),
+            "status_code": status_code,
+            "solve_status": solve_status,
+            "condition_number": float(condition_number),
+            "minimum_eigenvalue": float(minimum_eigenvalue),
+            "maximum_eigenvalue": float(maximum_eigenvalue),
+            "score_ridge": score_ridge,
+            "condition_limit": condition_limit,
+            "observation_order": "time_major_interleaved_xy",
+        }
+        rows.append(row)
+        if status_code != "ok" and first_failure is None:
+            first_failure = (
+                status_code,
+                str(curve_id),
+                dict(row),
+            )
+
+    diagnostics = pd.DataFrame(rows)
+    if first_failure is not None and failure_action == "error":
+        code, curve_id, details = first_failure
+        raise SparseNativeError(
+            code,
+            f"joint PACE score system failed for curve {curve_id!r}",
+            details={
+                **details,
+                "all_curve_diagnostics": diagnostics.to_dict(
+                    orient="records"
+                ),
+            },
+        )
+
+    provenance: dict[str, object] = {
+        "operator_storage_order": "channel_major",
+        "score_observation_order": "time_major_interleaved_xy",
+        "ordering_permutation_applied": True,
+        "score_covariance_source": (
+            "full_fitted_joint_covariance_plus_measurement_error"
+        ),
+        "rank_k_covariance_used_for_scoring": False,
+        "raw_sparse_trajectory_interpolation_performed": False,
+        "population_function_evaluation_at_native_times": True,
+        "measurement_error_covariance_mode": resolved_error.mode,
+        "score_ridge": score_ridge,
+        "condition_limit": condition_limit,
+    }
+    return JointPACEScoreResult(
+        scores=scores,
+        diagnostics=diagnostics,
+        measurement_error_covariance=resolved_error.covariance.copy(),
         provenance=provenance,
     )
 
