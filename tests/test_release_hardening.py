@@ -17,20 +17,18 @@ def _load_script(name):
     return module
 
 
-def test_release_version_contract_agrees_for_release_candidate():
+def test_release_version_contract_agrees_for_development_line():
     module = _load_script("verify_release_version.py")
-    assert module.verify_version_contract() == "0.11.0"
+    assert module.verify_version_contract() == "0.12.0.dev0"
 
 
-def test_release_candidate_version_contract_is_production_eligible():
+def test_current_development_line_is_not_production_eligible():
     module = _load_script("verify_release_version.py")
-    assert (
+    with pytest.raises(RuntimeError, match="development versions"):
         module.verify_version_contract(
-            tag="v0.11.0",
+            tag="v0.12.0.dev0",
             production=True,
         )
-        == "0.11.0"
-    )
 
 
 def test_production_release_rejects_development_line(monkeypatch):
@@ -148,6 +146,9 @@ def test_release_governance_requires_exact_main_simulation_evidence():
     assert "sparse-performance" in module.REQUIRED_CHECKS
     assert "stress-recovery" in module.REQUIRED_CHECKS
     assert "noise-variance-recovery" in module.REQUIRED_CHECKS
+    assert "known-truth-recovery" in module.REQUIRED_CHECKS
+    assert "resource-envelope" in module.REQUIRED_CHECKS
+    assert "frozen-fixture-sensitivity" in module.REQUIRED_CHECKS
     assert (
         "functional_simulation_qualification_qualified"
         in module._GITHUB_RELEASE_DECLARATIONS
@@ -158,6 +159,18 @@ def test_release_governance_requires_exact_main_simulation_evidence():
     )
     assert (
         "sparse_native_validation_qualified"
+        in module._GITHUB_RELEASE_DECLARATIONS
+    )
+    assert (
+        "sparse_multivariate_validation_qualified"
+        in module._GITHUB_RELEASE_DECLARATIONS
+    )
+    assert (
+        "sparse_multivariate_external_sensitivity_recorded"
+        in module._GITHUB_RELEASE_DECLARATIONS
+    )
+    assert (
+        "sparse_multivariate_performance_recorded"
         in module._GITHUB_RELEASE_DECLARATIONS
     )
 
