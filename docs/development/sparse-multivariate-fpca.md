@@ -5,8 +5,8 @@ title: Native sparse multivariate FPCA for planar gaze
 # Native sparse multivariate FPCA for planar gaze
 
 This page defines the **0.12 scientific design contract**. It follows the
-completed pre-0.12 recovery audit and does not itself claim that the estimator
-has been implemented or qualified.
+completed pre-0.12 recovery audit and records the implemented numerical/public
+composition boundary. Full 0.12 recovery qualification remains pending.
 
 ## Release boundary
 
@@ -248,9 +248,23 @@ interpolation.
 Population mean/covariance/eigenfunction evaluation at native times is allowed.
 Raw sparse trajectory interpolation remains false.
 
+## Public composition status
+
+PR A implemented the direct sparse vector mean and xx/xy/yy covariance-block
+fit. PR B implemented direction-preserving native-time surface evaluation,
+explicit channel-major to time-major ordering, strict two-channel
+measurement-error validation, and full-covariance joint PACE scoring.
+
+PR C exposes those same numerical pieces through `fit_sparse_mfpca()` and
+`SparseMFPCAResult`; it does not introduce a second estimator path. Public
+mean/eigenfunction arrays use time before dimension, while the internal
+operator remains channel-major. The initial public contract requires explicit
+`diagonal` or `fixed_matrix` measurement-error input. It does not expose
+channel weights or automatic measurement-error estimation.
+
 ## Public API target
 
-The provisional canonical entry point is:
+The canonical entry point is:
 
 ```python
 fit_sparse_mfpca(
