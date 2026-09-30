@@ -276,7 +276,7 @@ fit_sparse_mfpca(
     mean_bandwidth,
     covariance_bandwidth,
     analysis_support_action="error",
-    measurement_error="diagonal",
+    measurement_error,
     measurement_error_variance=None,
     measurement_error_covariance=None,
     psd_action="error",
@@ -297,7 +297,7 @@ tested behavior.
 The result must retain at least:
 
 - evaluation grid and analysis support;
-- selected dimension names and channel weights;
+- selected dimension names;
 - vector mean function;
 - all four fitted covariance blocks;
 - the directly smoothed pre-PSD covariance blocks separately from the
