@@ -197,6 +197,51 @@ def test_sparse_mfpca_recovery_is_block_aware_for_asymmetric_cross_covariance():
     )
 
 
+def test_joint_covariance_ise_is_sum_of_named_block_errors():
+    simulation = _simulate(
+        (1.20, 0.45),
+        (_asym_plus, _asym_minus),
+    )
+    exact = _exact_result(simulation)
+    perturbation = np.full_like(exact.covariance_cxy, 0.05)
+    modified = SparseMFPCAResult(
+        **{
+            **exact.__dict__,
+            "covariance_cxy": exact.covariance_cxy + perturbation,
+            "covariance_cyx": (
+                exact.covariance_cxy + perturbation
+            ).T,
+        }
+    )
+    assessment = evaluate_sparse_mfpca_recovery(
+        modified,
+        simulation.truth,
+    )
+    frame = functional_recovery_assessment_frame(assessment)
+    blocks = frame.loc[
+        frame["metric"] == "covariance_block_ise",
+        ["source", "value"],
+    ].set_index("source")["value"]
+    joint = float(
+        frame.loc[
+            frame["metric"] == "covariance_ise",
+            "value",
+        ].iloc[0]
+    )
+
+    assert blocks["cxx"] == pytest.approx(0.0, abs=1e-12)
+    assert blocks["cyy"] == pytest.approx(0.0, abs=1e-12)
+    assert blocks["cxy"] > 0
+    assert blocks["cyx"] == pytest.approx(blocks["cxy"])
+    assert joint == pytest.approx(
+        blocks["cxx"]
+        + blocks["cxy"]
+        + blocks["cyx"]
+        + blocks["cyy"]
+    )
+    assert joint == pytest.approx(2.0 * blocks["cxy"])
+
+
 def test_tied_truth_uses_subspace_and_procrustes_not_component_score_metrics():
     simulation = _simulate(
         (1.0, 1.0),
