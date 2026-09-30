@@ -22,6 +22,7 @@ from .types import (
     FunctionalMixedEffectsResult,
     RegistrationResult,
     SparseFPCAResult,
+    SparseMFPCAResult,
 )
 
 
@@ -145,6 +146,22 @@ _METRICS = {
             "squared covariance × time²",
             "population",
             "Quadrature-weighted integrated squared covariance error.",
+        ),
+        _metric(
+            "covariance_block_ise",
+            "planar covariance block",
+            "lower_is_better",
+            "squared covariance × time²",
+            "covariance_block",
+            "Quadrature-weighted integrated squared error of one named planar covariance block.",
+        ),
+        _metric(
+            "score_subspace_procrustes_rmse",
+            "latent score coordinates within a tied eigenspace",
+            "lower_is_better",
+            "score units",
+            "tied_eigenspace",
+            "Root-mean-square score error after optimal orthogonal Procrustes alignment within an identified tied truth eigenspace.",
         ),
         _metric(
             "eigenvalue_relative_error",
@@ -543,6 +560,154 @@ def _ise(
             "functional difference does not match quadrature weights"
         )
     return float(np.sum(flat**2 * flat_weights))
+
+
+def _planar_truth_covariance_blocks(
+    truth: FunctionalSimulationTruth,
+) -> dict[str, np.ndarray]:
+    """Construct named planar truth covariance blocks on truth.truth_grid."""
+
+    components = np.asarray(truth.eigenfunctions, dtype=float)
+    eigenvalues = np.asarray(truth.eigenvalues, dtype=float)
+    if components.ndim != 3 or components.shape[2] != 2:
+        raise ValueError(
+            "sparse MFPCA recovery requires exactly two truth dimensions"
+        )
+    x = components[:, :, 0]
+    y = components[:, :, 1]
+    return {
+        "cxx": np.einsum(
+            "k,ks,kt->st", eigenvalues, x, x, optimize=True
+        ),
+        "cxy": np.einsum(
+            "k,ks,kt->st", eigenvalues, x, y, optimize=True
+        ),
+        "cyx": np.einsum(
+            "k,ks,kt->st", eigenvalues, y, x, optimize=True
+        ),
+        "cyy": np.einsum(
+            "k,ks,kt->st", eigenvalues, y, y, optimize=True
+        ),
+    }
+
+
+def _covariance_block_ise(
+    estimated: np.ndarray,
+    target: np.ndarray,
+    time_weights: np.ndarray,
+) -> float:
+    """Quadrature-weighted ISE for one G x G covariance block."""
+
+    estimate = np.asarray(estimated, dtype=float)
+    truth = np.asarray(target, dtype=float)
+    weights = np.asarray(time_weights, dtype=float)
+    expected = (weights.size, weights.size)
+    if estimate.shape != expected or truth.shape != expected:
+        raise ValueError(
+            "planar covariance blocks must match the truth-grid geometry"
+        )
+    if not np.all(np.isfinite(estimate)) or not np.all(np.isfinite(truth)):
+        raise ValueError("planar covariance blocks must be finite")
+    return float(
+        np.sum(
+            (estimate - truth) ** 2
+            * np.outer(weights, weights)
+        )
+    )
+
+
+def _truth_tie_groups(
+    eigenvalues: np.ndarray,
+    *,
+    relative_tolerance: float,
+) -> tuple[tuple[int, ...], ...]:
+    """Return contiguous truth-eigenvalue groups that are not identifiable singly."""
+
+    values = np.asarray(eigenvalues, dtype=float)
+    tolerance = float(relative_tolerance)
+    if values.ndim != 1 or values.size < 1:
+        raise ValueError("truth eigenvalues must be a non-empty vector")
+    if not np.all(np.isfinite(values)) or np.any(values <= 0):
+        raise ValueError("truth eigenvalues must be finite and positive")
+    if not np.isfinite(tolerance) or tolerance < 0:
+        raise ValueError(
+            "relative_tolerance must be finite and non-negative"
+        )
+
+    groups: list[tuple[int, ...]] = []
+    start = 0
+    for index in range(1, values.size):
+        scale = max(
+            abs(float(values[index - 1])),
+            abs(float(values[index])),
+            np.finfo(float).tiny,
+        )
+        tied = (
+            abs(float(values[index - 1] - values[index]))
+            <= tolerance * scale
+        )
+        if not tied:
+            if index - start > 1:
+                groups.append(tuple(range(start, index)))
+            start = index
+    if values.size - start > 1:
+        groups.append(tuple(range(start, values.size)))
+    return tuple(groups)
+
+
+def _weighted_subspace_principal_cosines(
+    estimated: np.ndarray,
+    truth: np.ndarray,
+    flat_weights: np.ndarray,
+) -> np.ndarray:
+    """Principal cosines between two equally sized functional subspaces."""
+
+    estimated_normalized = _normalized_rows(estimated, flat_weights)
+    truth_normalized = _normalized_rows(truth, flat_weights)
+    if estimated_normalized.shape != truth_normalized.shape:
+        raise ValueError(
+            "subspace comparison requires equal component counts/geometries"
+        )
+    sqrt_weights = np.sqrt(np.asarray(flat_weights, dtype=float))
+    q_estimated, _ = np.linalg.qr(
+        estimated_normalized.T * sqrt_weights[:, None]
+    )
+    q_truth, _ = np.linalg.qr(
+        truth_normalized.T * sqrt_weights[:, None]
+    )
+    return np.clip(
+        np.linalg.svd(q_estimated.T @ q_truth, compute_uv=False),
+        0.0,
+        1.0,
+    )
+
+
+def _score_procrustes_rmse(
+    estimated_scores: np.ndarray,
+    truth_scores: np.ndarray,
+) -> float | None:
+    """Orthogonally align tied score coordinates and return elementwise RMSE."""
+
+    estimated = np.asarray(estimated_scores, dtype=float)
+    target = np.asarray(truth_scores, dtype=float)
+    if estimated.shape != target.shape or estimated.ndim != 2:
+        raise ValueError(
+            "score Procrustes comparison requires equal two-dimensional arrays"
+        )
+    finite_rows = np.all(np.isfinite(estimated), axis=1) & np.all(
+        np.isfinite(target), axis=1
+    )
+    if np.count_nonzero(finite_rows) < max(2, estimated.shape[1]):
+        return None
+    estimate = estimated[finite_rows]
+    truth_finite = target[finite_rows]
+    u, _, vt = np.linalg.svd(
+        estimate.T @ truth_finite,
+        full_matrices=False,
+    )
+    rotation = u @ vt
+    aligned = estimate @ rotation
+    return float(np.sqrt(np.mean((aligned - truth_finite) ** 2)))
 
 
 def _population_values(
@@ -994,6 +1159,390 @@ def evaluate_sparse_fpca_recovery(
                 alignment.truth_indices.tolist()
             ),
             "alignment_signs": alignment.signs.tolist(),
+        },
+    )
+
+
+def evaluate_sparse_mfpca_recovery(
+    result: SparseMFPCAResult,
+    truth: FunctionalSimulationTruth,
+) -> FunctionalRecoveryAssessment:
+    """Evaluate native sparse multivariate FPCA/joint PACE against truth.
+
+    Covariance recovery is block-aware so public time-major functional arrays
+    are never confused with the internal channel-major block operator. Exact
+    or near-tied truth eigenspaces are treated as subspaces: component-specific
+    eigenfunction and score metrics are omitted inside those groups and
+    replaced by principal-angle geometry plus Procrustes-aligned score RMSE.
+    """
+
+    if not isinstance(result, SparseMFPCAResult):
+        raise TypeError("result must be a SparseMFPCAResult")
+    if not isinstance(truth, FunctionalSimulationTruth):
+        raise TypeError("truth must be a FunctionalSimulationTruth")
+    _require_truth_grid(result.evaluation_grid, truth)
+    if tuple(result.dimensions) != tuple(truth.dimension_names):
+        raise ValueError(
+            "fitted dimension names/order do not match generating truth"
+        )
+    if len(result.dimensions) != 2:
+        raise ValueError(
+            "sparse MFPCA recovery requires exactly two dimensions"
+        )
+
+    mean = np.asarray(result.mean, dtype=float)
+    components = np.asarray(result.eigenfunctions, dtype=float)
+    eigenvalues = np.asarray(result.eigenvalues, dtype=float)
+    scores = np.asarray(result.scores, dtype=float)
+    truth_mean = np.asarray(truth.mean, dtype=float)
+    truth_components = np.asarray(truth.eigenfunctions, dtype=float)
+    truth_scores = np.asarray(truth.scores, dtype=float)
+    if mean.shape != truth_mean.shape:
+        raise ValueError(
+            "fitted mean and generating mean must have identical shape"
+        )
+    if (
+        components.ndim != 3
+        or components.shape[1:] != truth_mean.shape
+        or components.shape[2] != 2
+    ):
+        raise ValueError(
+            "fitted joint eigenfunctions do not match truth geometry"
+        )
+    if eigenvalues.shape != (components.shape[0],):
+        raise ValueError(
+            "fitted eigenvalues do not match fitted component count"
+        )
+    if scores.shape != (truth_scores.shape[0], components.shape[0]):
+        raise ValueError(
+            "fitted scores do not match truth curve/component geometry"
+        )
+
+    weights = np.asarray(result.quadrature_weights, dtype=float)
+    expected_weights = functional_trapezoid_weights(
+        result.evaluation_grid
+    )
+    if weights.shape != expected_weights.shape or not np.allclose(
+        weights,
+        expected_weights,
+        rtol=0.0,
+        atol=1e-14,
+    ):
+        raise ValueError(
+            "sparse MFPCA recovery requires the declared functional quadrature weights"
+        )
+    flat_weights = _functional_weights(weights, 2)
+    alignment = _align_components(
+        components,
+        truth_components,
+        flat_weights,
+    )
+
+    tie_tolerance = 1e-8
+    tie_groups = _truth_tie_groups(
+        truth.eigenvalues,
+        relative_tolerance=tie_tolerance,
+    )
+    tie_lookup = {
+        component: group
+        for group in tie_groups
+        for component in group
+    }
+    selected_truth = set(int(value) for value in alignment.truth_indices)
+    for group in tie_groups:
+        overlap = selected_truth.intersection(group)
+        if overlap and len(overlap) != len(group):
+            raise ValueError(
+                "retained components split a tied truth eigenspace; "
+                "component-level recovery is not identifiable"
+            )
+
+    values: list[FunctionalRecoveryValue] = [
+        _value(
+            "mean_ise",
+            _ise(mean - truth_mean, flat_weights),
+        )
+    ]
+
+    truth_blocks = _planar_truth_covariance_blocks(truth)
+    estimated_blocks = {
+        "cxx": np.asarray(result.covariance_cxx, dtype=float),
+        "cxy": np.asarray(result.covariance_cxy, dtype=float),
+        "cyx": np.asarray(result.covariance_cyx, dtype=float),
+        "cyy": np.asarray(result.covariance_cyy, dtype=float),
+    }
+    block_errors: dict[str, float] = {}
+    for block_name in ("cxx", "cxy", "cyx", "cyy"):
+        error = _covariance_block_ise(
+            estimated_blocks[block_name],
+            truth_blocks[block_name],
+            weights,
+        )
+        block_errors[block_name] = error
+        values.append(
+            _value(
+                "covariance_block_ise",
+                error,
+                source=block_name,
+            )
+        )
+    values.append(
+        _value(
+            "covariance_ise",
+            sum(block_errors.values()),
+        )
+    )
+
+    for component, truth_component_raw in enumerate(
+        alignment.truth_indices
+    ):
+        truth_component = int(truth_component_raw)
+        target_eigenvalue = float(truth.eigenvalues[truth_component])
+        values.append(
+            _value(
+                "eigenvalue_relative_error",
+                abs(float(eigenvalues[component]) - target_eigenvalue)
+                / abs(target_eigenvalue),
+                component=component,
+            )
+        )
+        if truth_component in tie_lookup:
+            continue
+        values.append(
+            _value(
+                "component_absolute_similarity",
+                alignment.component_similarity[component],
+                component=component,
+            )
+        )
+        estimate = alignment.signs[component] * scores[:, component]
+        target = truth_scores[:, truth_component]
+        finite = np.isfinite(estimate) & np.isfinite(target)
+        if np.count_nonzero(finite) >= 2:
+            correlation = float(
+                np.corrcoef(estimate[finite], target[finite])[0, 1]
+            )
+            if np.isfinite(correlation):
+                values.append(
+                    _value(
+                        "score_correlation",
+                        correlation,
+                        component=component,
+                    )
+                )
+            values.append(
+                _value(
+                    "score_rmse",
+                    np.sqrt(
+                        np.mean((estimate[finite] - target[finite]) ** 2)
+                    ),
+                    component=component,
+                )
+            )
+
+    for index, cosine in enumerate(alignment.principal_cosines):
+        values.extend(
+            [
+                _value(
+                    "subspace_principal_cosine",
+                    cosine,
+                    component=index,
+                ),
+                _value(
+                    "subspace_principal_angle_degrees",
+                    np.degrees(np.arccos(cosine)),
+                    component=index,
+                ),
+            ]
+        )
+
+    tied_sources: list[str] = []
+    for group in tie_groups:
+        if not set(group).issubset(selected_truth):
+            continue
+        estimated_indices = [
+            index
+            for index, truth_index in enumerate(alignment.truth_indices)
+            if int(truth_index) in group
+        ]
+        source = "truth_components_" + "_".join(
+            str(index + 1) for index in group
+        )
+        tied_sources.append(source)
+        group_cosines = _weighted_subspace_principal_cosines(
+            components[estimated_indices],
+            truth_components[list(group)],
+            flat_weights,
+        )
+        for local_index, cosine in enumerate(group_cosines):
+            values.extend(
+                [
+                    _value(
+                        "subspace_principal_cosine",
+                        cosine,
+                        component=local_index,
+                        source=source,
+                    ),
+                    _value(
+                        "subspace_principal_angle_degrees",
+                        np.degrees(np.arccos(cosine)),
+                        component=local_index,
+                        source=source,
+                    ),
+                ]
+            )
+        procrustes = _score_procrustes_rmse(
+            scores[:, estimated_indices],
+            truth_scores[:, list(group)],
+        )
+        if procrustes is not None:
+            values.append(
+                _value(
+                    "score_subspace_procrustes_rmse",
+                    procrustes,
+                    source=source,
+                )
+            )
+
+    reconstruction = mean[None, :, :] + np.einsum(
+        "nk,ktd->ntd",
+        scores,
+        components,
+        optimize=True,
+    )
+    latent = np.asarray(truth.latent_on_truth_grid, dtype=float)
+    if reconstruction.shape != latent.shape:
+        raise ValueError(
+            "reconstructed curves and latent truth must have identical shape"
+        )
+    curve_ise = np.sum(
+        (reconstruction - latent) ** 2
+        * weights[None, :, None],
+        axis=(1, 2),
+    )
+    finite_curve = np.isfinite(curve_ise)
+    if np.any(finite_curve):
+        values.append(
+            _value(
+                "reconstruction_ise",
+                float(np.mean(curve_ise[finite_curve])),
+            )
+        )
+
+    diagnostics = result.score_diagnostics
+    if len(diagnostics):
+        if "status_code" in diagnostics.columns:
+            values.append(
+                _value(
+                    "score_failure_rate",
+                    np.mean(
+                        diagnostics["status_code"].to_numpy()
+                        != "ok"
+                    ),
+                )
+            )
+        if "condition_number" in diagnostics.columns:
+            condition = pd.to_numeric(
+                diagnostics["condition_number"],
+                errors="coerce",
+            ).to_numpy(dtype=float)
+            condition = condition[np.isfinite(condition)]
+            if condition.size:
+                values.extend(
+                    [
+                        _value(
+                            "score_condition_number_median",
+                            np.median(condition),
+                        ),
+                        _value(
+                            "score_condition_number_q95",
+                            np.quantile(condition, 0.95),
+                        ),
+                        _value(
+                            "score_condition_number_max",
+                            np.max(condition),
+                        ),
+                    ]
+                )
+    else:
+        values.append(
+            _value(
+                "score_failure_rate",
+                np.mean(~np.all(np.isfinite(scores), axis=1)),
+            )
+        )
+
+    covariance_diagnostics = dict(result.covariance_diagnostics)
+    applied_action = str(
+        covariance_diagnostics.get("applied_action", "unknown")
+    )
+    correction = covariance_diagnostics.get(
+        "relative_operator_correction_frobenius_norm"
+    )
+    if correction is not None and np.isfinite(float(correction)):
+        values.extend(
+            [
+                _value(
+                    "psd_repair_applied",
+                    1.0 if applied_action == "project" else 0.0,
+                ),
+                _value(
+                    "psd_relative_operator_correction",
+                    float(correction),
+                ),
+            ]
+        )
+
+    supplied_error = np.asarray(
+        result.measurement_error_covariance,
+        dtype=float,
+    )
+    truth_error = np.asarray(
+        truth.measurement_noise_covariance,
+        dtype=float,
+    )
+    measurement_error_truth_supplied = (
+        supplied_error.shape == truth_error.shape
+        and np.allclose(
+            supplied_error,
+            truth_error,
+            rtol=0.0,
+            atol=1e-12,
+        )
+    )
+    sparse_provenance = dict(result.provenance).get(
+        "sparse_mfpca", {}
+    )
+    return FunctionalRecoveryAssessment(
+        values=tuple(values),
+        provenance={
+            "estimator": "native_sparse_mfpca_joint_pace",
+            "truth_grid_match": "exact",
+            "dimensions": list(result.dimensions),
+            "covariance_recovery": "named_block_quadrature_ise",
+            "joint_covariance_ise_definition": (
+                "cxx + cxy + cyx + cyy"
+            ),
+            "matched_truth_components": (
+                alignment.truth_indices.tolist()
+            ),
+            "alignment_signs": alignment.signs.tolist(),
+            "truth_eigenvalue_tie_relative_tolerance": tie_tolerance,
+            "tied_truth_component_groups": [
+                [index + 1 for index in group]
+                for group in tie_groups
+            ],
+            "tied_score_subspace_sources": tied_sources,
+            "component_metrics_omitted_for_tied_eigenspaces": bool(
+                tie_groups
+            ),
+            "measurement_error_mode": sparse_provenance.get(
+                "measurement_error_mode"
+            ),
+            "measurement_error_truth_supplied": bool(
+                measurement_error_truth_supplied
+            ),
+            "measurement_error_recovery_metric_reported": False,
         },
     )
 
