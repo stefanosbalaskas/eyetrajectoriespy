@@ -407,11 +407,24 @@ objects:
 
 No automatic architecture winner is selected from one simulation.
 
+PR E implements the two-stage marginal-basis benchmark with declared
+marginal ranks 1 and 2 on a frozen rho_xy=0.6 fixture. It compares named
+covariance-block error, joint functional subspaces, score subspaces and latent
+reconstruction against truth and the canonical direct estimator. The evidence
+sets `automatic_rank_selection=false` and
+`architecture_winner_selected=false`.
+
 ### 5. Independent external sensitivity
 
 Use mGSFPCA 0.2.2 as the primary cross-language comparator on frozen fixtures
 with explicit rank/basis settings. Compare invariant subspaces and scores, not
 raw signs or implementation-specific normalization.
+
+PR E runs this comparator on the same frozen rho_xy=0.6 native/truth fixture
+and records mGSFPCA-versus-truth, native-versus-truth and
+mGSFPCA-versus-native functional and score subspaces. The comparator remains a
+validation-only dependency and the evidence explicitly forbids an equivalence
+claim or automatic architecture selection.
 
 Exact equivalence must not be claimed when smoothing, likelihood, basis,
 normalization, or score contracts differ.
