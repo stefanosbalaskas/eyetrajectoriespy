@@ -328,6 +328,48 @@
       "ci_test": "test_sparse_mfpca_recovery_is_block_aware_for_asymmetric_cross_covariance",
       "status": "qualified",
       "limitations": "Seeded finite-sample native recovery. The true measurement-error covariance is supplied to the estimator rather than estimated. Two-stage and mGSFPCA cross-implementation sensitivity, observation-loss stress, and 0.12 performance qualification are separate later evidence."
+    },
+    {
+      "id": "sparse-mfpca-two-stage-sensitivity",
+      "method": "Native direct sparse MFPCA versus internal two-stage marginal sparse-basis benchmark",
+      "scientific_quantity": [
+        "named planar covariance-block recovery",
+        "joint functional subspace",
+        "joint score subspace",
+        "latent planar reconstruction",
+        "marginal-basis truncation sensitivity"
+      ],
+      "reference_source": "validation-only two-stage construction from separate native x/y sparse FPCA/PACE bases and empirical covariance of concatenated marginal scores",
+      "reference_type": "cross_implementation_sensitivity",
+      "dataset_problem": "Same deterministic irregular rho_xy=0.6 planar fixture, declared marginal ranks 1 and 2, true diagonal measurement-error variances supplied to both marginal fits and the canonical direct fit.",
+      "expected_result": "No architecture winner or automatic rank selection claim; invariant subspace/score agreement should remain finite while covariance and reconstruction evidence characterize the information lost under marginal truncation.",
+      "comparison_metric": "named covariance-block ISE; truth/direct functional-subspace principal cosines; truth/direct score-subspace principal cosines; latent reconstruction ISE; finite-score fraction",
+      "tolerance_class": "cross_implementation_sensitivity",
+      "tolerance": "descriptive sensitivity only; outputs must be finite where defined, declared ranks must be exactly 1 and 2, automatic_rank_selection=false, architecture_winner_selected=false",
+      "platforms": "dedicated Ubuntu Python 3.12 sparse-mfpca-comparator-sensitivity workflow plus core unit tests",
+      "ci_test": "test_two_stage_benchmark_uses_declared_marginal_ranks_without_selection",
+      "status": "qualified",
+      "limitations": "Internal benchmark, not a second public estimator. Empirical joint score covariance depends on finite-sample marginal PACE scores. Rank-1 truncation deliberately cannot represent the complete truth; no winner is selected from this fixture."
+    },
+    {
+      "id": "sparse-mfpca-mgsfpca-sensitivity",
+      "method": "Native direct sparse MFPCA versus mGSFPCA 0.2.2",
+      "scientific_quantity": [
+        "joint vector-valued functional subspace",
+        "joint score subspace",
+        "retained eigenvalue spectrum"
+      ],
+      "reference_source": "CRAN mGSFPCA 0.2.2 spMultFPCA on the same frozen irregular rho_xy=0.6 native/truth fixture",
+      "reference_type": "cross_implementation_sensitivity",
+      "dataset_problem": "Thirty irregular paired x/y curves on a shared truth grid with explicit four-component target and persisted original-ID to integer-ID comparator adapter.",
+      "expected_result": "No exact equivalence claim; native/truth, mGSFPCA/truth, and mGSFPCA/native invariant subspace relationships are all retained and finite without automatic architecture selection.",
+      "comparison_metric": "functional-subspace principal cosines; score-subspace principal cosines; descriptive retained eigenvalues",
+      "tolerance_class": "cross_implementation_sensitivity",
+      "tolerance": "descriptive invariant sensitivity; exact equivalence is explicitly false and no architecture winner is selected",
+      "platforms": "Ubuntu 24.04, Python 3.12, R release, exact mGSFPCA 0.2.2",
+      "ci_test": "test_external_evaluator_uses_invariant_subspaces_and_never_claims_equivalence",
+      "status": "qualified",
+      "limitations": "Not equivalence. Sparse smoothing, likelihood, marginal truncation, basis construction, normalization, and score contracts differ. mGSFPCA is validation-only and not a runtime dependency."
     }
   ]
 }
