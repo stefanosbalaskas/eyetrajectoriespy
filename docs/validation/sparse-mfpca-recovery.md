@@ -75,6 +75,16 @@ The sparse-mfpca-sensitivity job separately records evaluation grids G = 31, 51,
 
 The same analytic process is regenerated directly on each truth grid rather than interpolating truth between grids. Sensitivity tables set selection_performed=false; no tuning value is chosen from them.
 
+## PR D qualification evidence
+
+The seven deterministic native cases passed the current guarded qualification matrix. Across the five rho cases, the minimum whole-subspace principal cosine ranged from 0.953 to 0.994, separated-component median score correlations ranged from 0.844 to 0.992, score-system failure rate was zero, and reconstruction ISE ranged from 0.010 to 0.033. At rho_xy=0, where the two channel modes are tied within each temporal eigenspace, component-specific score metrics were omitted and the maximum tied-eigenspace Procrustes score RMSE was 0.198.
+
+The deliberately asymmetric cross-covariance case recovered Cxy with block ISE 0.0134 versus 0.1406 for the zero-cross-covariance baseline. Its minimum joint-subspace cosine was 0.987 and median separated score correlation was 1.000 to three decimals. This is evidence for directional Cxy recovery, not merely the implementation transpose identity.
+
+The correlated measurement-error case supplied the true fixed matrix rather than estimating it. It completed with zero score failures, minimum subspace cosine 0.996, median separated score correlation 0.934, reconstruction ISE 0.0113, and the assessment records measurement_error_truth_supplied=true.
+
+Grid sensitivity was effectively stable from G=31 through G=81: minimum subspace cosine stayed near 0.957, median score correlation near 0.881, reconstruction ISE near 0.0311, and joint covariance ISE near 0.470. The score-ridge sensitivity likewise changed recovery negligibly over gamma=0 through 1e-4; gamma=1e-4 reduced the median score-system condition number from about 28,954 to 26,059 without a meaningful score-recovery change. These are descriptive observations only; selection_performed remains false and the public default ridge is unchanged.
+
 ## Evidence boundary
 
 PR D asks whether the native estimator recovers known joint planar truth under its own supported contracts. It does not test external equivalence. The two-stage benchmark and mGSFPCA comparison remain PR E work; observation-loss stress and performance qualification remain downstream evidence.
