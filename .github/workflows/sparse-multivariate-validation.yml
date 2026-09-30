@@ -9,6 +9,7 @@ on:
       - src/eyetrajectoriespy/types.py
       - scripts/run_sparse_mfpca_recovery.py
       - scripts/run_sparse_mfpca_qualification.py
+      - scripts/run_sparse_mfpca_robustness.py
       - tests/test_sparse_multivariate.py
       - docs/development/native-sparse-mfpca.md
       - .github/workflows/sparse-multivariate-validation.yml
@@ -111,6 +112,34 @@ jobs:
           if payload.get("failed_scenarios"):
               raise SystemExit("qualification reports failed scenarios")
           PY
+      - name: Run robustness audit
+        run: |
+          python scripts/run_sparse_mfpca_robustness.py \
+            --output-dir sparse-mfpca-robustness
+      - name: Verify robustness evidence contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(
+              Path(
+                  "sparse-mfpca-robustness/sparse_mfpca_robustness.json"
+              ).read_text()
+          )
+          sensitivity = payload["grid_bandwidth_sensitivity"]
+          stress = payload["observation_loss_stress"]
+          if sensitivity.get("qualification_gate") is not True:
+              raise SystemExit("grid/bandwidth sensitivity must be gated")
+          if sensitivity.get("qualification_pass") is not True:
+              raise SystemExit("grid/bandwidth sensitivity failed")
+          if stress.get("qualification_gate") is not False:
+              raise SystemExit(
+                  "informative-loss stress must remain descriptive"
+              )
+          if stress.get("all_stress_runs_completed") is not True:
+              raise SystemExit("one or more observation-loss stress runs failed")
+          PY
       - name: Upload recovery evidence
         uses: actions/upload-artifact@v7
         with:
@@ -118,4 +147,5 @@ jobs:
           path: |
             sparse-mfpca-recovery
             sparse-mfpca-qualification
+            sparse-mfpca-robustness
           if-no-files-found: error
