@@ -178,6 +178,7 @@ nav:
           - Functional simulation validation: validation/functional-simulation-validation.md
           - Targeted pre-0.12 recovery audit: validation/pre-0.12-recovery-audit.md
           - Native sparse MFPCA recovery: validation/sparse-mfpca-recovery.md
+          - Sparse MFPCA comparator sensitivity: validation/sparse-mfpca-comparator-sensitivity.md
           - Numerical tolerance policy: validation/numerical-tolerance-policy.md
           - Performance envelope: validation/performance-envelope.md
       - Development roadmap:
