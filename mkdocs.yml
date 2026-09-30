@@ -182,6 +182,7 @@ nav:
       - Development roadmap:
           - Native sparse FPCA + PACE (0.10): development/native-sparse-fpca.md
           - Native functional simulation (0.11): development/simulation-framework.md
+          - Native sparse multivariate FPCA (0.12): development/sparse-multivariate-fpca.md
       - Reproducibility & release:
           - Portable scientific results: reproducibility/portable-results.md
           - Reproducibility bundle checklist: reproducibility/checklist.md
