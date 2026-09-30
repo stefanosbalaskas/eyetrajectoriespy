@@ -267,9 +267,12 @@ signal-/eccentricity-dependent recovery changes without turning those
 differences into tuning thresholds. The three declared performance workloads
 also completed with zero score failures under repeated fresh-process timing.
 Stress remains descriptive and the performance envelope applies no speed
-target. The methodological evidence collection is therefore complete; the next
-step is an explicit 0.12 release-candidate decision rather than further
-estimator expansion.
+target. The methodological evidence collection is therefore complete. The explicit RC
+entry decision is now **go to exact-version 0.12.0rc1 qualification**, not go
+to publication. The scientific/API surface is frozen while fresh exact-version
+build, performance, recovery, comparator, stress, documentation and
+cross-platform evidence is generated. Publication remains disarmed and
+separate.
 
 See [native sparse MFPCA recovery validation](../validation/sparse-mfpca-recovery.md).
 
