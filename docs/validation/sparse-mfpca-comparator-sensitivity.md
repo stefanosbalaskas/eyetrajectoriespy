@@ -66,6 +66,14 @@ For each relationship it reports functional-subspace and score-subspace
 principal cosines. Raw component signs and implementation-specific
 normalizations are not comparison targets.
 
+## Observed PR E evidence
+
+For the internal two-stage benchmark, marginal rank 1 produced a two-dimensional joint basis with truth/direct minimum functional-subspace cosines 0.9992/0.9970 and truth/direct minimum score-subspace cosines 0.9999/0.9999, but latent reconstruction ISE was 1.3485. This is the intended truncation warning: excellent alignment of the retained subspace does not imply that the omitted temporal mode is negligible.
+
+At marginal rank 2, the benchmark retained four joint components. Its truth/direct minimum functional-subspace cosines were 0.9983/0.9938 and truth/direct minimum score-subspace cosines were 0.9996/0.9998. Reconstruction ISE fell to 0.0226, compared with 0.0153 for the canonical direct fit on the same fixture. Total two-stage covariance ISE fell from 0.8385 at marginal rank 1 to 0.4742 at marginal rank 2. These values characterize truncation sensitivity; they are not an automatic architecture-selection rule.
+
+For the exact mGSFPCA 0.2.2 external run, the native direct fit had minimum functional/score subspace cosines to truth of 0.9910/0.9997. mGSFPCA had 0.9386/0.9930 to truth, while mGSFPCA versus native direct was 0.9388/0.9925. The mGSFPCA and native retained eigenvalues differed materially, which is consistent with their different smoothing, basis, likelihood and normalization contracts. The evidence therefore supports broad invariant compatibility, not exact equivalence.
+
 ## Interpretation boundary
 
 The evidence explicitly records
