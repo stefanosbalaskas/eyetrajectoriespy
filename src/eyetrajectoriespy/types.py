@@ -685,6 +685,45 @@ class SparseFPCAResult:
 
 
 @dataclass(frozen=True)
+class SparseMFPCAResult:
+    """Native sparse multivariate FPCA/PACE for paired planar coordinates."""
+
+    scores: np.ndarray
+    eigenvalues: np.ndarray
+    eigenfunctions: np.ndarray
+    mean: np.ndarray
+    evaluation_grid: np.ndarray
+    dimensions: tuple[str, str]
+    curve_ids: tuple[str, ...]
+    metadata: pd.DataFrame
+    coordinate_system: str
+    time_unit: str
+    n_components: int
+    quadrature_weights: np.ndarray
+    smoothed_cxx: np.ndarray
+    smoothed_cxy: np.ndarray
+    smoothed_cyx: np.ndarray
+    smoothed_cyy: np.ndarray
+    covariance_cxx: np.ndarray
+    covariance_cxy: np.ndarray
+    covariance_cyx: np.ndarray
+    covariance_cyy: np.ndarray
+    measurement_error_covariance: np.ndarray
+    score_diagnostics: pd.DataFrame
+    mean_support_counts: np.ndarray
+    covariance_support_counts: Mapping[str, np.ndarray]
+    covariance_pair_counts: Mapping[str, int]
+    covariance_diagnostics: Mapping[str, Any]
+    fit_method: str
+    score_method: str
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    @property
+    def n_curves(self) -> int:
+        return len(self.curve_ids)
+
+
+@dataclass(frozen=True)
 class FunctionalMeanBandResult:
     """Simultaneous multiplier-bootstrap band for a functional mean."""
 
