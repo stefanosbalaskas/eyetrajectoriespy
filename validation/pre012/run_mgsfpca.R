@@ -12,16 +12,69 @@ if (as.character(utils::packageVersion("mGSFPCA")) != "0.2.2") {
   stop("pre-0.12 comparator requires mGSFPCA 0.2.2 exactly")
 }
 
-x <- utils::read.csv(file.path(output_dir, "external_fixture_x.csv"))
-y <- utils::read.csv(file.path(output_dir, "external_fixture_y.csv"))
+x <- utils::read.csv(
+  file.path(output_dir, "external_fixture_x.csv"),
+  stringsAsFactors = FALSE,
+  check.names = FALSE
+)
+y <- utils::read.csv(
+  file.path(output_dir, "external_fixture_y.csv"),
+  stringsAsFactors = FALSE,
+  check.names = FALSE
+)
 
 required <- c("ID", "time", "value")
 if (!identical(names(x), required) || !identical(names(y), required)) {
   stop("external fixtures must contain exactly ID, time, value columns")
 }
 
+# mGSFPCA 0.2.2 expects the first column to be a numeric/integer subject ID.
+# Keep the frozen eyetrajectoriespy fixture unchanged and adapt only at this
+# external-comparator boundary. The mapping is persisted so exported evidence
+# remains traceable to the original curve IDs.
+original_ids <- unique(as.character(x$ID))
+if (length(original_ids) == 0L) {
+  stop("external fixture contains no curve IDs")
+}
+if (!setequal(original_ids, unique(as.character(y$ID)))) {
+  stop("x/y external fixtures must contain the same curve IDs")
+}
+
+id_mapping <- data.frame(
+  original_ID = original_ids,
+  numeric_ID = seq_along(original_ids),
+  stringsAsFactors = FALSE
+)
+id_lookup <- stats::setNames(id_mapping$numeric_ID, id_mapping$original_ID)
+
+adapt_fixture <- function(frame, label) {
+  original <- as.character(frame$ID)
+  if (any(!original %in% names(id_lookup))) {
+    stop(paste0(label, " fixture contains an unmapped curve ID"))
+  }
+  adapted <- data.frame(
+    ID = unname(id_lookup[original]),
+    time = suppressWarnings(as.numeric(frame$time)),
+    value = suppressWarnings(as.numeric(frame$value))
+  )
+  if (anyNA(adapted) || any(!is.finite(adapted$time)) ||
+      any(!is.finite(adapted$value))) {
+    stop(paste0(label, " fixture contains non-finite numeric time/value data"))
+  }
+  adapted
+}
+
+x_fit <- adapt_fixture(x, "x")
+y_fit <- adapt_fixture(y, "y")
+
+utils::write.csv(
+  id_mapping,
+  file.path(output_dir, "mgsfpca_id_mapping.csv"),
+  row.names = FALSE
+)
+
 fit <- mGSFPCA::spMultFPCA(
-  dataCell = list(x, y),
+  dataCell = list(x_fit, y_fit),
   r = list(2L, 2L),
   G = list(8L, 8L),
   basis_type = c("bspline", "bspline"),
@@ -43,12 +96,12 @@ utils::write.csv(
   file.path(output_dir, "mgsfpca_eigenvalues.csv"),
   row.names = FALSE
 )
-subject_ids <- unique(as.character(x$ID))
-if (length(subject_ids) != nrow(fit$scores)) {
+
+if (length(original_ids) != nrow(fit$scores)) {
   stop("mGSFPCA score row count does not match fixture subject count")
 }
 utils::write.csv(
-  data.frame(ID = subject_ids, as.data.frame(fit$scores)),
+  data.frame(ID = original_ids, as.data.frame(fit$scores)),
   file.path(output_dir, "mgsfpca_scores.csv"),
   row.names = FALSE
 )
@@ -72,7 +125,9 @@ writeLines(
     paste0("version=", as.character(utils::packageVersion("mGSFPCA"))),
     "function=spMultFPCA",
     "equivalence_claim=false",
-    "rank_and_basis_selection=explicit"
+    "rank_and_basis_selection=explicit",
+    "id_adapter=original_curve_id_to_contiguous_integer",
+    "id_mapping=mgsfpca_id_mapping.csv"
   ),
   file.path(output_dir, "mgsfpca_run_metadata.txt")
 )
