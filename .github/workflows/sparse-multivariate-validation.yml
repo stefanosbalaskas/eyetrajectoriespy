@@ -8,6 +8,7 @@ on:
       - src/eyetrajectoriespy/sparse_multivariate.py
       - src/eyetrajectoriespy/types.py
       - scripts/run_sparse_mfpca_recovery.py
+      - scripts/run_sparse_mfpca_qualification.py
       - tests/test_sparse_multivariate.py
       - docs/development/native-sparse-mfpca.md
       - .github/workflows/sparse-multivariate-validation.yml
@@ -85,9 +86,36 @@ jobs:
                       "known-truth recovery produced a joint score failure"
                   )
           PY
+      - name: Run independent qualification
+        run: |
+          python scripts/run_sparse_mfpca_qualification.py \
+            --output-dir sparse-mfpca-qualification
+      - name: Verify qualification evidence contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path(
+              "sparse-mfpca-qualification/sparse_mfpca_qualification.json"
+          )
+          payload = json.loads(path.read_text())
+          if payload.get("qualification_gate") is not True:
+              raise SystemExit("qualification evidence must be a gate")
+          if payload.get("pilot_seeds_reused") is not False:
+              raise SystemExit("qualification must use independent seeds")
+          if payload.get("signal_relative_eigenvalue_floor") != 0.05:
+              raise SystemExit("signal-subspace contract changed unexpectedly")
+          if payload.get("qualification_pass") is not True:
+              raise SystemExit("sparse MFPCA qualification did not pass")
+          if payload.get("failed_scenarios"):
+              raise SystemExit("qualification reports failed scenarios")
+          PY
       - name: Upload recovery evidence
         uses: actions/upload-artifact@v7
         with:
           name: sparse-multivariate-recovery
-          path: sparse-mfpca-recovery
+          path: |
+            sparse-mfpca-recovery
+            sparse-mfpca-qualification
           if-no-files-found: error
