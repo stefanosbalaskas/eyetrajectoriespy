@@ -79,6 +79,17 @@ This row does not replace the still-separate two-stage and mGSFPCA
 cross-implementation sensitivity evidence. See
 [native sparse MFPCA recovery validation](sparse-mfpca-recovery.md).
 
+## Sparse MFPCA comparator sensitivity evidence
+
+| Method | Scientific quantity | Reference type | Reference |
+|---|---|---|---|
+| Native sparse MFPCA vs internal two-stage route | covariance blocks, joint functional/score subspaces, reconstruction, marginal-rank sensitivity | cross-implementation sensitivity | declared-rank marginal sparse FPCA/PACE bases followed by joint score-covariance eigendecomposition |
+| Native sparse MFPCA vs mGSFPCA 0.2.2 | joint functional subspace, score subspace, eigenvalue spectrum | cross-implementation sensitivity | mGSFPCA::spMultFPCA on the same frozen rho_xy=0.6 fixture |
+
+Both rows explicitly prohibit an equivalence claim or automatic architecture winner. The two-stage route is validation-only and the mGSFPCA package is an external validation dependency only.
+
+See [sparse MFPCA comparator sensitivity](sparse-mfpca-comparator-sensitivity.md).
+
 ## Interpretation boundaries
 
 The mixed-effects reference deliberately uses the same established statsmodels
