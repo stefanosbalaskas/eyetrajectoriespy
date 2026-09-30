@@ -285,12 +285,12 @@ fit_sparse_mfpca(
     score_ridge=0.0,
     score_condition_limit=1e12,
     score_failure_action="error",
-    channel_weights=None,
 )
 ```
 
-The exact signature may change during implementation review, but these
-scientific choices must remain explicit.
+The implemented PR C signature intentionally omits channel weights and other
+placeholder options. Every public parameter corresponds to implemented and
+tested behavior.
 
 ## Result contract
 
@@ -383,6 +383,11 @@ first-class qualification scenario. Qualification must also include negative
 cross-channel coupling and at least one construction with a deliberately
 non-symmetric C_xy(s,t) while preserving C_yx(s,t)=C_xy(t,s).
 
+PR D implements `evaluate_sparse_mfpca_recovery()` with named-block covariance
+ISE and identification-aware tied-eigenspace score recovery. The deterministic
+qualification family is extended to `rho_xy=-0.6, 0, 0.3, 0.6, 0.9`, plus one
+deliberately asymmetric Cxy case and one correlated-measurement-error case.
+Grid and ridge sensitivity remain descriptive and do not select tuning values.
 ### 3. Observation-process stress
 
 Repeat recovery under MCAR and declared signal-dependent observation loss.
