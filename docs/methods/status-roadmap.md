@@ -205,8 +205,9 @@ interpretation, and agreement/disagreement with published constrained
 multivariate analyses. This is validation work, not a reason to duplicate an
 external estimator.
 
-**2. 0.12 candidate — native sparse multivariate FPCA for planar gaze.** The
-scientific object is the joint process
+**2. 0.12 development line — native sparse multivariate FPCA for planar gaze.**
+The first 0.12 development tranche now implements the direct joint block-covariance
+architecture selected by the pre-0.12 audit. The scientific object is the joint process
 
 $$
 \mathbf G_i(t)=
@@ -226,11 +227,14 @@ C_{yx}(s,t) & C_{yy}(s,t)
 \end{bmatrix}.
 $$
 
-A future `fit_sparse_mfpca(...)` must estimate genuine cross-channel
-covariance, state cross-channel measurement-error assumptions, derive the joint
-observation covariance and conditional score system, and validate recovery
-under sparse/irregular designs. Conditional expectation alone is not sufficient
-reason to label the method “multivariate PACE.”
+`fit_sparse_mfpca(...)` estimates genuine cross-channel covariance, states the
+first-tranche independent cross-channel measurement-error assumption, derives one
+joint observation covariance and conditional score system, and retains native
+irregular observations without silent interpolation. Independent known-truth
+qualification, robustness stress, frozen-fixture mGSFPCA sensitivity, and
+method-specific resource characterization are required evidence for this development
+surface. Conditional expectation alone remains insufficient reason to label a
+method “multivariate PACE.”
 
 **3. Later candidate — sparse participant/trial functional decomposition.**
 Only after sparse multivariate recovery is understood should the package
@@ -274,6 +278,8 @@ every later tranche.
 
 
 ## Development status
+
+The current development line is **0.12.0.dev0**. It is unreleased and publication remains disarmed; published **0.11.0** remains the immutable stable pre-1.0 release.
 
 The current stable pre-1.0 line is **0.11.0**. It was published on 29 September 2026. Stable **0.10.0** and prereleases **0.10.0rc1**, **0.10.0rc2**, and **0.11.0rc1** remain immutable historical release records.
 

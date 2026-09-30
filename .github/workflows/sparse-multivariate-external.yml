@@ -1,0 +1,137 @@
+name: sparse-multivariate-external
+
+on:
+  pull_request:
+    paths:
+      - src/eyetrajectoriespy/_sparse_multivariate.py
+      - src/eyetrajectoriespy/sparse_multivariate.py
+      - scripts/evaluate_sparse_mfpca_external.py
+      - scripts/evaluate_pre012_mgsfpca.py
+      - scripts/run_pre012_recovery_audit.py
+      - validation/pre012/run_mgsfpca.R
+      - .github/workflows/sparse-multivariate-external.yml
+  push:
+    branches: [main]
+    paths:
+      - src/eyetrajectoriespy/_sparse_multivariate.py
+      - src/eyetrajectoriespy/sparse_multivariate.py
+      - scripts/evaluate_sparse_mfpca_external.py
+      - scripts/evaluate_pre012_mgsfpca.py
+      - scripts/run_pre012_recovery_audit.py
+      - validation/pre012/run_mgsfpca.R
+      - .github/workflows/sparse-multivariate-external.yml
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frozen-fixture-sensitivity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install eyetrajectoriespy
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e .
+      - name: Regenerate frozen pre-0.12 fixture
+        run: |
+          python scripts/run_pre012_recovery_audit.py \
+            --output-dir sparse-mfpca-external \
+            --external-fixture-only
+      - name: Evaluate native sparse MFPCA
+        run: |
+          python scripts/evaluate_sparse_mfpca_external.py \
+            sparse-mfpca-external
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "release"
+          use-public-rspm: true
+      - name: Install R system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
+      - name: Install exact mGSFPCA comparator
+        run: |
+          Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
+          Rscript -e 'remotes::install_version("mGSFPCA", version="0.2.2", repos="https://cloud.r-project.org", upgrade="never")'
+          Rscript -e 'stopifnot(as.character(utils::packageVersion("mGSFPCA")) == "0.2.2")'
+      - name: Run mGSFPCA comparator
+        run: |
+          Rscript validation/pre012/run_mgsfpca.R \
+            sparse-mfpca-external
+      - name: Evaluate mGSFPCA sensitivity
+        run: |
+          python scripts/evaluate_pre012_mgsfpca.py \
+            sparse-mfpca-external
+      - name: Assemble cross-implementation evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("sparse-mfpca-external")
+          native = json.loads(
+              (root / "eyetrajectoriespy_sparse_mfpca_sensitivity.json")
+              .read_text()
+          )
+          external = json.loads(
+              (root / "mgsfpca_sensitivity.json").read_text()
+          )
+          if native.get("equivalence_claim") is not False:
+              raise SystemExit("native evidence must not claim equivalence")
+          if external.get("equivalence_claim") is not False:
+              raise SystemExit("mGSFPCA evidence must not claim equivalence")
+          if native.get("fixture_rho_xy") != external.get("fixture_rho_xy"):
+              raise SystemExit("comparators did not use the same fixture")
+          if native.get("n_curves") != external.get("n_curves"):
+              raise SystemExit("comparators did not use the same curves")
+          if native.get("score_failure_rate") != 0.0:
+              raise SystemExit("native estimator had a frozen-fixture score failure")
+
+          payload = {
+              "schema_version": 1,
+              "audit": "sparse MFPCA frozen-fixture cross-implementation sensitivity",
+              "equivalence_claim": False,
+              "fixture_rho_xy": native["fixture_rho_xy"],
+              "n_curves": native["n_curves"],
+              "eyetrajectoriespy": native,
+              "mGSFPCA": external,
+              "comparison": {
+                  "functional_subspace_min_difference_native_minus_mgsfpca": (
+                      native["functional_subspace_min_principal_cosine"]
+                      - external["functional_subspace_min_principal_cosine"]
+                  ),
+                  "score_subspace_min_difference_native_minus_mgsfpca": (
+                      native["score_subspace_min_principal_cosine"]
+                      - external["score_subspace_min_principal_cosine"]
+                  ),
+              },
+              "interpretation": (
+                  "Both methods are evaluated against the same known truth. "
+                  "Differences are descriptive sensitivity evidence, not an "
+                  "equivalence or winner claim."
+              ),
+          }
+          (root / "cross_implementation_sensitivity.json").write_text(
+              json.dumps(payload, indent=2, sort_keys=True) + "\n"
+          )
+          print(json.dumps(payload, indent=2, sort_keys=True))
+          PY
+      - name: Upload external sensitivity evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: sparse-multivariate-external
+          path: sparse-mfpca-external
+          if-no-files-found: error
