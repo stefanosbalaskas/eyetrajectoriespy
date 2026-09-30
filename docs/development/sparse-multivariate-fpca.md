@@ -30,7 +30,7 @@ two unrelated univariate sparse fits
 
 For curve i, planar gaze is the bivariate latent process
 
-$
+$$
 \mathbf X_i(t)
 =
 \begin{bmatrix}
@@ -41,24 +41,24 @@ Y_i(t)
 \mathbf Y_{ij}
 =
 \mathbf X_i(t_{ij})+\boldsymbol\epsilon_{ij}.
-$
+$$
 
 The population mean is
 
-$
+$$
 \boldsymbol\mu(t)=E\{\mathbf X(t)\},
-$
+$$
 
 and the target covariance operator is the full block surface
 
-$
+$$
 \mathbf C(s,t)
 =
 \begin{bmatrix}
 C_{xx}(s,t) & C_{xy}(s,t)\\
 C_{yx}(s,t) & C_{yy}(s,t)
 \end{bmatrix}.
-$
+$$
 
 The cross-channel blocks are first-class estimands. A method that estimates
 only Cxx and Cyy is not the canonical 0.12 estimator.
@@ -67,33 +67,33 @@ only Cxx and Cyy is not the canonical 0.12 estimator.
 
 Joint eigenfunctions are vector-valued,
 
-$
+$$
 \boldsymbol\phi_k(t)
 =
 \begin{bmatrix}
 \phi_{kx}(t)\\
 \phi_{ky}(t)
 \end{bmatrix},
-$
+$$
 
 and satisfy
 
-$
+$$
 \int \mathbf C(s,t)\boldsymbol\phi_k(s)\,ds
 =
 \lambda_k\boldsymbol\phi_k(t),
-$
+$$
 
 under the planar inner product
 
-$
+$$
 \langle \mathbf f,\mathbf g\rangle
 =
 \int
 \left\{
 f_x(t)g_x(t)+f_y(t)g_y(t)
 \right\}\,dt.
-$
+$$
 
 Optional scale weighting may be considered only if it is explicit,
 scientifically motivated, and retained in provenance. Normalized screen
@@ -105,18 +105,18 @@ For one curve with native observation times Ti, stack the observed planar
 values as x1,y1,...,xm,ym. Let Ci be the full fitted block covariance evaluated
 at the native observation times. Let the measurement-error covariance be
 
-$
+$$
 \mathbf R_\epsilon
 =
 \begin{bmatrix}
 \sigma_x^2 & \sigma_{xy}\\
 \sigma_{xy} & \sigma_y^2
 \end{bmatrix}.
-$
+$$
 
 The score system uses
 
-$
+$$
 \widehat{\boldsymbol\Sigma}_i
 =
 \widehat{\mathbf C}_i
@@ -124,12 +124,12 @@ $
 I_{m_i}\otimes\widehat{\mathbf R}_\epsilon
 +
 \gamma I.
-$
+$$
 
 For component k, define the stacked vector-eigenfunction evaluations
 $\widehat{\boldsymbol\phi}_{ik}$. The conditional score is
 
-$
+$$
 \widehat\xi_{ik}
 =
 \widehat\lambda_k
@@ -138,7 +138,7 @@ $
 \left\{
 \mathbf y_i-\widehat{\boldsymbol\mu}_i
 \right\}.
-$
+$$
 
 As in 0.10, `n_components` controls which components and scores are returned.
 It must not replace the full fitted observation covariance by a rank-K
@@ -266,9 +266,9 @@ directly.
 
 The fitted block operator must satisfy the covariance symmetry relation
 
-$
+$$
 C_{yx}(s,t)=C_{xy}(t,s).
-$
+$$
 
 Numerical enforcement of this identity must be explicit.
 
