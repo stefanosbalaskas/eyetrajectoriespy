@@ -44,6 +44,7 @@ def test_version_and_public_symbols():
         "fpca_subspace_stability_reporting_text",
         "SparseFPCAResult","SparseMFPCAResult","fit_sparse_mfpca",
         "sparse_mfpca_score_frame","sparse_mfpca_reporting_text",
+        "evaluate_sparse_mfpca_recovery",
         "sparse_dimension_summary","to_fdapy_irregular",
         "fit_sparse_fpca","fit_sparse_fpca_fdapy","sparse_fpca_score_frame",
         "sparse_fpca_reporting_text","plot_sparse_irregular_dimension",
