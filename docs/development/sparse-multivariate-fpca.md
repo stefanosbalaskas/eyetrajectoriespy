@@ -10,21 +10,21 @@ has been implemented or qualified.
 
 ## Release boundary
 
-- Stable \`0.11.0\` remains frozen.
+- Stable `0.11.0` remains frozen.
 - The completed pre-0.12 audit found no supported-contract defect requiring an
   0.11 correction.
-- \`0.12\` is the native sparse multivariate planar-FPCA tranche.
+- `0.12` is the native sparse multivariate planar-FPCA tranche.
 - Sparse participant/trial functional decomposition remains later work.
 - mGSFPCA, MFPCA, FDApy, and related packages are independent
   reference/sensitivity implementations, not runtime scientific dependencies.
 
 The architectural rule is:
 
-\`\`\`text
+```text
 joint planar estimand
     !=
 two unrelated univariate sparse fits
-\`\`\`
+```
 
 ## Scientific object
 
@@ -140,7 +140,7 @@ For component k, define the stacked vector-eigenfunction evaluations
 \right\}.
 \]
 
-As in 0.10, \`n_components\` controls which components and scores are returned.
+As in 0.10, `n_components` controls which components and scores are returned.
 It must not replace the full fitted observation covariance by a rank-K
 reconstruction unless a separately named sensitivity method explicitly does so.
 
@@ -151,9 +151,9 @@ declared rather than guessed.
 
 The first implementation should support:
 
-1. \`measurement_error="diagonal"\`: independent x/y measurement noise with
+1. `measurement_error="diagonal"`: independent x/y measurement noise with
    explicit or separately estimated sigma_x^2 and sigma_y^2;
-2. \`measurement_error="fixed_matrix"\`: analyst-supplied positive-semidefinite
+2. `measurement_error="fixed_matrix"`: analyst-supplied positive-semidefinite
    2x2 error covariance.
 
 Automatic estimation of sigma_xy from the same sparse covariance surface is
@@ -164,7 +164,7 @@ The default must therefore not invent cross-channel measurement error.
 
 The canonical estimator is the **direct block-covariance route**:
 
-\`\`\`text
+```text
 native irregular planar observations
         ->
 pooled vector mean
@@ -176,7 +176,7 @@ symmetry + PSD audit of the weighted block operator
 joint eigensystem
         ->
 joint conditional scores
-\`\`\`
+```
 
 The implementation must estimate the cross-channel blocks directly from paired
 within-curve observations and carry them through the operator and score system.
@@ -185,14 +185,14 @@ within-curve observations and carry them through the operator and score system.
 
 A two-stage benchmark should also be implemented for validation:
 
-\`\`\`text
+```text
 univariate sparse basis for x
 + univariate sparse basis for y
         ->
 joint covariance of retained univariate scores
         ->
 secondary joint rotation
-\`\`\`
+```
 
 This route is useful for sensitivity and debugging. It is not the canonical
 scientific endpoint because its cross-channel representation is conditional on
@@ -200,7 +200,7 @@ the independently chosen marginal bases and truncations.
 
 ## Irregular observation contract
 
-The estimator operates directly on \`IrregularTrajectorySet\`.
+The estimator operates directly on `IrregularTrajectorySet`.
 
 The first 0.12 implementation assumes both planar coordinates are observed at
 the same retained time stamps within a curve. Coordinate-specific missingness
@@ -215,7 +215,7 @@ Raw sparse trajectory interpolation remains false.
 
 The provisional canonical entry point is:
 
-\`\`\`python
+```python
 fit_sparse_mfpca(
     trajectories,
     *,
@@ -236,7 +236,7 @@ fit_sparse_mfpca(
     score_failure_action="error",
     channel_weights=None,
 )
-\`\`\`
+```
 
 The exact signature may change during implementation review, but these
 scientific choices must remain explicit.
@@ -284,7 +284,7 @@ covariance.
 
 The joint estimator should distinguish at least:
 
-\`\`\`text
+```text
 insufficient_joint_support
 insufficient_cross_covariance_pairs
 insufficient_cross_covariance_local_support
@@ -299,7 +299,7 @@ joint_score_covariance_not_positive_definite
 joint_score_covariance_ill_conditioned
 nonfinite_sparse_planar_observation
 observations_outside_analysis_support
-\`\`\`
+```
 
 Failures must remain visible in per-curve/per-fit diagnostics.
 
