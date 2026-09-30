@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "audit": "pre-0.12 external comparator plan",
+  "runtime_dependency": false,
+  "primary": {
+    "name": "mGSFPCA",
+    "version": "0.2.2",
+    "source": "CRAN",
+    "function": "spMultFPCA",
+    "role": "cross-language sparse multivariate sensitivity comparator",
+    "equivalence_claim": false,
+    "settings": {
+      "r": [[2], [2]],
+      "G": [[8], [8]],
+      "basis_type": ["bspline", "bspline"],
+      "nRegGrid": 51,
+      "grid_range": [[0.0, 1.0], [0.0, 1.0]],
+      "mu_nbasis": 8,
+      "M_npc": 4,
+      "maxit": 500,
+      "optim_tol": 1e-5,
+      "bin_size": 51
+    },
+    "selection_policy": "Rank and basis candidates are fixed explicitly for the audit. Automatic AIC/elbow selection is not treated as equivalent to eyetrajectoriespy's explicit-selection contract."
+  },
+  "secondary": [
+    {
+      "name": "MFPCA",
+      "source": "CRAN",
+      "role": "established multivariate FDA sensitivity comparator",
+      "equivalence_claim": false,
+      "status": "planned after the primary sparse comparator"
+    },
+    {
+      "name": "bayesFPCA",
+      "source": "GitHub:hruffieux/bayesFPCA",
+      "role": "Bayesian irregular multivariate sensitivity comparator",
+      "equivalence_claim": false,
+      "status": "reference/sensitivity only; not a runtime dependency or core Bayesian subsystem"
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+name: pre012-mgsfpca-external
+
+on:
+  pull_request:
+    paths:
+      - scripts/run_pre012_recovery_audit.py
+      - scripts/evaluate_pre012_mgsfpca.py
+      - validation/pre012/**
+      - .github/workflows/pre012-mgsfpca-external.yml
+  push:
+    branches: [main]
+    paths:
+      - scripts/run_pre012_recovery_audit.py
+      - scripts/evaluate_pre012_mgsfpca.py
+      - validation/pre012/**
+      - .github/workflows/pre012-mgsfpca-external.yml
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mgsfpca-sensitivity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install eyetrajectoriespy
+        run: python -m pip install -U pip && python -m pip install -e .
+      - name: Generate frozen external fixture only
+        run: |
+          python scripts/run_pre012_recovery_audit.py \
+            --output-dir pre012-mgsfpca \
+            --external-fixture-only
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "release"
+          use-public-rspm: true
+      - name: Install R system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
+      - name: Install exact mGSFPCA comparator
+        run: |
+          Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
+          Rscript -e 'remotes::install_version("mGSFPCA", version="0.2.2", repos="https://cloud.r-project.org", upgrade="never")'
+          Rscript -e 'stopifnot(as.character(utils::packageVersion("mGSFPCA")) == "0.2.2")'
+      - name: Run external sparse multivariate comparator
+        run: Rscript validation/pre012/run_mgsfpca.R pre012-mgsfpca
+      - name: Evaluate invariant sensitivity evidence
+        run: python scripts/evaluate_pre012_mgsfpca.py pre012-mgsfpca
+      - name: Verify external evidence contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("pre012-mgsfpca")
+          required = {
+              "external_fixture_x.csv",
+              "external_fixture_y.csv",
+              "external_fixture_truth.json",
+              "mgsfpca_id_mapping.csv",
+              "mgsfpca_eigenvalues.csv",
+              "mgsfpca_scores.csv",
+              "mgsfpca_eigenfunctions_x.csv",
+              "mgsfpca_eigenfunctions_y.csv",
+              "mgsfpca_run_metadata.txt",
+              "mgsfpca_sensitivity.json",
+          }
+          missing = sorted(name for name in required if not (root / name).exists())
+          if missing:
+              raise SystemExit(f"missing external comparator evidence: {missing}")
+          payload = json.loads((root / "mgsfpca_sensitivity.json").read_text())
+          if payload.get("comparator_version") != "0.2.2":
+              raise SystemExit("unexpected mGSFPCA comparator version")
+          if payload.get("equivalence_claim") is not False:
+              raise SystemExit("external sensitivity must not be labelled equivalence")
+          if payload.get("eyetrajectoriespy_version") != "0.11.0":
+              raise SystemExit("external audit must run against stable 0.11.0")
+          PY
+      - name: Upload external comparator evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: pre012-mgsfpca-external
+          path: pre012-mgsfpca
+          if-no-files-found: error

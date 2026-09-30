@@ -176,6 +176,7 @@ nav:
           - Independent-reference validation ledger: validation/reference-validation-ledger.md
           - Native sparse FPCA validation: validation/sparse-fpca-validation.md
           - Functional simulation validation: validation/functional-simulation-validation.md
+          - Targeted pre-0.12 recovery audit: validation/pre-0.12-recovery-audit.md
           - Numerical tolerance policy: validation/numerical-tolerance-policy.md
           - Performance envelope: validation/performance-envelope.md
       - Development roadmap:
