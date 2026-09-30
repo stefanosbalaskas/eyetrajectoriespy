@@ -70,6 +70,7 @@ jobs:
               "external_fixture_x.csv",
               "external_fixture_y.csv",
               "external_fixture_truth.json",
+              "mgsfpca_id_mapping.csv",
               "mgsfpca_eigenvalues.csv",
               "mgsfpca_scores.csv",
               "mgsfpca_eigenfunctions_x.csv",
