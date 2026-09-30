@@ -160,6 +160,43 @@ Automatic estimation of sigma_xy from the same sparse covariance surface is
 deferred until a defensible identifiability/estimation contract is validated.
 The default must therefore not invent cross-channel measurement error.
 
+### Latent covariance pair contract
+
+The first direct sparse implementation estimates all latent covariance blocks
+from temporally off-diagonal residual products only. For residual coordinates
+r_ixj and r_iyj, the pair sets are
+
+$
+r_{ixj}r_{ix\ell},\qquad
+r_{iyj}r_{iy\ell},\qquad
+r_{ixj}r_{iy\ell},
+\qquad j\ne\ell.
+$
+
+Same-time products are deliberately excluded. In particular, omitting
+r_ixj r_iyj prevents an analyst-supplied contemporaneous measurement-error
+covariance sigma_xy from contaminating the latent C_xy surface, provided the
+measurement errors are independent across distinct time points.
+
+The cross surface is directional:
+
+$
+C_{xy}(s,t)\ne C_{xy}(t,s)
+$
+
+in general. The implementation must therefore fit C_xy(s,t) directly from the
+ordered x-at-s / y-at-t products and must never symmetrize C_xy against its own
+transpose. C_yx is not estimated as a fourth noisy surface; it is defined by
+
+$
+C_{yx}(s,t)=C_{xy}(t,s).
+$
+
+The first canonical implementation uses one explicit mean bandwidth shared by
+x and y and one explicit covariance bandwidth shared by xx, xy, and yy.
+Per-channel or per-block bandwidths remain deferred until recovery evidence
+shows that the added flexibility is scientifically necessary.
+
 ## Canonical architecture
 
 The canonical estimator is the **direct block-covariance route**:
@@ -249,6 +286,8 @@ The result must retain at least:
 - selected dimension names and channel weights;
 - vector mean function;
 - all four fitted covariance blocks;
+- the directly smoothed pre-PSD covariance blocks separately from the
+  covariance blocks actually used downstream after joint PSD handling;
 - pre/post-repair weighted block-operator spectra;
 - PSD repair diagnostics and correction norms;
 - measurement-error covariance and its provenance;
@@ -326,7 +365,9 @@ cross-channel dependence. Recover:
 - latent planar trajectory reconstruction.
 
 The rho_xy = 0, 0.3, 0.6, 0.9 family from the pre-0.12 audit becomes a
-first-class qualification scenario.
+first-class qualification scenario. Qualification must also include negative
+cross-channel coupling and at least one construction with a deliberately
+non-symmetric C_xy(s,t) while preserving C_yx(s,t)=C_xy(t,s).
 
 ### 3. Observation-process stress
 
