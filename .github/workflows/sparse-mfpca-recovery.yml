@@ -1,0 +1,79 @@
+name: sparse-mfpca-recovery
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  sparse-mfpca-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+      - name: Run deterministic sparse MFPCA qualification
+        run: |
+          python scripts/run_sparse_mfpca_recovery_validation.py \
+            --mode qualification \
+            --output-json sparse-mfpca-recovery-validation.json \
+            --qualification-csv sparse-mfpca-recovery-qualification.csv
+      - name: Upload qualification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: sparse-mfpca-recovery-validation
+          path: |
+            sparse-mfpca-recovery-validation.json
+            sparse-mfpca-recovery-qualification.csv
+
+  sparse-mfpca-sensitivity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+      - name: Run descriptive grid and ridge sensitivity
+        run: |
+          python scripts/run_sparse_mfpca_recovery_validation.py \
+            --mode sensitivity \
+            --output-json sparse-mfpca-sensitivity.json \
+            --grid-csv sparse-mfpca-grid-sensitivity.csv \
+            --ridge-csv sparse-mfpca-ridge-sensitivity.csv
+      - name: Upload descriptive sensitivity evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: sparse-mfpca-sensitivity
+          path: |
+            sparse-mfpca-sensitivity.json
+            sparse-mfpca-grid-sensitivity.csv
+            sparse-mfpca-ridge-sensitivity.csv
