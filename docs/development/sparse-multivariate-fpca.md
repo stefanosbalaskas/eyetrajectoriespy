@@ -471,8 +471,10 @@ The tranche can move toward a 0.12 release candidate only after:
 The dedicated final qualification workflow adds a sparse-MFPCA-specific
 single-package performance envelope with fresh-process repeated runtime and
 peak-RSS measurements. No comparative speed claim or release speed threshold is
-introduced. Completion of that workflow closes the planned evidence collection
-before an explicit 0.12 RC decision.
+introduced. Completion of that workflow closes the planned evidence collection.
 
-Until then, 0.12 remains a research/development line rather than a stable
-release claim.
+All seven promotion criteria are now satisfied. The RC entry decision is to
+freeze the scientific/API surface and proceed to **fresh exact-version
+0.12.0rc1 qualification**. This is not a stable-release claim and does not arm
+publication. Pre-RC evidence remains immutable development evidence and must
+not be relabelled as exact-version RC evidence.
