@@ -61,7 +61,17 @@ This is a supported-input check for joint PACE, not measurement-error estimation
 
 ## Guarded versus descriptive evidence
 
-The sparse-mfpca-recovery CI job runs the small deterministic qualification matrix with predeclared finite-sample guards. The sparse-mfpca-sensitivity job separately records evaluation grids G = 31, 51, 81 and score ridge gamma = 0, 1e-8, 1e-6, 1e-4.
+The sparse-mfpca-recovery CI job runs the small deterministic qualification matrix with predeclared finite-sample guards. Mean recovery is scaled to the analytic latent finite-sample reference
+
+$
+E\{ISE(\bar X-\mu)\}=\frac{\sum_k\lambda_k}{n}.
+$
+
+For the independent curve-score design used here, the guard requires fitted mean ISE to remain below twice this reference rather than imposing an arbitrary absolute ISE threshold across signal scales.
+
+The first qualification execution used an absolute mean-ISE guard of 0.03 and is retained as failed evidence. For the rho family, $\sum_k\lambda_k/n=2.9/36\approx0.0806$, so that absolute guard was below the scenario's own expected finite-sample latent-mean deviation. The guard definition was therefore corrected to the scale-aware ratio before qualification was accepted; no other recovery guard was relaxed.
+
+The sparse-mfpca-sensitivity job separately records evaluation grids G = 31, 51, 81 and score ridge gamma = 0, 1e-8, 1e-6, 1e-4.
 
 The same analytic process is regenerated directly on each truth grid rather than interpolating truth between grids. Sensitivity tables set selection_performed=false; no tuning value is chosen from them.
 
