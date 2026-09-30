@@ -11,6 +11,9 @@ from eyetrajectoriespy._sparse_multivariate import (
 )
 from eyetrajectoriespy.fpca import functional_trapezoid_weights
 from eyetrajectoriespy.sparse_multivariate import fit_sparse_mfpca
+from eyetrajectoriespy._sparse_multivariate_truth import (
+    simulate_sparse_multivariate_truth,
+)
 from eyetrajectoriespy.types import IrregularTrajectorySet
 
 
@@ -208,3 +211,49 @@ def test_sparse_mfpca_requires_explicit_cross_channel_noise_contract():
         assert "cross_channel_measurement_error" in str(exc)
     else:
         raise AssertionError("unsupported cross-channel noise must fail")
+
+
+
+def test_sparse_multivariate_truth_holds_marginals_fixed_across_rho():
+    grid = np.linspace(0.0, 1.0, 17)
+    _, _, truth_zero = simulate_sparse_multivariate_truth(
+        n_curves=8,
+        samples_per_curve=6,
+        channel_correlation=0.0,
+        random_state=9021,
+    )
+    _, _, truth_six = simulate_sparse_multivariate_truth(
+        n_curves=8,
+        samples_per_curve=6,
+        channel_correlation=0.6,
+        random_state=9021,
+    )
+
+    zero = truth_zero.covariance_blocks(grid)
+    six = truth_six.covariance_blocks(grid)
+
+    np.testing.assert_allclose(
+        zero[0, :, 0, :],
+        six[0, :, 0, :],
+        atol=1e-12,
+    )
+    np.testing.assert_allclose(
+        zero[1, :, 1, :],
+        six[1, :, 1, :],
+        atol=1e-12,
+    )
+    np.testing.assert_allclose(
+        zero[0, :, 1, :],
+        0.0,
+        atol=1e-12,
+    )
+    np.testing.assert_allclose(
+        six[0, :, 1, :],
+        0.6 * six[0, :, 0, :],
+        atol=1e-12,
+    )
+    np.testing.assert_allclose(
+        six[1, :, 0, :],
+        six[0, :, 1, :].T,
+        atol=1e-12,
+    )
