@@ -259,13 +259,17 @@ retained-subspace alignment, while marginal rank 2 closely tracks the direct
 joint subspace and scores. The external comparator shows broad invariant
 functional/score compatibility without an equivalence claim.
 
-The final pre-RC qualification tranche now adds the public estimator's
-row-level observation-process stress matrix and a dedicated non-comparative
-runtime/peak-memory envelope. Stress remains descriptive rather than a tuning or
-qualification threshold, and the performance envelope applies no speed target.
-Once these two jobs and the ordinary package/documentation/release-readiness
-matrix are green, the next step is an explicit 0.12 RC decision rather than
-further methodological expansion.
+The final pre-RC qualification tranche now completes the public estimator's
+row-level observation-process stress matrix and dedicated non-comparative
+runtime/peak-memory envelope. All 21 stressed fits completed with zero score
+failures; the evidence visibly distinguishes MCAR from stronger
+signal-/eccentricity-dependent recovery changes without turning those
+differences into tuning thresholds. The three declared performance workloads
+also completed with zero score failures under repeated fresh-process timing.
+Stress remains descriptive and the performance envelope applies no speed
+target. The methodological evidence collection is therefore complete; the next
+step is an explicit 0.12 release-candidate decision rather than further
+estimator expansion.
 
 See [native sparse MFPCA recovery validation](../validation/sparse-mfpca-recovery.md).
 
