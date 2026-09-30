@@ -61,13 +61,7 @@ This is a supported-input check for joint PACE, not measurement-error estimation
 
 ## Guarded versus descriptive evidence
 
-The sparse-mfpca-recovery CI job runs the small deterministic qualification matrix with predeclared finite-sample guards. Mean recovery is scaled to the analytic latent finite-sample reference
-
-$
-E\{ISE(\bar X-\mu)\}=\frac{\sum_k\lambda_k}{n}.
-$
-
-For the independent curve-score design used here, the guard requires fitted mean ISE to remain below twice this reference rather than imposing an arbitrary absolute ISE threshold across signal scales.
+The sparse-mfpca-recovery CI job runs the small deterministic qualification matrix with predeclared finite-sample guards. Mean recovery is scaled to the analytic latent finite-sample reference $E\{ISE(\bar X-\mu)\}=\sum_k\lambda_k/n$. For the independent curve-score design used here, the guard requires fitted mean ISE to remain below twice this reference rather than imposing an arbitrary absolute ISE threshold across signal scales.
 
 The first qualification execution used an absolute mean-ISE guard of 0.03 and is retained as failed evidence. For the rho family, $\sum_k\lambda_k/n=2.9/36\approx0.0806$, so that absolute guard was below the scenario's own expected finite-sample latent-mean deviation. The guard definition was therefore corrected to the scale-aware ratio before qualification was accepted; no other recovery guard was relaxed.
 
