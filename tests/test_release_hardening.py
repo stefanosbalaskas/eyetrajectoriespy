@@ -160,6 +160,22 @@ def test_release_governance_requires_exact_main_simulation_evidence():
         "sparse_native_validation_qualified"
         in module._GITHUB_RELEASE_DECLARATIONS
     )
+    for gate in (
+        "sparse_mfpca_recovery_qualified",
+        "sparse_mfpca_comparator_sensitivity_recorded",
+        "sparse_mfpca_observation_stress_recorded",
+        "sparse_mfpca_performance_qualified",
+    ):
+        assert gate in module._GITHUB_RELEASE_DECLARATIONS
+    for check in (
+        "sparse-mfpca-recovery",
+        "sparse-mfpca-sensitivity",
+        "two-stage-sensitivity",
+        "mgsfpca-sensitivity",
+        "observation-process-stress",
+        "sparse-mfpca-performance-envelope",
+    ):
+        assert check in module.REQUIRED_CHECKS
 
     validation_workflow = (
         ROOT
@@ -179,10 +195,34 @@ def test_release_governance_requires_exact_main_simulation_evidence():
         / "workflows"
         / "sparse-native-validation.yml"
     ).read_text(encoding="utf-8")
+    sparse_mfpca_recovery_workflow = (
+        ROOT
+        / ".github"
+        / "workflows"
+        / "sparse-mfpca-recovery.yml"
+    ).read_text(encoding="utf-8")
+    sparse_mfpca_comparator_workflow = (
+        ROOT
+        / ".github"
+        / "workflows"
+        / "sparse-mfpca-comparator-sensitivity.yml"
+    ).read_text(encoding="utf-8")
+    sparse_mfpca_final_workflow = (
+        ROOT
+        / ".github"
+        / "workflows"
+        / "sparse-mfpca-final-qualification.yml"
+    ).read_text(encoding="utf-8")
     assert "- main" in validation_workflow
     assert "- main" in stress_workflow
     assert "- main" in sparse_workflow
     assert "- release/0.11-native-simulation" in sparse_workflow
+    assert "- main" in sparse_mfpca_recovery_workflow
+    assert "- main" in sparse_mfpca_comparator_workflow
+    assert "- main" in sparse_mfpca_final_workflow
+    assert "name: sparse-mfpca-performance-envelope" in (
+        sparse_mfpca_final_workflow
+    )
 
 
 def test_release_workflow_builds_once_and_reuses_exact_artifact():
