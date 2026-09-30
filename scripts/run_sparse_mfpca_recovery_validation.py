@@ -30,7 +30,7 @@ QUALIFICATION_GRID_SIZE = 31
 QUALIFICATION_GUARDS = {
     "score_failure_rate_max": 0.05,
     "minimum_subspace_principal_cosine_min": 0.70,
-    "mean_ise_max": 0.03,
+    "mean_ise_sampling_reference_ratio_max": 2.0,
     "joint_covariance_ise_max": 1.50,
     "reconstruction_ise_max": 0.80,
     "psd_relative_operator_correction_max": 0.50,
@@ -278,14 +278,24 @@ def _assessment_row(
         truth_cxy,
         np.asarray(simulation.truth.truth_grid, dtype=float),
     )
+    n_curves = int(simulation.truth.scores.shape[0])
+    mean_sampling_reference = float(
+        np.sum(np.asarray(simulation.truth.eigenvalues, dtype=float))
+        / n_curves
+    )
+    mean_sampling_ratio = (
+        float(mean_ise[0]) / mean_sampling_reference
+    )
     return {
         "case": case,
         "case_type": case_type,
         "rho_xy": rho_xy,
         "grid_size": int(len(simulation.truth.truth_grid)),
-        "n_curves": int(simulation.truth.scores.shape[0]),
+        "n_curves": n_curves,
         "n_components": int(fitted.n_components),
         "mean_ise": float(mean_ise[0]),
+        "mean_latent_sampling_reference_ise": mean_sampling_reference,
+        "mean_ise_sampling_reference_ratio": mean_sampling_ratio,
         "joint_covariance_ise": float(covariance_ise[0]),
         "cxy_ise": float(cxy[0]),
         "cxy_zero_baseline_ise": float(zero_cxy_ise),
@@ -340,6 +350,8 @@ def _guard_row(row: dict[str, object]) -> list[str]:
     failures: list[str] = []
     finite_required = (
         "mean_ise",
+        "mean_latent_sampling_reference_ise",
+        "mean_ise_sampling_reference_ratio",
         "joint_covariance_ise",
         "cxy_ise",
         "minimum_subspace_principal_cosine",
@@ -364,8 +376,12 @@ def _guard_row(row: dict[str, object]) -> list[str]:
         ]
     ):
         failures.append("minimum_subspace_principal_cosine")
-    if float(row["mean_ise"]) > QUALIFICATION_GUARDS["mean_ise_max"]:
-        failures.append("mean_ise")
+    if float(row["mean_ise_sampling_reference_ratio"]) > (
+        QUALIFICATION_GUARDS[
+            "mean_ise_sampling_reference_ratio_max"
+        ]
+    ):
+        failures.append("mean_ise_sampling_reference_ratio")
     if float(row["joint_covariance_ise"]) > QUALIFICATION_GUARDS[
         "joint_covariance_ise_max"
     ]:
