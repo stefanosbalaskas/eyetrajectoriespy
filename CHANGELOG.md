@@ -10,6 +10,7 @@
 - Add identification-aware native sparse MFPCA known-truth recovery: covariance error is evaluated by named Cxx/Cxy/Cyx/Cyy blocks, exact tied eigenspaces suppress non-identifiable component/score metrics, and tied score coordinates use orthogonal Procrustes RMSE.
 - Add deterministic rho_xy = -0.6, 0, 0.3, 0.6, 0.9 qualification, one directional asymmetric-Cxy case, and one supplied correlated measurement-error case.
 - Separate guarded qualification from descriptive G = 31/51/81 and score-ridge sensitivity; no tuning value is selected from the sensitivity evidence.
+- Scale the mean-recovery qualification guard to the analytic finite-sample latent mean variance (sum(lambda)/n) after the first retained run showed the original absolute ISE guard was below the scenario's own sampling scale; no other guard is relaxed.
 - Keep two-stage sensitivity, external mGSFPCA sensitivity, observation-loss stress, performance qualification, and release-candidate decisions for subsequent tranches.
 
 ## 0.11.0 — 2026-09-29
