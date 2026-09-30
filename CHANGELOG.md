@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased — 0.12 development
+
+- Add the first public native sparse multivariate FPCA/joint-PACE composition for two jointly observed planar coordinates.
+- Preserve direct off-diagonal xx/xy/yy latent covariance estimation, directional Cxy with Cyx defined by transpose, full joint-operator PSD handling, and full-covariance joint PACE scoring.
+- Require explicit diagonal or fixed-matrix two-channel measurement-error covariance; do not estimate cross-channel measurement error automatically.
+- Expose public mean/eigenfunction arrays in time-before-dimension convention while retaining channel-major ordering only as an internal operator implementation detail.
+- Retain pre-PSD and downstream covariance blocks, score/conditioning diagnostics, support/pair counts, measurement-error covariance, units, metadata, and provenance in `SparseMFPCAResult`.
+- Keep 0.12 recovery qualification, two-stage sensitivity, external mGSFPCA sensitivity, observation-loss stress, and release-candidate decisions for subsequent tranches.
+
 ## 0.11.0 — 2026-09-29
 
 - Promote the publicly qualified `0.11.0rc1` simulation/recovery laboratory to final `0.11.0` without adding an estimator, numerical method, generalized family, API expansion, hidden analytical default, or post-0.11 research feature.
