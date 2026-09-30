@@ -194,18 +194,29 @@ and [functional simulation validation](../validation/functional-simulation-valid
 
 ## Post-0.11 research sequence
 
-The next methodological work is deliberately ordered rather than opened in
+The next methodological work remains deliberately ordered rather than opened in
 parallel.
 
-**1. Package-wide recovery audit and external validation.** Use the 0.11
-laboratory to find weak existing estimators before adding methodology. Where
-feasible, add external eye-tracking benchmarks for compositional ROI
-trajectories and verify non-negativity, unit-sum reconstruction, component
-interpretation, and agreement/disagreement with published constrained
-multivariate analyses. This is validation work, not a reason to duplicate an
-external estimator.
+**1. Targeted pre-0.12 recovery audit — complete.** The 0.11 known-truth
+laboratory was used to test four decision-relevant questions before opening new
+methodology: signal-dependent observation loss, controlled x/y cross-channel
+truth under fixed marginal covariance, the sparse repeated-trial hierarchy
+boundary, and an independent sparse multivariate comparator.
 
-**2. 0.12 candidate — native sparse multivariate FPCA for planar gaze.** The
+The audit found no result-changing or public-API defect inside an already
+supported 0.11 contract. Signal-dependent loss produced visible covariance and
+reconstruction sensitivity without PACE score failures in the controlled
+scenarios. The planar truth experiment showed that cross-channel block energy
+increases materially while the marginal x/y covariance is held fixed, so
+separate univariate sparse fits cannot represent the full planar estimand.
+Sparse/unequal repeated-trial input remained correctly outside the complete-grid
+mixed-effects contract. The mGSFPCA 0.2.2 external sensitivity workflow also
+completed successfully after an explicit numeric subject-ID adapter was added
+at the comparator boundary.
+
+See the [targeted pre-0.12 recovery audit](../validation/pre-0.12-recovery-audit.md).
+
+**2. 0.12 development — native sparse multivariate FPCA for planar gaze.** The
 scientific object is the joint process
 
 $$
@@ -226,11 +237,14 @@ C_{yx}(s,t) & C_{yy}(s,t)
 \end{bmatrix}.
 $$
 
-A future `fit_sparse_mfpca(...)` must estimate genuine cross-channel
-covariance, state cross-channel measurement-error assumptions, derive the joint
-observation covariance and conditional score system, and validate recovery
-under sparse/irregular designs. Conditional expectation alone is not sufficient
-reason to label the method “multivariate PACE.”
+The canonical design is a direct sparse block-covariance estimator with one
+joint eigensystem and one joint conditional-score system. Cross-channel
+measurement-error assumptions must remain explicit. A two-stage construction
+based on univariate sparse bases followed by a joint score covariance is retained
+as a benchmark/sensitivity route rather than becoming the canonical estimator
+by convenience.
+
+See the [0.12 sparse multivariate FPCA design contract](../development/sparse-multivariate-fpca.md).
 
 **3. Later candidate — sparse participant/trial functional decomposition.**
 Only after sparse multivariate recovery is understood should the package
@@ -244,12 +258,12 @@ Its estimand is participant/trial dimension reduction and variance
 decomposition under sparse observation, distinct from the existing
 likelihood-based functional mixed-effects regression surface.
 
-**4. Validation extension — signal-dependent observation and missingness.**
-Post-0.11 simulation work may distinguish MCAR/block loss from explicit
-signal-dependent availability, for example where observation probability
-depends on latent position, velocity, phase, or another generated quantity.
-This should enter as a declared simulation/provenance mechanism and stress
-scenario before it is considered an estimator-correction problem.
+**4. Continuing validation extension — observation-process sensitivity.**
+MCAR/block loss and explicit signal-dependent availability now belong to the
+standing sparse-functional validation laboratory. Position-, velocity-, phase-,
+eccentricity-, and related generated observation mechanisms should continue to
+be declared in simulation/provenance and reported separately from qualification
+evidence unless a supported-contract defect is demonstrated.
 
 **Deferred.** Bayesian sparse MFPCA, additional generalized families, broad
 nonlinear simulation ecosystems, and further method-catalogue expansion remain
@@ -271,7 +285,6 @@ sparse hierarchical gaze
 
 with the 0.11 recovery laboratory providing the validation infrastructure under
 every later tranche.
-
 
 ## Development status
 
