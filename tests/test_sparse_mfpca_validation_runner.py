@@ -141,6 +141,18 @@ def test_asymmetric_design_is_genuinely_directional_not_implementation_only():
     np.testing.assert_allclose(cyx, cxy.T, atol=1e-12)
 
 
+def test_mean_guard_uses_analytic_finite_sample_scale_not_absolute_ise():
+    runner = _load_runner()
+    assert "mean_ise_max" not in runner.QUALIFICATION_GUARDS
+    assert runner.QUALIFICATION_GUARDS[
+        "mean_ise_sampling_reference_ratio_max"
+    ] == pytest.approx(2.0)
+
+    eigenvalues, _ = runner.planar_rho_design(0.6)
+    expected = sum(eigenvalues) / 36
+    assert expected == pytest.approx(2.9 / 36)
+
+
 def test_sensitivity_contract_never_selects_a_tuning_value():
     runner = _load_runner()
     assert runner.GRID_SIZES == (31, 51, 81)
