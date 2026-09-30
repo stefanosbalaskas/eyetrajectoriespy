@@ -685,6 +685,44 @@ class SparseFPCAResult:
 
 
 @dataclass(frozen=True)
+class SparseMFPCAResult:
+    """Native sparse multivariate FPCA fitted to irregular trajectories."""
+
+    scores: np.ndarray
+    eigenvalues: np.ndarray
+    explained_variance_ratio: np.ndarray
+    dimension_names: tuple[str, ...]
+    curve_ids: tuple[str, ...]
+    metadata: pd.DataFrame
+    coordinate_system: str
+    time_unit: str
+    n_components: int
+    evaluation_grid: np.ndarray
+    mean: np.ndarray
+    covariance: np.ndarray
+    eigenfunctions: np.ndarray
+    noise_variances: np.ndarray
+    quadrature_weights: np.ndarray
+    score_diagnostics: pd.DataFrame = field(default_factory=pd.DataFrame)
+    covariance_diagnostics: Mapping[str, Any] = field(default_factory=dict)
+    mean_support_counts: Mapping[str, np.ndarray] = field(default_factory=dict)
+    covariance_support_counts: Mapping[str, np.ndarray] = field(default_factory=dict)
+    cross_covariance_support_counts: Mapping[str, np.ndarray] = field(
+        default_factory=dict
+    )
+    noise_raw_diagonal: Mapping[str, np.ndarray] = field(default_factory=dict)
+    noise_diagonal_difference: Mapping[str, np.ndarray] = field(
+        default_factory=dict
+    )
+    provenance: Mapping[str, Any] = field(default_factory=dict)
+
+    def cumulative_explained_variance(self) -> np.ndarray:
+        """Cumulative proportion of retained positive joint variance."""
+
+        return np.cumsum(self.explained_variance_ratio)
+
+
+@dataclass(frozen=True)
 class FunctionalMeanBandResult:
     """Simultaneous multiplier-bootstrap band for a functional mean."""
 
