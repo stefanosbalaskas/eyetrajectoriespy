@@ -75,7 +75,8 @@ jobs:
           path: sparse-mfpca-observation-stress
           if-no-files-found: error
 
-  performance-envelope:
+  sparse-mfpca-performance-envelope:
+    name: sparse-mfpca-performance-envelope
     runs-on: ubuntu-latest
     timeout-minutes: 35
     env:
