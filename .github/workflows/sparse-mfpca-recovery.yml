@@ -37,6 +37,7 @@ jobs:
             --output-json sparse-mfpca-recovery-validation.json \
             --qualification-csv sparse-mfpca-recovery-qualification.csv
       - name: Upload qualification evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: sparse-mfpca-recovery-validation
@@ -70,6 +71,7 @@ jobs:
             --grid-csv sparse-mfpca-grid-sensitivity.csv \
             --ridge-csv sparse-mfpca-ridge-sensitivity.csv
       - name: Upload descriptive sensitivity evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: sparse-mfpca-sensitivity
