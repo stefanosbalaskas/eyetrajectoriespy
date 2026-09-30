@@ -1,5 +1,41 @@
 # Pre-1.0 release-readiness checklist
 
+## 0.12.0rc1 entry decision — 1 October 2026
+
+The 0.12 native sparse-MFPCA development surface has completed its planned
+pre-RC evidence collection on protected main commit
+`6b02310b4abb2d16e9df96293e9c8f1a63c34984`.
+
+The entry decision is **ready for exact-version RC qualification**, based on:
+
+- direct joint block-covariance estimator and public `fit_sparse_mfpca()`
+  composition;
+- analytical/operator and ordering/measurement-error checks;
+- identification-aware known-truth recovery over negative, zero and positive
+  cross-channel coupling;
+- directional asymmetric-Cxy and correlated-measurement-error cases;
+- grid and score-ridge descriptive sensitivity;
+- internal two-stage marginal-basis sensitivity;
+- external mGSFPCA 0.2.2 sensitivity with no equivalence/winner claim;
+- public-estimator observation-process stress with 21/21 fits completed and
+  zero score failures;
+- dedicated sparse-MFPCA repeated runtime/peak-RSS evidence with zero score
+  failures in all three declared workloads;
+- portable-result zero-loss checks, docs/examples, optional backends,
+  release-readiness, and Ubuntu/macOS/Windows × Python 3.11–3.13 CI.
+
+This decision does **not** arm a release. `RELEASE_READINESS.json` keeps
+`github_release_ready=false` and `production_release_ready=false`, and all
+active package/version ledgers remain `0.11.0`.
+
+Before `0.12.0rc1` can be published, a separate version-alignment branch must
+create fresh evidence under exact identity `0.12.0rc1`, merge through
+protected main, and pass the complete exact-main matrix. Publication must then
+be armed in a separate reviewed governance-only change and invoked manually.
+
+The installed-RC workflow remains intentionally pinned to published immutable
+`0.11.0rc1` until the new candidate actually exists on production PyPI.
+
 The stabilization line changes the success criterion from feature count to
 whether an independent researcher can choose, reproduce, audit and correctly
 interpret a workflow.
