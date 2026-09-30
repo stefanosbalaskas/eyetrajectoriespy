@@ -19,6 +19,9 @@ from eyetrajectoriespy._sparse_multivariate_truth import (
 )
 
 
+SIGNAL_RELATIVE_EIGENVALUE_FLOOR = 0.05
+
+
 def _principal_cosines_functional(estimated, truth, grid):
     estimated = np.asarray(estimated, dtype=float)
     truth = np.asarray(truth, dtype=float)
