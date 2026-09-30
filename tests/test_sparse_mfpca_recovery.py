@@ -497,7 +497,6 @@ def test_tied_recovery_retains_subspace_when_scores_are_not_recoverable():
     )
     exact = _exact_result(simulation)
     sparse_scores = np.full_like(exact.scores, np.nan)
-    sparse_scores[0] = exact.scores[0]
 
     assessment = evaluate_sparse_mfpca_recovery(
         replace(exact, scores=sparse_scores),
