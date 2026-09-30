@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_development_version": "0.11.0",
+  "current_development_version": "0.12.0.dev0",
   "first_public_release_target": "0.9.0",
   "production_release_ready": false,
   "gates": {
@@ -17,7 +17,10 @@
     "exact_main_ci_required": true,
     "functional_simulation_qualification_qualified": true,
     "functional_simulation_stress_recorded": true,
-    "sparse_native_validation_qualified": true
+    "sparse_native_validation_qualified": true,
+    "sparse_multivariate_validation_qualified": true,
+    "sparse_multivariate_external_sensitivity_recorded": true,
+    "sparse_multivariate_performance_recorded": true
   },
   "notes": [
     "Before final 0.11.0 publication, 0.10.0 was the current stable pre-1.0 release; published 0.11.0rc1 remains immutable.",
@@ -36,7 +39,8 @@
     "Final 0.11.0 production release workflow #13 (run 36628220308) completed successfully from exact protected-main commit 2616675ad2dfc095bf17a442c1d350ba88fd030a.",
     "Workflow #13 built the wheel and sdist once, passed production governance and unpublished-version preflight, created annotated tag v0.11.0 and the GitHub Release, published the exact release distributions to production PyPI through OIDC Trusted Publishing with digital attestations, and passed a fresh eyetrajectoriespy==0.11.0 production-PyPI installation smoke test.",
     "Published GitHub Release assets are eyetrajectoriespy-0.11.0-py3-none-any.whl (sha256:7cba258531ae5f5a41e0a95dbfc1d0604c29456dd121c3a422adc9f576f2e481), eyetrajectoriespy-0.11.0.tar.gz (sha256:99b5285226a675f14a4f42369e6b4a696615b273cbd347c1716387f14250a4bc), and SHA256SUMS.",
-    "Post-publication readiness is jointly disarmed to prevent accidental republication of immutable 0.11.0. Ordinary pushes and merges remain non-publishing; a future release must begin a new reviewed version/readiness cycle."
+    "Post-publication readiness is jointly disarmed to prevent accidental republication of immutable 0.11.0. Ordinary pushes and merges remain non-publishing; a future release must begin a new reviewed version/readiness cycle.",
+    "Post-release development now uses package identity 0.12.0.dev0. Published 0.11.0 remains immutable; production and GitHub publication stay disarmed. The 0.12 development line adds native sparse multivariate planar FPCA only after the targeted pre-0.12 audit, independent recovery qualification, frozen-fixture mGSFPCA sensitivity, robustness stress, and method-specific resource characterization."
   ],
   "github_release_ready": false
 }
