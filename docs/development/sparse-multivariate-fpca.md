@@ -166,12 +166,12 @@ The first direct sparse implementation estimates all latent covariance blocks
 from temporally off-diagonal residual products only. For residual coordinates
 r_ixj and r_iyj, the pair sets are
 
-$
+$$
 r_{ixj}r_{ix\ell},\qquad
 r_{iyj}r_{iy\ell},\qquad
 r_{ixj}r_{iy\ell},
 \qquad j\ne\ell.
-$
+$$
 
 Same-time products are deliberately excluded. In particular, omitting
 r_ixj r_iyj prevents an analyst-supplied contemporaneous measurement-error
@@ -180,17 +180,17 @@ measurement errors are independent across distinct time points.
 
 The cross surface is directional:
 
-$
+$$
 C_{xy}(s,t)\ne C_{xy}(t,s)
-$
+$$
 
 in general. The implementation must therefore fit C_xy(s,t) directly from the
 ordered x-at-s / y-at-t products and must never symmetrize C_xy against its own
 transpose. C_yx is not estimated as a fourth noisy surface; it is defined by
 
-$
+$$
 C_{yx}(s,t)=C_{xy}(t,s).
-$
+$$
 
 The first canonical implementation uses one explicit mean bandwidth shared by
 x and y and one explicit covariance bandwidth shared by xx, xy, and yy.
