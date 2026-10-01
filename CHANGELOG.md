@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.0 (unreleased)
+
+- Promote the publicly qualified and production-observed `0.12.0rc1` sparse-MFPCA/joint-PACE surface to final `0.12.0` without changing estimator behavior, numerical methods, analytical defaults, dependencies, or public APIs.
+- Require fresh exact-version `0.12.0` package-wide performance evidence and a fresh sparse-MFPCA performance run rather than relabelling release-candidate measurements.
+- Carry forward exact production-installed RC observation on Python 3.11–3.13, including the public `fit_sparse_mfpca()` → recovery → reporting → portable-result chain and 36/36 successful joint-PACE scores.
+- Preserve `v0.12.0rc1`, its production-PyPI distributions, release assets, attestations, and archived performance evidence as immutable prerelease history.
+- Keep GitHub and production-PyPI publication jointly disarmed throughout final-version qualification; publication arming remains a separate governance-only change after the complete exact-main matrix passes.
+
 ## 0.12.0rc1 — 2026-10-01
 
 - Promote the feature-frozen, fully qualified 0.12 sparse-MFPCA/joint-PACE surface to the first release candidate without adding scientific behavior or changing analytical defaults.

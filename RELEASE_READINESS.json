@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_development_version": "0.12.0rc1",
+  "current_development_version": "0.12.0",
   "first_public_release_target": "0.9.0",
   "production_release_ready": false,
   "gates": {
@@ -35,7 +35,7 @@
     "Final 0.11.0 qualification required a fresh exact-version performance envelope, complete pull-request matrix, protected-main merge, and complete exact-main matrix before publication could be armed; all of those gates subsequently passed.",
     "Publication was deliberately disarmed during final qualification and was armed later only through separate governance-only PR #121 after exact-main 0.11.0 qualification passed.",
     "Post-0.11 methodology remains deferred pending the package-wide recovery audit.",
-    "Final 0.11.0 qualification PR #120 merged as exact protected-main commit f0b328dabd9d5050fa9988e3c157d034efb0ee7f. The complete exact-main final-version matrix passed: package plus Ubuntu/macOS/Windows × Python 3.11–3.13, docs, examples, optional scikit-fda, optional FDApy sparse, release-readiness, performance, functional-simulation recovery, threshold-free functional-simulation stress, and native sparse/PACE validation.",
+    "Final 0.11.0 qualification PR #120 merged as exact protected-main commit f0b328dabd9d5050fa9988e3c157d034efb0ee7f. The complete exact-main final-version matrix passed: package plus Ubuntu/macOS/Windows \u00d7 Python 3.11\u20133.13, docs, examples, optional scikit-fda, optional FDApy sparse, release-readiness, performance, functional-simulation recovery, threshold-free functional-simulation stress, and native sparse/PACE validation.",
     "Exact-main final-version performance qualification run 36625124460 passed under package identity 0.11.0. The final version therefore has fresh performance evidence rather than relabelled 0.11.0rc1 measurements.",
     "PR #121 jointly armed GitHub and production PyPI publication only after completed final-version qualification; production remained an explicit manual release.yml dispatch from exact protected main.",
     "Final 0.11.0 production release workflow #13 (run 36628220308) completed successfully from exact protected-main commit 2616675ad2dfc095bf17a442c1d350ba88fd030a.",
@@ -54,7 +54,13 @@
     "Governance-only PR #135 armed publication at exact protected-main commit e1051190991e586c6d9a8d449c94311c65e3d238 only after the arming commit itself passed the required exact-main governance checks.",
     "Production release workflow #14 (run 36853730887) completed successfully from exact arming commit e1051190991e586c6d9a8d449c94311c65e3d238 on 1 October 2026. It created annotated tag and GitHub prerelease v0.12.0rc1, published the checksum-verified wheel and sdist to production PyPI through OIDC Trusted Publishing with digital attestations, and passed a fresh eyetrajectoriespy==0.12.0rc1 production-PyPI installation smoke test on the first visibility attempt.",
     "Published v0.12.0rc1 GitHub Release assets are eyetrajectoriespy-0.12.0rc1-py3-none-any.whl (sha256:28b0a83b12f700edc6c9e2125b40e4f4046c4c391393d2540c5c6a3fbc770511), eyetrajectoriespy-0.12.0rc1.tar.gz (sha256:9f350fe640062c89e97932f686ef47b91b0add9584109735a61b1d0e138e3ad0), and SHA256SUMS.",
-    "Post-publication GitHub/PyPI readiness is jointly disarmed again to prevent accidental republication of immutable 0.12.0rc1. The installed-RC workflow is retargeted to production-PyPI 0.12.0rc1 for external-consumer observation before any final 0.12.0 promotion decision."
+    "Post-publication GitHub/PyPI readiness is jointly disarmed again to prevent accidental republication of immutable 0.12.0rc1. The installed-RC workflow is retargeted to production-PyPI 0.12.0rc1 for external-consumer observation before any final 0.12.0 promotion decision.",
+    "Final 0.12.0 is a version-only promotion of the feature-frozen, production-observed 0.12.0rc1 scientific/API surface. No estimator, numerical method, analytical default, dependency, or public API expansion is introduced during final qualification.",
+    "The immutable 0.12.0rc1 package-wide performance envelope remains archived under validation/performance/PERFORMANCE_ENVELOPE-0.12.0rc1.json and must not be relabelled as final-version evidence.",
+    "Installed sparse-MFPCA/joint-PACE observation PR #137 merged as exact protected-main commit 0250fdb8113d51d024c199f552c50079ea97e84a. Exact-main installed-RC workflow run 36911103234 reinstalled production-PyPI 0.12.0rc1 on Python 3.11-3.13 and passed the deep installed recovery, stress, portability, and sparse-MFPCA observation chain.",
+    "Exact-main installed observation artifact 11186552786 has digest sha256:de1b531fc2a6a5c2836ee3fc1a70df898f7a7e3ecfdad75c3e022300216d24d8. The sparse-MFPCA installed observation returned 36/36 successful joint-PACE scores and zero nonportable fields.",
+    "Final 0.12.0 qualification requires fresh exact-version package-wide and sparse-MFPCA performance evidence, the complete pull-request matrix, protected-main merge, and the complete exact-main matrix before publication may be armed.",
+    "Publication remains jointly disarmed during final qualification. Arming GitHub/PyPI publication is reserved for a later governance-only reviewed change after exact-main 0.12.0 qualification passes."
   ],
   "github_release_ready": false
 }

@@ -6,7 +6,7 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_RELEASE_CANDIDATE = "0.12.0rc1"
+CURRENT_RELEASE_CANDIDATE = "0.12.0"
 
 
 def _load_script(name):

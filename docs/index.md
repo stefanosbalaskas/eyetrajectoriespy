@@ -1,4 +1,8 @@
 ---
+
+!!! info "Final 0.12.0 under qualification"
+    Final `0.12.0` is a version-only promotion of the production-observed `0.12.0rc1` sparse-MFPCA/joint-PACE surface. Fresh final-version performance and complete PR/exact-main qualification are required before publication can be armed.
+
 title: eyetrajectoriespy
 hide:
   - navigation

@@ -4,24 +4,15 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-`0.12.0rc1` is the current release-candidate line under exact-version qualification. `0.11.0` remains the current published stable pre-1.0 release; published `0.11.0rc1` remains immutable.
+`0.12.0` is the current final-version line under exact-version qualification. `0.11.0` remains the current published stable release, and published `0.12.0rc1` remains immutable prerelease history.
 
-- Package line: `0.11.0`.
-- Release phase: final publication is complete. PR #121 armed publication only after final exact-version qualification passed; exact protected-main arming commit `2616675ad2dfc095bf17a442c1d350ba88fd030a` passed the complete post-arming matrix, and production release workflow #13 (run `36628220308`) completed successfully.
-- Scientific promotion boundary: final `0.11.0` promotes the feature-frozen `0.11.0rc1` simulation/recovery laboratory without adding an estimator, numerical method, generalized family, API expansion, hidden default, or post-0.11 research feature.
-- Production-installed RC observation: PR #119 added an external-consumer qualification workflow and merged as exact protected-main commit `a37214653c2f72839e356d603c4f87a514f01056`.
-- Exact-main installed-RC workflow run `36622305877` passed on Python 3.11–3.13 and produced deep evidence artifact `11059511070` with digest `sha256:a01bddd0818c09b298d93596a5698f6f8f835a6e3cde9735857780c2167f289e`.
-- The installed-artifact tranche verified import provenance outside the source checkout, deterministic scenario replay, dense FPCA recovery, actual functional mixed-effects recovery, actual registration recovery, portable export/load, reporting, plotting, and explicit environment capture.
-- Existing four-scenario recovery qualification passed against the production-installed rc1 artifact. The threshold-free stress run retained all 42 declared replicate records.
-- Estimated-noise diagonal-difference stress remained explicitly difficult: 2/3 seeded fits failed closed with `noise_variance_invalid`; the other 13 stress regimes had zero execution failures. No clipping or threshold widening was introduced.
-- An initial observation design with effectively rank-one participant truth caused the two-dimensional unstructured mixed-effects recovery fit to fail closed. Only the new qualification workload was corrected to full-rank basis-matched truth; the package estimator, optimizer policy, and scientific thresholds were unchanged.
-- The immutable `0.11.0rc1` performance snapshot from run `36560873074` is archived. Final `0.11.0` requires a fresh exact-version performance envelope rather than relabelled RC evidence.
-- Final `0.11.0` PR #120 merged as `f0b328dabd9d5050fa9988e3c157d034efb0ee7f`; its complete exact-main matrix passed, including all 9 OS/Python test lanes, docs, examples, optional backends, performance, release-readiness, functional recovery/stress, and native sparse/PACE validation.
-- Exact-main final-version performance qualification run `36625124460` passed under package identity `0.11.0`.
-- Production workflow #13 created `v0.11.0`, published the exact GitHub Release wheel/sdist to production PyPI through OIDC Trusted Publishing with digital attestations, and passed a fresh `eyetrajectoriespy==0.11.0` production-PyPI installation smoke test.
-- Post-publication GitHub/PyPI readiness is jointly disarmed again to prevent accidental republication of immutable `0.11.0`.
-- The 0.11 feature surface remains frozen. Sparse multivariate FPCA, sparse multilevel decomposition, Bayesian sparse FDA, additional generalized families, a new nonlinear simulation ecosystem, and signal-dependent missingness remain post-0.11 work.
-- Existing tests, coverage thresholds, scientific validation rules, fail-closed sparse/PACE behavior, and publication protections remain unchanged.
+- Final `0.12.0` is a version-only promotion of the feature-frozen `0.12.0rc1` sparse-MFPCA/joint-PACE scientific/API surface.
+- Production-installed RC observation is complete on exact protected-main commit `0250fdb8113d51d024c199f552c50079ea97e84a`; run `36911103234` passed exact PyPI installation on Python 3.11–3.13 plus deep recovery/stress/portability and the public sparse-MFPCA observation chain.
+- The exact-main installed sparse-MFPCA fixture returned 36/36 successful joint-PACE scores and `nonportable_fields == ()`; evidence artifact `11186552786` has digest `sha256:de1b531fc2a6a5c2836ee3fc1a70df898f7a7e3ecfdad75c3e022300216d24d8`.
+- The immutable `0.12.0rc1` performance envelope remains archived and is not final-version evidence.
+- Final qualification requires fresh `0.12.0` package-wide performance evidence, fresh sparse-MFPCA performance evidence, the complete PR matrix, protected-main merge, and the complete exact-main matrix.
+- GitHub/PyPI publication readiness remains jointly false during qualification; a later governance-only PR may arm publication after exact-main final qualification passes.
+- No estimator fallback, recovery-threshold widening, automatic tuning, dependency change, or public API expansion is part of this promotion.
 
 See `docs/release-readiness.md` for the release gate and
 `docs/validation/functional-simulation-validation.md` for recovery/stress
