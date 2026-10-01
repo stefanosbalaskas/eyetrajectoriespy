@@ -1,5 +1,10 @@
 # Coordinated GitHub Release and PyPI publication
 
+## Final 0.12.0 exact-version qualification
+
+Final `0.12.0` is qualified as a literal package identity, not by relabelling `0.12.0rc1`. The RC release, production-installed observation, and archived RC performance evidence remain immutable inputs. Final qualification must generate fresh package-wide and sparse-MFPCA performance evidence under `0.12.0`, pass the complete pull-request matrix, merge through protected `main`, and pass the complete exact-main matrix. GitHub and PyPI publication remain disarmed until a separate governance-only arming change.
+
+
 
 ## 0.12.0rc1 qualification
 

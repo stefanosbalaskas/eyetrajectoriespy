@@ -1,5 +1,10 @@
 # Pre-1.0 release-readiness checklist
 
+## Final 0.12.0 qualification
+
+The final-version promotion changes package identity only. `0.12.0rc1` remains immutable and its installed-artifact observation is retained as external-consumer evidence. Fresh final-version performance and the complete PR plus post-merge exact-main matrices are required before publication readiness can be armed. Both publication flags remain false during this tranche.
+
+
 
 ## 0.12.0rc1 qualification and publication arming
 

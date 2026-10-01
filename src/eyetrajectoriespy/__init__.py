@@ -548,7 +548,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.12.0rc1"
+__version__ = "0.12.0"
 
 __all__ = [
     "PortableScientificResultSnapshot",

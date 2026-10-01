@@ -1,5 +1,10 @@
 # Capability status and roadmap
 
+## 0.12 final-promotion checkpoint
+
+The sparse-MFPCA/joint-PACE methodology surface is frozen. Production-installed `0.12.0rc1` observation is complete, so the next release step is literal final `0.12.0` exact-version qualification. This checkpoint adds no methodology and does not reopen tuning, estimator, or API decisions.
+
+
 eyetrajectoriespy is intentionally an **eye-tracking functional-analysis layer**, not a reimplementation of every general FDA estimator.
 
 This page distinguishes implemented scientific contracts from optional interoperability and future work.
