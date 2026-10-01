@@ -6,6 +6,7 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
+CURRENT_RELEASE_CANDIDATE = "0.12.0rc1"
 
 
 def _load_script(name):
@@ -19,18 +20,27 @@ def _load_script(name):
 
 def test_release_version_contract_agrees_for_release_candidate():
     module = _load_script("verify_release_version.py")
-    assert module.verify_version_contract() == "0.11.0"
+    assert module.verify_version_contract() == CURRENT_RELEASE_CANDIDATE
 
 
 def test_release_candidate_version_contract_is_production_eligible():
     module = _load_script("verify_release_version.py")
     assert (
         module.verify_version_contract(
+            tag=f"v{CURRENT_RELEASE_CANDIDATE}",
+            production=True,
+        )
+        == CURRENT_RELEASE_CANDIDATE
+    )
+
+
+def test_release_candidate_rejects_stale_stable_tag():
+    module = _load_script("verify_release_version.py")
+    with pytest.raises(RuntimeError, match="release tag/version mismatch"):
+        module.verify_version_contract(
             tag="v0.11.0",
             production=True,
         )
-        == "0.11.0"
-    )
 
 
 def test_production_release_rejects_development_line(monkeypatch):
@@ -70,6 +80,7 @@ def test_release_governance_happy_path_requires_all_quality_gates(monkeypatch):
     module = _load_script("verify_release_governance.py")
     repository = "stefanosbalaskas/eyetrajectoriespy"
     commit = "a" * 40
+
     def fake_get(url, token):
         assert token == "token"
         if url.endswith("/branches/main"):
@@ -326,6 +337,7 @@ def test_production_release_requires_explicit_manual_target():
     assert "production-new-version-preflight" in workflow
     assert "verify_pypi_version_unpublished.py" in workflow
 
+
 def test_release_governance_blocks_unarmed_readiness_manifest(monkeypatch):
     module = _load_script("verify_release_governance.py")
     monkeypatch.setattr(
@@ -343,6 +355,7 @@ def test_release_governance_blocks_unarmed_readiness_manifest(monkeypatch):
             commit="a" * 40,
             token="token",
         )
+
 
 def test_production_path_fails_on_preexisting_release_or_version():
     workflow = (
@@ -430,4 +443,3 @@ def test_pypi_version_preflight_fails_closed_on_index_error(monkeypatch):
     monkeypatch.setattr(module.urllib.request, "urlopen", fake_urlopen)
     with pytest.raises(RuntimeError, match="preflight failed"):
         module.verify_version_unpublished("eyetrajectoriespy", "0.9.2")
-
