@@ -21,7 +21,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: Apply fail-closed RC identity alignment
-        run: python scripts/_prepare_012_rc_identity.py
+        run: |
+          rm docs/releases/0.12.0rc1.md
+          python scripts/_prepare_012_rc_identity.py
       - name: Commit aligned RC identity
         run: |
           git config user.name 'github-actions[bot]'
