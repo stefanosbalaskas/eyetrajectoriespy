@@ -1,10 +1,38 @@
 # Pre-1.0 release-readiness checklist
 
-## Final 0.12.0 qualification
+## Final 0.12.0 qualification and publication arming
 
-The final-version promotion changes package identity only. `0.12.0rc1` remains immutable and its installed-artifact observation is retained as external-consumer evidence. Fresh final-version performance and the complete PR plus post-merge exact-main matrices are required before publication readiness can be armed. Both publication flags remain false during this tranche.
+Final `0.12.0` exact-version qualification is complete on protected-main commit
+`4469971885104524e7ceb62f05d63f470f838b80`. The complete post-merge
+exact-main matrix finished **14/14 workflow groups green** before publication
+arming.
 
+On that exact commit, sparse-MFPCA final-qualification run `36917712173` passed
+both the repeated sparse-MFPCA performance-envelope job and the public
+observation-process stress job, including evidence-contract verification and
+artifact upload. Comparator-sensitivity run `36917712051` passed the native
+two-stage sensitivity and exact external mGSFPCA path. Package-wide performance
+run `36917712042`, release-readiness run `36917712021`, and package/test run
+`36917711911` also completed successfully; the latter covered package build and
+Ubuntu/macOS/Windows × Python 3.11–3.13.
 
+The final-version promotion changes package identity only. Published
+`0.12.0rc1` remains immutable and its production-installed sparse-MFPCA/
+joint-PACE observation remains retained as external-consumer evidence. Fresh
+final-version performance is distinct from the RC performance record rather
+than a relabeling of prerelease evidence.
+
+This governance-only change jointly arms GitHub and production PyPI publication
+readiness. It changes no estimator, scientific API, numerical method, analytical
+default, test threshold, comparator method, dependency, or performance
+methodology, and it does not itself publish `0.12.0`.
+
+After the arming change is merged, the new exact protected-main arming commit
+must itself pass the required exact-main governance checks before the explicit
+manual `release.yml` dispatch with `target=production`. Ordinary pushes and
+merges remain non-publishing. The production ceremony must originate from that
+later arming commit, not from the qualified-but-disarmed checkpoint
+`4469971885104524e7ceb62f05d63f470f838b80`.
 
 ## 0.12.0rc1 qualification and publication arming
 
