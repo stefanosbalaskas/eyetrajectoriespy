@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/workflows/installed-rc-qualification.yml"
       - "scripts/run_installed_rc_observation.py"
+      - "scripts/run_installed_sparse_mfpca_observation.py"
       - "scripts/run_functional_simulation_validation.py"
       - "scripts/run_functional_simulation_stress.py"
       - "scripts/release_smoke_test.py"
@@ -15,6 +16,7 @@ on:
     paths:
       - ".github/workflows/installed-rc-qualification.yml"
       - "scripts/run_installed_rc_observation.py"
+      - "scripts/run_installed_sparse_mfpca_observation.py"
       - "scripts/run_functional_simulation_validation.py"
       - "scripts/run_functional_simulation_stress.py"
       - "scripts/release_smoke_test.py"
@@ -157,6 +159,14 @@ jobs:
             "${GITHUB_WORKSPACE}/scripts/run_installed_rc_observation.py" \
             --expected-version "${RC_VERSION}" \
             --output-dir evidence/installed-rc-observation
+      - name: Run installed sparse-MFPCA observation
+        shell: bash
+        run: |
+          cd "${RUNNER_TEMP}/rc-work"
+          "${RUNNER_TEMP}/rc-observation/bin/python" \
+            "${GITHUB_WORKSPACE}/scripts/run_installed_sparse_mfpca_observation.py" \
+            --expected-version "${RC_VERSION}" \
+            --output-dir evidence/installed-sparse-mfpca-observation
       - name: Verify retained evidence contracts
         shell: bash
         run: |
@@ -178,6 +188,13 @@ jobs:
                   root
                   / "installed-rc-observation"
                   / "installed-rc-observation.json"
+              ).read_text()
+          )
+          installed_sparse = json.loads(
+              (
+                  root
+                  / "installed-sparse-mfpca-observation"
+                  / "installed-sparse-mfpca-observation.json"
               ).read_text()
           )
 
@@ -212,9 +229,52 @@ jobs:
               raise RuntimeError("portable result version mismatch")
           if not installed["mixed_effects_recovery"]["converged"]:
               raise RuntimeError("installed mixed-effects fit did not converge")
+
+          if installed_sparse["expected_version"] != os.environ["RC_VERSION"]:
+              raise RuntimeError("installed sparse-MFPCA version mismatch")
+          if installed_sparse["source_checkout_imported"] is not False:
+              raise RuntimeError("installed sparse-MFPCA imported source checkout")
+          if installed_sparse["scientific_thresholds_added"] is not False:
+              raise RuntimeError("installed sparse-MFPCA invented thresholds")
+          sparse = installed_sparse["sparse_mfpca"]
+          if sparse["recovery_thresholds_applied"] is not False:
+              raise RuntimeError("installed sparse-MFPCA applied recovery thresholds")
+          if sparse["automatic_tuning_performed"] is not False:
+              raise RuntimeError("installed sparse-MFPCA performed automatic tuning")
+          if sparse["expected_shapes"] != sparse["observed_shapes"]:
+              raise RuntimeError("installed sparse-MFPCA public shapes changed")
+          if set(sparse["joint_score_status_counts"]) != {"ok"}:
+              raise RuntimeError("installed sparse-MFPCA joint PACE scores failed")
+          pace = sparse["joint_pace_contract"]
+          if pace["score_method"] != "joint_PACE":
+              raise RuntimeError("installed sparse-MFPCA score method changed")
+          if pace["score_covariance_source"] != (
+              "full_fitted_joint_covariance_plus_measurement_error"
+          ):
+              raise RuntimeError("installed sparse-MFPCA score covariance changed")
+          if pace["rank_k_covariance_used_for_scoring"] is not False:
+              raise RuntimeError("installed sparse-MFPCA used rank-K scoring covariance")
+          directional = sparse["directional_cxy_contract"]
+          if directional["cross_channel_covariance_modeled"] is not True:
+              raise RuntimeError("installed sparse-MFPCA lost cross-channel covariance")
+          if directional["yx_estimated_independently"] is not False:
+              raise RuntimeError("installed sparse-MFPCA independently estimated Cyx")
+          if directional["cross_covariance_self_symmetrized"] is not False:
+              raise RuntimeError("installed sparse-MFPCA self-symmetrized Cxy")
+          if directional["cyx_is_cxy_transpose"] is not True:
+              raise RuntimeError("installed sparse-MFPCA Cyx transpose contract failed")
+          portable = sparse["portable_result"]
+          if portable["package_version_match"] is not True:
+              raise RuntimeError("installed sparse-MFPCA portable version mismatch")
+          if portable["nonportable_fields"] != []:
+              raise RuntimeError("installed sparse-MFPCA portable snapshot lost fields")
+          if sparse["reporting"]["nonempty"] is not True:
+              raise RuntimeError("installed sparse-MFPCA reporting text is empty")
+
           print(
               "installed RC evidence contracts passed: "
-              f"{expected_records} stress replicates retained"
+              f"{expected_records} stress replicates retained; "
+              "sparse-MFPCA/joint-PACE observation passed"
           )
           PY
       - name: Capture environment lock and evidence checksums
