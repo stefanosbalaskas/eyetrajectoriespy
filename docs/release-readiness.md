@@ -1,5 +1,17 @@
 # Pre-1.0 release-readiness checklist
 
+
+## 0.12.0rc1 qualification state
+
+`0.12.0rc1` is the current release-candidate line under qualification; stable
+`0.11.0` remains published and immutable. The pre-RC sparse-MFPCA evidence and
+release-governance hardening are green.
+
+Publication remains jointly disarmed. Fresh exact-version performance, the
+complete RC pull-request matrix, protected-main merge, and the complete
+exact-main RC matrix are required before a separate governance-only arming
+change.
+
 ## 0.12.0rc1 entry decision — 1 October 2026
 
 The 0.12 native sparse-MFPCA development surface has completed its planned

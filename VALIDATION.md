@@ -4,8 +4,7 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-`0.11.0` is the current published stable pre-1.0 release. Published
-`0.11.0rc1` remains an immutable prerelease record.
+`0.12.0rc1` is the current release-candidate line under exact-version qualification. `0.11.0` remains the current published stable pre-1.0 release; published `0.11.0rc1` remains immutable.
 
 - Package line: `0.11.0`.
 - Release phase: final publication is complete. PR #121 armed publication only after final exact-version qualification passed; exact protected-main arming commit `2616675ad2dfc095bf17a442c1d350ba88fd030a` passed the complete post-arming matrix, and production release workflow #13 (run `36628220308`) completed successfully.

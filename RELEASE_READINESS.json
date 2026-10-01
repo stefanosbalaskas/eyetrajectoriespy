@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_development_version": "0.11.0",
+  "current_development_version": "0.12.0rc1",
   "first_public_release_target": "0.9.0",
   "production_release_ready": false,
   "gates": {
@@ -21,7 +21,8 @@
     "sparse_mfpca_recovery_qualified": true,
     "sparse_mfpca_comparator_sensitivity_recorded": true,
     "sparse_mfpca_observation_stress_recorded": true,
-    "sparse_mfpca_performance_qualified": true
+    "sparse_mfpca_performance_qualified": true,
+    "sparse_mfpca_rc_exact_version_performance_qualified": false
   },
   "notes": [
     "Before final 0.11.0 publication, 0.10.0 was the current stable pre-1.0 release; published 0.11.0rc1 remains immutable.",
@@ -34,7 +35,7 @@
     "Final 0.11.0 qualification required a fresh exact-version performance envelope, complete pull-request matrix, protected-main merge, and complete exact-main matrix before publication could be armed; all of those gates subsequently passed.",
     "Publication was deliberately disarmed during final qualification and was armed later only through separate governance-only PR #121 after exact-main 0.11.0 qualification passed.",
     "Post-0.11 methodology remains deferred pending the package-wide recovery audit.",
-    "Final 0.11.0 qualification PR #120 merged as exact protected-main commit f0b328dabd9d5050fa9988e3c157d034efb0ee7f. The complete exact-main final-version matrix passed: package plus Ubuntu/macOS/Windows × Python 3.11–3.13, docs, examples, optional scikit-fda, optional FDApy sparse, release-readiness, performance, functional-simulation recovery, threshold-free functional-simulation stress, and native sparse/PACE validation.",
+    "Final 0.11.0 qualification PR #120 merged as exact protected-main commit f0b328dabd9d5050fa9988e3c157d034efb0ee7f. The complete exact-main final-version matrix passed: package plus Ubuntu/macOS/Windows \u00d7 Python 3.11\u20133.13, docs, examples, optional scikit-fda, optional FDApy sparse, release-readiness, performance, functional-simulation recovery, threshold-free functional-simulation stress, and native sparse/PACE validation.",
     "Exact-main final-version performance qualification run 36625124460 passed under package identity 0.11.0. The final version therefore has fresh performance evidence rather than relabelled 0.11.0rc1 measurements.",
     "PR #121 jointly armed GitHub and production PyPI publication only after completed final-version qualification; production remained an explicit manual release.yml dispatch from exact protected main.",
     "Final 0.11.0 production release workflow #13 (run 36628220308) completed successfully from exact protected-main commit 2616675ad2dfc095bf17a442c1d350ba88fd030a.",
@@ -44,7 +45,9 @@
     "The 0.12 native sparse-MFPCA scientific/API surface is feature-frozen for release-candidate preparation after direct operator/covariance/PACE implementation, public composition, known-truth recovery, two-stage and mGSFPCA sensitivity, observation-process stress, portability, documentation, performance and cross-platform qualification all passed on protected main.",
     "Protected-main commit 6b02310b4abb2d16e9df96293e9c8f1a63c34984 closes the pre-RC 0.12 evidence collection. All 21 public-estimator observation-stress fits completed with zero score failures, and all three dedicated sparse-MFPCA performance workloads completed with zero score failures under repeated fresh-process timing.",
     "This RC-readiness decision does not change the package identity from 0.11.0 and does not arm GitHub or PyPI publication. A later exact-version 0.12.0rc1 qualification change must align every active version declaration, generate fresh exact-version evidence, pass pull-request and protected-main matrices, and only then may publication be armed in a separate reviewed governance change.",
-    "The production governance checker now requires the 0.12 sparse-MFPCA recovery, sensitivity, external-comparator, observation-stress and uniquely named sparse-MFPCA performance checks in addition to the existing 0.11-era quality gates."
+    "The production governance checker now requires the 0.12 sparse-MFPCA recovery, sensitivity, external-comparator, observation-stress and uniquely named sparse-MFPCA performance checks in addition to the existing 0.11-era quality gates.",
+    "0.12.0rc1 exact-version qualification starts only after governance-hardening PR #133 and all seven sparse-MFPCA promotion criteria pass on protected main.",
+    "Publication remains jointly disarmed during RC qualification. Fresh exact-version performance plus the complete PR and post-merge exact-main matrices are required before a separate governance-only publication-arming change."
   ],
   "github_release_ready": false
 }
