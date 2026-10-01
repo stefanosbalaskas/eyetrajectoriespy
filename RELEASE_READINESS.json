@@ -2,7 +2,7 @@
   "schema_version": 1,
   "current_development_version": "0.12.0rc1",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": false,
+  "production_release_ready": true,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -22,7 +22,7 @@
     "sparse_mfpca_comparator_sensitivity_recorded": true,
     "sparse_mfpca_observation_stress_recorded": true,
     "sparse_mfpca_performance_qualified": true,
-    "sparse_mfpca_rc_exact_version_performance_qualified": false
+    "sparse_mfpca_rc_exact_version_performance_qualified": true
   },
   "notes": [
     "Before final 0.11.0 publication, 0.10.0 was the current stable pre-1.0 release; published 0.11.0rc1 remains immutable.",
@@ -35,7 +35,7 @@
     "Final 0.11.0 qualification required a fresh exact-version performance envelope, complete pull-request matrix, protected-main merge, and complete exact-main matrix before publication could be armed; all of those gates subsequently passed.",
     "Publication was deliberately disarmed during final qualification and was armed later only through separate governance-only PR #121 after exact-main 0.11.0 qualification passed.",
     "Post-0.11 methodology remains deferred pending the package-wide recovery audit.",
-    "Final 0.11.0 qualification PR #120 merged as exact protected-main commit f0b328dabd9d5050fa9988e3c157d034efb0ee7f. The complete exact-main final-version matrix passed: package plus Ubuntu/macOS/Windows \u00d7 Python 3.11\u20133.13, docs, examples, optional scikit-fda, optional FDApy sparse, release-readiness, performance, functional-simulation recovery, threshold-free functional-simulation stress, and native sparse/PACE validation.",
+    "Final 0.11.0 qualification PR #120 merged as exact protected-main commit f0b328dabd9d5050fa9988e3c157d034efb0ee7f. The complete exact-main final-version matrix passed: package plus Ubuntu/macOS/Windows × Python 3.11–3.13, docs, examples, optional scikit-fda, optional FDApy sparse, release-readiness, performance, functional-simulation recovery, threshold-free functional-simulation stress, and native sparse/PACE validation.",
     "Exact-main final-version performance qualification run 36625124460 passed under package identity 0.11.0. The final version therefore has fresh performance evidence rather than relabelled 0.11.0rc1 measurements.",
     "PR #121 jointly armed GitHub and production PyPI publication only after completed final-version qualification; production remained an explicit manual release.yml dispatch from exact protected main.",
     "Final 0.11.0 production release workflow #13 (run 36628220308) completed successfully from exact protected-main commit 2616675ad2dfc095bf17a442c1d350ba88fd030a.",
@@ -47,7 +47,11 @@
     "This RC-readiness decision does not change the package identity from 0.11.0 and does not arm GitHub or PyPI publication. A later exact-version 0.12.0rc1 qualification change must align every active version declaration, generate fresh exact-version evidence, pass pull-request and protected-main matrices, and only then may publication be armed in a separate reviewed governance change.",
     "The production governance checker now requires the 0.12 sparse-MFPCA recovery, sensitivity, external-comparator, observation-stress and uniquely named sparse-MFPCA performance checks in addition to the existing 0.11-era quality gates.",
     "0.12.0rc1 exact-version qualification starts only after governance-hardening PR #133 and all seven sparse-MFPCA promotion criteria pass on protected main.",
-    "Publication remains jointly disarmed during RC qualification. Fresh exact-version performance plus the complete PR and post-merge exact-main matrices are required before a separate governance-only publication-arming change."
+    "Publication remains jointly disarmed during RC qualification. Fresh exact-version performance plus the complete PR and post-merge exact-main matrices are required before a separate governance-only publication-arming change.",
+    "0.12.0rc1 exact-version qualification PR #134 merged as exact protected-main commit a30a3297250f60bea7b433591e01052b707155ba. The complete post-merge exact-main qualification matrix finished 14/14 workflow groups successfully before publication arming.",
+    "Exact RC sparse-MFPCA final-qualification workflow run 36839573704 passed on commit a30a3297250f60bea7b433591e01052b707155ba. Its sparse-mfpca-performance-envelope job ran the repeated exact-version performance workload, verified the performance evidence contract, and uploaded the evidence; its observation-process-stress job also completed successfully.",
+    "External comparator workflow run 36839573801 passed on the same exact protected-main commit. The mgsfpca-sensitivity job installed exact mGSFPCA 0.2.2, ran the external comparator, evaluated invariant sensitivity, verified the external sensitivity contract, and uploaded the comparator evidence successfully.",
+    "This governance-only arming change jointly arms GitHub and production PyPI readiness only after the completed 0.12.0rc1 exact-version qualification. After this change is merged, its exact protected-main arming commit must itself pass the required exact-main governance checks before any explicit manual release.yml production dispatch. Ordinary pushes and merges remain non-publishing."
   ],
-  "github_release_ready": false
+  "github_release_ready": true
 }
