@@ -1,24 +1,41 @@
 # Pre-1.0 release-readiness checklist
 
 
-## 0.12.0rc1 qualification state
+## 0.12.0rc1 qualification and publication arming
 
-`0.12.0rc1` is the current release-candidate line under qualification; stable
-`0.11.0` remains published and immutable. The pre-RC sparse-MFPCA evidence and
-release-governance hardening are green.
+`0.12.0rc1` has completed exact-version qualification on protected main commit
+`a30a3297250f60bea7b433591e01052b707155ba`; stable `0.11.0` remains the
+current published stable pre-1.0 release until the RC production ceremony
+completes.
 
-Publication remains jointly disarmed. Fresh exact-version performance, the
-complete RC pull-request matrix, protected-main merge, and the complete
-exact-main RC matrix are required before a separate governance-only arming
-change.
+The complete post-merge exact-main qualification matrix finished **14/14
+workflow groups green**. Exact RC sparse-MFPCA final-qualification workflow run
+`36839573704` passed on that commit; its `sparse-mfpca-performance-envelope`
+job ran the repeated exact-version performance workload, verified the evidence
+contract, and uploaded the performance evidence, while the companion
+`observation-process-stress` job also completed successfully. External
+comparator workflow run `36839573801` also passed on the same exact commit. Its
+`mgsfpca-sensitivity` job installed exact mGSFPCA 0.2.2, ran the external
+comparator, evaluated invariant sensitivity, verified the external sensitivity
+contract, and uploaded the comparator evidence successfully.
+
+This governance-only change jointly arms GitHub and production PyPI publication
+readiness. It changes no estimator, scientific API, numerical method, test
+threshold, comparator method, dependency, or performance methodology. After the
+arming change is merged, the new exact protected-main arming commit must itself
+pass the required exact-main governance checks before the explicit manual
+`release.yml` dispatch with `target=production`. Ordinary pushes and merges
+remain non-publishing. The production ceremony must originate from that later
+arming commit, not from the qualified-but-disarmed commit
+`a30a3297250f60bea7b433591e01052b707155ba`.
 
 ## 0.12.0rc1 entry decision — 1 October 2026
 
-The 0.12 native sparse-MFPCA development surface has completed its planned
+The 0.12 native sparse-MFPCA development surface completed its planned
 pre-RC evidence collection on protected main commit
 `6b02310b4abb2d16e9df96293e9c8f1a63c34984`.
 
-The entry decision is **ready for exact-version RC qualification**, based on:
+The entry decision was **ready for exact-version RC qualification**, based on:
 
 - direct joint block-covariance estimator and public `fit_sparse_mfpca()`
   composition;
@@ -36,14 +53,17 @@ The entry decision is **ready for exact-version RC qualification**, based on:
 - portable-result zero-loss checks, docs/examples, optional backends,
   release-readiness, and Ubuntu/macOS/Windows × Python 3.11–3.13 CI.
 
-This decision does **not** arm a release. `RELEASE_READINESS.json` keeps
-`github_release_ready=false` and `production_release_ready=false`, and all
-active package/version ledgers remain `0.11.0`.
+At that pre-RC entry decision, publication remained deliberately disarmed and
+the package identity remained `0.11.0`; the decision itself did **not** authorize
+a release. It required a separate exact-version alignment/qualification change
+followed by a distinct reviewed governance-only arming change.
 
-Before `0.12.0rc1` can be published, a separate version-alignment branch must
-create fresh evidence under exact identity `0.12.0rc1`, merge through
-protected main, and pass the complete exact-main matrix. Publication must then
-be armed in a separate reviewed governance-only change and invoked manually.
+Those exact-version alignment and qualification requirements are now satisfied
+by PR #134 and protected-main commit
+`a30a3297250f60bea7b433591e01052b707155ba`. Publication readiness is being
+armed only after that complete exact-main evidence passed; the arming commit
+must still pass its own exact-main governance checks before manual production
+dispatch.
 
 The installed-RC workflow remains intentionally pinned to published immutable
 `0.11.0rc1` until the new candidate actually exists on production PyPI.
@@ -296,7 +316,7 @@ Do not enter a 0.9-style release-candidate phase until:
 
 ## Post-0.9.0 state
 
-`0.11.0` is the current stable release. Stable `0.9.0` and `0.10.0`, plus prereleases `0.10.0rc1`, `0.10.0rc2`, and `0.11.0rc1`, remain immutable historical records. Production workflow #11 published final `0.10.0` through GitHub-first release creation and checksum-verified PyPI OIDC Trusted Publishing from exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc`; the fresh production-PyPI installation smoke test passed.
+`0.11.0` is the current stable release. Stable `0.9.0` and `0.10.0`, plus prereleases `0.10.0rc1`, `0.10.0rc2`, and `0.11.0rc1`, remain immutable historical records. Production workflow #11 published final `0.10.0` through GitHub-first release creation and checksum-verified PyPI OIDC Trusted Publishing from exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc`; the fresh production-PyPI install check passed.
 
 Final `0.10.0` promotes the corrected rc2 code without scientific/API expansion. The package identity, validation manifests, documentation contracts, fresh performance envelope, complete pull-request matrix, post-arming exact-main matrix, and public-artifact verification all completed successfully. Publication readiness is now deliberately disarmed; ordinary merges remain non-publishing, and a future release must begin a new reviewed version/readiness cycle.
 
