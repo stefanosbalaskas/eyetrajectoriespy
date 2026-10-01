@@ -5,18 +5,24 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 WORKFLOW = ROOT / ".github" / "workflows" / "installed-rc-qualification.yml"
 SCRIPT = ROOT / "scripts" / "run_installed_rc_observation.py"
+SPARSE_SCRIPT = ROOT / "scripts" / "run_installed_sparse_mfpca_observation.py"
 
 
-def test_installed_rc_observation_script_parses_and_uses_public_package_only():
-    source = SCRIPT.read_text(encoding="utf-8")
+def _imported_modules(path: Path) -> list[str]:
+    source = path.read_text(encoding="utf-8")
     tree = ast.parse(source)
-
     imported = []
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             imported.extend(alias.name for alias in node.names)
         elif isinstance(node, ast.ImportFrom) and node.module is not None:
             imported.append(node.module)
+    return imported
+
+
+def test_installed_rc_observation_script_parses_and_uses_public_package_only():
+    source = SCRIPT.read_text(encoding="utf-8")
+    imported = _imported_modules(SCRIPT)
 
     assert "eyetrajectoriespy" in imported
     assert not any(
@@ -27,6 +33,47 @@ def test_installed_rc_observation_script_parses_and_uses_public_package_only():
     assert "scientific_thresholds_added" in source
     assert '"scientific_thresholds_added": False' in source
     assert '"truth_available_to_estimators": False' in source
+
+
+def test_installed_sparse_mfpca_script_is_public_observation_only():
+    source = SPARSE_SCRIPT.read_text(encoding="utf-8")
+    imported = _imported_modules(SPARSE_SCRIPT)
+
+    assert "eyetrajectoriespy" in imported
+    assert not any(
+        name.startswith("eyetrajectoriespy.")
+        for name in imported
+    )
+    assert "src/eyetrajectoriespy" not in source
+    assert "RHO_XY = 0.6" in source
+    assert '"scientific_thresholds_added": False' in source
+    assert '"recovery_thresholds_applied": False' in source
+    assert '"automatic_tuning_performed": False' in source
+    assert '"truth_available_to_estimator": False' in source
+
+    required = (
+        "FunctionalSimulationScenario",
+        "simulate_functional_scenario",
+        "fit_sparse_mfpca",
+        "evaluate_sparse_mfpca_recovery",
+        "functional_recovery_assessment_frame",
+        "sparse_mfpca_score_frame",
+        "sparse_mfpca_reporting_text",
+        "export_portable_result",
+        "load_portable_result",
+    )
+    for name in required:
+        assert f"et.{name}" in source
+
+    contract_text = (
+        "full_fitted_joint_covariance_plus_measurement_error",
+        "cross_covariance_self_symmetrized",
+        "yx_estimated_independently",
+        "nonportable_fields",
+        "source_checkout_imported",
+    )
+    for text in contract_text:
+        assert text in source
 
 
 def test_installed_rc_workflow_installs_exact_production_artifact_without_editable_source():
@@ -50,11 +97,17 @@ def test_installed_rc_workflow_covers_supported_python_and_deep_public_recovery(
     assert "run_functional_simulation_validation.py" in workflow
     assert "run_functional_simulation_stress.py" in workflow
     assert "run_installed_rc_observation.py" in workflow
+    assert "run_installed_sparse_mfpca_observation.py" in workflow
     assert "functional-simulation-validation.json" in workflow
     assert "functional-simulation-stress.json" in workflow
     assert "installed-rc-observation.json" in workflow
+    assert "installed-sparse-mfpca-observation.json" in workflow
     assert 'if stress["failure_action"] != "record"' in workflow
     assert "expected_records = 14 * int(stress[" in workflow
+    assert "sparse-MFPCA/joint-PACE observation passed" in workflow
+    assert 'set(sparse["joint_score_status_counts"]) != {"ok"}' in workflow
+    assert "full_fitted_joint_covariance_plus_measurement_error" in workflow
+    assert 'portable["nonportable_fields"] != []' in workflow
 
 
 def test_installed_rc_workflow_retains_environment_and_immutable_evidence():
