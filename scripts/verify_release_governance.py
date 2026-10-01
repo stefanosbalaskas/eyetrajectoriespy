@@ -24,6 +24,10 @@ _GITHUB_RELEASE_DECLARATIONS = {
     "functional_simulation_qualification_qualified",
     "functional_simulation_stress_recorded",
     "sparse_native_validation_qualified",
+    "sparse_mfpca_recovery_qualified",
+    "sparse_mfpca_comparator_sensitivity_recorded",
+    "sparse_mfpca_observation_stress_recorded",
+    "sparse_mfpca_performance_qualified",
 }
 
 REQUIRED_CHECKS = {
@@ -49,6 +53,12 @@ REQUIRED_CHECKS = {
     "sparse-performance",
     "stress-recovery",
     "noise-variance-recovery",
+    "sparse-mfpca-recovery",
+    "sparse-mfpca-sensitivity",
+    "two-stage-sensitivity",
+    "mgsfpca-sensitivity",
+    "observation-process-stress",
+    "sparse-mfpca-performance-envelope",
 }
 
 

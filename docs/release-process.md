@@ -1,5 +1,81 @@
 # Coordinated GitHub Release and PyPI publication
 
+## 0.12.0rc1 release-candidate decision and qualification
+
+Protected main commit `6b02310b4abb2d16e9df96293e9c8f1a63c34984`
+closes the planned pre-RC evidence collection for native sparse multivariate
+FPCA/joint PACE. The seven promotion criteria in the 0.12 design contract are
+satisfied: the direct estimator/public API exists, analytical checks pass,
+known-truth recovery passes, the internal two-stage benchmark is characterized,
+mGSFPCA 0.2.2 sensitivity is reproducible, observation-process stress is
+retained separately, and portability/docs/examples/performance/cross-platform
+qualification are green.
+
+The release decision is therefore **go to exact-version RC qualification**.
+It is not a publication decision.
+
+The 0.12 scientific/API surface is frozen during RC qualification. Only
+release-version alignment, packaging/installability, documentation,
+reproducibility, governance, and demonstrated defect fixes may change. A
+scientific estimator, public parameter, hidden analytical default, automatic
+selection rule, or post-0.12 research feature requires reopening development
+rather than being slipped into the RC.
+
+The RC sequence is:
+
+~~~text
+retain stable package identity 0.11.0 while recording the RC decision
+        |
+        v
+align every active version declaration to 0.12.0rc1
+        |
+        v
+generate fresh exact-version sparse-MFPCA and package performance evidence
+        |
+        v
+rerun native recovery, comparator sensitivity, observation stress,
+general simulation validation/stress, docs/examples and optional backends
+        |
+        v
+pass the complete pull-request matrix
+        |
+        v
+merge the exact qualified RC state through protected main
+        |
+        v
+pass the complete exact-main 0.12.0rc1 matrix
+        |
+        v
+arm GitHub/PyPI publication in a separate reviewed governance-only change
+        |
+        v
+manual target=production release dispatch
+        |
+        v
+verify GitHub Release, checksums/attestations and production PyPI
+        |
+        v
+run fresh production-installed 0.12.0rc1 qualification
+~~~
+
+Pre-RC performance/recovery evidence remains evidence for the development
+surface and must not be relabelled as exact-version `0.12.0rc1` evidence.
+
+The production governance gate for 0.12 additionally requires successful
+`sparse-mfpca-recovery`, `sparse-mfpca-sensitivity`,
+`two-stage-sensitivity`, `mgsfpca-sensitivity`,
+`observation-process-stress`, and
+`sparse-mfpca-performance-envelope` checks. The sparse-MFPCA performance job
+has a unique check name so it cannot be confused with the package-wide
+`performance-envelope` gate.
+
+The existing installed-RC workflow remains pinned to immutable published
+`0.11.0rc1` until `0.12.0rc1` exists on production PyPI. Publication
+readiness remains disarmed throughout RC qualification and is armed only in a
+later reviewed change after exact-main qualification passes.
+
+See the [planned 0.12.0rc1 release contract](releases/0.12.0rc1.md).
+
 ## Final 0.11.0 qualification and publication
 
 Published `0.11.0rc1` is the feature-frozen public scientific candidate.

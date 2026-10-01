@@ -17,7 +17,11 @@
     "exact_main_ci_required": true,
     "functional_simulation_qualification_qualified": true,
     "functional_simulation_stress_recorded": true,
-    "sparse_native_validation_qualified": true
+    "sparse_native_validation_qualified": true,
+    "sparse_mfpca_recovery_qualified": true,
+    "sparse_mfpca_comparator_sensitivity_recorded": true,
+    "sparse_mfpca_observation_stress_recorded": true,
+    "sparse_mfpca_performance_qualified": true
   },
   "notes": [
     "Before final 0.11.0 publication, 0.10.0 was the current stable pre-1.0 release; published 0.11.0rc1 remains immutable.",
@@ -36,7 +40,11 @@
     "Final 0.11.0 production release workflow #13 (run 36628220308) completed successfully from exact protected-main commit 2616675ad2dfc095bf17a442c1d350ba88fd030a.",
     "Workflow #13 built the wheel and sdist once, passed production governance and unpublished-version preflight, created annotated tag v0.11.0 and the GitHub Release, published the exact release distributions to production PyPI through OIDC Trusted Publishing with digital attestations, and passed a fresh eyetrajectoriespy==0.11.0 production-PyPI installation smoke test.",
     "Published GitHub Release assets are eyetrajectoriespy-0.11.0-py3-none-any.whl (sha256:7cba258531ae5f5a41e0a95dbfc1d0604c29456dd121c3a422adc9f576f2e481), eyetrajectoriespy-0.11.0.tar.gz (sha256:99b5285226a675f14a4f42369e6b4a696615b273cbd347c1716387f14250a4bc), and SHA256SUMS.",
-    "Post-publication readiness is jointly disarmed to prevent accidental republication of immutable 0.11.0. Ordinary pushes and merges remain non-publishing; a future release must begin a new reviewed version/readiness cycle."
+    "Post-publication readiness is jointly disarmed to prevent accidental republication of immutable 0.11.0. Ordinary pushes and merges remain non-publishing; a future release must begin a new reviewed version/readiness cycle.",
+    "The 0.12 native sparse-MFPCA scientific/API surface is feature-frozen for release-candidate preparation after direct operator/covariance/PACE implementation, public composition, known-truth recovery, two-stage and mGSFPCA sensitivity, observation-process stress, portability, documentation, performance and cross-platform qualification all passed on protected main.",
+    "Protected-main commit 6b02310b4abb2d16e9df96293e9c8f1a63c34984 closes the pre-RC 0.12 evidence collection. All 21 public-estimator observation-stress fits completed with zero score failures, and all three dedicated sparse-MFPCA performance workloads completed with zero score failures under repeated fresh-process timing.",
+    "This RC-readiness decision does not change the package identity from 0.11.0 and does not arm GitHub or PyPI publication. A later exact-version 0.12.0rc1 qualification change must align every active version declaration, generate fresh exact-version evidence, pass pull-request and protected-main matrices, and only then may publication be armed in a separate reviewed governance change.",
+    "The production governance checker now requires the 0.12 sparse-MFPCA recovery, sensitivity, external-comparator, observation-stress and uniquely named sparse-MFPCA performance checks in addition to the existing 0.11-era quality gates."
   ],
   "github_release_ready": false
 }
