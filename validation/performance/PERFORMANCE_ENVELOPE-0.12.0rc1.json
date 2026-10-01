@@ -1,0 +1,244 @@
+{
+  "schema_version": 1,
+  "package_version": "0.12.0rc1",
+  "benchmark_kind": "single-package performance envelope",
+  "comparative_benchmark": false,
+  "profile": "ci-qualification",
+  "status": "qualified",
+  "qualification_commit": "55a26473aae0bdc679ea4774d63df0a0452a3ed3",
+  "qualification_run_id": "36831590687",
+  "environment": {
+    "cpu_model": "AMD EPYC 7763 64-Core Processor",
+    "github_run_id": "36831590687",
+    "github_runner_environment": "github-hosted",
+    "github_runner_name": "GitHub Actions 1000074997",
+    "implementation": "CPython",
+    "logical_cpu_count": 4,
+    "machine": "x86_64",
+    "packages": {
+      "eyetrajectoriespy": "0.12.0rc1",
+      "numpy": "2.5.3",
+      "pandas": "3.0.6",
+      "scikit-learn": "1.9.1",
+      "scipy": "1.18.1",
+      "statsmodels": "0.15.0"
+    },
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "python": "3.12.14",
+    "release": "6.17.0-1022-azure",
+    "source_commit": "55a26473aae0bdc679ea4774d63df0a0452a3ed3",
+    "system": "Linux",
+    "thread_limits": {
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    },
+    "workflow_commit": "3fe4ce54110ef2feb9a6dba87d1cdab5ae33ab55"
+  },
+  "results": [
+    {
+      "case": "fpca_bootstrap",
+      "scale": {
+        "n_bootstrap": 20,
+        "n_participants": 10,
+        "n_time": 41,
+        "n_trials": 3,
+        "q": 3
+      },
+      "repeats": 3,
+      "observed": {
+        "runtime_seconds": {
+          "all": [
+            2.832158899000035,
+            1.9746407410000302,
+            1.9682883140000058
+          ],
+          "maximum": 2.832158899000035,
+          "median": 1.9746407410000302,
+          "minimum": 1.9682883140000058,
+          "q1": 1.971464527500018,
+          "q3": 2.4033998200000326
+        },
+        "peak_memory_mib": {
+          "all": [
+            229.29296875,
+            224.05078125,
+            224.55078125
+          ],
+          "maximum": 229.29296875,
+          "median": 224.55078125
+        }
+      }
+    },
+    {
+      "case": "mixed_full_refit_bootstrap",
+      "scale": {
+        "n_bootstrap": 20,
+        "n_participants": 12,
+        "n_time": 6,
+        "n_trials": 3,
+        "q": 2
+      },
+      "repeats": 3,
+      "observed": {
+        "runtime_seconds": {
+          "all": [
+            2.9673670870000137,
+            2.946054275999984,
+            2.96297335700001
+          ],
+          "maximum": 2.9673670870000137,
+          "median": 2.96297335700001,
+          "minimum": 2.946054275999984,
+          "q1": 2.954513816499997,
+          "q3": 2.965170222000012
+        },
+        "peak_memory_mib": {
+          "all": [
+            228.12109375,
+            227.62109375,
+            227.6796875
+          ],
+          "maximum": 228.12109375,
+          "median": 227.6796875
+        }
+      }
+    },
+    {
+      "case": "nested_mixed_fit",
+      "scale": {
+        "n_participants": 8,
+        "n_time": 5,
+        "n_trials": 3,
+        "q": 2
+      },
+      "repeats": 3,
+      "observed": {
+        "runtime_seconds": {
+          "all": [
+            2.686011320000034,
+            2.6439268130000073,
+            2.6731307730000253
+          ],
+          "maximum": 2.686011320000034,
+          "median": 2.6731307730000253,
+          "minimum": 2.6439268130000073,
+          "q1": 2.6585287930000163,
+          "q3": 2.6795710465000298
+        },
+        "peak_memory_mib": {
+          "all": [
+            227.46875,
+            227.45703125,
+            227.625
+          ],
+          "maximum": 227.625,
+          "median": 227.46875
+        }
+      }
+    },
+    {
+      "case": "generalized_gee_bootstrap",
+      "scale": {
+        "n_bootstrap": 100,
+        "n_participants": 8,
+        "n_time": 5,
+        "n_trials": 2,
+        "q": 2
+      },
+      "repeats": 3,
+      "observed": {
+        "runtime_seconds": {
+          "all": [
+            2.2367766500000243,
+            2.255227246000004,
+            2.2179589869999745
+          ],
+          "maximum": 2.255227246000004,
+          "median": 2.2367766500000243,
+          "minimum": 2.2179589869999745,
+          "q1": 2.2273678184999994,
+          "q3": 2.246001948000014
+        },
+        "peak_memory_mib": {
+          "all": [
+            226.52734375,
+            226.765625,
+            226.48828125
+          ],
+          "maximum": 226.765625,
+          "median": 226.52734375
+        }
+      }
+    },
+    {
+      "case": "recurrence_rqa",
+      "scale": {
+        "n_participants": 1,
+        "n_time": 800,
+        "n_trials": 1,
+        "q": null
+      },
+      "repeats": 3,
+      "observed": {
+        "runtime_seconds": {
+          "all": [
+            2.0815242389999753,
+            2.100544694000007,
+            2.108044318999987
+          ],
+          "maximum": 2.108044318999987,
+          "median": 2.100544694000007,
+          "minimum": 2.0815242389999753,
+          "q1": 2.091034466499991,
+          "q3": 2.104294506499997
+        },
+        "peak_memory_mib": {
+          "all": [
+            229.03125,
+            228.83984375,
+            228.72265625
+          ],
+          "maximum": 229.03125,
+          "median": 228.83984375
+        }
+      }
+    },
+    {
+      "case": "nonlinear_sensitivity",
+      "scale": {
+        "n_participants": 1,
+        "n_specifications": 16,
+        "n_time": 300,
+        "n_trials": 1,
+        "q": null
+      },
+      "repeats": 3,
+      "observed": {
+        "runtime_seconds": {
+          "all": [
+            2.2682082089999653,
+            2.2889580499999624,
+            2.267479149000053
+          ],
+          "maximum": 2.2889580499999624,
+          "median": 2.2682082089999653,
+          "minimum": 2.267479149000053,
+          "q1": 2.267843679000009,
+          "q3": 2.278583129499964
+        },
+        "peak_memory_mib": {
+          "all": [
+            224.16015625,
+            224.21484375,
+            223.73046875
+          ],
+          "maximum": 224.21484375,
+          "median": 224.16015625
+        }
+      }
+    }
+  ],
+  "interpretation": "Observed runtime and process peak RSS on the recorded environment. No cross-package speed claim and no universal workstation claim."
+}
