@@ -1,0 +1,32 @@
+name: temporary-012-rc-identity
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  align:
+    if: github.actor != 'github-actions[bot]' && github.head_ref == 'release/0.12.0rc1'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/0.12.0rc1
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply fail-closed RC identity alignment
+        run: python scripts/_prepare_012_rc_identity.py
+      - name: Commit aligned RC identity
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --check
+          git commit -m 'Align 0.12.0rc1 qualification identity'
+          git push origin HEAD:release/0.12.0rc1
