@@ -26,7 +26,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  RC_VERSION: "0.11.0rc1"
+  RC_VERSION: "0.12.0rc1"
 
 jobs:
   installed-version-matrix:
@@ -47,19 +47,23 @@ jobs:
         run: |
           python -m venv "${RUNNER_TEMP}/rc-matrix"
           "${RUNNER_TEMP}/rc-matrix/bin/python" -m pip install -U pip
-          "${RUNNER_TEMP}/rc-matrix/bin/python" -m pip install --no-cache-dir             "eyetrajectoriespy==${RC_VERSION}"
+          "${RUNNER_TEMP}/rc-matrix/bin/python" -m pip install --no-cache-dir \
+            "eyetrajectoriespy==${RC_VERSION}"
           "${RUNNER_TEMP}/rc-matrix/bin/python" -m pip check
       - name: Smoke test outside the repository working tree
         shell: bash
         run: |
           mkdir -p "${RUNNER_TEMP}/rc-matrix-work"
           cd "${RUNNER_TEMP}/rc-matrix-work"
-          "${RUNNER_TEMP}/rc-matrix/bin/python"             "${GITHUB_WORKSPACE}/scripts/release_smoke_test.py"             --expected-version "${RC_VERSION}"
+          "${RUNNER_TEMP}/rc-matrix/bin/python" \
+            "${GITHUB_WORKSPACE}/scripts/release_smoke_test.py" \
+            --expected-version "${RC_VERSION}"
       - name: Capture installed-distribution and runner evidence
         shell: bash
         run: |
           mkdir -p "${RUNNER_TEMP}/rc-matrix-evidence"
-          "${RUNNER_TEMP}/rc-matrix/bin/python" - <<'PY'             > "${RUNNER_TEMP}/rc-matrix-evidence/import-environment.json"
+          "${RUNNER_TEMP}/rc-matrix/bin/python" - <<'PY' \
+            > "${RUNNER_TEMP}/rc-matrix-evidence/import-environment.json"
           import importlib.metadata
           import json
           import os
@@ -95,7 +99,8 @@ jobs:
           }
           print(json.dumps(payload, indent=2, sort_keys=True))
           PY
-          "${RUNNER_TEMP}/rc-matrix/bin/python" -m pip freeze             > "${RUNNER_TEMP}/rc-matrix-evidence/pip-freeze.txt"
+          "${RUNNER_TEMP}/rc-matrix/bin/python" -m pip freeze \
+            > "${RUNNER_TEMP}/rc-matrix-evidence/pip-freeze.txt"
       - name: Upload installed-version evidence
         uses: actions/upload-artifact@v7
         with:
@@ -123,24 +128,35 @@ jobs:
         run: |
           python -m venv "${RUNNER_TEMP}/rc-observation"
           "${RUNNER_TEMP}/rc-observation/bin/python" -m pip install -U pip
-          "${RUNNER_TEMP}/rc-observation/bin/python" -m pip install --no-cache-dir             "eyetrajectoriespy==${RC_VERSION}"
+          "${RUNNER_TEMP}/rc-observation/bin/python" -m pip install --no-cache-dir \
+            "eyetrajectoriespy==${RC_VERSION}"
           "${RUNNER_TEMP}/rc-observation/bin/python" -m pip check
       - name: Run qualification from the installed package
         shell: bash
         run: |
           mkdir -p "${RUNNER_TEMP}/rc-work/evidence"
           cd "${RUNNER_TEMP}/rc-work"
-          "${RUNNER_TEMP}/rc-observation/bin/python"             "${GITHUB_WORKSPACE}/scripts/run_functional_simulation_validation.py"             --replicates 3             --output evidence/functional-simulation-validation.json
+          "${RUNNER_TEMP}/rc-observation/bin/python" \
+            "${GITHUB_WORKSPACE}/scripts/run_functional_simulation_validation.py" \
+            --replicates 3 \
+            --output evidence/functional-simulation-validation.json
       - name: Run threshold-free stress evidence from the installed package
         shell: bash
         run: |
           cd "${RUNNER_TEMP}/rc-work"
-          "${RUNNER_TEMP}/rc-observation/bin/python"             "${GITHUB_WORKSPACE}/scripts/run_functional_simulation_stress.py"             --replicates 3             --seed-start 204000             --output evidence/functional-simulation-stress.json
+          "${RUNNER_TEMP}/rc-observation/bin/python" \
+            "${GITHUB_WORKSPACE}/scripts/run_functional_simulation_stress.py" \
+            --replicates 3 \
+            --seed-start 204000 \
+            --output evidence/functional-simulation-stress.json
       - name: Run external-consumer observation harness
         shell: bash
         run: |
           cd "${RUNNER_TEMP}/rc-work"
-          "${RUNNER_TEMP}/rc-observation/bin/python"             "${GITHUB_WORKSPACE}/scripts/run_installed_rc_observation.py"             --expected-version "${RC_VERSION}"             --output-dir evidence/installed-rc-observation
+          "${RUNNER_TEMP}/rc-observation/bin/python" \
+            "${GITHUB_WORKSPACE}/scripts/run_installed_rc_observation.py" \
+            --expected-version "${RC_VERSION}" \
+            --output-dir evidence/installed-rc-observation
       - name: Verify retained evidence contracts
         shell: bash
         run: |
@@ -205,9 +221,14 @@ jobs:
         shell: bash
         run: |
           cd "${RUNNER_TEMP}/rc-work"
-          "${RUNNER_TEMP}/rc-observation/bin/python" -m pip freeze             > evidence/pip-freeze.txt
-          "${RUNNER_TEMP}/rc-observation/bin/python" -m pip show eyetrajectoriespy             > evidence/pip-show-eyetrajectoriespy.txt
-          find evidence -type f ! -name SHA256SUMS -print0             | sort -z             | xargs -0 sha256sum             > evidence/SHA256SUMS
+          "${RUNNER_TEMP}/rc-observation/bin/python" -m pip freeze \
+            > evidence/pip-freeze.txt
+          "${RUNNER_TEMP}/rc-observation/bin/python" -m pip show eyetrajectoriespy \
+            > evidence/pip-show-eyetrajectoriespy.txt
+          find evidence -type f ! -name SHA256SUMS -print0 \
+            | sort -z \
+            | xargs -0 sha256sum \
+            > evidence/SHA256SUMS
       - name: Upload production-installed RC evidence
         uses: actions/upload-artifact@v7
         with:
