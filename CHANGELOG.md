@@ -1,6 +1,11 @@
 # Changelog
 
-## Unreleased — 0.12 development
+## 0.12.0rc1 — 2026-10-01
+
+- Promote the feature-frozen, fully qualified 0.12 sparse-MFPCA/joint-PACE surface to the first release candidate without adding scientific behavior or changing analytical defaults.
+- Preserve direct block-covariance estimation and full-covariance joint PACE as canonical; two-stage and mGSFPCA routes remain sensitivity evidence only.
+- Require fresh exact-0.12.0rc1 performance and complete PR/exact-main qualification before publication can be armed.
+- Keep GitHub/PyPI publication readiness jointly disarmed throughout this RC qualification change.
 
 - Add the first public native sparse multivariate FPCA/joint-PACE composition for two jointly observed planar coordinates.
 - Preserve direct off-diagonal xx/xy/yy latent covariance estimation, directional Cxy with Cyx defined by transpose, full joint-operator PSD handling, and full-covariance joint PACE scoring.
@@ -17,7 +22,7 @@
 - Add a dedicated sparse-MFPCA single-package performance envelope over very sparse, moderate, and richer irregular planar workloads with at least three fresh-process repetitions, runtime distribution, peak RSS, workload scale, score-failure/PSD diagnostics, environment and commit/run provenance.
 - Record the 0.12 RC entry decision after all seven promotion gates pass: freeze the sparse-MFPCA scientific/API surface and proceed to fresh exact-version 0.12.0rc1 qualification without publishing.
 - Extend production governance so a future 0.12 release requires sparse-MFPCA recovery, grid/ridge sensitivity, two-stage sensitivity, mGSFPCA sensitivity, observation-process stress, and a uniquely named sparse-MFPCA performance gate in addition to the existing release checks.
-- Keep GitHub/PyPI publication readiness disarmed and retain active package identity 0.11.0 until a separate exact-version RC alignment/qualification change.
+- Enter exact-version `0.12.0rc1` qualification only after the separate RC decision/governance-hardening PR is merged.
 
 ## 0.11.0 — 2026-09-29
 

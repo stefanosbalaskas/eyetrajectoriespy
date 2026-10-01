@@ -43,9 +43,10 @@ jobs:
         run: python -m pytest -q tests/test_pre012_recovery_audit.py
       - name: Run decision-oriented audit
         run: python scripts/run_pre012_recovery_audit.py --output-dir pre012-audit
-      - name: Verify evidence bundle
+      - name: Verify historical evidence boundary or regression replay
         run: |
           python - <<'PY'
+          import importlib.metadata
           import json
           from pathlib import Path
 
@@ -71,8 +72,31 @@ jobs:
               "external_comparison",
           }:
               raise SystemExit("pre-0.12 audit question set is incomplete")
-          if payload.get("package_version") != "0.11.0":
-              raise SystemExit("pre-0.12 audit must execute against stable 0.11.0")
+
+          historical_reference_version = "0.11.0"
+          current_version = importlib.metadata.version("eyetrajectoriespy")
+          audit_version = payload.get("package_version")
+          if audit_version != current_version:
+              raise SystemExit(
+                  "pre-0.12 audit replay version does not match the installed package: "
+                  f"audit={audit_version!r}, installed={current_version!r}"
+              )
+
+          decision_contract = payload.get("decision_contract", {})
+          boundary = decision_contract.get("block_0.12_only_for", "")
+          if "0.11" not in boundary:
+              raise SystemExit(
+                  "pre-0.12 audit lost its historical 0.11 decision boundary"
+              )
+
+          if current_version == historical_reference_version:
+              print("validated historical pre-0.12 audit on stable 0.11.0")
+          else:
+              print(
+                  "validated regression replay of the historical pre-0.12 audit "
+                  f"under {current_version}; the authoritative historical "
+                  "decision boundary remains stable 0.11.0"
+              )
           PY
       - name: Upload audit evidence
         uses: actions/upload-artifact@v7

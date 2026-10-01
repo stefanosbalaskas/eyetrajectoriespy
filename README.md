@@ -17,6 +17,8 @@ derived univariate functions, compositional AOI-probability trajectories, repeat
 
 > **Current stable release:** `0.11.0` was published on 29 September 2026 from exact protected-main commit `2616675ad2dfc095bf17a442c1d350ba88fd030a`. Production release workflow #13 completed successfully, including GitHub Release creation, production PyPI Trusted Publishing, digital attestations, and a fresh `eyetrajectoriespy==0.11.0` production-PyPI installation smoke test.
 >
+> **Current release candidate under qualification:** `0.12.0rc1` freezes the qualified native sparse multivariate FPCA/joint-PACE 0.12 surface. Publication remains disarmed until fresh exact-version performance, the complete RC pull-request matrix, and the post-merge exact-main matrix pass.
+>
 > **Scientific promotion boundary:** final `0.11.0` promotes the publicly qualified `0.11.0rc1` simulation/recovery laboratory without adding an estimator, numerical method, generalized family, API expansion, hidden analytical default, or post-0.11 research feature. Published `0.11.0rc1` remains an immutable prerelease record.
 >
 > **RC observation evidence:** before final promotion, the exact production-PyPI `0.11.0rc1` artifact was independently exercised outside the source checkout on Python 3.11–3.13. Exact protected-main observation commit `a37214653c2f72839e356d603c4f87a514f01056` passed deterministic simulation replay, recovery qualification, threshold-free stress retention, mixed-effects and registration recovery, portable export/load, reporting, and plotting.
@@ -76,6 +78,12 @@ Current stable release:
 ```bash
 pip install eyetrajectoriespy==0.11.0
 # or: pip install eyetrajectoriespy
+```
+
+Current 0.12 release candidate under qualification:
+
+```bash
+pip install --pre eyetrajectoriespy==0.12.0rc1
 ```
 
 The immutable qualified release candidate remains available for reproducibility:

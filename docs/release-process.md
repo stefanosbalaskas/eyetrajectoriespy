@@ -1,5 +1,43 @@
 # Coordinated GitHub Release and PyPI publication
 
+
+## 0.12.0rc1 qualification
+
+Stable `0.11.0` remains the current public release. `0.12.0rc1` freezes the
+fully qualified native sparse multivariate FPCA/joint-PACE 0.12 surface. The RC
+may correct packaging, documentation, reproducibility, or release-governance
+defects, but it must not add a new estimator, hidden default, or unqualified
+statistical pathway.
+
+The sequence is:
+
+~~~text
+align active version/citation/validation/docs contracts to 0.12.0rc1
+        |
+        v
+generate a fresh exact-version performance envelope
+        |
+        v
+rerun sparse-MFPCA recovery, sensitivity, external comparator,
+observation stress, dedicated performance and ordinary package CI
+        |
+        v
+merge exact qualified RC state through protected main
+        |
+        v
+rerun complete exact-main 0.12.0rc1 matrix
+        |
+        v
+arm publication in a separate reviewed governance-only change
+        |
+        v
+manual target=production dispatch only
+~~~
+
+Pre-RC evidence is retained as development evidence and is never relabelled as
+RC evidence. Publication remains fail-closed until the post-merge exact-main
+matrix passes.
+
 ## 0.12.0rc1 release-candidate decision and qualification
 
 Protected main commit `6b02310b4abb2d16e9df96293e9c8f1a63c34984`
