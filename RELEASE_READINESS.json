@@ -2,7 +2,7 @@
   "schema_version": 1,
   "current_development_version": "0.12.0",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": false,
+  "production_release_ready": true,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -35,7 +35,7 @@
     "Final 0.11.0 qualification required a fresh exact-version performance envelope, complete pull-request matrix, protected-main merge, and complete exact-main matrix before publication could be armed; all of those gates subsequently passed.",
     "Publication was deliberately disarmed during final qualification and was armed later only through separate governance-only PR #121 after exact-main 0.11.0 qualification passed.",
     "Post-0.11 methodology remains deferred pending the package-wide recovery audit.",
-    "Final 0.11.0 qualification PR #120 merged as exact protected-main commit f0b328dabd9d5050fa9988e3c157d034efb0ee7f. The complete exact-main final-version matrix passed: package plus Ubuntu/macOS/Windows \u00d7 Python 3.11\u20133.13, docs, examples, optional scikit-fda, optional FDApy sparse, release-readiness, performance, functional-simulation recovery, threshold-free functional-simulation stress, and native sparse/PACE validation.",
+    "Final 0.11.0 qualification PR #120 merged as exact protected-main commit f0b328dabd9d5050fa9988e3c157d034efb0ee7f. The complete exact-main final-version matrix passed: package plus Ubuntu/macOS/Windows × Python 3.11–3.13, docs, examples, optional scikit-fda, optional FDApy sparse, release-readiness, performance, functional-simulation recovery, threshold-free functional-simulation stress, and native sparse/PACE validation.",
     "Exact-main final-version performance qualification run 36625124460 passed under package identity 0.11.0. The final version therefore has fresh performance evidence rather than relabelled 0.11.0rc1 measurements.",
     "PR #121 jointly armed GitHub and production PyPI publication only after completed final-version qualification; production remained an explicit manual release.yml dispatch from exact protected main.",
     "Final 0.11.0 production release workflow #13 (run 36628220308) completed successfully from exact protected-main commit 2616675ad2dfc095bf17a442c1d350ba88fd030a.",
@@ -60,7 +60,10 @@
     "Installed sparse-MFPCA/joint-PACE observation PR #137 merged as exact protected-main commit 0250fdb8113d51d024c199f552c50079ea97e84a. Exact-main installed-RC workflow run 36911103234 reinstalled production-PyPI 0.12.0rc1 on Python 3.11-3.13 and passed the deep installed recovery, stress, portability, and sparse-MFPCA observation chain.",
     "Exact-main installed observation artifact 11186552786 has digest sha256:de1b531fc2a6a5c2836ee3fc1a70df898f7a7e3ecfdad75c3e022300216d24d8. The sparse-MFPCA installed observation returned 36/36 successful joint-PACE scores and zero nonportable fields.",
     "Final 0.12.0 qualification requires fresh exact-version package-wide and sparse-MFPCA performance evidence, the complete pull-request matrix, protected-main merge, and the complete exact-main matrix before publication may be armed.",
-    "Publication remains jointly disarmed during final qualification. Arming GitHub/PyPI publication is reserved for a later governance-only reviewed change after exact-main 0.12.0 qualification passes."
+    "Publication remains jointly disarmed during final qualification. Arming GitHub/PyPI publication is reserved for a later governance-only reviewed change after exact-main 0.12.0 qualification passes.",
+    "Final 0.12.0 exact-version qualification PR #138 merged as protected-main commit 4469971885104524e7ceb62f05d63f470f838b80 after the complete pull-request matrix passed. The complete post-merge exact-main qualification matrix then finished 14/14 workflow groups successfully with zero failures.",
+    "On exact final-qualified commit 4469971885104524e7ceb62f05d63f470f838b80, sparse-MFPCA final-qualification run 36917712173 passed repeated sparse-MFPCA performance evidence and observation-process stress; comparator-sensitivity run 36917712051, package-wide performance run 36917712042, release-readiness run 36917712021, and package/test run 36917711911 also completed successfully.",
+    "Publication readiness is now jointly armed only after final 0.12.0 exact-main qualification passed. This governance-only arming changes no estimator, scientific API, numerical method, analytical default, test threshold, comparator method, dependency, or performance methodology. The resulting exact protected-main arming commit must itself pass required exact-main governance checks before any explicit manual production dispatch."
   ],
-  "github_release_ready": false
+  "github_release_ready": true
 }
