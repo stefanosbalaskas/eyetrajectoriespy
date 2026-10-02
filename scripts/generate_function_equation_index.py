@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import base64
 from pathlib import Path
 
 from eyetrajectoriespy import list_mathematical_contracts
@@ -59,13 +58,6 @@ def _render(*, site: bool) -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
-def _emit_capture(label: str, content: str) -> None:
-    encoded = base64.b64encode(content.encode("utf-8")).decode("ascii")
-    print(f"BEGIN_{label}_BASE64")
-    print(encoded)
-    print(f"END_{label}_BASE64")
-
-
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -87,19 +79,9 @@ def main() -> None:
             if not path.exists() or path.read_text(encoding="utf-8") != content
         ]
         if stale:
-            # Temporary capture mode on the documentation branch only. Emit the
-            # exact generated sources into the CI log and write them in the CI
-            # worktree so downstream docs checks exercise the intended surface.
-            _emit_capture("ROOT_FUNCTION_EQUATION_INDEX", expected[ROOT_TARGET])
-            _emit_capture("SITE_FUNCTION_EQUATION_INDEX", expected[DOCS_TARGET])
-            for path, content in expected.items():
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_text(content, encoding="utf-8")
-            print(
-                "captured regenerated mathematical indexes: "
-                f"{len(list_mathematical_contracts())} contracts"
+            raise SystemExit(
+                "generated mathematical indexes are stale: " + ", ".join(stale)
             )
-            return
         print(f"function-equation indexes OK: {len(list_mathematical_contracts())} contracts")
         return
 
