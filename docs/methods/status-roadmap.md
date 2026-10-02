@@ -4,6 +4,8 @@
 
 `0.12.0` is the current stable release.
 
+The current stable pre-1.0 line is **0.12.0**.
+
 The 0.12 sparse-MFPCA/joint-PACE line is complete and frozen. The package is not currently committed to another estimator tranche.
 
 Near-term work prioritizes:
