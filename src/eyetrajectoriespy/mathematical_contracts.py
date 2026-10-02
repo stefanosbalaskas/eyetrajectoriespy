@@ -10,10 +10,11 @@ from __future__ import annotations
 
 import pandas as pd
 
-from ._mathematical_contracts_base import (
-    MathematicalContract,
-    _CONTRACTS as _BASE_CONTRACTS,
-)
+from . import _mathematical_contracts_base as _base
+
+
+MathematicalContract = _base.MathematicalContract
+_BASE_CONTRACTS = _base.list_mathematical_contracts()
 
 
 _SPARSE_MFPCA_CONTRACT = MathematicalContract(
@@ -66,29 +67,33 @@ def list_mathematical_contracts() -> tuple[MathematicalContract, ...]:
 def get_mathematical_contract(name: str) -> MathematicalContract:
     """Return a mathematical contract by key or registered public function."""
 
-    if not isinstance(name, str):
-        raise TypeError("name must be a string")
-    for contract in _CONTRACTS:
-        if name == contract.key or name in contract.public_api:
-            return contract
-    raise KeyError(f"No mathematical contract is registered for {name!r}")
+    if name == _SPARSE_MFPCA_CONTRACT.key or name in _SPARSE_MFPCA_CONTRACT.public_api:
+        return _SPARSE_MFPCA_CONTRACT
+    return _base.get_mathematical_contract(name)
 
 
 def mathematical_contract_frame() -> pd.DataFrame:
     """Return one tidy row per registered public function and its LaTeX contract."""
 
-    rows = []
-    for contract in _CONTRACTS:
-        latex = "\n\n".join(contract.equations)
-        for function in contract.public_api:
-            rows.append(
-                {
-                    "contract_key": contract.key,
-                    "title": contract.title,
-                    "function": function,
-                    "latex": latex,
-                    "site_anchor": contract.site_anchor,
-                    "scope": contract.scope,
-                }
-            )
-    return pd.DataFrame(rows)
+    base = _base.mathematical_contract_frame()
+    sparse = pd.DataFrame(
+        [
+            {
+                "contract_key": _SPARSE_MFPCA_CONTRACT.key,
+                "title": _SPARSE_MFPCA_CONTRACT.title,
+                "function": function,
+                "latex": "\n\n".join(_SPARSE_MFPCA_CONTRACT.equations),
+                "site_anchor": _SPARSE_MFPCA_CONTRACT.site_anchor,
+                "scope": _SPARSE_MFPCA_CONTRACT.scope,
+            }
+            for function in _SPARSE_MFPCA_CONTRACT.public_api
+        ]
+    )
+    univariate_rows = base.index[
+        base["contract_key"] == "sparse-fpca-pace"
+    ].tolist()
+    position = univariate_rows[-1] + 1
+    return pd.concat(
+        [base.iloc[:position], sparse, base.iloc[position:]],
+        ignore_index=True,
+    )
