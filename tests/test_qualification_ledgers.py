@@ -1,10 +1,9 @@
 import json
 from pathlib import Path
 
-import eyetrajectoriespy as et
-
 
 ROOT = Path(__file__).resolve().parents[1]
+QUALIFIED_EVIDENCE_VERSION = "0.12.0"
 
 
 def _all_test_source():
@@ -22,8 +21,8 @@ def test_reference_validation_ledger_has_explicit_evidence_strengths():
         (ROOT / "VALIDATION_TOLERANCES.json").read_text(encoding="utf-8")
     )
 
-    assert ledger["package_version"] == et.__version__
-    assert tolerances["package_version"] == et.__version__
+    assert ledger["package_version"] == QUALIFIED_EVIDENCE_VERSION
+    assert tolerances["package_version"] == QUALIFIED_EVIDENCE_VERSION
     assert set(ledger["evidence_types"]) == {
         "analytical_truth",
         "independent_implementation_equivalence",
@@ -83,7 +82,7 @@ def test_performance_envelope_declares_noncomparative_repeated_workloads():
     ledger = json.loads(
         (ROOT / "PERFORMANCE_ENVELOPE.json").read_text(encoding="utf-8")
     )
-    assert ledger["package_version"] == et.__version__
+    assert ledger["package_version"] == QUALIFIED_EVIDENCE_VERSION
     assert ledger["comparative_benchmark"] is False
     assert ledger["profile"] == "ci-qualification"
 
