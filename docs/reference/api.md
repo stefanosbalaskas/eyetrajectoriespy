@@ -226,10 +226,6 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.fit_sparse_mfpca
 ::: eyetrajectoriespy.sparse_mfpca_score_frame
 ::: eyetrajectoriespy.sparse_mfpca_reporting_text
-::: eyetrajectoriespy.plot_sparse_mfpca_component
-::: eyetrajectoriespy.plot_sparse_mfpca_covariance_blocks
-::: eyetrajectoriespy.plot_sparse_mfpca_cross_covariance
-::: eyetrajectoriespy.plot_sparse_mfpca_score_diagnostics
 
 ## Functional mean inference
 ::: eyetrajectoriespy.multiplier_functional_mean_band
@@ -305,4 +301,250 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.fpca_regression_slope_band_reporting_text
 
 ## Gaussian FPCR bootstrap uncertainty
-::: eyetrajectoriespy.FP... (truncated)
+::: eyetrajectoriespy.FPCARegressionUncertaintyResult
+::: eyetrajectoriespy.bootstrap_fpca_regression_uncertainty
+::: eyetrajectoriespy.fpca_regression_slope_uncertainty_frame
+::: eyetrajectoriespy.fpca_regression_prediction_uncertainty_frame
+::: eyetrajectoriespy.plot_fpca_regression_slope_uncertainty
+::: eyetrajectoriespy.plot_fpca_regression_mean_prediction_uncertainty
+::: eyetrajectoriespy.fpca_regression_uncertainty_reporting_text
+
+## Predictive FPCA regression selection
+::: eyetrajectoriespy.cross_validate_fpca_regression
+::: eyetrajectoriespy.summarise_fpca_regression_cv
+::: eyetrajectoriespy.select_fpca_regression_components
+::: eyetrajectoriespy.nested_cross_validate_fpca_regression
+::: eyetrajectoriespy.plot_fpca_regression_cv
+::: eyetrajectoriespy.plot_nested_fpca_regression_cv
+::: eyetrajectoriespy.fpca_regression_cv_reporting_text
+::: eyetrajectoriespy.fpca_nested_regression_cv_reporting_text
+
+## FPC shape uncertainty
+::: eyetrajectoriespy.FPCAComponentBandResult
+::: eyetrajectoriespy.bootstrap_fpca_component_bands
+::: eyetrajectoriespy.fpca_component_band_frame
+::: eyetrajectoriespy.plot_fpca_component_band
+::: eyetrajectoriespy.fpca_component_band_reporting_text
+::: eyetrajectoriespy.bootstrap_fpca_component_envelopes
+::: eyetrajectoriespy.plot_fpca_component_envelope
+::: eyetrajectoriespy.fpca_component_envelope_reporting_text
+
+## FPC score basis uncertainty
+::: eyetrajectoriespy.FPCAScoreUncertaintyResult
+::: eyetrajectoriespy.bootstrap_fpca_score_uncertainty
+::: eyetrajectoriespy.fpca_score_uncertainty_frame
+::: eyetrajectoriespy.plot_fpca_score_uncertainty
+::: eyetrajectoriespy.fpca_score_uncertainty_reporting_text
+
+## FPCA spectrum uncertainty
+::: eyetrajectoriespy.FPCASpectrumUncertaintyResult
+::: eyetrajectoriespy.bootstrap_fpca_spectrum_uncertainty
+::: eyetrajectoriespy.fpca_spectrum_uncertainty_frame
+::: eyetrajectoriespy.plot_fpca_spectrum_uncertainty
+::: eyetrajectoriespy.fpca_spectrum_uncertainty_reporting_text
+
+## Near-tied eigenvalues and eigenspaces
+::: eyetrajectoriespy.fpca_eigenvalue_gap_table
+::: eyetrajectoriespy.compare_fpca_subspaces
+::: eyetrajectoriespy.bootstrap_fpca_subspace_stability
+::: eyetrajectoriespy.summarise_fpca_subspace_stability
+::: eyetrajectoriespy.plot_fpca_subspace_stability
+::: eyetrajectoriespy.fpca_eigengap_reporting_text
+::: eyetrajectoriespy.fpca_subspace_stability_reporting_text
+
+## Split-conformal FPCA anomaly review
+::: eyetrajectoriespy.ConformalFunctionalAnomalyResult
+::: eyetrajectoriespy.split_conformal_fpca_anomaly
+::: eyetrajectoriespy.conformal_fpca_anomaly_frame
+::: eyetrajectoriespy.plot_conformal_fpca_anomaly
+::: eyetrajectoriespy.conformal_fpca_anomaly_reporting_text
+
+## Functional outliers and influence
+::: eyetrajectoriespy.diagnose_fpca_outliers
+::: eyetrajectoriespy.leave_one_group_out_fpca_influence
+::: eyetrajectoriespy.detect_functional_outliers_skfda
+::: eyetrajectoriespy.plot_fpca_outlier_diagnostics
+::: eyetrajectoriespy.plot_fpca_influence
+::: eyetrajectoriespy.fpca_outlier_reporting_text
+::: eyetrajectoriespy.fpca_influence_reporting_text
+
+## FPCA stability and reconstruction
+::: eyetrajectoriespy.component_similarity_matrix
+::: eyetrajectoriespy.match_fpca_components
+::: eyetrajectoriespy.bootstrap_fpca_stability
+::: eyetrajectoriespy.summarise_fpca_stability
+::: eyetrajectoriespy.reconstruction_error_by_curve
+::: eyetrajectoriespy.fpca_reconstruction_curve
+
+## Registration and phase
+::: eyetrajectoriespy.register_to_landmarks
+::: eyetrajectoriespy.warping_displacement
+::: eyetrajectoriespy.phase_summary
+::: eyetrajectoriespy.phase_trajectory_set
+::: eyetrajectoriespy.fit_phase_fpca
+::: eyetrajectoriespy.phase_landmark_frame
+::: eyetrajectoriespy.compare_registered_unregistered_fpca
+::: eyetrajectoriespy.registration_sensitivity_frame
+
+## Multilevel and compositional
+::: eyetrajectoriespy.fit_multilevel_fpca
+::: eyetrajectoriespy.fit_compositional_fpca
+::: eyetrajectoriespy.reconstruct_compositional_fpca
+
+## Derived functions
+::: eyetrajectoriespy.speed_function
+::: eyetrajectoriespy.acceleration_magnitude_function
+::: eyetrajectoriespy.distance_to_landmark_function
+::: eyetrajectoriespy.cumulative_path_length
+::: eyetrajectoriespy.heading_function
+::: eyetrajectoriespy.signed_curvature_function
+::: eyetrajectoriespy.turning_rate_function
+::: eyetrajectoriespy.trajectory_tortuosity
+
+## Functional mixed-effects regression
+::: eyetrajectoriespy.FunctionalMixedEffectsResult
+::: eyetrajectoriespy.fit_functional_mixed_effects_regression
+::: eyetrajectoriespy.functional_mixed_effects_coefficient_frame
+::: eyetrajectoriespy.plot_functional_mixed_effects_coefficient
+::: eyetrajectoriespy.functional_mixed_effects_reporting_text
+::: eyetrajectoriespy.functional_mixed_effects_whitened_residuals
+::: eyetrajectoriespy.FunctionalMixedEffectsResidualDiagnosticsResult
+::: eyetrajectoriespy.functional_mixed_effects_residual_diagnostics
+::: eyetrajectoriespy.functional_mixed_effects_residual_diagnostic_frame
+::: eyetrajectoriespy.functional_mixed_effects_residual_pair_frame
+::: eyetrajectoriespy.compare_functional_mixed_effects_residual_diagnostics
+::: eyetrajectoriespy.plot_functional_mixed_effects_residual_acf
+::: eyetrajectoriespy.plot_functional_mixed_effects_residual_variogram
+::: eyetrajectoriespy.functional_mixed_effects_residual_reporting_text
+
+### Covariance-structure sensitivity
+::: eyetrajectoriespy.FunctionalMixedEffectsCovarianceSpecification
+::: eyetrajectoriespy.FunctionalMixedEffectsCovarianceSensitivityResult
+::: eyetrajectoriespy.functional_mixed_effects_covariance_sensitivity
+::: eyetrajectoriespy.functional_mixed_effects_variance_decomposition
+::: eyetrajectoriespy.plot_covariance_sensitivity_coefficients
+::: eyetrajectoriespy.plot_covariance_sensitivity_band_widths
+::: eyetrajectoriespy.plot_functional_variance_decomposition
+::: eyetrajectoriespy.functional_mixed_effects_covariance_sensitivity_reporting_text
+
+## Function-on-scalar regression
+::: eyetrajectoriespy.FunctionOnScalarResult
+::: eyetrajectoriespy.FunctionOnScalarBootstrapResult
+::: eyetrajectoriespy.FunctionOnScalarBandResult
+::: eyetrajectoriespy.fit_function_on_scalar_regression
+::: eyetrajectoriespy.bootstrap_function_on_scalar_coefficients
+::: eyetrajectoriespy.function_on_scalar_simultaneous_bands
+::: eyetrajectoriespy.function_on_scalar_coefficient_frame
+::: eyetrajectoriespy.plot_function_on_scalar_coefficients
+::: eyetrajectoriespy.function_on_scalar_reporting_text
+
+### Generalized function-on-scalar regression
+::: eyetrajectoriespy.GeneralizedFunctionOnScalarResult
+::: eyetrajectoriespy.GeneralizedFunctionOnScalarBootstrapResult
+::: eyetrajectoriespy.GeneralizedFunctionOnScalarBandResult
+::: eyetrajectoriespy.fit_generalized_function_on_scalar_regression
+::: eyetrajectoriespy.bootstrap_generalized_function_on_scalar_coefficients
+::: eyetrajectoriespy.generalized_function_on_scalar_simultaneous_bands
+::: eyetrajectoriespy.generalized_function_on_scalar_coefficient_frame
+::: eyetrajectoriespy.generalized_function_on_scalar_exposure_frame
+::: eyetrajectoriespy.plot_generalized_function_on_scalar_coefficients
+::: eyetrajectoriespy.generalized_function_on_scalar_reporting_text
+
+### Generalized FoSR fixed-profile prediction
+::: eyetrajectoriespy.GeneralizedFunctionOnScalarPredictionResult
+::: eyetrajectoriespy.GeneralizedFunctionOnScalarPredictionBootstrapResult
+::: eyetrajectoriespy.GeneralizedFunctionOnScalarPredictionBandResult
+::: eyetrajectoriespy.GeneralizedFunctionOnScalarMeanDifferenceResult
+::: eyetrajectoriespy.generalized_function_on_scalar_predict
+::: eyetrajectoriespy.bootstrap_generalized_function_on_scalar_predictions
+::: eyetrajectoriespy.generalized_function_on_scalar_prediction_bands
+::: eyetrajectoriespy.generalized_function_on_scalar_mean_difference_band
+::: eyetrajectoriespy.generalized_function_on_scalar_prediction_frame
+::: eyetrajectoriespy.generalized_function_on_scalar_mean_difference_frame
+::: eyetrajectoriespy.plot_generalized_function_on_scalar_predictions
+::: eyetrajectoriespy.plot_generalized_function_on_scalar_mean_difference
+::: eyetrajectoriespy.generalized_function_on_scalar_prediction_reporting_text
+::: eyetrajectoriespy.generalized_function_on_scalar_mean_difference_reporting_text
+
+## Downstream analysis
+::: eyetrajectoriespy.functional_l2_distance
+::: eyetrajectoriespy.pairwise_functional_distances
+::: eyetrajectoriespy.discrete_frechet_distance
+::: eyetrajectoriespy.pairwise_discrete_frechet_distances
+::: eyetrajectoriespy.dynamic_time_warping_distance
+::: eyetrajectoriespy.pairwise_dynamic_time_warping_distances
+::: eyetrajectoriespy.cluster_fpca_scores
+::: eyetrajectoriespy.fit_scalar_on_function_regression
+
+## Plotting and reporting
+::: eyetrajectoriespy.plot_planar_trajectories
+::: eyetrajectoriespy.plot_dynamic_time_warping_alignment
+::: eyetrajectoriespy.plot_fpca_component
+::: eyetrajectoriespy.plot_warping_functions
+::: eyetrajectoriespy.plot_fpca_stability
+::: eyetrajectoriespy.plot_reconstruction_curve
+::: eyetrajectoriespy.dynamic_time_warping_reporting_text
+::: eyetrajectoriespy.TrajectoryDistanceSensitivityResult
+::: eyetrajectoriespy.trajectory_distance_sensitivity
+::: eyetrajectoriespy.trajectory_distance_comparison_frame
+::: eyetrajectoriespy.trajectory_distance_neighbor_frame
+::: eyetrajectoriespy.plot_trajectory_distance_rank_correlations
+::: eyetrajectoriespy.trajectory_distance_sensitivity_reporting_text
+::: eyetrajectoriespy.fpca_stability_reporting_text
+::: eyetrajectoriespy.registration_sensitivity_reporting_text
+::: eyetrajectoriespy.summarise_fpca
+::: eyetrajectoriespy.fpca_reporting_text
+
+## Optional interoperability
+::: eyetrajectoriespy.to_skfda_grid
+::: eyetrajectoriespy.to_skfda_basis
+::: eyetrajectoriespy.fit_elastic_fpca
+
+## Discrete transfer entropy
+::: eyetrajectoriespy.DiscreteTransferEntropyResult
+::: eyetrajectoriespy.TransferEntropyCircularShiftTestResult
+::: eyetrajectoriespy.discrete_transfer_entropy
+::: eyetrajectoriespy.transfer_entropy_local_frame
+::: eyetrajectoriespy.transfer_entropy_circular_shift_test
+::: eyetrajectoriespy.plot_transfer_entropy_circular_shift_test
+::: eyetrajectoriespy.transfer_entropy_reporting_text
+::: eyetrajectoriespy.transfer_entropy_circular_shift_reporting_text
+
+## Transfer entropy sensitivity
+::: eyetrajectoriespy.TransferEntropySensitivityResult
+::: eyetrajectoriespy.transfer_entropy_parameter_sensitivity
+::: eyetrajectoriespy.plot_transfer_entropy_sensitivity
+::: eyetrajectoriespy.transfer_entropy_parameter_sensitivity_reporting_text
+
+## Conditional transfer entropy
+::: eyetrajectoriespy.ConditionalTransferEntropyResult
+::: eyetrajectoriespy.ConditionalTransferEntropyCircularShiftTestResult
+::: eyetrajectoriespy.conditional_transfer_entropy
+::: eyetrajectoriespy.conditional_transfer_entropy_local_frame
+::: eyetrajectoriespy.conditional_transfer_entropy_circular_shift_test
+::: eyetrajectoriespy.plot_conditional_transfer_entropy_circular_shift_test
+::: eyetrajectoriespy.conditional_transfer_entropy_reporting_text
+::: eyetrajectoriespy.conditional_transfer_entropy_circular_shift_reporting_text
+
+## Functional mixed-effects simultaneous inference
+::: eyetrajectoriespy.FunctionalMixedEffectsBootstrapResult
+::: eyetrajectoriespy.FunctionalMixedEffectsBandResult
+::: eyetrajectoriespy.bootstrap_functional_mixed_effects_coefficients
+::: eyetrajectoriespy.functional_mixed_effects_simultaneous_bands
+
+## Random functional slope inspection
+::: eyetrajectoriespy.functional_random_effect_frame
+::: eyetrajectoriespy.plot_functional_random_effects
+
+## Trial functional random-effect inspection
+::: eyetrajectoriespy.functional_trial_random_effect_frame
+::: eyetrajectoriespy.plot_functional_trial_random_effects
+
+## Functional mixed-effects full-refit bootstrap
+::: eyetrajectoriespy.FunctionalMixedEffectsFullRefitBootstrapResult
+::: eyetrajectoriespy.bootstrap_functional_mixed_effects_full_refit
+::: eyetrajectoriespy.functional_mixed_effects_full_refit_audit_frame
+::: eyetrajectoriespy.functional_mixed_effects_full_refit_trial_audit_frame
+::: eyetrajectoriespy.functional_mixed_effects_variance_bootstrap_frame
+::: eyetrajectoriespy.compare_functional_mixed_effects_bootstraps
+::: eyetrajectoriespy.plot_functional_mixed_effects_bootstrap_comparison
