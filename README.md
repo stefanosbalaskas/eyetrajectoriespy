@@ -103,6 +103,25 @@ Consequential choices stay explicit: missingness, interpolation, smoothing, regi
 
 The package deliberately separates stable public methods, advanced diagnostics, external-backend interoperability, and experimental methods. Scientific product qualification matters more than estimator count.
 
+## Where is the full advanced API?
+
+The README is intentionally a compact entry point rather than the exhaustive function catalogue.
+
+- [Capability inventory](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/capability-inventory/)
+- [Public API](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/api/)
+- [API stability and hierarchy](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/api-stability/)
+- [Mathematical reference](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/)
+- [Capability status and roadmap](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/status-roadmap/)
+- [Reference validation & performance envelope](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/)
+
+## Release lineage and reproducibility
+
+The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native sparse univariate FPCA/PACE line, the immutable `0.11.0rc1` prerelease preceded final 0.11 known-truth recovery infrastructure, and `0.12.0` added the native sparse planar MFPCA/joint-PACE line. Published tags and distributions remain immutable historical records.
+
+- [Portable scientific results](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/portable-results/)
+- [Reproducibility bundle checklist](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/checklist/)
+- [Release process](https://stefanosbalaskas.github.io/eyetrajectoriespy/release-process/)
+
 ## Documentation and reproducibility
 
 - [Sparse planar MFPCA / joint PACE guide](https://stefanosbalaskas.github.io/eyetrajectoriespy/guides/sparse-multivariate-fpca/)
