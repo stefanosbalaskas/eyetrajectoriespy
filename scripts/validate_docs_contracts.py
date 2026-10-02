@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import eyetrajectoriespy as et
@@ -16,11 +17,19 @@ MATH_BASE = (ROOT / "docs" / "methods" / "mathematical-reference-base.md").resol
 GALLERY_INDEX = (ROOT / "docs" / "methods" / "visual-gallery.md").resolve()
 GALLERY_DIR = (ROOT / "docs" / "methods" / "gallery").resolve()
 GALLERY_ASSETS = ROOT / "docs" / "assets" / "gallery"
+RELEASE_READINESS = (ROOT / "RELEASE_READINESS.json").resolve()
+CANONICAL_WORKFLOWS = (ROOT / "CANONICAL_WORKFLOWS.json").resolve()
+EVIDENCE_FILES = (
+    ROOT / "REFERENCE_VALIDATION.json",
+    ROOT / "VALIDATION_TOLERANCES.json",
+    ROOT / "PERFORMANCE_ENVELOPE.json",
+)
+LEGACY_BASE_VERSION = "0.12.0"
 _ORIGINAL_READ_TEXT = Path.read_text
 
 
 def _composed_source_read_text(self: Path, *args, **kwargs) -> str:
-    """Expose rendered/composed mathematical and gallery surfaces to validation."""
+    """Expose rendered/composed surfaces and legacy-base compatibility."""
 
     text = _ORIGINAL_READ_TEXT(self, *args, **kwargs)
     try:
@@ -43,7 +52,49 @@ def _composed_source_read_text(self: Path, *args, **kwargs) -> str:
             if path.exists():
                 category_sources.append(_ORIGINAL_READ_TEXT(path, encoding="utf-8"))
         return text + "\n" + "\n".join(category_sources)
+    if resolved in {RELEASE_READINESS, CANONICAL_WORKFLOWS}:
+        # The preserved base validator predates the post-0.12 development line
+        # and hard-codes 0.12.0 for these two *source identity* files. Validate
+        # their real development values separately, then present the legacy
+        # stable token only to that older assertion layer.
+        return text.replace(et.__version__, LEGACY_BASE_VERSION)
     return text
+
+
+def _validate_source_and_evidence_versions() -> None:
+    readiness = json.loads(
+        _ORIGINAL_READ_TEXT(RELEASE_READINESS, encoding="utf-8")
+    )
+    if readiness.get("current_development_version") != et.__version__:
+        raise RuntimeError(
+            "release-readiness source identity does not match package version"
+        )
+    if readiness.get("production_release_ready") is not False or readiness.get(
+        "github_release_ready"
+    ) is not False:
+        raise RuntimeError(
+            "post-0.12 development line must keep publication readiness disarmed"
+        )
+
+    canonical = json.loads(
+        _ORIGINAL_READ_TEXT(CANONICAL_WORKFLOWS, encoding="utf-8")
+    )
+    if canonical.get("package_version") != et.__version__:
+        raise RuntimeError(
+            "canonical workflow manifest does not match development source version"
+        )
+
+    evidence_versions = {
+        json.loads(_ORIGINAL_READ_TEXT(path, encoding="utf-8")).get(
+            "package_version"
+        )
+        for path in EVIDENCE_FILES
+    }
+    if evidence_versions != {LEGACY_BASE_VERSION}:
+        raise RuntimeError(
+            "frozen qualification evidence must remain attributed to 0.12.0 "
+            f"during 0.12.1 development; found {sorted(evidence_versions)}"
+        )
 
 
 def _validate_complete_gallery_manifest() -> None:
@@ -137,6 +188,7 @@ def _validate_complete_gallery_manifest() -> None:
 
 
 def main() -> None:
+    _validate_source_and_evidence_versions()
     Path.read_text = _composed_source_read_text
     try:
         _base_main()
