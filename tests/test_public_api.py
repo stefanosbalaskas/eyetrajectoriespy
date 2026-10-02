@@ -1,7 +1,7 @@
 import eyetrajectoriespy as et
 
 def test_version_and_public_symbols():
-    assert et.__version__=="0.12.0"
+    assert et.__version__=="0.12.1.dev0"
     required={
         "GeneralizedFunctionOnScalarPredictionResult","GeneralizedFunctionOnScalarPredictionBootstrapResult","GeneralizedFunctionOnScalarPredictionBandResult","GeneralizedFunctionOnScalarMeanDifferenceResult","generalized_function_on_scalar_predict","bootstrap_generalized_function_on_scalar_predictions","generalized_function_on_scalar_prediction_bands","generalized_function_on_scalar_mean_difference_band","generalized_function_on_scalar_prediction_frame","generalized_function_on_scalar_mean_difference_frame","plot_generalized_function_on_scalar_predictions","plot_generalized_function_on_scalar_mean_difference","generalized_function_on_scalar_prediction_reporting_text","generalized_function_on_scalar_mean_difference_reporting_text",
         "GeneralizedFunctionOnScalarResult","GeneralizedFunctionOnScalarBootstrapResult","GeneralizedFunctionOnScalarBandResult","fit_generalized_function_on_scalar_regression","bootstrap_generalized_function_on_scalar_coefficients","generalized_function_on_scalar_simultaneous_bands","generalized_function_on_scalar_coefficient_frame","generalized_function_on_scalar_exposure_frame","plot_generalized_function_on_scalar_coefficients","generalized_function_on_scalar_reporting_text",
@@ -44,6 +44,8 @@ def test_version_and_public_symbols():
         "fpca_subspace_stability_reporting_text",
         "SparseFPCAResult","SparseMFPCAResult","fit_sparse_mfpca",
         "sparse_mfpca_score_frame","sparse_mfpca_reporting_text",
+        "plot_sparse_mfpca_component","plot_sparse_mfpca_covariance_blocks",
+        "plot_sparse_mfpca_cross_covariance","plot_sparse_mfpca_score_diagnostics",
         "evaluate_sparse_mfpca_recovery",
         "sparse_dimension_summary","to_fdapy_irregular",
         "fit_sparse_fpca","fit_sparse_fpca_fdapy","sparse_fpca_score_frame",
