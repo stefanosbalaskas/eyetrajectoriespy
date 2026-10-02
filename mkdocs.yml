@@ -25,7 +25,8 @@ nav:
       - Data & representation:
           - Preparing trajectories: guides/preprocessing.md
           - Native irregular trajectories: guides/irregular-trajectories.md
-          - Sparse irregular / PACE FPCA: guides/sparse-irregular-fpca.md
+          - Sparse univariate FPCA / PACE: guides/sparse-irregular-fpca.md
+          - Sparse planar MFPCA / joint PACE: guides/sparse-multivariate-fpca.md
           - Native functional simulation: guides/functional-simulation.md
           - Basis representations: guides/basis-representations.md
           - Derived continuous functions: guides/derived-functions.md
@@ -94,6 +95,7 @@ nav:
           - Native irregular sampling: examples/native-irregular.md
           - Irregular sampling & gaps: examples/irregular-data.md
           - Sparse PACE FPCA: examples/sparse-pace-fpca.md
+          - Sparse planar MFPCA / joint PACE: examples/sparse-mfpca.md
           - Native functional simulation: examples/functional-simulation.md
           - Compositional AOI trajectories: examples/compositional.md
           - Repeated-trial multilevel FPCA: examples/multilevel.md
@@ -270,6 +272,9 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.highlight
   - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      base_path: ["."]
+      check_paths: true
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid

@@ -1,388 +1,148 @@
-"""Validate documentation navigation, math, gallery, and API-link contracts."""
+"""Run documentation-contract validation against composed MkDocs sources."""
 
 from __future__ import annotations
 
-import json
-import re
-
-import yaml
 from pathlib import Path
+
+import eyetrajectoriespy as et
+
+from _validate_docs_contracts_base import main as _base_main
+from docs_gallery_manifest import GALLERY_CATEGORIES, GALLERY_PLOTS
 
 
 ROOT = Path(__file__).resolve().parents[1]
-DOCS = ROOT / "docs"
+MATH_PAGE = (ROOT / "docs" / "methods" / "mathematical-reference.md").resolve()
+MATH_BASE = (ROOT / "docs" / "methods" / "mathematical-reference-base.md").resolve()
+GALLERY_INDEX = (ROOT / "docs" / "methods" / "visual-gallery.md").resolve()
+GALLERY_DIR = (ROOT / "docs" / "methods" / "gallery").resolve()
+GALLERY_ASSETS = ROOT / "docs" / "assets" / "gallery"
+_ORIGINAL_READ_TEXT = Path.read_text
 
 
-def _nav_paths(node):
-    if isinstance(node, str):
-        yield node
-    elif isinstance(node, list):
-        for item in node:
-            yield from _nav_paths(item)
-    elif isinstance(node, dict):
-        for value in node.values():
-            yield from _nav_paths(value)
+def _composed_source_read_text(self: Path, *args, **kwargs) -> str:
+    """Expose rendered/composed mathematical and gallery surfaces to validation."""
+
+    text = _ORIGINAL_READ_TEXT(self, *args, **kwargs)
+    try:
+        resolved = self.resolve()
+    except OSError:
+        return text
+    if resolved == MATH_PAGE:
+        base = _ORIGINAL_READ_TEXT(MATH_BASE, encoding="utf-8")
+        # The validator checks API names and explicit anchors as set-membership
+        # contracts. Concatenating the preserved base and public extension is
+        # equivalent to the MkDocs snippet-composed surface for those checks.
+        return base + "\n" + text
+    if resolved == GALLERY_INDEX:
+        # The historical validator treated the gallery as one page. The modern
+        # site intentionally splits it into seven category pages; concatenate
+        # them only for that legacy aggregate asset-reference check.
+        category_sources = []
+        for category in GALLERY_CATEGORIES:
+            path = GALLERY_DIR / f"{category}.md"
+            if path.exists():
+                category_sources.append(_ORIGINAL_READ_TEXT(path, encoding="utf-8"))
+        return text + "\n" + "\n".join(category_sources)
+    return text
+
+
+def _validate_complete_gallery_manifest() -> None:
+    public_plots = {
+        name
+        for name in et.__all__
+        if name.startswith("plot_") and callable(getattr(et, name, None))
+    }
+    documented_plots = set(GALLERY_PLOTS)
+    missing = sorted(public_plots - documented_plots)
+    stale = sorted(documented_plots - public_plots)
+    if missing or stale:
+        raise RuntimeError(
+            "gallery manifest must exactly cover public plotting APIs: "
+            f"missing={missing}, stale={stale}"
+        )
+
+    assets = [entry["asset"] for entry in GALLERY_PLOTS.values()]
+    if len(assets) != len(set(assets)):
+        raise RuntimeError("gallery manifest asset names must be unique")
+
+    categories = set(GALLERY_CATEGORIES)
+    bad_categories = sorted(
+        {
+            entry["category"]
+            for entry in GALLERY_PLOTS.values()
+            if entry["category"] not in categories
+        }
+    )
+    if bad_categories:
+        raise RuntimeError(
+            f"gallery manifest contains undeclared categories: {bad_categories}"
+        )
+
+    missing_metadata = sorted(
+        name
+        for name, entry in GALLERY_PLOTS.items()
+        if not all(
+            entry.get(key, "").strip()
+            for key in ("asset", "category", "quantity", "equation", "example")
+        )
+    )
+    if missing_metadata:
+        raise RuntimeError(
+            "gallery manifest entries require asset/category/quantity/equation/example: "
+            f"{missing_metadata}"
+        )
+
+    missing_assets = sorted(
+        name
+        for name, entry in GALLERY_PLOTS.items()
+        if not (GALLERY_ASSETS / entry["asset"]).exists()
+    )
+    if missing_assets:
+        raise RuntimeError(
+            "gallery manifest assets were not generated for public plots: "
+            f"{missing_assets}"
+        )
+
+    missing_pages = sorted(
+        category
+        for category in GALLERY_CATEGORIES
+        if not (GALLERY_DIR / f"{category}.md").exists()
+    )
+    if missing_pages:
+        raise RuntimeError(f"gallery category pages were not generated: {missing_pages}")
+
+    page_violations: list[str] = []
+    for name, entry in GALLERY_PLOTS.items():
+        page = (GALLERY_DIR / f"{entry['category']}.md").read_text(encoding="utf-8")
+        required_tokens = (
+            f"`{name}`",
+            entry["asset"],
+            "**API:**",
+            "**Scientific quantity:**",
+            "**Equation:**",
+            "**Worked example:**",
+        )
+        if not all(token in page for token in required_tokens):
+            page_violations.append(name)
+    if page_violations:
+        raise RuntimeError(
+            "gallery category entries are incomplete for public plots: "
+            f"{sorted(page_violations)}"
+        )
+
+    print(
+        "plot gallery manifest OK: "
+        f"{len(public_plots)} public plotting APIs, exact assets/pages coverage"
+    )
 
 
 def main() -> None:
-    for workflow_path in (
-        ROOT / ".github" / "workflows" / "release.yml",
-        ROOT / ".github" / "workflows" / "release-readiness.yml",
-    ):
-        parsed = yaml.safe_load(workflow_path.read_text(encoding="utf-8"))
-        if not isinstance(parsed, dict):
-            raise RuntimeError(
-                f"workflow did not parse as a mapping: {workflow_path}"
-            )
-
-    config_text = (ROOT / "mkdocs.yml").read_text(encoding="utf-8")
-    nav = re.findall(
-        r":\s+([A-Za-z0-9_./-]+\.md)\s*$",
-        config_text,
-        flags=re.MULTILINE,
-    )
-    missing_nav = sorted(path for path in nav if not (DOCS / path).exists())
-    if missing_nav:
-        raise RuntimeError(f"missing MkDocs nav targets: {missing_nav}")
-
-    escaped_backticks = []
-    for markdown_path in ROOT.rglob("*.md"):
-        source = markdown_path.read_text(encoding="utf-8")
-        if "\\`" in source:
-            escaped_backticks.append(str(markdown_path.relative_to(ROOT)))
-    if escaped_backticks:
-        raise RuntimeError(
-            "Markdown files contain escaped backticks that break inline-code "
-            f"or fenced-code rendering: {sorted(escaped_backticks)}"
-        )
-
-    invalid_controls = []
-    for markdown_path in ROOT.rglob("*.md"):
-        raw = markdown_path.read_bytes()
-        bad_codes = sorted(
-            {
-                byte
-                for byte in raw
-                if byte < 32 and byte != 10
-            }
-        )
-        if bad_codes:
-            invalid_controls.append(
-                (
-                    str(markdown_path.relative_to(ROOT)),
-                    bad_codes,
-                )
-            )
-    if invalid_controls:
-        raise RuntimeError(
-            "Markdown files contain non-newline ASCII control characters; "
-            "these commonly indicate escaped LaTeX corruption: "
-            f"{invalid_controls}"
-        )
-
-    invalid_math_delimiters = []
-    unbalanced_display_math = []
-    for markdown_path in DOCS.rglob("*.md"):
-        source = markdown_path.read_text(encoding="utf-8")
-        in_fence = False
-        display_delimiters = 0
-        for line_number, line in enumerate(source.splitlines(), start=1):
-            if re.match(r"^\s*(?:\`\`\`|~~~)", line):
-                in_fence = not in_fence
-                continue
-            if in_fence:
-                continue
-            without_code = re.sub(r"`[^`]*`", "", line)
-            stripped = without_code.strip()
-            if stripped in {"$", r"\[", r"\]"}:
-                invalid_math_delimiters.append(
-                    (
-                        str(markdown_path.relative_to(ROOT)),
-                        line_number,
-                        stripped,
-                    )
-                )
-            if r"\(" in without_code or r"\)" in without_code:
-                invalid_math_delimiters.append(
-                    (
-                        str(markdown_path.relative_to(ROOT)),
-                        line_number,
-                        r"inline \(...\) delimiter",
-                    )
-                )
-            display_delimiters += without_code.count("$$")
-        if display_delimiters % 2:
-            unbalanced_display_math.append(
-                str(markdown_path.relative_to(ROOT))
-            )
-    if invalid_math_delimiters:
-        raise RuntimeError(
-            "Documentation must use $...$ for inline math and $$...$$ for "
-            "display math; incompatible delimiters remain: "
-            f"{invalid_math_delimiters}"
-        )
-    if unbalanced_display_math:
-        raise RuntimeError(
-            "Documentation contains unbalanced $$ display-math delimiters: "
-            f"{sorted(unbalanced_display_math)}"
-        )
-
-    math_page = (DOCS / "methods" / "mathematical-reference.md").read_text(
-        encoding="utf-8"
-    )
-    root_math = (ROOT / "MATHEMATICAL_CONTRACTS.md").read_text(encoding="utf-8")
-    required_math = {
-        "functional_trapezoid_weights()",
-        "fit_mfpca()",
-        "fit_multilevel_fpca()",
-        "fit_compositional_fpca()",
-        "heading_function()",
-        "signed_curvature_function()",
-        "turning_rate_function()",
-        "trajectory_tortuosity()",
-        "discrete_frechet_distance()",
-        "dynamic_time_warping_distance()",
-        "trajectory_distance_sensitivity()",
-        "multiplier_functional_mean_band()",
-        "fit_functional_mixed_effects_regression()",
-        "functional_random_effect_frame()",
-        "bootstrap_functional_mixed_effects_coefficients()",
-        "functional_mixed_effects_simultaneous_bands()",
-        "bootstrap_functional_mixed_effects_full_refit()",
-        "functional_mixed_effects_variance_bootstrap_frame()",
-        "compare_functional_mixed_effects_bootstraps()",
-        "functional_mixed_effects_covariance_sensitivity()",
-        "functional_mixed_effects_variance_decomposition()",
-        "fit_function_on_scalar_regression()",
-        "function_on_scalar_simultaneous_bands()",
-        "fit_generalized_function_on_scalar_regression()",
-        "bootstrap_generalized_function_on_scalar_coefficients()",
-        "generalized_function_on_scalar_simultaneous_bands()",
-        "generalized_function_on_scalar_exposure_frame()",
-        "generalized_function_on_scalar_predict()",
-        "generalized_function_on_scalar_prediction_bands()",
-        "generalized_function_on_scalar_mean_difference_band()",
-        "wild_bootstrap_fpca_projection()",
-        "fpca_wild_bootstrap_projection_family_test()",
-        "fpca_wild_bootstrap_family_test_monte_carlo_diagnostics()",
-        "split_conformal_fpca_anomaly()",
-        "delay_embed_trajectory()",
-        "recurrence_matrix()",
-        "joint_recurrence_matrix()",
-        "joint_rqa_metrics()",
-        "recurrence_network()",
-        "discrete_transfer_entropy()",
-        "transfer_entropy_circular_shift_test()",
-        "transfer_entropy_parameter_sensitivity()",
-        "conditional_transfer_entropy()",
-        "conditional_transfer_entropy_circular_shift_test()",
-        "recurrence_radius_profile()",
-        "rqa_parameter_sensitivity()",
-        "bootstrap_rqa_metric_means()",
-        "windowed_rqa_trajectory_set()",
-        "estimate_largest_lyapunov_rosenstein()",
-        "estimate_largest_lyapunov_kantz()",
-        "kantz_parameter_sensitivity()",
-        "lyapunov_parameter_sensitivity()",
-        "generate_multivariate_iaaft_surrogates()",
-        "multivariate_surrogate_nonlinearity_test()",
-        "surrogate_nonlinearity_test()",
-        "return_map_stability()",
-    }
-    missing_math_api = sorted(name for name in required_math if name not in math_page)
-    if missing_math_api:
-        raise RuntimeError(
-            f"mathematical reference is missing API contracts: {missing_math_api}"
-        )
-    if math_page.count("$") < 20 or root_math.count("$") < 10:
-        raise RuntimeError("mathematical contract pages lost expected LaTeX blocks")
-
-    math_fragments: set[str] = set()
-    for markdown_path in DOCS.rglob("*.md"):
-        source = markdown_path.read_text(encoding="utf-8")
-        math_fragments.update(
-            re.findall(r"mathematical-reference\.md#([A-Za-z0-9_-]+)", source)
-        )
-    missing_fragments = sorted(
-        fragment
-        for fragment in math_fragments
-        if f"{{ #{fragment} }}" not in math_page
-    )
-    if missing_fragments:
-        raise RuntimeError(
-            "mathematical-reference links use undefined explicit anchors: "
-            f"{missing_fragments}"
-        )
-
-    mathjax = (DOCS / "javascripts" / "mathjax.js").read_text(encoding="utf-8")
-    if "document$.subscribe" not in mathjax or "typesetPromise" not in mathjax:
-        raise RuntimeError("MathJax instant-navigation hook is incomplete")
-
-    gallery = (DOCS / "methods" / "visual-gallery.md").read_text(encoding="utf-8")
-    asset_refs = sorted(set(re.findall(r"\.\./assets/gallery/([^)\s]+\.svg)", gallery)))
-    if len(asset_refs) < 30:
-        raise RuntimeError("visual gallery must reference at least thirty SVG figures")
-    missing_assets = sorted(
-        name for name in asset_refs if not (DOCS / "assets" / "gallery" / name).exists()
-    )
-    if missing_assets:
-        raise RuntimeError(f"gallery assets were not generated: {missing_assets}")
-
-    reference_ledger = json.loads(
-        (ROOT / "REFERENCE_VALIDATION.json").read_text(encoding="utf-8")
-    )
-    tolerance_policy = json.loads(
-        (ROOT / "VALIDATION_TOLERANCES.json").read_text(encoding="utf-8")
-    )
-    performance_ledger = json.loads(
-        (ROOT / "PERFORMANCE_ENVELOPE.json").read_text(encoding="utf-8")
-    )
-    for name, payload in (
-        ("reference validation", reference_ledger),
-        ("tolerance policy", tolerance_policy),
-        ("performance envelope", performance_ledger),
-    ):
-        if payload.get("package_version") != "0.12.0":
-            raise RuntimeError(f"{name} package version is stale")
-    evidence_types = set(reference_ledger.get("evidence_types", {}))
-    if evidence_types != {
-        "analytical_truth",
-        "independent_implementation_equivalence",
-        "simulation_recovery",
-        "cross_implementation_sensitivity",
-    }:
-        raise RuntimeError("reference validation evidence types are incomplete")
-    if performance_ledger.get("status") != "qualified":
-        raise RuntimeError("performance envelope must be qualified before merge")
-    if performance_ledger.get("comparative_benchmark") is not False:
-        raise RuntimeError("performance envelope must remain non-comparative")
-    if len(performance_ledger.get("results", [])) != 6:
-        raise RuntimeError("performance envelope must contain six workflow rows")
-
-    manifest = json.loads(
-        (ROOT / "CANONICAL_WORKFLOWS.json").read_text(encoding="utf-8")
-    )
-    if manifest.get("package_version") != "0.12.0":
-        raise RuntimeError("canonical workflow manifest version is stale")
-    workflows = manifest.get("workflows", [])
-    if len(workflows) != 5:
-        raise RuntimeError("canonical workflow manifest must define five routes")
-    workflow_ids = [item.get("id") for item in workflows]
-    if len(workflow_ids) != len(set(workflow_ids)):
-        raise RuntimeError("canonical workflow IDs must be unique")
-    for workflow in workflows:
-        docs_path = ROOT / workflow["docs"]
-        if not docs_path.exists():
-            raise RuntimeError(
-                f"canonical workflow docs target is missing: {docs_path}"
-            )
-        example_path = ROOT / workflow["realistic_example"]
-        if not example_path.exists():
-            raise RuntimeError(
-                f"canonical realistic example is missing: {example_path}"
-            )
-
-    workflow_atlas = (
-        ROOT / "docs" / "methods" / "workflow-atlas.md"
-    ).read_text(encoding="utf-8")
-    for unsafe_mermaid in (
-        "-->|Yes: E > 0|",
-        "-->|Yes: explicit N > 0|",
-        "I[Fixed-family max-|t| interval]",
-    ):
-        if unsafe_mermaid in workflow_atlas:
-            raise RuntimeError(
-                "workflow atlas contains Mermaid 11-unsafe syntax: "
-                f"{unsafe_mermaid!r}"
-            )
-    for required_mermaid_id in (
-        "P1[Scalar IAAFT]",
-        "Q1[Declare MIAAFT reference dimension]",
-        "R1[Multivariate IAAFT + cross-spectrum diagnostics]",
-        "P2[Declare Poincare section]",
-        "Q2[Interpolated crossings]",
-        "R2[Declare reference + neighborhood]",
-    ):
-        if required_mermaid_id not in workflow_atlas:
-            raise RuntimeError(
-                "workflow atlas nonlinear Mermaid IDs are stale: "
-                f"missing {required_mermaid_id!r}"
-            )
-
-    readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for required in (
-        "MATHEMATICAL_CONTRACTS.md",
-        "FUNCTION_EQUATION_INDEX.md",
-        "WORKFLOW_ATLAS.md",
-        "Visual gallery",
-        "0.10.0",
-        "0.11.0rc1",
-        "Which workflow do I need?",
-        "Where is the full advanced API?",
-        "Reference validation & performance envelope",
-        "Portable scientific results",
-        "Release process",
-    ):
-        if required not in readme:
-            raise RuntimeError(f"README integration missing {required!r}")
-
-    release_readiness = json.loads(
-        (ROOT / "RELEASE_READINESS.json").read_text(encoding="utf-8")
-    )
-    if release_readiness.get("current_development_version") != "0.12.0":
-        raise RuntimeError("release-readiness development version is stale")
-    if release_readiness.get("first_public_release_target") != "0.9.0":
-        raise RuntimeError("first stable public release target must remain explicit")
-    release_flags = (
-        release_readiness.get("production_release_ready"),
-        release_readiness.get("github_release_ready"),
-    )
-    if release_flags not in {(False, False), (True, True)}:
-        raise RuntimeError(
-            "production and GitHub release readiness must be jointly "
-            "disarmed or jointly armed"
-        )
-
-    readiness_gates = release_readiness.get("gates", {})
-    if readiness_gates.get("pypi_trusted_publishing_configured") is not True:
-        raise RuntimeError(
-            "dedicated pypi Trusted Publisher must remain recorded as configured"
-        )
-
-    release_workflow = (
-        ROOT / ".github" / "workflows" / "release.yml"
-    ).read_text(encoding="utf-8")
-    production_block = release_workflow.split(
-        "  publish-pypi:", 1
-    )[1].split("  resume-pypi:", 1)[0]
-    resume_block = release_workflow.split(
-        "  resume-pypi:", 1
-    )[1].split("  verify-pypi:", 1)[0]
-    if "environment: pypi" not in production_block:
-        raise RuntimeError("production PyPI job must use dedicated pypi environment")
-    if "skip-existing: true" in production_block:
-        raise RuntimeError("ordinary production must fail on existing PyPI files")
-    if "skip-existing: true" not in resume_block:
-        raise RuntimeError("resume-production must retain explicit recovery semantics")
-
-    public_api = (ROOT / "src" / "eyetrajectoriespy" / "__init__.py").read_text(
-        encoding="utf-8"
-    )
-    documented = (DOCS / "reference" / "api.md").read_text(encoding="utf-8")
-    symbols = set(re.findall(r"::: eyetrajectoriespy\.([A-Za-z0-9_]+)", documented))
-    unresolved = sorted(name for name in symbols if f'"{name}"' not in public_api)
-    if unresolved:
-        raise RuntimeError(f"documented API symbols are not exported: {unresolved}")
-
-    print(
-        "docs contracts OK: "
-        f"{len(nav)} nav targets, "
-        f"{len(symbols)} documented API symbols, "
-        f"{len(asset_refs)} gallery assets, "
-        f"{len(math_fragments)} mathematical deep links, "
-        f"{len(reference_ledger['entries'])} reference-validation rows, "
-        f"{len(performance_ledger['results'])} performance rows"
-    )
+    Path.read_text = _composed_source_read_text
+    try:
+        _base_main()
+        _validate_complete_gallery_manifest()
+    finally:
+        Path.read_text = _ORIGINAL_READ_TEXT
 
 
 if __name__ == "__main__":
