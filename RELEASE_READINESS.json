@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_development_version": "0.12.0",
+  "current_development_version": "0.12.1.dev0",
   "first_public_release_target": "0.9.0",
   "production_release_ready": false,
   "gates": {
@@ -67,7 +67,8 @@
     "Final 0.12.0 production release workflow #16 (run 36934655797) completed successfully from exact protected-main arming commit 5f17019a2e346c5d6073d8c213a7798c89a5d529 on 1 October 2026.",
     "Workflow #16 built the wheel and sdist once, passed production governance and unpublished-version preflight, created annotated tag and GitHub Release v0.12.0, verified the exact release checksums, published both distributions to production PyPI through OIDC Trusted Publishing with digital attestations, and passed a fresh eyetrajectoriespy==0.12.0 production-PyPI installation smoke test on the first visibility attempt.",
     "Published v0.12.0 GitHub Release assets are eyetrajectoriespy-0.12.0-py3-none-any.whl (sha256:0c2a528a4fa11ec1a3556556e657c6bff7742f552224fee8cac805c87c55ea74), eyetrajectoriespy-0.12.0.tar.gz (sha256:f59dc133381e82681b17d4c3417efa7f46f3ac0fdcd16959551e833ba2f4285a), and SHA256SUMS (sha256:b99e849f026e4b9a53a888149104874c7e7d893e444f581b184c00a703de0708). Retained workflow artifact 11197248188 has digest sha256:f62b284a6c67a23844729d2958d99d3a216ac5a7ea168cf36eaffb610c78ed2b.",
-    "Post-publication GitHub/PyPI readiness is jointly disarmed to prevent accidental republication of immutable 0.12.0. Ordinary pushes and merges remain non-publishing; a future release must begin a new reviewed version/readiness cycle."
+    "Post-publication GitHub/PyPI readiness is jointly disarmed to prevent accidental republication of immutable 0.12.0. Ordinary pushes and merges remain non-publishing; a future release must begin a new reviewed version/readiness cycle.",
+    "0.12.1.dev0 opens a post-0.12 visualization/API development line. It adds sparse-MFPCA plotting helpers only; the 0.12.0 estimator and published artifacts remain immutable, qualification evidence remains attributed to 0.12.0 until a future release is independently requalified, and GitHub/PyPI publication readiness remains jointly disarmed."
   ],
   "github_release_ready": false
 }

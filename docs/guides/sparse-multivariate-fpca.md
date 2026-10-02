@@ -133,7 +133,25 @@ Inspect `result.score_diagnostics` before downstream use. `score_failure_action=
 
 ## Plots
 
-The 0.12 site includes deterministic documentation-only covariance-block and vector-eigenfunction figures generated directly from public result arrays. Dedicated `plot_sparse_mfpca_*` public helpers are a subsequent API addition rather than a retroactive change to immutable 0.12.0.
+The published 0.12.0 artifact is unchanged. The post-0.12 `0.12.1.dev0` source line adds four public visualization helpers that operate only on the already-retained `SparseMFPCAResult` quantities:
+
+```python
+from eyetrajectoriespy import (
+    plot_sparse_mfpca_component,
+    plot_sparse_mfpca_covariance_blocks,
+    plot_sparse_mfpca_cross_covariance,
+    plot_sparse_mfpca_score_diagnostics,
+)
+
+plot_sparse_mfpca_component(fit, component=0)
+plot_sparse_mfpca_covariance_blocks(fit, stage="used")
+plot_sparse_mfpca_cross_covariance(fit, stage="used")
+plot_sparse_mfpca_score_diagnostics(fit)
+```
+
+`plot_sparse_mfpca_component()` interprets the retained vector eigenfunction as coordinate-specific mean ± mode curves. `plot_sparse_mfpca_covariance_blocks()` displays all four covariance blocks together. `plot_sparse_mfpca_cross_covariance()` keeps the directional C_xy/C_yx orientation explicit. `plot_sparse_mfpca_score_diagnostics()` shows conditional-system conditioning against paired native observation counts and preserves failed/non-finite systems as visible diagnostics.
+
+For covariance plots, `stage="used"` displays the blocks after the declared joint PSD policy—the blocks actually used downstream—whereas `stage="smoothed"` displays the retained directly smoothed pre-PSD blocks. Neither option refits or resmooths the model.
 
 ![Sparse planar covariance blocks](../assets/gallery/sparse-mfpca-covariance-blocks.svg)
 
@@ -141,7 +159,7 @@ The 0.12 site includes deterministic documentation-only covariance-block and vec
 
 ## Recovery and comparator evidence
 
-Use the [native sparse-MFPCA recovery](../validation/sparse-mfpca-recovery.md), [comparator sensitivity](../validation/sparse-mfpca-comparator-sensitivity.md), and [stress/performance](../validation/sparse-mfpca-observation-performance.md) pages. Population eigenspace recovery and individual joint-PACE score recovery are distinct targets.
+Use the [native sparse-MFPCA recovery](../validation/sparse-mfpca-recovery.md), [comparator sensitivity](../validation/sparse-mfpca-comparator-sensitivity.md), and [stress/performance](../validation/sparse-mfpca-observation-performance.md) pages. Population eigenspace recovery and individual joint-PACE score recovery are distinct targets. Those scientific qualification records remain explicitly attributed to 0.12.0 until a later package version receives fresh exact-version qualification.
 
 ## Reporting
 
@@ -156,4 +174,4 @@ Report native sampling, paired-timestamp requirements, analysis grid/support, me
 
 ## Limitations
 
-The stable 0.12 estimator does not imply automatic bandwidth selection, arbitrary unpaired x/y observation times, automatic cross-channel noise estimation, complete sparse-FPCA uncertainty propagation into downstream models, or equivalence to dense-grid projection scores.
+The stable 0.12 estimator does not imply automatic bandwidth selection, arbitrary unpaired x/y observation times, automatic cross-channel noise estimation, complete sparse-FPCA uncertainty propagation into downstream models, or equivalence to dense-grid projection scores. The 0.12.1 development plotting helpers do not alter any of those boundaries.

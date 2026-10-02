@@ -6,7 +6,7 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_RELEASE_CANDIDATE = "0.12.0"
+CURRENT_DEVELOPMENT_VERSION = "0.12.1.dev0"
 
 
 def _load_script(name):
@@ -18,23 +18,21 @@ def _load_script(name):
     return module
 
 
-def test_release_version_contract_agrees_for_release_candidate():
+def test_release_version_contract_agrees_for_development_line():
     module = _load_script("verify_release_version.py")
-    assert module.verify_version_contract() == CURRENT_RELEASE_CANDIDATE
+    assert module.verify_version_contract() == CURRENT_DEVELOPMENT_VERSION
 
 
-def test_release_candidate_version_contract_is_production_eligible():
+def test_development_version_contract_is_not_production_eligible():
     module = _load_script("verify_release_version.py")
-    assert (
+    with pytest.raises(RuntimeError, match="development versions"):
         module.verify_version_contract(
-            tag=f"v{CURRENT_RELEASE_CANDIDATE}",
+            tag=f"v{CURRENT_DEVELOPMENT_VERSION}",
             production=True,
         )
-        == CURRENT_RELEASE_CANDIDATE
-    )
 
 
-def test_release_candidate_rejects_stale_stable_tag():
+def test_development_line_rejects_stale_stable_tag():
     module = _load_script("verify_release_version.py")
     with pytest.raises(RuntimeError, match="release tag/version mismatch"):
         module.verify_version_contract(
@@ -43,15 +41,36 @@ def test_release_candidate_rejects_stale_stable_tag():
         )
 
 
+def test_development_line_retains_frozen_012_evidence():
+    module = _load_script("verify_release_version.py")
+    assert set(module.qualified_evidence_contract().values()) == {"0.12.0"}
+    assert module.verify_version_contract() == CURRENT_DEVELOPMENT_VERSION
+
+
+def test_release_candidate_would_require_fresh_exact_version_evidence(monkeypatch):
+    module = _load_script("verify_release_version.py")
+    monkeypatch.setattr(
+        module,
+        "version_contract",
+        lambda: {
+            "pyproject.toml": "0.12.1rc1",
+            "package __version__": "0.12.1rc1",
+            "CITATION.cff": "0.12.1rc1",
+        },
+    )
+    with pytest.raises(RuntimeError, match="exact-version qualification evidence"):
+        module.verify_version_contract()
+
+
 def test_production_release_rejects_development_line(monkeypatch):
     module = _load_script("verify_release_version.py")
     monkeypatch.setattr(
         module,
         "version_contract",
         lambda: {
-            "pyproject.toml": "0.10.1.dev0",
-            "package __version__": "0.10.1.dev0",
-            "CITATION.cff": "0.10.1.dev0",
+            "pyproject.toml": "0.12.1.dev0",
+            "package __version__": "0.12.1.dev0",
+            "CITATION.cff": "0.12.1.dev0",
         },
     )
     with pytest.raises(RuntimeError, match="development versions"):
@@ -64,14 +83,14 @@ def test_production_release_rejects_development_tag(monkeypatch):
         module,
         "version_contract",
         lambda: {
-            "pyproject.toml": "0.10.1.dev0",
-            "package __version__": "0.10.1.dev0",
-            "CITATION.cff": "0.10.1.dev0",
+            "pyproject.toml": "0.12.1.dev0",
+            "package __version__": "0.12.1.dev0",
+            "CITATION.cff": "0.12.1.dev0",
         },
     )
     with pytest.raises(RuntimeError, match="development versions"):
         module.verify_version_contract(
-            tag="v0.10.1.dev0",
+            tag="v0.12.1.dev0",
             production=True,
         )
 

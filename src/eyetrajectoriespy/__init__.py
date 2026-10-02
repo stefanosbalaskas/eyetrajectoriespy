@@ -442,6 +442,12 @@ from .sparse_multivariate import (
     sparse_mfpca_reporting_text,
     sparse_mfpca_score_frame,
 )
+from .sparse_multivariate_plotting import (
+    plot_sparse_mfpca_component,
+    plot_sparse_mfpca_covariance_blocks,
+    plot_sparse_mfpca_cross_covariance,
+    plot_sparse_mfpca_score_diagnostics,
+)
 from .subspace import (
     bootstrap_fpca_subspace_stability,
     compare_fpca_subspaces,
@@ -548,7 +554,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "0.12.0"
+__version__ = "0.12.1.dev0"
 
 __all__ = [
     "PortableScientificResultSnapshot",
@@ -936,6 +942,10 @@ __all__ = [
     "functional_mean_band_reporting_text",
     "SparseFPCAResult",
     "SparseMFPCAResult",
+    "plot_sparse_mfpca_component",
+    "plot_sparse_mfpca_covariance_blocks",
+    "plot_sparse_mfpca_cross_covariance",
+    "plot_sparse_mfpca_score_diagnostics",
     "fit_sparse_mfpca",
     "sparse_mfpca_score_frame",
     "sparse_mfpca_reporting_text",

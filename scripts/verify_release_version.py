@@ -13,8 +13,11 @@ from packaging.version import Version
 
 ROOT = Path(__file__).resolve().parents[1]
 
-_VERSION_JSON_FILES = (
+_SOURCE_VERSION_JSON_FILES = (
     "CANONICAL_WORKFLOWS.json",
+)
+
+_QUALIFIED_EVIDENCE_JSON_FILES = (
     "REFERENCE_VALIDATION.json",
     "VALIDATION_TOLERANCES.json",
     "PERFORMANCE_ENVELOPE.json",
@@ -44,6 +47,8 @@ def _citation_version() -> str:
 
 
 def version_contract() -> dict[str, str]:
+    """Return declarations that define the active source/distribution identity."""
+
     with (ROOT / "pyproject.toml").open("rb") as stream:
         project_version = tomllib.load(stream)["project"]["version"]
 
@@ -58,7 +63,7 @@ def version_contract() -> dict[str, str]:
     versions["RELEASE_READINESS.json"] = str(
         release_readiness["current_development_version"]
     )
-    for relative_path in _VERSION_JSON_FILES:
+    for relative_path in _SOURCE_VERSION_JSON_FILES:
         payload = json.loads(
             (ROOT / relative_path).read_text(encoding="utf-8")
         )
@@ -83,6 +88,47 @@ def version_contract() -> dict[str, str]:
     return versions
 
 
+def qualified_evidence_contract() -> dict[str, str]:
+    """Return versions attached to frozen qualification/performance evidence."""
+
+    versions: dict[str, str] = {}
+    for relative_path in _QUALIFIED_EVIDENCE_JSON_FILES:
+        payload = json.loads(
+            (ROOT / relative_path).read_text(encoding="utf-8")
+        )
+        versions[relative_path] = str(payload["package_version"])
+    return versions
+
+
+def _verify_qualified_evidence(source_version: Version) -> None:
+    evidence = qualified_evidence_contract()
+    distinct = set(evidence.values())
+    if len(distinct) != 1:
+        details = ", ".join(
+            f"{name}={version}"
+            for name, version in evidence.items()
+        )
+        raise RuntimeError(
+            "qualified evidence version declarations disagree: " + details
+        )
+
+    evidence_text = next(iter(distinct))
+    evidence_version = Version(evidence_text)
+    if source_version.is_devrelease:
+        if evidence_version > source_version:
+            raise RuntimeError(
+                "development source cannot inherit qualification evidence from "
+                f"a newer version: source={source_version}, evidence={evidence_version}"
+            )
+        return
+
+    if evidence_version != source_version:
+        raise RuntimeError(
+            "release candidates and final versions require exact-version "
+            f"qualification evidence: source={source_version}, evidence={evidence_version}"
+        )
+
+
 def verify_version_contract(
     *,
     tag: str | None = None,
@@ -99,6 +145,7 @@ def verify_version_contract(
 
     version_text = next(iter(distinct))
     parsed = Version(version_text)
+    _verify_qualified_evidence(parsed)
 
     if tag is not None:
         expected_tag = f"v{version_text}"

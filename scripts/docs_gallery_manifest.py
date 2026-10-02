@@ -47,6 +47,10 @@ GALLERY_PLOTS: dict[str, dict[str, str]] = {
     "plot_sparse_fpca_component": {"asset": "sparse-fpca-component.svg", "category": "sparse-fda", "quantity": "Sparse PACE FPC interpretation", "equation": "sparse-fpca-pace", "example": "sparse-pace-fpca"},
     "plot_sparse_fpca_covariance": {"asset": "sparse-fpca-covariance.svg", "category": "sparse-fda", "quantity": "Smoothed sparse covariance surface", "equation": "sparse-fpca-pace", "example": "sparse-pace-fpca"},
     "plot_sparse_fpca_score_diagnostics": {"asset": "sparse-fpca-score-conditioning.svg", "category": "sparse-fda", "quantity": "PACE conditional-system diagnostics", "equation": "sparse-fpca-pace", "example": "sparse-pace-fpca"},
+    "plot_sparse_mfpca_component": {"asset": "sparse-mfpca-component.svg", "category": "sparse-fda", "quantity": "Sparse planar MFPCA component interpretation", "equation": "sparse-mfpca-joint-pace", "example": "sparse-mfpca"},
+    "plot_sparse_mfpca_covariance_blocks": {"asset": "sparse-mfpca-covariance-blocks-public.svg", "category": "sparse-fda", "quantity": "Full 2x2 sparse planar covariance operator", "equation": "sparse-mfpca-joint-pace", "example": "sparse-mfpca"},
+    "plot_sparse_mfpca_cross_covariance": {"asset": "sparse-mfpca-cross-covariance.svg", "category": "sparse-fda", "quantity": "Directional Cxy/Cyx cross-covariance surfaces", "equation": "sparse-mfpca-joint-pace", "example": "sparse-mfpca"},
+    "plot_sparse_mfpca_score_diagnostics": {"asset": "sparse-mfpca-score-diagnostics.svg", "category": "sparse-fda", "quantity": "Joint-PACE conditioning and solve status", "equation": "sparse-mfpca-joint-pace", "example": "sparse-mfpca"},
 
     # Functional summaries, regression, mixed effects.
     "plot_functional_mean_band": {"asset": "functional-mean-band.svg", "category": "regression", "quantity": "Simultaneous functional mean band", "equation": "mean-band", "example": "functional-mean-bands"},

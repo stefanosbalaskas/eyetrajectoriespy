@@ -17,11 +17,11 @@ y_i(t)
 \end{bmatrix}.
 $$
 
-**Stable:** `0.12.0` · **Python:** 3.11–3.13
+**Stable:** `0.12.0` · **Development source:** `0.12.1.dev0` · **Python:** 3.11–3.13
 
 ```bash
 pip install eyetrajectoriespy
-# exact reproducible release
+# exact reproducible stable release
 pip install eyetrajectoriespy==0.12.0
 ```
 
@@ -34,6 +34,9 @@ pip install eyetrajectoriespy==0.12.0
 
 > **Current stable release: `0.12.0`**  
 > `0.12.0` adds the qualified native sparse multivariate FPCA / joint-PACE workflow for jointly observed planar gaze. Release qualification, immutable hashes, OIDC/attestation evidence, and publication chronology are retained in the [0.12.0 release notes](https://stefanosbalaskas.github.io/eyetrajectoriespy/releases/0.12.0/) and validation records rather than repeated on this landing page.
+>
+> **Development line: `0.12.1.dev0`**  
+> The current source line adds sparse-MFPCA visualization/API helpers only. It is not published, publication readiness remains disarmed, and the 0.12.0 estimator and qualification evidence remain unchanged.
 
 ![Sparse planar covariance structure estimated by eyetrajectoriespy](docs/assets/gallery/sparse-mfpca-covariance-blocks.svg)
 

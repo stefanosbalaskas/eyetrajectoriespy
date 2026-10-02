@@ -6,6 +6,8 @@
 
 The current stable pre-1.0 line is **0.12.0**.
 
+The current development line is **0.12.1.dev0**. It adds visualization/API helpers only; the 0.12 sparse-MFPCA/joint-PACE estimator remains frozen.
+
 The 0.12 sparse-MFPCA/joint-PACE line is complete and frozen. The package is not currently committed to another estimator tranche.
 
 Near-term work prioritizes:
@@ -95,6 +97,8 @@ Scientific qualification remains separated into:
 5. runtime / peak-memory evidence that does not weaken scientific gates.
 
 The 0.11 recovery laboratory remains the standing infrastructure for future methodology. The 0.12 sparse-MFPCA line was promoted only after native recovery, observation-process stress, direct/two-stage sensitivity, external mGSFPCA comparison, performance qualification, exact-version package qualification, production-installed observation, and the complete release matrix were closed.
+
+The current `0.12.1.dev0` line inherits those frozen 0.12 scientific-validation records only because it does not change the estimator or result schema. The evidence ledgers remain labelled `0.12.0`; they must not be relabelled as new-version evidence. Any future release candidate or final 0.12.1 package requires fresh exact-version qualification before publication.
 
 ## Published release sequence
 
