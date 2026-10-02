@@ -5,12 +5,14 @@ from __future__ import annotations
 from _generate_docs_gallery_base import main as _base_main
 from generate_docs_gallery_extra import main as _extra_main
 from generate_docs_gallery_pages import main as _pages_main
+from generate_sparse_mfpca_docs_figure import main as _sparse_mfpca_docs_main
 
 
 def main() -> None:
-    """Generate qualified assets, complete public coverage, and gallery pages."""
+    """Generate qualified assets, sparse-planar docs figures, public coverage, and pages."""
 
     _base_main()
+    _sparse_mfpca_docs_main()
     _extra_main()
     _pages_main()
 
