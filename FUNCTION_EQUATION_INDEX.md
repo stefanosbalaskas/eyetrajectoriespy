@@ -56,6 +56,38 @@ $$
 
 Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#sparse-fpca-pace
 
+## Native sparse multivariate FPCA / joint PACE
+
+**Functions:** `fit_sparse_mfpca()`
+
+$$
+\mathbf X_i(t)=\begin{bmatrix}X_i(t)\\Y_i(t)\end{bmatrix}
+$$
+
+$$
+\mathbf C(s,t)=\begin{bmatrix}C_{xx}(s,t)&C_{xy}(s,t)\\C_{yx}(s,t)&C_{yy}(s,t)\end{bmatrix}
+$$
+
+$$
+C_{yx}(s,t)=C_{xy}(t,s)
+$$
+
+$$
+\int \mathbf C(s,t)\boldsymbol\phi_k(s)\,ds=\lambda_k\boldsymbol\phi_k(t)
+$$
+
+$$
+\widehat{\boldsymbol\Sigma}_i=\widehat{\mathbf C}_i^{TM}+I_{m_i}\otimes\mathbf R_\epsilon+\gamma I
+$$
+
+$$
+\widehat\xi_{ik}=\widehat\lambda_k\widehat{\boldsymbol\phi}_{ik}^{\top}\widehat{\boldsymbol\Sigma}_i^{-1}\{\mathbf y_i-\widehat{\boldsymbol\mu}_i\}
+$$
+
+**Scope:** Two jointly observed planar sparse functional coordinates with direct directional cross-covariance estimation, explicit mean and covariance bandwidths, full joint PSD handling, declared measurement-error covariance, and full-covariance joint PACE. Raw sparse curves are not interpolated to a common grid; automatic bandwidth or arbitrary cross-channel noise estimation is not implied.
+
+Expanded reference: https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/#sparse-mfpca-joint-pace
+
 ## Integrated functional L2 distance
 
 **Functions:** `functional_l2_distance()`, `pairwise_functional_distances()`
