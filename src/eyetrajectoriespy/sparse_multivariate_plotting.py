@@ -148,7 +148,7 @@ def plot_sparse_mfpca_score_diagnostics(
 
     result = _require_result(result)
     diagnostics = result.score_diagnostics
-    required = {"n_time_points", "condition_number"}
+    required = {"n_time_points", "condition_number", "status_code"}
     missing = sorted(required - set(diagnostics.columns))
     if missing:
         raise ValueError(f"score_diagnostics is missing required columns: {missing}")
@@ -157,13 +157,9 @@ def plot_sparse_mfpca_score_diagnostics(
 
     x = diagnostics["n_time_points"].to_numpy(dtype=float)
     condition = diagnostics["condition_number"].to_numpy(dtype=float)
+    statuses = diagnostics["status_code"].astype(str).to_numpy()
     finite = np.isfinite(x) & np.isfinite(condition)
-    status_column = "solve_status" if "solve_status" in diagnostics.columns else None
-    if status_column is not None:
-        statuses = diagnostics[status_column].astype(str).str.lower().to_numpy()
-        ok = np.isin(statuses, ["ok", "success", "solved"])
-    else:
-        ok = np.ones(len(diagnostics), dtype=bool)
+    ok = statuses == "ok"
 
     good = finite & ok
     flagged = finite & ~ok
