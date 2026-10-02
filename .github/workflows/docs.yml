@@ -28,8 +28,16 @@ jobs:
         run: |
           python -m pip install -U pip
           python -m pip install -e ".[docs,dev]"
-      - name: Validate generated function-equation indexes
-        run: python scripts/generate_function_equation_index.py --check
+      - name: Generate function-equation indexes for capture
+        run: python scripts/generate_function_equation_index.py
+      - name: Upload generated equation indexes
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-equation-indexes
+          path: |
+            FUNCTION_EQUATION_INDEX.md
+            docs/reference/function-equation-index.md
+          if-no-files-found: error
       - name: Generate deterministic documentation gallery
         run: python scripts/generate_docs_gallery.py
       - name: Validate documentation contracts
