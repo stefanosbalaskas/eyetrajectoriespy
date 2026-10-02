@@ -13,11 +13,14 @@ from docs_gallery_manifest import GALLERY_CATEGORIES, GALLERY_PLOTS
 ROOT = Path(__file__).resolve().parents[1]
 MATH_PAGE = (ROOT / "docs" / "methods" / "mathematical-reference.md").resolve()
 MATH_BASE = (ROOT / "docs" / "methods" / "mathematical-reference-base.md").resolve()
+GALLERY_INDEX = (ROOT / "docs" / "methods" / "visual-gallery.md").resolve()
+GALLERY_DIR = (ROOT / "docs" / "methods" / "gallery").resolve()
+GALLERY_ASSETS = ROOT / "docs" / "assets" / "gallery"
 _ORIGINAL_READ_TEXT = Path.read_text
 
 
-def _snippet_aware_read_text(self: Path, *args, **kwargs) -> str:
-    """Expose the rendered mathematical-reference surface to source validation."""
+def _composed_source_read_text(self: Path, *args, **kwargs) -> str:
+    """Expose rendered/composed mathematical and gallery surfaces to validation."""
 
     text = _ORIGINAL_READ_TEXT(self, *args, **kwargs)
     try:
@@ -30,6 +33,16 @@ def _snippet_aware_read_text(self: Path, *args, **kwargs) -> str:
         # contracts. Concatenating the preserved base and public extension is
         # equivalent to the MkDocs snippet-composed surface for those checks.
         return base + "\n" + text
+    if resolved == GALLERY_INDEX:
+        # The historical validator treated the gallery as one page. The modern
+        # site intentionally splits it into seven category pages; concatenate
+        # them only for that legacy aggregate asset-reference check.
+        category_sources = []
+        for category in GALLERY_CATEGORIES:
+            path = GALLERY_DIR / f"{category}.md"
+            if path.exists():
+                category_sources.append(_ORIGINAL_READ_TEXT(path, encoding="utf-8"))
+        return text + "\n" + "\n".join(category_sources)
     return text
 
 
@@ -68,7 +81,10 @@ def _validate_complete_gallery_manifest() -> None:
     missing_metadata = sorted(
         name
         for name, entry in GALLERY_PLOTS.items()
-        if not all(entry.get(key, "").strip() for key in ("asset", "category", "quantity", "equation", "example"))
+        if not all(
+            entry.get(key, "").strip()
+            for key in ("asset", "category", "quantity", "equation", "example")
+        )
     )
     if missing_metadata:
         raise RuntimeError(
@@ -76,14 +92,52 @@ def _validate_complete_gallery_manifest() -> None:
             f"{missing_metadata}"
         )
 
+    missing_assets = sorted(
+        name
+        for name, entry in GALLERY_PLOTS.items()
+        if not (GALLERY_ASSETS / entry["asset"]).exists()
+    )
+    if missing_assets:
+        raise RuntimeError(
+            "gallery manifest assets were not generated for public plots: "
+            f"{missing_assets}"
+        )
+
+    missing_pages = sorted(
+        category
+        for category in GALLERY_CATEGORIES
+        if not (GALLERY_DIR / f"{category}.md").exists()
+    )
+    if missing_pages:
+        raise RuntimeError(f"gallery category pages were not generated: {missing_pages}")
+
+    page_violations: list[str] = []
+    for name, entry in GALLERY_PLOTS.items():
+        page = (GALLERY_DIR / f"{entry['category']}.md").read_text(encoding="utf-8")
+        required_tokens = (
+            f"`{name}`",
+            entry["asset"],
+            "**API:**",
+            "**Scientific quantity:**",
+            "**Equation:**",
+            "**Worked example:**",
+        )
+        if not all(token in page for token in required_tokens):
+            page_violations.append(name)
+    if page_violations:
+        raise RuntimeError(
+            "gallery category entries are incomplete for public plots: "
+            f"{sorted(page_violations)}"
+        )
+
     print(
         "plot gallery manifest OK: "
-        f"{len(public_plots)} public plotting APIs, exact coverage"
+        f"{len(public_plots)} public plotting APIs, exact assets/pages coverage"
     )
 
 
 def main() -> None:
-    Path.read_text = _snippet_aware_read_text
+    Path.read_text = _composed_source_read_text
     try:
         _base_main()
         _validate_complete_gallery_manifest()
