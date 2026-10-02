@@ -1,11 +1,14 @@
 """Generate deterministic gallery assets for public plots not covered by the base gallery.
 
 The package test suite already constructs valid, deterministic scientific objects for
-all public plotting helpers.  Rather than duplicate dozens of setup recipes here, this
-script instruments the public ``plot_*`` calls, runs only tests whose function bodies
+nearly every public plotting helper. Rather than duplicate dozens of setup recipes here,
+this script instruments the public ``plot_*`` calls, runs only tests whose function bodies
 exercise still-uncovered plot APIs, and saves the first successful render for each API.
-The test assertions still run, so a captured figure is backed by the same contract that
-qualifies the plotting helper itself.
+The one public plotting helper not called directly by an existing plotting test,
+``plot_surrogate_nonlinearity``, is generated from the same deterministic logistic-map
+workflow used by the qualified nonlinear example. The test assertions still run, so the
+remaining captured figures are backed by the same contracts that qualify the plotting
+helpers themselves.
 """
 
 from __future__ import annotations
@@ -122,6 +125,42 @@ def _restore(originals: dict[str, object]) -> None:
             setattr(module, name, original)
 
 
+def _generate_surrogate_nonlinearity_case() -> None:
+    """Render the one public plot not called directly by a selected plotting test."""
+
+    time = np.arange(450, dtype=float) * 0.01
+    x = np.empty(time.size)
+    x[0] = 0.217
+    for i in range(time.size - 1):
+        x[i + 1] = 4.0 * x[i] * (1.0 - x[i])
+
+    gaze = et.TrajectorySet(
+        time=time,
+        values=x[None, :, None],
+        curve_ids=("gallery-surrogate",),
+        dimension_names=("x",),
+        time_unit="s",
+        coordinate_system="arbitrary",
+    )
+    surrogate = et.surrogate_nonlinearity_test(
+        gaze,
+        curve=0,
+        dimension="x",
+        statistic="largest_lyapunov",
+        embedding_dimension=2,
+        delay=1,
+        theiler_window=8,
+        max_horizon=7,
+        fit_start=1,
+        fit_end=4,
+        n_surrogates=3,
+        max_iterations=200,
+        tolerance=1e-5,
+        random_state=42,
+    )
+    et.plot_surrogate_nonlinearity(surrogate)
+
+
 def main() -> None:
     OUTPUT.mkdir(parents=True, exist_ok=True)
     matplotlib.rcParams["svg.hashsalt"] = "eyetrajectoriespy-0.12-gallery-complete"
@@ -137,6 +176,8 @@ def main() -> None:
 
     originals = _instrument(targets)
     try:
+        if "plot_surrogate_nonlinearity" in targets:
+            _generate_surrogate_nonlinearity_case()
         exit_code = pytest.main(
             [
                 str(ROOT / "tests"),
@@ -163,7 +204,7 @@ def main() -> None:
     )
     if missing:
         raise RuntimeError(
-            "public plot APIs were not exercised by selected qualified test calls: "
+            "public plot APIs were not exercised by qualified gallery calls: "
             f"{missing}"
         )
 
