@@ -24,7 +24,7 @@ EVIDENCE_FILES = (
     ROOT / "VALIDATION_TOLERANCES.json",
     ROOT / "PERFORMANCE_ENVELOPE.json",
 )
-LEGACY_BASE_VERSION = "0.12.0"
+BASE_VALIDATOR_VERSION = "0.12.0"
 _ORIGINAL_READ_TEXT = Path.read_text
 
 
@@ -57,7 +57,7 @@ def _composed_source_read_text(self: Path, *args, **kwargs) -> str:
         # and hard-codes 0.12.0 for these two *source identity* files. Validate
         # their real development values separately, then present the legacy
         # stable token only to that older assertion layer.
-        return text.replace(et.__version__, LEGACY_BASE_VERSION)
+        return text.replace(et.__version__, BASE_VALIDATOR_VERSION)
     return text
 
 
@@ -90,10 +90,13 @@ def _validate_source_and_evidence_versions() -> None:
         )
         for path in EVIDENCE_FILES
     }
-    if evidence_versions != {LEGACY_BASE_VERSION}:
+    expected_evidence_version = (
+        BASE_VALIDATOR_VERSION if ".dev" in et.__version__ else et.__version__
+    )
+    if evidence_versions != {expected_evidence_version}:
         raise RuntimeError(
-            "frozen qualification evidence must remain attributed to 0.12.0 "
-            f"during 0.12.1 development; found {sorted(evidence_versions)}"
+            "qualification evidence version does not match the active qualification "
+            f"identity {expected_evidence_version!r}; found {sorted(evidence_versions)}"
         )
 
 

@@ -3,7 +3,7 @@
 ## Post-0.12 stability posture
 
 `0.12.0` is a closed scientific release. The active source line is
-`0.12.1.dev0`, but the project is **not** treating the next version number as a
+`1.0.0rc1`, but the project is **not** treating the next version number as a
 reason to add another estimator tranche.
 
 The completed post-0.12 observation programme now supports an explicit 1.0

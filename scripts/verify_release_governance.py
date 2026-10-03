@@ -28,6 +28,7 @@ _GITHUB_RELEASE_DECLARATIONS = {
     "sparse_mfpca_comparator_sensitivity_recorded",
     "sparse_mfpca_observation_stress_recorded",
     "sparse_mfpca_performance_qualified",
+    "one_dot_zero_api_stability_frozen",
 }
 
 REQUIRED_CHECKS = {
@@ -59,6 +60,7 @@ REQUIRED_CHECKS = {
     "mgsfpca-sensitivity",
     "observation-process-stress",
     "sparse-mfpca-performance-envelope",
+    "frozen-api-boundary",
 }
 
 

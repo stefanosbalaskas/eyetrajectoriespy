@@ -1,5 +1,10 @@
 # Pre-1.0 release-readiness checklist
 
+## 1.0.0rc1 qualification
+
+The API boundary is frozen and the scientific surface is closed. `1.0.0rc1` adds no new estimator or breaking API change. Publication remains disarmed while literal-version evidence is generated and the complete PR and exact-main matrices run.
+
+
 ## Final 0.12.0 qualification and publication arming
 
 Final `0.12.0` exact-version qualification is complete on protected-main commit

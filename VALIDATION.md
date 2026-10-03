@@ -4,15 +4,14 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-`0.12.0` is the current final-version line under exact-version qualification. `0.11.0` remains the current published stable release, and published `0.12.0rc1` remains immutable prerelease history.
+`1.0.0rc1` is the literal release-candidate identity under qualification; `0.12.0` remains the published stable release.
 
-- Final `0.12.0` is a version-only promotion of the feature-frozen `0.12.0rc1` sparse-MFPCA/joint-PACE scientific/API surface.
-- Production-installed RC observation is complete on exact protected-main commit `0250fdb8113d51d024c199f552c50079ea97e84a`; run `36911103234` passed exact PyPI installation on Python 3.11–3.13 plus deep recovery/stress/portability and the public sparse-MFPCA observation chain.
-- The exact-main installed sparse-MFPCA fixture returned 36/36 successful joint-PACE scores and `nonportable_fields == ()`; evidence artifact `11186552786` has digest `sha256:de1b531fc2a6a5c2836ee3fc1a70df898f7a7e3ecfdad75c3e022300216d24d8`.
-- The immutable `0.12.0rc1` performance envelope remains archived and is not final-version evidence.
-- Final qualification requires fresh `0.12.0` package-wide performance evidence, fresh sparse-MFPCA performance evidence, the complete PR matrix, protected-main merge, and the complete exact-main matrix.
-- GitHub/PyPI publication readiness remains jointly false during qualification; a later governance-only PR may arm publication after exact-main final qualification passes.
-- No estimator fallback, recovery-threshold widening, automatic tuning, dependency change, or public API expansion is part of this promotion.
+- The 1.0 API candidate boundary is frozen at 455 stable exports and three explicitly experimental exports.
+- No deprecation, removal, mass rename, estimator change, dependency change, or analytical-default change is part of the RC transition.
+- `REFERENCE_VALIDATION.json` and `VALIDATION_TOLERANCES.json` are promoted to the literal RC qualification identity.
+- `PERFORMANCE_ENVELOPE.json` is deliberately not relabelled; a fresh exact-`1.0.0rc1` run must replace it and be archived as separate RC evidence.
+- The complete RC pull-request matrix and the complete post-merge exact-main matrix must pass before publication may be armed.
+- GitHub/PyPI publication readiness remains jointly false during qualification.
 
 See `docs/release-readiness.md` for the release gate and
 `docs/validation/functional-simulation-validation.md` for recovery/stress
