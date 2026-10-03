@@ -1,0 +1,57 @@
+name: one-dot-zero-api-stability
+
+on:
+  pull_request:
+    paths:
+      - "ONE_DOT_ZERO_API_STABILITY.json"
+      - "PUBLIC_API_1_0_AUDIT.json"
+      - "CANONICAL_WORKFLOWS.json"
+      - "src/eyetrajectoriespy/**"
+      - "scripts/audit_public_api_surface.py"
+      - "scripts/freeze_one_dot_zero_api.py"
+      - "tests/test_one_dot_zero_api_stability.py"
+      - ".github/workflows/one-dot-zero-api-stability.yml"
+  push:
+    branches: [main]
+    paths:
+      - "ONE_DOT_ZERO_API_STABILITY.json"
+      - "PUBLIC_API_1_0_AUDIT.json"
+      - "CANONICAL_WORKFLOWS.json"
+      - "src/eyetrajectoriespy/**"
+      - "scripts/audit_public_api_surface.py"
+      - "scripts/freeze_one_dot_zero_api.py"
+      - "tests/test_one_dot_zero_api_stability.py"
+      - ".github/workflows/one-dot-zero-api-stability.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frozen-api-boundary:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install package and test dependencies
+        run: python -m pip install -U pip && python -m pip install -e ".[dev]"
+      - name: Generate candidate boundary from live public surface
+        run: |
+          python scripts/freeze_one_dot_zero_api.py \
+            --output generated-one-dot-zero-api-stability.json
+      - name: Upload independently generated boundary
+        uses: actions/upload-artifact@v7
+        with:
+          name: generated-one-dot-zero-api-stability
+          path: generated-one-dot-zero-api-stability.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Verify frozen boundary exactly
+        run: |
+          python scripts/freeze_one_dot_zero_api.py \
+            --check ONE_DOT_ZERO_API_STABILITY.json
