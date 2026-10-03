@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "programme": "post-0.12-product-observation-and-1.0-readiness",
+  "baseline_commit": "53eb83e0c47d2dcef74e0ad320b5ae2adfaa142a",
+  "source_version": "0.12.1.dev0",
+  "decision_state": "inventory_only_no_1_0_promise",
+  "principles": {
+    "no_mass_rename": true,
+    "no_removals_authorized": true,
+    "no_deprecations_authorized": true,
+    "plot_contract": "every public plot_* API must have one deterministic documented gallery case",
+    "plot_noncontract": "not every result object requires a plotting API",
+    "failure_semantics": "prefer explicit failure or explicit status over silent scientific repair",
+    "serialization": "portable scientific snapshots must disclose nonportable fields rather than hide them"
+  },
+  "postures": {
+    "canonical_candidate": "recommended workflow entry point under review for a 1.0 stability promise",
+    "supported_candidate": "supported public API under review for a 1.0 stability promise",
+    "diagnostic_candidate": "public audit, sensitivity, validation, or diagnostic API; supported but not a model-selection oracle",
+    "experimental": "supported API with an explicitly narrower interpretation or validation boundary; no 1.0 stability promise yet",
+    "compatibility": "public compatibility/backend-specific route retained deliberately; not an accidental duplicate",
+    "reproducibility": "public environment or portable-result infrastructure",
+    "result_object_candidate": "public Result container whose schema must be considered before any 1.0 promise"
+  },
+  "explicit_overrides": {
+    "compatibility": [
+      "fit_sparse_fpca_fdapy"
+    ],
+    "experimental": [
+      "discrete_transfer_entropy",
+      "conditional_transfer_entropy",
+      "return_map_stability"
+    ],
+    "reproducibility": [
+      "capture_environment",
+      "export_portable_result",
+      "load_portable_result",
+      "PortableScientificResultSnapshot"
+    ]
+  },
+  "review_dimensions": [
+    "name_and_signature",
+    "result_object_schema",
+    "frame_extractor_convention",
+    "reporting_text_convention",
+    "plotting_surface",
+    "failure_and_status_semantics",
+    "experimental_or_stable_label",
+    "deprecation_need",
+    "portable_serialization",
+    "duplicate_or_alias_risk"
+  ],
+  "known_intentional_parallel_routes": [
+    {
+      "apis": ["fit_sparse_fpca", "fit_sparse_fpca_fdapy"],
+      "decision": "retain_both_for_observation",
+      "reason": "native estimator versus explicit FDApy compatibility backend; not treated as accidental duplication"
+    },
+    {
+      "apis": ["fit_mfpca", "fit_sparse_mfpca"],
+      "decision": "retain_both",
+      "reason": "common-grid multivariate FDA and native sparse paired-planar FDA have different observation contracts"
+    }
+  ],
+  "deprecation_candidates": [],
+  "removal_candidates": [],
+  "one_dot_zero_commitment": false
+}
