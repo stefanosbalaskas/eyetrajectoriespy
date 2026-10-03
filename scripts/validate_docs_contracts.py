@@ -29,7 +29,7 @@ _ORIGINAL_READ_TEXT = Path.read_text
 
 
 def _composed_source_read_text(self: Path, *args, **kwargs) -> str:
-    """Expose rendered/composed surfaces and legacy-base compatibility."""
+    """Expose rendered/composed surfaces and base-validator compatibility."""
 
     text = _ORIGINAL_READ_TEXT(self, *args, **kwargs)
     try:
@@ -52,11 +52,15 @@ def _composed_source_read_text(self: Path, *args, **kwargs) -> str:
             if path.exists():
                 category_sources.append(_ORIGINAL_READ_TEXT(path, encoding="utf-8"))
         return text + "\n" + "\n".join(category_sources)
-    if resolved in {RELEASE_READINESS, CANONICAL_WORKFLOWS}:
-        # The preserved base validator predates the post-0.12 development line
-        # and hard-codes 0.12.0 for these two *source identity* files. Validate
-        # their real development values separately, then present the legacy
-        # stable token only to that older assertion layer.
+    if resolved in {
+        RELEASE_READINESS,
+        CANONICAL_WORKFLOWS,
+        *(path.resolve() for path in EVIDENCE_FILES),
+    }:
+        # The preserved base validator predates the post-0.12 source line and
+        # hard-codes 0.12.0 for source/evidence identity checks. Validate the
+        # real active values separately below, then present the old stable token
+        # only to that unchanged historical assertion layer.
         return text.replace(et.__version__, BASE_VALIDATOR_VERSION)
     return text
 
@@ -73,7 +77,7 @@ def _validate_source_and_evidence_versions() -> None:
         "github_release_ready"
     ) is not False:
         raise RuntimeError(
-            "post-0.12 development line must keep publication readiness disarmed"
+            "qualification source line must keep publication readiness disarmed"
         )
 
     canonical = json.loads(
@@ -81,7 +85,7 @@ def _validate_source_and_evidence_versions() -> None:
     )
     if canonical.get("package_version") != et.__version__:
         raise RuntimeError(
-            "canonical workflow manifest does not match development source version"
+            "canonical workflow manifest does not match active source version"
         )
 
     evidence_versions = {
