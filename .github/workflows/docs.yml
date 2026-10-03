@@ -32,6 +32,8 @@ jobs:
         run: python scripts/generate_function_equation_index.py --check
       - name: Generate deterministic documentation gallery
         run: python scripts/generate_docs_gallery.py
+      - name: Audit post-0.12 public API surface
+        run: python scripts/audit_public_api_surface.py --output build/public-api-1.0-audit.json
       - name: Validate documentation contracts
         run: python scripts/validate_docs_contracts.py
       - name: Build documentation strictly
