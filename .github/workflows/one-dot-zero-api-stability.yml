@@ -3,6 +3,7 @@ name: one-dot-zero-api-stability
 on:
   pull_request:
     paths:
+      - "RELEASE_READINESS.json"
       - "ONE_DOT_ZERO_API_STABILITY.json"
       - "PUBLIC_API_1_0_AUDIT.json"
       - "CANONICAL_WORKFLOWS.json"
@@ -14,6 +15,7 @@ on:
   push:
     branches: [main]
     paths:
+      - "RELEASE_READINESS.json"
       - "ONE_DOT_ZERO_API_STABILITY.json"
       - "PUBLIC_API_1_0_AUDIT.json"
       - "CANONICAL_WORKFLOWS.json"
