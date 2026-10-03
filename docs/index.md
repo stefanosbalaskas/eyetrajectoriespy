@@ -61,7 +61,7 @@ $$
 
     **API:** `fit_sparse_mfpca()`
 
-    [:octicons-arrow-right-24: Guide](guides/sparse-multivariate-fpca.md)
+    [→ Guide](guides/sparse-multivariate-fpca.md)
     · [Example](examples/sparse-mfpca.md)
     · [Mathematics](methods/mathematical-reference.md#sparse-mfpca-joint-pace)
     · [Validation](validation/sparse-mfpca-recovery.md)
@@ -73,19 +73,19 @@ $$
 <div class="grid cards" markdown>
 
 -   **Continuous gaze + FPCA** — dominant modes of common-grid continuous gaze variation.  
-    [:octicons-arrow-right-24: Open workflow](workflows/fpca-exploration.md)
+    [→ Open workflow](workflows/fpca-exploration.md)
 
 -   **Experimental functional regression** — time-varying effects of declared scalar predictors.  
-    [:octicons-arrow-right-24: Open workflow](workflows/experimental-functional-regression.md)
+    [→ Open workflow](workflows/experimental-functional-regression.md)
 
 -   **Repeated-trial mixed effects** — preserve participant → trial → time hierarchy.  
-    [:octicons-arrow-right-24: Open workflow](workflows/repeated-trial-mixed-effects.md)
+    [→ Open workflow](workflows/repeated-trial-mixed-effects.md)
 
 -   **Binary and count responses** — explicit Bernoulli, grouped-binomial and Poisson contracts.  
-    [:octicons-arrow-right-24: Open workflow](workflows/generalized-responses.md)
+    [→ Open workflow](workflows/generalized-responses.md)
 
 -   **Nonlinear and recurrence analysis** — explicit state representation, embedding and recurrence choices.  
-    [:octicons-arrow-right-24: Open workflow](workflows/nonlinear-recurrence.md)
+    [→ Open workflow](workflows/nonlinear-recurrence.md)
 
 </div>
 
