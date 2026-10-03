@@ -6,7 +6,7 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_DEVELOPMENT_VERSION = "1.0.0rc1"
+CURRENT_DEVELOPMENT_VERSION = "1.0.0"
 
 
 def _load_script(name):
@@ -408,7 +408,8 @@ def test_resume_production_requires_existing_matching_release():
 
     resume_preflight = workflow.split(
         "  resume-release-preflight:", 1
-    )[1].split("  publish-pypi:", 1)[0]
+    )[1].split("  publish-pypi:", 1
+    )[0]
     assert 'gh release view "${TAG}"' in resume_preflight
     assert 'TARGET="$(git rev-list -n 1 "${TAG}")"' in resume_preflight
     assert 'test "${TARGET}" = "${GITHUB_SHA}"' in resume_preflight
