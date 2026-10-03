@@ -145,15 +145,6 @@ def verify_version_contract(
 
     version_text = next(iter(distinct))
     parsed = Version(version_text)
-    _verify_qualified_evidence(parsed)
-
-    if tag is not None:
-        expected_tag = f"v{version_text}"
-        if tag != expected_tag:
-            raise RuntimeError(
-                f"release tag/version mismatch: tag={tag!r}, "
-                f"expected={expected_tag!r}"
-            )
 
     if production:
         if parsed.is_devrelease:
@@ -163,6 +154,16 @@ def verify_version_contract(
         if parsed.local is not None:
             raise RuntimeError(
                 "local-version identifiers are not permitted for production"
+            )
+
+    _verify_qualified_evidence(parsed)
+
+    if tag is not None:
+        expected_tag = f"v{version_text}"
+        if tag != expected_tag:
+            raise RuntimeError(
+                f"release tag/version mismatch: tag={tag!r}, "
+                f"expected={expected_tag!r}"
             )
 
     return version_text
