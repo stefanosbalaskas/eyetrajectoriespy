@@ -25,6 +25,7 @@ EVIDENCE_FILES = (
     ROOT / "PERFORMANCE_ENVELOPE.json",
 )
 BASE_VALIDATOR_VERSION = "0.12.0"
+QUALIFIED_RC_MAIN = "deb61a1b4f2f5e4c8da44d3f2b75ac09fa99430a"
 _ORIGINAL_READ_TEXT = Path.read_text
 
 
@@ -73,12 +74,28 @@ def _validate_source_and_evidence_versions() -> None:
         raise RuntimeError(
             "release-readiness source identity does not match package version"
         )
-    if readiness.get("production_release_ready") is not False or readiness.get(
-        "github_release_ready"
-    ) is not False:
+
+    production_ready = readiness.get("production_release_ready")
+    github_ready = readiness.get("github_release_ready")
+    if not isinstance(production_ready, bool) or not isinstance(github_ready, bool):
+        raise RuntimeError("publication readiness flags must be explicit booleans")
+    if production_ready != github_ready:
         raise RuntimeError(
-            "qualification source line must keep publication readiness disarmed"
+            "GitHub and production PyPI publication readiness must move jointly"
         )
+    if production_ready:
+        notes = "\n".join(str(note) for note in readiness.get("notes", ()))
+        required_arming_evidence = (
+            QUALIFIED_RC_MAIN,
+            "17/17 workflow groups successfully",
+            "manual release.yml dispatch with target=production",
+        )
+        missing = [token for token in required_arming_evidence if token not in notes]
+        if missing:
+            raise RuntimeError(
+                "armed publication readiness is missing exact qualification/governance "
+                f"evidence: {missing}"
+            )
 
     canonical = json.loads(
         _ORIGINAL_READ_TEXT(CANONICAL_WORKFLOWS, encoding="utf-8")
