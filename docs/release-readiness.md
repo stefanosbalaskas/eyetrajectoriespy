@@ -1,9 +1,36 @@
 # Pre-1.0 release-readiness checklist
 
-## 1.0.0rc1 qualification
+## 1.0.0rc1 qualification and publication arming
 
-The API boundary is frozen and the scientific surface is closed. `1.0.0rc1` adds no new estimator or breaking API change. Publication remains disarmed while literal-version evidence is generated and the complete PR and exact-main matrices run.
+`1.0.0rc1` has completed exact-version qualification on protected-main commit
+`deb61a1b4f2f5e4c8da44d3f2b75ac09fa99430a`; stable `0.12.0` remains the
+current published stable release until the RC production ceremony completes.
 
+The complete 17-workflow pull-request matrix passed before merge, and the
+post-merge exact-main matrix then finished **17/17 workflow groups green with
+zero failures**. On that exact commit, package-wide performance run
+`37149050366`, package/test run `37149050402`, frozen 1.0 API-stability run
+`37149050398`, and sparse-MFPCA comparator-sensitivity run `37149050450` all
+completed successfully. The external comparator path installed its exact
+mGSFPCA dependency, ran the comparison, evaluated invariant sensitivity,
+verified the contract, and uploaded evidence.
+
+This governance-only change jointly arms GitHub and production PyPI publication
+readiness. It changes no estimator, scientific API, numerical method, analytical
+default, test threshold, comparator method, dependency, or performance
+methodology, and it does not itself publish `1.0.0rc1`.
+
+After the arming change is merged, the new exact protected-main arming commit
+must itself pass the required exact-main governance checks before the explicit
+manual `release.yml` dispatch with `target=production`. Ordinary pushes and
+merges remain non-publishing. The production ceremony must originate from that
+later arming commit, not from the qualified-but-disarmed checkpoint
+`deb61a1b4f2f5e4c8da44d3f2b75ac09fa99430a`.
+
+The installed-RC workflow remains intentionally pinned to published immutable
+`0.12.0rc1` until `1.0.0rc1` actually exists on production PyPI. Retargeting
+installed-artifact observation is a separate post-publication qualification
+step.
 
 ## Final 0.12.0 qualification and publication arming
 
