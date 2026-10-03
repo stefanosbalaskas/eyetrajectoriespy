@@ -2,7 +2,7 @@
   "schema_version": 1,
   "current_development_version": "1.0.0rc1",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": true,
+  "production_release_ready": false,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -76,7 +76,11 @@
     "1.0.0rc1 exact-version qualification PR #150 merged as protected-main commit deb61a1b4f2f5e4c8da44d3f2b75ac09fa99430a after its complete 17-workflow pull-request matrix passed. The complete post-merge exact-main matrix then finished 17/17 workflow groups successfully with zero failures.",
     "On exact qualified commit deb61a1b4f2f5e4c8da44d3f2b75ac09fa99430a, package-wide performance run 37149050366, package/test run 37149050402, 1.0 API-stability run 37149050398, and sparse-MFPCA comparator-sensitivity run 37149050450 all completed successfully; the comparator job installed the exact mGSFPCA dependency, ran the external comparison, evaluated invariant sensitivity, verified the contract, and uploaded evidence.",
     "This governance-only arming change jointly arms GitHub and production PyPI readiness only after completed 1.0.0rc1 exact-version qualification. After it merges, the exact protected-main arming commit must itself pass the required exact-main governance checks before any explicit manual release.yml dispatch with target=production. Ordinary pushes and merges remain non-publishing.",
-    "Production-governance preflight on arming commit f02d7ac05009bad80474739add33cf50caa55bfb exposed that frozen-api-boundary was not path-triggered by RELEASE_READINESS.json. This corrective governance change adds RELEASE_READINESS.json to the 1.0 stability workflow path filters so the exact publication commit must carry a fresh frozen-api-boundary check before release."
+    "Production-governance preflight on arming commit f02d7ac05009bad80474739add33cf50caa55bfb exposed that frozen-api-boundary was not path-triggered by RELEASE_READINESS.json. This corrective governance change adds RELEASE_READINESS.json to the 1.0 stability workflow path filters so the exact publication commit must carry a fresh frozen-api-boundary check before release.",
+    "Corrective governance PR #152 merged as exact protected-main arming commit ef80b8680de7a4adf6ab498fa3edb8ad1522defa. Its exact-main qualification finished 16/16 workflow groups green, including a fresh frozen-api-boundary check and the exact external mGSFPCA comparator.",
+    "Production release workflow #17 (run 37158769400) completed successfully from exact arming commit ef80b8680de7a4adf6ab498fa3edb8ad1522defa on 4 October 2026. It built the wheel and sdist exactly once, passed production governance and unpublished-version preflight, created annotated tag and GitHub prerelease v1.0.0rc1, published the checksum-verified distributions to production PyPI through OIDC Trusted Publishing with digital attestations, and passed a fresh eyetrajectoriespy==1.0.0rc1 production-PyPI installation smoke test.",
+    "Published v1.0.0rc1 GitHub Release assets are eyetrajectoriespy-1.0.0rc1-py3-none-any.whl (sha256:555277d9328fa9b0a3f1f445d2dd2f85d192f3f634e95293789c1bf37c4fa118), eyetrajectoriespy-1.0.0rc1.tar.gz (sha256:03ea7851e81507ef00c9c7da309d2d1951992b23548a51dab4b5a46c9f694a24), and SHA256SUMS (sha256:ba57041afc1e3057c89057f4d12d064e5bdebd0f9e1edca9557930b9ee4f8baf). Retained workflow artifact 11286991255 has digest sha256:691527789e9b8a9d54c670b41353bc7d4afc550b6bbfda2416fd1a7dc5f790e8.",
+    "Post-publication GitHub/PyPI readiness is jointly disarmed again to prevent accidental republication of immutable 1.0.0rc1. The installed-RC workflow is retargeted to production-PyPI 1.0.0rc1 for external-consumer observation before any final 1.0.0 promotion decision."
   ],
-  "github_release_ready": true
+  "github_release_ready": false
 }
