@@ -28,7 +28,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  RC_VERSION: "0.12.0rc1"
+  RC_VERSION: "1.0.0rc1"
 
 jobs:
   installed-version-matrix:
@@ -235,7 +235,7 @@ jobs:
           if installed_sparse["source_checkout_imported"] is not False:
               raise RuntimeError("installed sparse-MFPCA imported source checkout")
           if installed_sparse["scientific_thresholds_added"] is not False:
-              raise RuntimeError("installed sparse-MFPCA invented thresholds")
+              raise RuntimeError("installed sparse-MFPCA invented new thresholds")
           sparse = installed_sparse["sparse_mfpca"]
           if sparse["recovery_thresholds_applied"] is not False:
               raise RuntimeError("installed sparse-MFPCA applied recovery thresholds")
