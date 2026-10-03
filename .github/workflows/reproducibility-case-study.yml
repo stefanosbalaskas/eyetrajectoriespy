@@ -1,0 +1,69 @@
+name: reproducibility-case-study
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sparse-mfpca-case-study:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install package
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e .
+      - name: Generate frozen surrogate
+        run: python case_studies/sparse_mfpca_0_12/generate_data.py
+      - name: Run canonical sparse-MFPCA case study
+        run: |
+          python case_studies/sparse_mfpca_0_12/run.py \
+            --output-dir build/case-study-sparse-mfpca-0.12
+      - name: Verify expected outputs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("build/case-study-sparse-mfpca-0.12")
+          summary = json.loads((root / "summary.json").read_text())
+          assert summary["data_sha256"] == "9f1305c91c03aa188ad5535c901eb8140ae4553e92a63eb10569ccbcbaf30bf7"
+          assert summary["public_api_only"] is True
+          assert summary["raw_interpolation_performed"] is False
+          assert summary["n_curves"] == 36
+          assert summary["score_status_counts"] == {"ok": 36}
+          assert summary["portable_nonportable_fields"] == []
+          for name in (
+              "component-1.svg",
+              "covariance-blocks.svg",
+              "score-diagnostics.svg",
+              "scores.csv",
+              "reporting.txt",
+              "environment.json",
+              "summary.json",
+              "portable-result/manifest.json",
+              "portable-result/arrays.npz",
+          ):
+              assert (root / name).is_file(), name
+          print("reproducibility case-study contract OK")
+          PY
+      - name: Upload reproducibility evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: sparse-mfpca-0.12-case-study
+          path: build/case-study-sparse-mfpca-0.12
+          retention-days: 90
+          if-no-files-found: error

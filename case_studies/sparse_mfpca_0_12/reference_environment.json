@@ -1,0 +1,42 @@
+{
+  "captured_at_utc": "2026-10-03T10:32:40.504173+00:00",
+  "dependencies": {
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1",
+    "statsmodels": "0.15.0"
+  },
+  "numerical_thread_environment": {
+    "MKL_NUM_THREADS": null,
+    "NUMEXPR_NUM_THREADS": null,
+    "OMP_NUM_THREADS": null,
+    "OPENBLAS_NUM_THREADS": null
+  },
+  "optional_backends": {
+    "FDApy": null,
+    "fdasrsf": null,
+    "scikit-fda": null
+  },
+  "package": {
+    "git_commit": "28b9e26c1f9a196bebcdfc2dfb4c698b7dcb740e",
+    "name": "eyetrajectoriespy",
+    "version": "0.12.1.dev0"
+  },
+  "platform": {
+    "logical_cpu_count": 4,
+    "machine": "x86_64",
+    "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+    "processor": "x86_64",
+    "release": "6.17.0-1022-azure",
+    "system": "Linux"
+  },
+  "python": {
+    "executable": "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python",
+    "implementation": "CPython",
+    "version": "3.12.14"
+  },
+  "schema_version": 1,
+  "note": "Reference environment captured from the successful post-0.12 product-observation workflow. The recorded git_commit is the GitHub pull-request merge test commit created by Actions; provenance.json separately records the stable branch head and workflow artifact digest."
+}

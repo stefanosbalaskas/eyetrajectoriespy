@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "case_study": "sparse_mfpca_0_12",
+  "data_sha256": "9f1305c91c03aa188ad5535c901eb8140ae4553e92a63eb10569ccbcbaf30bf7",
+  "n_rows": 409,
+  "n_curves": 36,
+  "native_observations_min": 9,
+  "native_observations_max": 14,
+  "n_components": 2,
+  "score_rows": 36,
+  "score_status_counts": {
+    "ok": 36
+  },
+  "portable_result_type": "eyetrajectoriespy.types.SparseMFPCAResult",
+  "portable_nonportable_fields": [],
+  "reference_eigenvalues": [
+    0.01355239,
+    0.00251580
+  ],
+  "eigenvalue_rtol": 0.00001,
+  "eigenvalue_atol": 1e-8,
+  "reporting_required_substrings": [
+    "Native sparse multivariate FPCA was fitted jointly",
+    "Cxy was fitted directionally",
+    "Joint PACE scores used the full fitted joint covariance",
+    "Raw sparse trajectories were not pre-interpolated"
+  ],
+  "expected_figures": [
+    "component-1.svg",
+    "covariance-blocks.svg",
+    "score-diagnostics.svg"
+  ]
+}
