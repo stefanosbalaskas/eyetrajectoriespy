@@ -61,7 +61,8 @@ def _save_result(value, filename: str) -> None:
         figure = plt.gcf()
     if figure is None or not hasattr(figure, "savefig"):
         raise RuntimeError(f"could not locate Matplotlib figure for {filename}")
-    figure.tight_layout()
+    if figure.get_layout_engine() is None:
+        figure.tight_layout()
     figure.savefig(
         OUTPUT / filename,
         format="svg",

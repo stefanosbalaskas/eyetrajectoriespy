@@ -101,6 +101,23 @@ def test_sparse_mfpca_public_plots_render_retained_result(sparse_mfpca_fit):
         plt.close(figure)
 
 
+def test_sparse_mfpca_default_colorbars_stay_outside_heatmaps(sparse_mfpca_fit):
+    for plotting_function in (
+        et.plot_sparse_mfpca_covariance_blocks,
+        et.plot_sparse_mfpca_cross_covariance,
+    ):
+        axes = np.asarray(plotting_function(sparse_mfpca_fit), dtype=object).reshape(-1)
+        figure = axes[0].figure
+        assert figure.get_layout_engine() is not None
+
+        figure.canvas.draw()
+        colorbar_axes = [ax for ax in figure.axes if ax not in axes.tolist()]
+        assert len(colorbar_axes) == 1
+        right_edge = max(ax.get_position().x1 for ax in axes)
+        assert colorbar_axes[0].get_position().x0 > right_edge
+        plt.close(figure)
+
+
 def test_sparse_mfpca_covariance_plots_support_smoothed_stage(sparse_mfpca_fit):
     covariance_axes = et.plot_sparse_mfpca_covariance_blocks(
         sparse_mfpca_fit,
