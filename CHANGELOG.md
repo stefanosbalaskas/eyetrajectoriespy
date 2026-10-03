@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.0rc1 (under qualification)
+
+- Freeze the evidence-backed 1.0 compatibility candidate boundary at 455 stable exports, with `conditional_transfer_entropy`, `discrete_transfer_entropy`, and `return_map_stability` explicitly experimental.
+- Preserve `fit_sparse_fpca_fdapy()` as an intentional stable compatibility route; introduce no deprecations, removals, mass renames, estimator changes, or new scientific methods.
+- Require fresh literal-`1.0.0rc1` performance evidence plus the complete pull-request and protected-main qualification matrices before publication can be armed.
+- Keep GitHub and production-PyPI publication readiness jointly disarmed during candidate qualification.
+
+
 ## 0.12.0 (unreleased)
 
 - Promote the publicly qualified and production-observed `0.12.0rc1` sparse-MFPCA/joint-PACE surface to final `0.12.0` without changing estimator behavior, numerical methods, analytical defaults, dependencies, or public APIs.

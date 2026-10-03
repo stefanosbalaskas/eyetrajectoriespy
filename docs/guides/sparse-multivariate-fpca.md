@@ -133,7 +133,7 @@ Inspect `result.score_diagnostics` before downstream use. `score_failure_action=
 
 ## Plots
 
-The published 0.12.0 artifact is unchanged. The post-0.12 `0.12.1.dev0` source line adds four public visualization helpers that operate only on the already-retained `SparseMFPCAResult` quantities:
+The published 0.12.0 artifact is unchanged. The post-0.12 `1.0.0rc1` source line adds four public visualization helpers that operate only on the already-retained `SparseMFPCAResult` quantities:
 
 ```python
 from eyetrajectoriespy import (

@@ -1,4 +1,8 @@
 ---
+
+!!! info "1.0.0rc1 under qualification"
+    The evidence-backed 1.0 API boundary is frozen at 455 stable exports and three explicitly experimental APIs. The release candidate adds no new estimator and remains unpublished until fresh exact-version and complete protected-main qualification pass.
+
 title: eyetrajectoriespy
 hide:
   - navigation

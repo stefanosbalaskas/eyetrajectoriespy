@@ -6,7 +6,7 @@ real-use evidence second, and only then a decision about what deserves a 1.0
 stability promise.
 
 The published `0.12.0` scientific release is closed. The active source line is
-`0.12.1.dev0`; this page does **not** imply a `0.13` estimator programme and it
+`1.0.0rc1`; this page does **not** imply a `0.13` estimator programme and it
 does not authorize namespace surgery.
 
 ## Machine-checked inventory
