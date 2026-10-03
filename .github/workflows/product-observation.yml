@@ -1,0 +1,80 @@
+name: product-observation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  external-researcher-use:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install package
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e .
+      - name: Run dense and sparse public-API observations
+        run: python scripts/run_product_observation.py --output-dir build/product-observation
+      - name: Verify observation evidence contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("build/product-observation")
+          summary = json.loads((root / "summary.json").read_text())
+          assert set(summary["results"]) == {"dense", "sparse"}
+          assert summary["empirical_human_data"] is False
+
+          dense = summary["results"]["dense"]
+          assert dense["public_api_only"] is True
+          assert dense["n_curves"] == 56
+          assert dense["n_time"] == 81
+          assert dense["n_components"] == 3
+          assert dense["reporting_nonempty"] is True
+          assert dense["failure_observation"]["observed"]["type"] == "ValueError"
+          assert "common time grid" in dense["failure_observation"]["observed"]["message"]
+
+          sparse = summary["results"]["sparse"]
+          assert sparse["public_api_only"] is True
+          assert sparse["raw_interpolation_performed"] is False
+          assert sparse["n_curves"] == 36
+          assert sparse["n_components"] == 2
+          assert sparse["all_scores_finite"] is True
+          assert sparse["score_status_counts"] == {"ok": 36}
+          assert sparse["reporting_nonempty"] is True
+
+          required = (
+              root / "dense" / "component-1-x.svg",
+              root / "dense" / "scores.csv",
+              root / "dense" / "portable-result" / "manifest.json",
+              root / "sparse-planar" / "component-1.svg",
+              root / "sparse-planar" / "covariance-blocks.svg",
+              root / "sparse-planar" / "score-diagnostics.svg",
+              root / "sparse-planar" / "scores.csv",
+              root / "sparse-planar" / "portable-result" / "manifest.json",
+          )
+          missing = [str(path) for path in required if not path.is_file()]
+          assert not missing, missing
+          print("product-observation evidence contract OK")
+          PY
+      - name: Upload product-observation evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: post-0.12-product-observation
+          path: build/product-observation
+          retention-days: 30
+          if-no-files-found: error
