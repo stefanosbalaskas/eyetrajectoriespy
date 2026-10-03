@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "programme": "post-0.12-product-observation-and-1.0-readiness",
+  "programme_checkpoint_main": "4917260e093600481cbc007b33a1cd3abce6619d",
+  "decision": "no_demonstrated_scientific_omission_blocks_1_0",
+  "ready_to_begin_1_0_stabilization": true,
+  "ready_to_publish_1_0": false,
+  "one_dot_zero_stability_promise_activated": false,
+  "new_estimator_required_before_1_0": false,
+  "scientific_omission_blocking_1_0": false,
+  "evidence": {
+    "public_surface_audit": {
+      "pull_request": 145,
+      "qualified_head": "9a1363ae90bf950ee72b06c95b477c3ff0826e58",
+      "merged_main": "9061262a6084c3b1c5e046124bfc798f1e287be1",
+      "public_exports": 458,
+      "public_plot_apis": 77,
+      "deprecation_candidates_authorized": 0,
+      "removal_candidates_authorized": 0,
+      "blanket_1_0_commitment": false
+    },
+    "real_use_observation": {
+      "pull_request": 146,
+      "qualified_head": "b5b14be63a077c110f398965491844f85eb1c886",
+      "merged_main": "3fc19e221d0efb6c7e7a282db4804bd1c2b31e4b",
+      "dense_route": {
+        "curves": 56,
+        "time_points": 81,
+        "components": 3,
+        "common_grid_mismatch_fails_explicitly": true,
+        "portable_nonportable_fields": ["result.model"]
+      },
+      "sparse_planar_route": {
+        "curves": 36,
+        "native_observations_min": 9,
+        "native_observations_max": 14,
+        "components": 2,
+        "joint_pace_status": {"ok": 36},
+        "all_scores_finite": true,
+        "raw_interpolation_performed": false,
+        "portable_nonportable_fields": []
+      },
+      "empirical_human_data": false
+    },
+    "canonical_reproducibility_case_study": {
+      "pull_request": 147,
+      "qualified_head": "17b93c47b1ed992bc2cf3417a83ee4c849043887",
+      "merged_main": "4917260e093600481cbc007b33a1cd3abce6619d",
+      "case_study": "sparse_mfpca_0_12",
+      "frozen_input_sha256": "9f1305c91c03aa188ad5535c901eb8140ae4553e92a63eb10569ccbcbaf30bf7",
+      "public_api_only": true,
+      "reproducibility_workflow_passed": true
+    }
+  },
+  "interpretation": {
+    "sparse_hierarchical_participant_trial_fda": "future_candidate_not_a_demonstrated_1_0_blocker",
+    "additional_estimators": "must_be_justified_by_new_real_analysis_evidence_not_version_number",
+    "plotting": "public_plot_implies_documented_deterministic_figure_not_every_result_requires_plot",
+    "dense_serialization": "backend_model_nonportability_is_explicitly_disclosed_and_not_hidden",
+    "sparse_mfpca_serialization": "scientific_result_is_portable_with_no_nonportable_fields_in_observed_case"
+  },
+  "known_limitations": [
+    "The two product-observation analyses use deterministic realistic synthetic gaze surrogates rather than independently licensed empirical human data.",
+    "The public namespace is large; the audit assigns review postures but does not yet activate a blanket compatibility guarantee for all 458 exports.",
+    "The current development identity is 0.12.1.dev0; no package has yet been built or qualified under a literal 1.0 release identity."
+  ],
+  "required_before_any_1_0_publication": [
+    "Define and freeze the explicit public stability boundary, including treatment of experimental and compatibility APIs.",
+    "Resolve any deliberately selected deprecations with documented migration windows; do not infer them from naming aesthetics alone.",
+    "Run a release-candidate qualification cycle under the literal 1.0 version identity, including package, documentation, scientific validation, performance, product-observation and reproducibility workflows.",
+    "Verify an installed 1.0 candidate outside the source checkout before final promotion.",
+    "Use the existing fail-closed release-governance process for final publication."
+  ],
+  "recommended_nonblocking_follow_up": [
+    "Repeat at least one public-only workflow on an independently licensed empirical eye-tracking dataset when redistribution and consent terms permit.",
+    "Observe whether external users encounter friction not reproduced by the deterministic case-study surrogates."
+  ]
+}
