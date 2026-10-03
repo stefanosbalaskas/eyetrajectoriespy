@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_development_version": "1.0.0rc1",
+  "current_development_version": "1.0.0",
   "first_public_release_target": "0.9.0",
   "production_release_ready": false,
   "gates": {
@@ -80,7 +80,14 @@
     "Corrective governance PR #152 merged as exact protected-main arming commit ef80b8680de7a4adf6ab498fa3edb8ad1522defa. Its exact-main qualification finished 16/16 workflow groups green, including a fresh frozen-api-boundary check and the exact external mGSFPCA comparator.",
     "Production release workflow #17 (run 37158769400) completed successfully from exact arming commit ef80b8680de7a4adf6ab498fa3edb8ad1522defa on 4 October 2026. It built the wheel and sdist exactly once, passed production governance and unpublished-version preflight, created annotated tag and GitHub prerelease v1.0.0rc1, published the checksum-verified distributions to production PyPI through OIDC Trusted Publishing with digital attestations, and passed a fresh eyetrajectoriespy==1.0.0rc1 production-PyPI installation smoke test.",
     "Published v1.0.0rc1 GitHub Release assets are eyetrajectoriespy-1.0.0rc1-py3-none-any.whl (sha256:555277d9328fa9b0a3f1f445d2dd2f85d192f3f634e95293789c1bf37c4fa118), eyetrajectoriespy-1.0.0rc1.tar.gz (sha256:03ea7851e81507ef00c9c7da309d2d1951992b23548a51dab4b5a46c9f694a24), and SHA256SUMS (sha256:ba57041afc1e3057c89057f4d12d064e5bdebd0f9e1edca9557930b9ee4f8baf). Retained workflow artifact 11286991255 has digest sha256:691527789e9b8a9d54c670b41353bc7d4afc550b6bbfda2416fd1a7dc5f790e8.",
-    "Post-publication GitHub/PyPI readiness is jointly disarmed again to prevent accidental republication of immutable 1.0.0rc1. The installed-RC workflow is retargeted to production-PyPI 1.0.0rc1 for external-consumer observation before any final 1.0.0 promotion decision."
+    "Post-publication GitHub/PyPI readiness is jointly disarmed again to prevent accidental republication of immutable 1.0.0rc1. The installed-RC workflow is retargeted to production-PyPI 1.0.0rc1 for external-consumer observation before any final 1.0.0 promotion decision.",
+    "Installed 1.0.0rc1 observation PR #153 merged as exact protected-main commit 4b79c7c3ac163af644e036a277670fee23d9dcd9. The complete post-merge exact-main observation matrix finished 17/17 workflow groups successfully with zero failures, including the frozen 1.0 API boundary and exact external mGSFPCA comparator.",
+    "Exact-main installed-RC workflow run 37160170148 reinstalled production-PyPI 1.0.0rc1 on Python 3.11-3.13 and passed installed recovery, 42/42 threshold-free stress record retention, external-consumer observation, sparse-MFPCA/joint-PACE observation, portability, and retained-evidence contract verification.",
+    "Canonical exact-main installed observation artifact 11287283256 has digest sha256:92d4053b50180153d0f37f99881f3f4c490a1d1d132b329cc8fd829e74fca5e4. The sparse-MFPCA observation returned 36/36 successful joint-PACE scores and zero nonportable sparse fields.",
+    "Final 1.0.0 is a version-only promotion of the frozen, production-observed 1.0.0rc1 scientific/API surface. No estimator, numerical method, analytical default, dependency, deprecation, removal, threshold, or public API expansion is introduced during final qualification.",
+    "The immutable 1.0.0rc1 package-wide performance envelope remains archived under validation/performance/PERFORMANCE_ENVELOPE-1.0.0rc1.json and must not be relabelled as final-version evidence.",
+    "Final 1.0.0 qualification requires fresh exact-version package-wide and sparse-MFPCA performance evidence, the complete pull-request matrix, protected-main merge, and the complete exact-main matrix before publication may be armed.",
+    "Publication remains jointly disarmed during final 1.0.0 qualification. Arming GitHub/PyPI publication is reserved for a later governance-only reviewed change after exact-main final-version qualification passes."
   ],
   "github_release_ready": false
 }
