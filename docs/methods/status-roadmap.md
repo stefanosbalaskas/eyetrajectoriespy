@@ -6,18 +6,17 @@
 
 The current stable pre-1.0 line is **0.12.0**.
 
-The current development line is **1.0.0rc1**. It adds visualization/API helpers only; the 0.12 sparse-MFPCA/joint-PACE estimator remains frozen.
+The current development line is **1.0.0**. It is a version-only final promotion of the frozen, production-observed `1.0.0rc1` scientific/API surface; the 0.12 sparse-MFPCA/joint-PACE estimator remains frozen.
 
 The 0.12 sparse-MFPCA/joint-PACE line is complete and frozen. The package is not currently committed to another estimator tranche.
 
 Near-term work prioritizes:
 
-- real-use and API audit;
+- exact-version final `1.0.0` qualification and release governance;
+- real-use and API observation against the frozen 1.0 boundary;
 - documentation and worked examples;
-- complete plotting/gallery coverage;
-- public benchmark/case-study material;
-- software/methodology dissemination; and
-- evaluation of 1.0 API-stability requirements.
+- public benchmark/case-study material; and
+- software/methodology dissemination.
 
 Future methodology is evidence-driven rather than version-number-driven.
 
@@ -98,7 +97,7 @@ Scientific qualification remains separated into:
 
 The 0.11 recovery laboratory remains the standing infrastructure for future methodology. The 0.12 sparse-MFPCA line was promoted only after native recovery, observation-process stress, direct/two-stage sensitivity, external mGSFPCA comparison, performance qualification, exact-version package qualification, production-installed observation, and the complete release matrix were closed.
 
-The current `1.0.0rc1` line inherits those frozen 0.12 scientific-validation records only because it does not change the estimator or result schema. The evidence ledgers remain labelled `0.12.0`; they must not be relabelled as new-version evidence. Any future release candidate or final 0.12.1 package requires fresh exact-version qualification before publication.
+The final `1.0.0` line preserves that frozen scientific/API surface. Production `1.0.0rc1` has already been observed outside the checkout on Python 3.11–3.13, including recovery/stress, sparse-MFPCA joint PACE, portability and the external comparator. The immutable RC performance record remains archived under its literal RC identity; final `1.0.0` requires fresh exact-version performance plus complete PR and exact-main qualification before publication can be armed.
 
 ## Published release sequence
 
@@ -114,16 +113,21 @@ Added explicit latent truth, declared finite-sample scenarios, recovery metrics,
 
 Added the direct joint sparse planar estimator, block-aware recovery, tied-eigenspace/Procrustes-aware score recovery, two-stage sensitivity comparison, external mGSFPCA sensitivity, observation-process stress, and dedicated runtime/RSS qualification. Final `0.12.0` is published on GitHub and production PyPI and the publication-readiness flags are disarmed again after release.
 
-Published tags and release artifacts remain immutable historical records. New documentation or later APIs do not retroactively alter the scientific identity of `0.12.0`.
+### 1.0.0rc1 — frozen 1.0 API release candidate
+
+Published the evidence-backed 1.0 API boundary as an immutable production prerelease after exact-version qualification. Post-publication installed-artifact observation closed without identifying a result-changing or public-API defect, making the candidate eligible for version-only final promotion.
+
+Published tags and release artifacts remain immutable historical records. New documentation or later APIs do not retroactively alter the scientific identity of earlier releases.
 
 ## Near-term documentation and API work
 
-The post-0.12 phase is deliberately product-facing rather than estimator-driven:
+The 1.0 qualification phase is deliberately product-facing rather than estimator-driven:
 
-- make the stable sparse-planar workflow first-class throughout the user site;
-- make every public plotting API discoverable through deterministic visual documentation;
-- standardize method-page structure around scientific question → estimand → mathematical contract → API → executable example → plot → assumptions/failures → provenance → validation → reporting;
-- evaluate small visualization/API additions only on a new development version, never by modifying the immutable 0.12.0 release.
+- keep the frozen 1.0 API boundary machine-checked;
+- qualify literal final `1.0.0` with fresh performance evidence;
+- preserve complete deterministic visual documentation and worked workflows;
+- turn realistic analyses into reproducible, citable case-study material; and
+- defer any new estimator programme until post-1.0 evidence justifies it.
 
 ## Future methodology
 

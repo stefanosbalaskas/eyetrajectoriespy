@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-QUALIFIED_EVIDENCE_VERSION = "1.0.0rc1"
+QUALIFIED_EVIDENCE_VERSION = "1.0.0"
 
 
 def _all_test_source():
