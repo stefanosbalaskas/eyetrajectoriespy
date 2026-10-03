@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "contract": "eyetrajectoriespy-1.0-public-api-stability-boundary",
+  "baseline_commit": "382c5940e090faf0f74f9bce4e9180a9e14f1eca",
+  "boundary_state": "generation_pending",
+  "selection_rule": "all public exports in the frozen baseline are stable except APIs explicitly classified experimental",
+  "semver_policy": {
+    "stable_names_signatures_and_result_schema_fields": true,
+    "experimental_apis_outside_1_0_compatibility_guarantee": true,
+    "compatibility_routes_are_stable_public_names": true,
+    "diagnostic_status_does_not_reduce_api_stability": true,
+    "no_mass_rename": true,
+    "deprecations_authorized": [],
+    "removals_authorized": []
+  },
+  "counts": {
+    "public_exports": 458,
+    "stable_exports": 0,
+    "experimental_exports": 0,
+    "compatibility_exports": 0
+  },
+  "all_public_exports": [],
+  "all_public_exports_sha256": "generation-pending",
+  "stable_exports": [],
+  "stable_exports_sha256": "generation-pending",
+  "experimental_exports": [],
+  "compatibility_exports": []
+}
