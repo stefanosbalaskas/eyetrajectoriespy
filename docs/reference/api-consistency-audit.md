@@ -124,11 +124,11 @@ not assumed by this document.
 
 The documentation contract is one-way:
 
-\[
+$$
 \text{public plot API}
 \Rightarrow
 \text{one deterministic documented gallery case}.
-\]
+$$
 
 The converse is **not** a requirement. A result object does not acquire a new
 plotting helper merely to make the namespace visually symmetric. This prevents
