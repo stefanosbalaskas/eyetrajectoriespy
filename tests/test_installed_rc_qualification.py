@@ -79,7 +79,8 @@ def test_installed_sparse_mfpca_script_is_public_observation_only():
 def test_installed_rc_workflow_installs_exact_production_artifact_without_editable_source():
     workflow = WORKFLOW.read_text(encoding="utf-8")
 
-    assert 'RC_VERSION: "0.12.0rc1"' in workflow
+    assert 'RC_VERSION: "1.0.0rc1"' in workflow
+    assert 'RC_VERSION: "0.12.0rc1"' not in workflow
     assert 'RC_VERSION: "0.11.0rc1"' not in workflow
     assert '"eyetrajectoriespy==${RC_VERSION}"' in workflow
     assert "--no-cache-dir" in workflow
