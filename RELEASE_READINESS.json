@@ -2,7 +2,7 @@
   "schema_version": 1,
   "current_development_version": "1.0.0rc1",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": false,
+  "production_release_ready": true,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -36,7 +36,7 @@
     "Final 0.11.0 qualification required a fresh exact-version performance envelope, complete pull-request matrix, protected-main merge, and complete exact-main matrix before publication could be armed; all of those gates subsequently passed.",
     "Publication was deliberately disarmed during final qualification and was armed later only through separate governance-only PR #121 after exact-main 0.11.0 qualification passed.",
     "Post-0.11 methodology remains deferred pending the package-wide recovery audit.",
-    "Final 0.11.0 qualification PR #120 merged as exact protected-main commit f0b328dabd9d5050fa9988e3c157d034efb0ee7f. The complete exact-main final-version matrix passed: package plus Ubuntu/macOS/Windows \u00d7 Python 3.11\u20133.13, docs, examples, optional scikit-fda, optional FDApy sparse, release-readiness, performance, functional-simulation recovery, threshold-free functional-simulation stress, and native sparse/PACE validation.",
+    "Final 0.11.0 qualification PR #120 merged as exact protected-main commit f0b328dabd9d5050fa9988e3c157d034efb0ee7f. The complete exact-main final-version matrix passed: package plus Ubuntu/macOS/Windows × Python 3.11–3.13, docs, examples, optional scikit-fda, optional FDApy sparse, release-readiness, performance, functional-simulation recovery, threshold-free functional-simulation stress, and native sparse/PACE validation.",
     "Exact-main final-version performance qualification run 36625124460 passed under package identity 0.11.0. The final version therefore has fresh performance evidence rather than relabelled 0.11.0rc1 measurements.",
     "PR #121 jointly armed GitHub and production PyPI publication only after completed final-version qualification; production remained an explicit manual release.yml dispatch from exact protected main.",
     "Final 0.11.0 production release workflow #13 (run 36628220308) completed successfully from exact protected-main commit 2616675ad2dfc095bf17a442c1d350ba88fd030a.",
@@ -72,7 +72,10 @@
     "0.12.1.dev0 opens a post-0.12 visualization/API development line. It adds sparse-MFPCA plotting helpers only; the 0.12.0 estimator and published artifacts remain immutable, qualification evidence remains attributed to 0.12.0 until a future release is independently requalified, and GitHub/PyPI publication readiness remains jointly disarmed.",
     "The explicit 1.0 API-stability boundary was frozen through PR #149 and merged as protected-main commit fb31bcdd9e5a3c5035c26382d8a0f250571d9c64 after the complete 16-workflow pull-request matrix passed. The boundary contains 455 stable public exports, three explicitly experimental exports, one intentional FDApy compatibility route, and zero authorized deprecations or removals.",
     "1.0.0rc1 is a release-stabilization candidate over that frozen scientific/API surface. It adds no estimator, numerical method, analytical default, dependency, deprecation, removal, or public API expansion.",
-    "Literal 1.0.0rc1 qualification requires fresh package-wide performance evidence under the exact RC identity, the complete pull-request matrix, protected-main merge, and the complete exact-main matrix. Publication remains jointly disarmed until a later governance-only change."
+    "Literal 1.0.0rc1 qualification requires fresh package-wide performance evidence under the exact RC identity, the complete pull-request matrix, protected-main merge, and the complete exact-main matrix. Publication remains jointly disarmed until a later governance-only change.",
+    "1.0.0rc1 exact-version qualification PR #150 merged as protected-main commit deb61a1b4f2f5e4c8da44d3f2b75ac09fa99430a after its complete 17-workflow pull-request matrix passed. The complete post-merge exact-main matrix then finished 17/17 workflow groups successfully with zero failures.",
+    "On exact qualified commit deb61a1b4f2f5e4c8da44d3f2b75ac09fa99430a, package-wide performance run 37149050366, package/test run 37149050402, 1.0 API-stability run 37149050398, and sparse-MFPCA comparator-sensitivity run 37149050450 all completed successfully; the comparator job installed the exact mGSFPCA dependency, ran the external comparison, evaluated invariant sensitivity, verified the contract, and uploaded evidence.",
+    "This governance-only arming change jointly arms GitHub and production PyPI readiness only after completed 1.0.0rc1 exact-version qualification. After it merges, the exact protected-main arming commit must itself pass the required exact-main governance checks before any explicit manual release.yml dispatch with target=production. Ordinary pushes and merges remain non-publishing."
   ],
-  "github_release_ready": false
+  "github_release_ready": true
 }
