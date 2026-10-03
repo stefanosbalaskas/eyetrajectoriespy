@@ -75,7 +75,8 @@ def _fit_sparse_planar():
 
 
 def _save(fig, name: str) -> None:
-    fig.tight_layout()
+    if fig.get_layout_engine() is None:
+        fig.tight_layout()
     fig.savefig(
         OUT / name,
         format="svg",
@@ -102,7 +103,7 @@ def main() -> None:
         (fit.covariance_cyx, r"$C_{yx}(s,t)$"),
         (fit.covariance_cyy, r"$C_{yy}(s,t)$"),
     )
-    fig, axes = plt.subplots(2, 2, figsize=(8.0, 6.4))
+    fig, axes = plt.subplots(2, 2, figsize=(8.0, 6.4), layout="constrained")
     vmax = max(float(np.nanmax(np.abs(block))) for block, _ in blocks)
     image = None
     for ax, (block, title) in zip(axes.flat, blocks, strict=True):
