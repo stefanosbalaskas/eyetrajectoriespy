@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "case_study": "sparse_mfpca_0_12",
+  "title": "Native sparse planar gaze with multivariate FPCA and joint PACE",
+  "data_kind": "deterministic redistributable synthetic gaze surrogate",
+  "empirical_human_data": false,
+  "coordinate_system": "normalized",
+  "time_unit": "s",
+  "generator_seed": 12012026,
+  "source_product_observation": {
+    "workflow_run_id": 37116724251,
+    "workflow_artifact_id": 11271442458,
+    "artifact_digest": "sha256:608853cc2de0ece3fcb6a4c5ab7f9c6f160a09ff83a8d3da707f06c185bf184e",
+    "observation_branch_head": "eb4a5d503928a45d266dc53a5b6662436e93d18f",
+    "observed_at_utc": "2026-10-03T10:32:42Z"
+  },
+  "frozen_input": {
+    "path": "data/input_long.csv",
+    "sha256": "9f1305c91c03aa188ad5535c901eb8140ae4553e92a63eb10569ccbcbaf30bf7",
+    "rows": 409,
+    "curves": 36
+  },
+  "scientific_boundary": {
+    "paired_planar_coordinates": true,
+    "raw_sparse_interpolation": false,
+    "estimator": "fit_sparse_mfpca",
+    "scoring": "joint PACE using full fitted joint covariance",
+    "public_api_only": true
+  },
+  "redistribution": "Generated data contain no human observations or personal data and are distributed with this repository under its license.",
+  "citation_note": "Cite eyetrajectoriespy and the immutable repository commit/tag used to run this case study. The case-study CITATION.cff supplies human-readable metadata."
+}

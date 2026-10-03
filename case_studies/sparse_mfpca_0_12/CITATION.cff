@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: >-
+  If you use this reproducibility case study, please cite eyetrajectoriespy and
+  identify the immutable release/tag or repository commit used for the analysis.
+title: Sparse planar MFPCA / joint-PACE reproducibility case study
+type: software
+authors:
+  - family-names: Balaskas
+    given-names: Stefanos
+version: '1'
+date-released: '2026-10-03'
+repository-code: https://github.com/stefanosbalaskas/eyetrajectoriespy
+license: MIT
+keywords:
+  - eye tracking
+  - functional data analysis
+  - sparse MFPCA
+  - PACE
+  - reproducibility
