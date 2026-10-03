@@ -99,7 +99,14 @@ def plot_sparse_mfpca_covariance_blocks(
     stage = _require_stage(stage)
     blocks = _covariance_blocks(result, stage)
     if axes is None:
-        _, axes = plt.subplots(2, 2, figsize=(8.2, 6.8), sharex=True, sharey=True)
+        _, axes = plt.subplots(
+            2,
+            2,
+            figsize=(8.2, 6.8),
+            sharex=True,
+            sharey=True,
+            layout="constrained",
+        )
     axes = np.asarray(axes, dtype=object)
     if axes.size != 4:
         raise ValueError("axes must contain exactly four Matplotlib axes")
@@ -190,7 +197,14 @@ def plot_sparse_mfpca_cross_covariance(
     stage = _require_stage(stage)
     _, cxy, cyx, _ = _covariance_blocks(result, stage)
     if axes is None:
-        _, axes = plt.subplots(1, 2, figsize=(8.5, 3.7), sharex=True, sharey=True)
+        _, axes = plt.subplots(
+            1,
+            2,
+            figsize=(8.5, 3.7),
+            sharex=True,
+            sharey=True,
+            layout="constrained",
+        )
     axes = np.asarray(axes, dtype=object).reshape(-1)
     if axes.size != 2:
         raise ValueError("axes must contain exactly two Matplotlib axes")
