@@ -1,10 +1,11 @@
 """Generate and verify the frozen eyetrajectoriespy 1.0 API boundary.
 
-The contract is deliberately conservative: every currently public export remains
-public, no deprecation or removal is introduced, and only APIs already labelled
-``experimental`` by the post-0.12 audit are excluded from the 1.0 stability
-promise. Compatibility routes remain stable public names/signatures while their
-backend-specific interpretation stays explicit.
+Every currently public export remains public and no deprecation or removal is
+introduced. Only APIs already labelled ``experimental`` by the post-0.12 audit
+are outside the 1.0 compatibility guarantee. The persisted contract keeps an
+explicit stable-name allow-list plus digests over the whole namespace and over
+stable signatures/result-schema fields, so review remains practical without
+weakening drift detection.
 """
 
 from __future__ import annotations
@@ -107,11 +108,11 @@ def build_contract() -> dict[str, Any]:
     if sorted(stable_names + experimental_names) != all_names:
         raise RuntimeError("1.0 API contract does not partition the public namespace")
 
-    stable_records = []
+    signature_schema_records = []
     for name in stable_names:
         record = records_by_name[name]
         value = getattr(et, name)
-        stable_records.append(
+        signature_schema_records.append(
             {
                 "name": name,
                 "family": record["family"],
@@ -120,15 +121,6 @@ def build_contract() -> dict[str, Any]:
                 "schema_fields": _schema_fields(value),
             }
         )
-
-    experimental_records = [
-        {
-            "name": name,
-            "family": records_by_name[name]["family"],
-            "posture": records_by_name[name]["posture"],
-        }
-        for name in experimental_names
-    ]
 
     return {
         "schema_version": 1,
@@ -154,12 +146,12 @@ def build_contract() -> dict[str, Any]:
             "experimental_exports": len(experimental_names),
             "compatibility_exports": len(compatibility_names),
         },
-        "all_public_exports": all_names,
-        "all_public_exports_sha256": _digest(all_names),
-        "stable_exports": stable_records,
-        "stable_exports_sha256": _digest(stable_records),
-        "experimental_exports": experimental_records,
+        "stable_exports": stable_names,
+        "stable_exports_sha256": _digest(stable_names),
+        "stable_signature_schema_sha256": _digest(signature_schema_records),
+        "experimental_exports": experimental_names,
         "compatibility_exports": compatibility_names,
+        "public_namespace_sha256": _digest(all_names),
     }
 
 
