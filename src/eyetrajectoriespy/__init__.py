@@ -554,7 +554,7 @@ from .validation import (
     validate_trajectory_set,
 )
 
-__version__ = "1.0.0"
+__version__ = "1.1.0.dev0"
 
 __all__ = [
     "PortableScientificResultSnapshot",
@@ -817,6 +817,8 @@ __all__ = [
     "fit_functional_mixed_effects_regression",
     "functional_mixed_effects_coefficient_frame",
     "plot_functional_mixed_effects_coefficient",
+    "functional_random_effect_frame",
+    "plot_functional_random_effects",
     "functional_mixed_effects_reporting_text",
     "fit_function_on_scalar_regression",
     "bootstrap_function_on_scalar_coefficients",
