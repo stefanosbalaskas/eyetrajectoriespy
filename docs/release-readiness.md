@@ -1,5 +1,35 @@
 # Pre-1.0 release-readiness checklist
 
+## Final 1.0.0 qualification and publication arming
+
+Final `1.0.0` exact-version qualification is complete on protected-main commit
+`1a2afc79e43108e674f3cdd2dc1cb2d8c1b8b3f0`. Its complete pull-request
+matrix passed before merge, and the complete post-merge exact-main matrix then
+finished **17/17 workflow groups successfully with zero failures**.
+
+That exact final-qualified commit passed the frozen 1.0 API boundary, package
+build and Ubuntu/macOS/Windows × Python 3.11–3.13 tests, strict docs/examples,
+fresh exact-`1.0.0` package-wide performance, functional-simulation
+validation/stress, native sparse/PACE and sparse-MFPCA qualification,
+reproducibility/product observation, optional backends, the pre-0.12 recovery
+audit, and the exact external `mGSFPCA 0.2.2` comparator. The immutable
+`1.0.0rc1` performance envelope remains archived under its literal RC identity;
+final `1.0.0` uses separate fresh exact-version evidence.
+
+This governance-only change jointly arms GitHub and production PyPI publication
+readiness. It changes no estimator, scientific API, numerical method, analytical
+default, test threshold, comparator method, dependency, or performance
+methodology, and it does not itself publish `1.0.0`.
+
+After this arming change merges, the resulting exact protected-main arming
+commit must itself pass the required exact-main governance checks before the
+explicit manual `release.yml` dispatch with `target=production`. Ordinary
+pushes and merges remain non-publishing. The production ceremony must originate
+from that later arming commit, not from the qualified-but-disarmed checkpoint
+`1a2afc79e43108e674f3cdd2dc1cb2d8c1b8b3f0`. Until that production ceremony
+succeeds, `0.12.0` remains the latest stable production release and `1.0.0rc1`
+remains the published 1.0 prerelease.
+
 ## 1.0.0rc1 qualification and publication arming
 
 `1.0.0rc1` has completed exact-version qualification on protected-main commit
