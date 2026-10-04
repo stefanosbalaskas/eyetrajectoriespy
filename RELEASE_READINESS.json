@@ -2,7 +2,7 @@
   "schema_version": 1,
   "current_development_version": "1.0.0",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": false,
+  "production_release_ready": true,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -87,7 +87,10 @@
     "Final 1.0.0 is a version-only promotion of the frozen, production-observed 1.0.0rc1 scientific/API surface. No estimator, numerical method, analytical default, dependency, deprecation, removal, threshold, or public API expansion is introduced during final qualification.",
     "The immutable 1.0.0rc1 package-wide performance envelope remains archived under validation/performance/PERFORMANCE_ENVELOPE-1.0.0rc1.json and must not be relabelled as final-version evidence.",
     "Final 1.0.0 qualification requires fresh exact-version package-wide and sparse-MFPCA performance evidence, the complete pull-request matrix, protected-main merge, and the complete exact-main matrix before publication may be armed.",
-    "Publication remains jointly disarmed during final 1.0.0 qualification. Arming GitHub/PyPI publication is reserved for a later governance-only reviewed change after exact-main final-version qualification passes."
+    "Publication remains jointly disarmed during final 1.0.0 qualification. Arming GitHub/PyPI publication is reserved for a later governance-only reviewed change after exact-main final-version qualification passes.",
+    "Final 1.0.0 exact-version qualification PR #154 merged as protected-main commit 1a2afc79e43108e674f3cdd2dc1cb2d8c1b8b3f0 after its complete 17-workflow pull-request matrix passed. The complete post-merge exact-main matrix then finished 17/17 workflow groups successfully with zero failures.",
+    "The exact final-qualified 1.0.0 main commit passed the frozen 1.0 API boundary, package build and Ubuntu/macOS/Windows × Python 3.11–3.13 tests, strict docs/examples, fresh exact-version performance, functional-simulation validation/stress, native sparse and sparse-MFPCA qualification, reproducibility/product observation, optional backends, and the exact external mGSFPCA 0.2.2 comparator with zero workflow failures.",
+    "This governance-only arming change jointly arms GitHub and production PyPI readiness only after completed final 1.0.0 exact-main qualification. After it merges, the resulting exact protected-main arming commit must itself pass the required exact-main governance checks before any explicit manual release.yml dispatch with target=production. Ordinary pushes and merges remain non-publishing."
   ],
-  "github_release_ready": false
+  "github_release_ready": true
 }
