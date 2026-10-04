@@ -62,6 +62,93 @@ $$
 
 The conditional system uses the **full fitted covariance surface**. `n_components` controls the returned eigensystem/scores; it does not replace the full covariance by a rank-K reconstruction for scoring.
 
+## Conditional uncertainty for native PACE scores
+
+The 1.1 development line adds an explicit uncertainty layer for the retained native PACE scores. Import it from the dedicated public module:
+
+```python
+from eyetrajectoriespy.sparse_score_uncertainty import (
+    sparse_fpca_score_uncertainty,
+    sparse_fpca_score_uncertainty_frame,
+)
+
+uncertainty = sparse_fpca_score_uncertainty(
+    result,
+    irregular,
+)
+
+score_uncertainty = sparse_fpca_score_uncertainty_frame(uncertainty)
+print(score_uncertainty.head())
+```
+
+Let
+
+$$
+\widehat\Lambda = \operatorname{diag}(\widehat\lambda_1,\ldots,\widehat\lambda_K),
+\qquad
+\widehat\Phi_i =
+\begin{bmatrix}
+\widehat\phi_1(T_i) & \cdots & \widehat\phi_K(T_i)
+\end{bmatrix}.
+$$
+
+For the same native-time score system used by the fitted estimator, the conditional covariance is
+
+$$
+\widehat V_i
+=
+\widehat\Lambda
+-
+\widehat\Lambda\widehat\Phi_i^\top
+\widehat\Sigma_i^{-1}
+\widehat\Phi_i\widehat\Lambda.
+$$
+
+With `score_ridge=0`, this is the standard Gaussian conditional covariance using the fitted latent covariance and measurement-error variance. When the fitted model used `score_ridge > 0`, the uncertainty calculation deliberately inherits that same numerical regularization through
+
+$$
+\widehat\Sigma_i=
+\widehat G(T_i,T_i)
++
+(\widehat\sigma_\epsilon^2+\gamma)I,
+$$
+
+so that the reported covariance corresponds to the **regularized score system actually used by PACE**, not to a different unregularized system. The ridge is numerical regularization; it should not be reinterpreted as independently estimated measurement-error variance.
+
+!!! warning "Conditional uncertainty is not full sparse-FPCA uncertainty"
+    `sparse_fpca_score_uncertainty()` conditions on the fitted mean, covariance surface, eigensystem, measurement-error variance, retained component count, and declared score-system regularization. It does **not** propagate uncertainty from estimating those population objects, the smoothing bandwidths, or the noise variance. Consequently, its standard errors and covariance matrices must not be reported as full sampling uncertainty for the complete sparse-FPCA procedure.
+
+The function requires exact curve-ID order, matching coordinate/time semantics, and effective sample counts consistent with the fitted analysis-support policy. Because `SparseFPCAResult` does not retain every original native timestamp, exact timestamp identity cannot be reconstructed from the fit alone; users should pass the same `IrregularTrajectorySet` used for fitting rather than a separately rebuilt object with merely matching IDs and counts.
+
+The same numerical safeguards as native PACE are applied: full fitted covariance evaluation at native times, positive-definiteness checks, an explicit condition-number limit, `numpy.linalg.solve` rather than a matrix inverse, symmetry restoration, and only tolerance-scale PSD repair. Materially invalid posterior covariance fails closed.
+
+Failure handling is explicit:
+
+```python
+uncertainty = sparse_fpca_score_uncertainty(
+    result,
+    irregular,
+    failure_action="retain_nan",
+)
+```
+
+`failure_action="error"` is the default. `"retain_nan"` preserves failed curves as `NaN` covariance/SE entries and records the failure code and conditioning diagnostics rather than silently dropping or reordering curves.
+
+### Qualification evidence
+
+The dedicated `sparse-score-uncertainty-validation` workflow validates this **conditional** claim with known population truth. It supplies the true Gaussian mean, covariance/eigensystem, and noise variance to PACE, so the exercise isolates score-recovery uncertainty rather than mixing it with population-estimation error.
+
+Across four deterministic 500-curve scenarios spanning sparse versus denser observation and low versus high measurement noise, the first qualification run produced:
+
+- 0% failed conditional systems in every scenario;
+- standardized score-error SDs of approximately 0.96–1.04;
+- 95% conditional coverage of 0.936–0.956;
+- score-error MSE / mean conditional-variance ratios of 0.75–1.13;
+- lower uncertainty under denser observation; and
+- higher uncertainty under higher measurement noise.
+
+Those are calibration results for the conditional Gaussian score problem under known population objects. They are **not** evidence that intervals achieve nominal coverage after estimating the mean, covariance surface, eigensystem, noise variance, or bandwidths from the same sample.
+
 ## Analysis support and noise estimation
 
 The evaluation-grid endpoints define the declared analysis support. Observations outside that interval raise by default and are excluded only when `analysis_support_action="restrict"` is explicitly supplied, with exclusions retained in provenance.
@@ -157,7 +244,7 @@ It is not the same object as a numerical-integration score from a densely observ
 
 ## Reporting
 
-Use `sparse_fpca_reporting_text()` as a reproducible starting point and report native sampling, analysis support, mean/covariance bandwidths, noise-variance method/support, PSD policy, score ridge, retained components, and any score failures.
+Use `sparse_fpca_reporting_text()` as a reproducible starting point and report native sampling, analysis support, mean/covariance bandwidths, noise-variance method/support, PSD policy, score ridge, retained components, and any score failures. When conditional score uncertainty is reported, also state explicitly that it conditions on the fitted population objects and whether a nonzero score ridge was inherited by the conditional system.
 
 ## Limitations
 
@@ -166,8 +253,9 @@ The univariate route does not:
 - model cross-channel covariance when x and y are fitted separately;
 - select smoothing parameters automatically on theoretical grounds;
 - turn `NaN` placeholders into absent observations;
-- claim equivalence between PACE and dense-grid projection scores; or
-- propagate all sparse-FPCA estimation uncertainty automatically into downstream models.
+- claim equivalence between PACE and dense-grid projection scores;
+- verify original native timestamps from the fitted result alone; or
+- propagate all sparse-FPCA estimation uncertainty automatically into score uncertainty or downstream models.
 
 ## API links
 
@@ -176,6 +264,9 @@ The univariate route does not:
 - `fit_sparse_fpca()`
 - `fit_sparse_fpca_fdapy()`
 - `sparse_fpca_score_frame()`
+- `sparse_fpca_score_uncertainty()` (`eyetrajectoriespy.sparse_score_uncertainty`)
+- `sparse_fpca_score_uncertainty_frame()` (`eyetrajectoriespy.sparse_score_uncertainty`)
+- `SparseFPCAScoreUncertaintyResult` (`eyetrajectoriespy.sparse_score_uncertainty`)
 - `plot_sparse_fpca_component()`
 - `plot_sparse_fpca_covariance()`
 - `plot_sparse_fpca_score_diagnostics()`
