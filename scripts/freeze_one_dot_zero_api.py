@@ -1,11 +1,11 @@
-"""Generate and verify the frozen eyetrajectoriespy 1.0 API boundary.
+"""Generate the historical 1.0 API boundary and verify 1.x compatibility.
 
-Every currently public export remains public and no deprecation or removal is
-introduced. Only APIs already labelled ``experimental`` by the post-0.12 audit
-are outside the 1.0 compatibility guarantee. The persisted contract keeps an
-explicit stable-name allow-list plus digests over the whole namespace and over
-stable signatures/result-schema fields, so review remains practical without
-weakening drift detection.
+The persisted ``ONE_DOT_ZERO_API_STABILITY.json`` file is immutable historical
+1.0 evidence.  During 1.0 stabilization the live public namespace had to match
+that boundary exactly.  On the 1.x line the compatibility rule is intentionally
+asymmetric: every frozen 1.0 export must remain available, frozen stable
+signatures/result-schema fields must remain unchanged, but reviewed additive
+1.x exports are allowed without rewriting the historical 1.0 manifest.
 """
 
 from __future__ import annotations
@@ -71,10 +71,33 @@ def _schema_fields(value: Any) -> list[str]:
     return []
 
 
-def build_contract() -> dict[str, Any]:
-    audit = _audit()
+def _signature_schema_records(
+    names: list[str],
+    *,
+    records_by_name: dict[str, dict[str, Any]],
+) -> list[dict[str, Any]]:
     import eyetrajectoriespy as et
 
+    records: list[dict[str, Any]] = []
+    for name in sorted(names):
+        record = records_by_name[name]
+        value = getattr(et, name)
+        records.append(
+            {
+                "name": name,
+                "family": record["family"],
+                "posture": record["posture"],
+                "signature": _signature(value),
+                "schema_fields": _schema_fields(value),
+            }
+        )
+    return records
+
+
+def build_contract() -> dict[str, Any]:
+    """Build an observational boundary from the current live public surface."""
+
+    audit = _audit()
     records_by_name = {record["name"]: record for record in audit["exports"]}
     all_names = sorted(records_by_name)
     stable_names = sorted(
@@ -108,19 +131,10 @@ def build_contract() -> dict[str, Any]:
     if sorted(stable_names + experimental_names) != all_names:
         raise RuntimeError("1.0 API contract does not partition the public namespace")
 
-    signature_schema_records = []
-    for name in stable_names:
-        record = records_by_name[name]
-        value = getattr(et, name)
-        signature_schema_records.append(
-            {
-                "name": name,
-                "family": record["family"],
-                "posture": record["posture"],
-                "signature": _signature(value),
-                "schema_fields": _schema_fields(value),
-            }
-        )
+    signature_schema_records = _signature_schema_records(
+        stable_names,
+        records_by_name=records_by_name,
+    )
 
     return {
         "schema_version": 1,
@@ -155,6 +169,93 @@ def build_contract() -> dict[str, Any]:
     }
 
 
+def verify_frozen_compatibility(expected: dict[str, Any]) -> dict[str, Any]:
+    """Verify that the immutable 1.0 boundary is preserved by the live 1.x API."""
+
+    audit = _audit()
+    import eyetrajectoriespy as et
+
+    records_by_name = {record["name"]: record for record in audit["exports"]}
+    live_names = list(et.__all__)
+    live_set = set(live_names)
+
+    stable_names = sorted(expected["stable_exports"])
+    experimental_names = sorted(expected["experimental_exports"])
+    compatibility_names = sorted(expected["compatibility_exports"])
+    frozen_names = sorted(stable_names + experimental_names)
+    frozen_set = set(frozen_names)
+
+    counts = expected["counts"]
+    if counts["stable_exports"] != len(stable_names):
+        raise RuntimeError("frozen 1.0 stable-export count is internally inconsistent")
+    if counts["experimental_exports"] != len(experimental_names):
+        raise RuntimeError(
+            "frozen 1.0 experimental-export count is internally inconsistent"
+        )
+    if counts["compatibility_exports"] != len(compatibility_names):
+        raise RuntimeError(
+            "frozen 1.0 compatibility-export count is internally inconsistent"
+        )
+    if counts["public_exports"] != len(frozen_names):
+        raise RuntimeError("frozen 1.0 public-export count is internally inconsistent")
+    if len(frozen_names) != len(frozen_set):
+        raise RuntimeError("frozen 1.0 stable/experimental export sets overlap")
+
+    if _digest(stable_names) != expected["stable_exports_sha256"]:
+        raise RuntimeError("frozen 1.0 stable-export digest is internally inconsistent")
+    if _digest(frozen_names) != expected["public_namespace_sha256"]:
+        raise RuntimeError("frozen 1.0 public-namespace digest is internally inconsistent")
+
+    missing = sorted(frozen_set - live_set)
+    if missing:
+        raise RuntimeError(
+            "live 1.x API is missing frozen 1.0 exports: " + ", ".join(missing)
+        )
+
+    stable_signature_schema = _signature_schema_records(
+        stable_names,
+        records_by_name=records_by_name,
+    )
+    current_digest = _digest(stable_signature_schema)
+    if current_digest != expected["stable_signature_schema_sha256"]:
+        raise RuntimeError(
+            "frozen 1.0 stable signature/result-schema contract drifted; "
+            "stable 1.x names, signatures and result fields must remain compatible"
+        )
+
+    reclassified_experimental = sorted(
+        name
+        for name in experimental_names
+        if records_by_name[name]["posture"] != "experimental"
+    )
+    if reclassified_experimental:
+        raise RuntimeError(
+            "frozen 1.0 experimental classifications changed without explicit review: "
+            + ", ".join(reclassified_experimental)
+        )
+
+    reclassified_compatibility = sorted(
+        name
+        for name in compatibility_names
+        if records_by_name[name]["posture"] != "compatibility"
+    )
+    if reclassified_compatibility:
+        raise RuntimeError(
+            "frozen 1.0 compatibility routes changed classification: "
+            + ", ".join(reclassified_compatibility)
+        )
+
+    additive = sorted(live_set - frozen_set)
+    return {
+        "frozen_public_exports": len(frozen_names),
+        "live_public_exports": len(live_names),
+        "missing_frozen_exports": [],
+        "additive_exports": additive,
+        "additive_export_count": len(additive),
+        "stable_signature_schema_sha256": current_digest,
+    }
+
+
 def _render(payload: dict[str, Any]) -> str:
     return json.dumps(payload, indent=2, ensure_ascii=False) + "\n"
 
@@ -167,7 +268,10 @@ def main() -> None:
         type=Path,
         nargs="?",
         const=DEFAULT_CONTRACT,
-        help="fail unless the frozen contract exactly matches the live public API",
+        help=(
+            "fail unless the immutable frozen 1.0 boundary remains a compatible "
+            "subset of the live 1.x public API"
+        ),
     )
     args = parser.parse_args()
 
@@ -176,20 +280,29 @@ def main() -> None:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(_render(candidate), encoding="utf-8")
 
+    compatibility = None
     if args.check is not None:
         expected = json.loads(args.check.read_text(encoding="utf-8"))
-        if expected != candidate:
-            raise RuntimeError(
-                "frozen 1.0 API contract differs from the live public surface; "
-                "regenerate and review ONE_DOT_ZERO_API_STABILITY.json explicitly"
-            )
+        compatibility = verify_frozen_compatibility(expected)
 
     if args.output is None and args.check is None:
         print(_render(candidate), end="")
         return
 
+    if compatibility is not None:
+        additions = compatibility["additive_exports"]
+        addition_text = ", ".join(additions) if additions else "none"
+        print(
+            "1.0 frozen compatibility: "
+            f"{compatibility['frozen_public_exports']}/"
+            f"{compatibility['frozen_public_exports']} frozen exports preserved; "
+            f"{compatibility['additive_export_count']} additive live exports "
+            f"({addition_text})"
+        )
+        return
+
     print(
-        "1.0 API boundary: "
+        "live API observation: "
         f"{candidate['counts']['stable_exports']} stable / "
         f"{candidate['counts']['experimental_exports']} experimental / "
         f"{candidate['counts']['public_exports']} total"
