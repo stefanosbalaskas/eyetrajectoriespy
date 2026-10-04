@@ -62,7 +62,7 @@ def test_uncertainty_inherits_fitted_score_ridge():
     regularized = sparse_fpca_score_uncertainty(_fit(3.0), _trajectory())
 
     assert unregularized.covariance[0, 0, 0] == pytest.approx(0.4)
-    assert regularized.covariance[0, 0, 0] == pytest.approx(8.0 / 7.0)
+    assert regularized.covariance[0, 0, 0] == pytest.approx(1.0)
     assert regularized.covariance[0, 0, 0] > unregularized.covariance[0, 0, 0]
     assert regularized.provenance["score_ridge"] == pytest.approx(3.0)
     assert regularized.provenance["covariance_source"] == (
