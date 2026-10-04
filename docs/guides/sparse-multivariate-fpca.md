@@ -1,6 +1,6 @@
 # Sparse planar MFPCA / joint PACE
 
-`fit_sparse_mfpca()` is the stable 0.12 route for **jointly observed sparse planar gaze** when x and y are observed at the same retained native timestamps within each curve.
+`fit_sparse_mfpca()` is the stable 1.x route for **jointly observed sparse planar gaze** when x and y are observed at the same retained native timestamps within each curve. The estimator was introduced and scientifically qualified in the 0.12 line and is part of the frozen 1.0 compatibility baseline.
 
 ## When should I use this?
 
@@ -77,7 +77,7 @@ $$
 \end{bmatrix}.
 $$
 
-The stable 0.12 API does not silently estimate an arbitrary cross-channel noise covariance. Use a defensible declared structure/variance and report it.
+The stable API does not silently estimate an arbitrary cross-channel noise covariance. Use a defensible declared structure/variance and report it.
 
 ## Joint PACE scoring
 
@@ -133,7 +133,7 @@ Inspect `result.score_diagnostics` before downstream use. `score_failure_action=
 
 ## Plots
 
-The published 0.12.0 artifact is unchanged. The post-0.12 `1.0.0rc1` source line adds four public visualization helpers that operate only on the already-retained `SparseMFPCAResult` quantities:
+Stable `1.0.0` includes four public visualization helpers that operate only on quantities already retained by `SparseMFPCAResult`:
 
 ```python
 from eyetrajectoriespy import (
@@ -159,7 +159,9 @@ For covariance plots, `stage="used"` displays the blocks after the declared join
 
 ## Recovery and comparator evidence
 
-Use the [native sparse-MFPCA recovery](../validation/sparse-mfpca-recovery.md), [comparator sensitivity](../validation/sparse-mfpca-comparator-sensitivity.md), and [stress/performance](../validation/sparse-mfpca-observation-performance.md) pages. Population eigenspace recovery and individual joint-PACE score recovery are distinct targets. Those scientific qualification records remain explicitly attributed to 0.12.0 until a later package version receives fresh exact-version qualification.
+Use the [native sparse-MFPCA recovery](../validation/sparse-mfpca-recovery.md), [comparator sensitivity](../validation/sparse-mfpca-comparator-sensitivity.md), and [stress/performance](../validation/sparse-mfpca-observation-performance.md) pages. Population eigenspace recovery and individual joint-PACE score recovery are distinct targets.
+
+The core scientific-method evidence remains traceable to the 0.12 estimator programme. Final `1.0.0` subsequently reran the exact-version package, sparse-MFPCA, cross-platform, performance and external-comparator qualification matrix without changing the estimator's scientific contract.
 
 ## Reporting
 
@@ -174,4 +176,4 @@ Report native sampling, paired-timestamp requirements, analysis grid/support, me
 
 ## Limitations
 
-The stable 0.12 estimator does not imply automatic bandwidth selection, arbitrary unpaired x/y observation times, automatic cross-channel noise estimation, complete sparse-FPCA uncertainty propagation into downstream models, or equivalence to dense-grid projection scores. The 0.12.1 development plotting helpers do not alter any of those boundaries.
+The stable 1.x estimator does not imply automatic bandwidth selection, arbitrary unpaired x/y observation times, automatic cross-channel noise estimation, complete sparse-FPCA uncertainty propagation into downstream models, or equivalence to dense-grid projection scores. The plotting helpers are views over retained fitted quantities and do not alter any of those scientific boundaries.
