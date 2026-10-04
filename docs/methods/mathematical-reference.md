@@ -10,6 +10,84 @@ and fail-closed score diagnostics. Separate x/y fits do not model
 cross-channel covariance; the stable joint planar estimator is documented in
 the separate 0.12 contract below.
 
+## Conditional uncertainty for native sparse PACE scores { #sparse-pace-score-uncertainty }
+
+For the retained univariate sparse-FPCA eigensystem, define
+
+$$
+\widehat\Lambda
+=
+\operatorname{diag}(\widehat\lambda_1,\ldots,\widehat\lambda_K),
+$$
+
+and, for curve $i$ observed at native times $T_i$,
+
+$$
+\widehat\Phi_i
+=
+\begin{bmatrix}
+\widehat\phi_1(T_i) & \cdots & \widehat\phi_K(T_i)
+\end{bmatrix}.
+$$
+
+The native PACE score system is
+
+$$
+\widehat\Sigma_i
+=
+\widehat G(T_i,T_i)
++
+(\widehat\sigma_\epsilon^2+\gamma)I,
+$$
+
+where $\gamma$ is the declared numerical `score_ridge`. The conditional
+covariance corresponding to that same score system is
+
+$$
+\widehat V_i
+=
+\widehat\Lambda
+-
+\widehat\Lambda\widehat\Phi_i^\top
+\widehat\Sigma_i^{-1}
+\widehat\Phi_i\widehat\Lambda.
+$$
+
+When $\gamma=0$, this is the usual Gaussian conditional covariance for the
+retained scores given the sparse observations and fitted population model. If
+$\gamma>0$, the same regularized system used for PACE scoring is retained so
+that score estimates and their reported conditional covariance are based on the
+same numerical system. The ridge is numerical regularization and is not an
+additional estimate of measurement-error variance.
+
+The calculation uses the **full fitted covariance surface** evaluated at native
+observation times, not a rank-$K$ covariance reconstruction and not an
+interpolated raw trajectory. It is implemented with stable linear solves,
+explicit positive-definiteness/conditioning checks, numerical symmetrization,
+and tolerance-scale PSD repair only.
+
+This quantity is **conditional on the fitted mean, covariance surface,
+eigensystem, measurement-error variance, retained component count, and declared
+score-system regularization**. It therefore excludes population-estimation
+uncertainty, including uncertainty from estimating the mean, covariance,
+eigensystem, noise variance, and smoothing bandwidths. It must not be reported
+as full sampling uncertainty for the complete sparse-FPCA procedure.
+
+**API:** `eyetrajectoriespy.sparse_score_uncertainty.sparse_fpca_score_uncertainty()`.
+
+**Result/helper:** `SparseFPCAScoreUncertaintyResult` stores per-curve conditional
+covariance matrices, standard errors, diagnostics, and provenance;
+`sparse_fpca_score_uncertainty_frame()` returns one tidy row per curve/component.
+
+**Reporting helper:** `eyetrajectoriespy.sparse_score_uncertainty_reporting.sparse_fpca_score_uncertainty_reporting_text()`
+produces wording that explicitly states the fitted-population conditioning and
+exclusion of population-estimation uncertainty.
+
+**Alignment limitation:** the fit retains curve IDs/order and effective sample
+counts but not every original native timestamp. The same `IrregularTrajectorySet`
+used for fitting should therefore be supplied; matching IDs/counts alone cannot
+prove exact timestamp identity.
+
 ## Native sparse multivariate FPCA / joint PACE { #sparse-mfpca-joint-pace }
 
 For paired planar curve $i$ observed at native times $t_{ij}$,
