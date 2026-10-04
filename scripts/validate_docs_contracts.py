@@ -25,7 +25,7 @@ EVIDENCE_FILES = (
     ROOT / "PERFORMANCE_ENVELOPE.json",
 )
 BASE_VALIDATOR_VERSION = "0.12.0"
-QUALIFIED_RC_MAIN = "deb61a1b4f2f5e4c8da44d3f2b75ac09fa99430a"
+QUALIFIED_RELEASE_MAIN = "1a2afc79e43108e674f3cdd2dc1cb2d8c1b8b3f0"
 _ORIGINAL_READ_TEXT = Path.read_text
 
 
@@ -86,7 +86,7 @@ def _validate_source_and_evidence_versions() -> None:
     if production_ready:
         notes = "\n".join(str(note) for note in readiness.get("notes", ()))
         required_arming_evidence = (
-            QUALIFIED_RC_MAIN,
+            QUALIFIED_RELEASE_MAIN,
             "17/17 workflow groups successfully",
             "manual release.yml dispatch with target=production",
         )
