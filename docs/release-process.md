@@ -1,156 +1,29 @@
 # Coordinated GitHub Release and PyPI publication
 
-## 1.0.0rc1 exact-version qualification
+`eyetrajectoriespy 1.0.0` is the current stable release. The release machinery is intentionally fail-closed: ordinary pushes and merges do not publish, and a public version is produced only after exact-version qualification, protected-main requalification, a separate governance-only arming change, and an explicit manual production dispatch.
 
-The 1.0 release candidate is qualified as a literal package identity over the frozen 455-stable/3-experimental API boundary. Historical 0.12 release evidence remains immutable. Fresh RC performance, the full pull-request matrix, protected-main merge, and the full exact-main matrix are required before a separate governance-only change may arm publication.
+## Post-1.0 versioning posture
 
+The stable 1.0 public boundary is a compatibility promise:
 
-## Final 0.12.0 exact-version qualification
+- **1.0.x** — compatible bug fixes, documentation, portability, validation and performance improvements that preserve established scientific meaning;
+- **1.x** — additive capabilities or deliberately governed compatible extensions;
+- **2.0** — breaking stable API/scientific-contract changes after explicit deprecation, except where an exceptional correction is necessary to prevent demonstrably wrong scientific results.
 
-Final `0.12.0` is qualified as a literal package identity, not by relabelling `0.12.0rc1`. The RC release, production-installed observation, and archived RC performance evidence remain immutable inputs. Final qualification must generate fresh package-wide and sparse-MFPCA performance evidence under `0.12.0`, pass the complete pull-request matrix, merge through protected `main`, and pass the complete exact-main matrix. GitHub and PyPI publication remain disarmed until a separate governance-only arming change.
+A new minor release is not created merely because the previous milestone is complete. External use, issues, real-data evidence and a demonstrated scientific gap should justify new capability work.
 
+## Standard release sequence
 
+Every future public release should follow the same evidence chain used for 1.0:
 
-## 0.12.0rc1 qualification
-
-Stable `0.11.0` remains the current public release. `0.12.0rc1` freezes the
-fully qualified native sparse multivariate FPCA/joint-PACE 0.12 surface. The RC
-may correct packaging, documentation, reproducibility, or release-governance
-defects, but it must not add a new estimator, hidden default, or unqualified
-statistical pathway.
-
-The sequence is:
-
-~~~text
-align active version/citation/validation/docs contracts to 0.12.0rc1
+```text
+review and freeze the intended release surface
         |
         v
-generate a fresh exact-version performance envelope
+align literal package/citation/docs/validation identity
         |
         v
-rerun sparse-MFPCA recovery, sensitivity, external comparator,
-observation stress, dedicated performance and ordinary package CI
-        |
-        v
-merge exact qualified RC state through protected main
-        |
-        v
-rerun complete exact-main 0.12.0rc1 matrix
-        |
-        v
-arm publication in a separate reviewed governance-only change
-        |
-        v
-manual target=production dispatch only
-~~~
-
-Pre-RC evidence is retained as development evidence and is never relabelled as
-RC evidence. Publication remains fail-closed until the post-merge exact-main
-matrix passes.
-
-## 0.12.0rc1 release-candidate decision and qualification
-
-Protected main commit `6b02310b4abb2d16e9df96293e9c8f1a63c34984`
-closes the planned pre-RC evidence collection for native sparse multivariate
-FPCA/joint PACE. The seven promotion criteria in the 0.12 design contract are
-satisfied: the direct estimator/public API exists, analytical checks pass,
-known-truth recovery passes, the internal two-stage benchmark is characterized,
-mGSFPCA 0.2.2 sensitivity is reproducible, observation-process stress is
-retained separately, and portability/docs/examples/performance/cross-platform
-qualification are green.
-
-The release decision is therefore **go to exact-version RC qualification**.
-It is not a publication decision.
-
-The 0.12 scientific/API surface is frozen during RC qualification. Only
-release-version alignment, packaging/installability, documentation,
-reproducibility, governance, and demonstrated defect fixes may change. A
-scientific estimator, public parameter, hidden analytical default, automatic
-selection rule, or post-0.12 research feature requires reopening development
-rather than being slipped into the RC.
-
-The RC sequence is:
-
-~~~text
-retain stable package identity 0.11.0 while recording the RC decision
-        |
-        v
-align every active version declaration to 0.12.0rc1
-        |
-        v
-generate fresh exact-version sparse-MFPCA and package performance evidence
-        |
-        v
-rerun native recovery, comparator sensitivity, observation stress,
-general simulation validation/stress, docs/examples and optional backends
-        |
-        v
-pass the complete pull-request matrix
-        |
-        v
-merge the exact qualified RC state through protected main
-        |
-        v
-pass the complete exact-main 0.12.0rc1 matrix
-        |
-        v
-arm GitHub/PyPI publication in a separate reviewed governance-only change
-        |
-        v
-manual target=production release dispatch
-        |
-        v
-verify GitHub Release, checksums/attestations and production PyPI
-        |
-        v
-run fresh production-installed 0.12.0rc1 qualification
-~~~
-
-Pre-RC performance/recovery evidence remains evidence for the development
-surface and must not be relabelled as exact-version `0.12.0rc1` evidence.
-
-The production governance gate for 0.12 additionally requires successful
-`sparse-mfpca-recovery`, `sparse-mfpca-sensitivity`,
-`two-stage-sensitivity`, `mgsfpca-sensitivity`,
-`observation-process-stress`, and
-`sparse-mfpca-performance-envelope` checks. The sparse-MFPCA performance job
-has a unique check name so it cannot be confused with the package-wide
-`performance-envelope` gate.
-
-The existing installed-RC workflow remains pinned to immutable published
-`0.11.0rc1` until `0.12.0rc1` exists on production PyPI. Publication
-readiness remains disarmed throughout RC qualification and is armed only in a
-later reviewed change after exact-main qualification passes.
-
-See the [planned 0.12.0rc1 release contract](releases/0.12.0rc1.md).
-
-## Final 0.11.0 qualification and publication
-
-Published `0.11.0rc1` is the feature-frozen public scientific candidate.
-Final `0.11.0` is a version-only promotion of that surface: no estimator,
-numerical method, generalized family, public API expansion, or hidden
-analytical default may be added during final qualification.
-
-Before final-version promotion, the production-installed rc1 artifact was
-exercised outside the repository checkout. Exact protected-main commit
-`a37214653c2f72839e356d603c4f87a514f01056` passed all eleven workflow
-groups, including `installed-rc-qualification` run `36622305877`. That run
-verified exact production-PyPI installation on Python 3.11–3.13, retained all
-42 threshold-free stress replicate records, and exercised deterministic
-scenario replay, dense FPCA recovery, mixed-effects recovery, registration
-recovery, portable result round trips, reporting, and plotting.
-
-The final sequence is:
-
-~~~text
-archive immutable 0.11.0rc1 performance evidence
-        |
-        v
-align package/citation/validation/docs contracts to exact 0.11.0
-and deliberately disarm publication readiness
-        |
-        v
-generate a fresh 0.11.0 performance envelope
+generate fresh exact-version evidence
         |
         v
 pass the complete pull-request qualification matrix
@@ -159,339 +32,115 @@ pass the complete pull-request qualification matrix
 merge through protected main
         |
         v
-pass the complete exact-main 0.11.0 matrix
-        |
-        v
-arm release readiness in a separate reviewed governance-only change
-        |
-        v
-manual target=production dispatch only
-        |
-        v
-verify GitHub Release, checksums/attestations, PyPI publication,
-and a fresh eyetrajectoriespy==0.11.0 production-PyPI install
-~~~
-
-The rc1 tag, GitHub Release, wheel, sdist, checksums, attestations, installed-RC
-evidence, and performance snapshot remain immutable. Final qualification created
-new exact-version evidence rather than relabeling rc1 evidence.
-
-Final publication is complete. PR #121 armed publication only after the exact
-final-version matrix passed; its protected-main merge commit
-`2616675ad2dfc095bf17a442c1d350ba88fd030a` then passed the complete post-arming
-matrix. Production release workflow #13 (run `36628220308`) created annotated
-tag and GitHub Release `v0.11.0`, published the exact wheel and sdist to
-production PyPI through OIDC Trusted Publishing with digital attestations, and
-passed a fresh `eyetrajectoriespy==0.11.0` production-PyPI installation smoke
-test. Post-publication readiness is disarmed again so ordinary pushes and merges
-cannot republish the immutable release.
-
-The threshold-free stress evidence remains descriptive. The known
-estimated-noise diagonal-difference failures remain in the denominator and are
-not converted to successful estimates by clipping or threshold widening.
-
-## 0.11.0rc1 qualification
-
-Stable `0.10.0` remains the current public release. `0.11.0rc1` promotes the
-feature-frozen known-truth simulation/recovery laboratory from qualified
-`0.11.0.dev0` without adding a new estimator, numerical method, generalized
-family, hidden default, or post-0.11 research feature.
-
-The rc1 qualification sequence is:
-
-~~~text
-archive immutable 0.11.0.dev0 performance evidence
-        |
-        v
-align package/citation/validation/docs contracts to 0.11.0rc1
-        |
-        v
-generate a fresh 0.11.0rc1 performance envelope
-        |
-        v
-rerun functional-simulation qualification + threshold-free stress evidence
-        |
-        v
-pass tests/docs/examples/optional-backend/sparse-native/release-readiness matrix
-        |
-        v
-merge the exact qualified RC state
-        |
-        v
-rerun exact release-state qualification
-        |
-        v
-arm GitHub/PyPI publication in a separate reviewed change
-        |
-        v
-manual target=production release dispatch
-~~~
-
-The stress workflow has no scientific pass/fail thresholds. Its success means
-the declared stress study executed reproducibly and retained failed replicates;
-it does not relabel difficult regimes as scientifically successful.
-
-The qualification and expanded exact-main gates are now complete. A separate reviewed governance-only change arms GitHub and production readiness. No GitHub Release or PyPI upload occurs until the explicit manual `target=production` dispatch.
-
-## Final 0.10.0 qualification and publication
-
-Published `0.10.0rc2` is the corrected public scientific candidate. Final `0.10.0` is a promotion of that code line only: no estimator, numerical method, API contract, or hidden analytical default may be added during final qualification.
-
-The final sequence is:
-
-~~~text
-align all active version declarations to 0.10.0
-archive the immutable 0.10.0rc2 performance snapshot
-        |
-        v
-generate a fresh 0.10.0 performance envelope
-        |
-        v
-pass the complete pull-request matrix
-        |
-        v
-merge through protected main
-        |
-        v
 pass the complete exact-main matrix
         |
         v
-arm release readiness in a separate reviewed change
+arm publication in a separate governance-only change
         |
         v
-manual target=production dispatch only
+pass the exact arming-main governance matrix
         |
         v
-verify GitHub Release, PyPI artifacts, checksums/attestations,
-and a fresh eyetrajectoriespy==0.10.0 production-PyPI install
-~~~
-
-The rc1 and rc2 tags, GitHub Releases, PyPI files, checksums and performance evidence remain immutable. Final qualification must create new exact-version evidence rather than relabeling either release candidate.
-
-Final exact-version qualification and publication are complete. PR #106 exact head `3c24ba411700ebc1199057537056c411944071cd` passed all eight pull-request workflow groups; protected-main commit `b9172a578a07e433cce6cb9ec53825ccbd5d2d04` passed the first final-version exact-main matrix; PR #107 armed publication; and exact protected-main commit `1a14f2f6544b18740e73729ebe193ed348cb23bc` passed the complete post-arming main matrix. Production release workflow #11 (run `36550274400`) then created `v0.10.0`, published the checksum-verified wheel and sdist to production PyPI through Trusted Publishing, generated digital attestations, and passed a fresh `eyetrajectoriespy==0.10.0` production-PyPI installation smoke test. Publication readiness is disarmed after release.
-
-## 0.10.0rc2 qualification
-
-Published `0.10.0rc1` remains immutable. Recovery validation subsequently
-identified a numerical defect in diagonal-difference measurement-noise
-estimation: the latent diagonal was taken from the generic local-linear
-covariance surface rather than the PACE-specific diagonal smoother.
-
-`0.10.0rc2` contains the correction only. It introduces no new estimator
-surface. The qualification sequence is:
-
-~~~text
-merge the source-faithful diagonal correction to protected main
+manual release.yml dispatch with target=production
         |
         v
-align all version declarations to 0.10.0rc2
-archive the immutable 0.10.0rc1 performance snapshot
+verify GitHub Release + hashes + attestations + production PyPI install
         |
         v
-generate a fresh 0.10.0rc2 performance envelope
-        |
-        v
-pass the complete pull-request matrix
-        |
-        v
-merge through protected main
-        |
-        v
-pass the complete exact-main matrix
-        |
-        v
-arm release readiness in a separate reviewed change
-        |
-        v
-manual target=production dispatch only
-~~~
+post-publication closeout and joint disarm
+```
 
-The rc1 artifacts, tag and PyPI files remain immutable. The rc2 pull-request and exact-main qualification matrices passed, and production release workflow #10 subsequently published rc2 to GitHub and PyPI and verified a fresh production-PyPI installation. rc2 is therefore the immutable public candidate used as the scientific basis for final 0.10.0 promotion.
+Historical evidence is never relabelled as evidence for a new package identity. A release candidate, final release, or patch release must receive its own exact-version qualification whenever the release contract requires fresh evidence.
 
-## Historical 0.10.0rc1 qualification and publication
+## Qualification before publication
 
-The first 0.10 publication candidate was `0.10.0rc1`. It contains the native
-sparse/irregular FPCA + PACE tranche already integrated into protected
-`main`. Release-candidate qualification must not introduce a new scientific
-estimator or hidden analytical default.
+Before publication may be armed:
 
-The qualification sequence is:
+1. the intended public/scientific surface must be reviewed;
+2. active version declarations must agree;
+3. qualification ledgers must refer to the literal target version;
+4. fresh performance evidence must be generated rather than copied from another version;
+5. package, cross-platform, documentation, examples, optional backends and scientific qualification workflows must pass on the pull-request head;
+6. the exact merged protected-main commit must pass the corresponding complete matrix; and
+7. publication readiness must remain jointly false until a separate reviewed arming change.
 
-~~~text
-align all version declarations to 0.10.0rc1
-        |
-        v
-archive the 0.10.0.dev0 performance snapshot
-        |
-        v
-generate a fresh 0.10.0rc1 performance envelope
-        |
-        v
-pass the complete pull-request matrix
-        |
-        v
-merge through protected main
-        |
-        v
-pass the complete exact-main matrix
-        |
-        v
-arm release readiness in a reviewed change
-        |
-        v
-manual target=production dispatch only
-~~~
+For stable 1.x releases, the frozen API contract is an additional release constraint: stable exports/signatures/result schemas must not drift silently.
 
-The qualification branch and its pull request do not publish anything. A
-production dispatch remains a separate deliberate action.
+## Publication arming
 
-For the historical 0.10.0rc1 candidate, the fresh performance envelope, complete
-pull-request matrix, protected-main merge, and complete exact-main matrix have
-all passed. Release readiness is now jointly armed for GitHub and production
-publication through a reviewed change. The remaining publication action is the
-explicit manual `release.yml` dispatch with `target=production`; ordinary
-pushes and merges remain non-publishing.
+Publication arming is deliberately separated from version/scientific qualification.
 
-Version 0.9.0 uses the release machinery qualified during the 0.9.0rc1
-ceremony. The final release is a separate immutable version; the RC remains a
-prerelease record.
+The arming change should contain governance/readiness state only and must not introduce an estimator, new scientific API, analytical-default change, threshold change, dependency change or performance-methodology change.
 
-## One build, two publication surfaces
+Both readiness flags move together:
 
-`.github/workflows/release.yml` owns the final ceremony:
+```json
+{
+  "production_release_ready": true,
+  "github_release_ready": true
+}
+```
 
-~~~text
-merge the fully qualified 0.9.0 PR to protected main
-        |
-        v
-build wheel + sdist once
-        |
-        +--> twine check
-        +--> fresh-wheel install + smoke test
-        +--> fresh-sdist install + smoke test
-        |
-        v
-wait for every exact-main required check
-        |
-        v
-create annotated tag v0.9.0
-create final GitHub Release
-attach wheel + sdist + SHA256SUMS
-        |
-        v
-download those exact GitHub Release assets
-verify SHA256SUMS
-remove checksum manifest from upload directory
-        |
-        v
-publish the SAME wheel + sdist to production PyPI through OIDC
-        |
-        v
-install eyetrajectoriespy==0.9.0 from production PyPI
-run installed-package smoke test
-~~~
+The arming commit itself must then pass the required exact-main governance checks. A green qualification commit is not sufficient if the later publication-authority commit has not been independently checked.
 
-The wheel and sdist are never rebuilt separately for GitHub and PyPI.
+## Production dispatch
 
-## Production and recovery triggers
+Production is an explicit manual workflow dispatch:
 
-Release automation is manual-dispatch only. Normal pushes and merges to
-`main` never publish.
+```text
+workflow: release.yml
+target: production
+ref: main
+```
 
-The workflow exposes four explicit targets:
+The workflow is designed to:
 
-~~~text
-build-only
-testpypi
-production
-resume-production
-~~~
+- require exact protected `main`;
+- verify the repository's production-governance checks;
+- reject development versions;
+- reject a pre-existing GitHub tag/release or PyPI version for ordinary production;
+- build the wheel and sdist once;
+- validate and smoke-test both distributions;
+- create the GitHub Release first;
+- verify checksums;
+- publish the same distributions to PyPI through OIDC Trusted Publishing;
+- generate digital attestations; and
+- reinstall the exact production-PyPI version in a fresh environment.
 
-`production` is the ordinary publication path. It is intentionally strict:
+`target=resume-production` is reserved for explicitly validated partial-publication recovery. It must not be used as a routine way to bypass the ordinary unpublished-version preflight.
 
-1. all version declarations must agree;
-2. the version must not be a development release;
-3. GitHub must report exact protected `main`;
-4. governance issue #64 must be closed;
-5. all required exact-main qualification checks must pass, including `recovery`, threshold-free `stress-evidence`, and native sparse/PACE `sparse-performance`, `stress-recovery`, and `noise-variance-recovery` for the 0.11 release line;
-6. the target GitHub tag/release must not already exist;
-7. the target PyPI version must not already exist.
+## Post-publication closeout
 
-If any release/tag/version already exists, ordinary production fails. It does
-not silently retain an existing GitHub Release and it does not use
-`skip-existing` on production PyPI.
+After successful production publication:
 
-`resume-production` is a deliberately separate recovery path. It requires an
-existing GitHub Release for the same version whose tag resolves to exact current
-`main`. It then reuses those immutable GitHub Release artifacts and may use
-PyPI `skip-existing` semantics to recover from a partially completed upload or
-post-upload verification failure.
+1. record workflow/run/artifact/checksum provenance;
+2. update public release-status documentation if necessary;
+3. jointly set GitHub/PyPI readiness back to `false`;
+4. merge that closeout through the normal qualification path; and
+5. leave the published tag and distributions immutable.
 
-This separation enforces the ordinary invariant:
+A later documentation commit is allowed to describe the finished release, but it must not move the published tag or rewrite release artifacts.
 
-~~~text
-one production invocation -> one previously unpublished version
-~~~
+## 1.0.0 production precedent
 
-while still providing an explicit audited recovery mechanism.
+Final `1.0.0` demonstrates the complete process:
 
-## Dedicated production PyPI authority
+- qualification PR #154 → protected-main `1a2afc79e43108e674f3cdd2dc1cb2d8c1b8b3f0` → 17/17 exact-main workflows green;
+- governance-only arming PR #155 → protected-main `d90fbbeea390054019e7689badedf5011ee09c22` → 16/16 exact-main workflows green;
+- production workflow #18 (`37185125898`) → GitHub Release `v1.0.0`, production PyPI OIDC publication, checksums/attestations and fresh exact-version install verification;
+- post-publication PR #156 → stable public status recorded and publication readiness jointly disarmed.
 
-Production and recovery jobs use only:
+See the [1.0.0 release notes](releases/1.0.0.md) and [release-readiness page](release-readiness.md) for the exact evidence record.
 
-~~~text
-environment: pypi
-PYPI_TRUSTED_PUBLISHING_CONFIGURED
-PYPI_REQUIRED_REVIEWER_CONFIGURED
-~~~
+## Historical releases
 
-The `testpypi` environment is no longer accepted as production authority.
-Issue #69 is closed: the obsolete production-publisher cleanup was completed,
-and the dedicated production PyPI Trusted Publisher is registered with:
+Earlier release-specific qualification narratives remain in their immutable release notes rather than being treated as the current process:
 
-~~~text
-Owner:       stefanosbalaskas
-Repository:  eyetrajectoriespy
-Workflow:    release.yml
-Environment: pypi
-~~~
+- [1.0.0rc1](releases/1.0.0rc1.md)
+- [0.12.0](releases/0.12.0.md)
+- [0.12.0rc1](releases/0.12.0rc1.md)
+- [0.11.0](releases/0.11.0.md)
+- [0.11.0rc1](releases/0.11.0rc1.md)
+- [0.10.0](releases/0.10.0.md)
 
-The successful 0.9.0rc1, 0.9.0, 0.10.0rc2, and 0.10.0 OIDC publications are historical evidence that Trusted Publishing works. The dedicated `pypi` publisher claim remains the production authority for future release ceremonies.
-
-## Optional TestPyPI rehearsal
-
-Manual workflow dispatch remains available for:
-
-- `build-only`;
-- `testpypi`.
-
-TestPyPI is optional for the final 0.9.0 ceremony because the RC already
-exercised the complete production PyPI path successfully. It remains useful for
-future publisher/environment migrations.
-
-## Final 0.9.0 ceremony
-
-1. Align package, citation, validation, workflow and documentation versions to
-   `0.9.0`.
-2. Archive the qualified RC performance snapshot.
-3. Qualify a fresh `0.9.0` performance envelope.
-4. Pass the complete pull-request matrix.
-5. Merge to protected `main`.
-6. Pass the complete exact-main matrix.
-7. Create annotated tag `v0.9.0` and final GitHub Release.
-8. Attach the exact wheel, sdist and `SHA256SUMS`.
-9. Download and checksum-verify those exact release assets.
-10. Publish only the wheel and sdist to production PyPI through OIDC.
-11. Install exactly `eyetrajectoriespy==0.9.0` from production PyPI.
-12. Run the installed-package canonical smoke test.
-
-The ceremony is complete only after step 12 succeeds.
-
-
-## Post-release development
-
-After a stable release, `main` moves to a development version such as
-`0.9.1.dev0`, and `RELEASE_READINESS.json` is disarmed. Ordinary development
-therefore cannot accidentally republish the previous version or create a new
-GitHub Release. A future release requires a reviewed version/readiness change
-plus explicit `target=production` dispatch.
+Those records describe the release state that existed at the time and should not be rewritten merely because the package later advanced to 1.0.
