@@ -6,7 +6,7 @@ authors:
   - family-names: Balaskas
     given-names: Stefanos
 version: 1.0.0
-date-released: 2026-10-03
+date-released: 2026-10-04
 repository-code: "https://github.com/stefanosbalaskas/eyetrajectoriespy"
 url: "https://stefanosbalaskas.github.io/eyetrajectoriespy/"
 license: MIT

@@ -1,21 +1,21 @@
 # Capability status and roadmap
 
-## Current stable scientific surface — 0.12.0
+## Current stable scientific surface — 1.0.0
 
-`0.12.0` is the current stable release.
+`1.0.0` is the current stable production release and the compatibility baseline for the 1.x line.
 
-The current stable pre-1.0 line is **0.12.0**.
+The current development line is **1.0.0**. This means the repository's active package/source identity remains the released stable baseline; no `1.1` development line has been opened.
 
-The current development line is **1.0.0**. It is a version-only final promotion of the frozen, production-observed `1.0.0rc1` scientific/API surface; the 0.12 sparse-MFPCA/joint-PACE estimator remains frozen.
+The frozen 1.0 public boundary contains **455 stable public exports** and three explicitly experimental APIs. No deprecations or removals were authorized by the 1.0 stabilization programme.
 
-The 0.12 sparse-MFPCA/joint-PACE line is complete and frozen. The package is not currently committed to another estimator tranche.
+There is no automatic 1.1 estimator tranche. The package has moved from release qualification into **post-1.0 maintenance and observation**: external use, issue observation, real-data case studies, documentation, portability, performance, and dissemination should drive future changes.
 
 Near-term work prioritizes:
 
-- exact-version final `1.0.0` qualification and release governance;
-- real-use and API observation against the frozen 1.0 boundary;
-- documentation and worked examples;
-- public benchmark/case-study material; and
+- preserving stable 1.0 APIs and established scientific contracts;
+- external-use and issue observation against the frozen 1.0 boundary;
+- reproducible real-data case studies when licensing/consent permit;
+- documentation, portability, validation and non-breaking performance work; and
 - software/methodology dissemination.
 
 Future methodology is evidence-driven rather than version-number-driven.
@@ -29,7 +29,7 @@ Future methodology is evidence-driven rather than version-number-driven.
 | Common-grid functional gaze | stable | `TrajectorySet`, `fit_fpca()`, `fit_mfpca()` |
 | Native curve-specific time grids | stable | `IrregularTrajectorySet` |
 | Sparse univariate covariance FPCA + PACE | stable; natively qualified since 0.10 | `fit_sparse_fpca()` |
-| Sparse paired planar MFPCA + joint PACE | stable; qualified in 0.12 | `fit_sparse_mfpca()` |
+| Sparse paired planar MFPCA + joint PACE | stable; qualified in 0.12 and frozen in 1.0 | `fit_sparse_mfpca()` |
 | Functional simulation / known-truth recovery | stable validation infrastructure since 0.11 | simulation and recovery APIs |
 | Function-on-scalar regression | stable | `fit_function_on_scalar_regression()` |
 | Generalized Bernoulli / grouped-binomial / Poisson functional responses | stable guarded marginal GEE line | `fit_generalized_function_on_scalar_regression()` |
@@ -41,7 +41,7 @@ Future methodology is evidence-driven rather than version-number-driven.
 
 ## What 0.12 added
 
-The defining 0.12 addition is native sparse multivariate FPCA / joint PACE for jointly observed planar gaze. Its scientific object is
+The defining 0.12 addition was native sparse multivariate FPCA / joint PACE for jointly observed planar gaze. Its scientific object is
 
 $$
 \mathbf X_i(t)=
@@ -97,7 +97,7 @@ Scientific qualification remains separated into:
 
 The 0.11 recovery laboratory remains the standing infrastructure for future methodology. The 0.12 sparse-MFPCA line was promoted only after native recovery, observation-process stress, direct/two-stage sensitivity, external mGSFPCA comparison, performance qualification, exact-version package qualification, production-installed observation, and the complete release matrix were closed.
 
-The final `1.0.0` line preserves that frozen scientific/API surface. Production `1.0.0rc1` has already been observed outside the checkout on Python 3.11–3.13, including recovery/stress, sparse-MFPCA joint PACE, portability and the external comparator. The immutable RC performance record remains archived under its literal RC identity; final `1.0.0` requires fresh exact-version performance plus complete PR and exact-main qualification before publication can be armed.
+Final `1.0.0` preserves that frozen scientific/API surface. The RC was observed outside the checkout on Python 3.11–3.13, final `1.0.0` received fresh exact-version performance and complete PR/exact-main qualification, and production workflow #18 published the final version from exact arming commit `d90fbbeea390054019e7689badedf5011ee09c22`. Post-publication readiness is disarmed again.
 
 ## Published release sequence
 
@@ -111,23 +111,34 @@ Added explicit latent truth, declared finite-sample scenarios, recovery metrics,
 
 ### 0.12.0 — native sparse planar MFPCA / joint PACE
 
-Added the direct joint sparse planar estimator, block-aware recovery, tied-eigenspace/Procrustes-aware score recovery, two-stage sensitivity comparison, external mGSFPCA sensitivity, observation-process stress, and dedicated runtime/RSS qualification. Final `0.12.0` is published on GitHub and production PyPI and the publication-readiness flags are disarmed again after release.
+Added the direct joint sparse planar estimator, block-aware recovery, tied-eigenspace/Procrustes-aware score recovery, two-stage sensitivity comparison, external mGSFPCA sensitivity, observation-process stress, and dedicated runtime/RSS qualification.
 
 ### 1.0.0rc1 — frozen 1.0 API release candidate
 
-Published the evidence-backed 1.0 API boundary as an immutable production prerelease after exact-version qualification. Post-publication installed-artifact observation closed without identifying a result-changing or public-API defect, making the candidate eligible for version-only final promotion.
+Published the evidence-backed 1.0 API boundary as an immutable production prerelease after exact-version qualification. Post-publication installed-artifact observation closed without identifying a result-changing or public-API defect.
+
+### 1.0.0 — stable compatibility baseline
+
+Published 4 October 2026 after literal final-version qualification and a separate governance-only arming step. The release changes package identity and compatibility status rather than adding scientific functionality. The stable 1.0 boundary is now the maintenance contract for the 1.x line.
 
 Published tags and release artifacts remain immutable historical records. New documentation or later APIs do not retroactively alter the scientific identity of earlier releases.
 
-## Near-term documentation and API work
+## Post-1.0 maintenance and observation
 
-The 1.0 qualification phase is deliberately product-facing rather than estimator-driven:
+The highest-value work after 1.0 is product- and evidence-facing rather than estimator-driven:
 
-- keep the frozen 1.0 API boundary machine-checked;
-- qualify literal final `1.0.0` with fresh performance evidence;
+- keep the frozen stable 1.0 API boundary machine-checked;
 - preserve complete deterministic visual documentation and worked workflows;
+- observe external-user friction and real-data edge cases;
+- add compatible fixes, validation, portability and performance improvements without changing established scientific meaning;
 - turn realistic analyses into reproducible, citable case-study material; and
-- defer any new estimator programme until post-1.0 evidence justifies it.
+- defer new methodology until a demonstrated scientific gap justifies it.
+
+For versioning, the intended posture is:
+
+- **1.0.x** — compatible bug fixes, documentation, portability, validation and performance improvements;
+- **1.x** — additive capabilities or deliberately governed compatible extensions;
+- **2.0** — breaking stable API/scientific-contract changes after explicit deprecation, except when an exceptional correction is necessary to prevent demonstrably wrong scientific results.
 
 ## Future methodology
 

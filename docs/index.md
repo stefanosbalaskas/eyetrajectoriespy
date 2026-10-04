@@ -1,22 +1,20 @@
 ---
-
-!!! info "1.0.0rc1 under qualification"
-    The evidence-backed 1.0 API boundary is frozen at 455 stable exports and three explicitly experimental APIs. The release candidate adds no new estimator and remains unpublished until fresh exact-version and complete protected-main qualification pass.
-
 title: eyetrajectoriespy
 hide:
   - navigation
   - toc
 ---
 
-!!! success "Current stable release — 0.12.0"
-    `eyetrajectoriespy 0.12.0` is the current stable release.
+!!! success "Current stable release — 1.0.0"
+    `eyetrajectoriespy 1.0.0` is the current stable production release and the compatibility baseline for the 1.x line.
 
     Python 3.11–3.13 · native sparse FPCA/PACE · native sparse planar MFPCA/joint PACE · production PyPI + GitHub Release
 
     ```bash
-    pip install eyetrajectoriespy==0.12.0
+    pip install eyetrajectoriespy==1.0.0
     ```
+
+    The frozen 1.0 boundary contains 455 stable public exports and three explicitly experimental APIs. Publication is complete and post-publication GitHub/PyPI readiness is disarmed.
 
 <div class="et-hero" markdown>
 <div markdown>
@@ -33,7 +31,7 @@ y_i(t)
 \end{bmatrix}.
 $$
 
-<span class="et-version-pill">stable 0.12.0 · Python 3.11–3.13</span>
+<span class="et-version-pill">stable 1.0.0 · Python 3.11–3.13</span>
 
 [Get started](quickstart.md){ .md-button .md-button--primary }
 [Choose a workflow](workflows/index.md){ .md-button }
@@ -47,7 +45,7 @@ $$
 </div>
 </div>
 
-## New stable sparse planar workflow
+## Sparse planar workflow
 
 <div class="grid cards" markdown>
 
@@ -112,11 +110,12 @@ Missingness, smoothing, registration, irregular-to-grid projection, analysis sup
 
 ## Scientific qualification
 
-- [Release readiness](release-readiness.md) — cross-platform package/release qualification.
+- [Release readiness](release-readiness.md) — qualification history and the current post-publication state.
 - [Validation ledger](validation/reference-validation-ledger.md) — independent-reference and recovery evidence.
 - [Visual gallery](methods/visual-gallery.md) — deterministic figures regenerated from package code.
 - [Mathematical reference](methods/mathematical-reference.md) — implementation-matched equations and scope boundaries.
+- [API stability policy](reference/api-stability.md) — the stable 1.x compatibility contract and deprecation rules.
 
 ---
 
-**Current stable release:** `0.12.0` · [PyPI](https://pypi.org/project/eyetrajectoriespy/) · [0.12.0 release notes](releases/0.12.0.md) · [API stability policy](reference/api-stability.md)
+**Current stable release:** `1.0.0` · [PyPI](https://pypi.org/project/eyetrajectoriespy/) · [1.0.0 release notes](releases/1.0.0.md) · [API stability policy](reference/api-stability.md)

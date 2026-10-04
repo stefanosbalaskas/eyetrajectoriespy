@@ -194,7 +194,7 @@ nav:
           - Release process: release-process.md
   - API:
       - API stability & hierarchy: reference/api-stability.md
-      - 0.55 consistency audit: reference/api-consistency-audit.md
+      - Post-0.12 consistency audit: reference/api-consistency-audit.md
       - Capability inventory: reference/capability-inventory.md
       - Public API: reference/api.md
       - Function → equation index: reference/function-equation-index.md
