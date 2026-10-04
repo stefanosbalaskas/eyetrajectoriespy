@@ -43,18 +43,18 @@ jobs:
           cache: pip
       - name: Install package and test dependencies
         run: python -m pip install -U pip && python -m pip install -e ".[dev]"
-      - name: Generate candidate boundary from live public surface
+      - name: Generate live 1.x public-surface observation
         run: |
           python scripts/freeze_one_dot_zero_api.py \
-            --output generated-one-dot-zero-api-stability.json
-      - name: Upload independently generated boundary
+            --output live-one-x-api-observation.json
+      - name: Upload live 1.x public-surface observation
         uses: actions/upload-artifact@v7
         with:
-          name: generated-one-dot-zero-api-stability
-          path: generated-one-dot-zero-api-stability.json
+          name: live-one-x-api-observation
+          path: live-one-x-api-observation.json
           if-no-files-found: error
           retention-days: 90
-      - name: Verify frozen boundary exactly
+      - name: Verify frozen 1.0 compatibility
         run: |
           python scripts/freeze_one_dot_zero_api.py \
             --check ONE_DOT_ZERO_API_STABILITY.json
