@@ -1,18 +1,15 @@
 # Post-0.12 public API consistency audit
 
-This audit is the first tranche of the **post-0.12 product-observation and
-1.0-readiness programme**. It is deliberately conservative: inventory first,
-real-use evidence second, and only then a decision about what deserves a 1.0
-stability promise.
+!!! note "Historical stabilization evidence"
+    This page records the conservative audit that preceded the frozen 1.0 compatibility boundary. Final `1.0.0` is now published; the active compatibility policy is the [API stability and hierarchy](api-stability.md) page.
 
-The published `0.12.0` scientific release is closed. The active source line is
-`1.0.0rc1`; this page does **not** imply a `0.13` estimator programme and it
-does not authorize namespace surgery.
+This audit was the first tranche of the **post-0.12 product-observation and 1.0-readiness programme**: inventory first, real-use evidence second, and only then a decision about what deserved a 1.0 stability promise.
+
+The published `0.12.0` scientific release remained immutable throughout that work. The audit did **not** imply a `0.13` estimator programme and did not authorize namespace surgery. Its results fed the later frozen 1.0 contract and final `1.0.0` release.
 
 ## Machine-checked inventory
 
-`PUBLIC_API_1_0_AUDIT.json` records the review policy. The exhaustive installed
-inventory is generated from the exact package `__all__` surface with:
+`PUBLIC_API_1_0_AUDIT.json` records the review policy. The exhaustive installed inventory is generated from the exact package `__all__` surface with:
 
 ```bash
 python scripts/audit_public_api_surface.py \
@@ -25,35 +22,23 @@ The audit fails closed when:
 - a public reporting helper violates the `*_reporting_text` convention;
 - a public `_frame` name does not use the `*_frame` suffix;
 - an explicit stability override refers to a non-public symbol; or
-- the deterministic gallery manifest differs from the callable public
-  `plot_*` surface.
+- the deterministic gallery manifest differs from the callable public `plot_*` surface.
 
-The generated JSON contains every public export, its naming family, its current
-**review posture**, workflow roles, exact callable/class identity aliases, and
-summary counts. A review posture is not a stability guarantee.
+The generated JSON contains every public export, its naming family, its review posture, workflow roles, exact callable/class identity aliases, and summary counts. At the time of this audit, a review posture was intentionally not yet a stability guarantee.
 
-## Review postures
+## Review postures used by the audit
 
-The current audit distinguishes:
+The audit distinguished:
 
-- **canonical candidate** — recommended workflow entry points and their
-  canonical bootstrap/reporting companions;
-- **supported candidate** — supported public functionality that still needs a
-  deliberate 1.0 decision;
-- **diagnostic candidate** — sensitivity, audit, recovery, validation, or
-  diagnostic functionality that must not become a silent model-selection
-  oracle;
-- **experimental** — supported with a narrower interpretation/validation
-  boundary and no 1.0 promise yet;
-- **compatibility** — an intentionally retained backend-specific or migration
-  route rather than an accidental duplicate;
+- **canonical candidate** — recommended workflow entry points and their canonical bootstrap/reporting companions;
+- **supported candidate** — supported public functionality still awaiting a deliberate 1.0 decision;
+- **diagnostic candidate** — sensitivity, audit, recovery, validation, or diagnostic functionality that must not become a silent model-selection oracle;
+- **experimental** — supported with a narrower interpretation/validation boundary and no 1.0 promise;
+- **compatibility** — an intentionally retained backend-specific or migration route rather than an accidental duplicate;
 - **reproducibility** — environment and portable-result infrastructure; and
-- **result-object candidate** — a public `*Result` schema that must be assessed
-  before promising long-term compatibility.
+- **result-object candidate** — a public `*Result` schema assessed before promising long-term compatibility.
 
-Unclassified public APIs default to **supported candidate**, not stable. This
-is intentional: 1.0 stability is something the project will opt into after
-product observation, not something inferred from age or test coverage.
+Unclassified public APIs defaulted to **supported candidate**, not stable. This was intentional: 1.0 stability was something the project opted into only after product observation rather than something inferred from age or test coverage.
 
 ## Naming conventions under review
 
@@ -70,44 +55,28 @@ The forward conventions remain:
 | interval level | `confidence_level` |
 | analysis result container | descriptive `*Result` class |
 
-Historical descriptive APIs such as `recurrence_matrix()`, `rqa_metrics()`,
-`dynamic_time_warping_distance()`, `register_to_landmarks()` and
-`summarise_fpca()` are not renamed merely to force prefix uniformity.
+Historical descriptive APIs such as `recurrence_matrix()`, `rqa_metrics()`, `dynamic_time_warping_distance()`, `register_to_landmarks()` and `summarise_fpca()` were not renamed merely to force prefix uniformity.
 
 ## Parallel routes are not automatically duplicates
 
-The audit explicitly records two scientifically meaningful pairs:
+The audit explicitly recorded two scientifically meaningful pairs:
 
-1. `fit_sparse_fpca()` versus `fit_sparse_fpca_fdapy()` — native sparse PACE
-   versus the explicit FDApy compatibility backend;
-2. `fit_mfpca()` versus `fit_sparse_mfpca()` — common-grid multivariate FDA
-   versus native paired sparse/irregular planar FDA.
+1. `fit_sparse_fpca()` versus `fit_sparse_fpca_fdapy()` — native sparse PACE versus the explicit FDApy compatibility backend;
+2. `fit_mfpca()` versus `fit_sparse_mfpca()` — common-grid multivariate FDA versus native paired sparse/irregular planar FDA.
 
-Neither pair is a deprecation candidate simply because both routes exist.
-Exact Python-object aliases are nevertheless reported in the generated audit
-so accidental compatibility names can be reviewed rather than guessed.
+Neither pair became a deprecation candidate simply because both routes exist. Exact Python-object aliases are nevertheless reported in the generated audit so accidental compatibility names can be reviewed rather than guessed.
 
 ## Result objects and serialization
 
-Public result objects are part of the 1.0 review surface. Their long-term
-contract is wider than field names: units, array orientation, identifiers,
-diagnostics, failure/status fields and provenance all matter.
+Public result objects were part of the 1.0 review surface. Their long-term contract is wider than field names: units, array orientation, identifiers, diagnostics, failure/status fields and provenance all matter.
 
-Portable serialization remains intentionally distinct from pickling. The
-portable-result layer stores scientific arrays, identifiers, specifications,
-units, diagnostics and provenance in an explicit JSON + NPZ bundle. Opaque
-backend-native fields are disclosed through `nonportable_fields`; the project
-must not silently pretend they were serialized.
+Portable serialization remains intentionally distinct from pickling. The portable-result layer stores scientific arrays, identifiers, specifications, units, diagnostics and provenance in an explicit JSON + NPZ bundle. Opaque backend-native fields are disclosed through `nonportable_fields`; the project must not silently pretend they were serialized.
 
-The real-use tranche will test whether the dense and sparse-planar result
-objects survive the actual path from fitted analysis through frames, reporting,
-figures and portable export/load without repository-only knowledge.
+The later real-use tranche tested whether dense and sparse-planar result objects survived the actual path from fitted analysis through frames, reporting, figures and portable export/load without repository-only knowledge. That evidence contributed to the final 1.0 freeze.
 
 ## Failure semantics
 
-The candidate 1.0 rule remains **explicit failure or explicit status rather
-than silent scientific repair**. In particular, public workflows should not
-silently:
+The candidate 1.0 rule was **explicit failure or explicit status rather than silent scientific repair**. That rule remains part of the stable 1.x policy. In particular, public workflows should not silently:
 
 - interpolate raw sparse trajectories merely to satisfy a common-grid method;
 - replace missing observations with zero;
@@ -117,12 +86,9 @@ silently:
 - reinterpret participant/trial independence; or
 - hide nonportable scientific state during serialization.
 
-Whether every existing API obeys this consistently is an observation target,
-not assumed by this document.
-
 ## Plotting policy
 
-The documentation contract is one-way:
+The documentation contract remains one-way:
 
 $$
 \text{public plot API}
@@ -130,27 +96,21 @@ $$
 \text{one deterministic documented gallery case}.
 $$
 
-The converse is **not** a requirement. A result object does not acquire a new
-plotting helper merely to make the namespace visually symmetric. This prevents
-1.0-readiness work from becoming another source of API inflation.
+The converse is **not** a requirement. A result object does not acquire a new plotting helper merely to make the namespace visually symmetric. This prevents stability work from becoming another source of API inflation.
 
-## Deprecation and removal decision
+## Deprecation and removal outcome
 
-At this tranche:
+The audit authorized:
 
-- **deprecation candidates: none authorized**;
-- **removal candidates: none authorized**;
-- **1.0 compatibility promise: not yet active**.
+- **deprecation candidates: none**;
+- **removal candidates: none**.
 
-Any later inconsistency selected for correction requires an individual
-migration record containing the current public name/signature, replacement,
-warning/alias behavior, first deprecated version, earliest removal version and
-affected docs/examples/tests.
+Subsequent product observation, reproducibility work and explicit contract generation supported a stable 1.0 boundary of 455 stable exports plus three explicitly experimental exports. Final `1.0.0` activated that compatibility promise.
 
-## What comes next
+Any future inconsistency selected for correction requires an individual migration record containing the current public name/signature, replacement, warning/alias behavior, first deprecated version, earliest removal version and affected docs/examples/tests.
 
-This inventory is intentionally not the final decision. The next evidence is
-external-researcher-style use of both the dense/common-grid and sparse planar
-paths. Friction found there may justify targeted corrections. Absence of
-friction is evidence for stability. Either outcome is more informative than
-renaming APIs from a static namespace inspection alone.
+## Outcome
+
+The inventory was intentionally not the final decision. It was followed by external-researcher-style product observation, reproducibility evidence, the machine-readable 1.0 contract, literal `1.0.0rc1` qualification/production observation, and final `1.0.0` qualification/publication.
+
+The current policy is therefore no longer “observe before promising stability”; it is **preserve the stable 1.0 boundary and require explicit governance for any change to it**.
