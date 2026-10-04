@@ -25,6 +25,7 @@ EVIDENCE_FILES = (
     ROOT / "PERFORMANCE_ENVELOPE.json",
 )
 BASE_VALIDATOR_VERSION = "0.12.0"
+LATEST_QUALIFIED_EVIDENCE_VERSION = "1.0.0"
 QUALIFIED_RELEASE_MAIN = "1a2afc79e43108e674f3cdd2dc1cb2d8c1b8b3f0"
 _ORIGINAL_READ_TEXT = Path.read_text
 
@@ -53,16 +54,20 @@ def _composed_source_read_text(self: Path, *args, **kwargs) -> str:
             if path.exists():
                 category_sources.append(_ORIGINAL_READ_TEXT(path, encoding="utf-8"))
         return text + "\n" + "\n".join(category_sources)
-    if resolved in {
-        RELEASE_READINESS,
-        CANONICAL_WORKFLOWS,
-        *(path.resolve() for path in EVIDENCE_FILES),
-    }:
+    if resolved in {RELEASE_READINESS, CANONICAL_WORKFLOWS}:
         # The preserved base validator predates the post-0.12 source line and
-        # hard-codes 0.12.0 for source/evidence identity checks. Validate the
-        # real active values separately below, then present the old stable token
-        # only to that unchanged historical assertion layer.
+        # hard-codes 0.12.0 for source-identity checks. Validate the real active
+        # source identity separately below, then present the historical token
+        # only to that unchanged legacy assertion layer.
         return text.replace(et.__version__, BASE_VALIDATOR_VERSION)
+    if resolved in {path.resolve() for path in EVIDENCE_FILES}:
+        # The same historical validator also hard-codes 0.12.0 for qualification
+        # evidence. Real development-source validation below requires the latest
+        # frozen evidence identity (1.0.0); translate only for the legacy layer.
+        return text.replace(
+            LATEST_QUALIFIED_EVIDENCE_VERSION,
+            BASE_VALIDATOR_VERSION,
+        )
     return text
 
 
@@ -112,7 +117,9 @@ def _validate_source_and_evidence_versions() -> None:
         for path in EVIDENCE_FILES
     }
     expected_evidence_version = (
-        BASE_VALIDATOR_VERSION if ".dev" in et.__version__ else et.__version__
+        LATEST_QUALIFIED_EVIDENCE_VERSION
+        if ".dev" in et.__version__
+        else et.__version__
     )
     if evidence_versions != {expected_evidence_version}:
         raise RuntimeError(

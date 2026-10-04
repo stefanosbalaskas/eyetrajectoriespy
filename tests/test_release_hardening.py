@@ -6,7 +6,8 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_DEVELOPMENT_VERSION = "1.0.0"
+CURRENT_DEVELOPMENT_VERSION = "1.1.0.dev0"
+LATEST_QUALIFIED_EVIDENCE_VERSION = "1.0.0"
 
 
 def _load_script(name):
@@ -23,30 +24,25 @@ def test_release_version_contract_agrees_for_development_line():
     assert module.verify_version_contract() == CURRENT_DEVELOPMENT_VERSION
 
 
-def test_release_candidate_contract_is_production_eligible_after_exact_qualification():
+def test_development_line_is_not_production_eligible():
     module = _load_script("verify_release_version.py")
-    assert (
+    with pytest.raises(RuntimeError, match="development versions"):
         module.verify_version_contract(
             tag=f"v{CURRENT_DEVELOPMENT_VERSION}",
             production=True,
         )
-        == CURRENT_DEVELOPMENT_VERSION
-    )
 
 
 def test_development_line_rejects_stale_stable_tag():
     module = _load_script("verify_release_version.py")
     with pytest.raises(RuntimeError, match="release tag/version mismatch"):
-        module.verify_version_contract(
-            tag="v0.11.0",
-            production=True,
-        )
+        module.verify_version_contract(tag="v1.0.0")
 
 
-def test_release_candidate_requires_literal_exact_version_evidence():
+def test_development_line_inherits_latest_qualified_evidence():
     module = _load_script("verify_release_version.py")
     assert set(module.qualified_evidence_contract().values()) == {
-        CURRENT_DEVELOPMENT_VERSION
+        LATEST_QUALIFIED_EVIDENCE_VERSION
     }
     assert module.verify_version_contract() == CURRENT_DEVELOPMENT_VERSION
 

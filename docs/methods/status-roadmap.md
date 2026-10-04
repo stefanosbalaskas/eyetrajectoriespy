@@ -4,19 +4,21 @@
 
 `1.0.0` is the current stable production release and the compatibility baseline for the 1.x line.
 
-The current development line is **1.0.0**. This means the repository's active package/source identity remains the released stable baseline; no `1.1` development line has been opened.
+The current development line is **1.1.0.dev0**. It is a non-publishing source identity opened after 1.0 for evidence-driven compatible extensions; it is not a release commitment and does not alter the immutable `1.0.0` production artifacts or frozen 1.0 qualification records.
 
 The frozen 1.0 public boundary contains **455 stable public exports** and three explicitly experimental APIs. No deprecations or removals were authorized by the 1.0 stabilization programme.
 
-There is no automatic 1.1 estimator tranche. The package has moved from release qualification into **post-1.0 maintenance and observation**: external use, issue observation, real-data case studies, documentation, portability, performance, and dissemination should drive future changes.
+There is no automatic 1.1 estimator tranche. Post-1.0 methodology is governed by issue #158 and is deliberately narrower than a general FDA expansion: the current research programme concentrates on **sparse and irregular functional inference for eye tracking**, with each capability reviewed as a separate additive tranche.
 
 Near-term work prioritizes:
 
 - preserving stable 1.0 APIs and established scientific contracts;
 - external-use and issue observation against the frozen 1.0 boundary;
-- reproducible real-data case studies when licensing/consent permit;
-- documentation, portability, validation and non-breaking performance work; and
-- software/methodology dissemination.
+- conditional sparse-PACE score uncertainty, explicitly distinguished from full population-estimation uncertainty;
+- audited smoothing/bandwidth selection without hidden defaults;
+- informative-observation-process diagnostics before any correction estimator;
+- reproducible real-data case studies when licensing/consent permit; and
+- documentation, portability, validation, non-breaking performance work, and dissemination.
 
 Future methodology is evidence-driven rather than version-number-driven.
 
@@ -99,6 +101,8 @@ The 0.11 recovery laboratory remains the standing infrastructure for future meth
 
 Final `1.0.0` preserves that frozen scientific/API surface. The RC was observed outside the checkout on Python 3.11–3.13, final `1.0.0` received fresh exact-version performance and complete PR/exact-main qualification, and production workflow #18 published the final version from exact arming commit `d90fbbeea390054019e7689badedf5011ee09c22`. Post-publication readiness is disarmed again.
 
+The `1.1.0.dev0` source line may inherit those records only as historical baseline evidence. Frozen qualification files remain labelled `1.0.0`; any future 1.1 release candidate or final release requires fresh exact-version qualification before publication may be armed.
+
 ## Published release sequence
 
 ### 0.10.0 — native sparse univariate FPCA / PACE
@@ -123,16 +127,18 @@ Published 4 October 2026 after literal final-version qualification and a separat
 
 Published tags and release artifacts remain immutable historical records. New documentation or later APIs do not retroactively alter the scientific identity of earlier releases.
 
-## Post-1.0 maintenance and observation
+## Post-1.0 sparse/irregular inference programme
 
-The highest-value work after 1.0 is product- and evidence-facing rather than estimator-driven:
+The evidence-driven programme tracked in issue #158 is ordered so that inferential hardening precedes large new estimators:
 
-- keep the frozen stable 1.0 API boundary machine-checked;
-- preserve complete deterministic visual documentation and worked workflows;
-- observe external-user friction and real-data edge cases;
-- add compatible fixes, validation, portability and performance improvements without changing established scientific meaning;
-- turn realistic analyses into reproducible, citable case-study material; and
-- defer new methodology until a demonstrated scientific gap justifies it.
+1. conditional PACE/joint-PACE score uncertainty, with full population-refit uncertainty kept distinct;
+2. audited opt-in bandwidth selection with declared resampling units and retained failures;
+3. informative-observation diagnostics/sensitivity before any inverse-intensity correction;
+4. sparse participant/trial multilevel FPCA, initially univariate;
+5. asynchronous/coordinate-specific sparse planar MFPCA without hidden interpolation;
+6. future/partially observed trajectory prediction with participant-aware functional uncertainty.
+
+Irregular functional mixed effects, shape/manifold analysis, genuinely functional clustering/classification, focused Bayesian sparse modelling, and additional nonlinear/state-space methods remain later or conditional work. Device/clock synchronization remains outside the package except for narrow audit interfaces.
 
 For versioning, the intended posture is:
 
@@ -140,20 +146,4 @@ For versioning, the intended posture is:
 - **1.x** — additive capabilities or deliberately governed compatible extensions;
 - **2.0** — breaking stable API/scientific-contract changes after explicit deprecation, except when an exceptional correction is necessary to prevent demonstrably wrong scientific results.
 
-## Future methodology
-
-A sparse participant/trial functional decomposition remains a plausible later candidate because it targets a different scientific object from the existing complete-grid mixed-effects regression surface. Bayesian sparse MFPCA, additional generalized families, and broad nonlinear simulation expansion remain research possibilities rather than scheduled releases.
-
-The intended methodological progression remains:
-
-```text
-dense functional gaze
-        ->
-sparse univariate gaze
-        ->
-sparse joint planar gaze
-        ->
-sparse hierarchical gaze (only if recovery evidence justifies it)
-```
-
-No version number by itself commits the project to the final arrow.
+No version number by itself commits the project to a scientific capability; promotion remains contingent on method-specific validation and the package's release-governance gates.
