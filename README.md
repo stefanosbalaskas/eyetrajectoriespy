@@ -17,7 +17,7 @@ y_i(t)
 \end{bmatrix}.
 $$
 
-**Stable:** `1.0.0` · **Python:** 3.11–3.13
+**Stable:** `1.0.0` · **Development source:** `1.1.0.dev0` · **Python:** 3.11–3.13
 
 ```bash
 pip install eyetrajectoriespy
@@ -34,6 +34,9 @@ pip install eyetrajectoriespy==1.0.0
 
 > **Current stable release: `1.0.0`**  
 > `1.0.0` freezes the evidence-backed 1.0 compatibility boundary over the production-observed `1.0.0rc1` scientific/API surface without adding a new estimator or changing scientific behavior. Release qualification, immutable hashes, OIDC/attestation evidence, and publication chronology are retained in the [1.0.0 release notes](https://stefanosbalaskas.github.io/eyetrajectoriespy/releases/1.0.0/) and validation records rather than repeated on this landing page.
+>
+> **Development source: `1.1.0.dev0`**  
+> The current source line is a non-publishing post-1.0 development identity for evidence-driven sparse/irregular inference work tracked in issue #158. It does not alter the immutable `1.0.0` release, publication readiness remains disarmed, and frozen 1.0 qualification records remain attributed to `1.0.0` until a later release receives fresh exact-version qualification.
 
 ![Sparse planar covariance structure estimated by eyetrajectoriespy](docs/assets/gallery/sparse-mfpca-covariance-blocks.svg)
 
