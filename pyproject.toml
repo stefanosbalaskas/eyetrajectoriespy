@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "eyetrajectoriespy"
-version = "1.0.0"
+version = "1.1.0.dev0"
 description = "Functional and continuous trajectory analysis for eye-tracking data in Python"
 readme = "README.md"
 license = "MIT"
@@ -20,7 +20,7 @@ dependencies = [
   "statsmodels>=0.14",
 ]
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Science/Research",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.11",
