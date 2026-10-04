@@ -17,12 +17,12 @@ y_i(t)
 \end{bmatrix}.
 $$
 
-**Stable:** `0.12.0` · **1.0 release candidate under qualification:** `1.0.0rc1` · **Python:** 3.11–3.13
+**Stable:** `1.0.0` · **Python:** 3.11–3.13
 
 ```bash
 pip install eyetrajectoriespy
 # exact reproducible stable release
-pip install eyetrajectoriespy==0.12.0
+pip install eyetrajectoriespy==1.0.0
 ```
 
 [Documentation](https://stefanosbalaskas.github.io/eyetrajectoriespy/) ·
@@ -32,11 +32,8 @@ pip install eyetrajectoriespy==0.12.0
 [Visual gallery](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/visual-gallery/) ·
 [Validation](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/)
 
-> **Current stable release: `0.12.0`**  
-> `0.12.0` adds the qualified native sparse multivariate FPCA / joint-PACE workflow for jointly observed planar gaze. Release qualification, immutable hashes, OIDC/attestation evidence, and publication chronology are retained in the [0.12.0 release notes](https://stefanosbalaskas.github.io/eyetrajectoriespy/releases/0.12.0/) and validation records rather than repeated on this landing page.
->
-> **1.0 release candidate under qualification: `1.0.0rc1`**  
-> The candidate freezes the evidence-backed 1.0 API boundary without adding a new estimator or changing scientific behavior. Publication readiness remains disarmed until fresh exact-RC performance and the complete PR plus protected-main qualification matrices pass.
+> **Current stable release: `1.0.0`**  
+> `1.0.0` freezes the evidence-backed 1.0 compatibility boundary over the production-observed `1.0.0rc1` scientific/API surface without adding a new estimator or changing scientific behavior. Release qualification, immutable hashes, OIDC/attestation evidence, and publication chronology are retained in the [1.0.0 release notes](https://stefanosbalaskas.github.io/eyetrajectoriespy/releases/1.0.0/) and validation records rather than repeated on this landing page.
 
 ![Sparse planar covariance structure estimated by eyetrajectoriespy](docs/assets/gallery/sparse-mfpca-covariance-blocks.svg)
 
@@ -133,7 +130,7 @@ The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native spa
 - [Mathematical contracts](MATHEMATICAL_CONTRACTS.md)
 - [Workflow atlas](WORKFLOW_ATLAS.md)
 - [Validation ledger](VALIDATION.md)
-- [0.12.0 release notes](docs/releases/0.12.0.md)
+- [1.0.0 release notes](docs/releases/1.0.0.md)
 
 Development checks:
 
