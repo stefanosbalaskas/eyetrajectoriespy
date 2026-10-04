@@ -4,6 +4,8 @@
 
 `1.0.0` is the current stable production release and the compatibility baseline for the 1.x line.
 
+The current development line is **1.0.0**. This means the repository's active package/source identity remains the released stable baseline; no `1.1` development line has been opened.
+
 The frozen 1.0 public boundary contains **455 stable public exports** and three explicitly experimental APIs. No deprecations or removals were authorized by the 1.0 stabilization programme.
 
 There is no automatic 1.1 estimator tranche. The package has moved from release qualification into **post-1.0 maintenance and observation**: external use, issue observation, real-data case studies, documentation, portability, performance, and dissemination should drive future changes.
