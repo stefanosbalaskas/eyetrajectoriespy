@@ -54,16 +54,20 @@ def _composed_source_read_text(self: Path, *args, **kwargs) -> str:
             if path.exists():
                 category_sources.append(_ORIGINAL_READ_TEXT(path, encoding="utf-8"))
         return text + "\n" + "\n".join(category_sources)
-    if resolved in {
-        RELEASE_READINESS,
-        CANONICAL_WORKFLOWS,
-        *(path.resolve() for path in EVIDENCE_FILES),
-    }:
+    if resolved in {RELEASE_READINESS, CANONICAL_WORKFLOWS}:
         # The preserved base validator predates the post-0.12 source line and
-        # hard-codes 0.12.0 for source/evidence identity checks. Validate the
-        # real active values separately below, then present that historical token
-        # only to the unchanged legacy assertion layer.
+        # hard-codes 0.12.0 for source-identity checks. Validate the real active
+        # source identity separately below, then present the historical token
+        # only to that unchanged legacy assertion layer.
         return text.replace(et.__version__, BASE_VALIDATOR_VERSION)
+    if resolved in {path.resolve() for path in EVIDENCE_FILES}:
+        # The same historical validator also hard-codes 0.12.0 for qualification
+        # evidence. Real development-source validation below requires the latest
+        # frozen evidence identity (1.0.0); translate only for the legacy layer.
+        return text.replace(
+            LATEST_QUALIFIED_EVIDENCE_VERSION,
+            BASE_VALIDATOR_VERSION,
+        )
     return text
 
 
