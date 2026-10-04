@@ -116,7 +116,7 @@ The README is intentionally a compact entry point rather than the exhaustive fun
 
 ## Release lineage and reproducibility
 
-The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native sparse univariate FPCA/PACE line, the immutable `0.11.0rc1` prerelease preceded final 0.11 known-truth recovery infrastructure, and `0.12.0` added the native sparse planar MFPCA/joint-PACE line. Published tags and distributions remain immutable historical records.
+The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native sparse univariate FPCA/PACE line, the immutable `0.11.0rc1` prerelease preceded final 0.11 known-truth recovery infrastructure, and `0.12.0` added the native sparse planar MFPCA/joint-PACE line. `1.0.0` closes that stabilization programme as the frozen stable compatibility baseline. Published tags and distributions remain immutable historical records.
 
 - [Portable scientific results](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/portable-results/)
 - [Reproducibility bundle checklist](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/checklist/)
@@ -129,7 +129,7 @@ The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native spa
 - [Function → equation index](FUNCTION_EQUATION_INDEX.md)
 - [Mathematical contracts](MATHEMATICAL_CONTRACTS.md)
 - [Workflow atlas](WORKFLOW_ATLAS.md)
-- [Validation ledger](VALIDATION.md)
+- [Current validation ledger](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/)
 - [1.0.0 release notes](docs/releases/1.0.0.md)
 
 Development checks:
