@@ -1,0 +1,42 @@
+name: sparse-score-uncertainty-validation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  oracle-conditional-calibration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+      - name: Validate conditional score uncertainty against known population truth
+        run: |
+          python scripts/run_sparse_score_uncertainty_validation.py \
+            --n-curves 500 \
+            --output sparse-score-uncertainty-validation.json
+      - name: Upload conditional uncertainty evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: sparse-score-uncertainty-validation
+          path: sparse-score-uncertainty-validation.json
