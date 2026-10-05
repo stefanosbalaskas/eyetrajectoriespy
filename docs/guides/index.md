@@ -25,7 +25,8 @@ modeling.
 ## FPCA, uncertainty & review
 
 Use these guides for functional decomposition, component retention, stability,
-uncertainty, anomaly review, and participant-aware resampling.
+uncertainty, anomaly review, participant-aware resampling, and prediction from
+partially observed sparse histories.
 
 - [FPCA & MFPCA](fpca.md)
 - [FPCA stability & validation](stability-validation.md)
@@ -35,6 +36,7 @@ uncertainty, anomaly review, and participant-aware resampling.
 - [Simultaneous FPC bands](simultaneous-fpc-bands.md)
 - [FPCA spectrum uncertainty](spectrum-uncertainty.md)
 - [FPC score basis uncertainty](score-uncertainty.md)
+- [Sparse partial-trajectory prediction](sparse-partial-trajectory-prediction.md)
 - [Simultaneous functional mean bands](simultaneous-mean-bands.md)
 - [Near-tied FPC subspaces](subspace-stability.md)
 - [Outliers & influence](outliers-influence.md)
