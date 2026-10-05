@@ -205,25 +205,17 @@ def _interval_summary(times: np.ndarray) -> tuple[float, float, float]:
     return float(np.min(delta)), float(np.median(delta)), float(np.max(delta))
 
 
-def _summarise_units(
-    frame: pd.DataFrame,
-    *,
-    unit_column: str,
-    curve_column: str,
-    time_column: str,
-    observed_column: str,
-) -> pd.DataFrame:
+def _curve_summary(process: ObservationProcessData) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []
-    for unit, subset in frame.groupby(unit_column, sort=False):
-        candidate = subset[time_column].to_numpy(dtype=float)
-        observed_mask = subset[observed_column].to_numpy(dtype=bool)
+    for curve_id, subset in process.frame.groupby(process.curve_column, sort=False):
+        candidate = subset[process.time_column].to_numpy(dtype=float)
+        observed_mask = subset[process.observed_column].to_numpy(dtype=bool)
         observed_time = candidate[observed_mask]
         cmin, cmed, cmax = _interval_summary(candidate)
         omin, omed, omax = _interval_summary(observed_time)
         rows.append(
             {
-                unit_column: str(unit),
-                "n_curves": int(subset[curve_column].nunique()),
+                process.curve_column: str(curve_id),
                 "n_candidates": int(len(subset)),
                 "n_observed": int(np.count_nonzero(observed_mask)),
                 "n_missing": int(np.count_nonzero(~observed_mask)),
@@ -249,26 +241,33 @@ def _summarise_units(
     return pd.DataFrame(rows)
 
 
-def _curve_summary(process: ObservationProcessData) -> pd.DataFrame:
-    return _summarise_units(
-        process.frame,
-        unit_column=process.curve_column,
-        curve_column=process.curve_column,
-        time_column=process.time_column,
-        observed_column=process.observed_column,
-    )
-
-
 def _group_summary(process: ObservationProcessData) -> pd.DataFrame | None:
     if process.group_column is None:
         return None
-    return _summarise_units(
-        process.frame,
-        unit_column=process.group_column,
-        curve_column=process.curve_column,
-        time_column=process.time_column,
-        observed_column=process.observed_column,
-    )
+    rows: list[dict[str, Any]] = []
+    for group_id, subset in process.frame.groupby(process.group_column, sort=False):
+        candidate = subset[process.time_column].to_numpy(dtype=float)
+        observed_mask = subset[process.observed_column].to_numpy(dtype=bool)
+        observed_time = candidate[observed_mask]
+        rows.append(
+            {
+                process.group_column: str(group_id),
+                "n_curves": int(subset[process.curve_column].nunique()),
+                "n_candidates": int(len(subset)),
+                "n_observed": int(np.count_nonzero(observed_mask)),
+                "n_missing": int(np.count_nonzero(~observed_mask)),
+                "observed_fraction": float(np.mean(observed_mask)),
+                "candidate_time_min": float(np.min(candidate)),
+                "candidate_time_max": float(np.max(candidate)),
+                "observed_time_min": (
+                    np.nan if observed_time.size == 0 else float(np.min(observed_time))
+                ),
+                "observed_time_max": (
+                    np.nan if observed_time.size == 0 else float(np.max(observed_time))
+                ),
+            }
+        )
+    return pd.DataFrame(rows)
 
 
 def _time_summary(
@@ -474,7 +473,7 @@ def _descriptive_logistic(
         x0=np.zeros(2, dtype=float),
         jac=lambda beta: objective(beta)[1],
         method="BFGS",
-        options={"gtol": 1e-10, "maxiter": 500},
+        options={"gtol": 1e-8, "maxiter": 500},
     )
     if not fit.success or not np.all(np.isfinite(fit.x)):
         return "fit_failure", {
@@ -636,6 +635,7 @@ def diagnose_observation_process(
         )
 
     predictor_rows: list[dict[str, Any]] = []
+    included_names: set[str] = set()
     if include_linear_time_association:
         predictor_rows.append(
             _predictor_diagnostic_row(
@@ -646,7 +646,10 @@ def diagnose_observation_process(
                 n_total=n_candidates,
             )
         )
+        included_names.add(process.time_column)
     for name in requested_predictors:
+        if name in included_names:
+            continue
         predictor_rows.append(
             _predictor_diagnostic_row(
                 name,
@@ -656,6 +659,7 @@ def diagnose_observation_process(
                 n_total=n_candidates,
             )
         )
+        included_names.add(name)
     if history_frame is not None:
         for name in requested_history:
             predictor_rows.append(
@@ -708,6 +712,7 @@ def diagnose_observation_process(
         "time_column": process.time_column,
         "observed_column": process.observed_column,
         "group_column": process.group_column,
+        "group_summary_contains_sequence_run_metrics": False,
         "predictor_kinds": dict(process.predictor_kinds),
         "requested_predictors": list(requested_predictors),
         "requested_history_predictors": list(requested_history),
