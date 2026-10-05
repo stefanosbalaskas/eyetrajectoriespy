@@ -16,6 +16,8 @@ modeling.
 - [Preparing trajectories](preprocessing.md)
 - [Native irregular trajectories](irregular-trajectories.md)
 - [Sparse irregular / PACE FPCA](sparse-irregular-fpca.md)
+- [Sparse planar MFPCA / joint PACE](sparse-multivariate-fpca.md)
+- [Asynchronous sparse planar MFPCA / joint PACE](sparse-multivariate-async.md)
 - [Observation-process diagnostics](observation-process-diagnostics.md)
 - [Basis representations](basis-representations.md)
 - [Derived continuous functions](derived-functions.md)
