@@ -1,0 +1,84 @@
+name: sparse-mfpca-bandwidth-selection-validation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  known-truth-selection:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+      - name: Run known-truth sparse-MFPCA bandwidth selection qualification
+        run: |
+          python scripts/run_sparse_mfpca_bandwidth_selection_validation.py \
+            --n-participants 24 \
+            --output sparse-mfpca-bandwidth-selection-validation.json
+      - name: Verify qualification scope
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(
+              Path("sparse-mfpca-bandwidth-selection-validation.json").read_text()
+          )
+          if payload.get("validation_passed") is not True:
+              raise SystemExit("sparse-MFPCA bandwidth qualification did not pass")
+          if payload.get("criterion") != "mean_curve_planar_gaussian_nll":
+              raise SystemExit("unexpected selection criterion")
+          if payload.get("measurement_error_tuned") is not False:
+              raise SystemExit("qualification must not tune measurement error")
+          if payload.get("joint_pace_scoring_performed") is not False:
+              raise SystemExit("qualification must not use PACE score loss")
+          if payload.get("rank_k_covariance_used_for_validation") is not False:
+              raise SystemExit("qualification must use the full fitted joint covariance")
+          if payload.get("unique_true_bandwidth_recovery_claimed") is not False:
+              raise SystemExit("qualification must not claim unique true-bandwidth recovery")
+
+          scenarios = payload.get("scenarios", [])
+          if len(scenarios) != 2:
+              raise SystemExit("qualification must contain two scenarios")
+          modes = {row.get("measurement_error_mode") for row in scenarios}
+          if modes != {"diagonal", "fixed_matrix"}:
+              raise SystemExit("qualification must exercise diagonal and correlated error")
+          units = {row.get("resampling_unit") for row in scenarios}
+          if units != {"curve", "group"}:
+              raise SystemExit("qualification must exercise curve and group resampling")
+          if not all(row.get("deterministic_replay_passed") for row in scenarios):
+              raise SystemExit("deterministic replay must pass")
+          if not all(row.get("pathological_failed_folds", 0) > 0 for row in scenarios):
+              raise SystemExit("pathological candidate failures must remain visible")
+          if any(row.get("downstream_fit_automatic_bandwidth_selection_performed") for row in scenarios):
+              raise SystemExit("downstream fit must remain explicit/nonautomatic")
+          group_rows = [row for row in scenarios if row.get("resampling_unit") == "group"]
+          if len(group_rows) != 1 or group_rows[0].get("group_leakage_prevented") is not True:
+              raise SystemExit("group-resampling qualification must prevent leakage")
+          PY
+      - name: Upload sparse-MFPCA bandwidth selection evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: sparse-mfpca-bandwidth-selection-validation
+          path: sparse-mfpca-bandwidth-selection-validation.json
+          if-no-files-found: error

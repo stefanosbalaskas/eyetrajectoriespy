@@ -180,6 +180,7 @@ nav:
           - Functional simulation validation: validation/functional-simulation-validation.md
           - Targeted pre-0.12 recovery audit: validation/pre-0.12-recovery-audit.md
           - Native sparse MFPCA recovery: validation/sparse-mfpca-recovery.md
+          - Sparse MFPCA bandwidth selection: validation/sparse-mfpca-bandwidth-selection.md
           - Sparse joint-PACE score uncertainty: validation/sparse-mfpca-score-uncertainty.md
           - Sparse MFPCA comparator sensitivity: validation/sparse-mfpca-comparator-sensitivity.md
           - Sparse MFPCA stress and performance: validation/sparse-mfpca-observation-performance.md
