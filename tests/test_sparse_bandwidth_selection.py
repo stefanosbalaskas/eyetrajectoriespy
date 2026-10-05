@@ -1,11 +1,17 @@
+import inspect
+from types import SimpleNamespace
+
 import numpy as np
 import pandas as pd
 import pytest
 
+from eyetrajectoriespy import fit_sparse_fpca
 from eyetrajectoriespy.sparse_bandwidth_selection import (
     SparseFPCABandwidthSelectionResult,
     _candidate_table,
+    _curve_gaussian_nll,
     _make_folds,
+    _positive_grid,
     _select_minimum_candidate,
     select_sparse_fpca_bandwidths,
     sparse_fpca_bandwidth_selection_reporting_text,
@@ -42,20 +48,52 @@ def _sparse_curves(n_curves: int = 8) -> IrregularTrajectorySet:
     )
 
 
-def _select(trajectories, **kwargs):
-    return select_sparse_fpca_bandwidths(
-        trajectories,
-        dimension="x",
-        evaluation_grid=np.linspace(0.20, 0.80, 7),
-        mean_bandwidths=(0.22, 0.32),
-        covariance_bandwidths=(0.35,),
-        noise_variance_method="fixed",
-        measurement_error_variance=0.01,
-        analysis_support_action="restrict",
-        n_splits=2,
-        psd_action="project",
-        **kwargs,
+def _select(trajectories, **overrides):
+    kwargs = {
+        "dimension": "x",
+        "evaluation_grid": np.linspace(0.20, 0.80, 7),
+        "mean_bandwidths": (0.22, 0.32),
+        "covariance_bandwidths": (0.35,),
+        "noise_variance_method": "fixed",
+        "measurement_error_variance": 0.01,
+        "analysis_support_action": "restrict",
+        "n_splits": 2,
+        "psd_action": "project",
+    }
+    kwargs.update(overrides)
+    return select_sparse_fpca_bandwidths(trajectories, **kwargs)
+
+
+def test_gaussian_curve_loss_matches_direct_calculation():
+    fit = SimpleNamespace(
+        evaluation_grid=np.array([0.0, 1.0]),
+        mean=np.array([0.1, -0.2]),
+        covariance=np.array([[0.8, 0.15], [0.15, 0.6]]),
+        noise_variance=0.25,
     )
+    time = np.array([0.0, 1.0])
+    observed = np.array([0.9, -0.5])
+
+    loss, condition, minimum, maximum = _curve_gaussian_nll(
+        fit,
+        time,
+        observed,
+        predictive_condition_limit=1e12,
+    )
+
+    sigma = fit.covariance + fit.noise_variance * np.eye(2)
+    residual = observed - fit.mean
+    expected = 0.5 * (
+        np.linalg.slogdet(sigma)[1]
+        + residual @ np.linalg.solve(sigma, residual)
+        + 2 * np.log(2 * np.pi)
+    ) / 2
+    eigenvalues = np.linalg.eigvalsh(sigma)
+
+    assert loss == pytest.approx(expected)
+    assert minimum == pytest.approx(eigenvalues.min())
+    assert maximum == pytest.approx(eigenvalues.max())
+    assert condition == pytest.approx(eigenvalues.max() / eigenvalues.min())
 
 
 def test_curve_level_selector_retains_complete_audit_and_selects_argmin():
@@ -84,7 +122,11 @@ def test_curve_level_selector_retains_complete_audit_and_selects_argmin():
     assert result.provenance["fit_inside_fold"] is True
     assert result.provenance["validation_observations_used_for_training"] is False
     assert result.provenance["validation_observations_used_for_pace_scoring"] is False
+    assert result.provenance["one_se_rule_implemented"] is False
     assert result.provenance["automatic_fit_bandwidth_selection_performed"] is False
+    assert result.provenance[
+        "selected_values_must_be_passed_explicitly_to_fit_sparse_fpca"
+    ] is True
 
 
 def test_curve_fold_assignment_is_deterministic_under_fixed_seed():
@@ -134,6 +176,20 @@ def test_group_resampling_keeps_participant_curves_together():
     assert result.provenance["group_leakage_prevented"] is True
 
 
+def test_impossible_group_design_fails_before_candidate_evaluation():
+    trajectories = _sparse_curves()
+
+    with pytest.raises(ValueError, match="unique groups"):
+        _select(
+            trajectories,
+            mean_bandwidths=(0.28,),
+            resampling_unit="group",
+            group_column="participant",
+            n_splits=5,
+            shuffle=False,
+        )
+
+
 def test_failed_candidate_folds_are_retained_not_silently_dropped():
     trajectories = _sparse_curves()
 
@@ -153,33 +209,32 @@ def test_failed_candidate_folds_are_retained_not_silently_dropped():
     )
 
     failed = result.fold_results[
-        result.fold_results["mean_bandwidth"] == pytest.approx(1e-6)
-    ]
-    # pandas does not vectorize pytest.approx comparisons reliably; use isclose.
-    failed = result.fold_results[
         np.isclose(result.fold_results["mean_bandwidth"], 1e-6)
     ]
     assert len(failed) == 2
     assert set(failed["status_code"]) == {"fit_failure"}
     assert failed["failure_code"].notna().all()
+    assert failed["failure_message"].notna().all()
     assert result.candidate_summary["n_failed_folds"].max() == 2
     assert result.selected_bandwidths is not None
     assert result.selected_bandwidths["mean_bandwidth"] == pytest.approx(0.28)
 
 
 def test_candidate_grid_is_sorted_unique_cartesian_product():
-    candidates = _candidate_table(
-        (0.3, 0.2),
-        (0.5, 0.4),
-        (0.2, 0.1),
-    )
+    mean_grid = _positive_grid((0.3, 0.2, 0.3), name="mean_bandwidths")
+    covariance_grid = _positive_grid((0.5, 0.4), name="covariance_bandwidths")
+    noise_grid = _positive_grid((0.2, 0.1), name="noise_bandwidths")
+    candidates = _candidate_table(mean_grid, covariance_grid, noise_grid)
 
+    assert mean_grid == (0.2, 0.3)
+    assert covariance_grid == (0.4, 0.5)
+    assert noise_grid == (0.1, 0.2)
     assert len(candidates) == 8
     assert candidates.iloc[0].to_dict() == {
         "candidate_id": "candidate_0000",
-        "mean_bandwidth": 0.3,
-        "covariance_bandwidth": 0.5,
-        "noise_bandwidth": 0.2,
+        "mean_bandwidth": 0.2,
+        "covariance_bandwidth": 0.4,
+        "noise_bandwidth": 0.1,
     }
 
 
@@ -233,3 +288,27 @@ def test_fixed_noise_rejects_noise_bandwidth_grid():
             analysis_support_action="restrict",
             n_splits=2,
         )
+
+
+def test_sparse_fitter_remains_explicit_and_nonautomatic():
+    parameters = inspect.signature(fit_sparse_fpca).parameters
+
+    assert "mean_bandwidth" in parameters
+    assert "covariance_bandwidth" in parameters
+    assert "mean_bandwidths" not in parameters
+    assert "covariance_bandwidths" not in parameters
+
+    trajectories = _sparse_curves()
+    fit = fit_sparse_fpca(
+        trajectories,
+        dimension="x",
+        n_components=1,
+        evaluation_grid=np.linspace(0.20, 0.80, 7),
+        mean_bandwidth=0.28,
+        covariance_bandwidth=0.35,
+        noise_variance_method="fixed",
+        measurement_error_variance=0.01,
+        analysis_support_action="restrict",
+        psd_action="project",
+    )
+    assert fit.provenance["sparse_fpca"]["automatic_bandwidth_selection_performed"] is False
