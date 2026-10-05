@@ -1,9 +1,17 @@
 """Audited bandwidth selection for native univariate sparse FPCA.
 
-The selector is deliberately separate from :func:`fit_sparse_fpca`.  It refits
+The selector is deliberately separate from :func:`fit_sparse_fpca`. It refits
 population objects inside curve/group training folds and evaluates whole
-held-out curves under the fitted Gaussian observation model.  No validation
+held-out curves under the fitted Gaussian observation model. No validation
 observation contributes to training-fold smoothing or noise estimation.
+
+The first qualified tranche tunes mean and latent-covariance bandwidths only.
+When diagonal-difference measurement-noise estimation is used, its
+``noise_bandwidth`` remains an explicitly declared scalar held fixed across all
+candidates/folds. Known-truth qualification showed that marginal predictive
+likelihood can recover total observation covariance while misallocating latent
+versus measurement-noise variance, so noise-bandwidth CV is intentionally not
+promoted in this tranche.
 """
 
 from __future__ import annotations
@@ -64,6 +72,15 @@ def _positive_grid(values: Sequence[float], *, name: str) -> tuple[float, ...]:
     return tuple(sorted(set(converted)))
 
 
+def _positive_scalar(value: float, *, name: str) -> float:
+    if isinstance(value, bool):
+        raise TypeError(f"{name} must be numeric")
+    number = float(value)
+    if not np.isfinite(number) or number <= 0:
+        raise ValueError(f"{name} must be finite and positive")
+    return number
+
+
 def _validate_evaluation_grid(evaluation_grid: np.ndarray) -> np.ndarray:
     grid = np.asarray(evaluation_grid, dtype=float)
     if (
@@ -86,6 +103,7 @@ def _validate_selector_inputs(
     evaluation_grid: np.ndarray,
     noise_variance_method: str,
     measurement_error_variance: float | None,
+    noise_bandwidth: float | None,
     noise_support: tuple[float, float] | None,
     analysis_support_action: str,
     n_splits: int,
@@ -94,7 +112,7 @@ def _validate_selector_inputs(
     min_valid_folds: int | None,
     predictive_condition_limit: float,
     failure_action: str,
-) -> tuple[np.ndarray, int]:
+) -> tuple[np.ndarray, int, float | None]:
     if not isinstance(trajectories, IrregularTrajectorySet):
         raise TypeError("trajectories must be an IrregularTrajectorySet")
     if dimension not in trajectories.dimension_names:
@@ -140,11 +158,21 @@ def _validate_selector_inputs(
         raise ValueError(
             "noise_variance_method must be 'diagonal_difference' or 'fixed'"
         )
+    resolved_noise_bandwidth: float | None
     if noise_variance_method == "diagonal_difference":
         if measurement_error_variance is not None:
             raise ValueError(
                 "measurement_error_variance must be None for diagonal_difference"
             )
+        if noise_bandwidth is None:
+            raise ValueError(
+                "noise_bandwidth is required for diagonal_difference selection; "
+                "A2 does not tune noise_bandwidth"
+            )
+        resolved_noise_bandwidth = _positive_scalar(
+            noise_bandwidth,
+            name="noise_bandwidth",
+        )
         if noise_support is None:
             raise ValueError(
                 "noise_support is required for diagonal_difference bandwidth selection"
@@ -159,10 +187,15 @@ def _validate_selector_inputs(
             raise ValueError(
                 "measurement_error_variance must be finite and non-negative"
             )
+        if noise_bandwidth is not None:
+            raise ValueError(
+                "noise_bandwidth must be None when noise_variance_method='fixed'"
+            )
         if noise_support is not None:
             raise ValueError(
                 "noise_support must be None when noise_variance_method='fixed'"
             )
+        resolved_noise_bandwidth = None
 
     if isinstance(n_splits, bool) or not isinstance(n_splits, int) or n_splits < 2:
         raise ValueError("n_splits must be an integer >= 2")
@@ -199,7 +232,7 @@ def _validate_selector_inputs(
         raise ValueError("predictive_condition_limit must be finite and > 1")
     if failure_action not in {"retain", "error"}:
         raise ValueError("failure_action must be 'retain' or 'error'")
-    return grid, required_folds
+    return grid, required_folds, resolved_noise_bandwidth
 
 
 def _make_folds(
@@ -230,6 +263,10 @@ def _make_folds(
     for fold, (train_idx, validation_idx) in enumerate(raw_splits):
         train_idx = np.asarray(train_idx, dtype=int)
         validation_idx = np.asarray(validation_idx, dtype=int)
+        if train_idx.size < 3:
+            raise ValueError(
+                "each training fold must contain at least three curves for native sparse FPCA"
+            )
         if np.intersect1d(train_idx, validation_idx).size:
             raise RuntimeError("cross-validation split contains curve leakage")
         if groups is not None:
@@ -252,26 +289,43 @@ def _make_folds(
 def _candidate_table(
     mean_bandwidths: tuple[float, ...],
     covariance_bandwidths: tuple[float, ...],
-    noise_bandwidths: tuple[float, ...] | None,
+    noise_bandwidth: float | None,
 ) -> pd.DataFrame:
-    noise_values: tuple[float | None, ...]
-    if noise_bandwidths is None:
-        noise_values = (None,)
-    else:
-        noise_values = tuple(noise_bandwidths)
     rows: list[dict[str, Any]] = []
-    for index, (mean_bw, covariance_bw, noise_bw) in enumerate(
-        product(mean_bandwidths, covariance_bandwidths, noise_values)
+    for index, (mean_bw, covariance_bw) in enumerate(
+        product(mean_bandwidths, covariance_bandwidths)
     ):
         rows.append(
             {
                 "candidate_id": f"candidate_{index:04d}",
                 "mean_bandwidth": float(mean_bw),
                 "covariance_bandwidth": float(covariance_bw),
-                "noise_bandwidth": None if noise_bw is None else float(noise_bw),
+                "noise_bandwidth": (
+                    None if noise_bandwidth is None else float(noise_bandwidth)
+                ),
             }
         )
     return pd.DataFrame(rows)
+
+
+def _effective_observation_count(
+    trajectories: IrregularTrajectorySet,
+    grid: np.ndarray,
+    *,
+    action: str,
+) -> int:
+    if action == "error":
+        return int(np.sum(trajectories.sample_counts))
+    start = float(grid[0])
+    end = float(grid[-1])
+    return int(
+        np.sum(
+            [
+                np.count_nonzero((np.asarray(time) >= start) & (np.asarray(time) <= end))
+                for time in trajectories.time
+            ]
+        )
+    )
 
 
 def _effective_validation_curve(
@@ -394,16 +448,14 @@ def _select_minimum_candidate(
     eligible = summary[summary["eligible"] & np.isfinite(summary["mean_loss"])].copy()
     if eligible.empty:
         return None
-    eligible["noise_bandwidth_sort"] = eligible["noise_bandwidth"].fillna(-np.inf)
     eligible = eligible.sort_values(
         [
             "mean_loss",
             "mean_bandwidth",
             "covariance_bandwidth",
-            "noise_bandwidth_sort",
             "candidate_id",
         ],
-        ascending=[True, False, False, False, True],
+        ascending=[True, False, False, True],
         kind="mergesort",
     )
     best = eligible.iloc[0]
@@ -423,7 +475,7 @@ def select_sparse_fpca_bandwidths(
     evaluation_grid: np.ndarray,
     mean_bandwidths: Sequence[float],
     covariance_bandwidths: Sequence[float],
-    noise_bandwidths: Sequence[float] | None = None,
+    noise_bandwidth: float | None = None,
     noise_support: tuple[float, float] | None = None,
     analysis_support_action: str = "error",
     noise_variance_method: str = "diagonal_difference",
@@ -446,17 +498,21 @@ def select_sparse_fpca_bandwidths(
     covariance_min_local_pairs: int = 6,
     noise_min_local_points: int = 3,
 ) -> SparseFPCABandwidthSelectionResult:
-    """Select sparse-FPCA smoothing bandwidths by audited held-out likelihood.
+    """Select sparse-FPCA mean/covariance bandwidths by held-out likelihood.
 
-    Each candidate is fitted from scratch inside every training fold.  The loss
+    Each candidate is fitted from scratch inside every training fold. The loss
     for a held-out curve is its per-observation Gaussian negative log predictive
     density under the training-only fitted mean, full latent covariance, and
-    measurement-error variance.  Fold loss is the mean of the held-out curve
+    measurement-error variance. Fold loss is the mean of the held-out curve
     losses, so curves rather than individual observations are the primary
     validation unit.
 
+    ``noise_bandwidth`` is not tuned in this first qualified tranche. When
+    diagonal-difference noise estimation is requested it must be supplied once
+    and is held fixed across all mean/covariance candidates and folds.
+
     This selector never changes :func:`fit_sparse_fpca` defaults and never
-    invokes automatic tuning from inside the fitter.  The selected numeric
+    invokes automatic tuning from inside the fitter. The selected numeric
     bandwidths must be passed explicitly to a subsequent fit.
     """
 
@@ -465,25 +521,13 @@ def select_sparse_fpca_bandwidths(
         covariance_bandwidths,
         name="covariance_bandwidths",
     )
-    if noise_variance_method == "diagonal_difference":
-        if noise_bandwidths is None:
-            raise ValueError(
-                "noise_bandwidths is required for diagonal_difference selection"
-            )
-        noise_grid = _positive_grid(noise_bandwidths, name="noise_bandwidths")
-    else:
-        if noise_bandwidths is not None:
-            raise ValueError(
-                "noise_bandwidths must be None when noise_variance_method='fixed'"
-            )
-        noise_grid = None
-
-    grid, required_folds = _validate_selector_inputs(
+    grid, required_folds, resolved_noise_bandwidth = _validate_selector_inputs(
         trajectories,
         dimension=dimension,
         evaluation_grid=evaluation_grid,
         noise_variance_method=noise_variance_method,
         measurement_error_variance=measurement_error_variance,
+        noise_bandwidth=noise_bandwidth,
         noise_support=noise_support,
         analysis_support_action=analysis_support_action,
         n_splits=n_splits,
@@ -502,7 +546,11 @@ def select_sparse_fpca_bandwidths(
         shuffle=shuffle,
         random_state=random_state,
     )
-    candidates = _candidate_table(mean_grid, covariance_grid, noise_grid)
+    candidates = _candidate_table(
+        mean_grid,
+        covariance_grid,
+        resolved_noise_bandwidth,
+    )
 
     fold_rows: list[dict[str, Any]] = []
     curve_rows: list[dict[str, Any]] = []
@@ -511,24 +559,34 @@ def select_sparse_fpca_bandwidths(
         candidate_id = str(candidate["candidate_id"])
         mean_bandwidth = float(candidate["mean_bandwidth"])
         covariance_bandwidth = float(candidate["covariance_bandwidth"])
-        raw_noise_bandwidth = candidate["noise_bandwidth"]
-        noise_bandwidth = (
-            None if pd.isna(raw_noise_bandwidth) else float(raw_noise_bandwidth)
-        )
 
         for fold, (train_idx, validation_idx) in enumerate(splits):
             train = trajectories.subset(train_idx)
             validation = trajectories.subset(validation_idx)
+            raw_train_observations = int(np.sum(train.sample_counts))
+            raw_validation_observations = int(np.sum(validation.sample_counts))
+            effective_train_observations = _effective_observation_count(
+                train,
+                grid,
+                action=analysis_support_action,
+            )
+            effective_validation_observations = _effective_observation_count(
+                validation,
+                grid,
+                action=analysis_support_action,
+            )
             base_row: dict[str, Any] = {
                 "candidate_id": candidate_id,
                 "fold": int(fold),
                 "mean_bandwidth": mean_bandwidth,
                 "covariance_bandwidth": covariance_bandwidth,
-                "noise_bandwidth": noise_bandwidth,
+                "noise_bandwidth": resolved_noise_bandwidth,
                 "n_train_curves": int(train.n_curves),
                 "n_validation_curves": int(validation.n_curves),
-                "n_train_observations": int(np.sum(train.sample_counts)),
-                "n_validation_observations": int(np.sum(validation.sample_counts)),
+                "n_train_observations_raw": raw_train_observations,
+                "n_validation_observations_raw": raw_validation_observations,
+                "n_train_observations_effective": effective_train_observations,
+                "n_validation_observations_effective": effective_validation_observations,
             }
             try:
                 fit = fit_sparse_fpca(
@@ -538,7 +596,7 @@ def select_sparse_fpca_bandwidths(
                     evaluation_grid=grid,
                     mean_bandwidth=mean_bandwidth,
                     covariance_bandwidth=covariance_bandwidth,
-                    noise_bandwidth=noise_bandwidth,
+                    noise_bandwidth=resolved_noise_bandwidth,
                     noise_support=noise_support,
                     analysis_support_action=analysis_support_action,
                     mean_smoother=mean_smoother,
@@ -584,6 +642,7 @@ def select_sparse_fpca_bandwidths(
                 strict=True,
             ):
                 observed = np.asarray(values[:, dimension_index], dtype=float)
+                raw_curve_observations = int(len(time))
                 try:
                     effective_time, effective_observed, outside = (
                         _effective_validation_curve(
@@ -610,6 +669,7 @@ def select_sparse_fpca_bandwidths(
                             "failure_code": None,
                             "failure_message": None,
                             "gaussian_nll_per_observation": float(loss),
+                            "n_observations_raw": raw_curve_observations,
                             "n_evaluated_observations": int(effective_time.size),
                             "outside_support_observations": int(outside),
                             "predictive_condition_number": float(condition),
@@ -631,6 +691,7 @@ def select_sparse_fpca_bandwidths(
                             "failure_code": code,
                             "failure_message": message,
                             "gaussian_nll_per_observation": np.nan,
+                            "n_observations_raw": raw_curve_observations,
                             "n_evaluated_observations": 0,
                             "outside_support_observations": np.nan,
                             "predictive_condition_number": np.nan,
@@ -713,10 +774,10 @@ def select_sparse_fpca_bandwidths(
         "min_valid_folds": int(required_folds),
         "failure_action": failure_action,
         "predictive_condition_limit": float(predictive_condition_limit),
-        "candidate_order": "sorted_unique_cartesian_product",
+        "candidate_order": "sorted_unique_mean_x_covariance_cartesian_product",
         "selection_rule": "minimum_mean_fold_loss",
         "tie_break_rule": (
-            "minimum loss, then larger mean/covariance/noise bandwidths "
+            "minimum loss, then larger mean/covariance bandwidths "
             "lexicographically, then candidate_id"
         ),
         "one_se_rule_implemented": False,
@@ -724,11 +785,18 @@ def select_sparse_fpca_bandwidths(
             "no predeclared scalar simplicity ordering for a multidimensional "
             "bandwidth tuple"
         ),
+        "noise_bandwidth_tuned": False,
+        "noise_bandwidth_policy": (
+            "fixed_declared_across_candidates_and_folds"
+            if resolved_noise_bandwidth is not None
+            else "not_applicable_fixed_measurement_error_variance"
+        ),
         "automatic_fit_bandwidth_selection_performed": False,
         "selected_values_must_be_passed_explicitly_to_fit_sparse_fpca": True,
         "evaluation_grid": grid.tolist(),
         "analysis_support_action": analysis_support_action,
         "noise_variance_method": noise_variance_method,
+        "noise_bandwidth": resolved_noise_bandwidth,
         "noise_support": None if noise_support is None else list(noise_support),
         "measurement_error_variance": (
             None
@@ -784,24 +852,29 @@ def sparse_fpca_bandwidth_selection_reporting_text(
         else "at the curve level"
     )
     prefix = (
-        f"Sparse-FPCA smoothing bandwidths were evaluated using {result.n_splits}-fold "
-        f"cross-validation {unit}. Population mean, covariance, and measurement-noise "
-        "objects were refitted using training curves only. The prespecified criterion "
-        "was mean held-out-curve Gaussian negative log predictive density, using the "
-        "full fitted latent covariance plus measurement-error variance; held-out "
-        "observations were not used for population fitting or PACE score estimation. "
+        f"Sparse-FPCA mean/covariance bandwidths were evaluated using "
+        f"{result.n_splits}-fold cross-validation {unit}. Population mean, covariance, "
+        "and measurement-noise objects were refitted using training curves only. The "
+        "prespecified criterion was mean held-out-curve Gaussian negative log predictive "
+        "density, using the full fitted latent covariance plus measurement-error "
+        "variance; held-out observations were not used for population fitting or PACE "
+        "score estimation. "
         f"The audit evaluated {n_candidates} bandwidth candidate(s) and retained "
         f"{failures} failed candidate-fold evaluation(s)."
     )
+    if result.provenance.get("noise_bandwidth") is not None:
+        prefix += (
+            f" The diagonal-difference noise bandwidth "
+            f"{float(result.provenance['noise_bandwidth']):g} was declared in advance "
+            "and held fixed rather than tuned by this criterion."
+        )
     if result.selected_bandwidths is None:
         return prefix + " No candidate satisfied the declared valid-fold requirement."
     selected = result.selected_bandwidths
-    text = (
+    return (
         prefix
         + " The minimum mean fold loss selected mean bandwidth "
         + f"{selected['mean_bandwidth']:g} and covariance bandwidth "
-        + f"{selected['covariance_bandwidth']:g}"
+        + f"{selected['covariance_bandwidth']:g}. The selected numeric values were "
+        "not applied automatically to the fitter."
     )
-    if selected["noise_bandwidth"] is not None:
-        text += f", with noise bandwidth {selected['noise_bandwidth']:g}"
-    return text + ". The selected numeric values were not applied automatically to the fitter."
