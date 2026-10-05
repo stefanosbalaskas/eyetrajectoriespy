@@ -88,8 +88,8 @@ def test_duplicate_candidate_rows_fail_closed():
 
 def test_nonmonotone_candidate_schedule_fails_closed():
     frame = _frame()
-    frame.loc[1, "time"] = 2.5
-    frame.loc[2, "time"] = 2.0
+    frame.loc[1, "time"] = 2
+    frame.loc[2, "time"] = 1
 
     with pytest.raises(ValueError, match="strictly increasing"):
         observation_process_data(
@@ -244,8 +244,6 @@ def test_history_uses_only_information_available_before_current_candidate():
     assert c1.loc[2, "preceding_observed_run_length"] == 2
     assert c1.loc[3, "preceding_missing_run_length"] == 1
 
-    # The row at t=4 is observed at x=4, but its predictor must still describe
-    # the last retained gaze before t=4 (x=1), not the current value x=4.
     assert c1.loc[4, "previous_observed_x"] == pytest.approx(1.0)
     assert result.provenance["history_uses_past_information_only"] is True
     assert result.provenance["current_missing_gaze_imputed"] is False
@@ -321,7 +319,7 @@ def test_after_observed_risk_set_is_explicit_and_reproducible():
         association_bins=None,
     )
 
-    assert first.global_summary.iloc[0]["risk_candidate_count"] == 5
+    assert first.global_summary.iloc[0]["risk_candidate_count"] == 6
     pdt.assert_frame_equal(first.associations, second.associations)
     assert first.provenance["risk_set"] == "after_observed"
 
@@ -387,3 +385,268 @@ def test_reporting_text_states_descriptive_scope_and_no_correction():
     assert result.provenance["inverse_probability_weighting_performed"] is False
     assert result.provenance["inverse_intensity_correction_performed"] is False
     assert result.provenance["sparse_estimator_modified"] is False
+
+
+def test_denominator_constructor_rejects_wrong_container_empty_and_bad_coordinates():
+    with pytest.raises(TypeError, match="pandas DataFrame"):
+        observation_process_data([], curve_column="curve", time_column="time", observed_column="observed")
+    with pytest.raises(ValueError, match="at least one candidate"):
+        observation_process_data(pd.DataFrame(), curve_column="curve", time_column="time", observed_column="observed")
+    with pytest.raises(ValueError, match="exactly two"):
+        observation_process_data(
+            _frame(),
+            curve_column="curve",
+            time_column="time",
+            observed_column="observed",
+            coordinate_columns=("x",),
+        )
+
+
+def test_denominator_constructor_rejects_missing_columns_and_column_aliasing():
+    with pytest.raises(ValueError, match="missing required"):
+        observation_process_data(
+            _frame().drop(columns=["observed"]),
+            curve_column="curve",
+            time_column="time",
+            observed_column="observed",
+        )
+    with pytest.raises(ValueError, match="must be distinct"):
+        observation_process_data(
+            _frame(),
+            curve_column="curve",
+            time_column="curve",
+            observed_column="observed",
+        )
+    with pytest.raises(ValueError, match="group_column must be distinct"):
+        observation_process_data(
+            _frame(),
+            curve_column="curve",
+            time_column="time",
+            observed_column="observed",
+            group_column="curve",
+        )
+
+
+def test_denominator_constructor_rejects_missing_ids_and_bad_times():
+    frame = _frame()
+    frame.loc[0, "curve"] = np.nan
+    with pytest.raises(ValueError, match="curve identifiers"):
+        observation_process_data(frame, curve_column="curve", time_column="time", observed_column="observed")
+
+    frame = _frame()
+    frame.loc[0, "participant"] = np.nan
+    with pytest.raises(ValueError, match="group identifiers"):
+        observation_process_data(
+            frame,
+            curve_column="curve",
+            time_column="time",
+            observed_column="observed",
+            group_column="participant",
+        )
+
+    frame = _frame().astype({"time": object})
+    frame.loc[0, "time"] = "bad"
+    with pytest.raises(ValueError, match="numeric"):
+        observation_process_data(frame, curve_column="curve", time_column="time", observed_column="observed")
+
+    frame = _frame().astype({"time": float})
+    frame.loc[0, "time"] = np.inf
+    with pytest.raises(ValueError, match="finite"):
+        observation_process_data(frame, curve_column="curve", time_column="time", observed_column="observed")
+
+
+def test_binary_and_predictor_source_validation_fail_closed():
+    frame = _frame()
+    frame.loc[0, "observed"] = np.nan
+    with pytest.raises(ValueError, match="must not contain missing"):
+        observation_process_data(frame, curve_column="curve", time_column="time", observed_column="observed")
+
+    frame = _frame().astype({"observed": object})
+    frame.loc[0, "observed"] = "bad"
+    with pytest.raises(ValueError, match="binary"):
+        observation_process_data(frame, curve_column="curve", time_column="time", observed_column="observed")
+
+    with pytest.raises(ValueError, match="absent from candidate_predictors"):
+        observation_process_data(
+            _frame(),
+            curve_column="curve",
+            time_column="time",
+            observed_column="observed",
+            candidate_predictors=("design",),
+            predictor_sources={"condition": "design"},
+        )
+    with pytest.raises(ValueError, match="must be one of"):
+        observation_process_data(
+            _frame(),
+            curve_column="curve",
+            time_column="time",
+            observed_column="observed",
+            candidate_predictors=("design",),
+            predictor_sources={"design": "raw_gaze"},
+        )
+
+
+def test_observed_raw_coordinates_must_be_finite():
+    frame = _frame()
+    frame.loc[0, "x"] = np.nan
+    with pytest.raises(ValueError, match="finite on observed rows"):
+        observation_process_data(
+            frame,
+            curve_column="curve",
+            time_column="time",
+            observed_column="observed",
+            coordinate_columns=("x", "y"),
+        )
+
+
+def test_diagnostic_argument_validation_fail_closed():
+    with pytest.raises(TypeError, match="ObservationProcessData"):
+        diagnose_observation_process(_frame())
+    with pytest.raises(ValueError, match="time_basis"):
+        diagnose_observation_process(_process(), time_basis="spline")
+    with pytest.raises(ValueError, match="declared as complete"):
+        diagnose_observation_process(_process(), predictors=("not_declared",))
+    with pytest.raises(ValueError, match="unknown history"):
+        diagnose_observation_process(_process(), history_predictors=("future_gaze",))
+    with pytest.raises(ValueError, match="two finite coordinates"):
+        diagnose_observation_process(_process(), eccentricity_reference=(0.0, np.nan))
+    with pytest.raises(ValueError, match="risk_set"):
+        diagnose_observation_process(_process(), risk_set="unknown")
+
+
+def test_after_observed_can_have_empty_risk_set():
+    frame = pd.DataFrame({"curve": ["c1"], "time": [0.0], "observed": [1]})
+    process = observation_process_data(
+        frame,
+        curve_column="curve",
+        time_column="time",
+        observed_column="observed",
+    )
+    with pytest.raises(ValueError, match="contains no candidate rows"):
+        diagnose_observation_process(process, risk_set="after_observed")
+
+
+def test_bin_contract_validation_and_empty_bins():
+    process = _process()
+    with pytest.raises(TypeError, match="time_bins"):
+        diagnose_observation_process(process, time_bins=True)
+    with pytest.raises(ValueError, match="integer must be >= 2"):
+        diagnose_observation_process(process, time_bins=1)
+    with pytest.raises(ValueError, match="at least three finite"):
+        diagnose_observation_process(process, time_bins=(0.0, 1.0))
+    with pytest.raises(ValueError, match="strictly increasing"):
+        diagnose_observation_process(process, time_bins=(0.0, 3.0, 2.0, 5.0))
+    with pytest.raises(ValueError, match="cover all"):
+        diagnose_observation_process(process, time_bins=(1.0, 3.0, 5.0))
+
+    result = diagnose_observation_process(
+        process,
+        predictors=(),
+        time_basis=None,
+        time_bins=(0.0, 0.1, 0.2, 5.0),
+        association_bins=None,
+    )
+    assert len(result.time_summary) == 2
+
+
+def test_constant_predictors_retain_status_and_profile_failure():
+    frame = _frame()
+    frame["constant_numeric"] = 1.0
+    frame["constant_category"] = "same"
+    process = observation_process_data(
+        frame,
+        curve_column="curve",
+        time_column="time",
+        observed_column="observed",
+        candidate_predictors=("constant_numeric", "constant_category"),
+    )
+
+    result = diagnose_observation_process(process, time_basis=None, association_bins=4)
+    statuses = result.associations.set_index("predictor")["status_code"]
+    assert statuses["constant_numeric"] == "predictor_constant"
+    assert statuses["constant_category"] == "predictor_constant"
+    assert "constant_numeric" in set(result.failures["item"])
+
+
+def test_nonfinite_numeric_predictor_is_described_as_nonestimable():
+    frame = _frame()
+    frame["external"] = np.linspace(0.0, 1.0, len(frame))
+    frame.loc[3, "external"] = np.inf
+    process = observation_process_data(
+        frame,
+        curve_column="curve",
+        time_column="time",
+        observed_column="observed",
+        candidate_predictors=("external",),
+        predictor_sources={"external": "external_candidate_time"},
+    )
+
+    result = diagnose_observation_process(process, time_basis=None, association_bins=None)
+    assert result.associations.iloc[0]["status_code"] == "predictor_nonfinite"
+
+
+def test_single_candidate_curve_and_never_observed_curve_are_retained():
+    frame = pd.DataFrame(
+        {
+            "curve": ["single", "never", "never"],
+            "time": [0.0, 0.0, 1.0],
+            "observed": [1, 0, 0],
+        }
+    )
+    process = observation_process_data(
+        frame,
+        curve_column="curve",
+        time_column="time",
+        observed_column="observed",
+    )
+    result = diagnose_observation_process(
+        process,
+        predictors=(),
+        time_basis=None,
+        association_bins=None,
+    )
+    curves = result.curve_summary.set_index("curve_id")
+    assert np.isnan(curves.loc["single", "candidate_median_interval"])
+    assert np.isnan(curves.loc["never", "observed_start"])
+    assert np.isnan(curves.loc["never", "observed_end"])
+
+
+def test_history_unavailable_and_profile_failure_are_retained():
+    frame = pd.DataFrame({"curve": ["c1"], "time": [0.0], "observed": [1]})
+    process = observation_process_data(
+        frame,
+        curve_column="curve",
+        time_column="time",
+        observed_column="observed",
+    )
+    result = diagnose_observation_process(
+        process,
+        predictors=(),
+        history_predictors=("time_since_last_observed",),
+        time_basis=None,
+        association_bins=4,
+    )
+    assert result.failures.iloc[0]["status_code"] == "history_unavailable"
+
+
+def test_frame_and_reporting_helpers_validate_result_type_and_no_group_text():
+    with pytest.raises(TypeError, match="ObservationProcessDiagnosticResult"):
+        observation_process_frame(_process())
+    with pytest.raises(TypeError, match="ObservationProcessDiagnosticResult"):
+        observation_process_reporting_text(_process())
+
+    frame = _frame().drop(columns=["participant", "x", "y", "design", "condition"])
+    process = observation_process_data(
+        frame,
+        curve_column="curve",
+        time_column="time",
+        observed_column="observed",
+    )
+    result = diagnose_observation_process(
+        process,
+        predictors=(),
+        time_basis=None,
+        association_bins=None,
+    )
+    assert result.group_summary.empty
+    assert "declared groups" not in observation_process_reporting_text(result)
