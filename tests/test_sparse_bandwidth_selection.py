@@ -123,10 +123,26 @@ def test_curve_level_selector_retains_complete_audit_and_selects_argmin():
     assert result.provenance["validation_observations_used_for_training"] is False
     assert result.provenance["validation_observations_used_for_pace_scoring"] is False
     assert result.provenance["one_se_rule_implemented"] is False
+    assert result.provenance["noise_bandwidth_tuned"] is False
     assert result.provenance["automatic_fit_bandwidth_selection_performed"] is False
     assert result.provenance[
         "selected_values_must_be_passed_explicitly_to_fit_sparse_fpca"
     ] is True
+
+    assert {
+        "n_train_observations_raw",
+        "n_validation_observations_raw",
+        "n_train_observations_effective",
+        "n_validation_observations_effective",
+    } <= set(result.fold_results.columns)
+    assert (
+        result.fold_results["n_train_observations_effective"]
+        < result.fold_results["n_train_observations_raw"]
+    ).all()
+    assert (
+        result.fold_results["n_validation_observations_effective"]
+        < result.fold_results["n_validation_observations_raw"]
+    ).all()
 
 
 def test_curve_fold_assignment_is_deterministic_under_fixed_seed():
@@ -190,6 +206,17 @@ def test_impossible_group_design_fails_before_candidate_evaluation():
         )
 
 
+def test_training_fold_with_fewer_than_three_curves_fails_before_candidates():
+    trajectories = _sparse_curves(n_curves=3)
+
+    with pytest.raises(ValueError, match="at least three curves"):
+        _select(
+            trajectories,
+            mean_bandwidths=(0.28,),
+            n_splits=3,
+        )
+
+
 def test_failed_candidate_folds_are_retained_not_silently_dropped():
     trajectories = _sparse_curves()
 
@@ -220,21 +247,19 @@ def test_failed_candidate_folds_are_retained_not_silently_dropped():
     assert result.selected_bandwidths["mean_bandwidth"] == pytest.approx(0.28)
 
 
-def test_candidate_grid_is_sorted_unique_cartesian_product():
+def test_candidate_grid_is_sorted_unique_mean_by_covariance_product():
     mean_grid = _positive_grid((0.3, 0.2, 0.3), name="mean_bandwidths")
     covariance_grid = _positive_grid((0.5, 0.4), name="covariance_bandwidths")
-    noise_grid = _positive_grid((0.2, 0.1), name="noise_bandwidths")
-    candidates = _candidate_table(mean_grid, covariance_grid, noise_grid)
+    candidates = _candidate_table(mean_grid, covariance_grid, None)
 
     assert mean_grid == (0.2, 0.3)
     assert covariance_grid == (0.4, 0.5)
-    assert noise_grid == (0.1, 0.2)
-    assert len(candidates) == 8
+    assert len(candidates) == 4
     assert candidates.iloc[0].to_dict() == {
         "candidate_id": "candidate_0000",
         "mean_bandwidth": 0.2,
         "covariance_bandwidth": 0.4,
-        "noise_bandwidth": 0.1,
+        "noise_bandwidth": None,
     }
 
 
@@ -272,19 +297,36 @@ def test_reporting_text_states_training_only_loss_and_no_automatic_fit():
     assert "not applied automatically to the fitter" in text
 
 
-def test_fixed_noise_rejects_noise_bandwidth_grid():
+def test_fixed_noise_rejects_noise_bandwidth_argument():
     trajectories = _sparse_curves()
 
-    with pytest.raises(ValueError, match="noise_bandwidths must be None"):
+    with pytest.raises(ValueError, match="noise_bandwidth must be None"):
         select_sparse_fpca_bandwidths(
             trajectories,
             dimension="x",
             evaluation_grid=np.linspace(0.20, 0.80, 7),
             mean_bandwidths=(0.28,),
             covariance_bandwidths=(0.35,),
-            noise_bandwidths=(0.2,),
+            noise_bandwidth=0.2,
             noise_variance_method="fixed",
             measurement_error_variance=0.01,
+            analysis_support_action="restrict",
+            n_splits=2,
+        )
+
+
+def test_diagonal_difference_requires_declared_fixed_noise_bandwidth():
+    trajectories = _sparse_curves()
+
+    with pytest.raises(ValueError, match="does not tune noise_bandwidth"):
+        select_sparse_fpca_bandwidths(
+            trajectories,
+            dimension="x",
+            evaluation_grid=np.linspace(0.20, 0.80, 7),
+            mean_bandwidths=(0.28,),
+            covariance_bandwidths=(0.35,),
+            noise_variance_method="diagonal_difference",
+            noise_support=(0.25, 0.75),
             analysis_support_action="restrict",
             n_splits=2,
         )
