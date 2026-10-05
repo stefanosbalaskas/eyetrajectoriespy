@@ -34,10 +34,11 @@ def _dataset(
         observation_design=observation_design,
         random_state=random_state,
     )
-    if grouped:
-        participant_ids = [f"P{i // 2 + 1:03d}" for i in range(n_curves)]
-    else:
-        participant_ids = [f"P{i + 1:03d}" for i in range(n_curves)]
+    participant_ids = (
+        [f"P{i // 2 + 1:03d}" for i in range(n_curves)]
+        if grouped
+        else [f"P{i + 1:03d}" for i in range(n_curves)]
+    )
     observations = IrregularTrajectorySet(
         time=times,
         values=tuple(value[:, None] for value in values),
@@ -66,17 +67,11 @@ def _recovery_metrics(fit, truth, grid: np.ndarray) -> dict[str, float]:
 
     weights = functional_trapezoid_weights(grid)
     true_functions = np.vstack([function(grid) for function in truth.eigenfunctions])
-    similarities = np.abs(
-        fit.eigenfunctions @ np.diag(weights) @ true_functions.T
-    )
-    score_correlations = []
-    for component in range(2):
-        correlation = np.corrcoef(
-            fit.scores[:, component],
-            truth.scores[:, component],
-        )[0, 1]
-        score_correlations.append(float(abs(correlation)))
-
+    similarities = np.abs(fit.eigenfunctions @ np.diag(weights) @ true_functions.T)
+    score_correlations = [
+        float(abs(np.corrcoef(fit.scores[:, component], truth.scores[:, component])[0, 1]))
+        for component in range(2)
+    ]
     return {
         "mean_rmse": mean_rmse,
         "covariance_relative_rmse": float(covariance_relative_rmse),
@@ -85,32 +80,6 @@ def _recovery_metrics(fit, truth, grid: np.ndarray) -> dict[str, float]:
         "score_1_abs_correlation": score_correlations[0],
         "score_2_abs_correlation": score_correlations[1],
     }
-
-
-def _full_fit(
-    observations,
-    truth,
-    grid,
-    selected,
-    *,
-    noise_variance_method: str,
-    noise_support,
-):
-    kwargs: dict[str, Any] = {
-        "dimension": "x",
-        "n_components": 2,
-        "evaluation_grid": grid,
-        "mean_bandwidth": float(selected["mean_bandwidth"]),
-        "covariance_bandwidth": float(selected["covariance_bandwidth"]),
-        "noise_variance_method": noise_variance_method,
-        "psd_action": "project",
-    }
-    if noise_variance_method == "fixed":
-        kwargs["measurement_error_variance"] = truth.noise_sd**2
-    else:
-        kwargs["noise_bandwidth"] = float(selected["noise_bandwidth"])
-        kwargs["noise_support"] = noise_support
-    return fit_sparse_fpca(observations, **kwargs)
 
 
 def _candidate_loss(result, *, mean_bandwidth: float, covariance_bandwidth: float):
@@ -135,7 +104,6 @@ def _run_scenario(
     observation_design: str,
     random_state: int,
     grouped: bool,
-    noise_variance_method: str,
 ) -> dict[str, Any]:
     observations, truth = _dataset(
         n_curves=n_curves,
@@ -148,40 +116,26 @@ def _run_scenario(
     grid = np.linspace(0.0, 1.0, 21)
     mean_candidates = (0.06, 0.20, 0.50)
     covariance_candidates = (0.12, 0.32, 0.65)
-    noise_candidates = None
-    noise_support = None
-    selector_kwargs: dict[str, Any] = {
-        "dimension": "x",
-        "evaluation_grid": grid,
-        "mean_bandwidths": mean_candidates,
-        "covariance_bandwidths": covariance_candidates,
-        "n_splits": 3,
-        "resampling_unit": "group" if grouped else "curve",
-        "group_column": "participant_id" if grouped else None,
-        "random_state": 19,
-        "psd_action": "project",
-        "failure_action": "retain",
-        "noise_variance_method": noise_variance_method,
-    }
-    if noise_variance_method == "fixed":
-        selector_kwargs["measurement_error_variance"] = truth.noise_sd**2
-    else:
-        mean_candidates = (0.20,)
-        covariance_candidates = (0.32,)
-        noise_candidates = (0.10, 0.22, 0.45)
-        noise_support = (0.15, 0.85)
-        selector_kwargs.update(
-            {
-                "mean_bandwidths": mean_candidates,
-                "covariance_bandwidths": covariance_candidates,
-                "noise_bandwidths": noise_candidates,
-                "noise_support": noise_support,
-            }
-        )
 
-    result = select_sparse_fpca_bandwidths(observations, **selector_kwargs)
+    result = select_sparse_fpca_bandwidths(
+        observations,
+        dimension="x",
+        evaluation_grid=grid,
+        mean_bandwidths=mean_candidates,
+        covariance_bandwidths=covariance_candidates,
+        noise_variance_method="fixed",
+        measurement_error_variance=truth.noise_sd**2,
+        n_splits=3,
+        resampling_unit="group" if grouped else "curve",
+        group_column="participant_id" if grouped else None,
+        random_state=19,
+        psd_action="project",
+        failure_action="retain",
+    )
     if result.selected_bandwidths is None:
         raise AssertionError(f"{name}: selector returned no eligible candidate")
+    if result.provenance["noise_bandwidth_tuned"] is not False:
+        raise AssertionError(f"{name}: A2 must not tune the noise bandwidth")
 
     eligible = result.candidate_summary[
         result.candidate_summary["eligible"]
@@ -200,19 +154,22 @@ def _run_scenario(
     if int(selected_row.iloc[0]["n_valid_folds"]) != result.n_splits:
         raise AssertionError(f"{name}: selected candidate does not have all folds valid")
     if result.assignments["curve_id"].nunique() != observations.n_curves:
-        raise AssertionError(f"{name}: fold assignments do not cover each curve exactly once")
+        raise AssertionError(f"{name}: fold assignments do not cover every curve")
     if len(result.assignments) != observations.n_curves:
         raise AssertionError(f"{name}: duplicate/missing assignment rows")
     if grouped and result.assignments.groupby("group")["fold"].nunique().max() != 1:
         raise AssertionError(f"{name}: repeated participant leaked across validation folds")
 
-    fit = _full_fit(
+    fit = fit_sparse_fpca(
         observations,
-        truth,
-        grid,
-        result.selected_bandwidths,
-        noise_variance_method=noise_variance_method,
-        noise_support=noise_support,
+        dimension="x",
+        n_components=2,
+        evaluation_grid=grid,
+        mean_bandwidth=float(result.selected_bandwidths["mean_bandwidth"]),
+        covariance_bandwidth=float(result.selected_bandwidths["covariance_bandwidth"]),
+        noise_variance_method="fixed",
+        measurement_error_variance=truth.noise_sd**2,
+        psd_action="project",
     )
     recovery = _recovery_metrics(fit, truth, grid)
     if recovery["mean_rmse"] >= 0.35:
@@ -226,27 +183,28 @@ def _run_scenario(
 
     under_loss = _candidate_loss(
         result,
-        mean_bandwidth=float(mean_candidates[0]),
-        covariance_bandwidth=float(covariance_candidates[0]),
+        mean_bandwidth=mean_candidates[0],
+        covariance_bandwidth=covariance_candidates[0],
     )
     over_loss = _candidate_loss(
         result,
-        mean_bandwidth=float(mean_candidates[-1]),
-        covariance_bandwidth=float(covariance_candidates[-1]),
+        mean_bandwidth=mean_candidates[-1],
+        covariance_bandwidth=covariance_candidates[-1],
     )
     for label, comparison in (("under", under_loss), ("over", over_loss)):
         if comparison is not None and selected_loss > comparison + 1e-12:
-            raise AssertionError(f"{name}: selected loss exceeds eligible {label}-smooth extreme")
+            raise AssertionError(
+                f"{name}: selected loss exceeds eligible {label}-smooth extreme"
+            )
 
     failed_folds = int(np.count_nonzero(result.fold_results["status_code"] != "ok"))
     valid_fold_noise = result.fold_results.loc[
         result.fold_results["status_code"] == "ok",
         "fitted_noise_variance",
     ].to_numpy(dtype=float)
-    if valid_fold_noise.size and (
-        not np.all(np.isfinite(valid_fold_noise)) or np.any(valid_fold_noise <= 0)
-    ):
-        raise AssertionError(f"{name}: valid-fold noise estimates must be finite and positive")
+    expected_noise = truth.noise_sd**2
+    if not np.allclose(valid_fold_noise, expected_noise, rtol=0.0, atol=1e-14):
+        raise AssertionError(f"{name}: fixed measurement-error variance changed across folds")
 
     return {
         "name": name,
@@ -259,7 +217,8 @@ def _run_scenario(
         "noise_sd": float(noise_sd),
         "observation_design": observation_design,
         "resampling_unit": result.resampling_unit,
-        "noise_variance_method": noise_variance_method,
+        "noise_variance_method": "fixed",
+        "noise_bandwidth_tuned": False,
         "candidate_count": int(len(result.candidates)),
         "failed_candidate_folds": failed_folds,
         "eligible_candidate_count": int(np.count_nonzero(result.candidate_summary["eligible"])),
@@ -290,7 +249,6 @@ def main() -> None:
             observation_design="uniform",
             random_state=1601,
             grouped=False,
-            noise_variance_method="fixed",
         ),
         _run_scenario(
             name="variable_center_clustered_moderate_noise_grouped",
@@ -300,23 +258,30 @@ def main() -> None:
             observation_design="center_clustered",
             random_state=1602,
             grouped=True,
-            noise_variance_method="fixed",
         ),
         _run_scenario(
-            name="estimated_noise_bandwidth",
+            name="boundary_poor_high_noise",
             n_curves=args.n_curves,
             samples_per_curve=12,
-            noise_sd=0.14,
-            observation_design="uniform",
+            noise_sd=0.22,
+            observation_design="boundary_poor",
             random_state=1603,
             grouped=False,
-            noise_variance_method="diagonal_difference",
         ),
     ]
 
     payload = {
         "method": "audited_sparse_fpca_bandwidth_selection_known_truth_qualification",
         "criterion": "mean_curve_gaussian_nll",
+        "qualified_scope": "mean_and_covariance_bandwidth_selection_only",
+        "noise_bandwidth_tuned": False,
+        "noise_bandwidth_scope_note": (
+            "A2 does not tune diagonal-difference noise bandwidth. Earlier exploratory "
+            "qualification showed that marginal predictive likelihood can recover total "
+            "observation covariance while misallocating latent and measurement-noise "
+            "variance; decomposition-specific noise-bandwidth selection therefore "
+            "requires a separate criterion and qualification."
+        ),
         "claim_scope": (
             "Qualification checks leakage-free held-out predictive selection and "
             "descriptive population recovery. It does not define or recover a unique "
