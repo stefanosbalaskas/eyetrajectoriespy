@@ -1,12 +1,11 @@
 """Diagnostics for potentially informative sparse observation processes.
 
-This module is deliberately diagnostic. It requires an explicit candidate-sample
-schedule/denominator and never reconstructs missing rows from retained gaze,
-nominal sampling rate, or timestamp gaps. The first qualified tranche is
-strictly descriptive: it reports support, run structure, time dependence, and
-associations with always-available or past-information predictors. It does not
-perform inverse-probability weighting, inverse-intensity correction, selection
-modeling, or missing-gaze imputation.
+A3 requires an explicit candidate-sample denominator. It never reconstructs
+missing rows from retained timestamps or nominal sampling rate, and it never
+fills contemporaneous missing gaze. The qualified scope is descriptive only:
+support, run structure, time dependence, candidate-time predictors, and
+past-information history variables. No weighting/correction estimator is
+implemented here.
 """
 
 from __future__ import annotations
@@ -35,13 +34,7 @@ _HISTORY_NAMES = {
 
 @dataclass(frozen=True)
 class ObservationProcessData:
-    """Validated explicit denominator for an observation-process diagnostic.
-
-    ``frame`` contains one row for every candidate/scheduled sample that could
-    have been observed. The binary ``observed_column`` identifies retained gaze.
-    Rows are stored in curve/time order after validation; no missing rows are
-    created and no current missing gaze value is filled.
-    """
+    """Validated explicit denominator for observation-process diagnostics."""
 
     frame: pd.DataFrame
     curve_column: str
@@ -86,6 +79,7 @@ class ObservationProcessDiagnosticResult:
     curve_summary: pd.DataFrame
     group_summary: pd.DataFrame
     time_summary: pd.DataFrame
+    support_summary: pd.DataFrame
     associations: pd.DataFrame
     profiles: pd.DataFrame
     failures: pd.DataFrame
@@ -93,6 +87,7 @@ class ObservationProcessDiagnosticResult:
     time_basis: str | None
     association_bins: int | tuple[float, ...] | None
     time_bins: int | tuple[float, ...] | None
+    low_support_threshold: float
     scope: str = _SCOPE
     provenance: Mapping[str, Any] = field(default_factory=dict)
 
@@ -132,18 +127,19 @@ def observation_process_data(
     coordinate_system: str = "unknown",
     provenance: Mapping[str, Any] | None = None,
 ) -> ObservationProcessData:
-    """Validate an explicit candidate-sample denominator.
+    """Validate one explicit row per candidate/scheduled sample.
 
     Candidate predictors must be available on every candidate row. Raw gaze
-    coordinate columns, when supplied, must contain finite values on observed
-    rows and must be missing on unobserved rows; complete externally supplied
-    state variables belong in ``candidate_predictors`` instead.
+    coordinates, when supplied, must be finite on retained rows and genuinely
+    missing (NaN) on unretained rows. Complete external state belongs in
+    ``candidate_predictors`` instead of being presented as recovered gaze.
     """
 
     if not isinstance(frame, pd.DataFrame):
         raise TypeError("frame must be a pandas DataFrame")
     if frame.empty:
         raise ValueError("frame must contain at least one candidate sample")
+
     predictors = tuple(dict.fromkeys(map(str, candidate_predictors)))
     coordinates = tuple(map(str, coordinate_columns))
     if len(coordinates) not in {0, 2}:
@@ -185,7 +181,6 @@ def observation_process_data(
             "candidate rows must be unique within curve/time; "
             f"duplicate examples: {examples}"
         )
-
     for curve_id, group in data.groupby(curve_column, sort=False):
         times = group[time_column].to_numpy(dtype=float)
         if times.size > 1 and not np.all(np.diff(times) > 0):
@@ -223,7 +218,7 @@ def observation_process_data(
             raise ValueError(
                 f"coordinate column {coordinate!r} must be finite on observed rows"
             )
-        if np.any(np.isfinite(numeric[~observed])):
+        if np.any(~np.isnan(numeric[~observed])):
             raise ValueError(
                 f"coordinate column {coordinate!r} contains values on unobserved rows; "
                 "label complete external state as a candidate predictor instead"
@@ -257,8 +252,7 @@ def observation_process_data(
 
 
 def _longest_run(values: np.ndarray, target: int) -> int:
-    best = 0
-    current = 0
+    best = current = 0
     for value in values:
         if int(value) == target:
             current += 1
@@ -269,9 +263,7 @@ def _longest_run(values: np.ndarray, target: int) -> int:
 
 
 def _median_interval(times: np.ndarray) -> float:
-    if times.size < 2:
-        return np.nan
-    return float(np.median(np.diff(times)))
+    return np.nan if times.size < 2 else float(np.median(np.diff(times)))
 
 
 def _summarize_curves(process: ObservationProcessData) -> pd.DataFrame:
@@ -301,17 +293,16 @@ def _summarize_curves(process: ObservationProcessData) -> pd.DataFrame:
 
 
 def _summarize_groups(process: ObservationProcessData) -> pd.DataFrame:
+    columns = [
+        "group_id",
+        "curve_count",
+        "candidate_count",
+        "observed_count",
+        "missing_count",
+        "observed_fraction",
+    ]
     if process.group_column is None:
-        return pd.DataFrame(
-            columns=[
-                "group_id",
-                "curve_count",
-                "candidate_count",
-                "observed_count",
-                "missing_count",
-                "observed_fraction",
-            ]
-        )
+        return pd.DataFrame(columns=columns)
     rows: list[dict[str, Any]] = []
     for group_id, group in process.frame.groupby(process.group_column, sort=False):
         observed = group[process.observed_column].to_numpy(dtype=int)
@@ -325,7 +316,7 @@ def _summarize_groups(process: ObservationProcessData) -> pd.DataFrame:
                 "observed_fraction": float(observed.mean()),
             }
         )
-    return pd.DataFrame(rows)
+    return pd.DataFrame(rows, columns=columns)
 
 
 def _resolve_edges(
@@ -369,7 +360,6 @@ def _binned_summary(
         bins=np.asarray(edges, dtype=float),
         include_lowest=True,
         right=True,
-        duplicates="drop",
     )
     rows: list[dict[str, Any]] = []
     for category in categories.categories:
@@ -393,6 +383,75 @@ def _binned_summary(
     return pd.DataFrame(rows)
 
 
+def _regional_support(
+    process: ObservationProcessData,
+    edges: tuple[float, ...] | None,
+    *,
+    low_support_threshold: float,
+) -> pd.DataFrame:
+    columns = [
+        "scope",
+        "scope_id",
+        "time_bin",
+        "lower",
+        "upper",
+        "candidate_count",
+        "observed_count",
+        "missing_count",
+        "observed_fraction",
+        "no_candidate_support",
+        "zero_observed_support",
+        "near_zero_observed_support",
+    ]
+    if edges is None:
+        return pd.DataFrame(columns=columns)
+
+    data = process.frame.copy()
+    data["__time_bin"] = pd.cut(
+        data[process.time_column],
+        bins=np.asarray(edges, dtype=float),
+        include_lowest=True,
+        right=True,
+    )
+    categories = tuple(data["__time_bin"].cat.categories)
+    scopes: list[tuple[str, str, pd.DataFrame]] = [
+        ("curve", str(curve_id), group)
+        for curve_id, group in data.groupby(process.curve_column, sort=False)
+    ]
+    if process.group_column is not None:
+        scopes.extend(
+            ("group", str(group_id), group)
+            for group_id, group in data.groupby(process.group_column, sort=False)
+        )
+
+    rows: list[dict[str, Any]] = []
+    for scope, scope_id, group in scopes:
+        for category in categories:
+            subset = group[group["__time_bin"] == category]
+            candidate_count = int(len(subset))
+            observed_count = int(subset[process.observed_column].sum()) if candidate_count else 0
+            fraction = observed_count / candidate_count if candidate_count else np.nan
+            rows.append(
+                {
+                    "scope": scope,
+                    "scope_id": scope_id,
+                    "time_bin": str(category),
+                    "lower": float(category.left),
+                    "upper": float(category.right),
+                    "candidate_count": candidate_count,
+                    "observed_count": observed_count,
+                    "missing_count": candidate_count - observed_count,
+                    "observed_fraction": float(fraction) if candidate_count else np.nan,
+                    "no_candidate_support": candidate_count == 0,
+                    "zero_observed_support": candidate_count > 0 and observed_count == 0,
+                    "near_zero_observed_support": (
+                        candidate_count > 0 and fraction < low_support_threshold
+                    ),
+                }
+            )
+    return pd.DataFrame(rows, columns=columns)
+
+
 def _categorical_profile(
     values: pd.Series,
     observed: np.ndarray,
@@ -400,8 +459,8 @@ def _categorical_profile(
     predictor: str,
     source: str,
 ) -> pd.DataFrame:
-    rows: list[dict[str, Any]] = []
     labels = values.astype(str).to_numpy()
+    rows = []
     for level in pd.unique(labels):
         mask = labels == level
         y = observed[mask]
@@ -428,28 +487,20 @@ def _numeric_association(
     predictor: str,
     source: str,
 ) -> dict[str, Any]:
+    base = {"predictor": predictor, "source": source, "predictor_type": "numeric"}
     if not np.all(np.isfinite(values)):
-        return {
-            "predictor": predictor,
-            "source": source,
-            "predictor_type": "numeric",
-            "status_code": "predictor_nonfinite",
-        }
+        return {**base, "status_code": "predictor_nonfinite"}
     unique = np.unique(values)
     if unique.size < 2:
         return {
-            "predictor": predictor,
-            "source": source,
-            "predictor_type": "numeric",
+            **base,
             "status_code": "predictor_constant",
             "n_rows": int(values.size),
             "n_unique": int(unique.size),
         }
     if np.unique(observed).size < 2:
         return {
-            "predictor": predictor,
-            "source": source,
-            "predictor_type": "numeric",
+            **base,
             "status_code": "outcome_constant",
             "n_rows": int(values.size),
             "n_unique": int(unique.size),
@@ -457,18 +508,24 @@ def _numeric_association(
 
     observed_values = values[observed == 1]
     missing_values = values[observed == 0]
-    pooled_sd = float(np.std(values, ddof=1))
+    n_observed = observed_values.size
+    n_missing = missing_values.size
+    pooled_variance = np.nan
+    if n_observed > 1 and n_missing > 1 and n_observed + n_missing > 2:
+        pooled_variance = (
+            (n_observed - 1) * np.var(observed_values, ddof=1)
+            + (n_missing - 1) * np.var(missing_values, ddof=1)
+        ) / (n_observed + n_missing - 2)
+    pooled_sd = float(np.sqrt(pooled_variance)) if np.isfinite(pooled_variance) else np.nan
     standardized_difference = (
         float((np.mean(observed_values) - np.mean(missing_values)) / pooled_sd)
-        if pooled_sd > 0
+        if np.isfinite(pooled_sd) and pooled_sd > 0
         else np.nan
     )
     ranks = pd.Series(values).rank(method="average").to_numpy(dtype=float)
     rho = float(np.corrcoef(ranks, observed.astype(float))[0, 1])
     return {
-        "predictor": predictor,
-        "source": source,
-        "predictor_type": "numeric",
+        **base,
         "status_code": "ok",
         "n_rows": int(values.size),
         "n_unique": int(unique.size),
@@ -491,32 +548,24 @@ def _categorical_association(
 ) -> dict[str, Any]:
     labels = values.astype(str).to_numpy()
     unique = pd.unique(labels)
+    base = {"predictor": predictor, "source": source, "predictor_type": "categorical"}
     if unique.size < 2:
         return {
-            "predictor": predictor,
-            "source": source,
-            "predictor_type": "categorical",
+            **base,
             "status_code": "predictor_constant",
             "n_rows": int(labels.size),
             "n_unique": int(unique.size),
         }
     if np.unique(observed).size < 2:
         return {
-            "predictor": predictor,
-            "source": source,
-            "predictor_type": "categorical",
+            **base,
             "status_code": "outcome_constant",
             "n_rows": int(labels.size),
             "n_unique": int(unique.size),
         }
-    rates = []
-    for level in unique:
-        mask = labels == level
-        rates.append(float(observed[mask].mean()))
+    rates = [float(observed[labels == level].mean()) for level in unique]
     return {
-        "predictor": predictor,
-        "source": source,
-        "predictor_type": "categorical",
+        **base,
         "status_code": "ok",
         "n_rows": int(labels.size),
         "n_unique": int(unique.size),
@@ -542,54 +591,48 @@ def _derive_history(
     x_column = process.coordinate_columns[0] if process.coordinate_columns else None
     y_column = process.coordinate_columns[1] if process.coordinate_columns else None
     for _, index in data.groupby(process.curve_column, sort=False).groups.items():
-        positions = list(index)
-        last_observed_time: float | None = None
-        last_observed_xy: tuple[float, float] | None = None
-        previous_observed_xy: tuple[float, float] | None = None
-        previous_observed_time: float | None = None
-        observed_run = 0
-        missing_run = 0
-        for row_index in positions:
+        last_time: float | None = None
+        last_xy: tuple[float, float] | None = None
+        previous_xy: tuple[float, float] | None = None
+        previous_time: float | None = None
+        observed_run = missing_run = 0
+        for row_index in list(index):
             row = data.loc[row_index]
             current_time = float(row[process.time_column])
-            if last_observed_time is not None:
-                data.at[row_index, "time_since_last_observed"] = current_time - last_observed_time
+            if last_time is not None:
+                data.at[row_index, "time_since_last_observed"] = current_time - last_time
             data.at[row_index, "preceding_observed_run_length"] = float(observed_run)
             data.at[row_index, "preceding_missing_run_length"] = float(missing_run)
 
-            if last_observed_xy is not None:
-                data.at[row_index, "previous_observed_x"] = last_observed_xy[0]
-                data.at[row_index, "previous_observed_y"] = last_observed_xy[1]
+            if last_xy is not None:
+                data.at[row_index, "previous_observed_x"] = last_xy[0]
+                data.at[row_index, "previous_observed_y"] = last_xy[1]
                 if eccentricity_reference is not None:
                     data.at[row_index, "previous_observed_eccentricity"] = float(
                         np.hypot(
-                            last_observed_xy[0] - eccentricity_reference[0],
-                            last_observed_xy[1] - eccentricity_reference[1],
+                            last_xy[0] - eccentricity_reference[0],
+                            last_xy[1] - eccentricity_reference[1],
                         )
                     )
             if (
-                last_observed_xy is not None
-                and previous_observed_xy is not None
-                and last_observed_time is not None
-                and previous_observed_time is not None
-                and last_observed_time > previous_observed_time
+                last_xy is not None
+                and previous_xy is not None
+                and last_time is not None
+                and previous_time is not None
+                and last_time > previous_time
             ):
                 data.at[row_index, "previous_observed_speed"] = float(
-                    np.hypot(
-                        last_observed_xy[0] - previous_observed_xy[0],
-                        last_observed_xy[1] - previous_observed_xy[1],
-                    )
-                    / (last_observed_time - previous_observed_time)
+                    np.hypot(last_xy[0] - previous_xy[0], last_xy[1] - previous_xy[1])
+                    / (last_time - previous_time)
                 )
 
             if int(row[process.observed_column]) == 1:
                 observed_run += 1
                 missing_run = 0
                 if x_column is not None and y_column is not None:
-                    previous_observed_xy = last_observed_xy
-                    previous_observed_time = last_observed_time
-                    last_observed_xy = (float(row[x_column]), float(row[y_column]))
-                last_observed_time = current_time
+                    previous_xy, previous_time = last_xy, last_time
+                    last_xy = (float(row[x_column]), float(row[y_column]))
+                last_time = current_time
             else:
                 missing_run += 1
                 observed_run = 0
@@ -624,6 +667,7 @@ def diagnose_observation_process(
     time_basis: str | None = "linear",
     time_bins: int | Sequence[float] | None = None,
     association_bins: int | Sequence[float] | None = 4,
+    low_support_threshold: float = 0.10,
 ) -> ObservationProcessDiagnosticResult:
     """Describe dependence and support in an explicit observation process.
 
@@ -635,6 +679,10 @@ def diagnose_observation_process(
         raise TypeError("process must be an ObservationProcessData")
     if time_basis not in {None, "linear"}:
         raise ValueError("time_basis must be None or 'linear' in the A3 tranche")
+    low_support_threshold = float(low_support_threshold)
+    if not np.isfinite(low_support_threshold) or not 0.0 <= low_support_threshold <= 1.0:
+        raise ValueError("low_support_threshold must be finite and within [0, 1]")
+
     requested_predictors = (
         process.candidate_predictors
         if predictors is None
@@ -659,10 +707,7 @@ def diagnose_observation_process(
     else:
         resolved_reference = None
 
-    candidate_frame = _derive_history(
-        process,
-        eccentricity_reference=resolved_reference,
-    )
+    candidate_frame = _derive_history(process, eccentricity_reference=resolved_reference)
     risk_mask = _risk_mask(process, candidate_frame, risk_set)
     evaluated = candidate_frame.loc[risk_mask].copy()
     if evaluated.empty:
@@ -693,24 +738,15 @@ def diagnose_observation_process(
         ]
     )
 
-    failures: list[dict[str, Any]] = []
-    association_rows: list[dict[str, Any]] = []
-    profile_frames: list[pd.DataFrame] = []
-
-    if time_basis == "linear":
-        time_values = evaluated[process.time_column].to_numpy(dtype=float)
-        association_rows.append(
-            _numeric_association(
-                time_values,
-                observed,
-                predictor=process.time_column,
-                source="candidate_time",
-            )
-        )
     resolved_time_edges = _resolve_edges(
         process.frame[process.time_column].to_numpy(dtype=float),
         time_bins,
         name="time_bins",
+    )
+    support_summary = _regional_support(
+        process,
+        resolved_time_edges,
+        low_support_threshold=low_support_threshold,
     )
     if resolved_time_edges is None:
         time_summary = pd.DataFrame(
@@ -728,11 +764,24 @@ def diagnose_observation_process(
         )
     else:
         time_summary = _binned_summary(
-            process.frame[process.time_column].to_numpy(dtype=float),
-            process.frame[process.observed_column].to_numpy(dtype=int),
+            evaluated[process.time_column].to_numpy(dtype=float),
+            observed,
             resolved_time_edges,
             predictor=process.time_column,
             source="candidate_time",
+        )
+
+    failures: list[dict[str, Any]] = []
+    association_rows: list[dict[str, Any]] = []
+    profile_frames: list[pd.DataFrame] = []
+    if time_basis == "linear":
+        association_rows.append(
+            _numeric_association(
+                evaluated[process.time_column].to_numpy(dtype=float),
+                observed,
+                predictor=process.time_column,
+                source="candidate_time",
+            )
         )
 
     for predictor in requested_predictors:
@@ -741,12 +790,7 @@ def diagnose_observation_process(
         if is_numeric_dtype(series):
             values = pd.to_numeric(series, errors="coerce").to_numpy(dtype=float)
             association_rows.append(
-                _numeric_association(
-                    values,
-                    observed,
-                    predictor=predictor,
-                    source=source,
-                )
+                _numeric_association(values, observed, predictor=predictor, source=source)
             )
             try:
                 edges = _resolve_edges(values, association_bins, name="association_bins")
@@ -772,20 +816,10 @@ def diagnose_observation_process(
                 )
         else:
             association_rows.append(
-                _categorical_association(
-                    series,
-                    observed,
-                    predictor=predictor,
-                    source=source,
-                )
+                _categorical_association(series, observed, predictor=predictor, source=source)
             )
             profile_frames.append(
-                _categorical_profile(
-                    series,
-                    observed,
-                    predictor=predictor,
-                    source=source,
-                )
+                _categorical_profile(series, observed, predictor=predictor, source=source)
             )
 
     history_requires_coordinates = {
@@ -895,6 +929,9 @@ def diagnose_observation_process(
             else list(map(float, association_bins))
         ),
         "risk_set": risk_set,
+        "low_support_threshold": low_support_threshold,
+        "time_summary_uses_selected_risk_set": True,
+        "support_summary_uses_full_candidate_denominator": True,
         "predictor_sources": dict(process.predictor_sources),
         "history_predictors": list(requested_history),
         "history_uses_past_information_only": True,
@@ -916,6 +953,7 @@ def diagnose_observation_process(
         curve_summary=curve_summary,
         group_summary=group_summary,
         time_summary=time_summary,
+        support_summary=support_summary,
         associations=associations,
         profiles=profiles,
         failures=failure_frame,
@@ -931,6 +969,7 @@ def diagnose_observation_process(
             if isinstance(time_bins, int) or time_bins is None
             else tuple(map(float, time_bins))
         ),
+        low_support_threshold=low_support_threshold,
         provenance=provenance,
     )
 
@@ -949,6 +988,7 @@ def observation_process_frame(
         "curves": result.curve_summary,
         "groups": result.group_summary,
         "time": result.time_summary,
+        "support": result.support_summary,
         "associations": result.associations,
         "profiles": result.profiles,
         "failures": result.failures,
