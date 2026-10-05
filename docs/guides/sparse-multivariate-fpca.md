@@ -131,6 +131,38 @@ The result retains `mean`, `eigenfunctions`, `eigenvalues`, joint PACE `scores`,
 
 Inspect `result.score_diagnostics` before downstream use. `score_failure_action="retain_nan"` keeps failed conditional systems visible rather than silently removing curves or replacing scores.
 
+## Conditional joint-PACE score uncertainty
+
+The 1.1 development line adds a dedicated, additive uncertainty surface without changing `fit_sparse_mfpca()` defaults or the frozen 1.0 root API:
+
+```python
+from eyetrajectoriespy.sparse_multivariate_score_uncertainty import (
+    sparse_mfpca_score_uncertainty,
+    sparse_mfpca_score_uncertainty_frame,
+    sparse_mfpca_score_uncertainty_reporting_text,
+)
+
+uncertainty = sparse_mfpca_score_uncertainty(fit, irregular)
+print(sparse_mfpca_score_uncertainty_frame(uncertainty).head())
+print(sparse_mfpca_score_uncertainty_reporting_text(uncertainty))
+```
+
+For retained score vector $\boldsymbol\xi_i$, the reported covariance is
+
+$$
+\operatorname{Var}(\boldsymbol\xi_i\mid\mathbf Y_i,\text{ fitted population})
+=\mathbf\Lambda
+-\mathbf\Lambda\mathbf\Phi_i^\top
+\mathbf\Sigma_i^{-1}
+\mathbf\Phi_i\mathbf\Lambda.
+$$
+
+This calculation reuses the exact native joint-PACE score system: full fitted C_xx/C_xy/C_yx/C_yy covariance, `time_major_interleaved_xy` observation order, the declared 2x2 measurement-error covariance as $I_m\otimes\mathbf R_\epsilon$, and the fitted score ridge. It uses linear solves rather than an explicit inverse and does not interpolate raw sparse trajectories.
+
+The scope is intentionally narrow. The result is **conditional on the fitted joint mean/covariance/eigensystem, measurement-error covariance, support policy, and score regularization**. It does not include uncertainty from estimating those population objects, bandwidth selection, joint PSD repair, or measurement-error estimation. It also does not support asynchronous x/y observation grids.
+
+See the [joint-PACE score-uncertainty qualification](../validation/sparse-mfpca-score-uncertainty.md) for the oracle-population calibration design and exact evidence boundary.
+
 ## Plots
 
 Stable `1.0.0` includes four public visualization helpers that operate only on quantities already retained by `SparseMFPCAResult`:
@@ -159,7 +191,7 @@ For covariance plots, `stage="used"` displays the blocks after the declared join
 
 ## Recovery and comparator evidence
 
-Use the [native sparse-MFPCA recovery](../validation/sparse-mfpca-recovery.md), [comparator sensitivity](../validation/sparse-mfpca-comparator-sensitivity.md), and [stress/performance](../validation/sparse-mfpca-observation-performance.md) pages. Population eigenspace recovery and individual joint-PACE score recovery are distinct targets.
+Use the [native sparse-MFPCA recovery](../validation/sparse-mfpca-recovery.md), [joint-PACE score-uncertainty qualification](../validation/sparse-mfpca-score-uncertainty.md), [comparator sensitivity](../validation/sparse-mfpca-comparator-sensitivity.md), and [stress/performance](../validation/sparse-mfpca-observation-performance.md) pages. Population eigenspace recovery, individual joint-PACE score recovery, and conditional score uncertainty are distinct targets.
 
 The core scientific-method evidence remains traceable to the 0.12 estimator programme. Final `1.0.0` subsequently reran the exact-version package, sparse-MFPCA, cross-platform, performance and external-comparator qualification matrix without changing the estimator's scientific contract.
 
@@ -172,8 +204,8 @@ print(sparse_mfpca_score_frame(fit).head())
 print(sparse_mfpca_reporting_text(fit))
 ```
 
-Report native sampling, paired-timestamp requirements, analysis grid/support, mean/covariance bandwidths, measurement-error covariance, PSD action, score ridge/failure policy, retained components, and failed-score counts.
+Report native sampling, paired-timestamp requirements, analysis grid/support, mean/covariance bandwidths, measurement-error covariance, PSD action, score ridge/failure policy, retained components, and failed-score counts. If conditional score uncertainty is reported, state explicitly that it conditions on the fitted joint population objects and declared measurement-error covariance and excludes population-estimation and bandwidth uncertainty.
 
 ## Limitations
 
-The stable 1.x estimator does not imply automatic bandwidth selection, arbitrary unpaired x/y observation times, automatic cross-channel noise estimation, complete sparse-FPCA uncertainty propagation into downstream models, or equivalence to dense-grid projection scores. The plotting helpers are views over retained fitted quantities and do not alter any of those scientific boundaries.
+The stable 1.x estimator does not imply automatic bandwidth selection, arbitrary unpaired x/y observation times, automatic cross-channel noise estimation, full uncertainty propagation from sparse population estimation into joint scores or downstream models, or equivalence to dense-grid projection scores. The 1.1 conditional uncertainty surface covers only the fitted-population joint-PACE posterior covariance described above. The plotting helpers are views over retained fitted quantities and do not alter any of those scientific boundaries.
