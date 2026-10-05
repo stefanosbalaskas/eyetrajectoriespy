@@ -39,6 +39,7 @@ nav:
           - Simultaneous FPC bands: guides/simultaneous-fpc-bands.md
           - FPCA spectrum uncertainty: guides/spectrum-uncertainty.md
           - FPC score basis uncertainty: guides/score-uncertainty.md
+          - Sparse partial-trajectory prediction: guides/sparse-partial-trajectory-prediction.md
           - Simultaneous functional mean bands: guides/simultaneous-mean-bands.md
           - Near-tied FPC subspaces: guides/subspace-stability.md
           - Outliers & influence: guides/outliers-influence.md
@@ -184,6 +185,7 @@ nav:
           - Sparse joint-PACE score uncertainty: validation/sparse-mfpca-score-uncertainty.md
           - Sparse MFPCA comparator sensitivity: validation/sparse-mfpca-comparator-sensitivity.md
           - Sparse MFPCA stress and performance: validation/sparse-mfpca-observation-performance.md
+          - Sparse partial-trajectory prediction: validation/sparse-partial-prediction.md
           - Numerical tolerance policy: validation/numerical-tolerance-policy.md
           - Performance envelope: validation/performance-envelope.md
       - Development roadmap:
