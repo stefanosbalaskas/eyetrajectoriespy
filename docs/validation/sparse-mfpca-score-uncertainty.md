@@ -70,6 +70,24 @@ The workflow fails if any declared guard is violated. It checks that:
 
 The numerical acceptance windows are intentionally broad Monte Carlo qualification guards, not inferential confidence intervals or universal performance guarantees.
 
+## First exact-head qualification evidence
+
+The first complete qualification run on PR #170 head `06c0f61dd94a3b008fc223c94ca0bf6fe4a45ce0` passed all guards. GitHub Actions run `37288035380` produced artifact `11334658246`, digest `sha256:2799a46491c43ec702df55b247b39187fb59d066727a53a60d7c32d697c0ae1d`.
+
+Across the eight component-by-scenario calibration cells:
+
+- MSE / mean reported conditional variance ranged from **0.966 to 1.089**;
+- standardized-error means ranged from **-0.093 to 0.056**;
+- standardized-error standard deviations ranged from **0.975 to 1.045**;
+- empirical 68% marginal conditional coverage ranged from **0.660 to 0.704**; and
+- empirical 95% marginal conditional coverage ranged from **0.932 to 0.956**.
+
+No joint score system failed in any scenario. Posterior covariance symmetry error was exactly `0.0` throughout, and the smallest retained posterior eigenvalue across all scenarios was approximately `9.58e-05`, so every retained posterior covariance was positive definite in this qualification run.
+
+The information comparison behaved in the expected direction. Mean total conditional variance fell from `0.002157` to `0.000488` when the diagonal-error design moved from 5-7 to 14-18 native observations per curve, and from `0.002352` to `0.000474` under the correlated-error design. Deterministic replay passed for all four scenarios. The artifact also records `rank_k_covariance_used_for_uncertainty=false`, `population_estimation_uncertainty_included=false`, and `bandwidth_uncertainty_included=false` for every scenario.
+
+These are qualification observations for the declared oracle designs, not distribution-free guarantees for arbitrary fitted sparse-MFPCA analyses.
+
 ## What this evidence supports
 
 A passing run supports the implementation claim that, when the fitted joint Gaussian population objects are treated as fixed and correctly specified, `sparse_mfpca_score_uncertainty()` reproduces the expected conditional score-covariance behavior for the qualified planar designs.
