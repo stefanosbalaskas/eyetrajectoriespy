@@ -27,10 +27,9 @@ result = fit_multilevel_fpca(
 Participant FPCs characterize stable between-person functional differences. Trial FPCs characterize deviations around each participant's own mean trajectory.
 
 !!! note
-    The first release is a transparent two-level functional ANOVA decomposition followed by separate FPCAs, not a full probabilistic functional mixed model.
+    The stable dense implementation is a transparent two-level functional ANOVA decomposition followed by separate FPCAs, not a full probabilistic functional mixed model.
 
-
-The actual decomposition used before the two separate FPCAs is
+The actual dense/common-grid decomposition used before the two separate FPCAs is
 
 $$
 \mathbf U_i(t)
@@ -42,4 +41,10 @@ $$
 \mathbf G_{ij}(t)-\overline{\mathbf G}_{i\cdot}(t).
 $$
 
-See the [mathematical reference](../methods/mathematical-reference.md#multilevel).
+## Sparse/irregular repeated trials
+
+Do **not** manufacture participant mean curves by interpolating genuinely sparse raw trials onto a common grid merely to use the dense decomposition above. The 1.1 development line provides a separate [native sparse multilevel FPCA](sparse-multilevel-fpca.md) workflow. It estimates hierarchical covariance operators from native-time residual products and recovers participant/trial scores jointly by Gaussian BLUP using the full fitted hierarchy.
+
+The sparse route has a deliberately narrower first contract: univariate trajectories, exchangeable repeated trials after any required condition/visit effects are handled upstream, observation/raw-pair weighting, and explicit support/PSD/identifiability diagnostics. See its [known-truth qualification](../validation/sparse-multilevel-fpca.md).
+
+See the [mathematical reference](../methods/mathematical-reference.md#multilevel) for the stable dense decomposition.
