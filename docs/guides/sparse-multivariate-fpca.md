@@ -123,6 +123,78 @@ fit = fit_sparse_mfpca(
 )
 ```
 
+## Audited bandwidth selection
+
+The 1.1 development line adds a dedicated, opt-in selector without changing `fit_sparse_mfpca()` defaults or the frozen 1.0 root API:
+
+```python
+from eyetrajectoriespy.sparse_multivariate_bandwidth_selection import (
+    select_sparse_mfpca_bandwidths,
+    sparse_mfpca_bandwidth_selection_reporting_text,
+)
+
+selection = select_sparse_mfpca_bandwidths(
+    irregular,
+    dimensions=("x", "y"),
+    evaluation_grid=np.linspace(0.0, 1.0, 41),
+    mean_bandwidths=(0.10, 0.20, 0.35),
+    covariance_bandwidths=(0.20, 0.30, 0.50),
+    measurement_error="diagonal",
+    measurement_error_variance=(0.0025, 0.0025),
+    n_splits=5,
+    resampling_unit="curve",
+    psd_action="project",
+)
+print(selection.selected_bandwidths)
+print(sparse_mfpca_bandwidth_selection_reporting_text(selection))
+```
+
+Each candidate refits only the planar population mean and full latent covariance surfaces from training curves. Held-out native curves are evaluated by Gaussian negative log predictive density using the full Cxx/Cxy/Cyx/Cyy covariance plus the fixed declared 2x2 measurement-error covariance. Joint-PACE scores are **not** fitted or used as the selection criterion, and score ridge is not added to the held-out predictive covariance.
+
+For repeated trials, use group resampling so all trials from a participant stay in the same fold:
+
+```python
+selection = select_sparse_mfpca_bandwidths(
+    irregular,
+    dimensions=("x", "y"),
+    evaluation_grid=np.linspace(0.0, 1.0, 41),
+    mean_bandwidths=(0.10, 0.20, 0.35),
+    covariance_bandwidths=(0.20, 0.30, 0.50),
+    measurement_error="fixed_matrix",
+    measurement_error_covariance=error_covariance,
+    n_splits=5,
+    resampling_unit="group",
+    group_column="participant_id",
+    psd_action="project",
+)
+```
+
+The selector retains candidate/fold failures, fold assignments, per-curve losses, predictive covariance diagnostics, candidate summaries, and deterministic selection provenance. Measurement error, component rank, score ridge, evaluation grid, PSD policy, and support policy are not tuned in this tranche.
+
+Selected values must be passed explicitly to the fitter:
+
+```python
+selected = selection.selected_bandwidths
+if selected is None:
+    raise RuntimeError("no eligible bandwidth candidate")
+
+fit = fit_sparse_mfpca(
+    irregular,
+    dimensions=("x", "y"),
+    n_components=2,
+    evaluation_grid=np.linspace(0.0, 1.0, 41),
+    mean_bandwidth=float(selected["mean_bandwidth"]),
+    covariance_bandwidth=float(selected["covariance_bandwidth"]),
+    measurement_error="diagonal",
+    measurement_error_variance=(0.0025, 0.0025),
+    psd_action="project",
+)
+```
+
+The selection criterion is predictive and does not define a unique population-optimal or "true" smoothing bandwidth. A 1-SE rule is deliberately absent because no scalar simplicity ordering has been predeclared for the two-dimensional bandwidth tuple.
+
+See the [sparse-MFPCA bandwidth-selection qualification](../validation/sparse-mfpca-bandwidth-selection.md) for the known-truth selection design and exact evidence boundary.
+
 ## Understanding `SparseMFPCAResult`
 
 The result retains `mean`, `eigenfunctions`, `eigenvalues`, joint PACE `scores`, the C_xx/C_xy/C_yx/C_yy covariance blocks, measurement-error covariance and quadrature weights, support/pair counts, score diagnostics, units, curve IDs, metadata, and provenance.
@@ -157,7 +229,7 @@ $$
 \mathbf\Phi_i\mathbf\Lambda.
 $$
 
-This calculation reuses the exact native joint-PACE score system: full fitted C_xx/C_xy/C_yx/C_yy covariance, `time_major_interleaved_xy` observation order, the declared 2x2 measurement-error covariance as $I_m\otimes\mathbf R_\epsilon$, and the fitted score ridge. It uses linear solves rather than an explicit inverse and does not interpolate raw sparse trajectories.
+This calculation reuses the exact native joint-PACE score system: full fitted C_xx/Cxy/Cyx/Cyy covariance, `time_major_interleaved_xy` observation order, the declared 2x2 measurement-error covariance as $I_m\otimes\mathbf R_\epsilon$, and the fitted score ridge. It uses linear solves rather than an explicit inverse and does not interpolate raw sparse trajectories.
 
 The scope is intentionally narrow. The result is **conditional on the fitted joint mean/covariance/eigensystem, measurement-error covariance, support policy, and score regularization**. It does not include uncertainty from estimating those population objects, bandwidth selection, joint PSD repair, or measurement-error estimation. It also does not support asynchronous x/y observation grids.
 
@@ -191,7 +263,7 @@ For covariance plots, `stage="used"` displays the blocks after the declared join
 
 ## Recovery and comparator evidence
 
-Use the [native sparse-MFPCA recovery](../validation/sparse-mfpca-recovery.md), [joint-PACE score-uncertainty qualification](../validation/sparse-mfpca-score-uncertainty.md), [comparator sensitivity](../validation/sparse-mfpca-comparator-sensitivity.md), and [stress/performance](../validation/sparse-mfpca-observation-performance.md) pages. Population eigenspace recovery, individual joint-PACE score recovery, and conditional score uncertainty are distinct targets.
+Use the [native sparse-MFPCA recovery](../validation/sparse-mfpca-recovery.md), [sparse-MFPCA bandwidth-selection qualification](../validation/sparse-mfpca-bandwidth-selection.md), [joint-PACE score-uncertainty qualification](../validation/sparse-mfpca-score-uncertainty.md), [comparator sensitivity](../validation/sparse-mfpca-comparator-sensitivity.md), and [stress/performance](../validation/sparse-mfpca-observation-performance.md) pages. Population eigenspace recovery, bandwidth-selection behavior, individual joint-PACE score recovery, and conditional score uncertainty are distinct targets.
 
 The core scientific-method evidence remains traceable to the 0.12 estimator programme. Final `1.0.0` subsequently reran the exact-version package, sparse-MFPCA, cross-platform, performance and external-comparator qualification matrix without changing the estimator's scientific contract.
 
@@ -204,8 +276,8 @@ print(sparse_mfpca_score_frame(fit).head())
 print(sparse_mfpca_reporting_text(fit))
 ```
 
-Report native sampling, paired-timestamp requirements, analysis grid/support, mean/covariance bandwidths, measurement-error covariance, PSD action, score ridge/failure policy, retained components, and failed-score counts. If conditional score uncertainty is reported, state explicitly that it conditions on the fitted joint population objects and declared measurement-error covariance and excludes population-estimation and bandwidth uncertainty.
+Report native sampling, paired-timestamp requirements, analysis grid/support, mean/covariance bandwidths, measurement-error covariance, PSD action, score ridge/failure policy, retained components, and failed-score counts. If bandwidths were selected with the 1.1 selector, report the candidate grid, resampling unit/group column, fold count, predictive criterion, failed candidates/folds, selected pair, fixed measurement-error specification, and that the values were passed explicitly to the fitter. If conditional score uncertainty is reported, state explicitly that it conditions on the fitted joint population objects and declared measurement-error covariance and excludes population-estimation and bandwidth uncertainty.
 
 ## Limitations
 
-The stable 1.x estimator does not imply automatic bandwidth selection, arbitrary unpaired x/y observation times, automatic cross-channel noise estimation, full uncertainty propagation from sparse population estimation into joint scores or downstream models, or equivalence to dense-grid projection scores. The 1.1 conditional uncertainty surface covers only the fitted-population joint-PACE posterior covariance described above. The plotting helpers are views over retained fitted quantities and do not alter any of those scientific boundaries.
+The stable 1.x estimator does not imply automatic bandwidth selection, arbitrary unpaired x/y observation times, automatic cross-channel noise estimation, full uncertainty propagation from sparse population estimation into joint scores or downstream models, or equivalence to dense-grid projection scores. The 1.1 bandwidth selector is a separate predictive-CV audit layer and does not define a unique true bandwidth or propagate selection uncertainty. The 1.1 conditional uncertainty surface covers only the fitted-population joint-PACE posterior covariance described above. The plotting helpers are views over retained fitted quantities and do not alter any of those scientific boundaries.
