@@ -63,17 +63,38 @@ def _select(trajectories, **overrides):
 
 
 def test_planar_gaussian_loss_matches_direct_time_major_calculation():
-    grid = np.array([0.0, 1.0])
+    grid = np.array([0.0, 0.5, 1.0])
+    cxx = np.array(
+        [
+            [0.8, 0.30, 0.15],
+            [0.30, 0.70, 0.25],
+            [0.15, 0.25, 0.60],
+        ]
+    )
+    cxy = np.array(
+        [
+            [0.10, 0.06, 0.04],
+            [0.08, 0.09, 0.05],
+            [0.07, 0.06, 0.08],
+        ]
+    )
+    cyy = np.array(
+        [
+            [0.70, 0.20, 0.12],
+            [0.20, 0.60, 0.18],
+            [0.12, 0.18, 0.50],
+        ]
+    )
     blocks = PlanarCovarianceBlocks(
-        cxx=np.array([[0.8, 0.15], [0.15, 0.6]]),
-        cxy=np.array([[0.10, 0.04], [0.07, 0.08]]),
-        cyx=np.array([[0.10, 0.07], [0.04, 0.08]]),
-        cyy=np.array([[0.7, 0.12], [0.12, 0.5]]),
+        cxx=cxx,
+        cxy=cxy,
+        cyx=cxy.T,
+        cyy=cyy,
     )
     population = SimpleNamespace(
         evaluation_grid=grid,
         covariance_blocks=blocks,
-        mean=np.array([[0.1, -0.2], [0.3, 0.15]]),
+        mean=np.array([[0.1, 0.0, -0.2], [0.3, 0.2, 0.15]]),
     )
     time = np.array([0.0, 1.0])
     observed = np.array([[0.9, 0.1], [-0.5, 0.4]])
@@ -87,8 +108,15 @@ def test_planar_gaussian_loss_matches_direct_time_major_calculation():
         predictive_condition_limit=1e12,
     )
 
+    endpoint = np.array([0, 2])
+    cxx_endpoint = cxx[np.ix_(endpoint, endpoint)]
+    cxy_endpoint = cxy[np.ix_(endpoint, endpoint)]
+    cyy_endpoint = cyy[np.ix_(endpoint, endpoint)]
     channel_major = np.block(
-        [[blocks.cxx, blocks.cxy], [blocks.cyx, blocks.cyy]]
+        [
+            [cxx_endpoint, cxy_endpoint],
+            [cxy_endpoint.T, cyy_endpoint],
+        ]
     )
     permutation = np.array([0, 2, 1, 3])
     covariance = channel_major[np.ix_(permutation, permutation)]
