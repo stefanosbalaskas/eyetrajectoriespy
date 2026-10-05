@@ -1,0 +1,60 @@
+name: sparse-partial-prediction-validation
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  known-truth-partial-prediction:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+      - name: Validate sparse partial prediction and grouped conformal coverage
+        run: |
+          python scripts/run_sparse_partial_prediction_validation.py \
+            --output sparse-partial-prediction-validation.json
+      - name: Verify qualification scope
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          evidence = json.loads(Path("sparse-partial-prediction-validation.json").read_text())
+          assert evidence["validation_passed"] is True
+          assert evidence["deterministic_replay_passed"] is True
+          assert evidence["continuous_domain_conformal_coverage_claimed"] is False
+          assert evidence["latent_function_conformal_coverage_claimed"] is False
+          assert evidence["raw_history_interpolation_performed"] is False
+          assert evidence["raw_future_response_interpolation_performed"] is False
+          assert evidence["population_estimation_uncertainty_propagated"] is False
+          grouped = evidence["grouped_split_conformal"]
+          assert grouped["group_aggregation"] == "maximum_curve_nonconformity_within_group"
+          assert grouped["missing_grid_failure"] == "calibration_future_grid_observation_missing"
+          assert grouped["leakage_failure"] == "ValueError"
+          PY
+      - name: Upload sparse partial-prediction evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: sparse-partial-prediction-validation
+          path: sparse-partial-prediction-validation.json
