@@ -17,7 +17,6 @@ import pandas as pd
 from ._sparse_multivariate import (
     PlanarCovarianceBlocks,
     _prepare_planar_analysis_views,
-    _validate_planar_input,
     build_joint_score_covariance,
     evaluate_planar_covariance,
     resolve_measurement_error_covariance,
@@ -102,7 +101,9 @@ def _native_joint_provenance(
     if sparse.get("score_observation_order") != "time_major_interleaved_xy":
         raise ValueError("fit has an unsupported joint score observation order")
     if sparse.get("rank_k_covariance_used_for_scoring") is not False:
-        raise ValueError("fit does not retain the required full-covariance score contract")
+        raise ValueError(
+            "fit does not retain the required full-covariance score contract"
+        )
     return sparse
 
 
@@ -118,11 +119,59 @@ def _validate_alignment(
         )
     if len(fit.dimensions) != 2 or fit.dimensions[0] == fit.dimensions[1]:
         raise ValueError("fit must retain exactly two distinct planar dimensions")
-    x_index, y_index = _validate_planar_input(trajectories, fit.dimensions)
+    x_name, y_name = map(str, fit.dimensions)
+    try:
+        x_index = trajectories.dimension_names.index(x_name)
+        y_index = trajectories.dimension_names.index(y_name)
+    except ValueError as exc:
+        raise KeyError(
+            f"Unknown planar dimension in {fit.dimensions!r}"
+        ) from exc
     if trajectories.coordinate_system != fit.coordinate_system:
         raise ValueError("trajectory coordinate_system does not match fit")
     if trajectories.time_unit != fit.time_unit:
         raise ValueError("trajectory time_unit does not match fit")
+
+    # A valid sparse-MFPCA fit already passed the covariance-estimation support
+    # requirement (at least three curves). Posterior score uncertainty must not
+    # re-apply that fit-time population-support rule; it only needs to confirm
+    # that the supplied scoring trajectories reproduce the synchronous planar
+    # observation contract used by the fitted joint-PACE system.
+    for curve_id, values in zip(
+        trajectories.curve_ids,
+        trajectories.values,
+        strict=True,
+    ):
+        x = np.asarray(values[:, x_index], dtype=float)
+        y = np.asarray(values[:, y_index], dtype=float)
+        finite_x = np.isfinite(x)
+        finite_y = np.isfinite(y)
+        coordinate_mismatch = finite_x != finite_y
+        if np.any(coordinate_mismatch):
+            indices = np.flatnonzero(coordinate_mismatch)
+            raise SparseNativeError(
+                "coordinate_specific_missingness_unsupported",
+                "x and y must be jointly observed at every retained sparse timestamp",
+                details={
+                    "curve_id": str(curve_id),
+                    "n_coordinate_specific_missing": int(indices.size),
+                    "sample_indices": indices.tolist(),
+                    "dimensions": [x_name, y_name],
+                },
+            )
+        jointly_nonfinite = ~(finite_x & finite_y)
+        if np.any(jointly_nonfinite):
+            indices = np.flatnonzero(jointly_nonfinite)
+            raise SparseNativeError(
+                "nonfinite_sparse_planar_observation",
+                "absent planar observations must be represented by absent samples",
+                details={
+                    "curve_id": str(curve_id),
+                    "n_nonfinite_joint_samples": int(indices.size),
+                    "sample_indices": indices.tolist(),
+                    "dimensions": [x_name, y_name],
+                },
+            )
     return x_index, y_index
 
 
