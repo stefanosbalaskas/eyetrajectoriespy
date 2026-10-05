@@ -2,15 +2,21 @@
 
 This page defines the first 1.1 bandwidth-selection contract for the native univariate sparse-FPCA estimator. It is a tuning procedure around `fit_sparse_fpca()`; it does not change that estimator's scientific definition or defaults.
 
+## Qualified candidate space
+
+The first qualified candidate is the two-dimensional smoothing tuple
+
+$$
+h=(h_\mu,h_G),
+$$
+
+where $h_\mu$ is the local-linear mean bandwidth and $h_G$ is the latent-covariance bandwidth.
+
+The diagonal-difference noise bandwidth is **not** part of $h$ in A2. If `noise_variance_method="diagonal_difference"` is used, one analyst-declared $h_\epsilon$ and one `noise_support` interval are held fixed across all candidates and folds. If measurement-error variance is externally fixed, neither $h_\epsilon$ nor `noise_support` is used.
+
 ## Training-fold population model
 
-Let fold $f$ contain training curves $\mathcal T_f$ and validation curves $\mathcal V_f$. For candidate bandwidth tuple
-
-$$
-h=(h_\mu,h_G,h_\epsilon),
-$$
-
-where $h_\epsilon$ is present only for diagonal-difference noise estimation, the native sparse-FPCA population objects are refitted using **training curves only**:
+Let fold $f$ contain training curves $\mathcal T_f$ and validation curves $\mathcal V_f$. For candidate $h=(h_\mu,h_G)$, the native sparse-FPCA population objects are refitted using **training curves only**:
 
 $$
 \widehat\mu_{-f,h}(t),
@@ -22,7 +28,7 @@ $$
 
 No observation from $\mathcal V_f$ is used in those estimates.
 
-If measurement-error variance is externally fixed, $h_\epsilon$ is absent and the declared fixed variance is retained in every training fold. If diagonal-difference noise estimation is used, the noise smoother and declared `noise_support` are applied within each training fold.
+If measurement-error variance is externally fixed, that declared variance is retained in every training fold. If diagonal-difference noise estimation is used, the fixed $h_\epsilon$ and declared support are applied within every training fold, while the noise variance itself is re-estimated from training data.
 
 ## Held-out whole-curve Gaussian loss
 
@@ -114,7 +120,9 @@ $$
 
 for $K$-fold cross-validation, so every fold must be valid by default.
 
-Failed folds remain in the audit table with a failure code and message. They are not silently removed, replaced by another bandwidth, or converted to a finite loss.
+Failed folds remain in the audit table with a failure code and message. They are not silently removed, replaced by another bandwidth, or converted to a finite loss. The audit retains raw and effective post-support training/validation observation counts.
+
+Every training fold must contain at least three curves, matching the native sparse-FPCA population-fitting contract. Impossible fold designs fail before candidate evaluation.
 
 ## Selection rule
 
@@ -126,9 +134,21 @@ $$
 \operatorname*{arg\,min}_{h}\overline L(h).
 $$
 
-Ties are resolved deterministically by preferring larger mean, covariance, and noise bandwidths lexicographically, then by `candidate_id`. The tie-break is an implementation rule for reproducibility; it is not an inferential statement about optimal smoothing.
+Ties are resolved deterministically by preferring larger mean and covariance bandwidths lexicographically, then by `candidate_id`. The tie-break is an implementation rule for reproducibility; it is not an inferential statement about optimal smoothing.
 
-The first tranche does **not** implement a one-standard-error rule. A multidimensional bandwidth tuple does not currently have a prespecified scalar complexity ordering analogous to retaining fewer principal components. A 1-SE selector would require such an ordering to be defined scientifically before implementation.
+The first tranche does **not** implement a one-standard-error rule. A two-dimensional bandwidth tuple does not currently have a prespecified scalar complexity ordering analogous to retaining fewer principal components. A 1-SE selector would require such an ordering to be defined scientifically before implementation.
+
+## Why the noise bandwidth is held fixed
+
+An exploratory qualification originally included $h_\epsilon$ in the candidate tuple and used the same marginal predictive loss. In a known-truth scenario with simulated measurement-error variance $0.0196$, that procedure selected a noise bandwidth whose full-data fit estimated measurement-error variance near $0.183$, even though the total covariance and leading functional structure were recovered well.
+
+The marginal Gaussian loss depends on
+
+$$
+G(T_i,T_i)+\sigma_\epsilon^2 I,
+$$
+
+so good prediction of the **total observation covariance** does not identify how that covariance should be divided between the latent process and measurement error. Consequently, A2 does not use this criterion to tune $h_\epsilon$. Decomposition-specific noise-bandwidth selection requires a separate criterion and qualification.
 
 ## Resampling unit
 
@@ -155,7 +175,7 @@ not the PACE score system with `score_ridge`, and validation observations are no
 
 This separation is intentional: the first bandwidth selector tunes the training-fold population observation model rather than a downstream score reconstruction.
 
-## Scope of the selected bandwidth
+## Scope of the selected bandwidths
 
 $\widehat h$ is the minimizer of the declared criterion over the declared candidate set and fold design. It is not a universal population parameter and should not be described as recovery of a unique "true bandwidth".
 
@@ -178,6 +198,6 @@ Bandwidth choice depends on, among other things:
 
 **Reporting helper:** `sparse_fpca_bandwidth_selection_reporting_text()`.
 
-The selected numeric values are not applied automatically. They must be supplied explicitly to a later `fit_sparse_fpca()` call, which continues to record `automatic_bandwidth_selection_performed=False`.
+The selected mean/covariance values are not applied automatically. They must be supplied explicitly to a later `fit_sparse_fpca()` call, which continues to record `automatic_bandwidth_selection_performed=False`. When diagonal-difference noise estimation is used, the same predeclared `noise_bandwidth` and `noise_support` should be carried into that final fit.
 
 See the [user guide](../guides/sparse-bandwidth-selection.md) and the [native sparse FPCA/PACE guide](../guides/sparse-irregular-fpca.md).
