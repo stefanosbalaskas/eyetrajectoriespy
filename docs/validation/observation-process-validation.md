@@ -48,15 +48,15 @@ Existing functional-simulation truth is reused for the candidate schedule, pre-m
 
 The known informative mechanism is deliberately simulation-only. Starting from a complete functional simulation, candidate time is mapped from the global truth support to
 
-\[
+$$
 z(t)\in[-1,1],
-\]
+$$
 
 and retention is generated as
 
-\[
+$$
 P(R=1\mid t)=\operatorname{logit}^{-1}\{0.8-2.4z(t)\}.
-\]
+$$
 
 The exact probability for every candidate row is retained in simulation truth. It is used for qualification only and is not passed to the public diagnostic as a measured gaze predictor.
 
