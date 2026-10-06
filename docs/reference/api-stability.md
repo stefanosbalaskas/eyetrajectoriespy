@@ -54,6 +54,12 @@ Inspection, sensitivity and audit APIs. They expose consequences of declared cho
 
 Supported code with a narrower validation or interpretation boundary. The three experimental functions named above remain public and tested, but are outside the 1.0 compatibility guarantee. Any future change to their stability treatment requires an explicit governance decision; it does not rewrite the historical 1.0 evidence retroactively.
 
+## Supported 1.1 module-scoped additions
+
+The post-1.0 sparse/irregular programme adds specialized APIs without mechanically expanding the package-root namespace. These **module-scoped imports are supported 1.1 surface**, not private implementation details. See the [formal 1.1 module API](one-dot-one-module-api.md) and [integration audit](one-dot-one-integration-audit.md).
+
+The root decision is deliberate: module paths make specialized scientific contracts visible while the immutable 1.0 root boundary remains easy to distinguish. A future root re-export would be an additive API decision requiring explicit review; it is not implied by support for the module path.
+
 ## Naming conventions for new APIs
 
 New public APIs should follow these conventions unless a scientific object requires a clearer domain name:
@@ -135,4 +141,4 @@ Canonical workflows prefer explicit failure to silent repair. In particular, the
 - clip scientifically meaningful uncertainty merely to satisfy physical bounds;
 - or hide nonportable scientific state during serialization.
 
-The full public surface remains in the [API reference](api.md); the exhaustive capability list is separate from the recommended entry paths. The [post-0.12 consistency audit](api-consistency-audit.md) records the historical evidence that preceded the 1.0 boundary freeze.
+The frozen/root 1.0 surface remains in the [Public API reference](api.md). Supported post-1.0 module-scoped additions are listed separately in the [1.1 module API](one-dot-one-module-api.md). The exhaustive capability list is separate from the recommended entry paths. The [post-0.12 consistency audit](api-consistency-audit.md) records the historical evidence that preceded the 1.0 boundary freeze.
