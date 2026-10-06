@@ -36,18 +36,26 @@ pip install eyetrajectoriespy==1.0.0
 > `1.0.0` freezes the evidence-backed 1.0 compatibility boundary over the production-observed `1.0.0rc1` scientific/API surface without adding a new estimator or changing scientific behavior. Release qualification, immutable hashes, OIDC/attestation evidence, and publication chronology are retained in the [1.0.0 release notes](https://stefanosbalaskas.github.io/eyetrajectoriespy/releases/1.0.0/) and validation records rather than repeated on this landing page.
 >
 > **Development source: `1.1.0.dev0`**  
-> The current source line is a non-publishing post-1.0 development identity for evidence-driven sparse/irregular inference work tracked in issue #158. It does not alter the immutable `1.0.0` release, publication readiness remains disarmed, and frozen 1.0 qualification records remain attributed to `1.0.0` until a later release receives fresh exact-version qualification.
+> The post-1.0 sparse/irregular scientific programme tracked in issue #158 is complete. The resulting A1–C1 capabilities are supported **module-scoped 1.1 development APIs** and do not alter the immutable `1.0.0` root compatibility boundary. The active work is now the integration/readiness programme in issue #183. No `1.1.0rc1` decision has been made, publication readiness remains jointly disarmed, and frozen 1.0 qualification records remain attributed to `1.0.0` until a later version receives fresh exact-version qualification.
 
 ![Sparse planar covariance structure estimated by eyetrajectoriespy](docs/assets/gallery/sparse-mfpca-covariance-blocks.svg)
 
 ## What can it model?
 
-| Scientific object | Main route |
-|---|---|
-| Dense/common-grid continuous x/y gaze | `fit_mfpca()` |
-| Sparse/irregular single-coordinate gaze | `fit_sparse_fpca()` + PACE |
-| Sparse/irregular paired planar x/y gaze | `fit_sparse_mfpca()` + joint PACE |
-| Repeated participant/trial functions | functional mixed effects / multilevel FPCA |
+| Scientific object | Main route | Status |
+|---|---|---|
+| Dense/common-grid continuous x/y gaze | `fit_mfpca()` | stable 1.0 |
+| Sparse/irregular single-coordinate gaze | `fit_sparse_fpca()` + PACE | stable 1.0 |
+| Sparse/irregular paired planar x/y gaze | `fit_sparse_mfpca()` + joint PACE | stable 1.0 |
+| Repeated participant/trial functions | functional mixed effects / multilevel FPCA | stable 1.0 |
+| Conditional uncertainty for sparse PACE and joint PACE scores | `sparse_score_uncertainty` / `sparse_multivariate_score_uncertainty` | supported 1.1 development module API |
+| Audited sparse smoothing-bandwidth selection | `sparse_bandwidth_selection` / `sparse_multivariate_bandwidth_selection` | supported 1.1 development module API |
+| Candidate-sample observation-process diagnostics | `observation_process` | supported 1.1 development module API |
+| Sparse participant/trial hierarchical decomposition | `sparse_multilevel` | supported 1.1 development module API |
+| Coordinate-specific asynchronous sparse planar gaze | `sparse_multivariate_async` | supported 1.1 development module API |
+| Future/partially observed sparse trajectory prediction and participant-aware conformal bands | `sparse_partial_prediction` / `sparse_partial_conformal` | supported 1.1 development module API |
+
+The post-1.0 module-scoped APIs are documented in the [1.1 module API](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-module-api/) and [integration audit](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-integration-audit/). They are intentionally not root re-exports and should not be interpreted as already-published `1.1.0` functionality.
 
 ## Which workflow do I need?
 
@@ -112,6 +120,8 @@ The README is intentionally a compact entry point rather than the exhaustive fun
 
 - [Capability inventory](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/capability-inventory/)
 - [Public API](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/api/)
+- [1.1 module-scoped API](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-module-api/)
+- [1.1 integration audit](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-integration-audit/)
 - [API stability and hierarchy](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/api-stability/)
 - [Mathematical reference](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/)
 - [Capability status and roadmap](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/status-roadmap/)
@@ -119,7 +129,7 @@ The README is intentionally a compact entry point rather than the exhaustive fun
 
 ## Release lineage and reproducibility
 
-The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native sparse univariate FPCA/PACE line, the immutable `0.11.0rc1` prerelease preceded final 0.11 known-truth recovery infrastructure, and `0.12.0` added the native sparse planar MFPCA/joint-PACE line. `1.0.0` closes that stabilization programme as the frozen stable compatibility baseline. Published tags and distributions remain immutable historical records.
+The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native sparse univariate FPCA/PACE line, the immutable `0.11.0rc1` prerelease preceded final 0.11 known-truth recovery infrastructure, and `0.12.0` added the native sparse planar MFPCA/joint-PACE line. `1.0.0` closes that stabilization programme as the frozen stable compatibility baseline. Published tags and distributions remain immutable historical records. The completed A1–C1 work exists only on the non-publishing `1.1.0.dev0` source line until the separate readiness programme determines whether an RC is justified.
 
 - [Portable scientific results](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/portable-results/)
 - [Reproducibility bundle checklist](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/checklist/)

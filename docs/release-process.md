@@ -2,6 +2,24 @@
 
 `eyetrajectoriespy 1.0.0` is the current stable release. The release machinery is intentionally fail-closed: ordinary pushes and merges do not publish, and a public version is produced only after exact-version qualification, protected-main requalification, a separate governance-only arming change, and an explicit manual production dispatch.
 
+The active source identity is `1.1.0.dev0`. It is non-publishing and does **not** imply that `1.1.0rc1` has been approved.
+
+## Current 1.1 readiness sequence
+
+The post-1.0 A1–C1 sparse/irregular scientific programme is complete. The integrated development surface remains module-scoped and the frozen 1.0 root boundary remains unchanged.
+
+Issue #183 governs readiness through five deliberately separate tranches:
+
+1. **R1 — integrated API audit:** complete; supported module-scoped 1.1 imports are documented and machine-checked.
+2. **R2 — documentation/release narrative:** reconcile all current-state surfaces without changing package behavior or version.
+3. **R3 — end-to-end product analyses:** exercise univariate sparse, planar sparse/asynchronous, and repeated-trial sparse routes from supported imports to reportable outputs.
+4. **R4 — consolidated development evidence/performance audit:** freeze one exact protected-main head, run the complete matrix, retain workflow/artifact provenance, and issue `eligible_for_rc_decision=true|false`.
+5. **R5 — explicit RC decision:** only an affirmative R4 recommendation permits a separate version-only `1.1.0rc1` qualification PR.
+
+If R4 or R5 identifies unresolved scientific ambiguity, compatibility risk, or product friction, the project remains on `1.1.0.dev0`. Feature completion alone is not sufficient reason to create an RC.
+
+Publication readiness remains jointly false throughout R1–R5 and throughout any future RC qualification.
+
 ## Post-1.0 versioning posture
 
 The stable 1.0 public boundary is a compatibility promise:
@@ -10,13 +28,16 @@ The stable 1.0 public boundary is a compatibility promise:
 - **1.x** — additive capabilities or deliberately governed compatible extensions;
 - **2.0** — breaking stable API/scientific-contract changes after explicit deprecation, except where an exceptional correction is necessary to prevent demonstrably wrong scientific results.
 
-A new minor release is not created merely because the previous milestone is complete. External use, issues, real-data evidence and a demonstrated scientific gap should justify new capability work.
+A new minor release is not created merely because the previous milestone or a feature programme is complete. Integrated product evidence and exact qualification must justify promotion.
 
 ## Standard release sequence
 
-Every future public release should follow the same evidence chain used for 1.0:
+Every future public release follows the same fail-closed publication chain used for 1.0. For 1.1, the R1–R5 readiness programme happens **before** this release-specific chain begins.
 
 ```text
+explicit release/RC decision
+        |
+        v
 review and freeze the intended release surface
         |
         v
@@ -51,6 +72,29 @@ post-publication closeout and joint disarm
 ```
 
 Historical evidence is never relabelled as evidence for a new package identity. A release candidate, final release, or patch release must receive its own exact-version qualification whenever the release contract requires fresh evidence.
+
+## 1.1 RC decision boundary
+
+An eventual `1.1.0rc1` is not an automatic rename of `1.1.0.dev0`.
+
+Before any RC version change:
+
+- R1–R4 must be complete;
+- R4 must explicitly recommend `eligible_for_rc_decision=true` on one exact qualified protected-main commit;
+- R5 must review open scientific/product/performance issues and explicitly approve RC entry.
+
+If RC entry is approved, the RC qualification PR must be version/governance-only:
+
+- no estimator addition;
+- no analytical-default or threshold change;
+- no hidden resampling/interpolation/correction change;
+- no dependency change unless separately justified and reviewed;
+- active version declarations aligned to literal `1.1.0rc1`;
+- fresh literal-RC performance and qualification evidence;
+- complete PR and post-merge exact-main matrices; and
+- `production_release_ready = false` and `github_release_ready = false` throughout qualification.
+
+A successful RC qualification still does not publish anything. Publication arming remains a separate later governance-only change.
 
 ## Qualification before publication
 
@@ -143,4 +187,4 @@ Earlier release-specific qualification narratives remain in their immutable rele
 - [0.11.0rc1](releases/0.11.0rc1.md)
 - [0.10.0](releases/0.10.0.md)
 
-Those records describe the release state that existed at the time and should not be rewritten merely because the package later advanced to 1.0.
+Those records describe the release state that existed at the time and should not be rewritten merely because the package later advanced to 1.0 or entered the 1.1 development cycle.
