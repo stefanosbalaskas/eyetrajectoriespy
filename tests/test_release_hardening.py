@@ -6,8 +6,8 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_DEVELOPMENT_VERSION = "1.1.0.dev0"
-LATEST_QUALIFIED_EVIDENCE_VERSION = "1.0.0"
+CURRENT_DEVELOPMENT_VERSION = "1.1.0rc1"
+LATEST_QUALIFIED_EVIDENCE_VERSION = "1.1.0rc1"
 
 
 def _load_script(name):
@@ -24,13 +24,15 @@ def test_release_version_contract_agrees_for_development_line():
     assert module.verify_version_contract() == CURRENT_DEVELOPMENT_VERSION
 
 
-def test_development_line_is_not_production_eligible():
+def test_release_candidate_contract_is_production_eligible_after_exact_qualification():
     module = _load_script("verify_release_version.py")
-    with pytest.raises(RuntimeError, match="development versions"):
+    assert (
         module.verify_version_contract(
             tag=f"v{CURRENT_DEVELOPMENT_VERSION}",
             production=True,
         )
+        == CURRENT_DEVELOPMENT_VERSION
+    )
 
 
 def test_development_line_rejects_stale_stable_tag():
@@ -39,7 +41,7 @@ def test_development_line_rejects_stale_stable_tag():
         module.verify_version_contract(tag="v1.0.0")
 
 
-def test_development_line_inherits_latest_qualified_evidence():
+def test_release_candidate_requires_literal_exact_version_evidence():
     module = _load_script("verify_release_version.py")
     assert set(module.qualified_evidence_contract().values()) == {
         LATEST_QUALIFIED_EVIDENCE_VERSION
