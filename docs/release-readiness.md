@@ -15,21 +15,20 @@ Final publication was completed on **4 October 2026** from exact protected-main 
 
 Post-publication PR #156 recorded the immutable evidence, promoted `1.0.0` as the visible stable release, and jointly disarmed GitHub/PyPI publication readiness again. Ordinary pushes and merges remain non-publishing.
 
-## Current development source — 1.1.0.dev0
+## Current release-candidate source — 1.1.0rc1
 
-The active source identity is **`1.1.0.dev0`**. It is not a published release and does not change the stable installation guidance above.
+The active source identity is **`1.1.0rc1`** and is under exact-version qualification. It is not yet a published release and does not change the stable installation guidance above.
 
-The sparse/irregular scientific programme tracked in issue #158 has completed A1–C1. R1 then audited the integrated surface and retained the additions as supported **module-scoped 1.1 development APIs** while leaving the frozen 1.0 root compatibility boundary unchanged.
+The sparse/irregular scientific programme (#158) completed A1–C1. The integration/readiness programme (#183) then completed:
 
-The active governance programme is issue #183:
+1. R1 — integrated API/public-surface audit;
+2. R2 — documentation/release narrative reconciliation;
+3. R3 — canonical end-to-end product analyses; and
+4. R4 — consolidated exact-main evidence/performance audit.
 
-1. R1 — integrated API/public-surface audit: complete;
-2. R2 — documentation/release narrative: active;
-3. R3 — canonical end-to-end product analyses: pending;
-4. R4 — consolidated exact-main evidence/performance audit: pending;
-5. R5 — explicit RC decision: pending.
+R4 recorded `eligible_for_rc_decision=true` on protected main. R5 therefore approved entry into a **separate version/evidence-only `1.1.0rc1` qualification cycle**. No estimator, scientific default, dependency, supported module-scoped API, or frozen 1.0 root compatibility boundary is changed by the RC transition.
 
-No `1.1.0rc1` decision has been made. Completion of scientific features is not itself a release-candidate decision.
+Fresh literal-RC performance evidence is retained separately from the immutable R4 `1.1.0.dev0` development-readiness ledger. The RC still requires the complete pull-request matrix and complete post-merge exact-main matrix before qualification can close.
 
 ## Current publication interlock
 
@@ -38,15 +37,17 @@ The machine-readable authority is `RELEASE_READINESS.json`.
 Current state:
 
 - stable published version = `1.0.0`;
-- active source identity = `1.1.0.dev0`;
+- active source identity = `1.1.0rc1`;
 - `production_release_ready = false`;
 - `github_release_ready = false`;
-- stable 1.0 API boundary frozen and machine-checked;
-- A1–C1 development APIs remain module-scoped and additive;
-- frozen 1.0 qualification evidence remains attributed to `1.0.0`;
-- no RC or publication authority exists for 1.1.
+- stable 1.0 API boundary remains frozen and machine-checked;
+- A1–C1 1.1 APIs remain module-scoped and additive;
+- historical 1.0 qualification evidence remains attributed to `1.0.0`;
+- the R4 development-readiness ledger remains attributed to `1.1.0.dev0` and is not relabelled as RC evidence;
+- active RC reference/tolerance/performance evidence is qualified under literal `1.1.0rc1`; and
+- **no publication authority exists for 1.1.0rc1**.
 
-The `1.1.0.dev0` line has method-specific development evidence, but historical 1.0 records are baseline evidence only. A future `1.1.0rc1` requires a separate literal-version qualification cycle if and only if R5 approves RC entry after R1–R4.
+A green RC qualification does not publish or arm anything. GitHub/PyPI arming, an exact arming-main governance matrix, production dispatch, publication verification and post-publication disarming remain separate later governance steps.
 
 ## Final 1.0 qualification
 
@@ -77,47 +78,48 @@ No result-changing or frozen-public-API defect was identified that required anot
 
 ## Required path before any 1.1 publication
 
-A future release must not be produced by simply changing a version string. For 1.1 the current sequence is deliberately longer because integrated development/product evidence precedes the version decision:
+The 1.1 readiness path has now advanced through R4 and the R5 RC-entry decision:
 
 ```text
-R1 integrated API audit
+R1 integrated API audit                         complete
+        |
+R2 documentation/release narrative              complete
+        |
+R3 end-to-end product analyses                  complete
+        |
+R4 exact-main evidence/performance audit         complete
+        |                                        eligible_for_rc_decision=true
+R5 explicit RC/no-RC decision                    RC qualification approved
         |
         v
-R2 documentation/release narrative
+literal 1.1.0rc1 version/evidence qualification in progress
         |
         v
-R3 end-to-end product analyses
+fresh literal-RC evidence
         |
         v
-R4 exact-main evidence/performance audit
+complete PR matrix
         |
         v
-R5 explicit RC/no-RC decision
+protected-main merge + complete exact-main matrix
         |
-        +-- if no --> remain on 1.1.0.dev0
+        v
+RC qualified — publication still disarmed
         |
-        +-- if yes --> separate version-only 1.1.0rc1 qualification PR
-                          |
-                          v
-                    fresh literal-RC evidence
-                          |
-                          v
-                    complete PR + exact-main matrix
-                          |
-                          v
-                    separate governance-only publication arming
-                          |
-                          v
-                    exact arming-main governance matrix
-                          |
-                          v
-                    explicit manual release.yml target=production
-                          |
-                          v
-                    GitHub/PyPI verification + post-publication disarm
+        v
+separate governance-only publication arming
+        |
+        v
+exact arming-main governance matrix
+        |
+        v
+explicit manual release.yml target=production
+        |
+        v
+GitHub/PyPI verification + post-publication disarm
 ```
 
-Publication readiness remains jointly false throughout R1–R5 and throughout RC qualification. A green RC qualification commit still does not authorize publication.
+Publication readiness remains jointly false throughout RC qualification. A green RC qualification commit still does not authorize publication.
 
 ## Post-1.0 compatibility policy
 
