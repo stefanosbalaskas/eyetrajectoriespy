@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "programme": "1.1-r5-release-candidate-qualification",
+  "decision": "approve_exact_version_rc_qualification",
+  "r4_qualified_main_sha": "1f9b80701ba4d10c97836277e18d8a16abe0038a",
+  "r4_merge_main_sha": "827c41b280250a71a7cd2fd4ac96c8a4ccaa54aa",
+  "r4_eligible_for_rc_decision": true,
+  "package_version": "1.1.0rc1",
+  "performance_run_id": 37446635089,
+  "performance_qualification_commit": "85cb74bb905f08836bc2a3cccfa07968e0da906b",
+  "historical_r4_ledger": "ONE_DOT_ONE_DEVELOPMENT_READINESS.json",
+  "historical_r4_ledger_relabelled": false,
+  "frozen_one_dot_zero_evidence_mutated": false,
+  "scientific_behavior_changed": false,
+  "supported_api_changed": false,
+  "publication_interlock": {
+    "production_release_ready": false,
+    "github_publication_ready": false,
+    "pypi_publication_ready": false,
+    "publication_arming_performed": false
+  },
+  "status": "literal_rc_evidence_committed_pr_matrix_pending"
+}
