@@ -206,6 +206,7 @@ nav:
       - Function → equation index: reference/function-equation-index.md
       - Object contracts: reference/objects.md
   - Releases:
+      - 1.1.0: releases/1.1.0.md
       - 1.1.0rc1: releases/1.1.0rc1.md
       - 1.0.0: releases/1.0.0.md
       - 1.0.0rc1: releases/1.0.0rc1.md

@@ -4,7 +4,7 @@
 
 `1.0.0` is the current stable production release and the compatibility baseline for the 1.x line.
 
-The current release-candidate line is **1.1.0rc1**. It is a non-published source identity under exact-version qualification and does not alter the immutable `1.0.0` production artifacts or frozen 1.0 qualification records.
+The current development line is **1.1.0**. It is a version-only final-promotion candidate over the frozen, production-observed `1.1.0rc1` scientific/API surface. `1.0.0` remains the stable production release until final publication succeeds.
 
 The frozen 1.0 public boundary contains **455 stable public exports** and three explicitly experimental APIs. No deprecations or removals were authorized by the 1.0 stabilization programme.
 
@@ -16,7 +16,7 @@ The readiness sequence is now:
 2. **R2 — documentation/release narrative:** complete.
 3. **R3 — end-to-end product analyses:** complete with zero release-blocking friction.
 4. **R4 — consolidated evidence/performance audit:** complete; `eligible_for_rc_decision=true`.
-5. **R5 — RC decision and literal-version qualification:** RC entry approved; exact-`1.1.0rc1` qualification is in progress. Publication remains a separate later governance step.
+5. **R5 — RC/final decision and literal-version qualification:** RC qualification, publication, and production-installed observation are complete; exact-`1.1.0` final qualification is now in progress. Publication remains a separate later governance step.
 
 Future methodology remains evidence-driven rather than version-number-driven. `eyetrajectoriespy` is intentionally an **eye-tracking functional-analysis layer**, not a reimplementation of every general FDA estimator.
 
