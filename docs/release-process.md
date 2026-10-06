@@ -1,5 +1,9 @@
 # Coordinated GitHub Release and PyPI publication
 
+## 1.1.0rc1 exact-version qualification
+
+`1.1.0rc1` may be qualified only because R4 recorded `eligible_for_rc_decision=true`. The RC transition is version-only and must generate fresh literal-version evidence. Historical `1.1.0.dev0` R4 evidence and frozen 1.0 evidence remain attributed to their original identities. Publication remains disarmed throughout RC qualification; arming and production publication require later, separate governance.
+
 `eyetrajectoriespy 1.0.0` is the current stable release. The release machinery is intentionally fail-closed: ordinary pushes and merges do not publish, and a public version is produced only after exact-version qualification, protected-main requalification, a separate governance-only arming change, and an explicit manual production dispatch.
 
 The active source identity is `1.1.0.dev0`. It is non-publishing and does **not** imply that `1.1.0rc1` has been approved.

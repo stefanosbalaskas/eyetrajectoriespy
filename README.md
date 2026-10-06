@@ -17,7 +17,7 @@ y_i(t)
 \end{bmatrix}.
 $$
 
-**Stable:** `1.0.0` · **Development source:** `1.1.0.dev0` · **Python:** 3.11–3.13
+**Stable:** `1.0.0` · **1.1 release candidate under qualification:** `1.1.0rc1` · **Python:** 3.11–3.13
 
 ```bash
 pip install eyetrajectoriespy
@@ -35,7 +35,7 @@ pip install eyetrajectoriespy==1.0.0
 > **Current stable release: `1.0.0`**  
 > `1.0.0` freezes the evidence-backed 1.0 compatibility boundary over the production-observed `1.0.0rc1` scientific/API surface without adding a new estimator or changing scientific behavior. Release qualification, immutable hashes, OIDC/attestation evidence, and publication chronology are retained in the [1.0.0 release notes](https://stefanosbalaskas.github.io/eyetrajectoriespy/releases/1.0.0/) and validation records rather than repeated on this landing page.
 >
-> **Development source: `1.1.0.dev0`**  
+> **1.1 release candidate under qualification: `1.1.0rc1`**  
 > The post-1.0 sparse/irregular scientific programme tracked in issue #158 is complete. The resulting A1–C1 capabilities are supported **module-scoped 1.1 development APIs** and do not alter the immutable `1.0.0` root compatibility boundary. The active work is now the integration/readiness programme in issue #183. No `1.1.0rc1` decision has been made, publication readiness remains jointly disarmed, and frozen 1.0 qualification records remain attributed to `1.0.0` until a later version receives fresh exact-version qualification.
 
 ![Sparse planar covariance structure estimated by eyetrajectoriespy](docs/assets/gallery/sparse-mfpca-covariance-blocks.svg)
@@ -129,7 +129,7 @@ The README is intentionally a compact entry point rather than the exhaustive fun
 
 ## Release lineage and reproducibility
 
-The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native sparse univariate FPCA/PACE line, the immutable `0.11.0rc1` prerelease preceded final 0.11 known-truth recovery infrastructure, and `0.12.0` added the native sparse planar MFPCA/joint-PACE line. `1.0.0` closes that stabilization programme as the frozen stable compatibility baseline. Published tags and distributions remain immutable historical records. The completed A1–C1 work exists only on the non-publishing `1.1.0.dev0` source line until the separate readiness programme determines whether an RC is justified.
+The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native sparse univariate FPCA/PACE line, the immutable `0.11.0rc1` prerelease preceded final 0.11 known-truth recovery infrastructure, and `0.12.0` added the native sparse planar MFPCA/joint-PACE line. `1.0.0` closes that stabilization programme as the frozen stable compatibility baseline. Published tags and distributions remain immutable historical records. The completed A1–C1 work exists only on the non-publishing `1.1.0rc1` source line until the separate readiness programme determines whether an RC is justified.
 
 - [Portable scientific results](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/portable-results/)
 - [Reproducibility bundle checklist](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/checklist/)

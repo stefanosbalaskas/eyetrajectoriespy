@@ -4,7 +4,7 @@
 
 `1.0.0` is the current stable production release and the compatibility baseline for the 1.x line.
 
-The current development line is **1.1.0.dev0**. It is a non-publishing source identity for additive, evidence-driven 1.x development; it is not a release commitment and does not alter the immutable `1.0.0` production artifacts or frozen 1.0 qualification records.
+The current release-candidate line is **1.1.0rc1**. It is a non-publishing source identity for additive, evidence-driven 1.x development; it is not a release commitment and does not alter the immutable `1.0.0` production artifacts or frozen 1.0 qualification records.
 
 The frozen 1.0 public boundary contains **455 stable public exports** and three explicitly experimental APIs. No deprecations or removals were authorized by the 1.0 stabilization programme.
 

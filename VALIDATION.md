@@ -4,18 +4,13 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-`1.0.0rc1` is the literal release-candidate identity under qualification; `0.12.0` remains the published stable release.
+`1.1.0rc1` is the literal release-candidate identity under qualification; published stable `1.0.0` remains immutable.
 
-- The 1.0 API candidate boundary is frozen at 455 stable exports and three explicitly experimental exports.
-- No deprecation, removal, mass rename, estimator change, dependency change, or analytical-default change is part of the RC transition.
-- `REFERENCE_VALIDATION.json` and `VALIDATION_TOLERANCES.json` are promoted to the literal RC qualification identity.
-- `PERFORMANCE_ENVELOPE.json` is deliberately not relabelled; a fresh exact-`1.0.0rc1` run must replace it and be archived as separate RC evidence.
-- The complete RC pull-request matrix and the complete post-merge exact-main matrix must pass before publication may be armed.
-- GitHub/PyPI publication readiness remains jointly false during qualification.
-
-See `docs/release-readiness.md` for the release gate and
-`docs/validation/functional-simulation-validation.md` for recovery/stress
-evidence.
+- R4 qualified the integrated `1.1.0.dev0` surface and recorded `eligible_for_rc_decision=true`.
+- The RC transition changes identity/evidence only; no estimator, scientific default, dependency, or supported API is added here.
+- Active reference/tolerance/performance evidence must be regenerated or promoted only as fresh literal-`1.1.0rc1` qualification evidence; historical 1.0 and R4 development ledgers remain immutable.
+- The complete RC pull-request matrix and complete post-merge exact-main matrix must pass before publication may be considered.
+- GitHub/PyPI publication readiness remains jointly false throughout qualification.
 
 ## Locally validated — 2026-09-19
 

@@ -1,6 +1,9 @@
 # Changelog
 
-## Unreleased — 1.1.0.dev0
+## 1.1.0rc1 (under exact-version qualification)
+
+- Promote the completed R1-R4 development surface to the literal `1.1.0rc1` identity for qualification only; no estimator, analytical default, dependency, root-API expansion, or publication arming is introduced by this version change.
+- Require fresh literal-`1.1.0rc1` qualification/performance evidence plus complete pull-request and protected-main matrices before any publication decision.
 
 - Open and retain a non-publishing post-1.0 development identity while preserving `1.0.0` as the immutable stable compatibility baseline.
 - Complete the A1-C1 sparse/irregular programme as supported module-scoped 1.1 development APIs: conditional PACE/joint-PACE score uncertainty, audited univariate/planar bandwidth selection, candidate-sample observation-process diagnostics, sparse participant/trial multilevel FPCA, asynchronous coordinate-specific sparse planar MFPCA, and partial/future trajectory prediction with participant-aware conformal bands.
