@@ -4,19 +4,19 @@
 
 `1.0.0` is the current stable production release and the compatibility baseline for the 1.x line.
 
-The current release-candidate line is **1.1.0rc1**. It is a non-publishing source identity for additive, evidence-driven 1.x development; it is not a release commitment and does not alter the immutable `1.0.0` production artifacts or frozen 1.0 qualification records.
+The current release-candidate line is **1.1.0rc1**. It is a non-published source identity under exact-version qualification and does not alter the immutable `1.0.0` production artifacts or frozen 1.0 qualification records.
 
 The frozen 1.0 public boundary contains **455 stable public exports** and three explicitly experimental APIs. No deprecations or removals were authorized by the 1.0 stabilization programme.
 
-The post-1.0 sparse/irregular scientific programme tracked in issue #158 is now **complete**. Its A1–C1 capabilities remain supported **module-scoped 1.1 development APIs** rather than being mechanically added to the frozen package-root namespace. The active work is the integration/readiness programme tracked in issue #183. No `1.1.0rc1` decision has been made.
+The post-1.0 sparse/irregular scientific programme (#158) is **complete**. Its A1–C1 capabilities remain supported **module-scoped 1.1 APIs** rather than being mechanically added to the frozen package-root namespace. The integration/readiness programme (#183) has completed R1–R4; R4 recorded `eligible_for_rc_decision=true`, and R5 has approved the separate version/evidence-only `1.1.0rc1` qualification cycle.
 
-The current readiness sequence is:
+The readiness sequence is now:
 
 1. **R1 — integrated API/public-surface audit:** complete; module-scoped 1.1 surface documented and machine-checked.
-2. **R2 — documentation/release narrative:** active reconciliation of current-development and release-status surfaces.
-3. **R3 — end-to-end product analyses:** integrated scientist-facing workflows across the completed sparse/irregular surface.
-4. **R4 — consolidated evidence/performance audit:** exact-main development ledger and explicit RC-eligibility recommendation.
-5. **R5 — RC decision:** only if R4 recommends eligibility; version-only exact-`1.1.0rc1` qualification remains separate from publication arming.
+2. **R2 — documentation/release narrative:** complete.
+3. **R3 — end-to-end product analyses:** complete with zero release-blocking friction.
+4. **R4 — consolidated evidence/performance audit:** complete; `eligible_for_rc_decision=true`.
+5. **R5 — RC decision and literal-version qualification:** RC entry approved; exact-`1.1.0rc1` qualification is in progress. Publication remains a separate later governance step.
 
 Future methodology remains evidence-driven rather than version-number-driven. `eyetrajectoriespy` is intentionally an **eye-tracking functional-analysis layer**, not a reimplementation of every general FDA estimator.
 
@@ -37,9 +37,9 @@ Future methodology remains evidence-driven rather than version-number-driven. `e
 | Continuous trajectory geometry and distance | stable 1.0 | geometry, L2, Fréchet, DTW APIs |
 | Recurrence / nonlinear diagnostics | implemented; experimental status remains explicit where applicable | RQA, LLE, surrogate, TE APIs |
 
-## Completed 1.1 development surface — A1–C1
+## Completed 1.1 scientific surface — A1–C1
 
-The completed post-1.0 programme is additive and module-scoped. These APIs are supported on the `1.1.0.dev0` source line but are **not yet a published 1.1 release**.
+The completed post-1.0 programme is additive and module-scoped. These APIs were developed and integrated on `1.1.0.dev0` and are now being qualified under literal `1.1.0rc1`; they are **not yet a published 1.1 release**.
 
 | Tranche | Scientific capability | Supported module/API | Qualified boundary |
 |---|---|---|---|
@@ -118,7 +118,7 @@ The 0.11 recovery laboratory remains the standing infrastructure for later metho
 
 Final `1.0.0` preserves that frozen scientific/API surface. The RC was observed outside the checkout on Python 3.11–3.13, final `1.0.0` received fresh exact-version performance and complete PR/exact-main qualification, and production workflow #18 published the final version from exact arming commit `d90fbbeea390054019e7689badedf5011ee09c22`. Post-publication readiness is disarmed again.
 
-The `1.1.0.dev0` line has its own method-specific development evidence but may use 1.0 records only as historical baseline evidence. Frozen 1.0 qualification files remain labelled `1.0.0`; any future 1.1 release candidate or final release requires fresh literal-version qualification before publication may be armed.
+The R4 `1.1.0.dev0` development-readiness ledger remains immutable historical evidence. The active `1.1.0rc1` line receives fresh literal-version reference/tolerance/performance qualification; frozen 1.0 and R4 records are not relabelled.
 
 ## Published release sequence
 
@@ -155,7 +155,7 @@ Issue #158 closed after the following evidence-driven sequence completed:
 5. asynchronous/coordinate-specific sparse planar MFPCA without hidden interpolation; and
 6. future/partially observed trajectory prediction with participant-aware conformal calibration.
 
-The scientific programme is therefore no longer the active roadmap. R1–R5 under issue #183 now determine whether the integrated development surface is coherent and sufficiently qualified to justify an RC decision.
+R1–R4 under issue #183 subsequently qualified the integrated product surface and R5 approved entry into exact-version RC qualification. The scientific programme is therefore no longer the active roadmap.
 
 ## Later or conditional methodology
 
