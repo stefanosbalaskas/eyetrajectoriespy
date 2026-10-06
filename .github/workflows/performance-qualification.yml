@@ -6,6 +6,9 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -22,6 +25,21 @@ jobs:
       EYETRAJECTORIESPY_SOURCE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Stage literal 1.1.0rc1 identity on the qualification branch
+        if: github.event_name == 'pull_request' && github.head_ref == 'release/1.1.0rc1-qualification'
+        run: |
+          python scripts/_r5_apply_rc_identity.py
+          if ! git diff --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add pyproject.toml src/eyetrajectoriespy/__init__.py CITATION.cff CANONICAL_WORKFLOWS.json RELEASE_READINESS.json README.md CHANGELOG.md VALIDATION.md docs/methods/status-roadmap.md docs/release-readiness.md docs/release-process.md docs/releases/1.1.0rc1.md mkdocs.yml
+            git commit -m "Open literal 1.1.0rc1 qualification identity"
+            git push origin HEAD:release/1.1.0rc1-qualification
+          fi
+          echo "EYETRAJECTORIESPY_SOURCE_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
