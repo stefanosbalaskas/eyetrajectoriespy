@@ -6,6 +6,7 @@ on:
       - ".github/workflows/installed-rc-qualification.yml"
       - "scripts/run_installed_rc_observation.py"
       - "scripts/run_installed_sparse_mfpca_observation.py"
+      - "scripts/run_one_dot_one_product_analyses.py"
       - "scripts/run_functional_simulation_validation.py"
       - "scripts/run_functional_simulation_stress.py"
       - "scripts/release_smoke_test.py"
@@ -17,6 +18,7 @@ on:
       - ".github/workflows/installed-rc-qualification.yml"
       - "scripts/run_installed_rc_observation.py"
       - "scripts/run_installed_sparse_mfpca_observation.py"
+      - "scripts/run_one_dot_one_product_analyses.py"
       - "scripts/run_functional_simulation_validation.py"
       - "scripts/run_functional_simulation_stress.py"
       - "scripts/release_smoke_test.py"
@@ -28,7 +30,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  RC_VERSION: "1.0.0rc1"
+  RC_VERSION: "1.1.0rc1"
 
 jobs:
   installed-version-matrix:
@@ -111,7 +113,7 @@ jobs:
           if-no-files-found: error
 
   installed-recovery-observation:
-    name: installed recovery + stress + portability
+    name: installed recovery + stress + portability + 1.1 product observation
     needs: installed-version-matrix
     runs-on: ubuntu-24.04
     timeout-minutes: 60
@@ -133,10 +135,40 @@ jobs:
           "${RUNNER_TEMP}/rc-observation/bin/python" -m pip install --no-cache-dir \
             "eyetrajectoriespy==${RC_VERSION}"
           "${RUNNER_TEMP}/rc-observation/bin/python" -m pip check
-      - name: Run qualification from the installed package
+      - name: Verify deep observation imports the installed distribution
         shell: bash
         run: |
           mkdir -p "${RUNNER_TEMP}/rc-work/evidence"
+          cd "${RUNNER_TEMP}/rc-work"
+          "${RUNNER_TEMP}/rc-observation/bin/python" - <<'PY' \
+            > evidence/deep-import-environment.json
+          import importlib.metadata
+          import json
+          import os
+          from pathlib import Path
+          import eyetrajectoriespy as et
+
+          dist = importlib.metadata.distribution("eyetrajectoriespy")
+          root = Path(dist.locate_file("")).resolve()
+          module = Path(et.__file__).resolve()
+          workspace = Path(os.environ["GITHUB_WORKSPACE"]).resolve()
+          if module.is_relative_to(workspace):
+              raise RuntimeError("deep observation imported package from repository checkout")
+          if not module.is_relative_to(root):
+              raise RuntimeError("deep observation package import lies outside distribution root")
+          if et.__version__ != os.environ["RC_VERSION"]:
+              raise RuntimeError("deep observation package version mismatch")
+          print(json.dumps({
+              "package_version": et.__version__,
+              "distribution_version": dist.version,
+              "module_path": str(module),
+              "distribution_root": str(root),
+              "source_checkout_imported": False,
+          }, indent=2, sort_keys=True))
+          PY
+      - name: Run qualification from the installed package
+        shell: bash
+        run: |
           cd "${RUNNER_TEMP}/rc-work"
           "${RUNNER_TEMP}/rc-observation/bin/python" \
             "${GITHUB_WORKSPACE}/scripts/run_functional_simulation_validation.py" \
@@ -167,6 +199,14 @@ jobs:
             "${GITHUB_WORKSPACE}/scripts/run_installed_sparse_mfpca_observation.py" \
             --expected-version "${RC_VERSION}" \
             --output-dir evidence/installed-sparse-mfpca-observation
+      - name: Run installed 1.1 end-to-end product analyses
+        shell: bash
+        run: |
+          cd "${RUNNER_TEMP}/rc-work"
+          "${RUNNER_TEMP}/rc-observation/bin/python" \
+            "${GITHUB_WORKSPACE}/scripts/run_one_dot_one_product_analyses.py" \
+            --output-dir evidence/one-dot-one-product-analyses \
+            --source-commit "${{ github.event.pull_request.head.sha || github.sha }}"
       - name: Verify retained evidence contracts
         shell: bash
         run: |
@@ -195,6 +235,13 @@ jobs:
                   root
                   / "installed-sparse-mfpca-observation"
                   / "installed-sparse-mfpca-observation.json"
+              ).read_text()
+          )
+          product = json.loads(
+              (
+                  root
+                  / "one-dot-one-product-analyses"
+                  / "summary.json"
               ).read_text()
           )
 
@@ -271,10 +318,67 @@ jobs:
           if sparse["reporting"]["nonempty"] is not True:
               raise RuntimeError("installed sparse-MFPCA reporting text is empty")
 
+          if product["schema_version"] != 1:
+              raise RuntimeError("unexpected 1.1 product evidence schema")
+          if product["programme"] != "1.1-r3-canonical-end-to-end-product-analyses":
+              raise RuntimeError("unexpected 1.1 product programme")
+          if product["package_version"] != os.environ["RC_VERSION"]:
+              raise RuntimeError("installed 1.1 product package version mismatch")
+          if product["public_supported_api_only"] is not True:
+              raise RuntimeError("installed 1.1 product analysis used unsupported API")
+          if product["known_truth_qualification_simulator_used"] is not False:
+              raise RuntimeError("installed 1.1 product analysis used qualification truth")
+          if product["empirical_human_data"] is not False:
+              raise RuntimeError("installed 1.1 product fixture provenance changed")
+          if product["release_blocking_friction_count"] != 0:
+              raise RuntimeError("installed 1.1 product analysis found blocking friction")
+
+          uni = product["routes"]["univariate"]
+          if uni["bandwidth_eligible_candidates"] < 1:
+              raise RuntimeError("installed 1.1 univariate bandwidth selection failed")
+          if uni["pace_score_failures"] != 0:
+              raise RuntimeError("installed 1.1 univariate PACE scoring failed")
+          if uni["conditional_uncertainty_failures"] != 0:
+              raise RuntimeError("installed 1.1 univariate score uncertainty failed")
+          if uni["conformal_calibration_units"] != 10:
+              raise RuntimeError("installed 1.1 conformal calibration denominator changed")
+          if uni["raw_interpolation_performed"] is not False:
+              raise RuntimeError("installed 1.1 univariate route interpolated raw data")
+
+          planar = product["routes"]["planar"]
+          if planar["paired_eligible_candidates"] < 1:
+              raise RuntimeError("installed 1.1 planar bandwidth selection failed")
+          if planar["paired_score_failures"] != 0:
+              raise RuntimeError("installed 1.1 paired planar scoring failed")
+          if planar["paired_uncertainty_failures"] != 0:
+              raise RuntimeError("installed 1.1 planar uncertainty failed")
+          if planar["asynchronous_x_only_rows"] <= 0 or planar["asynchronous_y_only_rows"] <= 0:
+              raise RuntimeError("installed 1.1 asynchronous fixture lost coordinate-specific rows")
+          if planar["asynchronous_score_failures"] != 0:
+              raise RuntimeError("installed 1.1 asynchronous scoring failed")
+          if planar["raw_interpolation_performed"] is not False:
+              raise RuntimeError("installed 1.1 planar route interpolated raw data")
+          if planar["nearest_neighbour_synchronization_performed"] is not False:
+              raise RuntimeError("installed 1.1 async route synchronized by nearest neighbour")
+          if planar["time_binning_performed"] is not False:
+              raise RuntimeError("installed 1.1 async route time-binned raw data")
+
+          multi = product["routes"]["multilevel"]
+          if multi["participant_count"] != 16:
+              raise RuntimeError("installed 1.1 multilevel participant denominator changed")
+          if multi["repeated_participants"] != 12:
+              raise RuntimeError("installed 1.1 multilevel repeated-participant denominator changed")
+          if multi["single_trial_participants"] != 4:
+              raise RuntimeError("installed 1.1 multilevel single-trial denominator changed")
+          if multi["blup_failures"] != 0:
+              raise RuntimeError("installed 1.1 multilevel BLUP scoring failed")
+          if multi["raw_interpolation_performed"] is not False:
+              raise RuntimeError("installed 1.1 multilevel route interpolated raw data")
+
           print(
               "installed RC evidence contracts passed: "
               f"{expected_records} stress replicates retained; "
-              "sparse-MFPCA/joint-PACE observation passed"
+              "sparse-MFPCA/joint-PACE and complete 1.1 product observation passed"
           )
           PY
       - name: Capture environment lock and evidence checksums
