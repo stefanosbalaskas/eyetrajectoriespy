@@ -38,11 +38,13 @@ jobs:
           import json
           from pathlib import Path
 
+          import eyetrajectoriespy as et
+
           root = Path("build/one-dot-one-product-analyses")
           summary = json.loads((root / "summary.json").read_text(encoding="utf-8"))
           assert summary["schema_version"] == 1
           assert summary["programme"] == "1.1-r3-canonical-end-to-end-product-analyses"
-          assert summary["package_version"] == "1.1.0.dev0"
+          assert summary["package_version"] == et.__version__
           assert summary["public_supported_api_only"] is True
           assert summary["known_truth_qualification_simulator_used"] is False
           assert summary["empirical_human_data"] is False
