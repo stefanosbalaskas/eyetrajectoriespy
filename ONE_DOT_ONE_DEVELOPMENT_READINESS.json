@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "programme": "1.1-r4-development-readiness",
+  "qualified_main_sha": "1f9b80701ba4d10c97836277e18d8a16abe0038a",
+  "active_source_version": "1.1.0.dev0",
+  "stable_baseline_version": "1.0.0",
+  "frozen_one_dot_zero_compatibility": {
+    "manifest": "ONE_DOT_ZERO_API_STABILITY.json",
+    "baseline_commit": "382c5940e090faf0f74f9bce4e9180a9e14f1eca",
+    "public_exports": 458,
+    "stable_exports": 455,
+    "experimental_exports": 3,
+    "compatibility_exports": 1,
+    "authorized_deprecations": 0,
+    "authorized_removals": 0,
+    "status": "preserved"
+  },
+  "integration_tranches": {
+    "R1": {
+      "issue": 184,
+      "pull_request": 187,
+      "qualified_pr_head": "7dc84212d89a1cad1c883d8ecf34b010922751db",
+      "status": "merged",
+      "decision": "post-1.0 APIs remain supported module-scoped 1.1 APIs; frozen 1.0 root manifest unchanged"
+    },
+    "R2": {
+      "issue": 188,
+      "pull_request": 194,
+      "qualified_pr_head": "8bcb5920df0bf0662103f985ca8e42f9b5aba88a",
+      "merged_main_sha": "dd3076c471d0acc35188f663804b941e58be3224",
+      "status": "merged",
+      "decision": "documentation and release narrative reconciled without estimator, API, source-version, or publication-readiness change"
+    },
+    "R3": {
+      "issue": 189,
+      "pull_request": 195,
+      "qualified_pr_head": "88fc37abae74294cee110227d0f63ba9cfbfaf51",
+      "merged_main_sha": "1f9b80701ba4d10c97836277e18d8a16abe0038a",
+      "pr_workflow_groups": 25,
+      "pr_workflow_successes": 25,
+      "release_blocking_friction_count": 0,
+      "first_success_run_id": 37437196381,
+      "first_success_artifact_id": 11399602744,
+      "first_success_artifact_digest": "sha256:c44b69dc79fbce575ce4c325543afae0cccac9576f781dd753016374fe80c9a1",
+      "wall_clock_seconds": 30.528168409000017,
+      "max_rss_kib": 242672,
+      "status": "merged"
+    }
+  },
+  "method_evidence": {
+    "A1_sparse_pace_score_uncertainty": {
+      "workflow": "sparse-score-uncertainty-validation",
+      "exact_main_run_id": 37439404000,
+      "artifact_id": 11400607280,
+      "artifact_digest": "sha256:6e2ddfdfd72625d475b9dee0c6aa39a3a2d35bc6fd397563c02d795bd0deed1d",
+      "historical_qualified_pr_head": "62754b21069e481311a3f718f616d6ea84e17942",
+      "historical_artifact_id": 11316787078,
+      "status": "qualified_on_exact_main"
+    },
+    "A2_sparse_fpca_bandwidth_selection": {
+      "workflow": "sparse-bandwidth-selection-validation",
+      "exact_main_run_id": 37439403877,
+      "artifact_id": 11400891283,
+      "artifact_digest": "sha256:1b461b476dff3db7892d6ad995fcdb431e7d27273eea6a042b8c267bd284bf09",
+      "historical_qualified_pr_head": "72b452c5f53a7ef5eeb16415b1436342b480bca5",
+      "historical_artifact_id": 11329653400,
+      "status": "qualified_on_exact_main"
+    },
+    "A3_observation_process_diagnostics": {
+      "workflow": "observation-process-validation",
+      "exact_main_run_id": 37439404153,
+      "artifact_id": 11400572196,
+      "artifact_digest": "sha256:ff2610c9a5f8d890ffa22ef6701063753e358e8c4813f474902b2ababd88b6e7",
+      "historical_qualified_pr_head": "1cf2293329d53fa4ef63e9e354dc6b63430ff10e",
+      "status": "qualified_on_exact_main"
+    },
+    "A4_sparse_joint_pace_score_uncertainty": {
+      "workflow": "sparse-mfpca-score-uncertainty-validation",
+      "exact_main_run_id": 37439403814,
+      "artifact_id": 11400981227,
+      "artifact_digest": "sha256:58c0780eeb49f94062fa27e035d2875e19c77056b860c8cbadb90109ca263331",
+      "historical_qualification_run_id": 37288035380,
+      "historical_artifact_id": 11334658246,
+      "status": "qualified_on_exact_main"
+    },
+    "A5_sparse_mfpca_bandwidth_selection": {
+      "workflow": "sparse-mfpca-bandwidth-selection-validation",
+      "exact_main_run_id": 37439404011,
+      "artifact_id": 11399819377,
+      "artifact_digest": "sha256:bd76e51433460a5a45d385ec514de745e5a91ebdb502d9dce915d956ed6c80f9",
+      "historical_qualification_run_id": 37292216369,
+      "historical_artifact_id": 11336532568,
+      "status": "qualified_on_exact_main"
+    },
+    "B1_sparse_multilevel_fpca": {
+      "workflow": "sparse-multilevel-validation",
+      "exact_main_run_id": 37439403996,
+      "artifact_id": 11400961213,
+      "artifact_digest": "sha256:0434797b46705750f7256301c3394ba2d73ae0c9bf6c47fe1aac91fd31a95aec",
+      "historical_qualification_run_id": 37295674725,
+      "historical_artifact_id": 11338965608,
+      "status": "qualified_on_exact_main"
+    },
+    "B2_sparse_async_mfpca": {
+      "workflow": "sparse-mfpca-async-validation",
+      "exact_main_run_id": 37439403973,
+      "artifact_id": 11400966100,
+      "artifact_digest": "sha256:3c723d29be44c1485c9deb761c241ac10c8f8ed7638d5e3f0497e39ff247031d",
+      "historical_qualification_run_id": 37302525135,
+      "historical_artifact_id": 11340834915,
+      "status": "qualified_on_exact_main"
+    },
+    "C1_sparse_partial_prediction_conformal": {
+      "workflow": "sparse-partial-prediction-validation",
+      "exact_main_run_id": 37439403942,
+      "artifact_id": 11400661649,
+      "artifact_digest": "sha256:ad10e508c9ba0144be9a472be75287c46a3e01e06c8041525b7bedf390ef4bab",
+      "historical_qualification_run_id": 37357049977,
+      "historical_artifact_id": 11364204887,
+      "status": "qualified_on_exact_main"
+    }
+  },
+  "exact_main_matrix": {
+    "workflow_groups": 24,
+    "successes": 24,
+    "failures": 0,
+    "tests_run_id": 37439404053,
+    "examples_run_id": 37439403759,
+    "docs_run_id": 37439403972,
+    "release_readiness_run_id": 37439403832,
+    "performance_run_id": 37439403915,
+    "pre_0_12_recovery_run_id": 37439403977,
+    "external_comparator_run_id": 37439403893,
+    "external_comparator_job_id": 112189116488,
+    "status": "qualified"
+  },
+  "product_evidence": {
+    "fixture_scope": "deterministic realistic synthetic gaze; not empirical human observations",
+    "public_supported_api_only": true,
+    "known_truth_qualification_simulator_used": false,
+    "univariate_score_failures": 0,
+    "univariate_uncertainty_failures": 0,
+    "participant_level_conformal_calibration_units": 10,
+    "paired_planar_score_failures": 0,
+    "asynchronous_planar_score_failures": 0,
+    "asynchronous_x_only_rows": 259,
+    "asynchronous_y_only_rows": 270,
+    "multilevel_blup_failures": 0,
+    "raw_interpolation_performed": false,
+    "release_blocking_friction_count": 0
+  },
+  "performance_audit": {
+    "package_wide_exact_main_performance_gate": "passed",
+    "package_wide_exact_main_run_id": 37439403915,
+    "r3_integrated_wall_clock_seconds": 30.528168409000017,
+    "r3_integrated_max_rss_kib": 242672,
+    "pathological_runtime_or_rss_growth_detected": false,
+    "hidden_repeated_refit_detected": false,
+    "explicit_bandwidth_cv_repeated_refits_are_opt_in_and_by_design": true,
+    "new_pre_rc_dedicated_performance_envelope_required": false,
+    "fresh_literal_rc_performance_evidence_required_if_rc_is_created": true
+  },
+  "unresolved_nonblocking_scope_limits": [
+    "asynchronous sparse MFPCA bandwidths remain analyst-declared; no separately qualified asynchronous selector is provided",
+    "sparse multilevel FPCA bandwidths remain analyst-declared; no dedicated multilevel selector is provided",
+    "the first sparse multilevel tranche does not estimate fixed functional effects; these must be absent, stratified, or handled upstream",
+    "declared sparse score and prediction uncertainty remains conditional on fitted population objects where documented and is not full population-estimation uncertainty",
+    "R3 product fixtures are deterministic realistic synthetic gaze rather than empirical human-data validation"
+  ],
+  "publication_interlock": {
+    "production_release_ready": false,
+    "github_publication_ready": false,
+    "pypi_publication_ready": false,
+    "publication_arming_performed": false
+  },
+  "eligible_for_rc_decision": true,
+  "eligibility_reason": "A1-C1, R1-R3 and the complete post-R3 protected-main matrix are jointly qualified with no release-blocking scientific, compatibility, product, or performance defect; remaining limits are explicit scope boundaries. R5 must still make a separate RC decision and, if approved, generate fresh literal-1.1.0rc1 evidence.",
+  "rc_version_change_performed": false,
+  "rc_qualification_performed": false,
+  "publication_performed": false
+}
