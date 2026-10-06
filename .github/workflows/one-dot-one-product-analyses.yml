@@ -1,0 +1,106 @@
+name: one-dot-one-product-analyses
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [chore/1.1-product-analyses]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  r3-product-analyses:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install package
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e .
+      - name: Run canonical 1.1 product analyses
+        env:
+          SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python scripts/run_one_dot_one_product_analyses.py \
+            --output-dir build/one-dot-one-product-analyses \
+            --source-commit "$SOURCE_COMMIT"
+      - name: Verify R3 evidence contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("build/one-dot-one-product-analyses")
+          summary = json.loads((root / "summary.json").read_text(encoding="utf-8"))
+          assert summary["schema_version"] == 1
+          assert summary["programme"] == "1.1-r3-canonical-end-to-end-product-analyses"
+          assert summary["package_version"] == "1.1.0.dev0"
+          assert summary["public_supported_api_only"] is True
+          assert summary["known_truth_qualification_simulator_used"] is False
+          assert summary["empirical_human_data"] is False
+          assert summary["release_blocking_friction_count"] == 0
+
+          uni = summary["routes"]["univariate"]
+          assert uni["proper_training_participants"] == 20
+          assert uni["calibration_participants"] == 10
+          assert uni["conformal_calibration_units"] == 10
+          assert uni["bandwidth_eligible_candidates"] >= 1
+          assert uni["pace_score_failures"] == 0
+          assert uni["conditional_uncertainty_failures"] == 0
+          assert uni["raw_interpolation_performed"] is False
+
+          planar = summary["routes"]["planar"]
+          assert planar["paired_eligible_candidates"] >= 1
+          assert planar["paired_score_failures"] == 0
+          assert planar["paired_uncertainty_failures"] == 0
+          assert planar["asynchronous_x_only_rows"] > 0
+          assert planar["asynchronous_y_only_rows"] > 0
+          assert planar["asynchronous_score_failures"] == 0
+          assert planar["raw_interpolation_performed"] is False
+          assert planar["nearest_neighbour_synchronization_performed"] is False
+          assert planar["time_binning_performed"] is False
+
+          multi = summary["routes"]["multilevel"]
+          assert multi["participant_count"] == 16
+          assert multi["repeated_participants"] == 12
+          assert multi["single_trial_participants"] == 4
+          assert multi["trial_count_min"] == 1
+          assert multi["trial_count_max"] == 3
+          assert multi["participant_score_rows"] == 16
+          assert multi["trial_score_rows"] == multi["trial_count"]
+          assert multi["blup_failures"] == 0
+          assert multi["raw_interpolation_performed"] is False
+
+          required = [
+              root / "product-friction-ledger.csv",
+              root / "environment.json",
+              root / "univariate-sparse" / "observation-reporting.txt",
+              root / "univariate-sparse" / "bandwidth-reporting.txt",
+              root / "univariate-sparse" / "pace-score-uncertainty-reporting.txt",
+              root / "univariate-sparse" / "partial-prediction-reporting.txt",
+              root / "univariate-sparse" / "conformal-band-reporting.txt",
+              root / "planar-sparse" / "joint-pace-reporting.txt",
+              root / "planar-sparse" / "joint-pace-score-uncertainty-reporting.txt",
+              root / "planar-sparse" / "async-reporting.txt",
+              root / "repeated-trial-sparse" / "reporting.txt",
+          ]
+          missing = [str(path) for path in required if not path.exists() or path.stat().st_size == 0]
+          assert not missing, f"missing/empty R3 evidence files: {missing}"
+          print("R3 evidence contract OK")
+          PY
+      - name: Compile harness
+        run: python -m py_compile scripts/run_one_dot_one_product_analyses.py
+      - name: Upload R3 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: one-dot-one-product-analyses
+          path: build/one-dot-one-product-analyses
+          retention-days: 90

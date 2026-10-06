@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "programme": "1.1-r3-canonical-end-to-end-product-analyses",
+  "evidence_kind": "first_successful_branch_execution",
+  "source_commit": "5b2939b76f4c2112acbed415c7b40f0c37a72b15",
+  "package_version": "1.1.0.dev0",
+  "workflow_run_id": 37437196381,
+  "workflow_job_id": 112181805264,
+  "artifact": {
+    "id": 11399602744,
+    "name": "one-dot-one-product-analyses",
+    "files": 51,
+    "size_bytes": 102535,
+    "digest": "sha256:c44b69dc79fbce575ce4c325543afae0cccac9576f781dd753016374fe80c9a1",
+    "expires_at": "2027-01-04T08:36:05Z"
+  },
+  "environment": {
+    "runner": "ubuntu-24.04",
+    "python": "3.12.14"
+  },
+  "wall_clock_seconds": 30.528168409000017,
+  "max_rss_kb_linux_runner": 242672,
+  "release_blocking_friction_count": 0,
+  "routes": {
+    "univariate": {
+      "candidate_missing_fraction": 0.14362519201228874,
+      "proper_training_participants": 20,
+      "calibration_participants": 10,
+      "conformal_calibration_units": 10,
+      "selected_bandwidths": {
+        "candidate_id": "candidate_0002",
+        "mean_bandwidth": 0.36,
+        "covariance_bandwidth": 0.42,
+        "noise_bandwidth": null
+      },
+      "pace_score_failures": 0,
+      "conditional_uncertainty_failures": 0,
+      "raw_interpolation_performed": false
+    },
+    "planar": {
+      "selected_bandwidths": {
+        "candidate_id": "candidate_0002",
+        "mean_bandwidth": 0.36,
+        "covariance_bandwidth": 0.44
+      },
+      "paired_score_failures": 0,
+      "asynchronous_score_failures": 0,
+      "asynchronous_x_only_rows": 259,
+      "asynchronous_y_only_rows": 270,
+      "raw_interpolation_performed": false,
+      "nearest_neighbour_synchronization_performed": false,
+      "time_binning_performed": false
+    },
+    "multilevel": {
+      "participant_count": 16,
+      "trial_count": 34,
+      "single_trial_participants": 4,
+      "blup_failures": 0,
+      "raw_interpolation_performed": false
+    }
+  },
+  "scope": "Product integration/ergonomics evidence only. Synthetic realistic gaze fixtures are not empirical human data and are not known-truth estimator qualification. Runtime and RSS are descriptive observations, not performance thresholds."
+}
