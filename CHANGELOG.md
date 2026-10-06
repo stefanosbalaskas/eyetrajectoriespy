@@ -1,6 +1,21 @@
 # Changelog
 
-## 1.0.0rc1 (under qualification)
+## Unreleased — 1.1.0.dev0
+
+- Open and retain a non-publishing post-1.0 development identity while preserving `1.0.0` as the immutable stable compatibility baseline.
+- Complete the A1-C1 sparse/irregular programme as supported module-scoped 1.1 development APIs: conditional PACE/joint-PACE score uncertainty, audited univariate/planar bandwidth selection, candidate-sample observation-process diagnostics, sparse participant/trial multilevel FPCA, asynchronous coordinate-specific sparse planar MFPCA, and partial/future trajectory prediction with participant-aware conformal bands.
+- Preserve explicit scientific boundaries: no hidden bandwidth selection, no automatic observation-process correction, no hidden x/y synchronization/interpolation, no relabelling of conditional uncertainty as full population-estimation uncertainty, and no continuous-domain claim for finite-grid conformal coverage.
+- Keep the frozen 1.0 package-root boundary unchanged; the post-1.0 additions remain supported module-scoped APIs after the R1 integration audit.
+- Enter the separate R1-R5 integration/readiness programme under issue #183. No `1.1.0rc1` decision has been made and GitHub/PyPI publication readiness remains jointly disarmed.
+
+## 1.0.0 — 2026-10-04
+
+- Promote the fully qualified and production-observed `1.0.0rc1` scientific/API surface to stable `1.0.0` without adding an estimator, numerical method, analytical default, dependency, deprecation, removal, or public API expansion.
+- Preserve the frozen 455-stable-export compatibility boundary and three explicitly experimental exports as the 1.x maintenance baseline.
+- Require fresh literal-`1.0.0` performance and complete pull-request/exact-main qualification rather than relabelling RC evidence.
+- Publish through production workflow #18 only after a separate governance-only arming change; verify GitHub Release assets, checksums, attestations and fresh production-PyPI installation, then jointly disarm readiness again.
+
+## 1.0.0rc1 — 2026-10-04
 
 - Freeze the evidence-backed 1.0 compatibility candidate boundary at 455 stable exports, with `conditional_transfer_entropy`, `discrete_transfer_entropy`, and `return_map_stability` explicitly experimental.
 - Preserve `fit_sparse_fpca_fdapy()` as an intentional stable compatibility route; introduce no deprecations, removals, mass renames, estimator changes, or new scientific methods.
@@ -8,7 +23,7 @@
 - Keep GitHub and production-PyPI publication readiness jointly disarmed during candidate qualification.
 
 
-## 0.12.0 (unreleased)
+## 0.12.0 — 2026-10-01
 
 - Promote the publicly qualified and production-observed `0.12.0rc1` sparse-MFPCA/joint-PACE surface to final `0.12.0` without changing estimator behavior, numerical methods, analytical defaults, dependencies, or public APIs.
 - Require fresh exact-version `0.12.0` package-wide performance evidence and a fresh sparse-MFPCA performance run rather than relabelling release-candidate measurements.
