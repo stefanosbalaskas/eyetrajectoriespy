@@ -3,12 +3,15 @@ name: r5-rc-identity-patch
 on:
   push:
     branches: [release/1.1.0rc1-qualification]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: write
 
 jobs:
   patch:
+    if: github.event_name == 'push' || github.head_ref == 'release/1.1.0rc1-qualification'
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -20,9 +23,6 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           import re
-
-          RC = "1.1.0rc1"
-          DEV = "1.1.0.dev0"
 
           def replace(path, old, new, *, required=True):
               p = Path(path)
@@ -39,8 +39,7 @@ jobs:
           replace("RELEASE_READINESS.json", '"current_development_version": "1.1.0.dev0"', '"current_development_version": "1.1.0rc1"')
 
           cff = Path("CITATION.cff")
-          text = cff.read_text(encoding="utf-8")
-          text = text.replace("version: 1.1.0.dev0", "version: 1.1.0rc1")
+          text = cff.read_text(encoding="utf-8").replace("version: 1.1.0.dev0", "version: 1.1.0rc1")
           if "date-released:" in text:
               text = re.sub(r"^date-released:.*$", "date-released: 2026-10-06", text, flags=re.MULTILINE)
           else:
@@ -55,13 +54,11 @@ jobs:
           readme.write_text(text, encoding="utf-8")
 
           roadmap = Path("docs/methods/status-roadmap.md")
-          text = roadmap.read_text(encoding="utf-8")
-          text = text.replace("The current development line is **1.1.0.dev0**.", "The current release-candidate line is **1.1.0rc1**.")
+          text = roadmap.read_text(encoding="utf-8").replace("The current development line is **1.1.0.dev0**.", "The current release-candidate line is **1.1.0rc1**.")
           roadmap.write_text(text, encoding="utf-8")
 
           changelog = Path("CHANGELOG.md")
-          text = changelog.read_text(encoding="utf-8")
-          text = text.replace("## Unreleased — 1.1.0.dev0", "## 1.1.0rc1 (under exact-version qualification)", 1)
+          text = changelog.read_text(encoding="utf-8").replace("## Unreleased — 1.1.0.dev0", "## 1.1.0rc1 (under exact-version qualification)", 1)
           marker = "## 1.1.0rc1 (under exact-version qualification)\n"
           qualification = "\n- Promote the completed R1-R4 development surface to the literal `1.1.0rc1` identity for qualification only; no estimator, analytical default, dependency, root-API expansion, or publication arming is introduced by this version change.\n- Require fresh literal-`1.1.0rc1` qualification/performance evidence plus complete pull-request and protected-main matrices before any publication decision.\n"
           if qualification.strip() not in text:
