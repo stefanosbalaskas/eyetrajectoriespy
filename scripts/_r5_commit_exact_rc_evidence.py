@@ -26,11 +26,46 @@ replace("VALIDATION_TOLERANCES.json", '"package_version": "1.0.0"', f'"package_v
 fresh = Path("performance-envelope.json")
 if not fresh.exists():
     raise SystemExit("fresh performance-envelope.json was not generated")
-payload = json.loads(fresh.read_text(encoding="utf-8"))
-if payload.get("package_version") != RC:
-    raise SystemExit(f"performance evidence is not literal RC: {payload.get('package_version')!r}")
-if payload.get("status") != "qualified":
-    raise SystemExit("performance evidence is not qualified")
+raw = json.loads(fresh.read_text(encoding="utf-8"))
+package_version = raw.get("environment", {}).get("packages", {}).get("eyetrajectoriespy")
+if package_version != RC:
+    raise SystemExit(f"performance evidence is not literal RC: {package_version!r}")
+source_commit = raw.get("environment", {}).get("source_commit")
+if not source_commit:
+    raise SystemExit("performance evidence does not retain source_commit")
+
+# run_performance_qualification.py emits raw observations. Promotion to the
+# checked-in envelope schema adds qualification identity/status and nests the
+# repeated measurements under `observed`, matching every historical envelope.
+results = []
+for row in raw.get("results", []):
+    results.append(
+        {
+            "case": row["case"],
+            "scale": row["scale"],
+            "repeats": row["repeats"],
+            "observed": {
+                "runtime_seconds": row["runtime_seconds"],
+                "peak_memory_mib": row["peak_memory_mib"],
+            },
+        }
+    )
+
+payload = {
+    "schema_version": raw.get("schema_version", 1),
+    "package_version": RC,
+    "benchmark_kind": raw["benchmark_kind"],
+    "comparative_benchmark": raw["comparative_benchmark"],
+    "profile": raw["profile"],
+    "status": "qualified",
+    "qualification_commit": source_commit,
+    "qualification_run_id": os.environ["GITHUB_RUN_ID"],
+    "environment": raw["environment"],
+    "results": results,
+}
+if "interpretation" in raw:
+    payload["interpretation"] = raw["interpretation"]
+
 Path("PERFORMANCE_ENVELOPE.json").write_text(
     json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
     encoding="utf-8",
@@ -81,7 +116,7 @@ ledger = {
     "r4_eligible_for_rc_decision": True,
     "package_version": RC,
     "performance_run_id": int(os.environ["GITHUB_RUN_ID"]),
-    "performance_qualification_commit": payload.get("qualification_commit"),
+    "performance_qualification_commit": source_commit,
     "historical_r4_ledger": "ONE_DOT_ONE_DEVELOPMENT_READINESS.json",
     "historical_r4_ledger_relabelled": False,
     "frozen_one_dot_zero_evidence_mutated": False,
