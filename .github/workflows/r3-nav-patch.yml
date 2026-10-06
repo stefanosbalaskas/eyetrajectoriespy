@@ -1,0 +1,40 @@
+name: r3-nav-patch
+
+on:
+  push:
+    branches: [chore/1.1-product-analyses]
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: chore/1.1-product-analyses
+          fetch-depth: 0
+      - name: Add R3 validation page to navigation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path("mkdocs.yml")
+          text = path.read_text(encoding="utf-8")
+          marker = "          - Sparse partial-trajectory prediction: validation/sparse-partial-prediction.md\n"
+          addition = marker + "          - 1.1 end-to-end product analyses: validation/one-dot-one-product-analyses.md\n"
+          if "validation/one-dot-one-product-analyses.md" not in text:
+              if marker not in text:
+                  raise SystemExit("expected mkdocs validation marker not found")
+              text = text.replace(marker, addition, 1)
+              path.write_text(text, encoding="utf-8")
+          PY
+          if git diff --quiet -- mkdocs.yml; then
+            echo "navigation already patched"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mkdocs.yml
+          git commit -m "Add R3 product-analysis page to docs nav"
+          git push origin HEAD:chore/1.1-product-analyses
