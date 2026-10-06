@@ -2,7 +2,7 @@
   "schema_version": 1,
   "current_development_version": "1.1.0rc1",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": true,
+  "production_release_ready": false,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -98,7 +98,11 @@
     "1.1.0.dev0 opens a non-publishing post-1.0 development line for the evidence-driven sparse/irregular inference programme tracked in issue #158. The published 1.0.0 artifacts and frozen 1.0 API boundary remain immutable, qualification/performance evidence remains attributed to 1.0.0 until a later version receives fresh exact-version qualification, and GitHub/PyPI publication readiness remains jointly disarmed.",
     "1.1.0rc1 exact-version qualification PR #197 merged as protected-main commit 909f7cd493fc21f643e1f923ed503e6128dc750c after its complete 26-workflow pull-request matrix passed. The complete post-merge exact-main push matrix then finished 25/25 workflow groups successfully with zero failures.",
     "On exact qualified 1.1.0rc1 commit 909f7cd493fc21f643e1f923ed503e6128dc750c, package-wide performance run 37450433620, package/test run 37450433515, and sparse-MFPCA comparator-sensitivity run 37450433609 completed successfully alongside the full 1.1 sparse/irregular qualification programme.",
-    "This governance-only arming change jointly arms GitHub and production PyPI readiness only after completed 1.1.0rc1 exact-main qualification. After it merges, the resulting exact protected-main arming commit must itself pass the required exact-main governance checks before any explicit manual release.yml dispatch with target=production. Ordinary pushes and merges remain non-publishing."
+    "This governance-only arming change jointly arms GitHub and production PyPI readiness only after completed 1.1.0rc1 exact-main qualification. After it merges, the resulting exact protected-main arming commit must itself pass the required exact-main governance checks before any explicit manual release.yml dispatch with target=production. Ordinary pushes and merges remain non-publishing.",
+    "Governance-only PR #198 merged as exact protected-main publication-arming commit f4405897e2a7a2392c03523cc7fa18e43df00e5e after its complete pull-request matrix passed. The resulting exact-main arming matrix then finished 24/24 workflow groups successfully with zero failures, including the exact external mGSFPCA comparator.",
+    "Production release workflow #19 (run 37511987332) completed successfully from exact protected-main arming commit f4405897e2a7a2392c03523cc7fa18e43df00e5e on 6 October 2026. It built the wheel and sdist exactly once, passed production governance and unpublished-version preflight, created annotated tag and GitHub prerelease v1.1.0rc1 pointing to the exact arming commit, published the checksum-verified distributions to production PyPI through OIDC Trusted Publishing with digital attestations, and passed a fresh eyetrajectoriespy==1.1.0rc1 production-PyPI installation smoke test on the first visibility attempt.",
+    "Published v1.1.0rc1 GitHub Release assets are eyetrajectoriespy-1.1.0rc1-py3-none-any.whl (sha256:875242e0c7cd1fae0fdb9e472a33ecf687e99e886e3f36302748563dddede151), eyetrajectoriespy-1.1.0rc1.tar.gz (sha256:f67cf81f93aef8e47d47d918f0945bdaaa437d542381f60316ff0996e2370846), and SHA256SUMS (sha256:d849ef5b21eea95dd81626e2f071723a28110556b27911a57d69bc59ab5b8bc4). Retained workflow artifact 11435448783 has digest sha256:3572f75c8339f73a2a77845cc01072097309a3b32f5207e0dcffcdf777c99e83.",
+    "Post-publication GitHub/PyPI readiness is jointly disarmed again to prevent accidental republication of immutable 1.1.0rc1. The stable default remains 1.0.0 while 1.1.0rc1 enters production-installed observation before any final 1.1.0 promotion decision."
   ],
-  "github_release_ready": true
+  "github_release_ready": false
 }
