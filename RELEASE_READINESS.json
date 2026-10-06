@@ -2,7 +2,7 @@
   "schema_version": 1,
   "current_development_version": "1.1.0rc1",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": false,
+  "production_release_ready": true,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -95,7 +95,10 @@
     "Workflow #18 built the wheel and sdist exactly once, passed production governance and unpublished-version preflight, created annotated tag and GitHub Release v1.0.0 pointing to the exact arming commit, verified the release checksums, published both distributions to production PyPI through OIDC Trusted Publishing with digital attestations, and passed a fresh eyetrajectoriespy==1.0.0 production-PyPI installation smoke test.",
     "Published v1.0.0 GitHub Release assets are eyetrajectoriespy-1.0.0-py3-none-any.whl (sha256:49112a37a232f34f65be0724d5f6d59d787065c3394501a35c81454a3454345c), eyetrajectoriespy-1.0.0.tar.gz (sha256:0dbfa2fedb6b508c42b6f0e1ae62db96226609527d4f1ba20ba4ec9b8037d304), and SHA256SUMS (sha256:9c1e3393a61d8a5d2dcfbf33c37cd800fba3a88fb8e0f2eda87e4dcf7c92a92d). Retained workflow artifact 11297041447 has digest sha256:136f8d5238162af11556140b8caccb045ba579dcc11f5c75ae8399b58ff1c62f.",
     "Post-publication GitHub/PyPI readiness is jointly disarmed to prevent accidental republication of immutable 1.0.0. Ordinary pushes and merges remain non-publishing; a future release must begin a new reviewed version/readiness cycle.",
-    "1.1.0.dev0 opens a non-publishing post-1.0 development line for the evidence-driven sparse/irregular inference programme tracked in issue #158. The published 1.0.0 artifacts and frozen 1.0 API boundary remain immutable, qualification/performance evidence remains attributed to 1.0.0 until a later version receives fresh exact-version qualification, and GitHub/PyPI publication readiness remains jointly disarmed."
+    "1.1.0.dev0 opens a non-publishing post-1.0 development line for the evidence-driven sparse/irregular inference programme tracked in issue #158. The published 1.0.0 artifacts and frozen 1.0 API boundary remain immutable, qualification/performance evidence remains attributed to 1.0.0 until a later version receives fresh exact-version qualification, and GitHub/PyPI publication readiness remains jointly disarmed.",
+    "1.1.0rc1 exact-version qualification PR #197 merged as protected-main commit 909f7cd493fc21f643e1f923ed503e6128dc750c after its complete 26-workflow pull-request matrix passed. The complete post-merge exact-main push matrix then finished 25/25 workflow groups successfully with zero failures.",
+    "On exact qualified 1.1.0rc1 commit 909f7cd493fc21f643e1f923ed503e6128dc750c, package-wide performance run 37450433620, package/test run 37450433515, and sparse-MFPCA comparator-sensitivity run 37450433609 completed successfully alongside the full 1.1 sparse/irregular qualification programme.",
+    "This governance-only arming change jointly arms GitHub and production PyPI readiness only after completed 1.1.0rc1 exact-main qualification. After it merges, the resulting exact protected-main arming commit must itself pass the required exact-main governance checks before any explicit manual release.yml dispatch with target=production. Ordinary pushes and merges remain non-publishing."
   ],
-  "github_release_ready": false
+  "github_release_ready": true
 }
