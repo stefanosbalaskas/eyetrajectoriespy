@@ -1,8 +1,8 @@
 # Release readiness and publication state
 
-## Current state — stable 1.0.0
+## Current stable release — 1.0.0
 
-`eyetrajectoriespy 1.0.0` is published on GitHub and production PyPI and is the stable compatibility baseline for the 1.x line.
+`eyetrajectoriespy 1.0.0` is published on GitHub and production PyPI and remains the stable compatibility baseline for the 1.x line.
 
 Final publication was completed on **4 October 2026** from exact protected-main arming commit `d90fbbeea390054019e7689badedf5011ee09c22` through production workflow #18 (`37185125898`). The workflow:
 
@@ -14,6 +14,39 @@ Final publication was completed on **4 October 2026** from exact protected-main 
 - passed a fresh `eyetrajectoriespy==1.0.0` production-PyPI installation smoke test.
 
 Post-publication PR #156 recorded the immutable evidence, promoted `1.0.0` as the visible stable release, and jointly disarmed GitHub/PyPI publication readiness again. Ordinary pushes and merges remain non-publishing.
+
+## Current development source — 1.1.0.dev0
+
+The active source identity is **`1.1.0.dev0`**. It is not a published release and does not change the stable installation guidance above.
+
+The sparse/irregular scientific programme tracked in issue #158 has completed A1–C1. R1 then audited the integrated surface and retained the additions as supported **module-scoped 1.1 development APIs** while leaving the frozen 1.0 root compatibility boundary unchanged.
+
+The active governance programme is issue #183:
+
+1. R1 — integrated API/public-surface audit: complete;
+2. R2 — documentation/release narrative: active;
+3. R3 — canonical end-to-end product analyses: pending;
+4. R4 — consolidated exact-main evidence/performance audit: pending;
+5. R5 — explicit RC decision: pending.
+
+No `1.1.0rc1` decision has been made. Completion of scientific features is not itself a release-candidate decision.
+
+## Current publication interlock
+
+The machine-readable authority is `RELEASE_READINESS.json`.
+
+Current state:
+
+- stable published version = `1.0.0`;
+- active source identity = `1.1.0.dev0`;
+- `production_release_ready = false`;
+- `github_release_ready = false`;
+- stable 1.0 API boundary frozen and machine-checked;
+- A1–C1 development APIs remain module-scoped and additive;
+- frozen 1.0 qualification evidence remains attributed to `1.0.0`;
+- no RC or publication authority exists for 1.1.
+
+The `1.1.0.dev0` line has method-specific development evidence, but historical 1.0 records are baseline evidence only. A future `1.1.0rc1` requires a separate literal-version qualification cycle if and only if R5 approves RC entry after R1–R4.
 
 ## Final 1.0 qualification
 
@@ -34,55 +67,57 @@ Qualification PR #154 passed its complete **17-workflow** pull-request matrix an
 
 Governance-only PR #155 armed publication only after that final-version matrix passed. The resulting arming commit `d90fbbeea390054019e7689badedf5011ee09c22` then passed its own complete **16-workflow** exact-main matrix before the manual production dispatch.
 
-## Release-candidate observation
+## Release-candidate observation for 1.0
 
 Published `1.0.0rc1` remains immutable prerelease history. Before final promotion it was reinstalled from production PyPI on Python 3.11–3.13 outside the source checkout and passed the deep installed recovery/stress/portability/sparse-MFPCA observation chain.
 
 Canonical exact-main installed-RC workflow run `37160170148` retained 42/42 declared threshold-free stress records, returned 36/36 successful sparse-MFPCA joint-PACE scores, and reported zero nonportable sparse fields. Artifact `11287283256` has digest `sha256:92d4053b50180153d0f37f99881f3f4c490a1d1d132b329cc8fd829e74fca5e4`.
 
-No result-changing or frozen-public-API defect was identified that required another release candidate.
+No result-changing or frozen-public-API defect was identified that required another 1.0 release candidate.
 
-## Current publication interlock
+## Required path before any 1.1 publication
 
-The machine-readable authority is `RELEASE_READINESS.json`.
-
-Current post-publication state:
-
-- `production_release_ready = false`;
-- `github_release_ready = false`;
-- package identity = `1.0.0`;
-- stable 1.0 API boundary frozen and machine-checked;
-- future publication requires a new reviewed version/readiness cycle.
-
-A future release must not be produced by simply toggling a version string. The expected sequence remains:
+A future release must not be produced by simply changing a version string. For 1.1 the current sequence is deliberately longer because integrated development/product evidence precedes the version decision:
 
 ```text
-reviewed source/version change
+R1 integrated API audit
         |
         v
-fresh exact-version qualification evidence
+R2 documentation/release narrative
         |
         v
-complete pull-request matrix
+R3 end-to-end product analyses
         |
         v
-merge through protected main
+R4 exact-main evidence/performance audit
         |
         v
-complete exact-main matrix
+R5 explicit RC/no-RC decision
         |
-        v
-separate governance-only publication arming
+        +-- if no --> remain on 1.1.0.dev0
         |
-        v
-exact arming-main matrix
-        |
-        v
-explicit manual release.yml target=production dispatch
-        |
-        v
-GitHub/PyPI verification and post-publication disarm
+        +-- if yes --> separate version-only 1.1.0rc1 qualification PR
+                          |
+                          v
+                    fresh literal-RC evidence
+                          |
+                          v
+                    complete PR + exact-main matrix
+                          |
+                          v
+                    separate governance-only publication arming
+                          |
+                          v
+                    exact arming-main governance matrix
+                          |
+                          v
+                    explicit manual release.yml target=production
+                          |
+                          v
+                    GitHub/PyPI verification + post-publication disarm
 ```
+
+Publication readiness remains jointly false throughout R1–R5 and throughout RC qualification. A green RC qualification commit still does not authorize publication.
 
 ## Post-1.0 compatibility policy
 
@@ -90,7 +125,7 @@ GitHub/PyPI verification and post-publication disarm
 - **1.x**: additive capabilities or deliberately governed compatible extensions.
 - **Breaking stable API/scientific-contract changes**: deprecate deliberately and reserve actual breakage for `2.0`, unless an exceptional correction is required to prevent demonstrably wrong scientific results.
 
-The repository should not create a new minor release merely because 1.0 is complete. External use, issue observation, real-data case studies, documentation and dissemination are the preferred post-1.0 evidence sources.
+The repository does not create a new minor release merely because a feature programme is complete. Integrated product evidence and exact qualification must justify promotion.
 
 ## Repository policy
 
