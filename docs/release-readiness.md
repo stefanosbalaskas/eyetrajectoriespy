@@ -15,39 +15,41 @@ Final publication was completed on **4 October 2026** from exact protected-main 
 
 Post-publication PR #156 recorded the immutable evidence, promoted `1.0.0` as the visible stable release, and jointly disarmed GitHub/PyPI publication readiness again. Ordinary pushes and merges remain non-publishing.
 
-## Current release-candidate source — 1.1.0rc1
+## Qualified release-candidate source — 1.1.0rc1
 
-The active source identity is **`1.1.0rc1`** and is under exact-version qualification. It is not yet a published release and does not change the stable installation guidance above.
+The active source identity is **`1.1.0rc1`**. Exact-version qualification is complete; this governance-only tranche arms publication authority but does not itself publish the package or change the stable installation guidance above.
 
-The sparse/irregular scientific programme (#158) completed A1–C1. The integration/readiness programme (#183) then completed:
+The sparse/irregular scientific programme (#158) completed A1–C1. The integration/readiness programme (#183) then completed R1–R5:
 
 1. R1 — integrated API/public-surface audit;
 2. R2 — documentation/release narrative reconciliation;
-3. R3 — canonical end-to-end product analyses; and
-4. R4 — consolidated exact-main evidence/performance audit.
+3. R3 — canonical end-to-end product analyses;
+4. R4 — consolidated exact-main evidence/performance audit; and
+5. R5 — literal `1.1.0rc1` qualification and exact-main closure.
 
-R4 recorded `eligible_for_rc_decision=true` on protected main. R5 therefore approved entry into a **separate version/evidence-only `1.1.0rc1` qualification cycle**. No estimator, scientific default, dependency, supported module-scoped API, or frozen 1.0 root compatibility boundary is changed by the RC transition.
+R4 recorded `eligible_for_rc_decision=true`. R5 qualification PR #197 then passed its complete **26-workflow pull-request matrix**, merged through protected `main`, and produced exact qualified commit `909f7cd493fc21f643e1f923ed503e6128dc750c`. The post-merge exact-main push matrix finished **25/25 workflow groups successfully with zero failures**.
 
-Fresh literal-RC performance evidence is retained separately from the immutable R4 `1.1.0.dev0` development-readiness ledger. The RC still requires the complete pull-request matrix and complete post-merge exact-main matrix before qualification can close.
+Fresh literal-RC evidence remains separate from the immutable R4 `1.1.0.dev0` development-readiness ledger and the frozen 1.0 qualification evidence. No estimator, scientific default, dependency, supported module-scoped API, or frozen 1.0 root compatibility boundary changed during RC qualification.
 
 ## Current publication interlock
 
 The machine-readable authority is `RELEASE_READINESS.json`.
 
-Current state:
+Current arming-branch state:
 
 - stable published version = `1.0.0`;
 - active source identity = `1.1.0rc1`;
-- `production_release_ready = false`;
-- `github_release_ready = false`;
+- `production_release_ready = true`;
+- `github_release_ready = true`;
+- exact qualified RC main = `909f7cd493fc21f643e1f923ed503e6128dc750c`;
+- exact RC qualification matrix = 25/25 successful post-merge workflow groups;
 - stable 1.0 API boundary remains frozen and machine-checked;
 - A1–C1 1.1 APIs remain module-scoped and additive;
 - historical 1.0 qualification evidence remains attributed to `1.0.0`;
-- the R4 development-readiness ledger remains attributed to `1.1.0.dev0` and is not relabelled as RC evidence;
-- active RC reference/tolerance/performance evidence is qualified under literal `1.1.0rc1`; and
-- **no publication authority exists for 1.1.0rc1**.
+- the R4 development-readiness ledger remains attributed to `1.1.0.dev0` and is not relabelled as RC evidence; and
+- active reference/tolerance/performance evidence is qualified under literal `1.1.0rc1`.
 
-A green RC qualification does not publish or arm anything. GitHub/PyPI arming, an exact arming-main governance matrix, production dispatch, publication verification and post-publication disarming remain separate later governance steps.
+These true flags are **publication authority, not publication itself**. After this governance-only change merges, the resulting exact protected-main arming commit must pass the required exact-main governance checks. Only then may an explicit manual `release.yml` dispatch with `target=production` be used.
 
 ## Final 1.0 qualification
 
@@ -76,9 +78,9 @@ Canonical exact-main installed-RC workflow run `37160170148` retained 42/42 decl
 
 No result-changing or frozen-public-API defect was identified that required another 1.0 release candidate.
 
-## Required path before any 1.1 publication
+## Required path before 1.1.0rc1 publication
 
-The 1.1 readiness path has now advanced through R4 and the R5 RC-entry decision:
+The qualification programme is complete and the publication path is now deliberately narrow:
 
 ```text
 R1 integrated API audit                         complete
@@ -89,25 +91,16 @@ R3 end-to-end product analyses                  complete
         |
 R4 exact-main evidence/performance audit         complete
         |                                        eligible_for_rc_decision=true
-R5 explicit RC/no-RC decision                    RC qualification approved
+R5 literal 1.1.0rc1 qualification               complete
         |
         v
-literal 1.1.0rc1 version/evidence qualification in progress
+exact qualified main 909f7cd493fc...            25/25 successful
         |
         v
-fresh literal-RC evidence
+separate governance-only publication arming     current tranche
         |
         v
-complete PR matrix
-        |
-        v
-protected-main merge + complete exact-main matrix
-        |
-        v
-RC qualified — publication still disarmed
-        |
-        v
-separate governance-only publication arming
+protected-main merge
         |
         v
 exact arming-main governance matrix
@@ -116,10 +109,13 @@ exact arming-main governance matrix
 explicit manual release.yml target=production
         |
         v
-GitHub/PyPI verification + post-publication disarm
+GitHub/PyPI verification
+        |
+        v
+post-publication readiness disarm
 ```
 
-Publication readiness remains jointly false throughout RC qualification. A green RC qualification commit still does not authorize publication.
+The arming change contains no scientific or package-behaviour modification. Ordinary pushes and merges remain non-publishing throughout.
 
 ## Post-1.0 compatibility policy
 
@@ -146,6 +142,7 @@ The repository does not create a new minor release merely because a feature prog
 
 Detailed immutable chronology remains in the release notes:
 
+- [1.1.0rc1](releases/1.1.0rc1.md)
 - [1.0.0](releases/1.0.0.md)
 - [1.0.0rc1](releases/1.0.0rc1.md)
 - [0.12.0](releases/0.12.0.md)

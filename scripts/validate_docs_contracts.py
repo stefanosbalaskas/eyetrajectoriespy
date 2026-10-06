@@ -26,7 +26,7 @@ EVIDENCE_FILES = (
 )
 BASE_VALIDATOR_VERSION = "0.12.0"
 LATEST_QUALIFIED_EVIDENCE_VERSION = "1.1.0rc1"
-QUALIFIED_RELEASE_MAIN = "1a2afc79e43108e674f3cdd2dc1cb2d8c1b8b3f0"
+QUALIFIED_RELEASE_MAIN = "909f7cd493fc21f643e1f923ed503e6128dc750c"
 _ORIGINAL_READ_TEXT = Path.read_text
 
 
@@ -62,8 +62,8 @@ def _composed_source_read_text(self: Path, *args, **kwargs) -> str:
         return text.replace(et.__version__, BASE_VALIDATOR_VERSION)
     if resolved in {path.resolve() for path in EVIDENCE_FILES}:
         # The same historical validator also hard-codes 0.12.0 for qualification
-        # evidence. Real development-source validation below requires the latest
-        # frozen evidence identity (1.0.0); translate only for the legacy layer.
+        # evidence. Real validation below requires the latest qualified evidence
+        # identity; translate only for the legacy assertion layer.
         return text.replace(
             LATEST_QUALIFIED_EVIDENCE_VERSION,
             BASE_VALIDATOR_VERSION,
@@ -92,7 +92,7 @@ def _validate_source_and_evidence_versions() -> None:
         notes = "\n".join(str(note) for note in readiness.get("notes", ()))
         required_arming_evidence = (
             QUALIFIED_RELEASE_MAIN,
-            "17/17 workflow groups successfully",
+            "25/25 workflow groups successfully",
             "manual release.yml dispatch with target=production",
         )
         missing = [token for token in required_arming_evidence if token not in notes]
