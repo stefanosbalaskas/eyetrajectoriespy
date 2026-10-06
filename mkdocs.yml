@@ -186,6 +186,7 @@ nav:
           - Sparse MFPCA comparator sensitivity: validation/sparse-mfpca-comparator-sensitivity.md
           - Sparse MFPCA stress and performance: validation/sparse-mfpca-observation-performance.md
           - Sparse partial-trajectory prediction: validation/sparse-partial-prediction.md
+          - 1.1 end-to-end product analyses: validation/one-dot-one-product-analyses.md
           - Numerical tolerance policy: validation/numerical-tolerance-policy.md
           - Performance envelope: validation/performance-envelope.md
       - Development roadmap:
