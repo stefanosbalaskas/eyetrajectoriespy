@@ -1,0 +1,74 @@
+name: workflow-infrastructure-validation
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/workflow-infrastructure.yml"
+      - "src/eyetrajectoriespy/workflows/**"
+      - "tests/test_workflow_infrastructure.py"
+      - "tests/test_portable_results.py"
+      - "docs/reference/workflows-api.md"
+      - "docs/reproducibility/workflow-bundles.md"
+      - "mkdocs.yml"
+      - "pyproject.toml"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/workflow-infrastructure.yml"
+      - "src/eyetrajectoriespy/workflows/**"
+      - "tests/test_workflow_infrastructure.py"
+      - "tests/test_portable_results.py"
+      - "docs/reference/workflows-api.md"
+      - "docs/reproducibility/workflow-bundles.md"
+      - "mkdocs.yml"
+      - "pyproject.toml"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  workflow-contracts:
+    name: workflow-contracts (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install package
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+      - name: Compile workflow surface
+        run: |
+          python -m compileall -q src/eyetrajectoriespy/workflows tests/test_workflow_infrastructure.py
+      - name: Run workflow and portable-result contracts
+        run: |
+          python -m pytest -q tests/test_workflow_infrastructure.py tests/test_portable_results.py
+      - name: Verify module-scoped import boundary
+        run: |
+          python - <<'PY'
+          import eyetrajectoriespy as et
+          from eyetrajectoriespy import workflows
+
+          assert workflows.WORKFLOW_SCHEMA_VERSION == 1
+          assert workflows.WORKFLOW_BUNDLE_SCHEMA_VERSION == 1
+          for name in (
+              "WorkflowContract",
+              "WorkflowDecision",
+              "WorkflowStepRecord",
+              "PreprocessingPlan",
+              "export_workflow_bundle",
+              "load_workflow_bundle",
+          ):
+              assert name not in et.__all__
+              assert not hasattr(et, name)
+          PY
