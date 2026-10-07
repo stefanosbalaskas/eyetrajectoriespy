@@ -4,6 +4,8 @@
 
 The current stable production release is **1.1.0**. It is the stable/default production release and preserves the frozen 1.0 package-root compatibility boundary while promoting the qualified post-1.0 sparse/irregular capabilities as stable **module-scoped 1.1 APIs**.
 
+The current development line is **1.2.0.dev0**. It is a non-publishing source identity for compatible post-1.1 work. Opening this line does not imply that `1.2.0` will be released, does not arm publication, and does not relabel the immutable `1.1.0` qualification evidence.
+
 The frozen 1.0 public boundary contains **455 stable public exports** and three explicitly experimental APIs. No deprecations or removals were authorized by the 1.0 stabilization programme, and 1.1 did not mechanically expand that package-root namespace.
 
 The post-1.0 sparse/irregular scientific programme (#158), integration/readiness programme (#183), `1.1.0rc1` qualification/publication/installed observation, literal final `1.1.0` qualification, governance-only arming, production publication, and post-publication closeout are all **complete**.
@@ -17,7 +19,7 @@ The completed release sequence was:
 5. **R5 — RC/final decision and literal-version qualification:** complete through RC publication/observation and fresh final-version qualification.
 6. **Final publication governance:** complete; `1.1.0` was armed separately, published from exact protected main, promoted to stable/default, and publication readiness was disarmed again after closeout.
 
-Current post-1.1 work is deliberately split into separate programmes: issue #205 evaluates Bayesian sparse FPCA/MFPCA as an external scientific comparator before any native Bayesian API decision, while issue #211 defines a transparent, typed workflow/orchestration layer for a potential 1.2 product release. These programmes must not silently change the stable 1.1 scientific contracts.
+Current post-1.1 work is deliberately split into separate programmes on the `1.2.0.dev0` source line: issue #205 evaluates Bayesian sparse FPCA/MFPCA as an external scientific comparator before any native Bayesian API decision, while issue #211 defines a transparent, typed workflow/orchestration layer for a potential 1.2 product release. These programmes must not silently change the stable 1.1 scientific contracts.
 
 Future methodology remains evidence-driven rather than version-number-driven. `eyetrajectoriespy` is intentionally an **eye-tracking functional-analysis layer**, not a reimplementation of every general FDA estimator.
 
