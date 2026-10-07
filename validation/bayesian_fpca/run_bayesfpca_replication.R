@@ -221,6 +221,60 @@ run_one <- function(
   )
 }
 
+run_one_safe <- function(
+  scenario_dir,
+  design,
+  ids,
+  time_obs,
+  Y,
+  dimensions,
+  time_g,
+  L,
+  K_value,
+  seed
+) {
+  started <- proc.time()[["elapsed"]]
+  error_message <- ""
+  ok <- tryCatch(
+    {
+      run_one(
+        scenario_dir = scenario_dir,
+        design = design,
+        ids = ids,
+        time_obs = time_obs,
+        Y = Y,
+        dimensions = dimensions,
+        time_g = time_g,
+        L = L,
+        K_value = K_value,
+        seed = seed
+      )
+      TRUE
+    },
+    error = function(e) {
+      error_message <<- conditionMessage(e)
+      FALSE
+    }
+  )
+  elapsed <- proc.time()[["elapsed"]] - started
+  write.csv(
+    data.frame(
+      status = if (ok) "ok" else "failed",
+      K = K_value,
+      elapsed_seconds = as.numeric(elapsed),
+      error = error_message,
+      stringsAsFactors = FALSE
+    ),
+    file.path(
+      scenario_dir,
+      paste0("bayesfpca_k", K_value, "_fit_status.csv")
+    ),
+    row.names = FALSE
+  )
+  ok
+}
+
+
 for (row_index in seq_len(nrow(manifest))) {
   entry <- manifest[row_index, ]
   scenario <- as.character(entry$scenario)
@@ -273,7 +327,7 @@ for (row_index in seq_len(nrow(manifest))) {
   K_values <- if (fairness) 5L:9L else 7L
 
   for (K_value in K_values) {
-    run_one(
+    run_one_safe(
       scenario_dir = scenario_dir,
       design = design,
       ids = ids,
@@ -289,13 +343,20 @@ for (row_index in seq_len(nrow(manifest))) {
 
   if (fairness) {
     metadata_rows <- lapply(K_values, function(K_value) {
-      metadata <- read.csv(
-        file.path(
-          scenario_dir,
-          paste0("bayesfpca_k", K_value, "_metadata.csv")
-        ),
-        stringsAsFactors = FALSE
+      metadata_path <- file.path(
+        scenario_dir,
+        paste0("bayesfpca_k", K_value, "_metadata.csv")
       )
+      if (!file.exists(metadata_path)) {
+        return(
+          data.frame(
+            K = K_value,
+            final_elbo = NA_real_,
+            stringsAsFactors = FALSE
+          )
+        )
+      }
+      metadata <- read.csv(metadata_path, stringsAsFactors = FALSE)
       data.frame(
         K = K_value,
         final_elbo = as.numeric(metadata$final_elbo[[1]]),
@@ -305,7 +366,18 @@ for (row_index in seq_len(nrow(manifest))) {
     sensitivity <- do.call(rbind, metadata_rows)
     finite <- sensitivity[is.finite(sensitivity$final_elbo), , drop = FALSE]
     if (!nrow(finite)) {
-      stop("no successful finite-ELBO bayesFPCA sensitivity fit")
+      write.csv(
+        data.frame(
+          selected_K = NA_integer_,
+          criterion = "maximum_final_elbo",
+          candidate_K = paste(K_values, collapse = ";"),
+          status = "no_successful_candidate",
+          stringsAsFactors = FALSE
+        ),
+        file.path(scenario_dir, "bayesfpca_selected_choice.csv"),
+        row.names = FALSE
+      )
+      next
     }
     finite <- finite[
       order(-finite$final_elbo, finite$K),
@@ -339,6 +411,7 @@ for (row_index in seq_len(nrow(manifest))) {
         selected_K = selected_K,
         criterion = "maximum_final_elbo",
         candidate_K = paste(K_values, collapse = ";"),
+        status = "selected",
         stringsAsFactors = FALSE
       ),
       file.path(scenario_dir, "bayesfpca_selected_choice.csv"),
