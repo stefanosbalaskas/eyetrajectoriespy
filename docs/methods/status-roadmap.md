@@ -2,7 +2,7 @@
 
 ## Current stable scientific surface — 1.1.0
 
-`1.1.0` is the current stable/default production release. It preserves the frozen 1.0 package-root compatibility boundary while promoting the qualified post-1.0 sparse/irregular capabilities as stable **module-scoped 1.1 APIs**.
+The current stable production release is **1.1.0**. It is the stable/default production release and preserves the frozen 1.0 package-root compatibility boundary while promoting the qualified post-1.0 sparse/irregular capabilities as stable **module-scoped 1.1 APIs**.
 
 The frozen 1.0 public boundary contains **455 stable public exports** and three explicitly experimental APIs. No deprecations or removals were authorized by the 1.0 stabilization programme, and 1.1 did not mechanically expand that package-root namespace.
 
