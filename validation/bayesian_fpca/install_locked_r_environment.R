@@ -10,6 +10,7 @@
 options(repos = c(CRAN = "https://cloud.r-project.org"))
 
 locked <- list(
+  abind = list(version = "1.4.8", tarball = "abind_1.4-8.tar.gz"),
   ellipse = list(version = "0.5.0", tarball = "ellipse_0.5.0.tar.gz"),
   magic = list(version = "1.6.1.1", tarball = "magic_1.6-1-1.tar.gz"),
   matrixcalc = list(version = "1.0.6", tarball = "matrixcalc_1.0-6.tar.gz"),
