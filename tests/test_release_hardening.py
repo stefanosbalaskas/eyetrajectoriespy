@@ -24,6 +24,26 @@ def test_release_version_contract_agrees_for_development_line():
     assert module.verify_version_contract() == CURRENT_DEVELOPMENT_VERSION
 
 
+def test_release_version_validator_accepts_final_stable_line():
+    module = _load_script("verify_release_version.py")
+    source = (ROOT / "scripts" / "verify_release_version.py").read_text(
+        encoding="utf-8"
+    )
+    roadmap = (ROOT / "docs" / "methods" / "status-roadmap.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert (
+        'f"The current stable production release is **{project_version}**."'
+        in source
+    )
+    assert (
+        f"The current stable production release is **{CURRENT_DEVELOPMENT_VERSION}**."
+        in roadmap
+    )
+    assert module.verify_version_contract() == CURRENT_DEVELOPMENT_VERSION
+
+
 def test_release_candidate_contract_is_production_eligible_after_exact_qualification():
     module = _load_script("verify_release_version.py")
     assert (
