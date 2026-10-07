@@ -4,12 +4,12 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-`1.1.0rc1` is the literal release-candidate identity under qualification; published stable `1.0.0` remains immutable.
+`1.1.0` is the literal final-version identity under exact qualification; published stable `1.0.0` and published prerelease `1.1.0rc1` remain immutable.
 
-- R4 qualified the integrated `1.1.0.dev0` surface and recorded `eligible_for_rc_decision=true`.
-- The RC transition changes identity/evidence only; no estimator, scientific default, dependency, or supported API is added here.
-- Active reference/tolerance/performance evidence must be regenerated or promoted only as fresh literal-`1.1.0rc1` qualification evidence; historical 1.0 and R4 development ledgers remain immutable.
-- The complete RC pull-request matrix and complete post-merge exact-main matrix must pass before publication may be considered.
+- R4 qualified the integrated `1.1.0.dev0` surface, and `1.1.0rc1` subsequently completed exact-version qualification, production publication, and production-installed observation.
+- Final `1.1.0` is a version/evidence-only promotion of that frozen observed RC surface; no estimator, scientific default, dependency, threshold, or supported API is added here.
+- Active reference/tolerance evidence is aligned to literal `1.1.0`, and fresh package-wide performance evidence comes from run `37528714581` on source commit `cb3ecd82112e41ab1ac2b20961eeb79250da96cb`; historical 1.0, R4, and RC evidence remains immutable.
+- The complete final-version pull-request matrix and complete post-merge exact-main matrix must pass before publication may be armed.
 - GitHub/PyPI publication readiness remains jointly false throughout qualification.
 
 ## Locally validated — 2026-09-19
