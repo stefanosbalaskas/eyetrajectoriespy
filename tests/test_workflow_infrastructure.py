@@ -213,3 +213,16 @@ def test_bundle_rejects_non_dataclass_result(tmp_path):
             {"workflow_contract": "invalid"},
             tmp_path / "bundle",
         )
+
+
+def test_w1_remains_module_scoped_not_root_exported():
+    import eyetrajectoriespy as et
+
+    for name in (
+        "WorkflowDecisionRecord",
+        "WorkflowStepRecord",
+        "PreprocessingPlan",
+        "PreprocessingStepConfig",
+        "export_workflow_bundle",
+    ):
+        assert not hasattr(et, name)
