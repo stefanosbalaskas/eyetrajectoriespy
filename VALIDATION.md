@@ -4,13 +4,13 @@ This file records qualification evidence separately from implementation status. 
 
 ## Current development target
 
-`1.1.0` is the literal final-version identity under exact qualification; published stable `1.0.0` and published prerelease `1.1.0rc1` remain immutable.
+`1.2.0.dev0` is the active **non-publishing development source identity**. Published stable `1.1.0`, published prerelease `1.1.0rc1`, and the frozen 1.0 package-root compatibility boundary remain immutable.
 
-- R4 qualified the integrated `1.1.0.dev0` surface, and `1.1.0rc1` subsequently completed exact-version qualification, production publication, and production-installed observation.
-- Final `1.1.0` is a version/evidence-only promotion of that frozen observed RC surface; no estimator, scientific default, dependency, threshold, or supported API is added here.
-- Active reference/tolerance evidence is aligned to literal `1.1.0`, and fresh package-wide performance evidence comes from run `37528714581` on source commit `cb3ecd82112e41ab1ac2b20961eeb79250da96cb`; historical 1.0, R4, and RC evidence remains immutable.
-- The complete final-version pull-request matrix and complete post-merge exact-main matrix must pass before publication may be armed.
-- GitHub/PyPI publication readiness remains jointly false throughout qualification.
+- The complete `1.1.0` cycle is closed: RC qualification/publication/installed observation, fresh literal-final qualification, governance-only arming, final GitHub/PyPI publication with attestations, stable promotion, disarming, and post-publication exact-main closeout all passed.
+- Frozen reference/tolerance/performance evidence remains labelled `1.1.0`. The `1.2.0.dev0` source line may use that evidence only as historical baseline evidence; any future 1.2 release candidate/final release requires fresh exact-version qualification.
+- Issue #205 continues Bayesian sparse FPCA/MFPCA external-comparator/feasibility evidence without approving a native Bayesian estimator.
+- Issue #211 governs the transparent workflow/orchestration programme. Workflow APIs must preserve the scientific contracts of their underlying primitives and must not introduce hidden preprocessing, tuning, family selection, synchronization, or prediction splitting.
+- GitHub/PyPI publication readiness remains jointly false throughout ordinary development.
 
 ## Locally validated — 2026-09-19
 
