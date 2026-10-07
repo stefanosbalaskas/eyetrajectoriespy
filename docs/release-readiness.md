@@ -17,7 +17,7 @@ Post-publication PR #156 recorded the immutable evidence, promoted `1.0.0` as th
 
 ## Published release candidate — 1.1.0rc1
 
-The active source identity is **`1.1.0`** under exact-version final qualification. `1.1.0rc1` remains the published prerelease on GitHub and production PyPI, and **`1.0.0` remains the stable/default release** until final `1.1.0` publication succeeds.
+The active source identity is **`1.1.0`**. Exact final-version qualification is complete; this governance-only tranche arms publication authority but does not itself publish the package. `1.1.0rc1` remains the published prerelease and **`1.0.0` remains the stable/default release** until final publication succeeds.
 
 The sparse/irregular scientific programme (#158) completed A1–C1. The integration/readiness programme (#183) then completed R1–R5:
 
@@ -53,33 +53,38 @@ Fresh literal-RC evidence remains separate from the immutable R4 `1.1.0.dev0` de
 
 The machine-readable authority is `RELEASE_READINESS.json`.
 
-Current qualification state:
+Current arming-branch state:
 
 - stable published version = `1.0.0`;
 - published prerelease = `1.1.0rc1`;
-- active source identity = `1.1.0` (qualification only; not yet published);
-- `production_release_ready = false`;
-- `github_release_ready = false`;
+- active source identity = `1.1.0` (exact-version qualified; not yet published);
+- `production_release_ready = true`;
+- `github_release_ready = true`;
 - exact qualified RC main = `909f7cd493fc21f643e1f923ed503e6128dc750c`;
 - exact RC qualification matrix = 25/25 successful post-merge workflow groups;
 - exact publication-arming main = `f4405897e2a7a2392c03523cc7fa18e43df00e5e`;
 - exact publication-arming matrix = 24/24 successful workflow groups;
 - production release workflow = #19 (`37511987332`), successful;
+- exact final-qualified main = `7eaf842214dc26c8cd1cef9eaaa72a55916974de`;
+- exact final qualification matrix = 25/25 successful post-merge workflow groups;
+- final package-wide performance run = `37562352624`, successful;
+- final sparse-MFPCA qualification run = `37562352616`, successful;
+- final comparator-sensitivity run = `37562352573`, successful;
 - stable 1.0 API boundary remains frozen and machine-checked;
 - A1–C1 1.1 APIs remain module-scoped and additive;
 - historical 1.0 qualification evidence remains attributed to `1.0.0`;
 - the R4 development-readiness ledger remains attributed to `1.1.0.dev0` and is not relabelled as RC evidence; and
 - active reference/tolerance evidence is aligned to literal `1.1.0`; fresh package-wide final performance evidence comes from run `37528714581`, while archived `1.1.0rc1` evidence remains immutable.
 
-Both publication-readiness flags are now **false**. This prevents accidental republication of the immutable RC. Ordinary pushes and merges remain non-publishing. A later final `1.1.0` release must enter a new exact-version qualification and publication-arming cycle rather than reusing the RC authority.
+Both publication-readiness flags are now **true** on this governance-only arming branch. These flags are publication authority, not publication itself. Ordinary pushes and merges remain non-publishing. After this arming change merges, the resulting exact protected-main commit must pass the required governance checks before any explicit manual `release.yml` dispatch with `target=production`.
 
-## Current decision gate — exact final 1.1.0 qualification
+## Current decision gate — final 1.1.0 publication arming
 
-Production-installed RC observation is complete. Final `1.1.0` is now being qualified as a **version-only promotion** of the frozen, observed `1.1.0rc1` scientific/API surface.
+Final `1.1.0` exact-version qualification is complete. Qualification PR #201 passed **26/26 pull-request workflow groups**, merged as exact protected-main commit `7eaf842214dc26c8cd1cef9eaaa72a55916974de`, and the complete post-merge exact-main matrix passed **25/25 workflow groups with zero failures**.
 
-Fresh exact-final package-wide performance qualification passed in workflow run `37528714581` on source commit `cb3ecd82112e41ab1ac2b20961eeb79250da96cb`. Artifact `11443198062` has digest `sha256:fb6c12cae67df237b5ad5b8f172787d0e63fe75cca31199b712d6abf96e94647`. The canonical final envelope is archived separately under `validation/performance/PERFORMANCE_ENVELOPE-1.1.0.json`; the RC envelope remains unchanged.
+On that exact final-qualified commit, package-wide performance run `37562352624`, sparse-MFPCA final-qualification run `37562352616`, and comparator-sensitivity run `37562352573` all completed successfully. The comparator lane passed both the native two-stage job and the exact external `mGSFPCA` job.
 
-The remaining qualification gates are the complete pull-request matrix, protected-main merge, and the complete exact-main matrix on the resulting final-qualified commit. Publication remains jointly disarmed. If those gates pass without a result-changing or compatibility-breaking defect, a separate governance-only PR may arm final `1.1.0` publication.
+This tranche is governance-only: it jointly arms GitHub and production-PyPI publication readiness and changes no estimator, numerical method, scientific default, dependency, threshold, comparator method, performance methodology, or public API. After merge, the resulting exact arming-main commit must pass its own required exact-main governance matrix before any manual production dispatch.
 
 ## Final 1.0 qualification
 
@@ -146,7 +151,10 @@ post-publication readiness disarm                current tranche
 production-installed RC observation              complete
         |
         v
-literal final 1.1.0 qualification                current
+literal final 1.1.0 qualification                complete
+        |
+        v
+final 1.1.0 publication arming                   current
 ```
 
 ## Post-1.0 compatibility policy
@@ -174,6 +182,7 @@ The repository does not create a new minor release merely because a feature prog
 
 Detailed immutable chronology remains in the release notes:
 
+- [1.1.0](releases/1.1.0.md)
 - [1.1.0rc1](releases/1.1.0rc1.md)
 - [1.0.0](releases/1.0.0.md)
 - [1.0.0rc1](releases/1.0.0rc1.md)
