@@ -139,14 +139,14 @@ def test_localized_truth_is_nonharmonic_and_disjoint():
     assert np.max(first * second) == pytest.approx(
         0.0
     )
-    assert np.trapz(
+    assert np.trapezoid(
         first**2,
         grid,
     ) == pytest.approx(
         1.0,
         rel=2e-3,
     )
-    assert np.trapz(
+    assert np.trapezoid(
         second**2,
         grid,
     ) == pytest.approx(
