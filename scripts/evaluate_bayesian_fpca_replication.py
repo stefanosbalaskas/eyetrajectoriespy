@@ -425,29 +425,56 @@ def _aggregate_scenario(records: list[dict[str, object]]) -> dict[str, object]:
             for record in records
             if method in record and record[method] is not None
         ]
-        if not available:
+        attempted = [
+            record
+            for record in records
+            if record.get(f"{method}_fit_attempted") is True
+        ]
+        if not available and not attempted:
             continue
-        methods[method] = {
+        method_payload: dict[str, object] = {
             "replicate_count": len(available),
-            "reconstruction_ise": _summary(
-                row["reconstruction_ise"] for row in available
-            ),
-            "mean_ise": _summary(row["mean_ise"] for row in available),
-            "functional_subspace_min_cosine": _summary(
-                row["truth_functional_subspace_min_cosine"]
-                for row in available
-            ),
-            "score_subspace_min_cosine": _summary(
-                row["truth_score_subspace_min_cosine"]
-                for row in available
-            ),
-            "spectrum_pve_l1_error": _summary(
-                row["spectrum_pve_l1_error"] for row in available
-            ),
-            "score_failure_rate": _summary(
-                row["score_failure_rate"] for row in available
-            ),
         }
+        if attempted:
+            fit_failures = int(
+                sum(
+                    record.get(f"{method}_fit_failed") is True
+                    for record in attempted
+                )
+            )
+            method_payload.update(
+                {
+                    "fit_attempt_count": len(attempted),
+                    "fit_failure_count": fit_failures,
+                    "fit_failure_rate": fit_failures / len(attempted),
+                }
+            )
+        if available:
+            method_payload.update(
+                {
+                    "reconstruction_ise": _summary(
+                        row["reconstruction_ise"] for row in available
+                    ),
+                    "mean_ise": _summary(
+                        row["mean_ise"] for row in available
+                    ),
+                    "functional_subspace_min_cosine": _summary(
+                        row["truth_functional_subspace_min_cosine"]
+                        for row in available
+                    ),
+                    "score_subspace_min_cosine": _summary(
+                        row["truth_score_subspace_min_cosine"]
+                        for row in available
+                    ),
+                    "spectrum_pve_l1_error": _summary(
+                        row["spectrum_pve_l1_error"] for row in available
+                    ),
+                    "score_failure_rate": _summary(
+                        row["score_failure_rate"] for row in available
+                    ),
+                }
+            )
+        methods[method] = method_payload
         uncertainty = [
             row["score_uncertainty"]
             for row in available
@@ -464,10 +491,12 @@ def _aggregate_scenario(records: list[dict[str, object]]) -> dict[str, object]:
     paired_difference = []
     if native is not None and bayes is not None:
         for record in records:
-            native_value = float(
-                record["native_frozen"]["reconstruction_ise"]
-            )
-            bayes_value = float(record["bayesfpca_k7"]["reconstruction_ise"])
+            native_record = record.get("native_frozen")
+            bayes_record = record.get("bayesfpca_k7")
+            if native_record is None or bayes_record is None:
+                continue
+            native_value = float(native_record["reconstruction_ise"])
+            bayes_value = float(bayes_record["reconstruction_ise"])
             if np.isfinite(native_value) and np.isfinite(bayes_value):
                 paired_difference.append(native_value - bayes_value)
                 if bayes_value > 0:
@@ -551,15 +580,46 @@ def evaluate(root: Path) -> dict[str, object]:
             "truth_family": str(row.truth_family),
             "observation_mechanism": str(row.observation_mechanism),
         }
-        record["native_frozen"] = _method_metrics(
-            scenario_dir,
-            prefix="native_frozen",
-            truth=truth,
-            covariance_path=(
-                scenario_dir / "native_frozen_score_covariance.csv"
-            ),
-        )
-        if (scenario_dir / "native_selected_mean.csv").exists():
+        native_status_path = scenario_dir / "native_frozen_fit_status.json"
+        if native_status_path.exists():
+            native_status = json.loads(
+                native_status_path.read_text(encoding="utf-8")
+            )
+            record["native_frozen_fit_attempted"] = True
+            record["native_frozen_fit_failed"] = (
+                native_status.get("status") != "ok"
+            )
+        else:
+            record["native_frozen_fit_attempted"] = True
+            record["native_frozen_fit_failed"] = False
+
+        if record["native_frozen_fit_failed"]:
+            record["native_frozen"] = None
+        else:
+            record["native_frozen"] = _method_metrics(
+                scenario_dir,
+                prefix="native_frozen",
+                truth=truth,
+                covariance_path=(
+                    scenario_dir / "native_frozen_score_covariance.csv"
+                ),
+            )
+
+        selected_status_path = scenario_dir / "native_selected_fit_status.json"
+        record["native_selected_fit_attempted"] = selected_status_path.exists()
+        record["native_selected_fit_failed"] = False
+        if selected_status_path.exists():
+            selected_status = json.loads(
+                selected_status_path.read_text(encoding="utf-8")
+            )
+            record["native_selected_fit_failed"] = (
+                selected_status.get("status") != "ok"
+            )
+        if (
+            record["native_selected_fit_attempted"]
+            and not record["native_selected_fit_failed"]
+            and (scenario_dir / "native_selected_mean.csv").exists()
+        ):
             record["native_selected"] = _method_metrics(
                 scenario_dir,
                 prefix="native_selected",
@@ -571,8 +631,22 @@ def evaluate(root: Path) -> dict[str, object]:
 
         for k in K_VALUES:
             prefix = f"bayesfpca_k{k}"
+            status_path = scenario_dir / f"{prefix}_fit_status.csv"
             metadata_path = scenario_dir / f"{prefix}_metadata.csv"
-            if not metadata_path.exists():
+            record[f"{prefix}_fit_attempted"] = status_path.exists()
+            record[f"{prefix}_fit_failed"] = False
+            if status_path.exists():
+                status = pd.read_csv(status_path).iloc[0]
+                record[f"{prefix}_fit_failed"] = str(status["status"]) != "ok"
+            elif metadata_path.exists():
+                # Backward-compatible inference for already-retained pilot evidence.
+                record[f"{prefix}_fit_attempted"] = True
+
+            if (
+                not record[f"{prefix}_fit_attempted"]
+                or record[f"{prefix}_fit_failed"]
+                or not metadata_path.exists()
+            ):
                 record[prefix] = None
                 continue
             record[prefix] = _method_metrics(
@@ -654,7 +728,7 @@ def evaluate(root: Path) -> dict[str, object]:
             "population_objects_reestimated_per_replicate": True,
             "empirical_truth_coverage_quantified": True,
             "standardized_error_behavior_quantified": True,
-            "fit_failure_quantified": False,
+            "fit_failure_quantified": True,
             "score_failure_quantified": True,
             "invalid_or_nonpositive_covariance_failure_quantified": True,
             "fitted_covariance_includes_population_estimation_uncertainty": False,
