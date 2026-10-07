@@ -27,7 +27,7 @@ import evaluate_bayesian_fpca_comparator as b1  # noqa: E402
 
 
 PRIMARY_K = 7
-K_VALUES = (5, 7, 9)
+K_VALUES = (5, 6, 7, 8, 9)
 
 
 def _read_covariance_long(
@@ -175,6 +175,13 @@ def _uncertainty_summary(
                 "marginal_95_truth_inclusion": (
                     float(np.mean(hits)) if hits else float("nan")
                 ),
+                "marginal_95_truth_inclusion_hits": int(sum(hits)),
+                "standardized_error_sum": (
+                    float(np.sum(values)) if values.size else 0.0
+                ),
+                "standardized_error_sum_squares": (
+                    float(np.sum(values**2)) if values.size else 0.0
+                ),
             }
         )
 
@@ -187,6 +194,7 @@ def _uncertainty_summary(
             else float("nan")
         ),
         "n_valid_curves": int(len(ellipsoid_hits)),
+        "ellipsoid_truth_inclusion_hits": int(sum(ellipsoid_hits)),
         "n_failed_or_nonpositive_covariance": int(failed),
         "components": component_records,
         "interpretation": (
@@ -285,7 +293,7 @@ def _method_metrics(
             truth_scores=truth_scores,
             truth_functions=truth_functions,
             weights=weights,
-            near_tied=truth["scenario"] == "harmonic_near_tied",
+            near_tied=truth["scenario"] == "univariate_near_tied",
         )
     return payload
 
@@ -318,11 +326,98 @@ def _summary(values) -> dict[str, float | int]:
     }
 
 
+def _aggregate_uncertainty(
+    rows: list[dict[str, object]],
+) -> dict[str, object]:
+    valid_curves = int(sum(row["n_valid_curves"] for row in rows))
+    ellipsoid_hits = int(
+        sum(row["ellipsoid_truth_inclusion_hits"] for row in rows)
+    )
+    component_count = max(len(row["components"]) for row in rows)
+    components = []
+    for component_index in range(component_count):
+        records = [
+            row["components"][component_index]
+            for row in rows
+            if len(row["components"]) > component_index
+        ]
+        n_valid = int(sum(record["n_valid"] for record in records))
+        marginal_hits = int(
+            sum(
+                record["marginal_95_truth_inclusion_hits"]
+                for record in records
+            )
+        )
+        z_sum = float(
+            sum(record["standardized_error_sum"] for record in records)
+        )
+        z_sumsq = float(
+            sum(
+                record["standardized_error_sum_squares"]
+                for record in records
+            )
+        )
+        z_mean = z_sum / n_valid if n_valid else float("nan")
+        if n_valid > 1:
+            centered = max(0.0, z_sumsq - n_valid * z_mean**2)
+            z_sd = float(np.sqrt(centered / (n_valid - 1)))
+        else:
+            z_sd = float("nan")
+        components.append(
+            {
+                "component": component_index + 1,
+                "componentwise_identified_as_primary": all(
+                    record["componentwise_identified_as_primary"]
+                    for record in records
+                ),
+                "n_valid": n_valid,
+                "pooled_standardized_error_mean": z_mean,
+                "pooled_standardized_error_sd": z_sd,
+                "pooled_marginal_95_truth_inclusion": (
+                    marginal_hits / n_valid if n_valid else float("nan")
+                ),
+                "replicate_standardized_error_mean": _summary(
+                    record["standardized_error_mean"] for record in records
+                ),
+                "replicate_standardized_error_sd": _summary(
+                    record["standardized_error_sd"] for record in records
+                ),
+                "replicate_marginal_95_truth_inclusion": _summary(
+                    record["marginal_95_truth_inclusion"]
+                    for record in records
+                ),
+            }
+        )
+    return {
+        "replicate_count": len(rows),
+        "ellipsoid_95_truth_inclusion": _summary(
+            row["ellipsoid_truth_inclusion"] for row in rows
+        ),
+        "pooled_ellipsoid_95_truth_inclusion": (
+            ellipsoid_hits / valid_curves if valid_curves else float("nan")
+        ),
+        "valid_curves": valid_curves,
+        "failed_or_nonpositive_covariance": int(
+            sum(row["n_failed_or_nonpositive_covariance"] for row in rows)
+        ),
+        "components": components,
+        "population_objects_reestimated_per_replicate": True,
+        "fitted_covariance_includes_population_estimation_uncertainty": False,
+        "coverage_interpretation": (
+            "empirical calibration after population objects are re-estimated "
+            "in every replicate; fitted score covariance itself remains "
+            "conditional on fitted population objects"
+        ),
+    }
+
+
 def _aggregate_scenario(records: list[dict[str, object]]) -> dict[str, object]:
     name = str(records[0]["scenario"])
-    method_names = ["native_frozen", "native_selected"] + [
-        f"bayesfpca_k{k}" for k in K_VALUES
-    ]
+    method_names = [
+        "native_frozen",
+        "native_selected",
+        "bayesfpca_selected",
+    ] + [f"bayesfpca_k{k}" for k in K_VALUES]
     methods: dict[str, object] = {}
     for method in method_names:
         available = [
@@ -359,26 +454,9 @@ def _aggregate_scenario(records: list[dict[str, object]]) -> dict[str, object]:
             if "score_uncertainty" in row
         ]
         if uncertainty:
-            methods[method]["score_uncertainty"] = {
-                "replicate_count": len(uncertainty),
-                "ellipsoid_95_truth_inclusion": _summary(
-                    row["ellipsoid_truth_inclusion"]
-                    for row in uncertainty
-                ),
-                "valid_curves": int(
-                    sum(row["n_valid_curves"] for row in uncertainty)
-                ),
-                "failed_or_nonpositive_covariance": int(
-                    sum(
-                        row["n_failed_or_nonpositive_covariance"]
-                        for row in uncertainty
-                    )
-                ),
-                "coverage_interpretation": (
-                    "descriptive fitted-model truth inclusion, not full "
-                    "population-estimation nominal coverage"
-                ),
-            }
+            methods[method]["score_uncertainty"] = _aggregate_uncertainty(
+                uncertainty
+            )
 
     native = methods.get("native_frozen")
     bayes = methods.get("bayesfpca_k7")
@@ -400,8 +478,24 @@ def _aggregate_scenario(records: list[dict[str, object]]) -> dict[str, object]:
         values = [
             float(record[f"bayesfpca_k{k}"]["reconstruction_ise"])
             for record in records
+            if record.get(f"bayesfpca_k{k}") is not None
         ]
         k_sensitivity[str(k)] = _summary(values)
+
+    selected_k_counts = {
+        str(k): sum(record.get("bayesfpca_selected_k") == k for record in records)
+        for k in K_VALUES
+    }
+    selected_differences = []
+    for record in records:
+        native_selected = record.get("native_selected")
+        bayes_selected = record.get("bayesfpca_selected")
+        if native_selected is None or bayes_selected is None:
+            continue
+        native_value = float(native_selected["reconstruction_ise"])
+        bayes_value = float(bayes_selected["reconstruction_ise"])
+        if np.isfinite(native_value) and np.isfinite(bayes_value):
+            selected_differences.append(native_value - bayes_value)
 
     return {
         "scenario": name,
@@ -417,8 +511,12 @@ def _aggregate_scenario(records: list[dict[str, object]]) -> dict[str, object]:
             paired_ratio
         ),
         "bayesfpca_k_sensitivity_reconstruction_ise": k_sensitivity,
+        "bayesfpca_selected_k_counts": selected_k_counts,
+        "native_selected_minus_bayes_selected_reconstruction_ise": _summary(
+            selected_differences
+        ),
         "informative_observation_is_sensitivity_only": (
-            name == "harmonic_informative_observation"
+            name == "univariate_informative_time"
         ),
     }
 
@@ -473,6 +571,10 @@ def evaluate(root: Path) -> dict[str, object]:
 
         for k in K_VALUES:
             prefix = f"bayesfpca_k{k}"
+            metadata_path = scenario_dir / f"{prefix}_metadata.csv"
+            if not metadata_path.exists():
+                record[prefix] = None
+                continue
             record[prefix] = _method_metrics(
                 scenario_dir,
                 prefix=prefix,
@@ -481,14 +583,33 @@ def evaluate(root: Path) -> dict[str, object]:
                     scenario_dir / f"{prefix}_score_covariance.csv"
                 ),
             )
-            metadata = pd.read_csv(
-                scenario_dir / f"{prefix}_metadata.csv"
-            ).iloc[0]
+            metadata = pd.read_csv(metadata_path).iloc[0]
             record[prefix]["elapsed_seconds"] = float(
                 metadata["elapsed_seconds"]
             )
             record[prefix]["n_iter"] = int(metadata["n_iter"])
             record[prefix]["final_elbo"] = float(metadata["final_elbo"])
+
+        selected_metadata = scenario_dir / "bayesfpca_selected_metadata.csv"
+        if selected_metadata.exists():
+            record["bayesfpca_selected"] = _method_metrics(
+                scenario_dir,
+                prefix="bayesfpca_selected",
+                truth=truth,
+                covariance_path=(
+                    scenario_dir / "bayesfpca_selected_score_covariance.csv"
+                ),
+            )
+            metadata = pd.read_csv(selected_metadata).iloc[0]
+            record["bayesfpca_selected_k"] = int(
+                metadata["spline_basis_size"]
+            )
+            record["bayesfpca_selected"]["final_elbo"] = float(
+                metadata["final_elbo"]
+            )
+        else:
+            record["bayesfpca_selected"] = None
+            record["bayesfpca_selected_k"] = None
         records.append(record)
 
     aggregates = [
@@ -529,10 +650,18 @@ def evaluate(root: Path) -> dict[str, object]:
                 "conditional PACE score uncertainty with known population objects"
             ),
         },
+        "population_estimation_calibration_scope": {
+            "population_objects_reestimated_per_replicate": True,
+            "empirical_truth_coverage_quantified": True,
+            "standardized_error_behavior_quantified": True,
+            "fit_score_and_covariance_failure_quantified": True,
+            "fitted_covariance_includes_population_estimation_uncertainty": False,
+        },
         "native_fitted_uncertainty_interpretation": (
             "conditional score covariance given fitted population objects; "
-            "replicated truth inclusion is descriptive and is not full "
-            "population-estimation coverage"
+            "repeated-dataset truth coverage and standardized errors quantify "
+            "the calibration gap created when population objects are estimated, "
+            "without relabelling the covariance as full estimation uncertainty"
         ),
         "bayesian_uncertainty_interpretation": (
             "variational fitted-model score covariance; empirical known-score "
