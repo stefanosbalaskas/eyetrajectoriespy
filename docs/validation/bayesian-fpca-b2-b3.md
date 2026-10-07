@@ -40,6 +40,7 @@ The external comparator remains `hruffieux/bayesFPCA` at exact commit `f05b06156
 The CI environment additionally pins:
 
 - R `4.6.1`;
+- `abind 1.4-8`;
 - `ellipse 0.5.0`;
 - `magic 1.6.1.1`;
 - `matrixcalc 1.0.6`; and
