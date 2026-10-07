@@ -129,10 +129,13 @@ def _write_optional_tables(
         return ()
     if not isinstance(tables, Mapping):
         raise TypeError("tables must be a mapping of names to DataFrames")
+    validated = [
+        (_safe_name(name, kind="table"), frame)
+        for name, frame in tables.items()
+    ]
     target = destination / "tables"
     names: list[str] = []
-    for name, frame in sorted(tables.items()):
-        safe = _safe_name(name, kind="table")
+    for safe, frame in sorted(validated, key=lambda item: item[0]):
         if not isinstance(frame, pd.DataFrame):
             raise TypeError(f"table {safe!r} must be a pandas DataFrame")
         target.mkdir(parents=True, exist_ok=True)
@@ -150,10 +153,13 @@ def _write_optional_reports(
         return ()
     if not isinstance(reports, Mapping):
         raise TypeError("reports must be a mapping of names to strings")
+    validated = [
+        (_safe_name(name, kind="report"), report)
+        for name, report in reports.items()
+    ]
     target = destination / "reports"
     names: list[str] = []
-    for name, report in sorted(reports.items()):
-        safe = _safe_name(name, kind="report")
+    for safe, report in sorted(validated, key=lambda item: item[0]):
         if not isinstance(report, str):
             raise TypeError(f"report {safe!r} must be a string")
         target.mkdir(parents=True, exist_ok=True)
@@ -182,10 +188,13 @@ def _write_optional_figures(
         return ()
     if not isinstance(figures, Mapping):
         raise TypeError("figures must be a mapping of names to figure objects")
+    validated = [
+        (_safe_name(name, kind="figure"), value)
+        for name, value in figures.items()
+    ]
     target = destination / "figures"
     names: list[str] = []
-    for name, value in sorted(figures.items()):
-        safe = _safe_name(name, kind="figure")
+    for safe, value in sorted(validated, key=lambda item: item[0]):
         figure = _figure_object(value)
         target.mkdir(parents=True, exist_ok=True)
         filename = f"{safe}.png"
@@ -291,12 +300,24 @@ def _verify_checksums(source: Path) -> None:
         digest, separator, relative = line.partition("  ")
         if separator != "  " or not digest or not relative:
             raise ValueError("invalid workflow bundle checksum line")
-        path = source / relative
-        if not path.is_file():
-            raise FileNotFoundError(
-                f"workflow bundle payload not found: {path}"
+        relative_path = Path(relative)
+        if relative_path.is_absolute() or ".." in relative_path.parts:
+            raise ValueError(
+                f"unsafe workflow bundle checksum path: {relative!r}"
             )
-        if _sha256(path) != digest:
+        path = source / relative_path
+        try:
+            resolved = path.resolve()
+            resolved.relative_to(source.resolve())
+        except (OSError, ValueError) as error:
+            raise ValueError(
+                f"unsafe workflow bundle checksum path: {relative!r}"
+            ) from error
+        if not resolved.is_file():
+            raise FileNotFoundError(
+                f"workflow bundle payload not found: {resolved}"
+            )
+        if _sha256(resolved) != digest:
             raise ValueError(
                 f"workflow bundle checksum mismatch: {relative}"
             )
