@@ -34,6 +34,8 @@ It is not an automatic system that guesses scientifically consequential choices.
 
 `WorkflowStepRecord` retains the ordered function call, status, parameters, elapsed time and warnings for one orchestration step.
 
+`workflow_steps_frame()`, `workflow_decisions_frame()` and `workflow_summary_frame()` provide stable tabular audit surfaces without flattening the underlying scientific result objects.
+
 ## Preprocessing
 
 `PreprocessingPlan` contains an ordered tuple of `PreprocessingStepConfig` objects. The empty plan means no preprocessing.
