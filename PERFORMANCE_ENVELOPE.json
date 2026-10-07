@@ -1,22 +1,22 @@
 {
   "schema_version": 1,
-  "package_version": "1.1.0rc1",
+  "package_version": "1.1.0",
   "benchmark_kind": "single-package performance envelope",
   "comparative_benchmark": false,
   "profile": "ci-qualification",
   "status": "qualified",
-  "qualification_commit": "85cb74bb905f08836bc2a3cccfa07968e0da906b",
-  "qualification_run_id": "37446635089",
+  "qualification_commit": "cb3ecd82112e41ab1ac2b20961eeb79250da96cb",
+  "qualification_run_id": "37528714581",
   "environment": {
-    "cpu_model": "AMD EPYC 7763 64-Core Processor",
-    "github_run_id": "37446635089",
+    "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+    "github_run_id": "37528714581",
     "github_runner_environment": "github-hosted",
-    "github_runner_name": "GitHub Actions 1000085082",
+    "github_runner_name": "GitHub Actions 1000085696",
     "implementation": "CPython",
     "logical_cpu_count": 4,
     "machine": "x86_64",
     "packages": {
-      "eyetrajectoriespy": "1.1.0rc1",
+      "eyetrajectoriespy": "1.1.0",
       "numpy": "2.5.3",
       "pandas": "3.0.6",
       "scikit-learn": "1.9.1",
@@ -24,9 +24,9 @@
       "statsmodels": "0.15.0"
     },
     "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
-    "python": "3.12.14",
+    "python": "3.12.15",
     "release": "6.17.0-1022-azure",
-    "source_commit": "85cb74bb905f08836bc2a3cccfa07968e0da906b",
+    "source_commit": "cb3ecd82112e41ab1ac2b20961eeb79250da96cb",
     "system": "Linux",
     "thread_limits": {
       "MKL_NUM_THREADS": "1",
@@ -34,209 +34,61 @@
       "OMP_NUM_THREADS": "1",
       "OPENBLAS_NUM_THREADS": "1"
     },
-    "workflow_commit": "ee666b16deb8a88b596cacbe559c8f26ddba839c"
+    "workflow_commit": "485248b0747018f44f36d7ffa1b5d66d6d48a280"
   },
   "results": [
     {
       "case": "fpca_bootstrap",
-      "scale": {
-        "n_bootstrap": 20,
-        "n_participants": 10,
-        "n_time": 41,
-        "n_trials": 3,
-        "q": 3
-      },
+      "scale": {"n_bootstrap": 20, "n_participants": 10, "n_time": 41, "n_trials": 3, "q": 3},
       "repeats": 3,
       "observed": {
-        "runtime_seconds": {
-          "all": [
-            2.927417235000007,
-            1.9641929390000001,
-            1.9783944370000057
-          ],
-          "maximum": 2.927417235000007,
-          "median": 1.9783944370000057,
-          "minimum": 1.9641929390000001,
-          "q1": 1.971293688000003,
-          "q3": 2.4529058360000064
-        },
-        "peak_memory_mib": {
-          "all": [
-            229.14453125,
-            223.98828125,
-            224.3359375
-          ],
-          "maximum": 229.14453125,
-          "median": 224.3359375
-        }
+        "runtime_seconds": {"all": [3.2564330659999996, 1.513386655000005, 1.5088707929999998], "maximum": 3.2564330659999996, "median": 1.513386655000005, "minimum": 1.5088707929999998, "q1": 1.5111287240000024, "q3": 2.3849098605000023},
+        "peak_memory_mib": {"all": [227.87109375, 222.35546875, 222.64453125], "maximum": 227.87109375, "median": 222.64453125}
       }
     },
     {
       "case": "mixed_full_refit_bootstrap",
-      "scale": {
-        "n_bootstrap": 20,
-        "n_participants": 12,
-        "n_time": 6,
-        "n_trials": 3,
-        "q": 2
-      },
+      "scale": {"n_bootstrap": 20, "n_participants": 12, "n_time": 6, "n_trials": 3, "q": 2},
       "repeats": 3,
       "observed": {
-        "runtime_seconds": {
-          "all": [
-            2.9929735150000027,
-            3.0085590070000023,
-            2.9839800999999966
-          ],
-          "maximum": 3.0085590070000023,
-          "median": 2.9929735150000027,
-          "minimum": 2.9839800999999966,
-          "q1": 2.9884768074999997,
-          "q3": 3.0007662610000025
-        },
-        "peak_memory_mib": {
-          "all": [
-            227.921875,
-            228.1484375,
-            227.8359375
-          ],
-          "maximum": 228.1484375,
-          "median": 227.921875
-        }
+        "runtime_seconds": {"all": [2.1108255980000052, 2.1166336130000047, 2.1025643159999987], "maximum": 2.1166336130000047, "median": 2.1108255980000052, "minimum": 2.1025643159999987, "q1": 2.106694957000002, "q3": 2.113729605500005},
+        "peak_memory_mib": {"all": [230.4375, 230.5234375, 230.50390625], "maximum": 230.5234375, "median": 230.50390625}
       }
     },
     {
       "case": "nested_mixed_fit",
-      "scale": {
-        "n_participants": 8,
-        "n_time": 5,
-        "n_trials": 3,
-        "q": 2
-      },
+      "scale": {"n_participants": 8, "n_time": 5, "n_trials": 3, "q": 2},
       "repeats": 3,
       "observed": {
-        "runtime_seconds": {
-          "all": [
-            2.7558628220000116,
-            2.7867730010000002,
-            2.7353422300000005
-          ],
-          "maximum": 2.7867730010000002,
-          "median": 2.7558628220000116,
-          "minimum": 2.7353422300000005,
-          "q1": 2.745602526000006,
-          "q3": 2.771317911500006
-        },
-        "peak_memory_mib": {
-          "all": [
-            227.0390625,
-            227.87890625,
-            227.60546875
-          ],
-          "maximum": 227.87890625,
-          "median": 227.60546875
-        }
+        "runtime_seconds": {"all": [1.9977472229999904, 2.003882761, 1.999439197000001], "maximum": 2.003882761, "median": 1.999439197000001, "minimum": 1.9977472229999904, "q1": 1.9985932099999957, "q3": 2.0016609790000004},
+        "peak_memory_mib": {"all": [230.29296875, 229.7421875, 230.26171875], "maximum": 230.29296875, "median": 230.26171875}
       }
     },
     {
       "case": "generalized_gee_bootstrap",
-      "scale": {
-        "n_bootstrap": 100,
-        "n_participants": 8,
-        "n_time": 5,
-        "n_trials": 2,
-        "q": 2
-      },
+      "scale": {"n_bootstrap": 100, "n_participants": 8, "n_time": 5, "n_trials": 2, "q": 2},
       "repeats": 3,
       "observed": {
-        "runtime_seconds": {
-          "all": [
-            2.2750707739999996,
-            2.298268397000001,
-            2.3238186340000055
-          ],
-          "maximum": 2.3238186340000055,
-          "median": 2.298268397000001,
-          "minimum": 2.2750707739999996,
-          "q1": 2.2866695855000003,
-          "q3": 2.3110435155000033
-        },
-        "peak_memory_mib": {
-          "all": [
-            226.64453125,
-            226.71875,
-            226.9453125
-          ],
-          "maximum": 226.9453125,
-          "median": 226.71875
-        }
+        "runtime_seconds": {"all": [1.6876446859999987, 1.7054626369999966, 1.7110031369999916], "maximum": 1.7110031369999916, "median": 1.7054626369999966, "minimum": 1.6876446859999987, "q1": 1.6965536614999976, "q3": 1.708232886999994},
+        "peak_memory_mib": {"all": [229.48046875, 229.21875, 229.07421875], "maximum": 229.48046875, "median": 229.21875}
       }
     },
     {
       "case": "recurrence_rqa",
-      "scale": {
-        "n_participants": 1,
-        "n_time": 800,
-        "n_trials": 1,
-        "q": null
-      },
+      "scale": {"n_participants": 1, "n_time": 800, "n_trials": 1, "q": null},
       "repeats": 3,
       "observed": {
-        "runtime_seconds": {
-          "all": [
-            2.1872812440000047,
-            2.1866989799999885,
-            2.201997918999993
-          ],
-          "maximum": 2.201997918999993,
-          "median": 2.1872812440000047,
-          "minimum": 2.1866989799999885,
-          "q1": 2.1869901119999966,
-          "q3": 2.194639581499999
-        },
-        "peak_memory_mib": {
-          "all": [
-            228.8671875,
-            228.69921875,
-            228.75
-          ],
-          "maximum": 228.8671875,
-          "median": 228.75
-        }
+        "runtime_seconds": {"all": [1.6278679329999903, 1.6584541109999975, 1.6491791899999981], "maximum": 1.6584541109999975, "median": 1.6491791899999981, "minimum": 1.6278679329999903, "q1": 1.6385235614999942, "q3": 1.6538166504999978},
+        "peak_memory_mib": {"all": [229.91796875, 229.30859375, 229.2109375], "maximum": 229.91796875, "median": 229.30859375}
       }
     },
     {
       "case": "nonlinear_sensitivity",
-      "scale": {
-        "n_participants": 1,
-        "n_specifications": 16,
-        "n_time": 300,
-        "n_trials": 1,
-        "q": null
-      },
+      "scale": {"n_participants": 1, "n_specifications": 16, "n_time": 300, "n_trials": 1, "q": null},
       "repeats": 3,
       "observed": {
-        "runtime_seconds": {
-          "all": [
-            2.4103531119999957,
-            2.444526659999994,
-            2.364825158000002
-          ],
-          "maximum": 2.444526659999994,
-          "median": 2.4103531119999957,
-          "minimum": 2.364825158000002,
-          "q1": 2.387589134999999,
-          "q3": 2.427439885999995
-        },
-        "peak_memory_mib": {
-          "all": [
-            224.00390625,
-            223.890625,
-            224.28125
-          ],
-          "maximum": 224.28125,
-          "median": 224.00390625
-        }
+        "runtime_seconds": {"all": [1.7513390259999966, 1.7510773700000044, 1.7572995280000043], "maximum": 1.7572995280000043, "median": 1.7513390259999966, "minimum": 1.7510773700000044, "q1": 1.7512081980000005, "q3": 1.7543192770000005},
+        "peak_memory_mib": {"all": [224.40234375, 224.18359375, 224.6640625], "maximum": 224.6640625, "median": 224.40234375}
       }
     }
   ],
