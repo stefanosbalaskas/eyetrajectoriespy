@@ -1,0 +1,73 @@
+name: workflow-infrastructure-validation
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/workflow-infrastructure-validation.yml"
+      - "src/eyetrajectoriespy/workflows.py"
+      - "tests/test_workflow_infrastructure.py"
+      - "src/eyetrajectoriespy/portable_results.py"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/workflow-infrastructure-validation.yml"
+      - "src/eyetrajectoriespy/workflows.py"
+      - "tests/test_workflow_infrastructure.py"
+      - "src/eyetrajectoriespy/portable_results.py"
+  workflow_dispatch:
+
+concurrency:
+  group: \${{ github.workflow }}-\${{ github.event.pull_request.number || github.ref }}-\${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  workflow-contract:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: \${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install package
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+
+      - name: Run workflow infrastructure contracts
+        run: |
+          python -m pytest -q tests/test_workflow_infrastructure.py
+
+      - name: Verify module-scoped surface
+        run: |
+          python - <<'PY'
+          import eyetrajectoriespy as et
+          import eyetrajectoriespy.workflows as workflows
+
+          required = {
+              "WorkflowDecisionRecord",
+              "WorkflowStepRecord",
+              "PreprocessingStepConfig",
+              "PreprocessingPlan",
+              "workflow_config_to_dict",
+              "workflow_steps_frame",
+              "workflow_decisions_frame",
+              "workflow_reporting_text",
+              "export_workflow_bundle",
+          }
+          missing = sorted(name for name in required if not hasattr(workflows, name))
+          if missing:
+              raise SystemExit(f"missing workflow infrastructure names: {missing}")
+          leaked = sorted(name for name in required if hasattr(et, name))
+          if leaked:
+              raise SystemExit(
+                  f"workflow infrastructure leaked into frozen root API: {leaked}"
+              )
+          PY
