@@ -1,22 +1,23 @@
 # Capability status and roadmap
 
-## Current stable scientific surface — 1.0.0
+## Current stable scientific surface — 1.1.0
 
-`1.0.0` is the current stable production release and the compatibility baseline for the 1.x line.
+The current stable production release is **1.1.0**. It is the stable/default production release and preserves the frozen 1.0 package-root compatibility boundary while promoting the qualified post-1.0 sparse/irregular capabilities as stable **module-scoped 1.1 APIs**.
 
-The current development line is **1.1.0**. It is a version-only final-promotion candidate over the frozen, production-observed `1.1.0rc1` scientific/API surface. `1.0.0` remains the stable production release until final publication succeeds.
+The frozen 1.0 public boundary contains **455 stable public exports** and three explicitly experimental APIs. No deprecations or removals were authorized by the 1.0 stabilization programme, and 1.1 did not mechanically expand that package-root namespace.
 
-The frozen 1.0 public boundary contains **455 stable public exports** and three explicitly experimental APIs. No deprecations or removals were authorized by the 1.0 stabilization programme.
+The post-1.0 sparse/irregular scientific programme (#158), integration/readiness programme (#183), `1.1.0rc1` qualification/publication/installed observation, literal final `1.1.0` qualification, governance-only arming, production publication, and post-publication closeout are all **complete**.
 
-The post-1.0 sparse/irregular scientific programme (#158) is **complete**. Its A1–C1 capabilities remain supported **module-scoped 1.1 APIs** rather than being mechanically added to the frozen package-root namespace. The integration/readiness programme (#183) has completed R1–R4; R4 recorded `eligible_for_rc_decision=true`, and R5 has approved the separate version/evidence-only `1.1.0rc1` qualification cycle.
-
-The readiness sequence is now:
+The completed release sequence was:
 
 1. **R1 — integrated API/public-surface audit:** complete; module-scoped 1.1 surface documented and machine-checked.
 2. **R2 — documentation/release narrative:** complete.
 3. **R3 — end-to-end product analyses:** complete with zero release-blocking friction.
 4. **R4 — consolidated evidence/performance audit:** complete; `eligible_for_rc_decision=true`.
-5. **R5 — RC/final decision and literal-version qualification:** RC qualification, publication, and production-installed observation are complete; exact-`1.1.0` final qualification is now in progress. Publication remains a separate later governance step.
+5. **R5 — RC/final decision and literal-version qualification:** complete through RC publication/observation and fresh final-version qualification.
+6. **Final publication governance:** complete; `1.1.0` was armed separately, published from exact protected main, promoted to stable/default, and publication readiness was disarmed again after closeout.
+
+Current post-1.1 work is deliberately split into separate programmes: issue #205 evaluates Bayesian sparse FPCA/MFPCA as an external scientific comparator before any native Bayesian API decision, while issue #211 defines a transparent, typed workflow/orchestration layer for a potential 1.2 product release. These programmes must not silently change the stable 1.1 scientific contracts.
 
 Future methodology remains evidence-driven rather than version-number-driven. `eyetrajectoriespy` is intentionally an **eye-tracking functional-analysis layer**, not a reimplementation of every general FDA estimator.
 
@@ -39,7 +40,7 @@ Future methodology remains evidence-driven rather than version-number-driven. `e
 
 ## Completed 1.1 scientific surface — A1–C1
 
-The completed post-1.0 programme is additive and module-scoped. These APIs were developed and integrated on `1.1.0.dev0` and are now being qualified under literal `1.1.0rc1`; they are **not yet a published 1.1 release**.
+The completed post-1.0 programme is additive and module-scoped. These APIs were developed on `1.1.0.dev0`, qualified through immutable `1.1.0rc1`, observed from production artifacts, requalified under literal final `1.1.0`, and are now stable functionality in the published `1.1.0` release.
 
 | Tranche | Scientific capability | Supported module/API | Qualified boundary |
 |---|---|---|---|
@@ -53,7 +54,7 @@ The completed post-1.0 programme is additive and module-scoped. These APIs were 
 | C1 | future/partially observed sparse trajectory prediction | `sparse_partial_prediction` | Gaussian conditional moments using the full fitted covariance |
 | C1 | participant-aware split-conformal future bands | `sparse_partial_conformal` | finite-grid future-observation coverage under the declared grouping/exchangeability contract |
 
-See the [1.1 module API](../reference/one-dot-one-module-api.md) and [1.1 integration audit](../reference/one-dot-one-integration-audit.md). The frozen/root 1.0 API remains separately documented and machine-checked.
+See the [1.1 module API](../reference/one-dot-one-module-api.md) and [1.1 integration audit](../reference/one-dot-one-integration-audit.md). The frozen 1.0 package-root API remains separately documented and machine-checked as the 1.x compatibility boundary.
 
 ## What 0.12 added
 
@@ -118,7 +119,7 @@ The 0.11 recovery laboratory remains the standing infrastructure for later metho
 
 Final `1.0.0` preserves that frozen scientific/API surface. The RC was observed outside the checkout on Python 3.11–3.13, final `1.0.0` received fresh exact-version performance and complete PR/exact-main qualification, and production workflow #18 published the final version from exact arming commit `d90fbbeea390054019e7689badedf5011ee09c22`. Post-publication readiness is disarmed again.
 
-The R4 `1.1.0.dev0` development-readiness ledger and published `1.1.0rc1` qualification/observation evidence remain immutable historical records. The active final `1.1.0` qualification uses fresh literal-version reference/tolerance/performance evidence; frozen 1.0, R4, and RC records are not relabelled.
+The R4 `1.1.0.dev0` development-readiness ledger, published `1.1.0rc1` qualification/observation evidence, fresh literal-final `1.1.0` qualification, arming, publication, and post-publication closeout remain immutable historical records. Later evidence is additive and does not relabel frozen 1.0, R4, RC, or final-release records.
 
 ## Published release sequence
 
@@ -142,6 +143,14 @@ Published 4 October 2026 as the evidence-backed 1.0 API candidate after exact-ve
 
 Published 4 October 2026 after literal final-version qualification and a separate governance-only arming step. The release changed package identity and compatibility status rather than adding scientific functionality. The stable 1.0 boundary is the compatibility contract for the 1.x line.
 
+### 1.1.0rc1 — sparse/irregular 1.1 release candidate
+
+Published 6 October 2026 after exact-version qualification. It retained the frozen 1.0 root compatibility boundary while exposing the completed A1–C1 additions as supported module-scoped APIs. Production-installed observation on Python 3.11–3.13 completed before final promotion.
+
+### 1.1.0 — current stable/default release
+
+Published 7 October 2026 after fresh literal-final qualification, a separate governance-only publication-arming step, exact protected-main verification, production GitHub/PyPI publication with attestations, fresh exact-version installation smoke, and a post-publication disarming/closeout cycle. The scientific/API surface is the frozen, production-observed RC surface rather than a feature expansion during promotion.
+
 Published tags and release artifacts remain immutable historical records. New documentation or later APIs do not retroactively alter the scientific identity of earlier releases.
 
 ## Completed post-1.0 sparse/irregular inference programme
@@ -155,11 +164,23 @@ Issue #158 closed after the following evidence-driven sequence completed:
 5. asynchronous/coordinate-specific sparse planar MFPCA without hidden interpolation; and
 6. future/partially observed trajectory prediction with participant-aware conformal calibration.
 
-R1–R4 under issue #183 subsequently qualified the integrated product surface and R5 approved entry into exact-version RC qualification. The scientific programme is therefore no longer the active roadmap.
+R1–R5 under issue #183 subsequently qualified the integrated product surface through RC and final publication. The 1.1 scientific/release programme is therefore closed and is no longer the active roadmap.
+
+## Active post-1.1 programmes
+
+### Bayesian sparse comparator / feasibility — issue #205
+
+B1 external-comparator infrastructure is merged and qualified on protected main. It compares the native sparse FPCA/MFPCA routes against an exact pinned external `bayesFPCA` implementation using neutral known-truth fixtures, invariant subspace/reconstruction metrics, retained uncertainty evidence, and an explicit GPL/runtime boundary. B4 remains deferred until replicated B2 recovery/fairness evidence and B3 uncertainty calibration are complete.
+
+### Transparent workflow layer — issue #211
+
+The proposed 1.2 product programme promotes already-qualified analysis chains into explicit, typed, provenance-preserving workflow APIs. The workflow contract is **orchestration, not auto-analysis**: analyst decisions remain explicit; selectors and diagnostics remain inspectable; paired and asynchronous sparse planar routes remain scientifically distinct; preprocessing is declared rather than inferred; and workflow definitions receive their own schema/contract versioning.
+
+The intended sequence is W1 infrastructure, W2 sparse workflows, W3 dense/regression/prediction workflows, then W4 nonlinear/docs/gallery/product qualification.
 
 ## Later or conditional methodology
 
-Irregular functional mixed effects, shape/manifold analysis, genuinely functional clustering/classification, focused Bayesian sparse modelling, and additional nonlinear/state-space methods remain later or conditional work. Device/clock synchronization remains outside the package except for narrow audit interfaces.
+Irregular functional mixed effects, shape/manifold analysis, genuinely functional clustering/classification, and additional nonlinear/state-space methods remain later or conditional work. Bayesian sparse modelling is now an active **external-comparator/feasibility** programme under issue #205 rather than an approved native estimator/API. Device/clock synchronization remains outside the package except for narrow audit interfaces.
 
 For versioning, the intended posture is:
 

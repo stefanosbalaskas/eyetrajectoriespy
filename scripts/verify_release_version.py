@@ -76,6 +76,7 @@ def version_contract() -> dict[str, str]:
         f"The current development line is **{project_version}**.",
         f"The current release-candidate line is **{project_version}**.",
         f"The current stable pre-1.0 line is **{project_version}**.",
+        f"The current stable production release is **{project_version}**.",
     )
     if not any(line in roadmap for line in expected_lines):
         raise RuntimeError(

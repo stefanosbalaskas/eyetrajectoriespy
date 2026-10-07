@@ -46,11 +46,11 @@ pip install eyetrajectoriespy==1.1.0
 | Sparse/irregular paired planar x/y gaze | `fit_sparse_mfpca()` + joint PACE | stable 1.0 |
 | Repeated participant/trial functions | functional mixed effects / multilevel FPCA | stable 1.0 |
 | Conditional uncertainty for sparse PACE and joint PACE scores | `sparse_score_uncertainty` / `sparse_multivariate_score_uncertainty` | stable 1.1 module API |
-| Audited sparse smoothing-bandwidth selection | `sparse_bandwidth_selection` / `sparse_multivariate_bandwidth_selection` | supported 1.1 RC module API |
-| Candidate-sample observation-process diagnostics | `observation_process` | supported 1.1 RC module API |
-| Sparse participant/trial hierarchical decomposition | `sparse_multilevel` | supported 1.1 RC module API |
-| Coordinate-specific asynchronous sparse planar gaze | `sparse_multivariate_async` | supported 1.1 RC module API |
-| Future/partially observed sparse trajectory prediction and participant-aware conformal bands | `sparse_partial_prediction` / `sparse_partial_conformal` | supported 1.1 RC module API |
+| Audited sparse smoothing-bandwidth selection | `sparse_bandwidth_selection` / `sparse_multivariate_bandwidth_selection` | stable 1.1 module API |
+| Candidate-sample observation-process diagnostics | `observation_process` | stable 1.1 module API |
+| Sparse participant/trial hierarchical decomposition | `sparse_multilevel` | stable 1.1 module API |
+| Coordinate-specific asynchronous sparse planar gaze | `sparse_multivariate_async` | stable 1.1 module API |
+| Future/partially observed sparse trajectory prediction and participant-aware conformal bands | `sparse_partial_prediction` / `sparse_partial_conformal` | stable 1.1 module API |
 
 The post-1.0 module-scoped APIs are documented in the [1.1 module API](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-module-api/) and [integration audit](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-integration-audit/). They remain intentionally module-scoped rather than root re-exports and are stable `1.1.0` functionality under the published final release.
 
