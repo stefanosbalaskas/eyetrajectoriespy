@@ -120,6 +120,7 @@ def test_locked_r_environment_is_exact_not_latest_cran():
     ).read_text(encoding="utf-8")
 
     for token in (
+        'abind = list(version = "1.4.8"',
         'ellipse = list(version = "0.5.0"',
         'magic = list(version = "1.6.1.1"',
         'matrixcalc = list(version = "1.0.6"',
