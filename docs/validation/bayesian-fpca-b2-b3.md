@@ -4,17 +4,17 @@ title: Bayesian FPCA B2/B3 replication and uncertainty
 
 # Bayesian FPCA B2/B3 replication and uncertainty
 
-This tranche extends the immutable B1 comparator evidence without changing any estimator or public API.
+This definitive tranche extends the immutable B1 comparator evidence without changing any estimator or public API. The earlier PR #208 evidence is retained as pilot/feasibility evidence because its realized replication and tuning grids differed from the design freeze recorded in issue #205.
 
 ## B2 replication and separation
 
-The programme uses five predeclared replicates for each of eight known-truth scenarios:
+The primary programme uses **16 deterministic replicates per scenario** for each of eight known-truth scenarios:
 
 - harmonic moderate sparsity;
 - harmonic extreme sparsity;
 - harmonic low-N;
 - harmonic near-tied eigenvalues;
-- localized/non-harmonic univariate truth;
+- localized/non-harmonic **triangular-mode** univariate truth;
 - simulation-only informative observation retention;
 - paired sparse planar data; and
 - asynchronous coordinate-specific sparse planar data.
@@ -23,7 +23,7 @@ Low-N and near-tied regimes are deliberately separate. The informative-observati
 
 The primary comparison preserves the frozen B1 settings. A secondary native route uses the existing audited bandwidth selectors with a predeclared candidate grid. The asynchronous planar route does not silently reuse the paired selector because no qualified asynchronous selector exists.
 
-`bayesFPCA` is evaluated at predeclared spline-basis sizes `K = 5, 7, 9`; `K = 7` remains the primary B1-compatible setting. No truth-tuning or post-hoc favorable parameter search is permitted.
+The secondary fairness/tuning sensitivity is restricted to the **first four replicates** of extreme sparsity, low-N, near-tied, localized, and paired-planar scenarios. Native candidates use the Cartesian product of frozen mean/covariance bandwidths multiplied by `{0.75, 1.00, 1.25}` with the already-qualified 3-fold curve-level predictive criterion. `bayesFPCA` candidates use `K = {5, 6, 7, 8, 9}` and retain the successful fit with maximum final ELBO. `K = 7` remains the primary B1-compatible setting outside the fairness subset. No truth-tuning or post-hoc favorable parameter search is permitted.
 
 ## B3 uncertainty calibration
 
@@ -31,7 +31,7 @@ The existing native oracle validation remains the reference for the narrow condi
 
 B2/B3 additionally retains fitted-model score covariance from both native and Bayesian fits. Because component signs/order are not identified and near-tied components are especially unstable, fitted score/covariance outputs are aligned to truth through weighted orthogonal Procrustes before known-score inclusion is summarized.
 
-Those fitted-model truth-inclusion summaries are descriptive. They are not relabelled as full population-estimation coverage for native PACE and they are not used to compare covariance magnitudes directly.
+Population objects are re-estimated in every Monte Carlo replicate. The definitive B3 summaries therefore report empirical truth inclusion, pooled and replicate-level standardized-error behavior, covariance failures, and score failures across repeated datasets. These diagnostics quantify the calibration gap that appears when population objects are estimated, but the fitted conditional covariance itself is **not** relabelled as full population-estimation uncertainty and covariance magnitudes are not compared directly.
 
 ## Environment lock
 
