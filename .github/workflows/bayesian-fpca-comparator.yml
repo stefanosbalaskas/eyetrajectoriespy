@@ -1,0 +1,202 @@
+name: bayesian-fpca-comparator
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/bayesian-fpca-comparator.yml"
+      - "scripts/run_bayesian_fpca_comparator.py"
+      - "scripts/evaluate_bayesian_fpca_comparator.py"
+      - "validation/bayesian_fpca/**"
+      - "tests/test_bayesian_fpca_comparator.py"
+      - "src/eyetrajectoriespy/sparse_native.py"
+      - "src/eyetrajectoriespy/sparse_multivariate.py"
+      - "src/eyetrajectoriespy/sparse_multivariate_async.py"
+      - "src/eyetrajectoriespy/types.py"
+      - "src/eyetrajectoriespy/fpca.py"
+      - "pyproject.toml"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/bayesian-fpca-comparator.yml"
+      - "scripts/run_bayesian_fpca_comparator.py"
+      - "scripts/evaluate_bayesian_fpca_comparator.py"
+      - "validation/bayesian_fpca/**"
+      - "tests/test_bayesian_fpca_comparator.py"
+      - "src/eyetrajectoriespy/sparse_native.py"
+      - "src/eyetrajectoriespy/sparse_multivariate.py"
+      - "src/eyetrajectoriespy/sparse_multivariate_async.py"
+      - "src/eyetrajectoriespy/types.py"
+      - "src/eyetrajectoriespy/fpca.py"
+      - "pyproject.toml"
+  workflow_dispatch:
+
+concurrency:
+  group: \${{ github.workflow }}-\${{ github.event.pull_request.number || github.ref }}-\${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  bayesfpca-sensitivity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      BAYESFPCA_COMMIT: "f05b0615632cffe5c63838858d9a956af6588a73"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install eyetrajectoriespy
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+
+      - name: Run Python contract tests
+        run: |
+          python -m pytest -q tests/test_bayesian_fpca_comparator.py
+
+      - name: Generate frozen native and known-truth fixtures
+        run: |
+          python scripts/run_bayesian_fpca_comparator.py \
+            --output-dir bayesian-fpca-comparator
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "release"
+          use-public-rspm: true
+
+      - name: Install exact bayesFPCA comparator
+        run: |
+          git clone https://github.com/hruffieux/bayesFPCA.git external-bayesFPCA
+          git -C external-bayesFPCA checkout "$BAYESFPCA_COMMIT"
+          test "$(git -C external-bayesFPCA rev-parse HEAD)" = "$BAYESFPCA_COMMIT"
+          Rscript -e 'install.packages(c("ellipse", "magic", "matrixcalc", "pracma"), repos="https://cloud.r-project.org")'
+          R CMD INSTALL external-bayesFPCA
+          Rscript -e 'stopifnot(as.character(utils::packageVersion("bayesFPCA")) == "0.1.0")'
+
+      - name: Capture exact R comparator environment
+        run: |
+          printf '%s\n' "$BAYESFPCA_COMMIT" > bayesian-fpca-comparator/bayesfpca-git-commit.txt
+          git -C external-bayesFPCA rev-parse HEAD > bayesian-fpca-comparator/bayesfpca-checkout-head.txt
+          Rscript - <<'RS'
+          root <- "bayesian-fpca-comparator"
+          packages <- c(
+            "bayesFPCA", "ellipse", "magic", "matrixcalc", "pracma",
+            "MASS", "lattice"
+          )
+          versions <- vapply(
+            packages,
+            function(pkg) as.character(utils::packageVersion(pkg)),
+            character(1)
+          )
+          utils::write.csv(
+            data.frame(package = packages, version = versions),
+            file.path(root, "r-package-versions.csv"),
+            row.names = FALSE
+          )
+          capture.output(
+            sessionInfo(),
+            file = file.path(root, "r-session-info.txt")
+          )
+          capture.output(
+            list(
+              R_version_string = R.version.string,
+              R_platform = R.version$platform,
+              R_arch = R.version$arch,
+              R_os = R.version$os,
+              sys_info = Sys.info(),
+              ext_soft_version = extSoftVersion()
+            ),
+            file = file.path(root, "r-runtime-details.txt")
+          )
+          RS
+
+      - name: Run external bayesFPCA comparator
+        run: |
+          Rscript validation/bayesian_fpca/run_bayesfpca.R \
+            bayesian-fpca-comparator
+
+      - name: Evaluate invariant sensitivity evidence
+        run: |
+          python scripts/evaluate_bayesian_fpca_comparator.py \
+            bayesian-fpca-comparator
+
+      - name: Verify evidence contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("bayesian-fpca-comparator")
+          payload = json.loads(
+              (root / "bayesian_fpca_sensitivity.json").read_text()
+          )
+          if payload.get("evidence_type") != "cross_implementation_sensitivity":
+              raise SystemExit("unexpected evidence type")
+          if payload.get("bayesfpca_commit") != (
+              "f05b0615632cffe5c63838858d9a956af6588a73"
+          ):
+              raise SystemExit("unexpected bayesFPCA commit")
+          if payload.get("bayesfpca_version") != "0.1.0":
+              raise SystemExit("unexpected bayesFPCA version")
+          if payload.get("external_runtime_backend") is not False:
+              raise SystemExit("bayesFPCA must remain external-only")
+          if payload.get("source_code_ported") is not False:
+              raise SystemExit("GPL source must not be ported")
+          if payload.get("equivalence_claim") is not False:
+              raise SystemExit("comparator evidence must not claim equivalence")
+          if payload.get("architecture_winner_selected") is not False:
+              raise SystemExit("comparator evidence must not choose a winner")
+          if payload.get("automatic_promotion_decision") is not False:
+              raise SystemExit("comparator evidence must not auto-promote an API")
+          scenarios = {row["scenario"] for row in payload.get("scenarios", [])}
+          required = {
+              "univariate_moderate",
+              "univariate_extreme_sparse",
+              "univariate_low_n_near_tied",
+              "planar_paired",
+              "planar_async",
+          }
+          if scenarios != required:
+              raise SystemExit(
+                  f"unexpected comparator scenario matrix: {sorted(scenarios)}"
+              )
+          for row in payload["scenarios"]:
+              for method in ("native", "bayesfpca"):
+                  if method not in row:
+                      raise SystemExit(
+                          f"{row['scenario']} missing {method} evidence"
+                      )
+              contract = row.get("uncertainty_contract", {})
+              if contract.get("direct_uncertainty_superiority_claim") is not False:
+                  raise SystemExit("uncertainty evidence must remain descriptive")
+          PY
+
+      - name: Capture evidence checksums
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+
+          root = Path("bayesian-fpca-comparator")
+          lines = []
+          for path in sorted(p for p in root.rglob("*") if p.is_file()):
+              digest = sha256(path.read_bytes()).hexdigest()
+              lines.append(f"{digest}  {path.relative_to(root).as_posix()}")
+          (root / "SHA256SUMS").write_text("\n".join(lines) + "\n")
+          PY
+
+      - name: Upload Bayesian FPCA sensitivity evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: bayesian-fpca-comparator-evidence
+          path: bayesian-fpca-comparator
+          if-no-files-found: error
+          retention-days: 90
