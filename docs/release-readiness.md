@@ -17,7 +17,7 @@ Post-publication PR #156 recorded the immutable evidence, promoted `1.0.0` as th
 
 ## Published release candidate — 1.1.0rc1
 
-The active source identity is **`1.1.0`** under exact-version final qualification. `1.1.0rc1` remains the published prerelease on GitHub and production PyPI, and **`1.0.0` remains the stable/default release** until final `1.1.0` publication succeeds.
+The active source identity is **`1.1.0`**, now exact-version qualified and entering a separate governance-only publication-arming tranche. `1.1.0rc1` remains the published prerelease on GitHub and production PyPI, and **`1.0.0` remains the stable/default release** until final `1.1.0` publication succeeds.
 
 The sparse/irregular scientific programme (#158) completed A1–C1. The integration/readiness programme (#183) then completed R1–R5:
 
@@ -57,9 +57,9 @@ Current qualification state:
 
 - stable published version = `1.0.0`;
 - published prerelease = `1.1.0rc1`;
-- active source identity = `1.1.0` (qualification only; not yet published);
-- `production_release_ready = false`;
-- `github_release_ready = false`;
+- active source identity = `1.1.0` (final-qualified; not yet published);
+- `production_release_ready = true`;
+- `github_release_ready = true`;
 - exact qualified RC main = `909f7cd493fc21f643e1f923ed503e6128dc750c`;
 - exact RC qualification matrix = 25/25 successful post-merge workflow groups;
 - exact publication-arming main = `f4405897e2a7a2392c03523cc7fa18e43df00e5e`;
@@ -70,16 +70,21 @@ Current qualification state:
 - historical 1.0 qualification evidence remains attributed to `1.0.0`;
 - the R4 development-readiness ledger remains attributed to `1.1.0.dev0` and is not relabelled as RC evidence; and
 - active reference/tolerance evidence is aligned to literal `1.1.0`; fresh package-wide final performance evidence comes from run `37528714581`, while archived `1.1.0rc1` evidence remains immutable.
+- final qualification PR #201 = 26/26 pull-request workflow groups successful;
+- exact final-qualified main = `7eaf842214dc26c8cd1cef9eaaa72a55916974de`;
+- exact final-qualified main matrix = 25/25 push-triggered workflow groups successful with zero failures;
+- exact-main performance run = `37562352624`, artifact `11456959104`, digest `sha256:5d0ef3d81fc2b722c4b6bc5732b9d6464d5da126927c85b02b9d45b41670c5bc`; and
+- exact-main comparator-sensitivity run = `37562352573`, with both native two-stage and exact external `mGSFPCA` jobs successful.
 
-Both publication-readiness flags are now **false**. This prevents accidental republication of the immutable RC. Ordinary pushes and merges remain non-publishing. A later final `1.1.0` release must enter a new exact-version qualification and publication-arming cycle rather than reusing the RC authority.
+Both publication-readiness flags are now **true only in this reviewed governance-arming tranche**, after final `1.1.0` exact-version qualification completed. Ordinary pushes and merges remain non-publishing. After this arming change merges, its exact protected-main commit must pass the required governance matrix before any explicit manual `release.yml` dispatch with `target=production`.
 
-## Current decision gate — exact final 1.1.0 qualification
+## Current decision gate — final 1.1.0 publication arming
 
-Production-installed RC observation is complete. Final `1.1.0` is now being qualified as a **version-only promotion** of the frozen, observed `1.1.0rc1` scientific/API surface.
+Final `1.1.0` exact-version qualification is complete. Qualification PR #201 passed **26/26** pull-request workflow groups and merged as exact protected-main commit `7eaf842214dc26c8cd1cef9eaaa72a55916974de`; that exact commit then passed **25/25** push-triggered workflow groups with zero failures.
 
-Fresh exact-final package-wide performance qualification passed in workflow run `37528714581` on source commit `cb3ecd82112e41ab1ac2b20961eeb79250da96cb`. Artifact `11443198062` has digest `sha256:fb6c12cae67df237b5ad5b8f172787d0e63fe75cca31199b712d6abf96e94647`. The canonical final envelope is archived separately under `validation/performance/PERFORMANCE_ENVELOPE-1.1.0.json`; the RC envelope remains unchanged.
+On the exact final-qualified main commit, package/test run `37562352503`, release-readiness run `37562352566`, package-wide performance run `37562352624`, and sparse-MFPCA comparator-sensitivity run `37562352573` all completed successfully. Performance artifact `11456959104` has digest `sha256:5d0ef3d81fc2b722c4b6bc5732b9d6464d5da126927c85b02b9d45b41670c5bc`.
 
-The remaining qualification gates are the complete pull-request matrix, protected-main merge, and the complete exact-main matrix on the resulting final-qualified commit. Publication remains jointly disarmed. If those gates pass without a result-changing or compatibility-breaking defect, a separate governance-only PR may arm final `1.1.0` publication.
+This tranche changes publication authority only. It does not modify an estimator, numerical method, scientific default, dependency, threshold, public API, performance methodology, or release workflow. After the arming change merges, the resulting exact protected-main arming commit must pass its own required governance matrix. Only then may production be started through an explicit manual `release.yml` dispatch with `target=production`.
 
 ## Final 1.0 qualification
 
@@ -146,7 +151,10 @@ post-publication readiness disarm                current tranche
 production-installed RC observation              complete
         |
         v
-literal final 1.1.0 qualification                current
+literal final 1.1.0 qualification                complete
+        |
+        v
+separate governance-only final publication arming current
 ```
 
 ## Post-1.0 compatibility policy
