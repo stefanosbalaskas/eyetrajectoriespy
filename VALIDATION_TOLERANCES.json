@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package_version": "1.1.0rc1",
+  "package_version": "1.1.0",
   "classes": [
     {
       "id": "exact_combinatorial",
@@ -18,7 +18,7 @@
     {
       "id": "deterministic_geometry",
       "applies_to": [
-        "Fr\u00e9chet distance",
+        "Fréchet distance",
         "DTW cumulative cost",
         "deterministic functional distances"
       ],

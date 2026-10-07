@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_development_version": "1.1.0rc1",
+  "current_development_version": "1.1.0",
   "first_public_release_target": "0.9.0",
   "production_release_ready": false,
   "gates": {
@@ -102,7 +102,15 @@
     "Governance-only PR #198 merged as exact protected-main publication-arming commit f4405897e2a7a2392c03523cc7fa18e43df00e5e after its complete pull-request matrix passed. The resulting exact-main arming matrix then finished 24/24 workflow groups successfully with zero failures, including the exact external mGSFPCA comparator.",
     "Production release workflow #19 (run 37511987332) completed successfully from exact protected-main arming commit f4405897e2a7a2392c03523cc7fa18e43df00e5e on 6 October 2026. It built the wheel and sdist exactly once, passed production governance and unpublished-version preflight, created annotated tag and GitHub prerelease v1.1.0rc1 pointing to the exact arming commit, published the checksum-verified distributions to production PyPI through OIDC Trusted Publishing with digital attestations, and passed a fresh eyetrajectoriespy==1.1.0rc1 production-PyPI installation smoke test on the first visibility attempt.",
     "Published v1.1.0rc1 GitHub Release assets are eyetrajectoriespy-1.1.0rc1-py3-none-any.whl (sha256:875242e0c7cd1fae0fdb9e472a33ecf687e99e886e3f36302748563dddede151), eyetrajectoriespy-1.1.0rc1.tar.gz (sha256:f67cf81f93aef8e47d47d918f0945bdaaa437d542381f60316ff0996e2370846), and SHA256SUMS (sha256:d849ef5b21eea95dd81626e2f071723a28110556b27911a57d69bc59ab5b8bc4). Retained workflow artifact 11435448783 has digest sha256:3572f75c8339f73a2a77845cc01072097309a3b32f5207e0dcffcdf777c99e83.",
-    "Post-publication GitHub/PyPI readiness is jointly disarmed again to prevent accidental republication of immutable 1.1.0rc1. The stable default remains 1.0.0 while 1.1.0rc1 enters production-installed observation before any final 1.1.0 promotion decision."
+    "Post-publication GitHub/PyPI readiness is jointly disarmed again to prevent accidental republication of immutable 1.1.0rc1. The stable default remains 1.0.0 while 1.1.0rc1 enters production-installed observation before any final 1.1.0 promotion decision.",
+    "Installed 1.1.0rc1 observation PR #200 merged as exact protected-main commit 3a8f8a47647ed2c4cee5121713e0c67afc65ae72. The complete post-merge exact-main observation matrix finished 24/24 workflow groups successfully with zero failures, including the exact external mGSFPCA comparator.",
+    "Exact-main installed-RC workflow run 37526057779 reinstalled production-PyPI 1.1.0rc1 on Python 3.11-3.13 and passed installed-distribution separation, recovery, threshold-free stress, external-consumer observation, sparse-MFPCA observation, the complete installed 1.1 end-to-end product analyses, evidence-contract verification, and checksum capture.",
+    "Canonical exact-main installed observation artifact 11442785076 has digest sha256:aba9dc71c2e2bc5d5f198f2b6c4709e1b21acc4e880435b081c678e1f7ae917e.",
+    "Final 1.1.0 is a version-only promotion of the frozen, production-observed 1.1.0rc1 scientific/API surface. No estimator, numerical method, scientific default, dependency, deprecation, removal, threshold, or public API expansion is introduced during final qualification.",
+    "The immutable 1.1.0rc1 package-wide performance envelope remains archived under validation/performance/PERFORMANCE_ENVELOPE-1.1.0rc1.json and must not be relabelled as final-version evidence.",
+    "Final 1.1.0 qualification requires fresh exact-version package-wide and sparse-MFPCA performance evidence, the complete pull-request matrix, protected-main merge, and the complete exact-main matrix before publication may be armed.",
+    "Publication remains jointly disarmed during final 1.1.0 qualification. Arming GitHub/PyPI publication is reserved for a later governance-only reviewed change after exact-main final-version qualification passes.",
+    "Fresh final 1.1.0 package-wide performance qualification run 37528714581 passed on exact source commit cb3ecd82112e41ab1ac2b20961eeb79250da96cb. Retained artifact 11443198062 has digest sha256:fb6c12cae67df237b5ad5b8f172787d0e63fe75cca31199b712d6abf96e94647; the canonical final envelope is archived under validation/performance/PERFORMANCE_ENVELOPE-1.1.0.json while the immutable 1.1.0rc1 envelope remains unchanged."
   ],
   "github_release_ready": false
 }

@@ -17,7 +17,7 @@ Post-publication PR #156 recorded the immutable evidence, promoted `1.0.0` as th
 
 ## Published release candidate — 1.1.0rc1
 
-The active source identity is **`1.1.0rc1`**. It is now published as a prerelease on GitHub and production PyPI; **`1.0.0` remains the stable/default release** until a separately qualified final `1.1.0` promotion is justified.
+The active source identity is **`1.1.0`** under exact-version final qualification. `1.1.0rc1` remains the published prerelease on GitHub and production PyPI, and **`1.0.0` remains the stable/default release** until final `1.1.0` publication succeeds.
 
 The sparse/irregular scientific programme (#158) completed A1–C1. The integration/readiness programme (#183) then completed R1–R5:
 
@@ -53,11 +53,11 @@ Fresh literal-RC evidence remains separate from the immutable R4 `1.1.0.dev0` de
 
 The machine-readable authority is `RELEASE_READINESS.json`.
 
-Current post-publication state:
+Current qualification state:
 
 - stable published version = `1.0.0`;
 - published prerelease = `1.1.0rc1`;
-- active source identity = `1.1.0rc1`;
+- active source identity = `1.1.0` (qualification only; not yet published);
 - `production_release_ready = false`;
 - `github_release_ready = false`;
 - exact qualified RC main = `909f7cd493fc21f643e1f923ed503e6128dc750c`;
@@ -69,25 +69,17 @@ Current post-publication state:
 - A1–C1 1.1 APIs remain module-scoped and additive;
 - historical 1.0 qualification evidence remains attributed to `1.0.0`;
 - the R4 development-readiness ledger remains attributed to `1.1.0.dev0` and is not relabelled as RC evidence; and
-- active reference/tolerance/performance evidence remains qualified under literal `1.1.0rc1`.
+- active reference/tolerance evidence is aligned to literal `1.1.0`; fresh package-wide final performance evidence comes from run `37528714581`, while archived `1.1.0rc1` evidence remains immutable.
 
 Both publication-readiness flags are now **false**. This prevents accidental republication of the immutable RC. Ordinary pushes and merges remain non-publishing. A later final `1.1.0` release must enter a new exact-version qualification and publication-arming cycle rather than reusing the RC authority.
 
-## Next decision gate — production-installed RC observation
+## Current decision gate — exact final 1.1.0 qualification
 
-Publication is not the same as final promotion. The next programme is **production-installed observation and final-1.1 readiness**, not additional 1.1 feature expansion.
+Production-installed RC observation is complete. Final `1.1.0` is now being qualified as a **version-only promotion** of the frozen, observed `1.1.0rc1` scientific/API surface.
 
-The observation tranche should exercise the production-PyPI `1.1.0rc1` artifact outside the source checkout on the supported Python versions and retain evidence for:
+Fresh exact-final package-wide performance qualification passed in workflow run `37528714581` on source commit `cb3ecd82112e41ab1ac2b20961eeb79250da96cb`. Artifact `11443198062` has digest `sha256:fb6c12cae67df237b5ad5b8f172787d0e63fe75cca31199b712d6abf96e94647`. The canonical final envelope is archived separately under `validation/performance/PERFORMANCE_ENVELOPE-1.1.0.json`; the RC envelope remains unchanged.
 
-- installation and dependency integrity;
-- the principal 1.1 sparse/irregular module-scoped workflows;
-- known-truth recovery and threshold-free stress retention;
-- sparse-MFPCA/joint-PACE behavior;
-- portable result serialization and reporting;
-- product-analysis ergonomics and failure semantics; and
-- any real-user defect that would justify another RC rather than final promotion.
-
-A final `1.1.0` decision should occur only after that observation evidence is reviewed. If no result-changing, compatibility-breaking, or scientifically material defect is found, final `1.1.0` should be a version-only promotion of the observed RC scientific/API surface with fresh literal-final qualification evidence.
+The remaining qualification gates are the complete pull-request matrix, protected-main merge, and the complete exact-main matrix on the resulting final-qualified commit. Publication remains jointly disarmed. If those gates pass without a result-changing or compatibility-breaking defect, a separate governance-only PR may arm final `1.1.0` publication.
 
 ## Final 1.0 qualification
 
@@ -151,7 +143,10 @@ fresh production-PyPI install smoke test         pass, attempt 1
 post-publication readiness disarm                current tranche
         |
         v
-production-installed RC observation              next
+production-installed RC observation              complete
+        |
+        v
+literal final 1.1.0 qualification                current
 ```
 
 ## Post-1.0 compatibility policy

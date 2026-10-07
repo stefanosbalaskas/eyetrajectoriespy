@@ -1,12 +1,12 @@
 # Coordinated GitHub Release and PyPI publication
 
-## 1.1.0rc1 exact-version qualification
+## 1.1.0 final exact-version qualification
 
-`1.1.0rc1` may be qualified only because R4 recorded `eligible_for_rc_decision=true`. The RC transition is version-only and must generate fresh literal-version evidence. Historical `1.1.0.dev0` R4 evidence and frozen 1.0 evidence remain attributed to their original identities. Publication remains disarmed throughout RC qualification; arming and production publication require later, separate governance.
+`1.1.0` final qualification follows successful `1.1.0rc1` qualification, publication, and production-installed observation. The final transition is version-only and must generate fresh literal-version evidence. Historical `1.1.0.dev0`, `1.1.0rc1`, and frozen 1.0 evidence remain attributed to their original identities. Publication remains disarmed throughout final qualification; arming and production publication require later, separate governance.
 
 `eyetrajectoriespy 1.0.0` is the current stable release. The release machinery is intentionally fail-closed: ordinary pushes and merges do not publish, and a public version is produced only after exact-version qualification, protected-main requalification, a separate governance-only arming change, and an explicit manual production dispatch.
 
-The active source identity is `1.1.0.dev0`. It is non-publishing and does **not** imply that `1.1.0rc1` has been approved.
+The active source identity is `1.1.0` under exact-version qualification. It is non-publishing; `1.0.0` remains the stable release and `1.1.0rc1` remains the published prerelease until final publication succeeds.
 
 ## Current 1.1 readiness sequence
 
@@ -15,10 +15,10 @@ The post-1.0 A1–C1 sparse/irregular scientific programme is complete. The inte
 Issue #183 governs readiness through five deliberately separate tranches:
 
 1. **R1 — integrated API audit:** complete; supported module-scoped 1.1 imports are documented and machine-checked.
-2. **R2 — documentation/release narrative:** reconcile all current-state surfaces without changing package behavior or version.
-3. **R3 — end-to-end product analyses:** exercise univariate sparse, planar sparse/asynchronous, and repeated-trial sparse routes from supported imports to reportable outputs.
-4. **R4 — consolidated development evidence/performance audit:** freeze one exact protected-main head, run the complete matrix, retain workflow/artifact provenance, and issue `eligible_for_rc_decision=true|false`.
-5. **R5 — explicit RC decision:** only an affirmative R4 recommendation permits a separate version-only `1.1.0rc1` qualification PR.
+2. **R2 — documentation/release narrative:** complete.
+3. **R3 — end-to-end product analyses:** complete with zero release-blocking friction.
+4. **R4 — consolidated development evidence/performance audit:** complete with `eligible_for_rc_decision=true`.
+5. **R5 — RC/final decision:** RC qualification, publication, and installed observation are complete; literal final `1.1.0` qualification is now in progress.
 
 If R4 or R5 identifies unresolved scientific ambiguity, compatibility risk, or product friction, the project remains on `1.1.0.dev0`. Feature completion alone is not sufficient reason to create an RC.
 

@@ -1,6 +1,13 @@
 # Changelog
 
-## 1.1.0rc1 (under exact-version qualification)
+## 1.1.0 (under exact-version qualification)
+
+- Promote the frozen, production-observed `1.1.0rc1` scientific/API surface to literal final `1.1.0` without changing an estimator, numerical method, scientific default, dependency, threshold, public export, or frozen 1.0 root-API contract.
+- Preserve `v1.1.0rc1`, its production distributions, attestations, installed-artifact observation, and archived RC performance envelope as immutable prerelease evidence.
+- Record fresh exact-`1.1.0` package-wide performance evidence from workflow run `37528714581` on source commit `cb3ecd82112e41ab1ac2b20961eeb79250da96cb`; final qualification must still pass the complete PR and exact-main matrices before publication may be armed.
+- Keep GitHub and production-PyPI readiness jointly disarmed throughout final qualification; publication arming remains a separate governance-only change.
+
+## 1.1.0rc1 — 2026-10-06
 
 - Promote the completed R1-R4 development surface to the literal `1.1.0rc1` identity for qualification only; no estimator, analytical default, dependency, root-API expansion, or publication arming is introduced by this version change.
 - Require fresh literal-`1.1.0rc1` qualification/performance evidence plus complete pull-request and protected-main matrices before any publication decision.
