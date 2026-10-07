@@ -100,7 +100,7 @@ jobs:
           Rscript - <<'RS'
           root <- "bayesian-fpca-b2-b3"
           packages <- c(
-            "bayesFPCA", "ellipse", "magic", "matrixcalc", "pracma",
+            "bayesFPCA", "abind", "ellipse", "magic", "matrixcalc", "pracma",
             "MASS", "lattice"
           )
           versions <- vapply(
