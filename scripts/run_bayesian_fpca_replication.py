@@ -718,6 +718,49 @@ def _write_observations(
         )
 
 
+def _write_native_fit_status(
+    scenario_dir: Path,
+    prefix: str,
+    *,
+    status: str,
+    elapsed_seconds: float,
+    error: str | None = None,
+) -> None:
+    (scenario_dir / f"{prefix}_fit_status.json").write_text(
+        json.dumps(
+            {
+                "status": status,
+                "elapsed_seconds": float(elapsed_seconds),
+                "error": error,
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+
+def _attempt_native_fit(
+    scenario: Scenario,
+    dataset: IrregularTrajectorySet,
+    *,
+    mean_bandwidth: float,
+    covariance_bandwidth: float,
+):
+    start = time.perf_counter()
+    try:
+        fit, _ = _fit_native(
+            scenario,
+            dataset,
+            mean_bandwidth=mean_bandwidth,
+            covariance_bandwidth=covariance_bandwidth,
+        )
+    except Exception as exc:  # evidence harness must retain fit failures
+        return None, float(time.perf_counter() - start), repr(exc)
+    return fit, float(time.perf_counter() - start), None
+
+
 def _native_uncertainty(
     scenario: Scenario,
     fit,
@@ -760,12 +803,6 @@ def generate(output_dir: Path, *, replicates: int) -> dict[str, object]:
             replicate_dir.mkdir(parents=True, exist_ok=True)
 
             dataset, payload = _make_dataset(scenario, seed=seed)
-            frozen_fit, frozen_elapsed = _fit_native(
-                scenario,
-                dataset,
-                mean_bandwidth=scenario.mean_bandwidth,
-                covariance_bandwidth=scenario.covariance_bandwidth,
-            )
             _write_observations(replicate_dir, payload["observed"])
             (replicate_dir / "truth.json").write_text(
                 json.dumps(payload["truth"], indent=2, sort_keys=True) + "\n",
@@ -775,31 +812,59 @@ def generate(output_dir: Path, *, replicates: int) -> dict[str, object]:
                 replicate_dir / "truth_grid.csv",
                 index=False,
             )
-            _write_fit(
+
+            frozen_fit, frozen_elapsed, frozen_error = _attempt_native_fit(
+                scenario,
+                dataset,
+                mean_bandwidth=scenario.mean_bandwidth,
+                covariance_bandwidth=scenario.covariance_bandwidth,
+            )
+            _write_native_fit_status(
                 replicate_dir,
                 "native_frozen",
-                frozen_fit,
-                design=scenario.design,
-                dimensions=dataset.dimension_names,
+                status="ok" if frozen_fit is not None else "failed",
+                elapsed_seconds=frozen_elapsed,
+                error=frozen_error,
             )
 
-            uncertainty = _native_uncertainty(
-                scenario,
-                frozen_fit,
-                dataset,
-            )
-            uncertainty_available = uncertainty is not None
-            if uncertainty is not None:
-                _write_covariance_long(
-                    replicate_dir / "native_frozen_score_covariance.csv",
-                    tuple(frozen_fit.curve_ids),
-                    np.asarray(uncertainty.covariance, dtype=float),
+            uncertainty = None
+            uncertainty_available = False
+            frozen_score_failure_rate = None
+            if frozen_fit is not None:
+                _write_fit(
+                    replicate_dir,
+                    "native_frozen",
+                    frozen_fit,
+                    design=scenario.design,
+                    dimensions=dataset.dimension_names,
                 )
-                uncertainty.diagnostics.to_csv(
-                    replicate_dir
-                    / "native_frozen_score_uncertainty_diagnostics.csv",
-                    index=False,
+                uncertainty = _native_uncertainty(
+                    scenario,
+                    frozen_fit,
+                    dataset,
                 )
+                uncertainty_available = uncertainty is not None
+                frozen_score_failure_rate = float(
+                    np.mean(
+                        ~np.all(
+                            np.isfinite(
+                                np.asarray(frozen_fit.scores, dtype=float)
+                            ),
+                            axis=1,
+                        )
+                    )
+                )
+                if uncertainty is not None:
+                    _write_covariance_long(
+                        replicate_dir / "native_frozen_score_covariance.csv",
+                        tuple(frozen_fit.curve_ids),
+                        np.asarray(uncertainty.covariance, dtype=float),
+                    )
+                    uncertainty.diagnostics.to_csv(
+                        replicate_dir
+                        / "native_frozen_score_uncertainty_diagnostics.csv",
+                        index=False,
+                    )
 
             selected, selection_summary = _selected_bandwidths(
                 scenario,
@@ -818,25 +883,35 @@ def generate(output_dir: Path, *, replicates: int) -> dict[str, object]:
                     "selected" if selected is not None else "no_eligible_candidate"
                 )
             if selected is not None:
-                selected_fit, selected_elapsed = _fit_native(
-                    scenario,
-                    dataset,
-                    mean_bandwidth=selected["mean_bandwidth"],
-                    covariance_bandwidth=selected["covariance_bandwidth"],
+                selected_fit, selected_elapsed, selected_error = (
+                    _attempt_native_fit(
+                        scenario,
+                        dataset,
+                        mean_bandwidth=selected["mean_bandwidth"],
+                        covariance_bandwidth=selected["covariance_bandwidth"],
+                    )
                 )
-                _write_fit(
+                _write_native_fit_status(
                     replicate_dir,
                     "native_selected",
-                    selected_fit,
-                    design=scenario.design,
-                    dimensions=dataset.dimension_names,
+                    status="ok" if selected_fit is not None else "failed",
+                    elapsed_seconds=selected_elapsed,
+                    error=selected_error,
                 )
-                (
-                    replicate_dir / "native_selected_bandwidths.json"
-                ).write_text(
-                    json.dumps(selected, indent=2, sort_keys=True) + "\n",
-                    encoding="utf-8",
-                )
+                if selected_fit is not None:
+                    _write_fit(
+                        replicate_dir,
+                        "native_selected",
+                        selected_fit,
+                        design=scenario.design,
+                        dimensions=dataset.dimension_names,
+                    )
+                    (
+                        replicate_dir / "native_selected_bandwidths.json"
+                    ).write_text(
+                        json.dumps(selected, indent=2, sort_keys=True) + "\n",
+                        encoding="utf-8",
+                    )
 
             manifest_rows.append(
                 {
@@ -873,17 +948,9 @@ def generate(output_dir: Path, *, replicates: int) -> dict[str, object]:
                         else float(selected_elapsed)
                     ),
                     "native_bandwidth_selection_status": selected_status,
+                    "native_frozen_fit_failed": frozen_fit is None,
                     "native_score_uncertainty_available": uncertainty_available,
-                    "native_score_failure_rate": float(
-                        np.mean(
-                            ~np.all(
-                                np.isfinite(
-                                    np.asarray(frozen_fit.scores, dtype=float)
-                                ),
-                                axis=1,
-                            )
-                        )
-                    ),
+                    "native_score_failure_rate": frozen_score_failure_rate,
                 }
             )
 
