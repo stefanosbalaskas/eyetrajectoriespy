@@ -498,6 +498,13 @@ def evaluate(root: Path) -> dict[str, object]:
         for scenario in rows["scenario"].drop_duplicates().tolist()
     ]
 
+    oracle_path = root / "native-oracle-conditional-uncertainty.json"
+    oracle_reference = None
+    if oracle_path.exists():
+        oracle_reference = json.loads(oracle_path.read_text(encoding="utf-8"))
+        if oracle_reference.get("validation_passed") is not True:
+            raise ValueError("native oracle conditional uncertainty reference failed")
+
     payload = {
         "schema_version": 1,
         "programme": "post-1.1-bayesian-fpca-b2-b3",
@@ -515,9 +522,13 @@ def evaluate(root: Path) -> dict[str, object]:
         "post_hoc_favorable_search_performed": False,
         "native_secondary_tuning": manifest["native_secondary_tuning"],
         "bayesfpca_k_sensitivity": manifest["bayesfpca_k_sensitivity"],
-        "native_oracle_conditional_uncertainty_reference": (
-            "scripts/run_sparse_score_uncertainty_validation.py"
-        ),
+        "native_oracle_conditional_uncertainty_reference": {
+            "source": "scripts/run_sparse_score_uncertainty_validation.py",
+            "retained_evidence": oracle_reference,
+            "estimand": (
+                "conditional PACE score uncertainty with known population objects"
+            ),
+        },
         "native_fitted_uncertainty_interpretation": (
             "conditional score covariance given fitted population objects; "
             "replicated truth inclusion is descriptive and is not full "
