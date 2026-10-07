@@ -7,7 +7,7 @@
 - Keep issue #205 Bayesian sparse FPCA/MFPCA work as an external-comparator/feasibility evidence programme; no native Bayesian estimator/API is approved by opening the 1.2 development line.
 - Preserve the frozen 1.0 package-root compatibility boundary. New workflow APIs, when implemented, begin module-scoped under `eyetrajectoriespy.workflows`.
 
-## 1.1.0 (under exact-version qualification)
+## 1.1.0 — 2026-10-07
 
 - Promote the frozen, production-observed `1.1.0rc1` scientific/API surface to literal final `1.1.0` without changing an estimator, numerical method, scientific default, dependency, threshold, public export, or frozen 1.0 root-API contract.
 - Preserve `v1.1.0rc1`, its production distributions, attestations, installed-artifact observation, and archived RC performance envelope as immutable prerelease evidence.
