@@ -109,7 +109,8 @@
     "Final 1.1.0 is a version-only promotion of the frozen, production-observed 1.1.0rc1 scientific/API surface. No estimator, numerical method, scientific default, dependency, deprecation, removal, threshold, or public API expansion is introduced during final qualification.",
     "The immutable 1.1.0rc1 package-wide performance envelope remains archived under validation/performance/PERFORMANCE_ENVELOPE-1.1.0rc1.json and must not be relabelled as final-version evidence.",
     "Final 1.1.0 qualification requires fresh exact-version package-wide and sparse-MFPCA performance evidence, the complete pull-request matrix, protected-main merge, and the complete exact-main matrix before publication may be armed.",
-    "Publication remains jointly disarmed during final 1.1.0 qualification. Arming GitHub/PyPI publication is reserved for a later governance-only reviewed change after exact-main final-version qualification passes."
+    "Publication remains jointly disarmed during final 1.1.0 qualification. Arming GitHub/PyPI publication is reserved for a later governance-only reviewed change after exact-main final-version qualification passes.",
+    "Fresh final 1.1.0 package-wide performance qualification run 37528714581 passed on exact source commit cb3ecd82112e41ab1ac2b20961eeb79250da96cb. Retained artifact 11443198062 has digest sha256:fb6c12cae67df237b5ad5b8f172787d0e63fe75cca31199b712d6abf96e94647; the canonical final envelope is archived under validation/performance/PERFORMANCE_ENVELOPE-1.1.0.json while the immutable 1.1.0rc1 envelope remains unchanged."
   ],
   "github_release_ready": false
 }
