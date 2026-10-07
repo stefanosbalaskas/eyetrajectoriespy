@@ -1,24 +1,21 @@
 # Capability status and roadmap
 
-## Current stable scientific surface — 1.0.0
+## Current stable scientific surface — 1.1.0
 
-`1.0.0` is the current stable production release and the compatibility baseline for the 1.x line.
+`1.1.0` is the current stable production release. The frozen 1.0 package-root compatibility boundary remains the baseline contract for the 1.x line, while the qualified A1–C1 additions are stable module-scoped 1.1 APIs.
 
-The current development line is **1.1.0**. It is a version-only final-promotion candidate over the frozen, production-observed `1.1.0rc1` scientific/API surface. `1.0.0` remains the stable production release until final publication succeeds.
+Final `1.1.0` publication completed on 7 October 2026 after fresh literal-version qualification, production-installed observation, a separate governance-only arming step, and exact protected-main verification. Post-publication GitHub/PyPI readiness is jointly disarmed.
 
-The frozen 1.0 public boundary contains **455 stable public exports** and three explicitly experimental APIs. No deprecations or removals were authorized by the 1.0 stabilization programme.
+The frozen 1.0 public boundary contains **455 stable public exports** and three explicitly experimental APIs. No deprecations or removals were authorized by the 1.0 stabilization programme, and 1.1 did not mechanically expand that package-root boundary.
 
-The post-1.0 sparse/irregular scientific programme (#158) is **complete**. Its A1–C1 capabilities remain supported **module-scoped 1.1 APIs** rather than being mechanically added to the frozen package-root namespace. The integration/readiness programme (#183) has completed R1–R4; R4 recorded `eligible_for_rc_decision=true`, and R5 has approved the separate version/evidence-only `1.1.0rc1` qualification cycle.
+The post-1.0 sparse/irregular programme (#158) and integration/readiness programme (#183) are complete. Their RC, final-qualification, publication and closeout records remain immutable historical evidence.
 
-The readiness sequence is now:
+Active post-1.1 development is again evidence-driven rather than version-number-driven:
 
-1. **R1 — integrated API/public-surface audit:** complete; module-scoped 1.1 surface documented and machine-checked.
-2. **R2 — documentation/release narrative:** complete.
-3. **R3 — end-to-end product analyses:** complete with zero release-blocking friction.
-4. **R4 — consolidated evidence/performance audit:** complete; `eligible_for_rc_decision=true`.
-5. **R5 — RC/final decision and literal-version qualification:** RC qualification, publication, and production-installed observation are complete; exact-`1.1.0` final qualification is now in progress. Publication remains a separate later governance step.
+1. **Bayesian sparse comparator programme (#205):** B1 external-comparator evidence is complete and merged; B2 replication/tuning sensitivity and B3 uncertainty calibration are in progress. B4 remains undecided, and no native Bayesian public API is authorized.
+2. **Transparent workflow programme (#209):** W1 infrastructure begins the 1.2 product/orchestration line. Workflow APIs must preserve explicit analyst decisions, ordered composition, diagnostics, provenance and underlying primitive results rather than infer a preferred analysis automatically.
 
-Future methodology remains evidence-driven rather than version-number-driven. `eyetrajectoriespy` is intentionally an **eye-tracking functional-analysis layer**, not a reimplementation of every general FDA estimator.
+`eyetrajectoriespy` remains intentionally an **eye-tracking functional-analysis layer**, not a reimplementation of every general FDA estimator or an auto-analysis system.
 
 ## Stable core scientific routes
 
@@ -39,7 +36,7 @@ Future methodology remains evidence-driven rather than version-number-driven. `e
 
 ## Completed 1.1 scientific surface — A1–C1
 
-The completed post-1.0 programme is additive and module-scoped. These APIs were developed and integrated on `1.1.0.dev0` and are now being qualified under literal `1.1.0rc1`; they are **not yet a published 1.1 release**.
+The completed post-1.0 programme is additive and module-scoped. These APIs were developed on `1.1.0.dev0`, qualified and observed through immutable `1.1.0rc1`, freshly requalified under literal final `1.1.0`, and are now part of the published stable 1.1 release.
 
 | Tranche | Scientific capability | Supported module/API | Qualified boundary |
 |---|---|---|---|
@@ -118,7 +115,7 @@ The 0.11 recovery laboratory remains the standing infrastructure for later metho
 
 Final `1.0.0` preserves that frozen scientific/API surface. The RC was observed outside the checkout on Python 3.11–3.13, final `1.0.0` received fresh exact-version performance and complete PR/exact-main qualification, and production workflow #18 published the final version from exact arming commit `d90fbbeea390054019e7689badedf5011ee09c22`. Post-publication readiness is disarmed again.
 
-The R4 `1.1.0.dev0` development-readiness ledger and published `1.1.0rc1` qualification/observation evidence remain immutable historical records. The active final `1.1.0` qualification uses fresh literal-version reference/tolerance/performance evidence; frozen 1.0, R4, and RC records are not relabelled.
+The R4 `1.1.0.dev0` development-readiness ledger, published `1.1.0rc1` qualification/observation evidence, fresh literal-final `1.1.0` qualification, production publication and post-publication closeout remain immutable historical records. Frozen 1.0, R4, RC and final records are not relabelled for later development programmes.
 
 ## Published release sequence
 
@@ -141,6 +138,14 @@ Published 4 October 2026 as the evidence-backed 1.0 API candidate after exact-ve
 ### 1.0.0 — stable compatibility baseline
 
 Published 4 October 2026 after literal final-version qualification and a separate governance-only arming step. The release changed package identity and compatibility status rather than adding scientific functionality. The stable 1.0 boundary is the compatibility contract for the 1.x line.
+
+### 1.1.0rc1 — production-observed 1.1 release candidate
+
+Published 6 October 2026 after exact-version qualification. Production-installed observation exercised the 1.1 sparse/irregular module surface on Python 3.11–3.13 before final promotion.
+
+### 1.1.0 — current stable release
+
+Published 7 October 2026 after fresh literal-final qualification and a separate governance-only publication arming step. The release promotes the qualified A1–C1 module-scoped surface to stable 1.1 status while preserving the frozen 1.0 package-root compatibility boundary. Post-publication readiness is disarmed and the complete closeout matrix is green.
 
 Published tags and release artifacts remain immutable historical records. New documentation or later APIs do not retroactively alter the scientific identity of earlier releases.
 
