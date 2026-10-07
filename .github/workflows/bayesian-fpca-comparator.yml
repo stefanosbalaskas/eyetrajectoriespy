@@ -74,9 +74,11 @@ jobs:
 
       - name: Install exact bayesFPCA comparator
         run: |
-          Rscript -e 'install.packages("remotes", repos="https://cloud.r-project.org")'
-          Rscript -e 'remotes::install_github(paste0("hruffieux/bayesFPCA@", Sys.getenv("BAYESFPCA_COMMIT")), upgrade="never", dependencies=TRUE)'
-          Rscript -e 'd <- utils::packageDescription("bayesFPCA"); stopifnot(as.character(utils::packageVersion("bayesFPCA")) == "0.1.0"); stopifnot(identical(as.character(d$RemoteSha), Sys.getenv("BAYESFPCA_COMMIT")))'
+          git clone https://github.com/hruffieux/bayesFPCA.git external-bayesFPCA
+          git -C external-bayesFPCA checkout "$BAYESFPCA_COMMIT"
+          test "$(git -C external-bayesFPCA rev-parse HEAD)" = "$BAYESFPCA_COMMIT"
+          R CMD INSTALL external-bayesFPCA
+          Rscript -e 'stopifnot(as.character(utils::packageVersion("bayesFPCA")) == "0.1.0")'
 
       - name: Run external bayesFPCA comparator
         run: |
