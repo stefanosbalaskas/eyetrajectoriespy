@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_development_version": "1.1.0",
+  "current_development_version": "1.2.0.dev0",
   "first_public_release_target": "0.9.0",
   "production_release_ready": false,
   "gates": {
@@ -117,7 +117,8 @@
     "Governance-only PR #203 merged as exact signed protected-main final-publication arming commit 66cfb66798a90950e28401e45ee47e98543ff5c6 after its complete 25-workflow pull-request matrix passed. The exact-main arming matrix then finished 24/24 workflow groups successfully with zero failures, including release-readiness, the full cross-platform package matrix, sparse-MFPCA final qualification, and the exact external mGSFPCA comparator.",
     "Final 1.1.0 production release workflow #20 (run 37591747059) completed successfully from exact arming commit 66cfb66798a90950e28401e45ee47e98543ff5c6 on 7 October 2026. It built the wheel and sdist exactly once, passed production governance and unpublished-version preflight, created annotated tag and final GitHub Release v1.1.0 targeting the exact arming commit, published the checksum-verified distributions to production PyPI through OIDC Trusted Publishing with digital attestations, and passed a fresh eyetrajectoriespy==1.1.0 production-PyPI installation smoke test.",
     "Published v1.1.0 GitHub Release assets are eyetrajectoriespy-1.1.0-py3-none-any.whl (sha256:bb869c7a1dd3ecd03135d1615d2977f4d0e07c8cfa4fdef10cddc83f826dbf5b), eyetrajectoriespy-1.1.0.tar.gz (sha256:446a42532f3812b0aae8df24e0a95a40355a0669e822e4b27cd31350f57cf87b), and SHA256SUMS (sha256:ee04bbc6056b379df136480f033f9aaa9093447f3ec4b3c93213aa3b6efa3705). Retained workflow artifact 11469042132 has digest sha256:2397c33271f28ea174805a679badea859bee65385189ab22ba502c4e074cffcf.",
-    "Post-publication GitHub/PyPI readiness is jointly disarmed to prevent accidental republication of immutable 1.1.0. Version 1.1.0 is now the stable/default release; ordinary pushes and merges remain non-publishing, and any future release must begin a new reviewed version/readiness cycle."
+    "Post-publication GitHub/PyPI readiness is jointly disarmed to prevent accidental republication of immutable 1.1.0. Version 1.1.0 is now the stable/default release; ordinary pushes and merges remain non-publishing, and any future release must begin a new reviewed version/readiness cycle.",
+    "1.2.0.dev0 opens a non-publishing post-1.1 development line for the transparent workflow/orchestration programme tracked in issue #211 and continued evidence work such as issue #205. Published 1.1.0 artifacts and exact-version qualification evidence remain immutable and attributed to 1.1.0; the frozen 1.0 package-root compatibility boundary remains unchanged; GitHub/PyPI publication readiness stays jointly disarmed until a future exact-version release cycle."
   ],
   "github_release_ready": false
 }
