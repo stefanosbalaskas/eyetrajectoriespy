@@ -22,7 +22,7 @@ from eyetrajectoriespy import IrregularTrajectorySet, fit_sparse_fpca, fit_spars
 from eyetrajectoriespy.sparse_multivariate_async import fit_sparse_mfpca_async
 
 
-GRID = np.linspace(0.0, 1.0, 41)
+GRID = np.linspace(0.02, 0.98, 41)
 N_COMPONENTS = 2
 NOISE_SD = 0.05
 BAYESFPCA_COMMIT = "f05b0615632cffe5c63838858d9a956af6588a73"
@@ -156,7 +156,10 @@ def _sample_times(
     high: int,
 ) -> np.ndarray:
     count = int(rng.integers(low, high + 1))
-    return np.sort(rng.uniform(0.02, 0.98, size=count))
+    if count < 2:
+        raise ValueError("sample count must be at least two")
+    interior = rng.uniform(0.02, 0.98, size=count - 2)
+    return np.sort(np.concatenate(([0.02], interior, [0.98])))
 
 
 def _make_dataset(scenario: Scenario) -> tuple[IrregularTrajectorySet, dict[str, object]]:
