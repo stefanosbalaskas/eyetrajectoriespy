@@ -168,6 +168,7 @@ def test_async_secondary_native_tuning_is_not_silently_invented():
     assert "return None, None" in runner_source
     assert '"available_for_async_planar": False' in runner_source
 
+
 def test_definitive_fairness_selection_is_predeclared_and_elbo_based():
     runner_source = (
         ROOT / "scripts" / "run_bayesian_fpca_replication.py"
@@ -181,4 +182,30 @@ def test_definitive_fairness_selection_is_predeclared_and_elbo_based():
     assert "scenario.name not in FAIRNESS_SCENARIOS" in runner_source
     assert "K_values <- if (fairness) 5L:9L else 7L" in r_source
     assert 'criterion = "maximum_final_elbo"' in r_source
+
+def test_definitive_harness_retains_fit_failures_instead_of_aborting():
+    runner_source = (
+        ROOT / "scripts" / "run_bayesian_fpca_replication.py"
+    ).read_text(encoding="utf-8")
+    evaluator_source = (
+        ROOT / "scripts" / "evaluate_bayesian_fpca_replication.py"
+    ).read_text(encoding="utf-8")
+    r_source = (
+        ROOT / "validation" / "bayesian_fpca" / "run_bayesfpca_replication.R"
+    ).read_text(encoding="utf-8")
+    workflow = (
+        ROOT / ".github" / "workflows" / "bayesian-fpca-b2-b3.yml"
+    ).read_text(encoding="utf-8")
+
+    assert "_attempt_native_fit" in runner_source
+    assert "native_frozen_fit_status.json" not in runner_source
+    assert 'f"{prefix}_fit_status.json"' in runner_source
+    assert "evidence harness must retain fit failures" in runner_source
+    assert "run_one_safe <- function(" in r_source
+    assert '_fit_status.csv")' in r_source
+    assert '"fit_failure_quantified": True' in evaluator_source
+    assert '"fit_failure_rate"' in evaluator_source
+    assert '"fit_failure_quantified"' in workflow
+    assert '"score_failure_quantified"' in workflow
+    assert '"invalid_or_nonpositive_covariance_failure_quantified"' in workflow
 
