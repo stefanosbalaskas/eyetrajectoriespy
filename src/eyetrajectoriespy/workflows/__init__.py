@@ -17,6 +17,7 @@ from ._core import (
     workflow_decisions_frame,
     workflow_reporting_text,
     workflow_steps_frame,
+    workflow_summary_frame,
 )
 
 __all__ = [
@@ -32,4 +33,5 @@ __all__ = [
     "workflow_decisions_frame",
     "workflow_reporting_text",
     "workflow_steps_frame",
+    "workflow_summary_frame",
 ]
