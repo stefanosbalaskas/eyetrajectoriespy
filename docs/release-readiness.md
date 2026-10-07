@@ -1,90 +1,60 @@
 # Release readiness and publication state
 
-## Current stable release — 1.0.0
+## Current stable release — 1.1.0
 
-`eyetrajectoriespy 1.0.0` is published on GitHub and production PyPI and remains the stable compatibility baseline for the 1.x line.
+`eyetrajectoriespy 1.1.0` is published on GitHub and production PyPI and is now the stable/default release for the 1.x line.
 
-Final publication was completed on **4 October 2026** from exact protected-main arming commit `d90fbbeea390054019e7689badedf5011ee09c22` through production workflow #18 (`37185125898`). The workflow:
-
-- built the wheel and sdist exactly once;
-- passed exact-main production governance and unpublished-version preflight;
-- created annotated tag and GitHub Release `v1.0.0`;
-- verified release checksums;
-- published the exact distributions through PyPI OIDC Trusted Publishing with digital attestations; and
-- passed a fresh `eyetrajectoriespy==1.0.0` production-PyPI installation smoke test.
-
-Post-publication PR #156 recorded the immutable evidence, promoted `1.0.0` as the visible stable release, and jointly disarmed GitHub/PyPI publication readiness again. Ordinary pushes and merges remain non-publishing.
-
-## Published release candidate — 1.1.0rc1
-
-The active source identity is **`1.1.0`**. Exact final-version qualification is complete; this governance-only tranche arms publication authority but does not itself publish the package. `1.1.0rc1` remains the published prerelease and **`1.0.0` remains the stable/default release** until final publication succeeds.
-
-The sparse/irregular scientific programme (#158) completed A1–C1. The integration/readiness programme (#183) then completed R1–R5:
-
-1. R1 — integrated API/public-surface audit;
-2. R2 — documentation/release narrative reconciliation;
-3. R3 — canonical end-to-end product analyses;
-4. R4 — consolidated exact-main evidence/performance audit; and
-5. R5 — literal `1.1.0rc1` qualification and exact-main closure.
-
-R4 recorded `eligible_for_rc_decision=true`. R5 qualification PR #197 passed its complete **26-workflow pull-request matrix**, merged through protected `main`, and produced exact qualified commit `909f7cd493fc21f643e1f923ed503e6128dc750c`. The post-merge exact-main push matrix finished **25/25 workflow groups successfully with zero failures**.
-
-Governance-only PR #198 then armed publication. Its exact protected-main arming commit `f4405897e2a7a2392c03523cc7fa18e43df00e5e` passed the complete **24/24 exact-main arming matrix** with zero failures, including the exact external `mGSFPCA` comparator.
-
-Production workflow #19 (`37511987332`) completed successfully on **6 October 2026** from that exact arming commit. It:
+Final publication completed on **7 October 2026** from exact signed protected-main arming commit `66cfb66798a90950e28401e45ee47e98543ff5c6` through production workflow #20 (`37591747059`). The workflow:
 
 - built the wheel and sdist exactly once;
 - passed exact-main production governance and unpublished-version preflight;
-- created annotated tag and GitHub prerelease `v1.1.0rc1` targeting exact commit `f4405897e2a7a2392c03523cc7fa18e43df00e5e`;
-- checksum-verified the release distributions before publication;
-- published both distributions to production PyPI through OIDC Trusted Publishing with digital attestations; and
-- installed `eyetrajectoriespy==1.1.0rc1` from production PyPI successfully on the **first visibility attempt**, followed by a passing release smoke test.
+- created annotated tag and final GitHub Release `v1.1.0` targeting the exact arming commit;
+- generated and verified release checksums;
+- published the exact distributions to production PyPI through OIDC Trusted Publishing with digital attestations; and
+- passed a fresh `eyetrajectoriespy==1.1.0` production-PyPI installation smoke test.
 
-Published release assets:
+Published final assets:
 
-- `eyetrajectoriespy-1.1.0rc1-py3-none-any.whl` — `sha256:875242e0c7cd1fae0fdb9e472a33ecf687e99e886e3f36302748563dddede151`;
-- `eyetrajectoriespy-1.1.0rc1.tar.gz` — `sha256:f67cf81f93aef8e47d47d918f0945bdaaa437d542381f60316ff0996e2370846`;
-- `SHA256SUMS` — `sha256:d849ef5b21eea95dd81626e2f071723a28110556b27911a57d69bc59ab5b8bc4`; and
-- retained workflow artifact `11435448783` — `sha256:3572f75c8339f73a2a77845cc01072097309a3b32f5207e0dcffcdf777c99e83`.
+- `eyetrajectoriespy-1.1.0-py3-none-any.whl` — `sha256:bb869c7a1dd3ecd03135d1615d2977f4d0e07c8cfa4fdef10cddc83f826dbf5b`;
+- `eyetrajectoriespy-1.1.0.tar.gz` — `sha256:446a42532f3812b0aae8df24e0a95a40355a0669e822e4b27cd31350f57cf87b`;
+- `SHA256SUMS` — `sha256:ee04bbc6056b379df136480f033f9aaa9093447f3ec4b3c93213aa3b6efa3705`; and
+- retained workflow artifact `11469042132` — `sha256:2397c33271f28ea174805a679badea859bee65385189ab22ba502c4e074cffcf`.
 
-Fresh literal-RC evidence remains separate from the immutable R4 `1.1.0.dev0` development-readiness ledger and frozen 1.0 qualification evidence. No estimator, scientific default, dependency, supported module-scoped API, or frozen 1.0 root compatibility boundary changed during RC qualification or publication.
+The annotated tag object is `9a59ba37537559b9263d908bcdc9fa1dc129c6f5` and resolves exactly to arming commit `66cfb66798a90950e28401e45ee47e98543ff5c6`.
+
+## 1.1 qualification and publication basis
+
+The 1.1 sparse/irregular programme (#158) and integration/readiness programme (#183) progressed through the following audited gates:
+
+- `1.1.0rc1` exact qualification and production publication;
+- production-installed RC observation on Python 3.11–3.13;
+- fresh literal-final `1.1.0` qualification rather than relabelling RC evidence;
+- PR #201 final qualification: **26/26** pull-request workflow groups successful;
+- exact final-qualified main `7eaf842214dc26c8cd1cef9eaaa72a55916974de`: **25/25** post-merge workflow groups successful;
+- PR #203 governance-only arming: **25/25** pull-request workflow groups successful;
+- exact signed arming main `66cfb66798a90950e28401e45ee47e98543ff5c6`: **24/24** workflow groups successful, including release-readiness, cross-platform package tests, sparse-MFPCA final qualification, and the exact external `mGSFPCA` comparator; and
+- production workflow #20: successful final GitHub/PyPI publication and fresh exact-version install smoke.
+
+No estimator, numerical method, scientific default, dependency, threshold, comparator method, performance methodology, public export, or frozen 1.0 root-API contract changed during final qualification, arming, or publication.
 
 ## Current publication interlock
 
 The machine-readable authority is `RELEASE_READINESS.json`.
 
-Current arming-branch state:
+Current post-publication state:
 
-- stable published version = `1.0.0`;
-- published prerelease = `1.1.0rc1`;
-- active source identity = `1.1.0` (exact-version qualified; not yet published);
-- `production_release_ready = true`;
-- `github_release_ready = true`;
-- exact qualified RC main = `909f7cd493fc21f643e1f923ed503e6128dc750c`;
-- exact RC qualification matrix = 25/25 successful post-merge workflow groups;
-- exact publication-arming main = `f4405897e2a7a2392c03523cc7fa18e43df00e5e`;
-- exact publication-arming matrix = 24/24 successful workflow groups;
-- production release workflow = #19 (`37511987332`), successful;
+- stable/default published version = `1.1.0`;
+- immutable published prerelease = `1.1.0rc1`;
+- active source identity = `1.1.0`;
+- `production_release_ready = false`;
+- `github_release_ready = false`;
 - exact final-qualified main = `7eaf842214dc26c8cd1cef9eaaa72a55916974de`;
-- exact final qualification matrix = 25/25 successful post-merge workflow groups;
-- final package-wide performance run = `37562352624`, successful;
-- final sparse-MFPCA qualification run = `37562352616`, successful;
-- final comparator-sensitivity run = `37562352573`, successful;
-- stable 1.0 API boundary remains frozen and machine-checked;
-- A1–C1 1.1 APIs remain module-scoped and additive;
-- historical 1.0 qualification evidence remains attributed to `1.0.0`;
-- the R4 development-readiness ledger remains attributed to `1.1.0.dev0` and is not relabelled as RC evidence; and
-- active reference/tolerance evidence is aligned to literal `1.1.0`; fresh package-wide final performance evidence comes from run `37528714581`, while archived `1.1.0rc1` evidence remains immutable.
+- exact final-publication arming main = `66cfb66798a90950e28401e45ee47e98543ff5c6`;
+- final production release workflow = #20 (`37591747059`), successful;
+- stable 1.0 root API boundary remains frozen and machine-checked; and
+- the qualified 1.1 additions are stable module-scoped APIs.
 
-Both publication-readiness flags are now **true** on this governance-only arming branch. These flags are publication authority, not publication itself. Ordinary pushes and merges remain non-publishing. After this arming change merges, the resulting exact protected-main commit must pass the required governance checks before any explicit manual `release.yml` dispatch with `target=production`.
-
-## Current decision gate — final 1.1.0 publication arming
-
-Final `1.1.0` exact-version qualification is complete. Qualification PR #201 passed **26/26 pull-request workflow groups**, merged as exact protected-main commit `7eaf842214dc26c8cd1cef9eaaa72a55916974de`, and the complete post-merge exact-main matrix passed **25/25 workflow groups with zero failures**.
-
-On that exact final-qualified commit, package-wide performance run `37562352624`, sparse-MFPCA final-qualification run `37562352616`, and comparator-sensitivity run `37562352573` all completed successfully. The comparator lane passed both the native two-stage job and the exact external `mGSFPCA` job.
-
-This tranche is governance-only: it jointly arms GitHub and production-PyPI publication readiness and changes no estimator, numerical method, scientific default, dependency, threshold, comparator method, performance methodology, or public API. After merge, the resulting exact arming-main commit must pass its own required exact-main governance matrix before any manual production dispatch.
+Both publication-readiness flags are now **false**. This prevents accidental republication of immutable `1.1.0`. Ordinary pushes and merges remain non-publishing; any future release must begin a new reviewed version/readiness cycle.
 
 ## Final 1.0 qualification
 
@@ -113,7 +83,7 @@ Canonical exact-main installed-RC workflow run `37160170148` retained 42/42 decl
 
 No result-changing or frozen-public-API defect was identified that required another 1.0 release candidate.
 
-## 1.1.0rc1 publication path — completed
+## 1.1.0 promotion path — completed
 
 ```text
 R1 integrated API audit                         complete
@@ -123,29 +93,11 @@ R2 documentation/release narrative              complete
 R3 end-to-end product analyses                  complete
         |
 R4 exact-main evidence/performance audit         complete
-        |                                        eligible_for_rc_decision=true
+        |
 R5 literal 1.1.0rc1 qualification               complete
         |
         v
-exact qualified main 909f7cd493fc...            25/25 successful
-        |
-        v
-separate governance-only publication arming     PR #198
-        |
-        v
-exact arming main f4405897e2a7...                24/24 successful
-        |
-        v
-manual release.yml target=production             run 37511987332
-        |
-        v
-GitHub prerelease + PyPI + attestations          complete
-        |
-        v
-fresh production-PyPI install smoke test         pass, attempt 1
-        |
-        v
-post-publication readiness disarm                current tranche
+1.1.0rc1 publication                            complete
         |
         v
 production-installed RC observation              complete
@@ -154,7 +106,25 @@ production-installed RC observation              complete
 literal final 1.1.0 qualification                complete
         |
         v
-final 1.1.0 publication arming                   current
+exact final-qualified main 7eaf842214dc...       25/25 successful
+        |
+        v
+governance-only final publication arming         PR #203
+        |
+        v
+exact arming main 66cfb66798a9...                24/24 successful
+        |
+        v
+manual release.yml target=production             run 37591747059
+        |
+        v
+GitHub Release + PyPI + attestations             complete
+        |
+        v
+fresh production-PyPI install smoke              pass
+        |
+        v
+post-publication readiness disarm                current closeout
 ```
 
 ## Post-1.0 compatibility policy

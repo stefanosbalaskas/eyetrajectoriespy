@@ -17,14 +17,12 @@ y_i(t)
 \end{bmatrix}.
 $$
 
-**Stable:** `1.0.0` · **Published 1.1 release candidate:** `1.1.0rc1` · **Python:** 3.11–3.13
+**Stable:** `1.1.0` · **Python:** 3.11–3.13
 
 ```bash
 pip install eyetrajectoriespy
 # exact reproducible stable release
-pip install eyetrajectoriespy==1.0.0
-# exact published 1.1 prerelease
-pip install eyetrajectoriespy==1.1.0rc1
+pip install eyetrajectoriespy==1.1.0
 ```
 
 [Documentation](https://stefanosbalaskas.github.io/eyetrajectoriespy/) ·
@@ -34,11 +32,8 @@ pip install eyetrajectoriespy==1.1.0rc1
 [Visual gallery](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/visual-gallery/) ·
 [Validation](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/)
 
-> **Current stable release: `1.0.0`**  
-> `1.0.0` freezes the evidence-backed 1.0 compatibility boundary over the production-observed `1.0.0rc1` scientific/API surface without adding a new estimator or changing scientific behavior. Release qualification, immutable hashes, OIDC/attestation evidence, and publication chronology are retained in the [1.0.0 release notes](https://stefanosbalaskas.github.io/eyetrajectoriespy/releases/1.0.0/) and validation records rather than repeated on this landing page.
->
-> **Published 1.1 release candidate: `1.1.0rc1`**  
-> The post-1.0 sparse/irregular scientific programme (#158) and integration/readiness programme (#183) are complete through R5. `1.1.0rc1` is published on GitHub and production PyPI from exact protected-main commit `f4405897e2a7a2392c03523cc7fa18e43df00e5e`; the frozen `1.0.0` root compatibility boundary remains unchanged, and the 1.1 additions remain supported module-scoped APIs. `1.0.0` remains the stable/default release while the RC undergoes production-installed observation before any final `1.1.0` promotion decision.
+> **Current stable release: `1.1.0`**  
+> `1.1.0` is the exact-version-qualified final promotion of the production-observed `1.1.0rc1` surface. It preserves the frozen 1.0 root compatibility boundary while making the qualified 1.1 sparse/irregular additions stable module-scoped APIs. Final publication completed from exact protected-main arming commit `66cfb66798a90950e28401e45ee47e98543ff5c6`; immutable qualification, checksums, attestations, and publication provenance are retained in the [1.1.0 release notes](https://stefanosbalaskas.github.io/eyetrajectoriespy/releases/1.1.0/) and validation records.
 
 ![Sparse planar covariance structure estimated by eyetrajectoriespy](docs/assets/gallery/sparse-mfpca-covariance-blocks.svg)
 
@@ -50,14 +45,14 @@ pip install eyetrajectoriespy==1.1.0rc1
 | Sparse/irregular single-coordinate gaze | `fit_sparse_fpca()` + PACE | stable 1.0 |
 | Sparse/irregular paired planar x/y gaze | `fit_sparse_mfpca()` + joint PACE | stable 1.0 |
 | Repeated participant/trial functions | functional mixed effects / multilevel FPCA | stable 1.0 |
-| Conditional uncertainty for sparse PACE and joint PACE scores | `sparse_score_uncertainty` / `sparse_multivariate_score_uncertainty` | supported 1.1 RC module API |
+| Conditional uncertainty for sparse PACE and joint PACE scores | `sparse_score_uncertainty` / `sparse_multivariate_score_uncertainty` | stable 1.1 module API |
 | Audited sparse smoothing-bandwidth selection | `sparse_bandwidth_selection` / `sparse_multivariate_bandwidth_selection` | supported 1.1 RC module API |
 | Candidate-sample observation-process diagnostics | `observation_process` | supported 1.1 RC module API |
 | Sparse participant/trial hierarchical decomposition | `sparse_multilevel` | supported 1.1 RC module API |
 | Coordinate-specific asynchronous sparse planar gaze | `sparse_multivariate_async` | supported 1.1 RC module API |
 | Future/partially observed sparse trajectory prediction and participant-aware conformal bands | `sparse_partial_prediction` / `sparse_partial_conformal` | supported 1.1 RC module API |
 
-The post-1.0 module-scoped APIs are documented in the [1.1 module API](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-module-api/) and [integration audit](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-integration-audit/). They are intentionally not root re-exports and should not be interpreted as stable `1.1.0` functionality until final promotion is separately qualified.
+The post-1.0 module-scoped APIs are documented in the [1.1 module API](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-module-api/) and [integration audit](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-integration-audit/). They remain intentionally module-scoped rather than root re-exports and are stable `1.1.0` functionality under the published final release.
 
 ## Which workflow do I need?
 
@@ -130,7 +125,7 @@ The README is intentionally a compact entry point rather than the exhaustive fun
 
 ## Release lineage and reproducibility
 
-The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native sparse univariate FPCA/PACE line, the immutable `0.11.0rc1` prerelease preceded final 0.11 known-truth recovery infrastructure, and `0.12.0` added the native sparse planar MFPCA/joint-PACE line. `1.0.0` closes that stabilization programme as the frozen stable compatibility baseline. Published tags and distributions remain immutable historical records. The completed A1–C1 and R1–R5 1.1 work is published as immutable prerelease `1.1.0rc1`; production-installed observation now precedes any separately qualified final `1.1.0` promotion.
+The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native sparse univariate FPCA/PACE line, the immutable `0.11.0rc1` prerelease preceded final 0.11 known-truth recovery infrastructure, and `0.12.0` added the native sparse planar MFPCA/joint-PACE line. `1.0.0` froze the stable 1.x compatibility baseline. Published tags and distributions remain immutable historical records. The completed A1–C1 and R1–R5 programme progressed through immutable prerelease `1.1.0rc1`, production-installed observation, fresh final-version qualification, governance-only arming, and final `1.1.0` production publication.
 
 - [Portable scientific results](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/portable-results/)
 - [Reproducibility bundle checklist](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/checklist/)
@@ -144,8 +139,9 @@ The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native spa
 - [Mathematical contracts](MATHEMATICAL_CONTRACTS.md)
 - [Workflow atlas](WORKFLOW_ATLAS.md)
 - [Current validation ledger](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/)
-- [1.0.0 release notes](docs/releases/1.0.0.md)
+- [1.1.0 release notes](docs/releases/1.1.0.md)
 - [1.1.0rc1 release notes](docs/releases/1.1.0rc1.md)
+- [1.0.0 release notes](docs/releases/1.0.0.md)
 
 Development checks:
 
