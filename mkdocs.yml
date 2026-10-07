@@ -197,10 +197,12 @@ nav:
           - Native sparse multivariate FPCA (0.12): development/sparse-multivariate-fpca.md
       - Reproducibility & release:
           - Portable scientific results: reproducibility/portable-results.md
+          - Workflow reproducibility bundles: reproducibility/workflow-bundles.md
           - Reproducibility bundle checklist: reproducibility/checklist.md
           - Release process: release-process.md
   - API:
       - API stability & hierarchy: reference/api-stability.md
+      - Workflow infrastructure: reference/workflows-api.md
       - Post-0.12 consistency audit: reference/api-consistency-audit.md
       - Capability inventory: reference/capability-inventory.md
       - Public API: reference/api.md
