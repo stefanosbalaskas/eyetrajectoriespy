@@ -1,0 +1,305 @@
+name: bayesian-fpca-b2-b3
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/bayesian-fpca-b2-b3.yml"
+      - "scripts/run_bayesian_fpca_replication.py"
+      - "scripts/evaluate_bayesian_fpca_replication.py"
+      - "scripts/run_sparse_score_uncertainty_validation.py"
+      - "validation/bayesian_fpca/**"
+      - "tests/test_bayesian_fpca_b2_b3.py"
+      - "src/eyetrajectoriespy/sparse_native.py"
+      - "src/eyetrajectoriespy/sparse_multivariate.py"
+      - "src/eyetrajectoriespy/sparse_multivariate_async.py"
+      - "src/eyetrajectoriespy/sparse_bandwidth_selection.py"
+      - "src/eyetrajectoriespy/sparse_multivariate_bandwidth_selection.py"
+      - "src/eyetrajectoriespy/sparse_score_uncertainty.py"
+      - "src/eyetrajectoriespy/sparse_multivariate_score_uncertainty.py"
+      - "pyproject.toml"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/bayesian-fpca-b2-b3.yml"
+      - "scripts/run_bayesian_fpca_replication.py"
+      - "scripts/evaluate_bayesian_fpca_replication.py"
+      - "scripts/run_sparse_score_uncertainty_validation.py"
+      - "validation/bayesian_fpca/**"
+      - "tests/test_bayesian_fpca_b2_b3.py"
+      - "src/eyetrajectoriespy/sparse_native.py"
+      - "src/eyetrajectoriespy/sparse_multivariate.py"
+      - "src/eyetrajectoriespy/sparse_multivariate_async.py"
+      - "src/eyetrajectoriespy/sparse_bandwidth_selection.py"
+      - "src/eyetrajectoriespy/sparse_multivariate_bandwidth_selection.py"
+      - "src/eyetrajectoriespy/sparse_score_uncertainty.py"
+      - "src/eyetrajectoriespy/sparse_multivariate_score_uncertainty.py"
+      - "pyproject.toml"
+  workflow_dispatch:
+
+concurrency:
+  group: \${{ github.workflow }}-\${{ github.event.pull_request.number || github.ref }}-\${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  replicated-bayesian-sensitivity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      BAYESFPCA_COMMIT: "f05b0615632cffe5c63838858d9a956af6588a73"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install eyetrajectoriespy
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+
+      - name: Run B2/B3 contract tests
+        run: |
+          python -m pytest -q tests/test_bayesian_fpca_b2_b3.py
+
+      - name: Generate replicated known-truth fixtures
+        run: |
+          python scripts/run_bayesian_fpca_replication.py \
+            --output-dir bayesian-fpca-b2-b3 \
+            --replicates 16
+
+      - name: Retain native oracle conditional uncertainty calibration
+        run: |
+          python scripts/run_sparse_score_uncertainty_validation.py \
+            --n-curves 500 \
+            --output bayesian-fpca-b2-b3/native-oracle-conditional-uncertainty.json
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "4.6.1"
+
+      - name: Install locked R comparator environment
+        run: |
+          Rscript validation/bayesian_fpca/install_locked_r_environment.R
+          git clone https://github.com/hruffieux/bayesFPCA.git external-bayesFPCA
+          git -C external-bayesFPCA checkout "$BAYESFPCA_COMMIT"
+          test "$(git -C external-bayesFPCA rev-parse HEAD)" = "$BAYESFPCA_COMMIT"
+          R CMD INSTALL external-bayesFPCA
+          Rscript -e 'stopifnot(as.character(utils::packageVersion("bayesFPCA")) == "0.1.0")'
+
+      - name: Capture exact R comparator environment
+        run: |
+          printf '%s\n' "$BAYESFPCA_COMMIT" > bayesian-fpca-b2-b3/bayesfpca-git-commit.txt
+          git -C external-bayesFPCA rev-parse HEAD > bayesian-fpca-b2-b3/bayesfpca-checkout-head.txt
+          Rscript - <<'RS'
+          root <- "bayesian-fpca-b2-b3"
+          packages <- c(
+            "bayesFPCA", "abind", "ellipse", "magic", "matrixcalc", "pracma",
+            "MASS", "lattice"
+          )
+          versions <- vapply(
+            packages,
+            function(pkg) as.character(utils::packageVersion(pkg)),
+            character(1)
+          )
+          utils::write.csv(
+            data.frame(package = packages, version = versions),
+            file.path(root, "r-package-versions.csv"),
+            row.names = FALSE
+          )
+          capture.output(
+            sessionInfo(),
+            file = file.path(root, "r-session-info.txt")
+          )
+          capture.output(
+            list(
+              R_version_string = R.version.string,
+              R_platform = R.version$platform,
+              R_arch = R.version$arch,
+              R_os = R.version$os,
+              sys_info = Sys.info(),
+              ext_soft_version = extSoftVersion()
+            ),
+            file = file.path(root, "r-runtime-details.txt")
+          )
+          RS
+
+      - name: Run replicated external bayesFPCA comparator
+        run: |
+          Rscript validation/bayesian_fpca/run_bayesfpca_replication.R \
+            bayesian-fpca-b2-b3
+
+      - name: Evaluate B2 recovery and B3 uncertainty evidence
+        run: |
+          python scripts/evaluate_bayesian_fpca_replication.py \
+            bayesian-fpca-b2-b3
+
+      - name: Verify B2/B3 evidence contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("bayesian-fpca-b2-b3")
+          payload = json.loads((root / "b2_b3_summary.json").read_text())
+          if payload.get("replicates_per_scenario") != 16:
+              raise SystemExit("unexpected replication count")
+          if payload.get("b1_evidence_immutable") is not True:
+              raise SystemExit("B1 evidence was not preserved as immutable")
+          if payload.get("b4_decision_recorded") is not False:
+              raise SystemExit("B4 must remain deferred")
+          if payload.get("architecture_winner_selected") is not False:
+              raise SystemExit("B2/B3 must not select an architecture winner")
+          if payload.get("automatic_promotion_decision") is not False:
+              raise SystemExit("B2/B3 must not auto-promote a Bayesian API")
+          if payload.get("truth_tuning_performed") is not False:
+              raise SystemExit("truth tuning is forbidden")
+          if payload.get("post_hoc_favorable_search_performed") is not False:
+              raise SystemExit("post-hoc favorable search is forbidden")
+          if payload.get("direct_covariance_magnitude_comparison_performed") is not False:
+              raise SystemExit("covariance magnitudes must not be compared directly")
+          if payload.get("bayesfpca_k_sensitivity") != [5, 6, 7, 8, 9]:
+              raise SystemExit("unexpected bayesFPCA K sensitivity")
+          tuning = payload.get("native_secondary_tuning", {})
+          if tuning.get("mean_bandwidth_multipliers") != [0.75, 1.0, 1.25]:
+              raise SystemExit("unexpected mean-bandwidth sensitivity")
+          if tuning.get("covariance_bandwidth_multipliers") != [0.75, 1.0, 1.25]:
+              raise SystemExit("unexpected covariance-bandwidth sensitivity")
+          if tuning.get("fairness_replicates") != 4:
+              raise SystemExit("unexpected fairness replicate count")
+          expected_fairness = {
+              "univariate_extreme_sparse",
+              "univariate_low_n",
+              "univariate_near_tied",
+              "univariate_localized",
+              "planar_paired",
+          }
+          if set(tuning.get("fairness_scenarios", [])) != expected_fairness:
+              raise SystemExit("unexpected fairness scenario set")
+          calibration = payload.get("population_estimation_calibration_scope", {})
+          for key in (
+              "population_objects_reestimated_per_replicate",
+              "empirical_truth_coverage_quantified",
+              "standardized_error_behavior_quantified",
+              "fit_failure_quantified",
+              "score_failure_quantified",
+              "invalid_or_nonpositive_covariance_failure_quantified",
+          ):
+              if calibration.get(key) is not True:
+                  raise SystemExit(f"missing B3 calibration contract: {key}")
+          if calibration.get(
+              "fitted_covariance_includes_population_estimation_uncertainty"
+          ) is not False:
+              raise SystemExit("fitted covariance scope was overstated")
+          names = {
+              row["scenario"] for row in payload.get("scenario_aggregates", [])
+          }
+          required = {
+              "univariate_moderate",
+              "univariate_extreme_sparse",
+              "univariate_low_n",
+              "univariate_near_tied",
+              "univariate_localized",
+              "univariate_informative_time",
+              "planar_paired",
+              "planar_async",
+          }
+          if names != required:
+              raise SystemExit(f"unexpected B2 scenario set: {sorted(names)}")
+          oracle = payload.get(
+              "native_oracle_conditional_uncertainty_reference", {}
+          ).get("retained_evidence")
+          if not oracle or oracle.get("validation_passed") is not True:
+              raise SystemExit("native oracle conditional uncertainty did not pass")
+          informative = next(
+              row for row in payload["scenario_aggregates"]
+              if row["scenario"] == "univariate_informative_time"
+          )
+          if informative.get("informative_observation_is_sensitivity_only") is not True:
+              raise SystemExit("informative observation scope was broadened")
+          async_row = next(
+              row for row in payload["scenario_aggregates"]
+              if row["scenario"] == "planar_async"
+          )
+          if "native_selected" in async_row["methods"]:
+              raise SystemExit("async native tuning must remain unsupported")
+          for row in payload["scenario_aggregates"]:
+              if row["replicate_count"] != 16:
+                  raise SystemExit(
+                      f"{row['scenario']} has unexpected replicate count"
+                  )
+              for method in ("native_frozen", "bayesfpca_k7"):
+                  if method not in row["methods"]:
+                      raise SystemExit(
+                          f"{row['scenario']} missing primary method {method}"
+                      )
+                  method_payload = row["methods"][method]
+                  if method_payload.get("fit_attempt_count") != 16:
+                      raise SystemExit(
+                          f"{row['scenario']} {method} fit attempts != 16"
+                      )
+                  if "fit_failure_rate" not in method_payload:
+                      raise SystemExit(
+                          f"{row['scenario']} {method} missing fit failure rate"
+                      )
+              for method_payload in row["methods"].values():
+                  uncertainty = method_payload.get("score_uncertainty")
+                  if not uncertainty:
+                      continue
+                  if "pooled_ellipsoid_95_truth_inclusion" not in uncertainty:
+                      raise SystemExit("missing pooled ellipsoid calibration")
+                  if not uncertainty.get("components"):
+                      raise SystemExit("missing component calibration")
+                  for component in uncertainty["components"]:
+                      if "pooled_standardized_error_sd" not in component:
+                          raise SystemExit(
+                              "missing pooled standardized-error calibration"
+                          )
+          fairness_rows = [
+              row for row in payload["scenario_aggregates"]
+              if row["scenario"] in expected_fairness
+          ]
+          for row in fairness_rows:
+              if "native_selected" not in row["methods"]:
+                  raise SystemExit(
+                      f"{row['scenario']} missing selected native sensitivity"
+                  )
+              if "bayesfpca_selected" not in row["methods"]:
+                  raise SystemExit(
+                      f"{row['scenario']} missing selected Bayesian sensitivity"
+                  )
+              if sum(row["bayesfpca_selected_k_counts"].values()) != 4:
+                  raise SystemExit(
+                      f"{row['scenario']} has unexpected Bayesian selection count"
+                  )
+          PY
+
+      - name: Capture evidence checksums
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          from pathlib import Path
+
+          root = Path("bayesian-fpca-b2-b3")
+          lines = []
+          for path in sorted(p for p in root.rglob("*") if p.is_file()):
+              if path.name == "SHA256SUMS":
+                  continue
+              digest = sha256(path.read_bytes()).hexdigest()
+              lines.append(f"{digest}  {path.relative_to(root).as_posix()}")
+          (root / "SHA256SUMS").write_text("\n".join(lines) + "\n")
+          PY
+
+      - name: Upload B2/B3 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: bayesian-fpca-b2-b3-evidence
+          path: bayesian-fpca-b2-b3
+          if-no-files-found: error
+          retention-days: 90
