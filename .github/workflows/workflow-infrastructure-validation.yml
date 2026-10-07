@@ -60,6 +60,7 @@ jobs:
               "workflow_steps_frame",
               "workflow_decisions_frame",
               "workflow_reporting_text",
+              "workflow_summary_frame",
               "export_workflow_bundle",
           }
           missing = sorted(name for name in required if not hasattr(workflows, name))
