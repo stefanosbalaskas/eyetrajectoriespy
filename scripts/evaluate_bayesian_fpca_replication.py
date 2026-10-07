@@ -654,7 +654,9 @@ def evaluate(root: Path) -> dict[str, object]:
             "population_objects_reestimated_per_replicate": True,
             "empirical_truth_coverage_quantified": True,
             "standardized_error_behavior_quantified": True,
-            "fit_score_and_covariance_failure_quantified": True,
+            "fit_failure_quantified": False,
+            "score_failure_quantified": True,
+            "invalid_or_nonpositive_covariance_failure_quantified": True,
             "fitted_covariance_includes_population_estimation_uncertainty": False,
         },
         "native_fitted_uncertainty_interpretation": (
