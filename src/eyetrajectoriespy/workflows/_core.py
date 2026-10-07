@@ -237,6 +237,38 @@ def workflow_decisions_frame(
     )
 
 
+def workflow_summary_frame(result: Any) -> pd.DataFrame:
+    """Return a one-row generic workflow orchestration summary."""
+
+    _validate_workflow_result(result)
+    statuses = [step.status for step in result.steps]
+    sources = [record.source for record in result.decisions.values()]
+    return pd.DataFrame(
+        [
+            {
+                "workflow_schema_version": int(result.workflow_schema_version),
+                "workflow_contract": str(result.workflow_contract),
+                "step_count": len(result.steps),
+                "completed_steps": statuses.count("completed"),
+                "failed_steps": statuses.count("failed"),
+                "skipped_steps": statuses.count("skipped"),
+                "warning_count": int(
+                    sum(len(step.warnings) for step in result.steps)
+                ),
+                "decision_count": len(result.decisions),
+                "analyst_decisions": sources.count("analyst"),
+                "audited_selector_decisions": sources.count(
+                    "audited_selector"
+                ),
+                "workflow_contract_decisions": sources.count(
+                    "workflow_contract"
+                ),
+                "derived_decisions": sources.count("derived"),
+            }
+        ]
+    )
+
+
 def workflow_reporting_text(result: Any) -> str:
     """Return a compact generic audit description for a workflow result."""
 
