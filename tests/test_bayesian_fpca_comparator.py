@@ -57,6 +57,26 @@ def test_b1_scenario_matrix_and_external_only_contract():
     assert '"architecture_winner_selected": False' in source
 
 
+
+def test_workflow_retains_exact_r_environment_provenance():
+    workflow = (
+        ROOT / ".github" / "workflows" / "bayesian-fpca-comparator.yml"
+    ).read_text(encoding="utf-8")
+
+    for token in (
+        "bayesfpca-git-commit.txt",
+        "bayesfpca-checkout-head.txt",
+        "r-package-versions.csv",
+        "r-session-info.txt",
+        "r-runtime-details.txt",
+        "sessionInfo()",
+        "extSoftVersion()",
+        "R.version.string",
+    ):
+        assert token in workflow
+    assert 'git -C external-bayesFPCA rev-parse HEAD' in workflow
+    assert 'test "$(git -C external-bayesFPCA rev-parse HEAD)" = "$BAYESFPCA_COMMIT"' in workflow
+
 def _write_method(
     root: Path,
     prefix: str,
