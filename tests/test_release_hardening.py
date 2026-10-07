@@ -7,7 +7,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 CURRENT_DEVELOPMENT_VERSION = "1.1.0"
-LATEST_QUALIFIED_EVIDENCE_VERSION = "1.1.0rc1"
+LATEST_QUALIFIED_EVIDENCE_VERSION = "1.1.0"
 
 
 def _load_script(name):
