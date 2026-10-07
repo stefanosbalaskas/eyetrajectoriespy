@@ -173,6 +173,28 @@ jobs:
               raise SystemExit("unexpected covariance-bandwidth sensitivity")
           if tuning.get("fairness_replicates") != 4:
               raise SystemExit("unexpected fairness replicate count")
+          expected_fairness = {
+              "univariate_extreme_sparse",
+              "univariate_low_n",
+              "univariate_near_tied",
+              "univariate_localized",
+              "planar_paired",
+          }
+          if set(tuning.get("fairness_scenarios", [])) != expected_fairness:
+              raise SystemExit("unexpected fairness scenario set")
+          calibration = payload.get("population_estimation_calibration_scope", {})
+          for key in (
+              "population_objects_reestimated_per_replicate",
+              "empirical_truth_coverage_quantified",
+              "standardized_error_behavior_quantified",
+              "fit_score_and_covariance_failure_quantified",
+          ):
+              if calibration.get(key) is not True:
+                  raise SystemExit(f"missing B3 calibration contract: {key}")
+          if calibration.get(
+              "fitted_covariance_includes_population_estimation_uncertainty"
+          ) is not False:
+              raise SystemExit("fitted covariance scope was overstated")
           names = {
               row["scenario"] for row in payload.get("scenario_aggregates", [])
           }
@@ -205,6 +227,46 @@ jobs:
           )
           if "native_selected" in async_row["methods"]:
               raise SystemExit("async native tuning must remain unsupported")
+          for row in payload["scenario_aggregates"]:
+              if row["replicate_count"] != 16:
+                  raise SystemExit(
+                      f"{row['scenario']} has unexpected replicate count"
+                  )
+              for method in ("native_frozen", "bayesfpca_k7"):
+                  if method not in row["methods"]:
+                      raise SystemExit(
+                          f"{row['scenario']} missing primary method {method}"
+                      )
+              for method_payload in row["methods"].values():
+                  uncertainty = method_payload.get("score_uncertainty")
+                  if not uncertainty:
+                      continue
+                  if "pooled_ellipsoid_95_truth_inclusion" not in uncertainty:
+                      raise SystemExit("missing pooled ellipsoid calibration")
+                  if not uncertainty.get("components"):
+                      raise SystemExit("missing component calibration")
+                  for component in uncertainty["components"]:
+                      if "pooled_standardized_error_sd" not in component:
+                          raise SystemExit(
+                              "missing pooled standardized-error calibration"
+                          )
+          fairness_rows = [
+              row for row in payload["scenario_aggregates"]
+              if row["scenario"] in expected_fairness
+          ]
+          for row in fairness_rows:
+              if "native_selected" not in row["methods"]:
+                  raise SystemExit(
+                      f"{row['scenario']} missing selected native sensitivity"
+                  )
+              if "bayesfpca_selected" not in row["methods"]:
+                  raise SystemExit(
+                      f"{row['scenario']} missing selected Bayesian sensitivity"
+                  )
+              if sum(row["bayesfpca_selected_k_counts"].values()) != 4:
+                  raise SystemExit(
+                      f"{row['scenario']} has unexpected Bayesian selection count"
+                  )
           PY
 
       - name: Capture evidence checksums
