@@ -4,6 +4,8 @@
 
 `1.1.0` is the current stable production release. The frozen 1.0 package-root compatibility boundary remains the baseline contract for the 1.x line, while the qualified A1–C1 additions are stable module-scoped 1.1 APIs.
 
+The current development line is **1.1.0**. Post-1.1 research and workflow branches retain that source/distribution identity until a separate reviewed version-governance tranche authorizes a future 1.2 development version; feature work alone does not change package identity.
+
 Final `1.1.0` publication completed on 7 October 2026 after fresh literal-version qualification, production-installed observation, a separate governance-only arming step, and exact protected-main verification. Post-publication GitHub/PyPI readiness is jointly disarmed.
 
 The frozen 1.0 public boundary contains **455 stable public exports** and three explicitly experimental APIs. No deprecations or removals were authorized by the 1.0 stabilization programme, and 1.1 did not mechanically expand that package-root boundary.
