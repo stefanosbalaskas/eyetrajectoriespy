@@ -44,7 +44,7 @@ concurrency:
 jobs:
   replicated-bayesian-sensitivity:
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    timeout-minutes: 180
     env:
       BAYESFPCA_COMMIT: "f05b0615632cffe5c63838858d9a956af6588a73"
       OMP_NUM_THREADS: "1"
@@ -72,7 +72,7 @@ jobs:
         run: |
           python scripts/run_bayesian_fpca_replication.py \
             --output-dir bayesian-fpca-b2-b3 \
-            --replicates 5
+            --replicates 16
 
       - name: Retain native oracle conditional uncertainty calibration
         run: |
@@ -148,7 +148,7 @@ jobs:
 
           root = Path("bayesian-fpca-b2-b3")
           payload = json.loads((root / "b2_b3_summary.json").read_text())
-          if payload.get("replicates_per_scenario") != 5:
+          if payload.get("replicates_per_scenario") != 16:
               raise SystemExit("unexpected replication count")
           if payload.get("b1_evidence_immutable") is not True:
               raise SystemExit("B1 evidence was not preserved as immutable")
@@ -164,18 +164,25 @@ jobs:
               raise SystemExit("post-hoc favorable search is forbidden")
           if payload.get("direct_covariance_magnitude_comparison_performed") is not False:
               raise SystemExit("covariance magnitudes must not be compared directly")
-          if payload.get("bayesfpca_k_sensitivity") != [5, 7, 9]:
+          if payload.get("bayesfpca_k_sensitivity") != [5, 6, 7, 8, 9]:
               raise SystemExit("unexpected bayesFPCA K sensitivity")
+          tuning = payload.get("native_secondary_tuning", {})
+          if tuning.get("mean_bandwidth_multipliers") != [0.75, 1.0, 1.25]:
+              raise SystemExit("unexpected mean-bandwidth sensitivity")
+          if tuning.get("covariance_bandwidth_multipliers") != [0.75, 1.0, 1.25]:
+              raise SystemExit("unexpected covariance-bandwidth sensitivity")
+          if tuning.get("fairness_replicates") != 4:
+              raise SystemExit("unexpected fairness replicate count")
           names = {
               row["scenario"] for row in payload.get("scenario_aggregates", [])
           }
           required = {
-              "harmonic_moderate",
-              "harmonic_extreme_sparse",
-              "harmonic_low_n",
-              "harmonic_near_tied",
-              "localized_moderate",
-              "harmonic_informative_observation",
+              "univariate_moderate",
+              "univariate_extreme_sparse",
+              "univariate_low_n",
+              "univariate_near_tied",
+              "univariate_localized",
+              "univariate_informative_time",
               "planar_paired",
               "planar_async",
           }
@@ -188,7 +195,7 @@ jobs:
               raise SystemExit("native oracle conditional uncertainty did not pass")
           informative = next(
               row for row in payload["scenario_aggregates"]
-              if row["scenario"] == "harmonic_informative_observation"
+              if row["scenario"] == "univariate_informative_time"
           )
           if informative.get("informative_observation_is_sensitivity_only") is not True:
               raise SystemExit("informative observation scope was broadened")
