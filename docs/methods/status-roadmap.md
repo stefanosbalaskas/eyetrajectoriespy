@@ -118,7 +118,7 @@ The 0.11 recovery laboratory remains the standing infrastructure for later metho
 
 Final `1.0.0` preserves that frozen scientific/API surface. The RC was observed outside the checkout on Python 3.11–3.13, final `1.0.0` received fresh exact-version performance and complete PR/exact-main qualification, and production workflow #18 published the final version from exact arming commit `d90fbbeea390054019e7689badedf5011ee09c22`. Post-publication readiness is disarmed again.
 
-The R4 `1.1.0.dev0` development-readiness ledger remains immutable historical evidence. The active `1.1.0rc1` line receives fresh literal-version reference/tolerance/performance qualification; frozen 1.0 and R4 records are not relabelled.
+The R4 `1.1.0.dev0` development-readiness ledger and published `1.1.0rc1` qualification/observation evidence remain immutable historical records. The active final `1.1.0` qualification uses fresh literal-version reference/tolerance/performance evidence; frozen 1.0, R4, and RC records are not relabelled.
 
 ## Published release sequence
 
