@@ -269,7 +269,10 @@ for (row_index in seq_len(nrow(manifest))) {
   names(time_obs) <- ids
   names(Y) <- ids
 
-  for (K_value in c(5L, 7L, 9L)) {
+  fairness <- isTRUE(as.logical(entry$fairness_sensitivity))
+  K_values <- if (fairness) 5L:9L else 7L
+
+  for (K_value in K_values) {
     run_one(
       scenario_dir = scenario_dir,
       design = design,
@@ -281,6 +284,65 @@ for (row_index in seq_len(nrow(manifest))) {
       L = L,
       K_value = K_value,
       seed = 62000L + row_index * 10L + K_value
+    )
+  }
+
+  if (fairness) {
+    metadata_rows <- lapply(K_values, function(K_value) {
+      metadata <- read.csv(
+        file.path(
+          scenario_dir,
+          paste0("bayesfpca_k", K_value, "_metadata.csv")
+        ),
+        stringsAsFactors = FALSE
+      )
+      data.frame(
+        K = K_value,
+        final_elbo = as.numeric(metadata$final_elbo[[1]]),
+        stringsAsFactors = FALSE
+      )
+    })
+    sensitivity <- do.call(rbind, metadata_rows)
+    finite <- sensitivity[is.finite(sensitivity$final_elbo), , drop = FALSE]
+    if (!nrow(finite)) {
+      stop("no successful finite-ELBO bayesFPCA sensitivity fit")
+    }
+    finite <- finite[
+      order(-finite$final_elbo, finite$K),
+      ,
+      drop = FALSE
+    ]
+    selected_K <- as.integer(finite$K[[1]])
+    suffixes <- c(
+      "_mean.csv",
+      "_eigenfunctions.csv",
+      "_scores.csv",
+      "_eigenvalues.csv",
+      "_score_covariance.csv",
+      "_metadata.csv"
+    )
+    for (suffix in suffixes) {
+      source <- file.path(
+        scenario_dir,
+        paste0("bayesfpca_k", selected_K, suffix)
+      )
+      destination <- file.path(
+        scenario_dir,
+        paste0("bayesfpca_selected", suffix)
+      )
+      if (!file.copy(source, destination, overwrite = TRUE)) {
+        stop("failed to retain selected bayesFPCA sensitivity fit")
+      }
+    }
+    write.csv(
+      data.frame(
+        selected_K = selected_K,
+        criterion = "maximum_final_elbo",
+        candidate_K = paste(K_values, collapse = ";"),
+        stringsAsFactors = FALSE
+      ),
+      file.path(scenario_dir, "bayesfpca_selected_choice.csv"),
+      row.names = FALSE
     )
   }
 }
