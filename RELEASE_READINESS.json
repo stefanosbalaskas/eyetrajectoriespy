@@ -2,7 +2,7 @@
   "schema_version": 1,
   "current_development_version": "1.1.0",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": false,
+  "production_release_ready": true,
   "gates": {
     "portable_result_schema_qualified": true,
     "environment_capture_qualified": true,
@@ -110,7 +110,10 @@
     "The immutable 1.1.0rc1 package-wide performance envelope remains archived under validation/performance/PERFORMANCE_ENVELOPE-1.1.0rc1.json and must not be relabelled as final-version evidence.",
     "Final 1.1.0 qualification requires fresh exact-version package-wide and sparse-MFPCA performance evidence, the complete pull-request matrix, protected-main merge, and the complete exact-main matrix before publication may be armed.",
     "Publication remains jointly disarmed during final 1.1.0 qualification. Arming GitHub/PyPI publication is reserved for a later governance-only reviewed change after exact-main final-version qualification passes.",
-    "Fresh final 1.1.0 package-wide performance qualification run 37528714581 passed on exact source commit cb3ecd82112e41ab1ac2b20961eeb79250da96cb. Retained artifact 11443198062 has digest sha256:fb6c12cae67df237b5ad5b8f172787d0e63fe75cca31199b712d6abf96e94647; the canonical final envelope is archived under validation/performance/PERFORMANCE_ENVELOPE-1.1.0.json while the immutable 1.1.0rc1 envelope remains unchanged."
+    "Fresh final 1.1.0 package-wide performance qualification run 37528714581 passed on exact source commit cb3ecd82112e41ab1ac2b20961eeb79250da96cb. Retained artifact 11443198062 has digest sha256:fb6c12cae67df237b5ad5b8f172787d0e63fe75cca31199b712d6abf96e94647; the canonical final envelope is archived under validation/performance/PERFORMANCE_ENVELOPE-1.1.0.json while the immutable 1.1.0rc1 envelope remains unchanged.",
+    "Final 1.1.0 exact-version qualification PR #201 merged as exact protected-main commit 7eaf842214dc26c8cd1cef9eaaa72a55916974de after its complete 26-workflow pull-request matrix passed. The complete post-merge exact-main matrix then finished 25/25 workflow groups successfully with zero failures.",
+    "On exact final-qualified 1.1.0 commit 7eaf842214dc26c8cd1cef9eaaa72a55916974de, package-wide performance run 37562352624, sparse-MFPCA final-qualification run 37562352616, sparse-MFPCA comparator-sensitivity run 37562352573, release-readiness, docs, examples, package tests, optional backends, product analyses, recovery/stress, and all other declared final-version qualification workflows completed successfully.",
+    "This governance-only arming change jointly arms GitHub and production PyPI readiness only after completed final 1.1.0 exact-main qualification. After it merges, the resulting exact protected-main arming commit must itself pass the required exact-main governance checks before any explicit manual release.yml dispatch with target=production. Ordinary pushes and merges remain non-publishing."
   ],
-  "github_release_ready": false
+  "github_release_ready": true
 }
