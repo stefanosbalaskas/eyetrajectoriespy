@@ -23,10 +23,23 @@ _WORKFLOW_NAME_RE = re.compile(r"^[a-z][a-z0-9_]*$")
 _ALLOWED_STEP_STATUS = frozenset({"ok", "skipped", "failed"})
 
 
+def _freeze_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return MappingProxyType(
+            {
+                key: _freeze_value(item)
+                for key, item in value.items()
+            }
+        )
+    if isinstance(value, (tuple, list)):
+        return tuple(_freeze_value(item) for item in value)
+    return value
+
+
 def _freeze_mapping(value: Mapping[str, Any] | None) -> Mapping[str, Any]:
     if value is None:
         return MappingProxyType({})
-    return MappingProxyType(dict(value))
+    return _freeze_value(value)
 
 
 def _require_nonempty_text(value: str, *, name: str) -> str:
@@ -189,6 +202,85 @@ class PreprocessingPlan:
             raise TypeError(
                 "every preprocessing step must be a PreprocessingStepConfig"
             )
+
+
+@dataclass(frozen=True)
+class WorkflowDiagnosticConfig:
+    """One explicitly requested diagnostic operation."""
+
+    name: str
+    parameters: Mapping[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "name",
+            _require_nonempty_text(self.name, name="diagnostic name"),
+        )
+        object.__setattr__(
+            self,
+            "parameters",
+            _freeze_mapping(self.parameters),
+        )
+
+
+@dataclass(frozen=True)
+class WorkflowDiagnosticsPlan:
+    """Ordered, explicit diagnostic plan; empty means no diagnostics."""
+
+    diagnostics: tuple[WorkflowDiagnosticConfig, ...] = ()
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.diagnostics, tuple):
+            raise TypeError("diagnostics must be a tuple")
+        if not all(
+            isinstance(item, WorkflowDiagnosticConfig)
+            for item in self.diagnostics
+        ):
+            raise TypeError(
+                "every diagnostic must be a WorkflowDiagnosticConfig"
+            )
+
+
+@dataclass(frozen=True)
+class WorkflowResultBase:
+    """Shared frozen result contract for concrete workflow results."""
+
+    workflow_contract: str
+    config: Any
+    steps: tuple[WorkflowStepRecord, ...]
+    provenance: Mapping[str, Any]
+    workflow_schema_version: int = field(
+        default=WORKFLOW_SCHEMA_VERSION,
+        init=False,
+    )
+
+    def __post_init__(self) -> None:
+        contract = _require_nonempty_text(
+            self.workflow_contract,
+            name="workflow_contract",
+        )
+        if re.fullmatch(r"^[a-z][a-z0-9_]*:v[1-9][0-9]*$", contract) is None:
+            raise ValueError(
+                "workflow_contract must use the form '<name>:v<positive integer>'"
+            )
+        if not is_dataclass(self.config) or isinstance(self.config, type):
+            raise TypeError("config must be a dataclass instance")
+        if not isinstance(self.steps, tuple) or not all(
+            isinstance(step, WorkflowStepRecord)
+            for step in self.steps
+        ):
+            raise TypeError(
+                "steps must be a tuple of WorkflowStepRecord objects"
+            )
+        if not isinstance(self.provenance, Mapping):
+            raise TypeError("provenance must be a mapping")
+        object.__setattr__(self, "workflow_contract", contract)
+        object.__setattr__(
+            self,
+            "provenance",
+            _freeze_mapping(self.provenance),
+        )
 
 
 def _jsonable(value: Any, *, path: str) -> Any:
