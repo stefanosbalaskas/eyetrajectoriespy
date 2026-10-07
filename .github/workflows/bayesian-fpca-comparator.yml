@@ -77,6 +77,7 @@ jobs:
           git clone https://github.com/hruffieux/bayesFPCA.git external-bayesFPCA
           git -C external-bayesFPCA checkout "$BAYESFPCA_COMMIT"
           test "$(git -C external-bayesFPCA rev-parse HEAD)" = "$BAYESFPCA_COMMIT"
+          Rscript -e 'install.packages(c("ellipse", "magic", "matrixcalc", "pracma"), repos="https://cloud.r-project.org")'
           R CMD INSTALL external-bayesFPCA
           Rscript -e 'stopifnot(as.character(utils::packageVersion("bayesFPCA")) == "0.1.0")'
 
