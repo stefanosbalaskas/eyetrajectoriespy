@@ -15,6 +15,9 @@ from eyetrajectoriespy.workflows import (
     PreprocessingStepConfig,
     WorkflowContract,
     WorkflowDecision,
+    WorkflowDiagnosticConfig,
+    WorkflowDiagnosticsPlan,
+    WorkflowResultBase,
     WorkflowStepRecord,
     export_workflow_bundle,
     load_workflow_bundle,
@@ -32,18 +35,12 @@ class _DummyConfig:
 
 
 @dataclass(frozen=True)
-class _DummyWorkflowResult:
-    workflow_schema_version: int
-    workflow_contract: str
-    config: _DummyConfig
-    steps: tuple[WorkflowStepRecord, ...]
-    provenance: dict[str, object]
+class _DummyWorkflowResult(WorkflowResultBase):
     values: np.ndarray
 
 
 def _dummy_result() -> _DummyWorkflowResult:
     return _DummyWorkflowResult(
-        workflow_schema_version=WORKFLOW_SCHEMA_VERSION,
         workflow_contract="dummy:v1",
         config=_DummyConfig(
             evaluation_grid=np.linspace(0.0, 1.0, 5),
@@ -135,6 +132,15 @@ def test_decision_provenance_retains_value_source_and_criterion():
     assert decision.details["candidate_id"] == "candidate_0003"
     with pytest.raises(TypeError):
         decision.details["candidate_id"] = "changed"
+    nested = WorkflowDecision(
+        value=1,
+        source="analyst",
+        details={"nested": {"items": [1, 2]}},
+    )
+    with pytest.raises(TypeError):
+        nested.details["nested"]["items"] = (3,)
+
+
 
 
 def test_preprocessing_plan_is_explicit_and_ordered():
@@ -156,6 +162,36 @@ def test_preprocessing_plan_is_explicit_and_ordered():
         "normalize_coordinates",
     )
     assert PreprocessingPlan().steps == ()
+
+
+def test_diagnostics_plan_is_explicit_ordered_and_empty_by_default():
+    plan = WorkflowDiagnosticsPlan(
+        diagnostics=(
+            WorkflowDiagnosticConfig(
+                name="reconstruction",
+                parameters={"folds": 4},
+            ),
+            WorkflowDiagnosticConfig(
+                name="component_stability",
+                parameters={"n_bootstrap": 100},
+            ),
+        )
+    )
+
+    assert tuple(item.name for item in plan.diagnostics) == (
+        "reconstruction",
+        "component_stability",
+    )
+    assert WorkflowDiagnosticsPlan().diagnostics == ()
+
+
+def test_workflow_result_base_is_frozen_and_versioned():
+    result = _dummy_result()
+
+    assert result.workflow_schema_version == WORKFLOW_SCHEMA_VERSION
+    assert result.workflow_contract == "dummy:v1"
+    with pytest.raises(TypeError):
+        result.provenance["automatic_method_selection"] = True
 
 
 def test_workflow_step_record_validates_status_and_elapsed_time():
@@ -227,6 +263,9 @@ def test_workflow_api_is_module_scoped_not_root_exported():
         "WorkflowContract",
         "WorkflowDecision",
         "WorkflowStepRecord",
+        "WorkflowDiagnosticConfig",
+        "WorkflowDiagnosticsPlan",
+        "WorkflowResultBase",
         "PreprocessingPlan",
         "export_workflow_bundle",
         "load_workflow_bundle",
