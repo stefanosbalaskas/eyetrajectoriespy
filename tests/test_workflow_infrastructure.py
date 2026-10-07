@@ -18,6 +18,7 @@ from eyetrajectoriespy.workflows import (
     workflow_decisions_frame,
     workflow_reporting_text,
     workflow_steps_frame,
+    workflow_summary_frame,
 )
 
 
@@ -157,6 +158,7 @@ def test_frames_and_reporting_retain_decision_sources():
     steps = workflow_steps_frame(result.steps)
     decisions = workflow_decisions_frame(result.decisions)
     text = workflow_reporting_text(result)
+    summary = workflow_summary_frame(result)
 
     assert steps["order"].tolist() == [1, 2]
     assert decisions.set_index("name").loc["mean_bandwidth", "source"] == (
@@ -165,6 +167,11 @@ def test_frames_and_reporting_retain_decision_sources():
     assert "demo:v1" in text
     assert "analyst-declared" in text
     assert "audited selectors" in text
+    assert summary.loc[0, "workflow_contract"] == "demo:v1"
+    assert summary.loc[0, "step_count"] == 2
+    assert summary.loc[0, "warning_count"] == 1
+    assert summary.loc[0, "analyst_decisions"] == 1
+    assert summary.loc[0, "audited_selector_decisions"] == 1
 
 
 def test_workflow_bundle_is_complete_and_checksummed(tmp_path):
@@ -224,5 +231,6 @@ def test_w1_remains_module_scoped_not_root_exported():
         "PreprocessingPlan",
         "PreprocessingStepConfig",
         "export_workflow_bundle",
+        "workflow_summary_frame",
     ):
         assert not hasattr(et, name)
