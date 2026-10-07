@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - ".github/workflows/workflow-infrastructure-validation.yml"
-      - "src/eyetrajectoriespy/workflows.py"
+      - "src/eyetrajectoriespy/workflows/**"
       - "tests/test_workflow_infrastructure.py"
       - "src/eyetrajectoriespy/portable_results.py"
   push:
@@ -12,7 +12,7 @@ on:
       - main
     paths:
       - ".github/workflows/workflow-infrastructure-validation.yml"
-      - "src/eyetrajectoriespy/workflows.py"
+      - "src/eyetrajectoriespy/workflows/**"
       - "tests/test_workflow_infrastructure.py"
       - "src/eyetrajectoriespy/portable_results.py"
   workflow_dispatch:
