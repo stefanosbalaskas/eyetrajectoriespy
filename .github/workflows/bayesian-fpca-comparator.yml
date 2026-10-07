@@ -81,6 +81,43 @@ jobs:
           R CMD INSTALL external-bayesFPCA
           Rscript -e 'stopifnot(as.character(utils::packageVersion("bayesFPCA")) == "0.1.0")'
 
+      - name: Capture exact R comparator environment
+        run: |
+          printf '%s\n' "$BAYESFPCA_COMMIT" > bayesian-fpca-comparator/bayesfpca-git-commit.txt
+          git -C external-bayesFPCA rev-parse HEAD > bayesian-fpca-comparator/bayesfpca-checkout-head.txt
+          Rscript - <<'RS'
+          root <- "bayesian-fpca-comparator"
+          packages <- c(
+            "bayesFPCA", "ellipse", "magic", "matrixcalc", "pracma",
+            "MASS", "lattice"
+          )
+          versions <- vapply(
+            packages,
+            function(pkg) as.character(utils::packageVersion(pkg)),
+            character(1)
+          )
+          utils::write.csv(
+            data.frame(package = packages, version = versions),
+            file.path(root, "r-package-versions.csv"),
+            row.names = FALSE
+          )
+          capture.output(
+            sessionInfo(),
+            file = file.path(root, "r-session-info.txt")
+          )
+          capture.output(
+            list(
+              R_version_string = R.version.string,
+              R_platform = R.version$platform,
+              R_arch = R.version$arch,
+              R_os = R.version$os,
+              sys_info = Sys.info(),
+              ext_soft_version = extSoftVersion()
+            ),
+            file = file.path(root, "r-runtime-details.txt")
+          )
+          RS
+
       - name: Run external bayesFPCA comparator
         run: |
           Rscript validation/bayesian_fpca/run_bayesfpca.R \
