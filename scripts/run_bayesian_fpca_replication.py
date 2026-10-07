@@ -44,9 +44,19 @@ GRID = np.linspace(0.02, 0.98, 41)
 N_COMPONENTS = 2
 NOISE_SD = 0.05
 BAYESFPCA_COMMIT = "f05b0615632cffe5c63838858d9a956af6588a73"
-DEFAULT_REPLICATES = 5
+DEFAULT_REPLICATES = 16
 BASE_SEED = 2026120700
-K_SENSITIVITY = (5, 7, 9)
+K_SENSITIVITY = (5, 6, 7, 8, 9)
+FAIRNESS_REPLICATES = 4
+FAIRNESS_SCENARIOS = frozenset(
+    {
+        "univariate_extreme_sparse",
+        "univariate_low_n",
+        "univariate_near_tied",
+        "univariate_localized",
+        "planar_paired",
+    }
+)
 
 
 @dataclass(frozen=True)
@@ -65,7 +75,7 @@ class Scenario:
 
 SCENARIOS = (
     Scenario(
-        "harmonic_moderate",
+        "univariate_moderate",
         "univariate",
         "harmonic",
         32,
@@ -76,7 +86,7 @@ SCENARIOS = (
         0.30,
     ),
     Scenario(
-        "harmonic_extreme_sparse",
+        "univariate_extreme_sparse",
         "univariate",
         "harmonic",
         32,
@@ -87,48 +97,48 @@ SCENARIOS = (
         0.38,
     ),
     Scenario(
-        "harmonic_low_n",
+        "univariate_low_n",
         "univariate",
         "harmonic",
         14,
-        10,
-        14,
+        12,
+        18,
         (1.00, 0.40),
-        0.25,
-        0.34,
+        0.22,
+        0.32,
     ),
     Scenario(
-        "harmonic_near_tied",
+        "univariate_near_tied",
         "univariate",
         "harmonic",
         32,
-        10,
-        14,
+        12,
+        18,
         (1.00, 0.90),
-        0.25,
-        0.34,
+        0.20,
+        0.30,
     ),
     Scenario(
-        "localized_moderate",
+        "univariate_localized",
         "univariate",
         "localized",
         32,
         12,
         18,
         (1.00, 0.40),
-        0.20,
-        0.30,
+        0.18,
+        0.28,
     ),
     Scenario(
-        "harmonic_informative_observation",
+        "univariate_informative_time",
         "univariate",
         "harmonic",
         32,
-        7,
+        4,
         17,
         (1.00, 0.40),
-        0.24,
-        0.34,
+        0.20,
+        0.30,
         "latent_value_and_time_logistic_retention",
     ),
     Scenario(
@@ -171,8 +181,14 @@ _LOCALIZED_REFERENCE_WEIGHTS = _trap_weights(_LOCALIZED_REFERENCE_GRID)
 
 def _localized_raw(time_values: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     time_values = np.asarray(time_values, dtype=float)
-    first = np.exp(-0.5 * ((time_values - 0.30) / 0.11) ** 2)
-    second = np.exp(-0.5 * ((time_values - 0.72) / 0.09) ** 2)
+    first = np.maximum(
+        1.0 - np.abs(time_values - 0.30) / 0.18,
+        0.0,
+    )
+    second = np.maximum(
+        1.0 - np.abs(time_values - 0.72) / 0.16,
+        0.0,
+    )
     return first, second
 
 
@@ -492,14 +508,20 @@ def _selected_bandwidths(
     dataset: IrregularTrajectorySet,
     *,
     seed: int,
+    replicate: int,
 ) -> tuple[dict[str, float] | None, pd.DataFrame | None]:
-    mean_candidates = (
-        0.80 * scenario.mean_bandwidth,
-        1.20 * scenario.mean_bandwidth,
+    if (
+        replicate > FAIRNESS_REPLICATES
+        or scenario.name not in FAIRNESS_SCENARIOS
+    ):
+        return None, None
+
+    multipliers = (0.75, 1.00, 1.25)
+    mean_candidates = tuple(
+        multiplier * scenario.mean_bandwidth for multiplier in multipliers
     )
-    covariance_candidates = (
-        0.80 * scenario.covariance_bandwidth,
-        1.20 * scenario.covariance_bandwidth,
+    covariance_candidates = tuple(
+        multiplier * scenario.covariance_bandwidth for multiplier in multipliers
     )
     if scenario.design == "univariate":
         result = select_sparse_fpca_bandwidths(
@@ -783,6 +805,7 @@ def generate(output_dir: Path, *, replicates: int) -> dict[str, object]:
                 scenario,
                 dataset,
                 seed=seed,
+                replicate=replicate,
             )
             selected_status = "not_supported"
             selected_elapsed = np.nan
@@ -828,6 +851,10 @@ def generate(output_dir: Path, *, replicates: int) -> dict[str, object]:
                     "n_components": N_COMPONENTS,
                     "primary_spline_basis_size": 7,
                     "k_sensitivity": ";".join(map(str, K_SENSITIVITY)),
+                    "fairness_sensitivity": (
+                        scenario.name in FAIRNESS_SCENARIOS
+                        and replicate <= FAIRNESS_REPLICATES
+                    ),
                     "relative_path": (
                         f"replicates/{scenario.name}/replicate_{replicate:03d}"
                     ),
@@ -882,8 +909,10 @@ def generate(output_dir: Path, *, replicates: int) -> dict[str, object]:
         "bayesfpca_primary_k": 7,
         "native_secondary_tuning": {
             "method": "existing_audited_training_fold_predictive_likelihood",
-            "mean_bandwidth_multipliers": [0.8, 1.2],
-            "covariance_bandwidth_multipliers": [0.8, 1.2],
+            "mean_bandwidth_multipliers": [0.75, 1.00, 1.25],
+            "covariance_bandwidth_multipliers": [0.75, 1.00, 1.25],
+            "fairness_replicates": FAIRNESS_REPLICATES,
+            "fairness_scenarios": sorted(FAIRNESS_SCENARIOS),
             "folds": 3,
             "truth_used_for_tuning": False,
             "available_for_async_planar": False,
