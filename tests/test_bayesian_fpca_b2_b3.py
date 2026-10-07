@@ -129,7 +129,7 @@ def test_locked_r_environment_is_exact_not_latest_cran():
 
     assert 'r-version: "4.6.1"' in workflow
     assert "run_sparse_score_uncertainty_validation.py" in workflow
-    assert "--n-curves 200" in workflow
+    assert "--n-curves 500" in workflow
     assert "--replicates 5" in workflow
     assert "bayesfpca_k_sensitivity" in workflow
     assert "direct_covariance_magnitude_comparison_performed" in workflow
