@@ -20,6 +20,7 @@ from ..portable_results import (
 )
 from ._core import (
     WORKFLOW_SCHEMA_VERSION,
+    WorkflowResultBase,
     WorkflowStepRecord,
     _jsonable,
     workflow_config_dict,
@@ -91,8 +92,10 @@ def _contract_identifier(result: Any) -> str:
 
 
 def _workflow_result_contract(result: Any) -> tuple[int, str]:
-    if not is_dataclass(result) or isinstance(result, type):
-        raise TypeError("workflow result must be a dataclass instance")
+    if not isinstance(result, WorkflowResultBase):
+        raise TypeError(
+            "workflow result must inherit WorkflowResultBase"
+        )
     schema_version = getattr(result, "workflow_schema_version", None)
     if schema_version != WORKFLOW_SCHEMA_VERSION:
         raise ValueError(
