@@ -56,8 +56,17 @@ write_mean <- function(path, time_g, mu_hat, dimensions) {
 write_functions <- function(path, time_g, list_Psi_hat, dimensions, L) {
   rows <- list()
   index <- 1
+  univariate_matrix <- length(dimensions) == 1 && is.matrix(list_Psi_hat)
+  if (univariate_matrix &&
+      (nrow(list_Psi_hat) != length(time_g) || ncol(list_Psi_hat) < L)) {
+    stop("bayesFPCA univariate eigenfunction matrix has an unexpected shape")
+  }
   for (l in seq_len(L)) {
-    psi <- as.matrix(list_Psi_hat[[l]])
+    if (univariate_matrix) {
+      psi <- matrix(list_Psi_hat[, l], ncol = 1)
+    } else {
+      psi <- as.matrix(list_Psi_hat[[l]])
+    }
     if (nrow(psi) != length(time_g) || ncol(psi) != length(dimensions)) {
       stop("bayesFPCA eigenfunction shape does not match declared grid/dimensions")
     }
@@ -119,7 +128,6 @@ for (row_index in seq_len(nrow(manifest))) {
 
   truth <- read.csv(file.path(scenario_dir, "truth_grid.csv"))
   time_g <- as.numeric(truth$time)
-  x <- read_dimension(file.path(scenario_dir, "observations_x.csv"), character(0))
   x_frame <- read.csv(
     file.path(scenario_dir, "observations_x.csv"),
     stringsAsFactors = FALSE
