@@ -27,36 +27,60 @@ def test_b2_b3_scenario_matrix_separates_requested_regimes():
 
     names = {scenario.name for scenario in runner.SCENARIOS}
     assert names == {
-        "harmonic_moderate",
-        "harmonic_extreme_sparse",
-        "harmonic_low_n",
-        "harmonic_near_tied",
-        "localized_moderate",
-        "harmonic_informative_observation",
+        "univariate_moderate",
+        "univariate_extreme_sparse",
+        "univariate_low_n",
+        "univariate_near_tied",
+        "univariate_localized",
+        "univariate_informative_time",
         "planar_paired",
         "planar_async",
     }
-    assert runner.DEFAULT_REPLICATES == 5
-    assert runner.K_SENSITIVITY == (5, 7, 9)
+    assert runner.DEFAULT_REPLICATES == 16
+    assert runner.K_SENSITIVITY == (5, 6, 7, 8, 9)
+    assert runner.FAIRNESS_REPLICATES == 4
+    assert runner.FAIRNESS_SCENARIOS == {
+        "univariate_extreme_sparse",
+        "univariate_low_n",
+        "univariate_near_tied",
+        "univariate_localized",
+        "planar_paired",
+    }
 
-    low_n = next(x for x in runner.SCENARIOS if x.name == "harmonic_low_n")
+    low_n = next(x for x in runner.SCENARIOS if x.name == "univariate_low_n")
     near_tied = next(
-        x for x in runner.SCENARIOS if x.name == "harmonic_near_tied"
+        x for x in runner.SCENARIOS if x.name == "univariate_near_tied"
     )
-    assert low_n.n_curves < near_tied.n_curves
+    assert low_n.n_curves == 14
+    assert (low_n.samples_min, low_n.samples_max) == (12, 18)
+    assert (low_n.mean_bandwidth, low_n.covariance_bandwidth) == (0.22, 0.32)
+    assert near_tied.n_curves == 32
+    assert (near_tied.samples_min, near_tied.samples_max) == (12, 18)
+    assert (near_tied.mean_bandwidth, near_tied.covariance_bandwidth) == (
+        0.20,
+        0.30,
+    )
     assert low_n.eigenvalues != near_tied.eigenvalues
 
     localized = next(
-        x for x in runner.SCENARIOS if x.name == "localized_moderate"
+        x for x in runner.SCENARIOS if x.name == "univariate_localized"
     )
     assert localized.truth_family == "localized"
+    assert (localized.mean_bandwidth, localized.covariance_bandwidth) == (
+        0.18,
+        0.28,
+    )
 
     informative = next(
         x
         for x in runner.SCENARIOS
-        if x.name == "harmonic_informative_observation"
+        if x.name == "univariate_informative_time"
     )
     assert informative.observation_mechanism != "independent_irregular"
+    assert (informative.mean_bandwidth, informative.covariance_bandwidth) == (
+        0.20,
+        0.30,
+    )
 
 
 def test_localized_basis_is_finite_and_nearly_orthonormal():
@@ -65,7 +89,7 @@ def test_localized_basis_is_finite_and_nearly_orthonormal():
         "run_bayesian_fpca_replication_localized",
     )
     scenario = next(
-        x for x in runner.SCENARIOS if x.name == "localized_moderate"
+        x for x in runner.SCENARIOS if x.name == "univariate_localized"
     )
     functions = runner._modes(runner.GRID, scenario)
     weights = runner._trap_weights(runner.GRID)
@@ -131,7 +155,7 @@ def test_locked_r_environment_is_exact_not_latest_cran():
     assert 'r-version: "4.6.1"' in workflow
     assert "run_sparse_score_uncertainty_validation.py" in workflow
     assert "--n-curves 500" in workflow
-    assert "--replicates 5" in workflow
+    assert "--replicates 16" in workflow
     assert "bayesfpca_k_sensitivity" in workflow
     assert "direct_covariance_magnitude_comparison_performed" in workflow
 
@@ -143,3 +167,18 @@ def test_async_secondary_native_tuning_is_not_silently_invented():
     assert 'elif scenario.design == "planar_paired":' in runner_source
     assert "return None, None" in runner_source
     assert '"available_for_async_planar": False' in runner_source
+
+def test_definitive_fairness_selection_is_predeclared_and_elbo_based():
+    runner_source = (
+        ROOT / "scripts" / "run_bayesian_fpca_replication.py"
+    ).read_text(encoding="utf-8")
+    r_source = (
+        ROOT / "validation" / "bayesian_fpca" / "run_bayesfpca_replication.R"
+    ).read_text(encoding="utf-8")
+
+    assert "multipliers = (0.75, 1.00, 1.25)" in runner_source
+    assert "replicate > FAIRNESS_REPLICATES" in runner_source
+    assert "scenario.name not in FAIRNESS_SCENARIOS" in runner_source
+    assert "K_values <- if (fairness) 5L:9L else 7L" in r_source
+    assert 'criterion = "maximum_final_elbo"' in r_source
+
