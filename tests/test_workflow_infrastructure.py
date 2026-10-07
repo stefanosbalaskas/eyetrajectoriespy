@@ -326,6 +326,32 @@ def test_workflow_bundle_rejects_unsafe_export_names(tmp_path):
         )
 
 
+def test_workflow_bundle_rejects_nonstring_export_names_before_sorting(tmp_path):
+    with pytest.raises(ValueError, match="report names"):
+        export_workflow_bundle(
+            _dummy_result(),
+            tmp_path / "bad-report-name",
+            reports={1: "not allowed"},
+        )
+
+
+def test_workflow_bundle_rejects_checksum_path_traversal(tmp_path):
+    destination = export_workflow_bundle(
+        _dummy_result(),
+        tmp_path / "path-traversal",
+    )
+    checksum = destination / "SHA256SUMS"
+    checksum.write_text(
+        checksum.read_text(encoding="utf-8")
+        + ("0" * 64)
+        + "  ../outside.txt\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="unsafe workflow bundle checksum path"):
+        load_workflow_bundle(destination)
+
+
 def test_workflow_bundle_rejects_nonempty_destination(tmp_path):
     destination = tmp_path / "existing"
     destination.mkdir()
