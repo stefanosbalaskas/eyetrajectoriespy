@@ -185,6 +185,7 @@ nav:
           - Sparse joint-PACE score uncertainty: validation/sparse-mfpca-score-uncertainty.md
           - Sparse MFPCA comparator sensitivity: validation/sparse-mfpca-comparator-sensitivity.md
           - Bayesian sparse FPCA/MFPCA comparator: validation/bayesian-fpca-comparator.md
+          - Bayesian FPCA B2/B3 replication + uncertainty: validation/bayesian-fpca-b2-b3.md
           - Sparse MFPCA stress and performance: validation/sparse-mfpca-observation-performance.md
           - Sparse partial-trajectory prediction: validation/sparse-partial-prediction.md
           - 1.1 end-to-end product analyses: validation/one-dot-one-product-analyses.md
