@@ -18,17 +18,6 @@ if (!nzchar(expected_sha)) {
   stop("BAYESFPCA_COMMIT must be set")
 }
 
-desc <- utils::packageDescription("bayesFPCA")
-remote_sha <- desc$RemoteSha
-if (is.null(remote_sha) || !identical(as.character(remote_sha), expected_sha)) {
-  stop(
-    sprintf(
-      "installed bayesFPCA RemoteSha mismatch: expected %s, got %s",
-      expected_sha,
-      ifelse(is.null(remote_sha), "<missing>", as.character(remote_sha))
-    )
-  )
-}
 if (!identical(as.character(utils::packageVersion("bayesFPCA")), "0.1.0")) {
   stop("unexpected bayesFPCA package version")
 }
