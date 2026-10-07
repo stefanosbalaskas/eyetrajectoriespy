@@ -17,7 +17,7 @@ from typing import Any, Mapping, Sequence
 import numpy as np
 import pandas as pd
 
-from .portable_results import capture_environment, export_portable_result
+from ..portable_results import capture_environment, export_portable_result
 
 
 WORKFLOW_SCHEMA_VERSION = 1
