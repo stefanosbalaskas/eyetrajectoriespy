@@ -36,6 +36,24 @@ The existing optional wrapper is retained during the transition because it is
 already public and qualified. Removal or deprecation can happen only after the
 native path is validated and the normal deprecation window is satisfied.
 
+## bayesFPCA
+
+`bayesFPCA` is used only as a **post-1.1 external scientific comparator** for
+sparse/irregular univariate and multivariate FPCA. The dedicated validation
+workflow pins the exact upstream Git commit and exchanges only neutral
+CSV/JSON fixtures and evidence files.
+
+`bayesFPCA` is GPL >= 3. It is therefore not copied, translated, vendored,
+imported by the Python package, or added as a runtime backend/dependency.
+Any future native Bayesian method would require an independently specified
+mathematical and software contract rather than a source-code port.
+
+The comparator is especially useful because its variational latent-basis
+architecture differs from the native covariance/PACE route. Comparisons use
+known truth, invariant functional/score subspaces and reconstruction targets;
+they do not assume coefficient-level numerical equivalence or choose an
+architecture winner automatically.
+
 ## What counts as independent validation?
 
 A reference comparison should document:
