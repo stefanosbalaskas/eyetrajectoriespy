@@ -187,7 +187,9 @@ jobs:
               "population_objects_reestimated_per_replicate",
               "empirical_truth_coverage_quantified",
               "standardized_error_behavior_quantified",
-              "fit_score_and_covariance_failure_quantified",
+              "fit_failure_quantified",
+              "score_failure_quantified",
+              "invalid_or_nonpositive_covariance_failure_quantified",
           ):
               if calibration.get(key) is not True:
                   raise SystemExit(f"missing B3 calibration contract: {key}")
@@ -236,6 +238,15 @@ jobs:
                   if method not in row["methods"]:
                       raise SystemExit(
                           f"{row['scenario']} missing primary method {method}"
+                      )
+                  method_payload = row["methods"][method]
+                  if method_payload.get("fit_attempt_count") != 16:
+                      raise SystemExit(
+                          f"{row['scenario']} {method} fit attempts != 16"
+                      )
+                  if "fit_failure_rate" not in method_payload:
+                      raise SystemExit(
+                          f"{row['scenario']} {method} missing fit failure rate"
                       )
               for method_payload in row["methods"].values():
                   uncertainty = method_payload.get("score_uncertainty")
