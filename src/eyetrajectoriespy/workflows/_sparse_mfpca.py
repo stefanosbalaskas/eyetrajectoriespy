@@ -80,6 +80,12 @@ class SparseMFPCABandwidthSelectionConfig:
         if isinstance(self.n_splits, bool) or int(self.n_splits) < 2:
             raise ValueError("n_splits must be an integer >= 2")
         object.__setattr__(self, "n_splits", int(self.n_splits))
+        limit = float(self.predictive_condition_limit)
+        if not np.isfinite(limit) or limit <= 1:
+            raise ValueError(
+                "predictive_condition_limit must be finite and greater than 1"
+            )
+        object.__setattr__(self, "predictive_condition_limit", limit)
 
 
 @dataclass(frozen=True)
