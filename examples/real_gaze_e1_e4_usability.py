@@ -32,7 +32,7 @@ from eyetrajectoriespy.workflows.experimental import (
 
 SOURCE_REPO = "DFKI-Interactive-Machine-Learning/Disagreement-Detection-Dataset-CHI-26"
 SOURCE_COMMIT = "1a92e69487c862a80496d7a80c86e8f4f5a857bf"
-SOURCE_DOI = "https://github.com/" + SOURCE_REPO
+SOURCE_REPOSITORY_URL = "https://github.com/" + SOURCE_REPO
 LICENSE = "CC BY-NC 4.0"
 END_MS = 480
 STEP_MS = 4
@@ -212,7 +212,7 @@ def main() -> None:
     audit = pd.DataFrame(accounting)
     audit.to_csv(output / "input-selection-audit.csv", index=False)
     _json(output / "data-source-and-fingerprints.json", {
-        "origin": SOURCE_DOI, "git_commit": SOURCE_COMMIT,
+        "origin": SOURCE_REPOSITORY_URL, "git_commit": SOURCE_COMMIT,
         "licence": LICENSE, "license_url": "https://creativecommons.org/licenses/by-nc/4.0/",
         "nature": "real de-identified published gaze; no private health or outcome data",
         "raw_gaze_redistributed": False,
