@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "programme": "f1-f6-new-scientific-and-interchange-methods",
+  "source_version": "1.2.0rc2.dev0",
+  "status": "experimental_implementation_under_test",
+  "implementation_pull_request": 227,
+  "tracking_issue": 226,
+  "legacy_one_dot_two_rc_evidence_relabelled": false,
+  "published_stable_version": "1.1.0",
+  "root_namespace_promoted": false,
+  "release_candidate_qualified": false,
+  "production_publication_authorized": false,
+  "github_release_ready": false,
+  "tranches": {
+    "F1": {
+      "stage": "conditional_score_permutation_prototype",
+      "production_qualified": false,
+      "scientific_inference_qualified": false,
+      "required_evidence": [
+        "null size at multiple alpha",
+        "power under joint x-y alternatives",
+        "unequal independent groups",
+        "heteroscedasticity",
+        "participant/trial resampling",
+        "truth reference and covariance sensitivity"
+      ]
+    },
+    "F2": {
+      "stage": "provenance_audit_prototype",
+      "production_qualified": false,
+      "scientific_inference_qualified": false,
+      "required_evidence": [
+        "target-based accuracy precision reference fixtures",
+        "sessions and coordinate-unit matching",
+        "reporting guideline completeness"
+      ]
+    },
+    "F3": {
+      "stage": "single_stream_bep020_subset",
+      "production_qualified": false,
+      "scientific_inference_qualified": false,
+      "required_evidence": [
+        "pin standard version",
+        "reference physio TSV GZ fixtures",
+        "BIDS validator comparison",
+        "timestamp unit and sample rate stress",
+        "missingness and metadata roundtrip"
+      ]
+    },
+    "F4": {
+      "stage": "ALR_vs_simplex_projection_feasibility",
+      "production_qualified": false,
+      "scientific_inference_qualified": false,
+      "required_evidence": [
+        "actual constrained estimator independent derivation",
+        "holdout reconstruction",
+        "structural zeros and epsilon/reference sensitivity",
+        "known truth"
+      ]
+    },
+    "F5": {
+      "stage": "whole_curve_mean_CUSUM_prototype",
+      "production_qualified": false,
+      "scientific_inference_qualified": false,
+      "required_evidence": [
+        "type I under serial dependence",
+        "block length and weak stationary stress",
+        "multiple break detection",
+        "robust method comparator"
+      ]
+    },
+    "F6": {
+      "stage": "declared_diagonal_weighted_geometry_prototype",
+      "production_qualified": false,
+      "scientific_inference_qualified": false,
+      "required_evidence": [
+        "quadrature weighted orthonormality",
+        "inverse reconstruction",
+        "change of units equivariance",
+        "weight choice sensitivity",
+        "sparse scope explicitly excluded"
+      ]
+    }
+  },
+  "notes": [
+    "Source code is scientific research infrastructure, not scientifically validated inference.",
+    "Neither a passing smoke test nor an installed-wheel import establishes inferential calibration.",
+    "Keep literal RC2 and production publication disarmed pending revised E5 evidence."
+  ]
+}
