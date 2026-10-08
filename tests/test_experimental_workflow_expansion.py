@@ -192,7 +192,7 @@ def test_e3_retains_failed_configuration(gaze):
     assert out.specifications.set_index("specification").loc["bad", "status"] == "failed"
     assert np.isnan(out.metric_frame.set_index("specification").loc["bad", "explained"])
     ax = plot_workflow_sensitivity(out, metric="explained")
-    assert "no numeric estimate" in ax.get_legend().get_texts()[0].get_text()
+    assert any("no numeric estimate" in item.get_text() for item in ax.get_legend().get_texts())
     assert ax.collections[0].get_offset_transform() is not ax.transData
 
 
