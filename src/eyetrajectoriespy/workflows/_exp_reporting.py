@@ -17,6 +17,8 @@ from typing import Any, Mapping
 
 import pandas as pd
 
+from ._exp_preflight import WorkflowPreflightResult
+
 from ._core import (
     _jsonable, _validate_workflow_result, workflow_config_to_dict,
     workflow_decisions_frame, workflow_reporting_text, workflow_steps_frame,
@@ -49,6 +51,7 @@ def render_workflow_report(
     figures: Mapping[str, str | Path] | None = None,
     limitations: tuple[str, ...] = (),
     figure_captions: Mapping[str, str] | None = None,
+    preflight: WorkflowPreflightResult | None = None,
 ) -> WorkflowReportArtifact:
     """Render real model reports, tables, diagnostics and SHA256 provenance.
 
@@ -65,6 +68,8 @@ def render_workflow_report(
     directory.mkdir(parents=True, exist_ok=True)
     evidence = directory / "evidence"
     evidence.mkdir()
+    if preflight is not None and not isinstance(preflight, WorkflowPreflightResult):
+        raise TypeError("preflight must be a WorkflowPreflightResult")
     provenance = {
         "workflow_schema_version": result.workflow_schema_version,
         "workflow_contract": result.workflow_contract,
@@ -72,6 +77,9 @@ def render_workflow_report(
         "provenance": _jsonable(result.provenance, path="provenance"),
         "analyst_limitations": list(limitations),
         "generated_inference": False,
+        "preflight_provenance": None if preflight is None else preflight.provenance,
+        "preflight_warnings": [] if preflight is None else list(preflight.warnings),
+        "preflight_blocking_issues": [] if preflight is None else list(preflight.blocking_issues),
     }
     provenance_path = evidence / "provenance.json"
     provenance_path.write_text(json.dumps(provenance, sort_keys=True, indent=2) + "\n", encoding="utf-8")
@@ -84,6 +92,10 @@ def render_workflow_report(
         dataframe.to_csv(evidence / filename, index=False)
 
     tables = dict(getattr(result, "tables", {}) or {})
+    if preflight is not None:
+        tables["preflight_summary"] = preflight.summary
+        tables["preflight_curve_support"] = preflight.curve_support
+        tables["preflight_participant_support"] = preflight.participant_support
     names: set[str] = set()
     paths: dict[str, str] = {}
     for name, dataframe in sorted(tables.items()):
@@ -138,7 +150,19 @@ def render_workflow_report(
         text.extend(["", "## Diagnostics", "",
                      "[Summary](evidence/summary.csv) | [Audit decisions](evidence/decisions.csv) | "
                      "[Step warnings](evidence/steps.csv)", "",
-                     "## Limitations", ""])
+                     "## Sample accounting and preflight", ""])
+        if preflight is not None:
+            text.extend([
+                f"- Layout: {preflight.layout}; ready for declared data requirements: {preflight.ready}.",
+                "- [Input sample accounting](evidence/preflight_summary.csv)",
+                "- [Curve-by-curve support](evidence/preflight_curve_support.csv)",
+                "- [Participant/trial counts](evidence/preflight_participant_support.csv)",
+            ])
+            text.extend(f"- Warning: {message}" for message in preflight.warnings)
+            text.extend(f"- Blocking input issue: {message}" for message in preflight.blocking_issues)
+        else:
+            text.append("A separate preflight result was not supplied; no QC exclusion was inferred.")
+        text.extend(["", "## Limitations", ""])
         text.extend("- " + str(caveat) for caveat in (*caveats, *limitations))
         text.extend(["", "## Reproducibility", "",
                      "SHA256 evidence is provided in manifest.json; no inferential analysis was invented.", ""])
@@ -163,6 +187,9 @@ def render_workflow_report(
                           "' alt='" + escape(name, quote=True) + "'><figcaption>" +
                           escape(caption) + "</figcaption></figure>")
         blocks.append("<h2>Diagnostics</h2>" + summary.to_html(index=False, escape=True))
+        if preflight is not None:
+            blocks.append("<h2>Sample accounting and preflight</h2>" + preflight.summary.to_html(index=False, escape=True))
+            blocks.append("<ul>" + "".join("<li>" + escape(x) + "</li>" for x in (*preflight.warnings, *preflight.blocking_issues)) + "</ul>")
         blocks.append("<h2>Limitations</h2><ul>" +
                       "".join("<li>" + escape(str(c)) + "</li>" for c in (*caveats, *limitations)) +
                       "</ul>")

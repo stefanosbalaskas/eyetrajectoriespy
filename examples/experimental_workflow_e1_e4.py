@@ -85,6 +85,7 @@ def main() -> None:
         figure_captions={
             "sensitivity-stability": "Descriptive retained-variance fraction across analyst-declared FPCA component counts; no inference."
         },
+        preflight=preflight,
         limitations=(
             "Entirely deterministic simulated gaze data; not empirical participant evidence.",
             "Smoothing and time normalization may alter process interpretation and temporal estimands.",

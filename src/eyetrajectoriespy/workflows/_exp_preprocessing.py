@@ -220,10 +220,14 @@ def run_workflow_preprocessed(
         decisions["preprocessing_plan"] = WorkflowDecisionRecord(
             workflow_config_to_dict(config.preprocessing), "analyst"
         )
+    tables = dict(getattr(fitted, "tables", {}))
+    if transformed.steps:
+        tables["preprocessing_audit"] = transformed.audit.copy()
     return replace(
         fitted,
         config=config,
         steps=(*transformed.steps, *fitted.steps),
         decisions=decisions,
+        tables=tables,
         provenance={**dict(fitted.provenance), **transformed.provenance},
     )

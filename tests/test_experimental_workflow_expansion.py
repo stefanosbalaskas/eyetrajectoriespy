@@ -115,6 +115,7 @@ def test_e1_dense_composition_preserves_full_original_plan(gaze):
     ]
     assert fitted.provenance["preprocessing_executed"] is True
     assert "preprocessing_plan" in fitted.decisions
+    assert len(fitted.tables["preprocessing_audit"]) == 2
 
 
 def test_e2_missingness_low_support_never_removes_curves(gaze):
@@ -206,9 +207,12 @@ def test_e4_markdown_sha256_and_no_invented_p_values(gaze, tmp_path):
         figures={"component": figure},
         limitations=("This is synthetic demonstration data.",),
         figure_captions={"component": "Demonstration figure in normalized coordinates."},
+        preflight=workflow_preflight(gaze),
     )
     text = product.report_path.read_text()
     assert "## Methods" in text and "## Results" in text
+    assert "## Sample accounting" in text
+    assert (product.report_path.parent / "evidence" / "preflight_summary.csv").is_file()
     assert "This is synthetic demonstration data." in text
     assert "Demonstration figure" in text
     assert (product.report_path.parent / "evidence" / "config.json").exists() is False
