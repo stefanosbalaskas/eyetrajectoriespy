@@ -42,7 +42,7 @@ def fit_weighted_mfpca(
         curve_ids=trajectories.curve_ids,
         dimension_names=trajectories.dimension_names,
         metadata=trajectories.metadata.reset_index(drop=True),
-        coordinate_system="weighted_declared_coordinates",
+        coordinate_system="unknown",
         time_unit=trajectories.time_unit,
         provenance={**trajectories.provenance, "geometry": "weighted L2",
                     "weights": w.tolist(), "weight_choice": "analyst_declared"},
