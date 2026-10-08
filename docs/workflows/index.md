@@ -1,8 +1,8 @@
 # Canonical workflows
 
-Version 0.55 introduces a **canonical workflow layer**. It does not add a new
-estimator. Its purpose is to make the existing package navigable by scientific
-question rather than by function count.
+The five canonical scientific entry routes predate the 1.2 release candidate. They remain the recommended way to start with a research question. The **1.2 typed workflow layer** adds ten explicit orchestration entry points under `eyetrajectoriespy.workflows` without replacing existing estimators or promoting new package-root exports.
+
+**Release status:** 1.1.0 is published stable; the literal 1.2.0rc1 is under qualification and has not been published. See [ten-route selection](../articles/choosing-the-ten-workflows.md) and [transparent orchestration](workflow-orchestration.md).
 
 Start with one of five routes:
 

@@ -5,23 +5,24 @@ hide:
   - toc
 ---
 
-!!! success "Current stable release — 1.0.0"
-    `eyetrajectoriespy 1.0.0` is the current stable production release and the compatibility baseline for the 1.x line.
-
-    Python 3.11–3.13 · native sparse FPCA/PACE · native sparse planar MFPCA/joint PACE · production PyPI + GitHub Release
+!!! success "Published stable release — 1.1.0"
+    **1.1.0** is the current published stable release (Python 3.11–3.13). It preserves the 1.0 root API compatibility boundary and adds qualified sparse/irregular capabilities as stable **module-scoped 1.1 APIs**.
 
     ```bash
-    pip install eyetrajectoriespy==1.0.0
+    pip install eyetrajectoriespy==1.1.0
     ```
 
-    The frozen 1.0 boundary contains 455 stable public exports and three explicitly experimental APIs. Publication is complete and post-publication GitHub/PyPI readiness is disarmed.
+!!! info "1.2.0rc1 — release-candidate qualification, not yet published"
+    W1–W4 are complete and all ten typed workflows passed installed-wheel product qualification. Literal **1.2.0rc1** is merged under [PR #220](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/220) and remains unpublished pending independent exact-main qualification and release governance. Publication is not armed, and candidate workflow APIs are **not** part of the stable 1.1 installation.
 
 <div class="et-hero" markdown>
 <div markdown>
 
 # Model the viewing process, not only its summaries
 
-**Functional analysis of continuous and sparse eye-tracking trajectories in Python.**
+**Functional analysis of continuous, irregular and sparse eye-tracking trajectories in Python.**
+
+Preserve the time-indexed planar gaze process rather than reducing every trial immediately to fixation counts:
 
 $$
 \mathbf G_i(t)=
@@ -31,91 +32,104 @@ y_i(t)
 \end{bmatrix}.
 $$
 
-<span class="et-version-pill">stable 1.0.0 · Python 3.11–3.13</span>
+<span class="et-version-pill">stable 1.1.0 · 1.2 workflow RC qualification · Python 3.11–3.13</span>
 
-[Get started](quickstart.md){ .md-button .md-button--primary }
-[Choose a workflow](workflows/index.md){ .md-button }
-[View on GitHub](https://github.com/stefanosbalaskas/eyetrajectoriespy){ .md-button }
+[Install and get started](quickstart.md){ .md-button .md-button--primary }
+[Choose an analysis](articles/choosing-the-ten-workflows.md){ .md-button }
+[Explore figures](methods/visual-gallery.md){ .md-button }
 
 </div>
 <div markdown>
 
-![Sparse planar covariance blocks estimated by eyetrajectoriespy](assets/gallery/sparse-mfpca-covariance-blocks.svg)
+![Native sparse planar covariance estimated from deterministic synthetic data](assets/gallery/sparse-mfpca-covariance-blocks.svg)
 
 </div>
 </div>
 
-## Sparse planar workflow
+## See the methods
+
+All plotted examples below use **deterministic synthetic data** and are regenerated from package code during the documentation build. They illustrate outputs and diagnostics, not human-subject findings.
+
+<div class="grid cards et-gallery" markdown>
+
+- **Functional principal components**
+
+  ![FPCA workflow component](assets/gallery/workflow-fpca-component.svg)
+
+  Visualize a declared component/dimension of common-grid gaze variation.
+
+  [FPCA workflow](workflows/fpca-exploration.md) · [Interpret the plot](articles/interpreting-workflow-figures.md)
+
+- **Time-varying experimental effect**
+
+  ![Function-on-scalar coefficient](assets/gallery/workflow-function-on-scalar.svg)
+
+  Inspect a declared predictor coefficient function over trial time.
+
+  [Functional regression](workflows/experimental-functional-regression.md) · [Interpret the plot](articles/interpreting-workflow-figures.md)
+
+- **Recurrence in state space**
+
+  ![Fixed-parameter recurrence plot](assets/gallery/workflow-recurrence.svg)
+
+  Display recurrence with analyst-declared embedding, lag, radius and Theiler window.
+
+  [Recurrence workflow](workflows/nonlinear-recurrence.md) · [Interpret the plot](articles/interpreting-workflow-figures.md)
+
+</div>
+
+## The ten transparent workflows (1.2 candidate)
+
+!!! warning "Candidate APIs are not installed by pip"
+    The published stable `pip install eyetrajectoriespy` installs **1.1.0**, which does **not** include `run_sparse_mfpca_workflow()` or any other `run_*_workflow()` API. Those examples require the **1.2 candidate source**, not stable 1.1.
+
 
 <div class="grid cards" markdown>
 
--   **Sparse paired x/y gaze → native joint PACE**
+- **Five sparse routes**
 
-    Estimate the full planar covariance structure, including directional cross-channel covariance:
+  Native sparse FPCA/PACE, paired sparse planar MFPCA, asynchronous planar MFPCA, sparse multilevel decomposition, and partial-trajectory prediction.
 
-    $$
-    \mathbf C(s,t)=
-    \begin{bmatrix}
-    C_{xx}(s,t) & C_{xy}(s,t)\\
-    C_{xy}(t,s) & C_{yy}(s,t)
-    \end{bmatrix}.
-    $$
+  [Select a sparse route](articles/choosing-the-ten-workflows.md) · [Method validation](validation/one-dot-two-workflow-product-qualification.md)
 
-    **API:** `fit_sparse_mfpca()`
+- **Four dense/regression routes**
 
-    [→ Guide](guides/sparse-multivariate-fpca.md)
-    · [Example](examples/sparse-mfpca.md)
-    · [Mathematics](methods/mathematical-reference.md#sparse-mfpca-joint-pace)
-    · [Validation](validation/sparse-mfpca-recovery.md)
+  Common-grid FPCA, function-on-scalar regression, functional mixed effects and generalized functional responses.
 
-</div>
+  [Compare assumptions](articles/choosing-the-ten-workflows.md) · [Workflow API](workflows/workflow-orchestration.md)
 
-## Choose the analysis, not the function name
+- **One recurrence route**
 
-<div class="grid cards" markdown>
+  Explicit state-space embedding, fixed-radius recurrence and RQA, with no automatic nonlinear-parameter tuning.
 
--   **Continuous gaze + FPCA** — dominant modes of common-grid continuous gaze variation.  
-    [→ Open workflow](workflows/fpca-exploration.md)
-
--   **Experimental functional regression** — time-varying effects of declared scalar predictors.  
-    [→ Open workflow](workflows/experimental-functional-regression.md)
-
--   **Repeated-trial mixed effects** — preserve participant → trial → time hierarchy.  
-    [→ Open workflow](workflows/repeated-trial-mixed-effects.md)
-
--   **Binary and count responses** — explicit Bernoulli, grouped-binomial and Poisson contracts.  
-    [→ Open workflow](workflows/generalized-responses.md)
-
--   **Nonlinear and recurrence analysis** — explicit state representation, embedding and recurrence choices.  
-    [→ Open workflow](workflows/nonlinear-recurrence.md)
+  [Recurrence guide](workflows/nonlinear-recurrence.md) · [Reporting decisions](articles/reproducible-workflow-bundles.md)
 
 </div>
 
-## From gaze samples to a defensible result
+## Every analysis has an evidence trail
 
-| Stage | Scientific task | What stays explicit |
-| --- | --- | --- |
-| **Observe** | Native gaze, timing, metadata, missingness | sampling support and data loss |
-| **Represent** | Dense, irregular, sparse, multilevel, compositional | representation and projection choices |
-| **Model** | FPCA, regression, mixed effects, geometry, recurrence | estimand, family, hierarchy, parameters |
-| **Validate** | Stability, diagnostics, sensitivity, uncertainty | resampling unit and qualification evidence |
-| **Report** | Results, limitations, provenance | analytical decisions and scope boundaries |
+![Workflow audit decision provenance across deterministic examples](assets/gallery/workflow-audit-provenance.svg)
 
-## What eyetrajectoriespy refuses to hide
+The audit layer distinguishes **analyst input**, **audited selectors**, **fixed workflow contracts** and **derived values**. Provenance counts above are descriptive illustrations of the candidate workflows, not comparative performance or methodological superiority.
 
-Missingness, smoothing, registration, irregular-to-grid projection, analysis support, sparse-model bandwidths, measurement-error assumptions, PSD policy, resampling units, denominator/exposure semantics, provenance, and failure/status codes remain explicit scientific choices.
+[How to export an auditable bundle](articles/reproducible-workflow-bundles.md) · [Reproducibility checklist](reproducibility/checklist.md)
 
-!!! important "Not a replacement for event analysis"
-    Whole-trajectory FDA answers different questions from fixation, saccade, AOI-transition, and latency analyses. eyetrajectoriespy complements those methods rather than replacing them.
+## Follow the scientific question
 
-## Scientific qualification
+| Research aim | Default starting point | Main caveat |
+|---|---|---|
+| Dominant whole-path variation | [FPCA / MFPCA](workflows/fpca-exploration.md) | Component alignment and selection uncertainty |
+| Sparse asynchronous x/y tracking | [Asynchronous MFPCA](guides/sparse-multivariate-async.md) | Preserve native coordinate-specific times |
+| Effect of a condition over trial time | [Function-on-scalar regression](workflows/experimental-functional-regression.md) | Repeated-measures structure must be declared |
+| Participant/trial heterogeneity | [Functional mixed effects](workflows/repeated-trial-mixed-effects.md) | Covariance and resampling assumptions |
+| Binary or count functional outcome | [Generalized functional response](workflows/generalized-responses.md) | Explicit family, denominator or exposure |
+| Temporal recurrence | [Recurrence/RQA](workflows/nonlinear-recurrence.md) | Strong dependence on embedding/threshold choices |
 
-- [Release readiness](release-readiness.md) — qualification history and the current post-publication state.
-- [Validation ledger](validation/reference-validation-ledger.md) — independent-reference and recovery evidence.
-- [Visual gallery](methods/visual-gallery.md) — deterministic figures regenerated from package code.
-- [Mathematical reference](methods/mathematical-reference.md) — implementation-matched equations and scope boundaries.
-- [API stability policy](reference/api-stability.md) — the stable 1.x compatibility contract and deprecation rules.
+## Evidence before promotion
 
----
+Scientific contracts, limitations, full qualification provenance, and a machine-checked public API boundary accompany the software. The [Bayesian B4 feasibility decision](articles/bayesian-feasibility-boundary.md) motivates a separate native research/design programme; it does **not** select a replacement estimator or make Bayesian inference a 1.2 production feature.
 
-**Current stable release:** `1.0.0` · [PyPI](https://pypi.org/project/eyetrajectoriespy/) · [1.0.0 release notes](releases/1.0.0.md) · [API stability policy](reference/api-stability.md)
+!!! important "Functional analysis complements event-based eye tracking"
+    This package begins with a scientifically interpretable time/coordinate representation. It complements rather than replaces fixation, saccade, AOI-sequence, event detection and instrument-level QC workflows.
+
+[Visual gallery](methods/visual-gallery.md) · [All workflows](workflows/index.md) · [Mathematical reference](methods/mathematical-reference.md) · [Public API](reference/api.md) · [GitHub repository](https://github.com/stefanosbalaskas/eyetrajectoriespy) · [PyPI](https://pypi.org/project/eyetrajectoriespy/)

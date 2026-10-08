@@ -17,7 +17,7 @@ y_i(t)
 \end{bmatrix}.
 $$
 
-**Stable:** `1.1.0` · **Release candidate:** `1.2.0rc1` · **Python:** 3.11–3.13
+**Published stable:** `1.1.0` · **Candidate source:** `1.2.0rc1` (not published) · **Python:** 3.11–3.13
 
 ```bash
 pip install eyetrajectoriespy
@@ -35,10 +35,26 @@ pip install eyetrajectoriespy==1.1.0
 > **Current stable release: `1.1.0`**  
 > `1.1.0` is the exact-version-qualified final promotion of the production-observed `1.1.0rc1` surface. It preserves the frozen 1.0 root compatibility boundary while making the qualified 1.1 sparse/irregular additions stable module-scoped APIs. Final publication completed from exact protected-main arming commit `66cfb66798a90950e28401e45ee47e98543ff5c6`; immutable qualification, checksums, attestations, and publication provenance are retained in the [1.1.0 release notes](https://stefanosbalaskas.github.io/eyetrajectoriespy/releases/1.1.0/) and validation records.
 >
-> **Release candidate source: `1.2.0rc1`**  
-> The 1.2 workflow/orchestration surface is feature-frozen after W1–W4 qualification. This source line is undergoing literal-RC qualification only: publication readiness remains jointly disarmed, no root workflow exports are promoted, and publication requires a separate governance-only arming step after exact-main qualification.
+> **Next release: `1.2.0rc1` is under qualification (not a stable installation target).**  
+> W1–W4 are complete and exact protected-main workflow/product qualification has passed. The literal-version qualification [PR #220](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/220) merged at `67c5947` after 29/29 PR-head checks. Its exact protected-main checks are separately required before any publication-arming decision. Its separate publication interlocks remain disarmed. The ten orchestration APIs are **module-scoped candidate APIs**, not 1.1 production features or new scientific estimators. The [Bayesian B4 feasibility decision](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/205) authorizes a separate research/design programme only; no architecture winner or Bayesian product API was selected.
 
-![Sparse planar covariance structure estimated by eyetrajectoriespy](docs/assets/gallery/sparse-mfpca-covariance-blocks.svg)
+![Time-indexed planar gaze illustration (tracked repository asset)](docs/assets/trajectory-field.svg)
+
+## Explore the analysis visually
+
+| Scientific visualization | Deterministic 1.2 example |
+| --- | --- |
+| Common-grid FPCA component | [FPCA figure](https://stefanosbalaskas.github.io/eyetrajectoriespy/assets/gallery/workflow-fpca-component.svg) |
+| Function-on-scalar predictor coefficient | [Regression figure](https://stefanosbalaskas.github.io/eyetrajectoriespy/assets/gallery/workflow-function-on-scalar.svg) |
+| Fixed-threshold state-space recurrence | [Recurrence figure](https://stefanosbalaskas.github.io/eyetrajectoriespy/assets/gallery/workflow-recurrence.svg) |
+
+The README illustration is **repository-relative** and renders on GitHub without a Pages deployment. The linked workflow SVGs are generated from **deterministic synthetic fixtures** by the MkDocs documentation workflow, not from human-subject observations; their destinations require a successful Pages deployment. See the [visual gallery](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/visual-gallery/) and [figure-interpretation guide](https://stefanosbalaskas.github.io/eyetrajectoriespy/articles/interpreting-workflow-figures/).
+
+## What is new in the 1.2 release candidate?
+
+The completed **transparent workflow orchestration** layer composes existing validated estimators into ten audit-ready routes: sparse FPCA, paired/asynchronous sparse planar MFPCA, sparse multilevel FPCA, sparse partial prediction, dense FPCA, function-on-scalar regression, functional mixed effects, generalized functional regression and recurrence/RQA. Each route keeps its scientific configuration, step history, decision sources, reporting tables and reproducibility bundle. **No automatic preprocessing, model selection or estimator replacement is implied.**
+
+[Ten workflow routes](https://stefanosbalaskas.github.io/eyetrajectoriespy/articles/choosing-the-ten-workflows/) · [Auditable bundles](https://stefanosbalaskas.github.io/eyetrajectoriespy/articles/reproducible-workflow-bundles/) · [Bayesian evidence boundary](https://stefanosbalaskas.github.io/eyetrajectoriespy/articles/bayesian-feasibility-boundary/) · [1.2 API and validation](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/one-dot-two-workflow-product-qualification/)
 
 ## What can it model?
 
@@ -112,6 +128,21 @@ Consequential choices stay explicit: missingness, interpolation, smoothing, regi
 `eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and symbolic sequence models belong upstream or in specialist packages.
 
 The package deliberately separates stable public methods, advanced diagnostics, external-backend interoperability, and experimental methods. Scientific product qualification matters more than estimator count.
+
+## Workflow API (source/release-candidate only)
+
+> **Installation prerequisite:** A plain `pip install eyetrajectoriespy` currently installs stable **1.1.0** and **does not provide** `run_*_workflow()` APIs. The following code requires a qualified **1.2 candidate source checkout**; `1.2.0rc1` has not yet been published.
+
+```python
+from eyetrajectoriespy import simulate_planar_trajectories
+from eyetrajectoriespy.workflows import FPCAWorkflowConfig, run_fpca_workflow, workflow_reporting_text
+
+gaze = simulate_planar_trajectories(n_participants=18, trials_per_participant=1, random_state=2201)
+result = run_fpca_workflow(gaze, config=FPCAWorkflowConfig(n_components=2, scaling="dimension_sd"))
+print(workflow_reporting_text(result))
+```
+
+This example targets the **1.2 candidate source**, not the published 1.1 distribution. To reproduce it, use a qualified 1.2 source checkout/RC when it becomes available. The `eyetrajectoriespy.workflows` namespace is intentionally not re-exported from `eyetrajectoriespy`.
 
 ## Where is the full advanced API?
 

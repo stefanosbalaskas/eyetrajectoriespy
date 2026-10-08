@@ -1,5 +1,17 @@
 # Tutorial gallery
 
+## New: scientific workflow articles (1.2 candidate)
+
+The ten module-scoped workflow entry points combine existing qualified methods with explicit scientific decisions, ordered records, reporting and reproducibility bundles. **These are 1.2 candidate source examples, not 1.1 stable APIs.**
+
+- [Choose among the ten workflows](../articles/choosing-the-ten-workflows.md) to match representation, estimand and hierarchy.
+- [Interpret the new figures](../articles/interpreting-workflow-figures.md) without equating a plot with validation.
+- [Reproduce and audit an analysis](../articles/reproducible-workflow-bundles.md) through typed decisions, steps, reports and checksums.
+- [Understand the Bayesian decision](../articles/bayesian-feasibility-boundary.md) and what B4 does not authorize.
+
+---
+
+
 Choose a tutorial by the scientific problem rather than by the function name.
 
 <div class="grid cards" markdown>

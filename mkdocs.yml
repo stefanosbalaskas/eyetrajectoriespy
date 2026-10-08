@@ -17,6 +17,12 @@ nav:
           - Generalized binary/count responses: workflows/generalized-responses.md
           - Nonlinear/recurrence analysis: workflows/nonlinear-recurrence.md
           - Transparent orchestration (1.2): workflows/workflow-orchestration.md
+      - Research articles:
+          - Overview: articles/index.md
+          - Choose among ten workflows: articles/choosing-the-ten-workflows.md
+          - Interpret workflow figures: articles/interpreting-workflow-figures.md
+          - Reproducible workflow bundles: articles/reproducible-workflow-bundles.md
+          - Bayesian feasibility boundary: articles/bayesian-feasibility-boundary.md
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md
       - Scientific contracts: concepts/contracts.md

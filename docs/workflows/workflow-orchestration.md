@@ -11,6 +11,9 @@ The governing rule is:
 
 ## Import surface
 
+!!! warning "Candidate-only API"
+    The published `pip install eyetrajectoriespy` installs stable **1.1.0** and does **not** provide the ten `run_*_workflow()` entry points. All code examples on this page require the qualified **1.2 candidate source checkout** until a separately governed prerelease publication succeeds.
+
 Workflow APIs remain module-scoped in the 1.2 release candidate:
 
 ~~~python
@@ -151,6 +154,16 @@ receiving an invented substitute.
 ![Workflow FPCA figure](../assets/gallery/workflow-fpca-component.svg)
 
 ![Workflow recurrence figure](../assets/gallery/workflow-recurrence.svg)
+
+### Workflow decision provenance (synthetic example)
+
+![Decision sources for three deterministic 1.2 workflow examples](../assets/gallery/workflow-audit-provenance.svg)
+
+### Workflow execution order (synthetic example)
+
+![Ordered FPCA workflow steps and observed statuses](../assets/gallery/workflow-audit-steps.svg)
+
+These audit plots are regenerated from **workflow metadata** using deterministic synthetic fixture inputs. They document recorded decisions and ordering, not estimator validity, runtime benchmarks or comparison of scientific quality. See [reproducibility-bundle article](../articles/reproducible-workflow-bundles.md) and [figure interpretation](../articles/interpreting-workflow-figures.md).
 
 ## Reproducibility bundles
 

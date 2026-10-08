@@ -427,6 +427,32 @@ the orchestration record that produced the scientific result.
 
 </div>
 
+## Workflow provenance and ordered-step audit plots
+
+<div class="grid cards et-gallery" markdown>
+
+-   **Decision-source provenance (three synthetic workflow examples)**
+
+    ![Workflow decisions by provenance source](../assets/gallery/workflow-audit-provenance.svg)
+
+    Counts of analyst, audited-selector, workflow-contract and derived records are calculated directly from typed workflow results. The chart is **not** evidence that any scientific estimator outperforms another.
+
+    **API:** `workflow_decisions_frame()`
+
+    [Bundle article](../articles/reproducible-workflow-bundles.md) · [Interpretation](../articles/interpreting-workflow-figures.md)
+
+-   **Ordered FPCA orchestration steps**
+
+    ![Workflow step order and recorded completion status](../assets/gallery/workflow-audit-steps.svg)
+
+    Each step and its recorded status are taken from the typed audit trail. Elapsed time is excluded to keep this visualization deterministic and avoid treating CI runtime as a performance benchmark.
+
+    **API:** `workflow_steps_frame()`
+
+    [1.2 workflow guide](../workflows/workflow-orchestration.md)
+
+</div>
+
 ## Reproduce the gallery
 
 Run:

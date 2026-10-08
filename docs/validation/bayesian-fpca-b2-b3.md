@@ -48,6 +48,14 @@ The CI environment additionally pins:
 
 `sessionInfo()`, R runtime details, BLAS/LAPACK details, exact package versions and checkout SHA are retained in the evidence artifact.
 
-## B4 remains deferred
+## B4 decision — feasibility, not promotion
 
-This tranche must leave `b4_decision_recorded=false`. Only after the replicated recovery, tuning sensitivity and uncertainty evidence are inspected may issue #205 record one of `external_comparator_only`, `native_feasibility_warranted`, or `not_actionable`.
+B4 has been recorded in [issue #205](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/205), based on the definitive [PR #215 evidence](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/215):
+
+- `native_bayesian_feasibility_warranted=true`
+- `architecture_winner_selected=false`
+- `automatic_promotion_decision=false`
+
+The primary `K=7` external `bayesFPCA` comparison completed **128/128** fits (eight frozen scenarios × 16 replicates) and produced lower mean latent-curve reconstruction ISE than the frozen native comparator in every scenario. Where fitted score covariances were available from both routes, repeated-dataset 95% ellipsoid inclusion was higher for the external Bayesian comparator, but generally remained well below nominal coverage. This is evidence to **design and test** a native Bayesian approach, not evidence that it should replace the qualified native covariance/PACE routes. Full population-estimation uncertainty remains unresolved.
+
+The comparator is external-only, runs in isolated evidence jobs and is not copied/ported into this MIT codebase or introduced as a runtime dependency.
