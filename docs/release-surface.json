@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "published_stable_version": "1.1.0",
-  "current_candidate_version": "1.2.0rc1",
+  "current_candidate_version": "1.2.0rc2.dev0",
   "candidate_published": false,
   "public_workflow_availability": "candidate_source_only",
-  "notes": "Documentation publication authority. Update with an explicit governed release and cross-check against pyproject and README."
+  "notes": "Development-branch identity only; candidate_published=false; the frozen RC1 evidence remains separate. Update only after independently authorized E5 promotion."
 }

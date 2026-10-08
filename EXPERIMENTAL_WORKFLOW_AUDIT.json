@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "programme": "e1-e5-workflow-extension",
+  "source_version": "1.2.0rc2.dev0",
+  "previous_qualified_candidate": "1.2.0rc1",
+  "experimental_module": "eyetrajectoriespy.workflows.experimental",
+  "deliverables": [
+    "explicit_common_grid_preprocessing",
+    "workflow_preflight",
+    "declared_sensitivity",
+    "structured_scientific_reporting"
+  ],
+  "gates": {
+    "E1": "implemented_testing",
+    "E2": "implemented_testing",
+    "E3": "implemented_testing",
+    "E4": "implemented_testing",
+    "E5": "fresh_release_qualification_not_started"
+  },
+  "unchanged_frozen_rc1_evidence": true,
+  "root_namespace_promotion": false,
+  "candidate_publication_authorized": false,
+  "candidate_scientifically_qualified": false,
+  "candidate_exact_main_qualified": false,
+  "native_bayesian_estimator_added": false,
+  "new_effect_region_inference_added": false,
+  "retained_first_qualification": {
+    "head": "ad5f990c39587c87e00e3931ca45062dc6bf3064",
+    "run_id": 37826563706,
+    "python": [
+      "3.11",
+      "3.12",
+      "3.13"
+    ],
+    "artifacts": [
+      {
+        "name": "experimental-e1-e4-3.11",
+        "id": 11571208286,
+        "digest": "sha256:0d74d58d5083536df4d1d8e9963035fbb0ca6d9639525a8ed86819d02646f95e"
+      },
+      {
+        "name": "experimental-e1-e4-3.12",
+        "id": 11571262904,
+        "digest": "sha256:93b3bd43609f30f45146fffaae8dad055ab5a5450f9214ae9a1e6e7e3ed80253"
+      },
+      {
+        "name": "experimental-e1-e4-3.13",
+        "id": 11571253063,
+        "digest": "sha256:1e1493def5bafdbb06f903c9b2da8826e09beb383cf7554db16964cc5b76f5cc"
+      }
+    ]
+  },
+  "notes": "Development testing is not equivalent to literal 1.2.0rc2 qualification or authorization to merge a release or publish a distribution."
+}

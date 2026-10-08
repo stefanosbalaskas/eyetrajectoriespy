@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_development_version": "1.2.0rc1",
+  "current_development_version": "1.2.0rc2.dev0",
   "first_public_release_target": "0.9.0",
   "production_release_ready": false,
   "gates": {
@@ -124,7 +124,8 @@
     "The 1.2 workflow/orchestration surface is feature-frozen after W1-W4 completed through PR #219 and exact protected-main commit 11cefc4f81957ab5e3033ba18b993e49ffb01c3d passed 29/29 workflow groups with zero failures.",
     "Literal 1.2.0rc1 qualification is version/evidence/release engineering only. It adds no estimator, numerical method, scientific default, dependency, root API promotion, workflow contract expansion, or hidden selection behavior.",
     "GitHub and production-PyPI publication readiness remain jointly disarmed during 1.2.0rc1 qualification. Fresh exact-RC performance evidence plus the complete PR and exact-main matrices are required before a separate governance-only publication-arming change.",
-    "Production governance for 1.2 now requires the installed workflow-product qualification plus all three Python-version workflow-contract checks on the exact publication-authority commit, and the readiness manifest explicitly freezes the workflow API audit."
+    "Production governance for 1.2 now requires the installed workflow-product qualification plus all three Python-version workflow-contract checks on the exact publication-authority commit, and the readiness manifest explicitly freezes the workflow API audit.",
+    "E1-E4 experimental workflow expansion is isolated on a non-publishing 1.2.0rc2.dev0 development source: no new RC2 qualification, public export freeze or publication authorization is inherited from immutable 1.2.0rc1 evidence."
   ],
   "github_release_ready": false
 }

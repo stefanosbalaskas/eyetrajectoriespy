@@ -1,0 +1,88 @@
+name: experimental-workflow-expansion
+
+on:
+  pull_request:
+    paths:
+      - 'src/eyetrajectoriespy/workflows/_exp_*.py'
+      - 'src/eyetrajectoriespy/workflows/experimental.py'
+      - 'tests/test_experimental_workflow_expansion.py'
+      - 'examples/experimental_workflow_e1_e4.py'
+      - 'EXPERIMENTAL_WORKFLOW_API_AUDIT.json'
+      - 'EXPERIMENTAL_WORKFLOW_AUDIT.json'
+      - 'scripts/audit_experimental_workflow_expansion.py'
+      - 'pyproject.toml'
+      - 'RELEASE_READINESS.json'
+      - '.github/workflows/experimental-workflow-expansion.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/eyetrajectoriespy/workflows/_exp_*.py'
+      - 'src/eyetrajectoriespy/workflows/experimental.py'
+      - 'tests/test_experimental_workflow_expansion.py'
+      - 'examples/experimental_workflow_e1_e4.py'
+      - 'EXPERIMENTAL_WORKFLOW_API_AUDIT.json'
+      - 'EXPERIMENTAL_WORKFLOW_AUDIT.json'
+      - 'scripts/audit_experimental_workflow_expansion.py'
+      - 'pyproject.toml'
+      - 'RELEASE_READINESS.json'
+      - '.github/workflows/experimental-workflow-expansion.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  e1-e4-experimental-qualification:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install source and test tools
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+      - name: Audit E5 development and frozen RC1 boundaries
+        run: python scripts/audit_experimental_workflow_expansion.py
+      - name: Run E1-E4 boundary and robustness tests
+        run: python -m pytest -q tests/test_experimental_workflow_expansion.py
+      - name: Run realistic end-to-end synthetic case
+        run: python examples/experimental_workflow_e1_e4.py --output build/e1-e4-case
+      - name: Build and verify out-of-checkout candidate wheel
+        run: |
+          python -m build --wheel --outdir build/dist
+          python -m pip install --force-reinstall --no-deps build/dist/*.whl
+          cd /tmp
+          python - <<'PY'
+          from pathlib import Path
+          import os
+          import eyetrajectoriespy
+          from eyetrajectoriespy.workflows.experimental import (
+              run_preprocessing_plan, workflow_preflight,
+              run_workflow_sensitivity, render_workflow_report,
+          )
+          package_path = Path(eyetrajectoriespy.__file__).resolve()
+          workspace = Path(os.environ["GITHUB_WORKSPACE"]).resolve()
+          assert not package_path.is_relative_to(workspace), (
+              f"Installed-wheel smoke test inadvertently resolved source checkout: {package_path}"
+          )
+          print(f"PASS installed wheel outside checkout: {package_path}")
+          PY
+          python "$GITHUB_WORKSPACE/examples/experimental_workflow_e1_e4.py" \
+            --output "$GITHUB_WORKSPACE/build/e1-e4-installed-case"
+          test -f "$GITHUB_WORKSPACE/build/e1-e4-installed-case/scientific-report/manifest.json"
+      - name: Retain synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: experimental-e1-e4-${{ matrix.python-version }}
+          path: |
+            build/e1-e4-case/
+            build/e1-e4-installed-case/
+          if-no-files-found: ignore

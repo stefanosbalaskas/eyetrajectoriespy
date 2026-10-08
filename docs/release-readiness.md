@@ -1,6 +1,10 @@
 # Release readiness and publication state
 
-## Current 1.2 release-candidate qualification
+## Experimental source line (draft PR #223)
+
+Development source `1.2.0rc2.dev0` contains experimental E1–E4 utilities. It is not release-qualified and not published. Exact `1.2.0rc1` evidence is unchanged and must not be attributed to this source. A distinct RC2 gate requires its own scientific API audit, numerical/product evidence, release-version synchronization, protected-main CI and separate publication governance.
+
+## Completed 1.2rc1 release-candidate qualification
 
 `1.2.0rc1` is the active unpublished candidate source identity after PR #220 merged at exact protected-main SHA `67c59473cd6ee320298698dd25c1d4929bcf9a96`. The 29/29 successful PR-head workflows and independent post-merge exact-main qualification are distinct gates. No publication is armed by this change; published stable remains `1.1.0`.
 

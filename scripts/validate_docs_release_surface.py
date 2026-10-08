@@ -7,6 +7,8 @@ from pathlib import Path
 import re
 import tomllib
 
+from packaging.version import Version
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
@@ -37,7 +39,8 @@ def main() -> None:
         assert f"eyetrajectoriespy=={stable}" in content, f"{name} stable install mismatch"
         assert "candidate" in content.lower(), f"{name} missing candidate status"
 
-    assert f"The current release-candidate line is **{source_version}**." in roadmap
+    expected_status = ("development" if Version(source_version).is_devrelease else "release-candidate")
+    assert f"The current {expected_status} line is **{source_version}**." in roadmap
     assert stable in roadmap
     assert "pip install eyetrajectoriespy" in guide
     assert "not" in guide.lower() and "candidate" in guide.lower()

@@ -17,7 +17,7 @@ y_i(t)
 \end{bmatrix}.
 $$
 
-**Published stable:** `1.1.0` · **Candidate source:** `1.2.0rc1` (not published) · **Python:** 3.11–3.13
+**Published stable:** `1.1.0` · **Feature branch:** `1.2.0rc2.dev0` (unqualified, unpublished) · **Frozen RC1 source:** `1.2.0rc1` · **Python:** 3.11–3.13
 
 ```bash
 pip install eyetrajectoriespy
@@ -35,8 +35,8 @@ pip install eyetrajectoriespy==1.1.0
 > **Current stable release: `1.1.0`**  
 > `1.1.0` is the exact-version-qualified final promotion of the production-observed `1.1.0rc1` surface. It preserves the frozen 1.0 root compatibility boundary while making the qualified 1.1 sparse/irregular additions stable module-scoped APIs. Final publication completed from exact protected-main arming commit `66cfb66798a90950e28401e45ee47e98543ff5c6`; immutable qualification, checksums, attestations, and publication provenance are retained in the [1.1.0 release notes](https://stefanosbalaskas.github.io/eyetrajectoriespy/releases/1.1.0/) and validation records.
 >
-> **Next release: `1.2.0rc1` is under qualification (not a stable installation target).**  
-> W1–W4 are complete and exact protected-main workflow/product qualification has passed. The literal-version qualification [PR #220](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/220) merged at `67c5947` after 29/29 PR-head checks. Its exact protected-main checks are separately required before any publication-arming decision. Its separate publication interlocks remain disarmed. The ten orchestration APIs are **module-scoped candidate APIs**, not 1.1 production features or new scientific estimators. The [Bayesian B4 feasibility decision](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/205) authorizes a separate research/design programme only; no architecture winner or Bayesian product API was selected.
+> **Frozen source baseline: `1.2.0rc1` was qualified but not published.**  
+> W1–W4 are complete and exact protected-main workflow/product qualification has passed. The complete RC1 qualification [PR #220](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/220) merged at `67c5947` after 29/29 PR-head checks. Its exact protected-main checks are separately required before any publication-arming decision. Its separate publication interlocks remain disarmed. The ten orchestration APIs are **module-scoped candidate APIs**, not 1.1 production features or new scientific estimators. The [Bayesian B4 feasibility decision](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/205) authorizes a separate research/design programme only; no architecture winner or Bayesian product API was selected.
 
 ![Time-indexed planar gaze illustration (tracked repository asset)](docs/assets/trajectory-field.svg)
 
@@ -131,6 +131,8 @@ The package deliberately separates stable public methods, advanced diagnostics, 
 
 ## Workflow API (source/release-candidate only)
 
+> **Experimental branch (E1–E4):** The development identifier `1.2.0rc2.dev0` is *not a release candidate or installable PyPI version*. Its additional helpers are available only through `eyetrajectoriespy.workflows.experimental` in [draft PR #223](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/223); they require fresh E5 qualification and must never be treated as part of frozen `1.2.0rc1`.
+>
 > **Installation prerequisite:** A plain `pip install eyetrajectoriespy` currently installs stable **1.1.0** and **does not provide** `run_*_workflow()` APIs. The following code requires a qualified **1.2 candidate source checkout**; `1.2.0rc1` has not yet been published.
 
 ```python
