@@ -109,7 +109,7 @@ jobs:
         run: |
           RUN_DIR=$(mktemp -d)
           cd "$RUN_DIR"
-          "$GITHUB_WORKSPACE/.workflow-wheel/bin/python"             "$GITHUB_WORKSPACE/scripts/run_one_dot_two_workflow_product_qualification.py"             --output-dir "$GITHUB_WORKSPACE/build/workflow-product-qualification"             --expected-version "1.2.0.dev0"
+          "$GITHUB_WORKSPACE/.workflow-wheel/bin/python"             "$GITHUB_WORKSPACE/scripts/run_one_dot_two_workflow_product_qualification.py"             --output-dir "$GITHUB_WORKSPACE/build/workflow-product-qualification"             --expected-version "1.2.0rc1"
 
       - name: Verify installed evidence and performance envelope
         run: |
@@ -133,7 +133,7 @@ jobs:
               "recurrence:v1",
           }
           assert summary["programme"] == "1.2-workflow-installed-product-qualification"
-          assert summary["package_version"] == "1.2.0.dev0"
+          assert summary["package_version"] == "1.2.0rc1"
           assert summary["installed_package_execution"] is True
           assert summary["repository_private_helpers_used"] is False
           assert summary["empirical_human_data"] is False

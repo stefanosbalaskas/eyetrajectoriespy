@@ -1,5 +1,11 @@
 # Release readiness and publication state
 
+## Current 1.2 release-candidate qualification
+
+`1.2.0rc1` is the active non-publishing qualification identity. The W1–W4 workflow programme is complete, and exact pre-RC protected main `11cefc4f81957ab5e3033ba18b993e49ffb01c3d` passed 29/29 workflow groups with zero failures. Installed-wheel W4 product qualification exercised all ten workflow contracts with zero release-blocking friction and the frozen workflow API audit keeps the new surface module-scoped.
+
+Publication remains jointly disarmed. The current gate is fresh exact-RC performance plus the complete RC pull-request matrix, followed by protected-main merge and complete exact-main requalification. Publication arming is a later governance-only step.
+
 ## Current stable release — 1.1.0
 
 `eyetrajectoriespy 1.1.0` is published on GitHub and production PyPI and is now the stable/default release for the 1.x line.

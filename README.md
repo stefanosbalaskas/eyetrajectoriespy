@@ -17,7 +17,7 @@ y_i(t)
 \end{bmatrix}.
 $$
 
-**Stable:** `1.1.0` · **Development source:** `1.2.0.dev0` · **Python:** 3.11–3.13
+**Stable:** `1.1.0` · **Release candidate:** `1.2.0rc1` · **Python:** 3.11–3.13
 
 ```bash
 pip install eyetrajectoriespy
@@ -35,8 +35,8 @@ pip install eyetrajectoriespy==1.1.0
 > **Current stable release: `1.1.0`**  
 > `1.1.0` is the exact-version-qualified final promotion of the production-observed `1.1.0rc1` surface. It preserves the frozen 1.0 root compatibility boundary while making the qualified 1.1 sparse/irregular additions stable module-scoped APIs. Final publication completed from exact protected-main arming commit `66cfb66798a90950e28401e45ee47e98543ff5c6`; immutable qualification, checksums, attestations, and publication provenance are retained in the [1.1.0 release notes](https://stefanosbalaskas.github.io/eyetrajectoriespy/releases/1.1.0/) and validation records.
 >
-> **Development source: `1.2.0.dev0`**  
-> The current source line is non-publishing. It hosts the transparent workflow/orchestration programme tracked in issue #211 and continued evidence work such as issue #205. It does not alter the immutable `1.1.0` release; publication readiness remains jointly disarmed, and frozen 1.1 qualification evidence remains attributed to `1.1.0` until a future exact-version release is independently qualified.
+> **Release candidate source: `1.2.0rc1`**  
+> The 1.2 workflow/orchestration surface is feature-frozen after W1–W4 qualification. This source line is undergoing literal-RC qualification only: publication readiness remains jointly disarmed, no root workflow exports are promoted, and publication requires a separate governance-only arming step after exact-main qualification.
 
 ![Sparse planar covariance structure estimated by eyetrajectoriespy](docs/assets/gallery/sparse-mfpca-covariance-blocks.svg)
 
@@ -142,6 +142,7 @@ The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native spa
 - [Mathematical contracts](MATHEMATICAL_CONTRACTS.md)
 - [Workflow atlas](WORKFLOW_ATLAS.md)
 - [Current validation ledger](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/)
+- [1.2.0rc1 release notes](docs/releases/1.2.0rc1.md)
 - [1.1.0 release notes](docs/releases/1.1.0.md)
 - [1.1.0rc1 release notes](docs/releases/1.1.0rc1.md)
 - [1.0.0 release notes](docs/releases/1.0.0.md)

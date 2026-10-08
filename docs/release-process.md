@@ -1,5 +1,11 @@
 # Coordinated GitHub Release and PyPI publication
 
+## 1.2.0rc1 exact-version qualification
+
+The 1.2 workflow/orchestration surface is feature-frozen. `1.2.0rc1` is a version/evidence/release-engineering tranche only: no estimator, numerical method, dependency, scientific default, workflow contract or package-root API may change during qualification.
+
+Stable/default production remains `1.1.0`. Publication readiness remains jointly false while the literal RC identity receives fresh package-wide performance evidence and the complete PR plus exact-main matrices. A successful qualification still does not publish; publication authority is armed only in a separate governance-only change.
+
 ## 1.1.0 final exact-version qualification
 
 `1.1.0` final qualification follows successful `1.1.0rc1` qualification, publication, and production-installed observation. The final transition is version-only and must generate fresh literal-version evidence. Historical `1.1.0.dev0`, `1.1.0rc1`, and frozen 1.0 evidence remain attributed to their original identities. Publication remains disarmed throughout final qualification; arming and production publication require later, separate governance.

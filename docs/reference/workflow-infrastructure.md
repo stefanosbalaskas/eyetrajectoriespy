@@ -4,7 +4,7 @@ title: Workflow infrastructure
 
 # Workflow infrastructure
 
-`eyetrajectoriespy.workflows` is the orchestration foundation for the active `1.2.0.dev0` workflow line.
+`eyetrajectoriespy.workflows` is the feature-frozen orchestration surface for the `1.2.0rc1` release-candidate line.
 
 The W1 contract is intentionally infrastructure-only. It does not add a `run_*_workflow()` scientific analysis function, introduce a new estimator, or alter the qualified scientific defaults.
 

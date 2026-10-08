@@ -6,9 +6,9 @@ import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_DEVELOPMENT_VERSION = "1.2.0.dev0"
+CURRENT_SOURCE_VERSION = "1.2.0rc1"
 CURRENT_STABLE_VERSION = "1.1.0"
-LATEST_QUALIFIED_EVIDENCE_VERSION = "1.1.0"
+LATEST_QUALIFIED_EVIDENCE_VERSION = "1.2.0rc1"
 
 
 def _load_script(name):
@@ -20,12 +20,12 @@ def _load_script(name):
     return module
 
 
-def test_release_version_contract_agrees_for_development_line():
+def test_release_version_contract_agrees_for_active_source_line():
     module = _load_script("verify_release_version.py")
-    assert module.verify_version_contract() == CURRENT_DEVELOPMENT_VERSION
+    assert module.verify_version_contract() == CURRENT_SOURCE_VERSION
 
 
-def test_release_version_validator_accepts_final_stable_line():
+def test_release_version_validator_accepts_release_candidate_source_line():
     module = _load_script("verify_release_version.py")
     source = (ROOT / "scripts" / "verify_release_version.py").read_text(
         encoding="utf-8"
@@ -43,33 +43,32 @@ def test_release_version_validator_accepts_final_stable_line():
         in roadmap
     )
     assert (
-        f"The current development line is **{CURRENT_DEVELOPMENT_VERSION}**."
+        f"The current release-candidate line is **{CURRENT_SOURCE_VERSION}**."
         in roadmap
     )
-    assert module.verify_version_contract() == CURRENT_DEVELOPMENT_VERSION
+    assert module.verify_version_contract() == CURRENT_SOURCE_VERSION
 
 
-def test_development_line_is_not_production_eligible():
+def test_release_candidate_version_is_production_valid_but_not_armed_here():
     module = _load_script("verify_release_version.py")
-    with pytest.raises(RuntimeError, match="development versions"):
-        module.verify_version_contract(
-            tag=f"v{CURRENT_DEVELOPMENT_VERSION}",
-            production=True,
-        )
+    assert module.verify_version_contract(
+        tag=f"v{CURRENT_SOURCE_VERSION}",
+        production=True,
+    ) == CURRENT_SOURCE_VERSION
 
 
-def test_development_line_rejects_stale_stable_tag():
+def test_release_candidate_rejects_stale_stable_tag():
     module = _load_script("verify_release_version.py")
     with pytest.raises(RuntimeError, match="release tag/version mismatch"):
         module.verify_version_contract(tag=f"v{CURRENT_STABLE_VERSION}")
 
 
-def test_development_line_inherits_latest_qualified_evidence():
+def test_release_candidate_requires_exact_qualified_evidence():
     module = _load_script("verify_release_version.py")
     assert set(module.qualified_evidence_contract().values()) == {
         LATEST_QUALIFIED_EVIDENCE_VERSION
     }
-    assert module.verify_version_contract() == CURRENT_DEVELOPMENT_VERSION
+    assert module.verify_version_contract() == CURRENT_SOURCE_VERSION
 
 
 def test_release_candidate_would_require_fresh_exact_version_evidence(monkeypatch):
@@ -222,6 +221,18 @@ def test_release_governance_requires_exact_main_simulation_evidence():
         "sparse_mfpca_performance_qualified",
     ):
         assert gate in module._GITHUB_RELEASE_DECLARATIONS
+    for gate in (
+        "workflow_product_qualification_qualified",
+        "workflow_api_audit_frozen",
+    ):
+        assert gate in module._GITHUB_RELEASE_DECLARATIONS
+    for check in (
+        "workflow-contract (3.11)",
+        "workflow-contract (3.12)",
+        "workflow-contract (3.13)",
+        "installed-product",
+    ):
+        assert check in module.REQUIRED_CHECKS
     for check in (
         "sparse-mfpca-recovery",
         "sparse-mfpca-sensitivity",

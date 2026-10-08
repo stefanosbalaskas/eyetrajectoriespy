@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "programme": "1.2-workflow-release-candidate-qualification",
+  "decision": "approve_exact_version_rc_qualification",
+  "pre_rc_qualified_main_sha": "11cefc4f81957ab5e3033ba18b993e49ffb01c3d",
+  "pre_rc_exact_main_workflows": "29/29",
+  "w4_pull_request": 219,
+  "workflow_product_artifact_id": 11545926700,
+  "workflow_product_artifact_digest": "sha256:1942ed2266c466eae4127e177abdec963f4fcc0d6fd79b7c8cc9799e06154611",
+  "workflow_api_audit": "WORKFLOW_API_AUDIT.json",
+  "workflow_api_boundary_state": "module_scoped_stable_candidate",
+  "root_exports_promoted": false,
+  "workflow_entry_points": 10,
+  "workflow_contracts": 10,
+  "package_version": "1.2.0rc1",
+  "performance_run_id": 37771315492,
+  "performance_artifact_id": 11547647032,
+  "performance_artifact_digest": "sha256:dc90a93b930ba3e7b86f41552d9898c526edb2eb3f560a5b7702062d161be965",
+  "performance_qualification_commit": "765f7b5e9277315f8b0d0ddbcbcfe285aca66da1",
+  "historical_one_dot_one_performance_relabelled": false,
+  "frozen_one_dot_zero_evidence_mutated": false,
+  "scientific_behavior_changed": false,
+  "supported_api_changed": false,
+  "workflow_contract_changed": false,
+  "dependency_changed": false,
+  "publication_interlock": {
+    "production_release_ready": false,
+    "github_publication_ready": false,
+    "pypi_publication_ready": false,
+    "publication_arming_performed": false
+  },
+  "status": "literal_rc_evidence_committed_pr_matrix_pending"
+}
