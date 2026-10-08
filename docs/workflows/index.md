@@ -2,7 +2,7 @@
 
 The five canonical scientific entry routes predate the 1.2 release candidate. They remain the recommended way to start with a research question. The **1.2 typed workflow layer** adds ten explicit orchestration entry points under `eyetrajectoriespy.workflows` without replacing existing estimators or promoting new package-root exports.
 
-**Release status:** 1.1.0 is published stable; the literal 1.2.0rc1 is under qualification and has not been published. See [ten-route selection](../articles/choosing-the-ten-workflows.md) and [transparent orchestration](workflow-orchestration.md).
+**Release status:** 1.1.0 is published stable; frozen qualified 1.2.0rc1 is unpublished, and 1.2.0rc2.dev0 is experimental development merged into protected main. A literal RC2 release has not been qualified or published. See [ten-route selection](../articles/choosing-the-ten-workflows.md) and [transparent orchestration](workflow-orchestration.md).
 
 Start with one of five routes:
 

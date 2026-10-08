@@ -9,6 +9,8 @@ nav:
   - Home: index.md
   - Start here:
       - Quick start: quickstart.md
+      - Input schemas: guides/input-schemas.md
+      - Advanced recipes: tutorials/advanced-recipes.md
       - Canonical workflows:
           - Overview: workflows/index.md
           - Continuous gaze + FPCA: workflows/fpca-exploration.md
@@ -24,6 +26,8 @@ nav:
           - Interpret workflow figures: articles/interpreting-workflow-figures.md
           - Reproducible workflow bundles: articles/reproducible-workflow-bundles.md
           - Bayesian feasibility boundary: articles/bayesian-feasibility-boundary.md
+          - Authentic-data E1-E4 usability: articles/real-gaze-usability.md
+      - Experimental E1-E4 result figures: methods/experimental-e1-e4-gallery.md
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md
       - Scientific contracts: concepts/contracts.md

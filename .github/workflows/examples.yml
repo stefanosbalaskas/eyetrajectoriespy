@@ -81,3 +81,6 @@ jobs:
           python examples/canonical_repeated_trial_mixed_effects.py
           python examples/canonical_generalized_responses.py
           python examples/canonical_nonlinear_recurrence.py
+          python examples/quickstart_dense_fpca.py
+          python examples/quickstart_sparse_planar.py
+          python examples/quickstart_functional_regression.py

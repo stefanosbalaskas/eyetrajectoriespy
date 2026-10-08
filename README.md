@@ -17,7 +17,7 @@ y_i(t)
 \end{bmatrix}.
 $$
 
-**Published stable:** `1.1.0` · **Feature branch:** `1.2.0rc2.dev0` (unqualified, unpublished) · **Frozen RC1 source:** `1.2.0rc1` · **Python:** 3.11–3.13
+**Published stable:** `1.1.0` · **Unpublished development source:** `1.2.0rc2.dev0` (experimental, not literal RC2 qualified) · **Frozen RC1 source:** `1.2.0rc1` · **Python:** 3.11–3.13
 
 ```bash
 pip install eyetrajectoriespy
@@ -131,7 +131,7 @@ The package deliberately separates stable public methods, advanced diagnostics, 
 
 ## Workflow API (source/release-candidate only)
 
-> **Experimental branch (E1–E4):** The development identifier `1.2.0rc2.dev0` is *not a release candidate or installable PyPI version*. Its additional helpers are available only through `eyetrajectoriespy.workflows.experimental` in [draft PR #223](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/223); they require fresh E5 qualification and must never be treated as part of frozen `1.2.0rc1`.
+> **Experimental E1–E4:** The development identifier `1.2.0rc2.dev0` is **not** a qualified release candidate or published PyPI artifact. The experimental module is merged into protected `main` via [PR #223](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/223); it requires fresh literal RC2 qualification under E5. Frozen RC1 evidence must not be relabelled.
 >
 > **Installation prerequisite:** A plain `pip install eyetrajectoriespy` currently installs stable **1.1.0** and **does not provide** `run_*_workflow()` APIs. The following code requires a qualified **1.2 candidate source checkout**; `1.2.0rc1` has not yet been published.
 
