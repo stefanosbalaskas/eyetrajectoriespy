@@ -7,17 +7,7 @@ the underlying `fit_*`, diagnostic, reporting or plotting functions.
 
 The governing rule is:
 
-[
-	ext{workflow}
-=
-	ext{explicit decisions}
-+
-	ext{ordered composition}
-+
-	ext{reporting}
-+
-	ext{provenance}.
-]
+`workflow = explicit decisions + ordered composition + reporting + provenance`.
 
 ## Import surface
 
@@ -114,7 +104,7 @@ result = run_recurrence_workflow(
 ~~~
 
 The workflow performs delay embedding, fixed-radius recurrence construction and
-RQA in that order. It does **not** select (m), (	au), (arepsilon), the
+RQA in that order. It does **not** select the embedding dimension (m), delay (tau), recurrence radius (epsilon), the
 Theiler window or line thresholds. Use the existing diagnostic and sensitivity
 APIs when several specifications are scientifically defensible.
 
