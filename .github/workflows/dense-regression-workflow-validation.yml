@@ -6,6 +6,7 @@ on:
       - ".github/workflows/dense-regression-workflow-validation.yml"
       - "src/eyetrajectoriespy/workflows/**"
       - "tests/test_dense_regression_workflows.py"
+      - "tests/test_workflow_contract_edges.py"
       - "src/eyetrajectoriespy/fpca.py"
       - "src/eyetrajectoriespy/function_on_scalar.py"
       - "src/eyetrajectoriespy/functional_mixed_effects.py"
@@ -54,7 +55,8 @@ jobs:
           python -m pytest -q \
             tests/test_workflow_infrastructure.py \
             tests/test_sparse_workflows.py \
-            tests/test_dense_regression_workflows.py
+            tests/test_dense_regression_workflows.py \
+            tests/test_workflow_contract_edges.py
 
       - name: Verify W3 module-scoped surface and explicit family contract
         run: |
