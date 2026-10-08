@@ -29,6 +29,8 @@ _GITHUB_RELEASE_DECLARATIONS = {
     "sparse_mfpca_observation_stress_recorded",
     "sparse_mfpca_performance_qualified",
     "one_dot_zero_api_stability_frozen",
+    "workflow_product_qualification_qualified",
+    "workflow_api_audit_frozen",
 }
 
 REQUIRED_CHECKS = {
@@ -61,6 +63,10 @@ REQUIRED_CHECKS = {
     "observation-process-stress",
     "sparse-mfpca-performance-envelope",
     "frozen-api-boundary",
+    "workflow-contract (3.11)",
+    "workflow-contract (3.12)",
+    "workflow-contract (3.13)",
+    "installed-product",
 }
 
 
