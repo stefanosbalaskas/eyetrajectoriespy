@@ -15,6 +15,7 @@ from eyetrajectoriespy import simulate_planar_trajectories
 from eyetrajectoriespy.workflows import FPCAWorkflowConfig, PreprocessingPlan, PreprocessingStepConfig, run_fpca_workflow
 from eyetrajectoriespy.workflows.experimental import (
     WorkflowSpecification,
+    plot_workflow_preflight,
     plot_workflow_sensitivity,
     render_workflow_report,
     run_preprocessing_plan,
@@ -39,6 +40,9 @@ def main() -> None:
     preflight.summary.to_csv(output / "preflight-summary.csv", index=False)
     preflight.curve_support.to_csv(output / "curve-support.csv", index=False)
     preflight.participant_support.to_csv(output / "participant-support.csv", index=False)
+    qc_ax = plot_workflow_preflight(preflight)
+    preflight_figure = output / "preflight-missingness.svg"
+    qc_ax.figure.savefig(preflight_figure, format="svg", bbox_inches="tight")
 
     plan = PreprocessingPlan(steps=(
         PreprocessingStepConfig(
@@ -82,8 +86,9 @@ def main() -> None:
 
     report = render_workflow_report(
         fitted, output / "scientific-report", title="Synthetic planar-gaze FPCA demonstration",
-        figures={"sensitivity-stability": figure},
+        figures={"sensitivity-stability": figure, "preflight-missingness": preflight_figure},
         figure_captions={
+            "preflight-missingness": "Descriptive observed-sample missingness by curve; no automated exclusion.",
             "sensitivity-stability": "Descriptive retained-variance fraction across analyst-declared FPCA component counts; no inference."
         },
         preflight=preflight,

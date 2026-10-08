@@ -9,7 +9,7 @@ The analyst explicitly specifies an ordered `PreprocessingPlan`. The experimenta
 
 ## E2 — Preflight without exclusion
 
-`workflow_preflight()` reports per-curve missingness, minimum channel support, recorded time/coordinate units and participant/trial hierarchy. An incompatible requested dimension or common-grid requirement is blocking; low support and absent hierarchy labels are descriptive warnings. This is not a power calculation, a QC exclusion rule or estimator qualification.
+`workflow_preflight()` reports per-curve missingness, minimum channel support, recorded time/coordinate units and participant/trial hierarchy. An incompatible requested dimension or common-grid requirement is blocking; low support and absent hierarchy labels are descriptive warnings. This is not a power calculation, a QC exclusion rule or estimator qualification. The optional `plot_workflow_preflight()` presents the rank-ordered missingness fractions without identifying an exclusion threshold.
 
 ## E3 — Declared sensitivity rather than hidden model choice
 

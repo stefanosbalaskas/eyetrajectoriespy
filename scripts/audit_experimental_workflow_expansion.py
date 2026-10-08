@@ -18,6 +18,7 @@ EXPECTED_EXPERIMENTAL = {
     "WorkflowReportArtifact", "WorkflowSensitivityResult", "WorkflowSpecification",
     "run_preprocessing_plan", "run_workflow_preprocessed", "workflow_preflight",
     "run_workflow_sensitivity", "plot_workflow_sensitivity", "render_workflow_report",
+    "plot_workflow_preflight",
 }
 
 
@@ -46,7 +47,7 @@ def main() -> None:
     assert development["candidate_exact_main_qualified"] is False
     assert development["native_bayesian_estimator_added"] is False
     assert development["new_effect_region_inference_added"] is False
-    print("PASS E5 development boundaries: RC1 immutable, 11 experimental exports, RC2 not qualified")
+    print("PASS E5 development boundaries: RC1 immutable, 12 experimental exports, RC2 not qualified")
 
 
 if __name__ == "__main__":

@@ -144,3 +144,21 @@ def workflow_preflight(
                     "require_common_grid": require_common_grid,
                     "minimum_observed_per_dimension": minimum_observed_per_dimension},
     )
+
+
+def plot_workflow_preflight(result: WorkflowPreflightResult, *, ax: Any = None) -> Any:
+    """Plot sorted per-curve missingness fractions without selecting exclusions."""
+
+    import matplotlib.pyplot as plt
+
+    if not isinstance(result, WorkflowPreflightResult):
+        raise TypeError("result must be a WorkflowPreflightResult")
+    if ax is None:
+        _, ax = plt.subplots(figsize=(7.5, 3.75))
+    fractions = np.sort(result.curve_support["missing_fraction"].to_numpy(dtype=float))
+    ax.plot(np.arange(1, len(fractions) + 1), fractions, ".", color="tab:blue")
+    ax.set_ylim(-0.02, 1.02)
+    ax.set_xlabel("Trajectory rank by missing fraction (no exclusions)")
+    ax.set_ylabel("Missing dimension-samples / observed grid positions")
+    ax.set_title("Descriptive input missingness; no automatic quality cutoff")
+    return ax

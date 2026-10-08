@@ -16,7 +16,7 @@ from eyetrajectoriespy.workflows import (
     FPCAWorkflowConfig, PreprocessingPlan, PreprocessingStepConfig, run_fpca_workflow,
 )
 from eyetrajectoriespy.workflows.experimental import (
-    WorkflowSpecification, plot_workflow_sensitivity,
+    WorkflowSpecification, plot_workflow_preflight, plot_workflow_sensitivity,
     render_workflow_report, run_preprocessing_plan,
     run_workflow_preprocessed, run_workflow_sensitivity, workflow_preflight,
 )
@@ -130,6 +130,8 @@ def test_e2_missingness_low_support_never_removes_curves(gaze):
     assert out.warnings
     assert out.provenance["automatic_exclusions"] is False
     assert np.isnan(data.values[0, :, 0]).all()
+    ax = plot_workflow_preflight(out)
+    assert ax.get_ylim()[1] > 0.99
 
 
 def test_e2_sparse_layout_and_common_grid_requirement(gaze):
