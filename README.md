@@ -142,6 +142,7 @@ The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native spa
 - [Mathematical contracts](MATHEMATICAL_CONTRACTS.md)
 - [Workflow atlas](WORKFLOW_ATLAS.md)
 - [Current validation ledger](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/)
+- [1.2.0rc1 release notes](docs/releases/1.2.0rc1.md)
 - [1.1.0 release notes](docs/releases/1.1.0.md)
 - [1.1.0rc1 release notes](docs/releases/1.1.0rc1.md)
 - [1.0.0 release notes](docs/releases/1.0.0.md)
