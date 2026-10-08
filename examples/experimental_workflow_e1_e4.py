@@ -72,6 +72,7 @@ def main() -> None:
         preprocessed.data, runner=run_fpca_workflow, specifications=specs,
         baseline_name="retain-2",
         metrics={"explained_variance_ratio_sum": lambda r: float(r.fit.explained_variance_ratio.sum())},
+        conclusions={"multiple_components": lambda r: r.fit.n_components > 1},
     )
     sensitivity.specifications.to_csv(output / "sensitivity-specifications.csv", index=False)
     sensitivity.metric_frame.to_csv(output / "sensitivity-descriptive-metrics.csv", index=False)

@@ -13,7 +13,7 @@ The analyst explicitly specifies an ordered `PreprocessingPlan`. The experimenta
 
 ## E3 — Declared sensitivity rather than hidden model choice
 
-`run_workflow_sensitivity()` requires multiple named typed configurations, a common declared estimand, an explicit baseline and analyst-provided scalar extraction functions. Different estimands fail before execution; incompatible workflow contracts cannot be compared. Fits that fail remain visible in the specification ledger. The companion plot shows descriptive stability, not p-values or confidence intervals.
+`run_workflow_sensitivity()` requires multiple named typed configurations, a common declared estimand, an explicit baseline and analyst-provided scalar extraction functions. Different estimands fail before execution; incompatible workflow contracts cannot be compared. Fits that fail remain visible in the specification ledger. Optional analyst-defined boolean/string conclusion extractors can show which *declared* interpretation labels change relative to the baseline, without synthesizing statistical tests. Valid uncertainty endpoints may be included only as explicitly extracted comparable model metrics. The companion plot shows descriptive stability, not p-values or confidence intervals.
 
 ## E4 — Auditable manuscript reports
 

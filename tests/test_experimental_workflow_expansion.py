@@ -167,7 +167,9 @@ def test_e3_declared_specs_with_baseline_deltas(gaze):
         gaze, runner=run_fpca_workflow, specifications=_specs(),
         baseline_name="k1",
         metrics={"explained": lambda r: float(r.fit.explained_variance_ratio.sum())},
+        conclusions={"retains_two": lambda r: r.fit.n_components == 2},
     )
+    assert out.metric_frame["conclusion_retains_two_changed"].tolist() == [False, True]
     assert len(out.outcomes) == 2
     assert not out.errors
     assert out.metric_frame.iloc[0]["explained_delta_from_baseline"] == pytest.approx(0)
