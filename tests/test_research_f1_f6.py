@@ -1,0 +1,174 @@
+"""Experimental F1-F6 contract smoke tests; not scientific method qualification."""
+import json
+import numpy as np
+import pandas as pd
+import pytest
+
+from eyetrajectoriespy import TrajectorySet, IrregularTrajectorySet
+from eyetrajectoriespy.research import (
+    audit_gaze_measurement_quality, measurement_quality_reporting_frame,
+    validate_eyetracking_metadata, from_bids_eyetracking,
+    project_simplex, compare_aoi_functional_geometries,
+    fit_weighted_mfpca, reconstruct_weighted_mfpca, weighted_component_geometry,
+    detect_ordered_functional_changepoint,
+    test_sparse_functional_groups as sparse_group_test,
+    functional_group_contrast_frame,
+)
+
+
+def dense(n=16, p=2):
+    rng = np.random.default_rng(421)
+    t = np.linspace(0, 1, 25)
+    values = rng.normal(0, .01, (n, len(t), p))
+    values[:, :, 0] += .45 + .05 * np.sin(np.pi * t)
+    values[:, :, 1] += .52 + .05 * np.cos(np.pi * t)
+    return TrajectorySet(time=t, values=values,
+                         curve_ids=tuple(f"c{i}" for i in range(n)),
+                         dimension_names=("x", "y"),
+                         metadata=pd.DataFrame({"participant_id": [f"P{i}" for i in range(n)]}),
+                         coordinate_system="normalized", time_unit="s")
+
+
+def test_quality_missing_is_not_zero_accuracy():
+    data = dense()
+    record = audit_gaze_measurement_quality(data)
+    report = measurement_quality_reporting_frame(record)
+    row = report.loc[report.metric == "accuracy_deg"].iloc[0]
+    assert row.evidence == "not_available"
+    assert np.isnan(row["mean"])
+    assert report.iloc[-1]["mean"] == pytest.approx(1.0)
+    assert record.provenance["absolute_accuracy_inferred_from_gaze"] is False
+
+
+def test_quality_measurement_source_required():
+    with pytest.raises(ValueError, match="evidence_source"):
+        audit_gaze_measurement_quality(
+            dense(), validation_records=pd.DataFrame({"participant_id": ["P1"], "accuracy_deg": [0.4]})
+        )
+    record = audit_gaze_measurement_quality(
+        dense(), validation_records=pd.DataFrame({
+            "participant_id": ["P1"], "accuracy_deg": [.4],
+            "precision_deg": [.2], "evidence_source": ["validation target record"]
+        })
+    )
+    assert measurement_quality_reporting_frame(record).iloc[0]["mean"] == pytest.approx(.4)
+
+
+def sidecar():
+    return {
+        "Columns": ["timestamp", "x_coordinate", "y_coordinate"],
+        "SamplingFrequency": 100., "StartTime": 0.,
+        "PhysioType": "eyetrack", "RecordedEye": "left",
+        "SampleCoordinateSystem": "screen-pixel",
+        "x_coordinate": {"Units": "px"},
+        "y_coordinate": {"Units": "px"},
+        "timestamp": {"Units": "s"},
+    }
+
+
+def test_bids_narrow_import_and_missingness(tmp_path):
+    path = tmp_path / "sub-01_task-look_recording-eye1_physio.tsv.gz"
+    pd.DataFrame([[0, 100, 220], [.01, np.nan, 222], [.02, 101, 221]]).to_csv(
+        path, sep="\t", index=False, header=False, compression="gzip", na_rep="n/a"
+    )
+    meta = sidecar()
+    metadata = tmp_path / "sub-01_task-look_recording-eye1_physio.json"
+    metadata.write_text(json.dumps(meta))
+    item = from_bids_eyetracking(path, sidecar=metadata)
+    assert item.values.shape == (1, 3, 2)
+    assert np.isnan(item.values[0, 1, 0])
+    assert item.provenance["interpolation_performed"] is False
+    assert item.coordinate_system == "pixels"
+
+
+def test_bids_metadata_rejects_unknown_units_and_bad_clock(tmp_path):
+    bad = sidecar()
+    bad["x_coordinate"]["Units"] = "frames"
+    with pytest.raises(ValueError, match="units"):
+        validate_eyetracking_metadata(bad)
+    path = tmp_path / "sub-01_task-look_recording-eye1_physio.tsv.gz"
+    pd.DataFrame([[0, 100, 220], [.01, 120, 240], [.024, 140, 250]]).to_csv(
+        path, sep="\t", index=False, header=False, compression="gzip"
+    )
+    with pytest.raises(ValueError, match="timestamps"):
+        from_bids_eyetracking(path, sidecar=sidecar())
+
+
+def test_simplex_projection_and_aoi_comparison():
+    x = project_simplex(np.array([[-1., 2., 1.], [.4, .6, 0.]]))
+    assert (x >= -1e-12).all()
+    assert np.allclose(x.sum(axis=1), 1)
+    rng = np.random.default_rng(27)
+    t = np.linspace(0, 1, 21)
+    logits = rng.normal(0, .23, (14, len(t), 3))
+    v = np.exp(logits) / np.exp(logits).sum(axis=2, keepdims=True)
+    v[0, 0] = [1, 0, 0]
+    data = TrajectorySet(time=t, values=v,
+                         curve_ids=tuple(f"a{i}" for i in range(14)),
+                         dimension_names=("A", "B", "C"))
+    result = compare_aoi_functional_geometries(data, n_components=2)
+    assert len(result.summary) == 2
+    assert np.allclose(result.alr_reconstruction.sum(axis=2), 1)
+    assert np.allclose(result.projected_reconstruction.sum(axis=2), 1)
+    assert (result.projected_reconstruction >= 0).all()
+    assert result.provisional
+
+
+def test_weighted_geometry_and_fail_closed_input():
+    d = dense()
+    fit = fit_weighted_mfpca(d, weights=(2., .5), n_components=2)
+    assert reconstruct_weighted_mfpca(fit).shape == d.values.shape
+    assert weighted_component_geometry(fit).shape[2] == 2
+    with pytest.raises(ValueError, match="positive"):
+        fit_weighted_mfpca(d, weights=(1., 0.))
+
+
+def test_ordered_change_point_and_dependence_declared():
+    d = dense(n=20)
+    values = d.values.copy()
+    values[11:, :, 0] += .2
+    data = d.with_values(values)
+    out = detect_ordered_functional_changepoint(data, dependence="independent",
+                                                 n_bootstrap=99, random_state=123)
+    assert 5 <= out.split_index <= 15
+    assert len(out.null_statistics) == 99
+    assert out.evidence["calibration_not_qualified"]
+    with pytest.raises(ValueError, match="requires"):
+        detect_ordered_functional_changepoint(data, dependence="weak_block", n_bootstrap=99)
+    dependent = detect_ordered_functional_changepoint(
+        data, dependence="weak_block", block_length=3, n_bootstrap=99
+    )
+    assert dependent.evidence["block_length"] == 3
+
+
+def test_sparse_group_prototype_unit_permutation():
+    rng = np.random.default_rng(707)
+    times, values, ids = [], [], []
+    for i in range(16):
+        t = np.r_[0., np.sort(rng.uniform(.07, .93, 13)), 1.]
+        z = rng.normal()
+        v = np.column_stack((.4 + .08*z*np.sin(np.pi*t) + (i>=8)*.07*np.sin(np.pi*t),
+                             .5 + .07*z*np.cos(np.pi*t)))
+        v += rng.normal(0, .012, v.shape)
+        times.append(t); values.append(v); ids.append(f"unit{i}")
+    sparse = IrregularTrajectorySet(
+        time=tuple(times), values=tuple(values), curve_ids=tuple(ids),
+        dimension_names=("x", "y"), coordinate_system="normalized", time_unit="s"
+    )
+    kwargs = {
+        "n_components": 2, "evaluation_grid": np.linspace(0, 1, 21),
+        "mean_bandwidth": .3, "covariance_bandwidth": .45,
+        "measurement_error": "diagonal",
+        "measurement_error_variance": (.0002, .0002),
+        "psd_action": "project", "score_failure_action": "retain_nan",
+    }
+    out = sparse_group_test(sparse, ["A"]*8 + ["B"]*8,
+                            fit_kwargs=kwargs, n_permutations=99, random_state=4)
+    assert out.n_independent_units == 16
+    assert 0 < out.p_value <= 1
+    assert len(functional_group_contrast_frame(out)) == 42
+    assert out.evidence["not_Koner_Luo_2024_replication"]
+    with pytest.raises(ValueError, match="repeated participants|one independent unit"):
+        sparse_group_test(sparse, ["A"]*8 + ["B"]*8,
+                          fit_kwargs=kwargs, unit_ids=["same"]*16,
+                          n_permutations=99)
