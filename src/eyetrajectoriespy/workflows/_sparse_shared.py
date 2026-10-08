@@ -27,8 +27,10 @@ class ScoreUncertaintyConfig:
     def __post_init__(self) -> None:
         if self.condition_limit is not None:
             value = float(self.condition_limit)
-            if not np.isfinite(value) or value <= 0:
-                raise ValueError("condition_limit must be finite and positive")
+            if not np.isfinite(value) or value <= 1:
+                raise ValueError(
+                    "condition_limit must be finite and greater than 1"
+                )
             object.__setattr__(self, "condition_limit", value)
         if self.failure_action not in {"error", "retain_nan"}:
             raise ValueError("failure_action must be 'error' or 'retain_nan'")
