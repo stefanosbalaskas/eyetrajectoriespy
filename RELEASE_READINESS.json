@@ -23,7 +23,9 @@
     "sparse_mfpca_observation_stress_recorded": true,
     "sparse_mfpca_performance_qualified": true,
     "sparse_mfpca_rc_exact_version_performance_qualified": true,
-    "one_dot_zero_api_stability_frozen": true
+    "one_dot_zero_api_stability_frozen": true,
+    "workflow_product_qualification_qualified": true,
+    "workflow_api_audit_frozen": true
   },
   "notes": [
     "Before final 0.11.0 publication, 0.10.0 was the current stable pre-1.0 release; published 0.11.0rc1 remains immutable.",
@@ -121,7 +123,8 @@
     "1.2.0.dev0 opens a non-publishing post-1.1 development line for the transparent workflow/orchestration programme tracked in issue #211 and continued evidence work such as issue #205. Published 1.1.0 artifacts and exact-version qualification evidence remain immutable and attributed to 1.1.0; the frozen 1.0 package-root compatibility boundary remains unchanged; GitHub/PyPI publication readiness stays jointly disarmed until a future exact-version release cycle.",
     "The 1.2 workflow/orchestration surface is feature-frozen after W1-W4 completed through PR #219 and exact protected-main commit 11cefc4f81957ab5e3033ba18b993e49ffb01c3d passed 29/29 workflow groups with zero failures.",
     "Literal 1.2.0rc1 qualification is version/evidence/release engineering only. It adds no estimator, numerical method, scientific default, dependency, root API promotion, workflow contract expansion, or hidden selection behavior.",
-    "GitHub and production-PyPI publication readiness remain jointly disarmed during 1.2.0rc1 qualification. Fresh exact-RC performance evidence plus the complete PR and exact-main matrices are required before a separate governance-only publication-arming change."
+    "GitHub and production-PyPI publication readiness remain jointly disarmed during 1.2.0rc1 qualification. Fresh exact-RC performance evidence plus the complete PR and exact-main matrices are required before a separate governance-only publication-arming change.",
+    "Production governance for 1.2 now requires the installed workflow-product qualification plus all three Python-version workflow-contract checks on the exact publication-authority commit, and the readiness manifest explicitly freezes the workflow API audit."
   ],
   "github_release_ready": false
 }
