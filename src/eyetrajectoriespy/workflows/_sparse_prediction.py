@@ -81,9 +81,9 @@ class SparsePredictionWorkflowConfig:
         )
         if self.condition_limit is not None:
             value = float(self.condition_limit)
-            if not np.isfinite(value) or value <= 0:
+            if not np.isfinite(value) or value <= 1:
                 raise ValueError(
-                    "condition_limit must be finite and positive"
+                    "condition_limit must be finite and greater than 1"
                 )
             object.__setattr__(self, "condition_limit", value)
         if self.history_ridge is not None:
