@@ -246,6 +246,51 @@ def test_workflow_plotting_requires_explicit_scientific_selector(tmp_path):
         )
 
 
+def test_workflow_plot_dispatch_type_and_selector_guards():
+    with pytest.raises(TypeError, match="component"):
+        plot_workflow_result(
+            object(),
+            plot="sparse_fpca_component",
+            component=True,
+        )
+    with pytest.raises(TypeError, match="FPCAWorkflowResult"):
+        plot_workflow_result(
+            object(),
+            plot="fpca_component",
+            component=0,
+        )
+    with pytest.raises(TypeError, match="SparseFPCAWorkflowResult"):
+        plot_workflow_result(
+            object(),
+            plot="sparse_fpca_component",
+            component=0,
+        )
+    with pytest.raises(TypeError, match="SparseMFPCAWorkflowResult"):
+        plot_workflow_result(
+            object(),
+            plot="sparse_mfpca_component",
+            component=0,
+        )
+    with pytest.raises(TypeError, match="FunctionOnScalarWorkflowResult"):
+        plot_workflow_result(
+            object(),
+            plot="function_on_scalar_coefficient",
+            coefficient="condition",
+        )
+    with pytest.raises(TypeError, match="FunctionalMixedEffectsWorkflowResult"):
+        plot_workflow_result(
+            object(),
+            plot="functional_mixed_effects_coefficient",
+            coefficient="condition",
+        )
+    with pytest.raises(TypeError, match="GeneralizedFunctionalWorkflowResult"):
+        plot_workflow_result(
+            object(),
+            plot="generalized_functional_coefficient",
+            coefficient="condition",
+        )
+
+
 def test_recurrence_workflow_bundle_is_portable_and_auditable(tmp_path):
     trajectories, _ = _trajectory_set()
     result = run_recurrence_workflow(
