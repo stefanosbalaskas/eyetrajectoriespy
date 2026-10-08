@@ -1,10 +1,10 @@
 # Changelog
 
-## Unreleased — 1.2.0.dev0 workflow programme
+## 1.2.0rc1 — 2026-10-08
 
-- Open a non-publishing post-1.1 development identity while preserving `1.1.0` as the immutable stable/default production release and keeping GitHub/PyPI publication readiness jointly disarmed.
-- Track the transparent workflow/orchestration programme under issue #211. Workflow APIs are intended to compose already-qualified primitives with explicit analyst decisions, typed results, inspectable step records, reporting, provenance and reproducibility bundles rather than hidden auto-analysis.
-- Keep issue #205 Bayesian sparse FPCA/MFPCA work as an external-comparator/feasibility evidence programme; no native Bayesian estimator/API is approved by opening the 1.2 development line.
+- Promote the completed, feature-frozen 1.2 workflow/orchestration programme to literal `1.2.0rc1` qualification without changing an estimator, numerical method, scientific default, dependency, workflow contract, or package-root API.
+- Retain ten explicit module-scoped workflow entry points with typed configs/results, analyst-versus-selector provenance, ordered step records, reporting/tables, canonical plotting composition and reproducibility bundles.
+- Keep the completed Bayesian B4 feasibility decision outside the 1.2 product surface; no native Bayesian estimator/API is promoted by this release candidate.
 - Preserve the frozen 1.0 package-root compatibility boundary. New workflow APIs, when implemented, begin module-scoped under `eyetrajectoriespy.workflows`.
 
 ## 1.1.0 — 2026-10-07
