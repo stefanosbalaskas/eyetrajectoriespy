@@ -2,7 +2,7 @@
 
 > **Current source: `1.2.0rc2.dev0`; published stable: `1.1.0`.**
 > This is a qualification protocol, **not** RC2 qualification, release approval, or permission to publish.
-> The machine-readable prequalification ledger is [`RC2_QUALIFICATION_STATUS.json`](../../RC2_QUALIFICATION_STATUS.json).
+> The machine-readable prequalification ledger is [`RC2_QUALIFICATION_STATUS.json`](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/main/RC2_QUALIFICATION_STATUS.json).
 > Tracking issue: [#225](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/225).
 
 ## Completed preconditions
