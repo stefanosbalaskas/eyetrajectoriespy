@@ -79,6 +79,122 @@ def _paired_dataset():
     )
 
 
+def _async_dataset():
+    union = np.linspace(0.0, 1.0, 9)
+    x_mask = np.array([True, False, True, True, False, True, True, False, True])
+    y_mask = np.array([True, True, False, True, True, False, True, True, True])
+    times = []
+    values = []
+    participants = []
+    for index in range(18):
+        z1 = -1.5 + 3.0 * index / 17.0
+        z2 = np.cos(0.7 * (index + 1))
+        x_truth = (
+            0.1
+            + 0.2 * union
+            + z1 * np.sin(np.pi * union)
+            + 0.22 * z2 * np.cos(2.0 * np.pi * union)
+        )
+        y_truth = (
+            -0.05
+            + 0.1 * union
+            + 0.70 * z1 * np.cos(np.pi * union)
+            + 0.18 * z2 * np.sin(2.0 * np.pi * union)
+        )
+        observed = np.full((union.size, 2), np.nan, dtype=float)
+        observed[x_mask, 0] = x_truth[x_mask]
+        observed[y_mask, 1] = y_truth[y_mask]
+        times.append(union.copy())
+        values.append(observed)
+        participants.append(f"P{index // 3:02d}")
+    return et.IrregularTrajectorySet(
+        time=tuple(times),
+        values=tuple(values),
+        curve_ids=tuple(f"A{index:02d}" for index in range(18)),
+        dimension_names=("x", "y"),
+        metadata=pd.DataFrame({"participant_id": participants}),
+        coordinate_system="normalized",
+        time_unit="s",
+    )
+
+
+def _multilevel_dataset():
+    rng = np.random.default_rng(174)
+    times = []
+    values = []
+    curve_ids = []
+    participant_ids = []
+    participant_scores = np.linspace(-1.4, 1.4, 12)
+    for participant in range(12):
+        for trial in range(2):
+            base = np.linspace(0.0, 1.0, 11)
+            jitter = rng.normal(0.0, 0.012, size=base.size)
+            time = np.clip(base + jitter, 0.0, 1.0)
+            time[0] = 0.0
+            time[-1] = 1.0
+            time = np.maximum.accumulate(time)
+            for index in range(1, time.size):
+                if time[index] <= time[index - 1]:
+                    time[index] = min(1.0, time[index - 1] + 1e-5)
+            time[-1] = 1.0
+            trial_score = rng.normal(0.0, 0.55)
+            observed = (
+                0.15
+                + 0.10 * time
+                + participant_scores[participant]
+                * np.sqrt(2.0)
+                * np.sin(np.pi * time)
+                + trial_score * np.sqrt(2.0) * np.sin(2.0 * np.pi * time)
+                + rng.normal(0.0, 0.10, size=time.size)
+            )
+            times.append(time)
+            values.append(observed[:, None])
+            curve_ids.append(f"p{participant:02d}_t{trial:02d}")
+            participant_ids.append(f"p{participant:02d}")
+    return et.IrregularTrajectorySet(
+        time=tuple(times),
+        values=tuple(values),
+        curve_ids=tuple(curve_ids),
+        dimension_names=("x",),
+        metadata=pd.DataFrame({"participant_id": participant_ids}),
+        coordinate_system="normalized",
+        time_unit="normalized",
+    )
+
+
+def _prediction_roles():
+    grid = np.asarray([0.0, 0.25, 0.5, 0.75, 1.0])
+
+    def build(ids, scores, prefix):
+        values = []
+        for score in scores:
+            curve = (
+                0.1
+                + 0.15 * grid
+                + float(score) * np.sin(np.pi * grid)
+                + 0.15 * float(score) * np.sin(2.0 * np.pi * grid)
+            )
+            values.append(curve[:, None])
+        return et.IrregularTrajectorySet(
+            time=tuple(grid.copy() for _ in ids),
+            values=tuple(values),
+            curve_ids=tuple(ids),
+            dimension_names=("x",),
+            metadata=pd.DataFrame(
+                {"participant_id": [f"{prefix}-{index}" for index in range(len(ids))]}
+            ),
+            coordinate_system="normalized",
+            time_unit="s",
+        )
+
+    training_ids = tuple(f"train-{index}" for index in range(12))
+    calibration_ids = tuple(f"cal-{index}" for index in range(4))
+    training = build(training_ids, np.linspace(-1.5, 1.5, 12), "train-p")
+    calibration = build(calibration_ids, (-0.9, -0.3, 0.4, 1.0), "cal-p")
+    target = build(("target-0",), (0.25,), "target-p")
+    return training, calibration, target
+
+
 def test_w2_surface_is_module_scoped_and_ordered():
     import eyetrajectoriespy.workflows as workflows
 
@@ -219,6 +335,97 @@ def test_fixed_paired_sparse_mfpca_workflow_executes():
     assert result.decisions["covariance_bandwidth"].source == "analyst"
     assert [step.name for step in result.steps] == ["fit"]
     assert result.fit.scores.shape == (trajectories.n_curves, 2)
+
+
+def test_async_sparse_mfpca_workflow_executes():
+    trajectories = _async_dataset()
+    result = run_sparse_mfpca_async_workflow(
+        trajectories,
+        config=SparseMFPCAAsyncWorkflowConfig(
+            n_components=1,
+            evaluation_grid=tuple(np.linspace(0.0, 1.0, 7)),
+            mean_bandwidth=0.45,
+            covariance_bandwidth=0.55,
+            measurement_error="fixed_matrix",
+            measurement_error_covariance=np.array(
+                [[0.02, 0.004], [0.004, 0.025]]
+            ),
+            psd_action="project",
+            score_failure_action="retain_nan",
+        ),
+    )
+
+    assert result.workflow_contract == "sparse_mfpca_async:v1"
+    assert result.provenance["raw_interpolation_performed"] is False
+    assert result.provenance["raw_synchronization_performed"] is False
+    assert result.provenance["paired_bandwidth_selector_reused"] is False
+    assert [step.name for step in result.steps] == ["fit"]
+    assert result.fit.scores.shape == (18, 1)
+
+
+def test_sparse_multilevel_workflow_executes():
+    trajectories = _multilevel_dataset()
+    result = run_sparse_multilevel_workflow(
+        trajectories,
+        config=SparseMultilevelWorkflowConfig(
+            dimension="x",
+            participant_column="participant_id",
+            participant_components=1,
+            trial_components=1,
+            evaluation_grid=tuple(np.linspace(0.10, 0.90, 9)),
+            mean_bandwidth=0.35,
+            total_covariance_bandwidth=0.45,
+            between_covariance_bandwidth=0.45,
+            analysis_support_action="restrict",
+            noise_variance_method="fixed",
+            measurement_error_variance=0.01,
+            psd_action="project",
+            score_ridge=1e-6,
+        ),
+    )
+
+    assert result.workflow_contract == "sparse_multilevel:v1"
+    assert result.provenance["bandwidth_mode"] == "fixed"
+    assert result.provenance["bandwidth_selector_available"] is False
+    assert [step.name for step in result.steps] == ["fit"]
+    assert len(result.fit.participant_ids) == 12
+    assert len(result.fit.curve_ids) == 24
+
+
+def test_sparse_prediction_workflow_executes_explicit_roles():
+    training, calibration, target = _prediction_roles()
+    training_config = SparseFPCAWorkflowConfig(
+        dimension="x",
+        n_components=1,
+        evaluation_grid=(0.0, 0.25, 0.5, 0.75, 1.0),
+        mean_bandwidth=0.50,
+        covariance_bandwidth=0.55,
+        noise_variance_method="fixed",
+        measurement_error_variance=0.02,
+        psd_action="project",
+        score_failure_action="retain_nan",
+    )
+    result = run_sparse_prediction_workflow(
+        training,
+        calibration,
+        target,
+        config=SparsePredictionWorkflowConfig(
+            training=training_config,
+            history_cutoff=0.5,
+            prediction_grid=(0.75, 1.0),
+            alpha=0.4,
+        ),
+    )
+
+    assert result.workflow_contract == "sparse_prediction:v1"
+    assert result.provenance["random_role_split_performed"] is False
+    assert result.decisions["role_assignment"].source == "analyst"
+    assert result.calibration.n_calibration_curves == 4
+    assert result.band.prediction.curve_id == "target-0"
+    assert [step.name for step in result.steps][-2:] == [
+        "conformal_calibration",
+        "target_prediction",
+    ]
 
 
 def test_prediction_signature_requires_explicit_roles():
