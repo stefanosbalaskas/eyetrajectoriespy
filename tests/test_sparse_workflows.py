@@ -7,7 +7,9 @@ import pytest
 
 import eyetrajectoriespy as et
 from eyetrajectoriespy._sparse_truth import simulate_sparse_functional_truth
+from eyetrajectoriespy.observation_process import observation_process_data
 from eyetrajectoriespy.workflows import (
+    ObservationDiagnosticConfig,
     PreprocessingPlan,
     PreprocessingStepConfig,
     ScoreUncertaintyConfig,
@@ -195,6 +197,30 @@ def _prediction_roles():
     return training, calibration, target
 
 
+def _observation_process_for(trajectories):
+    rows = []
+    for curve_index, curve_id in enumerate(trajectories.curve_ids):
+        for time_index, time in enumerate((0.2, 0.8)):
+            rows.append(
+                {
+                    "curve_id": str(curve_id),
+                    "candidate_time": time,
+                    "observed": int((curve_index + time_index) % 3 != 0),
+                    "design_state": float(curve_index % 2),
+                }
+            )
+    return observation_process_data(
+        pd.DataFrame(rows),
+        curve_column="curve_id",
+        time_column="candidate_time",
+        observed_column="observed",
+        candidate_predictors=("design_state",),
+        predictor_sources={"design_state": "design"},
+        time_unit=trajectories.time_unit,
+        coordinate_system=trajectories.coordinate_system,
+    )
+
+
 def test_w2_surface_is_module_scoped_and_ordered():
     import eyetrajectoriespy.workflows as workflows
 
@@ -315,6 +341,78 @@ def test_fixed_sparse_fpca_workflow_executes_and_exports(tmp_path):
     assert (destination / "SHA256SUMS").exists()
 
 
+def test_sparse_fpca_audited_selector_and_observation_diagnostics_execute():
+    trajectories, truth = _univariate_dataset()
+    result = run_sparse_fpca_workflow(
+        trajectories,
+        config=SparseFPCAWorkflowConfig(
+            dimension="x",
+            n_components=2,
+            evaluation_grid=tuple(np.linspace(0.0, 1.0, 17)),
+            bandwidth_selection=SparseFPCABandwidthSelectionConfig(
+                mean_bandwidths=(0.25,),
+                covariance_bandwidths=(0.35,),
+                n_splits=3,
+            ),
+            noise_variance_method="fixed",
+            measurement_error_variance=truth.noise_sd**2,
+            psd_action="project",
+            score_failure_action="retain_nan",
+            observation_diagnostics=ObservationDiagnosticConfig(
+                predictors=("design_state",),
+                time_basis="linear",
+            ),
+        ),
+        observation_process=_observation_process_for(trajectories),
+    )
+
+    assert result.provenance["bandwidth_mode"] == "audited_selector"
+    assert result.bandwidth_selection is not None
+    assert result.decisions["mean_bandwidth"].source == "audited_selector"
+    assert result.decisions["covariance_bandwidth"].source == "audited_selector"
+    assert result.observation_diagnostics is not None
+    assert "bandwidth_selection" in result.reports
+    assert "observation_diagnostics" in result.reports
+    assert "bandwidth_candidates" in result.tables
+    assert "observation_global" in result.tables
+    assert [step.name for step in result.steps] == [
+        "bandwidth_selection",
+        "fit",
+        "observation_process_diagnostics",
+    ]
+
+
+def test_paired_sparse_mfpca_audited_selector_executes():
+    trajectories = _paired_dataset()
+    result = run_sparse_mfpca_workflow(
+        trajectories,
+        config=SparseMFPCAWorkflowConfig(
+            n_components=2,
+            evaluation_grid=tuple(np.linspace(0.0, 1.0, 17)),
+            bandwidth_selection=SparseMFPCABandwidthSelectionConfig(
+                mean_bandwidths=(0.30,),
+                covariance_bandwidths=(0.35,),
+                n_splits=3,
+            ),
+            measurement_error="diagonal",
+            measurement_error_variance=(0.05, 0.08),
+            psd_action="project",
+            covariance_min_local_pairs=12,
+        ),
+    )
+
+    assert result.provenance["bandwidth_mode"] == "audited_selector"
+    assert result.bandwidth_selection is not None
+    assert result.decisions["mean_bandwidth"].source == "audited_selector"
+    assert result.decisions["covariance_bandwidth"].source == "audited_selector"
+    assert "bandwidth_selection" in result.reports
+    assert "bandwidth_candidates" in result.tables
+    assert [step.name for step in result.steps] == [
+        "bandwidth_selection",
+        "fit",
+    ]
+
+
 def test_fixed_paired_sparse_mfpca_workflow_executes():
     trajectories = _paired_dataset()
     config = SparseMFPCAWorkflowConfig(
@@ -363,6 +461,33 @@ def test_async_sparse_mfpca_workflow_executes():
     assert result.fit.scores.shape == (18, 1)
 
 
+def test_async_workflow_retains_observation_diagnostic_report():
+    trajectories = _async_dataset()
+    result = run_sparse_mfpca_async_workflow(
+        trajectories,
+        config=SparseMFPCAAsyncWorkflowConfig(
+            n_components=1,
+            evaluation_grid=tuple(np.linspace(0.0, 1.0, 7)),
+            mean_bandwidth=0.45,
+            covariance_bandwidth=0.55,
+            measurement_error="fixed_matrix",
+            measurement_error_covariance=np.array(
+                [[0.02, 0.004], [0.004, 0.025]]
+            ),
+            psd_action="project",
+            score_failure_action="retain_nan",
+            observation_diagnostics=ObservationDiagnosticConfig(
+                predictors=("design_state",),
+            ),
+        ),
+        observation_process=_observation_process_for(trajectories),
+    )
+
+    assert result.observation_diagnostics is not None
+    assert "observation_diagnostics" in result.reports
+    assert result.steps[-1].name == "observation_process_diagnostics"
+
+
 def test_sparse_multilevel_workflow_executes():
     trajectories = _multilevel_dataset()
     result = run_sparse_multilevel_workflow(
@@ -390,6 +515,36 @@ def test_sparse_multilevel_workflow_executes():
     assert [step.name for step in result.steps] == ["fit"]
     assert len(result.fit.participant_ids) == 12
     assert len(result.fit.curve_ids) == 24
+
+
+def test_multilevel_workflow_retains_observation_diagnostic_report():
+    trajectories = _multilevel_dataset()
+    result = run_sparse_multilevel_workflow(
+        trajectories,
+        config=SparseMultilevelWorkflowConfig(
+            dimension="x",
+            participant_column="participant_id",
+            participant_components=1,
+            trial_components=1,
+            evaluation_grid=tuple(np.linspace(0.10, 0.90, 9)),
+            mean_bandwidth=0.35,
+            total_covariance_bandwidth=0.45,
+            between_covariance_bandwidth=0.45,
+            analysis_support_action="restrict",
+            noise_variance_method="fixed",
+            measurement_error_variance=0.01,
+            psd_action="project",
+            score_ridge=1e-6,
+            observation_diagnostics=ObservationDiagnosticConfig(
+                predictors=("design_state",),
+            ),
+        ),
+        observation_process=_observation_process_for(trajectories),
+    )
+
+    assert result.observation_diagnostics is not None
+    assert "observation_diagnostics" in result.reports
+    assert result.steps[-1].name == "observation_process_diagnostics"
 
 
 def test_sparse_prediction_workflow_executes_explicit_roles():
