@@ -236,6 +236,26 @@ def test_prediction_signature_requires_explicit_roles():
     assert "split_fraction" not in config_fields
 
 
+def test_condition_limits_match_primitive_contract():
+    with pytest.raises(ValueError, match="greater than 1"):
+        ScoreUncertaintyConfig(condition_limit=1.0)
+
+    training = SparseFPCAWorkflowConfig(
+        dimension="x",
+        n_components=2,
+        evaluation_grid=tuple(np.linspace(0.0, 1.0, 17)),
+        mean_bandwidth=0.25,
+        covariance_bandwidth=0.35,
+    )
+    with pytest.raises(ValueError, match="greater than 1"):
+        SparsePredictionWorkflowConfig(
+            training=training,
+            history_cutoff=0.5,
+            prediction_grid=(0.6, 0.8, 1.0),
+            condition_limit=1.0,
+        )
+
+
 def test_w2_function_order_remains_explicit():
     names = [
         run_sparse_fpca_workflow.__name__,
