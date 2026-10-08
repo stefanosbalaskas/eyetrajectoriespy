@@ -160,7 +160,12 @@ def plot_workflow_sensitivity(
     good = np.isfinite(y)
     ax.plot(x[good], y[good], "o-", label="Descriptive metric")
     if (~good).any():
-        ax.scatter(x[~good], np.zeros((~good).sum()), marker="x", label="Failed — no estimate")
+        # Place failed fits on the axes margin, not at the numeric value zero.
+        ax.scatter(
+            x[~good], np.full((~good).sum(), 0.035),
+            marker="x", transform=ax.get_xaxis_transform(), clip_on=False,
+            label="Failed fit (no numeric estimate)",
+        )
         ax.legend()
     ax.set_xticks(x)
     ax.set_xticklabels(data["specification"], rotation=30, ha="right")

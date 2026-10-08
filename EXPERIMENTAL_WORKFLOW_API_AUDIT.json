@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "branch_version": "1.2.0rc2.dev0",
+  "module": "eyetrajectoriespy.workflows.experimental",
+  "status": "frozen_proposed_api_for_scientific_review",
+  "publication_authorized": false,
+  "root_namespace_promoted": false,
+  "exported_symbols": [
+    "PreprocessingExecutionResult",
+    "WorkflowPreflightResult",
+    "WorkflowReportArtifact",
+    "WorkflowSensitivityResult",
+    "WorkflowSpecification",
+    "plot_workflow_preflight",
+    "plot_workflow_sensitivity",
+    "render_workflow_report",
+    "run_preprocessing_plan",
+    "run_workflow_preprocessed",
+    "run_workflow_sensitivity",
+    "workflow_preflight"
+  ],
+  "callable_parameters": {
+    "plot_workflow_preflight": [
+      "result",
+      "ax"
+    ],
+    "plot_workflow_sensitivity": [
+      "result",
+      "metric",
+      "ax"
+    ],
+    "render_workflow_report": [
+      "result",
+      "directory",
+      "title",
+      "format",
+      "figures",
+      "limitations",
+      "figure_captions",
+      "preflight"
+    ],
+    "run_preprocessing_plan": [
+      "data",
+      "plan"
+    ],
+    "run_workflow_preprocessed": [
+      "data",
+      "config",
+      "runner",
+      "runner_kwargs"
+    ],
+    "run_workflow_sensitivity": [
+      "data",
+      "runner",
+      "specifications",
+      "baseline_name",
+      "metrics",
+      "runner_kwargs",
+      "conclusions"
+    ],
+    "workflow_preflight": [
+      "data",
+      "participant_column",
+      "trial_column",
+      "minimum_observed_per_dimension",
+      "required_dimensions",
+      "require_common_grid"
+    ]
+  },
+  "dataclass_fields": {
+    "PreprocessingExecutionResult": [
+      "data",
+      "steps",
+      "audit",
+      "phase_results",
+      "provenance"
+    ],
+    "WorkflowPreflightResult": [
+      "layout",
+      "summary",
+      "curve_support",
+      "participant_support",
+      "warnings",
+      "blocking_issues",
+      "provenance"
+    ],
+    "WorkflowReportArtifact": [
+      "report_path",
+      "provenance_path",
+      "manifest_path",
+      "files_sha256",
+      "format"
+    ],
+    "WorkflowSensitivityResult": [
+      "estimand_id",
+      "baseline_name",
+      "specifications",
+      "metric_frame",
+      "outcomes",
+      "errors",
+      "warnings",
+      "provenance"
+    ],
+    "WorkflowSpecification": [
+      "name",
+      "config",
+      "estimand_id",
+      "scientific_rationale"
+    ]
+  },
+  "scientific_review": {
+    "E1": {
+      "scope": "Ordered, explicitly declared common-grid preprocessing with per-step support audit; registration retains phase maps",
+      "verified": "Experimental unit and installed-wheel tests",
+      "limitation": "Does not execute sparse/irregular transformations; registration changes timing interpretation."
+    },
+    "E2": {
+      "scope": "Descriptive support, unit, missingness and hierarchy audits without exclusion",
+      "verified": "Sparse-layout, support-threshold and participant/trial tests",
+      "limitation": "Preflight readiness is not statistical identification, model fitness or power."
+    },
+    "E3": {
+      "scope": "Analyst-declared within-estimand sensitivity; failure retention; descriptive metric and conclusion changes",
+      "verified": "Baseline, failure, incompatible estimand and stability-plot tests",
+      "limitation": "No automatic model selection; no new inferential uncertainty or region localization."
+    },
+    "E4": {
+      "scope": "Real estimator reports, figure assets, sample accounting and SHA256-provenance manifests",
+      "verified": "Markdown/HTML, escaping, checksums, deterministic synthetic end-to-end",
+      "limitation": "No generated p values or automatic interpretation; empirical usability review remains pending."
+    }
+  },
+  "pending": [
+    "Current-head 33-workflow CI qualification",
+    "Independent empirical usability analysis",
+    "Formal candidate publication decision",
+    "Exact literal 1.2.0rc2 evidence",
+    "Exact protected-main CI qualification"
+  ],
+  "decision": "Freeze proposed experimental contract for review; no RC2 release/publication authorization and no scientific-estimator changes."
+}

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+from dataclasses import fields, is_dataclass
+import inspect
 from pathlib import Path
 import tomllib
 
@@ -46,6 +48,19 @@ def main() -> None:
     assert development["candidate_exact_main_qualified"] is False
     assert development["native_bayesian_estimator_added"] is False
     assert development["new_effect_region_inference_added"] is False
+    proposed = json.loads((ROOT / "EXPERIMENTAL_WORKFLOW_API_AUDIT.json").read_text())
+    assert proposed["branch_version"] == DEV
+    assert proposed["publication_authorized"] is False
+    assert proposed["root_namespace_promoted"] is False
+    assert proposed["status"] == "frozen_proposed_api_for_scientific_review"
+    assert set(proposed["exported_symbols"]) == EXPECTED_EXPERIMENTAL
+    for name, parameters in proposed["callable_parameters"].items():
+        fn = getattr(experimental, name)
+        assert list(inspect.signature(fn).parameters) == parameters, name
+    for name, names in proposed["dataclass_fields"].items():
+        cls = getattr(experimental, name)
+        assert is_dataclass(cls)
+        assert [field.name for field in fields(cls)] == names, name
     print("PASS E5 development boundaries: RC1 immutable, 12 experimental exports, RC2 not qualified")
 
 
