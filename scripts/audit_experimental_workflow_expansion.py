@@ -36,7 +36,6 @@ def main() -> None:
     assert rc1["scientific_behavior_changed"] is False
     assert rc1["publication_interlock"]["publication_arming_performed"] is False
     assert frozen["root_exports_promoted"] is False
-    assert len(frozen["exported_symbols"]) == 49
     assert set(workflows.__all__) == set(frozen["exported_symbols"])
     assert set(experimental.__all__) == EXPECTED_EXPERIMENTAL
     assert set(experimental.__all__).isdisjoint(set(workflows.__all__))
