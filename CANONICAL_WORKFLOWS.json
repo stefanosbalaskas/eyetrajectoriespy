@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package_version": "1.2.0.dev0",
+  "package_version": "1.2.0rc1",
   "policy": {
     "canonical": "recommended default route for a common scientific question",
     "advanced": "supported capability requiring a more specific scientific reason",
