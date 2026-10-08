@@ -1,7 +1,7 @@
 """Transparent workflow orchestration namespace.
 
 The 1.2 workflow layer remains module-scoped during qualification.
-Scientific run_*_workflow functions are added in later tranches.
+W1 provides the shared contracts; W2 composes already-qualified sparse APIs.
 """
 
 from ._core import (
@@ -19,16 +19,66 @@ from ._core import (
     workflow_steps_frame,
     workflow_summary_frame,
 )
+from ._sparse_shared import (
+    ObservationDiagnosticConfig,
+    ScoreUncertaintyConfig,
+)
+from ._sparse_fpca import (
+    SparseFPCABandwidthSelectionConfig,
+    SparseFPCAWorkflowConfig,
+    SparseFPCAWorkflowResult,
+    run_sparse_fpca_workflow,
+)
+from ._sparse_mfpca import (
+    SparseMFPCABandwidthSelectionConfig,
+    SparseMFPCAWorkflowConfig,
+    SparseMFPCAWorkflowResult,
+    run_sparse_mfpca_workflow,
+)
+from ._sparse_async import (
+    SparseMFPCAAsyncWorkflowConfig,
+    SparseMFPCAAsyncWorkflowResult,
+    run_sparse_mfpca_async_workflow,
+)
+from ._sparse_multilevel import (
+    SparseMultilevelWorkflowConfig,
+    SparseMultilevelWorkflowResult,
+    run_sparse_multilevel_workflow,
+)
+from ._sparse_prediction import (
+    SparsePredictionWorkflowConfig,
+    SparsePredictionWorkflowResult,
+    run_sparse_prediction_workflow,
+)
 
 __all__ = [
+    "ObservationDiagnosticConfig",
     "PreprocessingPlan",
     "PreprocessingStepConfig",
+    "ScoreUncertaintyConfig",
+    "SparseFPCABandwidthSelectionConfig",
+    "SparseFPCAWorkflowConfig",
+    "SparseFPCAWorkflowResult",
+    "SparseMFPCABandwidthSelectionConfig",
+    "SparseMFPCAAsyncWorkflowConfig",
+    "SparseMFPCAAsyncWorkflowResult",
+    "SparseMFPCAWorkflowConfig",
+    "SparseMFPCAWorkflowResult",
+    "SparseMultilevelWorkflowConfig",
+    "SparseMultilevelWorkflowResult",
+    "SparsePredictionWorkflowConfig",
+    "SparsePredictionWorkflowResult",
     "WORKFLOW_BUNDLE_FORMAT",
     "WORKFLOW_BUNDLE_SCHEMA_VERSION",
     "WORKFLOW_SCHEMA_VERSION",
     "WorkflowDecisionRecord",
     "WorkflowStepRecord",
     "export_workflow_bundle",
+    "run_sparse_fpca_workflow",
+    "run_sparse_mfpca_async_workflow",
+    "run_sparse_mfpca_workflow",
+    "run_sparse_multilevel_workflow",
+    "run_sparse_prediction_workflow",
     "workflow_config_to_dict",
     "workflow_decisions_frame",
     "workflow_reporting_text",
