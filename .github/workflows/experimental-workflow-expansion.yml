@@ -7,6 +7,24 @@ on:
       - 'src/eyetrajectoriespy/workflows/experimental.py'
       - 'tests/test_experimental_workflow_expansion.py'
       - 'examples/experimental_workflow_e1_e4.py'
+      - 'EXPERIMENTAL_WORKFLOW_API_AUDIT.json'
+      - 'EXPERIMENTAL_WORKFLOW_AUDIT.json'
+      - 'scripts/audit_experimental_workflow_expansion.py'
+      - 'pyproject.toml'
+      - 'RELEASE_READINESS.json'
+      - '.github/workflows/experimental-workflow-expansion.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/eyetrajectoriespy/workflows/_exp_*.py'
+      - 'src/eyetrajectoriespy/workflows/experimental.py'
+      - 'tests/test_experimental_workflow_expansion.py'
+      - 'examples/experimental_workflow_e1_e4.py'
+      - 'EXPERIMENTAL_WORKFLOW_API_AUDIT.json'
+      - 'EXPERIMENTAL_WORKFLOW_AUDIT.json'
+      - 'scripts/audit_experimental_workflow_expansion.py'
+      - 'pyproject.toml'
+      - 'RELEASE_READINESS.json'
       - '.github/workflows/experimental-workflow-expansion.yml'
   workflow_dispatch:
 
