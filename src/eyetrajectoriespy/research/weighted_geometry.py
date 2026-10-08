@@ -69,4 +69,4 @@ def reconstruct_weighted_mfpca(
 
 def weighted_component_geometry(fitted: WeightedMFPCAResult) -> np.ndarray:
     """Return component trajectories back in original coordinate units."""
-    return fitted.fitted_transformed.eigenfunctions / np.sqrt(fitted.weights)[None, None, :]
+    return fitted.fitted_transformed.components / np.sqrt(fitted.weights)[None, None, :]
