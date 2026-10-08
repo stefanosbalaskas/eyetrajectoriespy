@@ -223,6 +223,19 @@ def run_workflow_preprocessed(
     tables = dict(getattr(fitted, "tables", {}))
     if transformed.steps:
         tables["preprocessing_audit"] = transformed.audit.copy()
+    for order, phase in enumerate(transformed.phase_results, start=1):
+        # Preserve the complete phase map in the scientific result and its
+        # portable tabular bundle, not just a Boolean provenance flag.
+        n_curves, n_times = phase.warping_functions.shape
+        reference_time = np.tile(phase.original.time, n_curves)
+        source_time = phase.warping_functions.reshape(-1)
+        tables[f"registration_{order:02d}_warping"] = pd.DataFrame({
+            "curve_id": np.repeat(phase.original.curve_ids, n_times),
+            "reference_time": reference_time,
+            "source_time": source_time,
+            "displacement": source_time - reference_time,
+            "time_unit": phase.original.time_unit,
+        })
     return replace(
         fitted,
         config=config,
