@@ -17,6 +17,7 @@ nav:
           - Generalized binary/count responses: workflows/generalized-responses.md
           - Nonlinear/recurrence analysis: workflows/nonlinear-recurrence.md
           - Transparent orchestration (1.2): workflows/workflow-orchestration.md
+          - Experimental E1-E4 expansion (unqualified): workflows/experimental-expansion.md
       - Research articles:
           - Overview: articles/index.md
           - Choose among ten workflows: articles/choosing-the-ten-workflows.md
