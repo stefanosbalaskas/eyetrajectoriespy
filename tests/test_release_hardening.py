@@ -1,12 +1,16 @@
 import importlib.util
 import urllib.error
 from pathlib import Path
+import tomllib
+
+from packaging.version import Version
 
 import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CURRENT_SOURCE_VERSION = "1.2.0rc1"
+with (ROOT / "pyproject.toml").open("rb") as _source_stream:
+    CURRENT_SOURCE_VERSION = tomllib.load(_source_stream)["project"]["version"]
 CURRENT_STABLE_VERSION = "1.1.0"
 LATEST_QUALIFIED_EVIDENCE_VERSION = "1.2.0rc1"
 
@@ -25,7 +29,7 @@ def test_release_version_contract_agrees_for_active_source_line():
     assert module.verify_version_contract() == CURRENT_SOURCE_VERSION
 
 
-def test_release_version_validator_accepts_release_candidate_source_line():
+def test_release_version_validator_declares_exact_active_source_line():
     module = _load_script("verify_release_version.py")
     source = (ROOT / "scripts" / "verify_release_version.py").read_text(
         encoding="utf-8"
@@ -42,19 +46,33 @@ def test_release_version_validator_accepts_release_candidate_source_line():
         f"The current stable production release is **{CURRENT_STABLE_VERSION}**."
         in roadmap
     )
-    assert (
-        f"The current release-candidate line is **{CURRENT_SOURCE_VERSION}**."
-        in roadmap
-    )
+    if Version(CURRENT_SOURCE_VERSION).is_devrelease:
+        assert (
+            f"The current development line is **{CURRENT_SOURCE_VERSION}**."
+            in roadmap
+        )
+    else:
+        assert (
+            f"The current release-candidate line is **{CURRENT_SOURCE_VERSION}**."
+            in roadmap
+        )
     assert module.verify_version_contract() == CURRENT_SOURCE_VERSION
 
 
-def test_release_candidate_version_is_production_valid_but_not_armed_here():
+def test_source_version_publication_gate_respects_dev_vs_rc():
     module = _load_script("verify_release_version.py")
-    assert module.verify_version_contract(
-        tag=f"v{CURRENT_SOURCE_VERSION}",
-        production=True,
-    ) == CURRENT_SOURCE_VERSION
+    if Version(CURRENT_SOURCE_VERSION).is_devrelease:
+        # E1-E4 may not reuse frozen RC1 evidence to publish a dev source.
+        with pytest.raises(RuntimeError, match="development versions"):
+            module.verify_version_contract(
+                tag=f"v{CURRENT_SOURCE_VERSION}",
+                production=True,
+            )
+    else:
+        assert module.verify_version_contract(
+            tag=f"v{CURRENT_SOURCE_VERSION}",
+            production=True,
+        ) == CURRENT_SOURCE_VERSION
 
 
 def test_release_candidate_rejects_stale_stable_tag():
@@ -63,12 +81,18 @@ def test_release_candidate_rejects_stale_stable_tag():
         module.verify_version_contract(tag=f"v{CURRENT_STABLE_VERSION}")
 
 
-def test_release_candidate_requires_exact_qualified_evidence():
+def test_frozen_qualified_evidence_never_relabelled_to_new_development_source():
     module = _load_script("verify_release_version.py")
     assert set(module.qualified_evidence_contract().values()) == {
         LATEST_QUALIFIED_EVIDENCE_VERSION
     }
     assert module.verify_version_contract() == CURRENT_SOURCE_VERSION
+    if Version(CURRENT_SOURCE_VERSION).is_devrelease:
+        # The retained RC1 evidence is not current-RC2 qualification.
+        assert CURRENT_SOURCE_VERSION != LATEST_QUALIFIED_EVIDENCE_VERSION
+        assert Version(CURRENT_SOURCE_VERSION) > Version(LATEST_QUALIFIED_EVIDENCE_VERSION)
+    else:
+        assert CURRENT_SOURCE_VERSION == LATEST_QUALIFIED_EVIDENCE_VERSION
 
 
 def test_release_candidate_would_require_fresh_exact_version_evidence(monkeypatch):
