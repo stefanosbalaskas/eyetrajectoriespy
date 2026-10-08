@@ -1,0 +1,99 @@
+name: dense-regression-workflow-validation
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/dense-regression-workflow-validation.yml"
+      - "src/eyetrajectoriespy/workflows/**"
+      - "tests/test_dense_regression_workflows.py"
+      - "tests/test_workflow_contract_edges.py"
+      - "src/eyetrajectoriespy/fpca.py"
+      - "src/eyetrajectoriespy/function_on_scalar.py"
+      - "src/eyetrajectoriespy/functional_mixed_effects.py"
+      - "src/eyetrajectoriespy/generalized_function_on_scalar.py"
+      - "src/eyetrajectoriespy/reporting.py"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/dense-regression-workflow-validation.yml"
+      - "src/eyetrajectoriespy/workflows/**"
+      - "tests/test_dense_regression_workflows.py"
+      - "src/eyetrajectoriespy/fpca.py"
+      - "src/eyetrajectoriespy/function_on_scalar.py"
+      - "src/eyetrajectoriespy/functional_mixed_effects.py"
+      - "src/eyetrajectoriespy/generalized_function_on_scalar.py"
+      - "src/eyetrajectoriespy/reporting.py"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dense-regression-workflow-contract:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install package
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+
+      - name: Run W1-W3 workflow contracts
+        run: |
+          python -m pytest -q \
+            tests/test_workflow_infrastructure.py \
+            tests/test_sparse_workflows.py \
+            tests/test_dense_regression_workflows.py \
+            tests/test_workflow_contract_edges.py
+
+      - name: Verify W3 module-scoped surface and explicit family contract
+        run: |
+          python - <<'PY'
+          import dataclasses
+          import eyetrajectoriespy as et
+          import eyetrajectoriespy.workflows as workflows
+
+          ordered = (
+              "run_fpca_workflow",
+              "run_function_on_scalar_workflow",
+              "run_functional_mixed_effects_workflow",
+              "run_generalized_functional_workflow",
+          )
+          missing = [name for name in ordered if not hasattr(workflows, name)]
+          if missing:
+              raise SystemExit(f"missing W3 workflow APIs: {missing}")
+          leaked = [name for name in ordered if hasattr(et, name)]
+          if leaked:
+              raise SystemExit(f"W3 APIs leaked into package root: {leaked}")
+
+          fields = {
+              field.name: field
+              for field in dataclasses.fields(
+                  workflows.GeneralizedFunctionalWorkflowConfig
+              )
+          }
+          family = fields["family"]
+          if family.default is not dataclasses.MISSING:
+              raise SystemExit("generalized workflow family must be required")
+          for name in (
+              "binomial_denominator",
+              "exposure",
+              "exposure_units",
+              "working_correlation",
+              "covariance_type",
+          ):
+              if name not in fields:
+                  raise SystemExit(f"missing explicit generalized field: {name}")
+          PY

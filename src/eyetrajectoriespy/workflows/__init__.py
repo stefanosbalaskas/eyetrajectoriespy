@@ -1,7 +1,7 @@
 """Transparent workflow orchestration namespace.
 
 The 1.2 workflow layer remains module-scoped during qualification.
-W1 provides the shared contracts; W2 composes already-qualified sparse APIs.
+W1 provides the shared contracts; W2-W3 compose already-qualified scientific APIs.
 """
 
 from ._core import (
@@ -50,8 +50,30 @@ from ._sparse_prediction import (
     SparsePredictionWorkflowResult,
     run_sparse_prediction_workflow,
 )
+from ._dense_regression import (
+    FPCAWorkflowConfig,
+    FPCAWorkflowResult,
+    FunctionOnScalarWorkflowConfig,
+    FunctionOnScalarWorkflowResult,
+    FunctionalMixedEffectsWorkflowConfig,
+    FunctionalMixedEffectsWorkflowResult,
+    GeneralizedFunctionalWorkflowConfig,
+    GeneralizedFunctionalWorkflowResult,
+    run_fpca_workflow,
+    run_function_on_scalar_workflow,
+    run_functional_mixed_effects_workflow,
+    run_generalized_functional_workflow,
+)
 
 __all__ = [
+    "FPCAWorkflowConfig",
+    "FPCAWorkflowResult",
+    "FunctionOnScalarWorkflowConfig",
+    "FunctionOnScalarWorkflowResult",
+    "FunctionalMixedEffectsWorkflowConfig",
+    "FunctionalMixedEffectsWorkflowResult",
+    "GeneralizedFunctionalWorkflowConfig",
+    "GeneralizedFunctionalWorkflowResult",
     "ObservationDiagnosticConfig",
     "PreprocessingPlan",
     "PreprocessingStepConfig",
@@ -74,6 +96,10 @@ __all__ = [
     "WorkflowDecisionRecord",
     "WorkflowStepRecord",
     "export_workflow_bundle",
+    "run_fpca_workflow",
+    "run_function_on_scalar_workflow",
+    "run_functional_mixed_effects_workflow",
+    "run_generalized_functional_workflow",
     "run_sparse_fpca_workflow",
     "run_sparse_mfpca_async_workflow",
     "run_sparse_mfpca_workflow",
