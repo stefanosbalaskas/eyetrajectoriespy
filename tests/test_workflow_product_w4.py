@@ -22,6 +22,10 @@ from eyetrajectoriespy.workflows import (
     run_recurrence_workflow,
     save_workflow_figure,
 )
+from eyetrajectoriespy.workflows._plotting import (
+    _require_coefficient,
+    _require_component,
+)
 
 
 def _trajectory_set():
@@ -248,11 +252,13 @@ def test_workflow_plotting_requires_explicit_scientific_selector(tmp_path):
 
 def test_workflow_plot_dispatch_type_and_selector_guards():
     with pytest.raises(TypeError, match="component"):
-        plot_workflow_result(
-            object(),
-            plot="sparse_fpca_component",
-            component=True,
-        )
+        _require_component(True)
+    with pytest.raises(ValueError, match="component"):
+        _require_component(None)
+    with pytest.raises(TypeError, match="coefficient"):
+        _require_coefficient(1.5)
+    with pytest.raises(ValueError, match="coefficient"):
+        _require_coefficient(None)
     with pytest.raises(TypeError, match="FPCAWorkflowResult"):
         plot_workflow_result(
             object(),
