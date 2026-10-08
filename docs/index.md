@@ -18,6 +18,8 @@ hide:
 <div class="et-hero" markdown>
 <div markdown>
 
+<!-- Experimental branch source version: 1.2.0rc2.dev0; not a published release. -->
+
 # Model the viewing process, not only its summaries
 
 **Functional analysis of continuous, irregular and sparse eye-tracking trajectories in Python.**

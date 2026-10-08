@@ -4,7 +4,7 @@
 
 The current stable production release is **1.1.0**. It is the stable/default production release and preserves the frozen 1.0 package-root compatibility boundary while promoting the qualified post-1.0 sparse/irregular capabilities as stable **module-scoped 1.1 APIs**.
 
-The current release-candidate line is **1.2.0rc1**. W1–W4 have completed their scientific and product gates; the candidate is unpublished and stable 1.1.0 remains the default.
+The current development line is **1.2.0rc2.dev0**. This research-development branch is neither qualified nor published; the prior **1.2.0rc1** candidate evidence remains frozen. W1–W4 have completed their scientific and product gates; the candidate is unpublished and stable 1.1.0 remains the default.
 
 The protected main source at the start of literal-RC qualification is **1.2.0.dev0**, with W1–W4 completed. [PR #220](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/220) has merged the exact candidate identity **1.2.0rc1** onto protected main at `67c5947`; it is not yet a published production version, and release readiness remains disarmed. Immutable 1.1.0 qualification evidence stays attributed to 1.1.0.
 

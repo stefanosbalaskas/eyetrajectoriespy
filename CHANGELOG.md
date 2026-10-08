@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased experimental development — 1.2.0rc2.dev0 (not a release)
+
+- Add isolated E1–E4 experimental workflow utilities for opt-in preprocessing, preflight, declared sensitivity and provenance-linked reports; these are not RC1 qualified APIs.
+- Preserve all frozen RC1 numerical/performance records and publication interlocks. A new E5 qualification and version-authority decision are mandatory before merge or publishing.
+
 ## 1.2.0rc1 — 2026-10-08
 
 - Promote the completed, feature-frozen 1.2 workflow/orchestration programme to literal `1.2.0rc1` qualification without changing an estimator, numerical method, scientific default, dependency, workflow contract, or package-root API.
