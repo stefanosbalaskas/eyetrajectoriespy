@@ -36,21 +36,82 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - name: Install experimental source
+      - name: Build a wheel and install into an isolated environment
         run: |
-          python -m pip install -U pip
-          python -m pip install -e ".[dev]"
-      - name: Compile real-data case
-        run: python -m py_compile examples/real_gaze_e1_e4_usability.py
-      - name: Verify all three standalone quickstarts
+          python -m pip install -U pip build
+          python -m build --wheel --outdir build/dist
+          python -m venv .empirical-wheel
+          .empirical-wheel/bin/python -m pip install -U pip
+          .empirical-wheel/bin/python -m pip install build/dist/*.whl
+          .empirical-wheel/bin/python -m pip check
+      - name: Execute all tutorials from installed wheel outside source checkout
+        shell: bash
         run: |
-          python -m py_compile examples/quickstart_dense_fpca.py examples/quickstart_sparse_planar.py examples/quickstart_functional_regression.py
-          python examples/quickstart_dense_fpca.py
-          python examples/quickstart_sparse_planar.py
-          python examples/quickstart_functional_regression.py
-      - name: Execute source-pinned empirical usability case
+          ROOT="$PWD"
+          EXPECTED_VERSION=$(python -c 'import tomllib; from pathlib import Path; print(tomllib.loads(Path("pyproject.toml").read_text())["project"]["version"])')
+          RUN_DIR=$(mktemp -d)
+          cd "$RUN_DIR"
+          "$ROOT/.empirical-wheel/bin/python" - "$ROOT" "$EXPECTED_VERSION" <<'PY'
+          import sys
+          from pathlib import Path
+          from importlib.metadata import version
+          import eyetrajectoriespy
+          workspace = Path(sys.argv[1]).resolve()
+          expected = sys.argv[2]
+          installed_path = Path(eyetrajectoriespy.__file__).resolve()
+          assert not installed_path.is_relative_to(workspace), installed_path
+          assert version("eyetrajectoriespy") == expected, (version("eyetrajectoriespy"), expected)
+          print("PASS exact-version installed wheel outside checkout", installed_path)
+          PY
+          for example in quickstart_dense_fpca.py quickstart_sparse_planar.py quickstart_functional_regression.py; do
+            "$ROOT/.empirical-wheel/bin/python" "$ROOT/examples/$example"
+          done
+      - name: Execute source-pinned empirical usability from installed wheel
+        shell: bash
         run: |
-          python examples/real_gaze_e1_e4_usability.py --output build/real-gaze-usability
+          ROOT="$PWD"
+          RUN_DIR=$(mktemp -d)
+          cd "$RUN_DIR"
+          "$ROOT/.empirical-wheel/bin/python"             "$ROOT/examples/real_gaze_e1_e4_usability.py"             --output "$ROOT/build/real-gaze-usability"
+      - name: Attest installed distribution identity and bytes
+        shell: bash
+        run: |
+          ROOT="$PWD"
+          RUN_DIR=$(mktemp -d)
+          cd "$RUN_DIR"
+          "$ROOT/.empirical-wheel/bin/python" - "$ROOT" <<'PY'
+          from hashlib import sha256
+          from importlib.metadata import version
+          import json
+          import os
+          from pathlib import Path
+          import sys
+          import tomllib
+          import eyetrajectoriespy
+          root = Path(sys.argv[1]).resolve()
+          project = tomllib.loads((root / "pyproject.toml").read_text())
+          expected = project["project"]["version"]
+          installed = version("eyetrajectoriespy")
+          wheel_paths = list((root / "build" / "dist").glob("*.whl"))
+          assert len(wheel_paths) == 1, wheel_paths
+          pkg_path = Path(eyetrajectoriespy.__file__).resolve()
+          assert installed == expected
+          assert not pkg_path.is_relative_to(root)
+          evidence = {
+              "installed_product_version": installed,
+              "declared_source_version": expected,
+              "wheel_name": wheel_paths[0].name,
+              "wheel_sha256": sha256(wheel_paths[0].read_bytes()).hexdigest(),
+              "installed_outside_source_checkout": True,
+              "full_empirical_workflow_executed": True,
+              "source_commit": os.environ.get("GITHUB_SHA"),
+              "runtime_python": sys.version,
+              "publication_authorized": False,
+          }
+          path = root / "build" / "real-gaze-usability" / "installed-wheel-attestation.json"
+          path.write_text(json.dumps(evidence, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+          print("PASS source-identical installed-wheel empirical attestation")
+          PY
       - name: Verify descriptive-only empirical evidence
         run: |
           python - <<'PY'
