@@ -43,9 +43,12 @@ def main() -> None:
     assert "not" in guide.lower() and "candidate" in guide.lower()
 
     figures = re.findall(r"!\[[^\]]*\]\(([^)]+\.svg)\)", readme)
+    # Shields.io version/status badges are intentionally remote and independent
+    # of the scientific gallery. All non-badge illustrative SVGs must be local.
+    figures = [fig for fig in figures if not fig.startswith("https://img.shields.io/")]
     assert figures, "README must display at least one available SVG"
     for fig in figures:
-        assert not fig.startswith(("http://", "https://")), "README images must be repo-relative"
+        assert not fig.startswith(("http://", "https://")), "README illustrations must be repo-relative"
         image = (ROOT / fig).resolve()
         assert image.is_relative_to(ROOT) and image.is_file(), f"README image is untracked: {fig}"
 
