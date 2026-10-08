@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from typing import Mapping, Any
 import numpy as np
 import pandas as pd
+from scipy.integrate import trapezoid
 from eyetrajectoriespy.types import TrajectorySet
 
 @dataclass(frozen=True)
@@ -46,7 +47,7 @@ def detect_ordered_functional_changepoint(
         c = np.cumsum(curves, axis=0)
         a = c[split - 1] / split[:, None, None]
         b = (c[-1] - c[split - 1]) / (n - split)[:, None, None]
-        norm_squared = np.trapz((a - b)**2, x=trajectories.time, axis=1).sum(axis=1)
+        norm_squared = trapezoid((a - b)**2, x=trajectories.time, axis=1).sum(axis=1)
         return np.sqrt(np.maximum(0, norm_squared) * split * (n - split) / n)
     scores = stat(x)
     observed = float(scores.max())
