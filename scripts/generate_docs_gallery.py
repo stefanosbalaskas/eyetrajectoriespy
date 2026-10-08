@@ -6,6 +6,7 @@ from _generate_docs_gallery_base import main as _base_main
 from generate_docs_gallery_extra import main as _extra_main
 from generate_docs_gallery_pages import main as _pages_main
 from generate_sparse_mfpca_docs_figure import main as _sparse_mfpca_docs_main
+from generate_workflow_gallery import main as _workflow_main
 
 
 def main() -> None:
@@ -13,6 +14,7 @@ def main() -> None:
 
     _base_main()
     _sparse_mfpca_docs_main()
+    _workflow_main()
     _extra_main()
     _pages_main()
 
