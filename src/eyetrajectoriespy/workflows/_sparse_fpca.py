@@ -11,6 +11,7 @@ import pandas as pd
 from ..observation_process import (
     ObservationProcessData,
     ObservationProcessDiagnosticResult,
+    observation_process_reporting_text,
 )
 from ..reporting import sparse_fpca_reporting_text
 from ..sparse import SparseFPCAResult, sparse_fpca_score_frame
@@ -397,6 +398,9 @@ def run_sparse_fpca_workflow(
             uncertainty
         )
     if observation is not None:
+        reports["observation_diagnostics"] = observation_process_reporting_text(
+            observation
+        )
         tables["observation_global"] = observation.global_summary.copy()
         tables["observation_time"] = observation.time_summary.copy()
         tables["observation_associations"] = observation.associations.copy()
