@@ -221,6 +221,18 @@ def test_release_governance_requires_exact_main_simulation_evidence():
         "sparse_mfpca_performance_qualified",
     ):
         assert gate in module._GITHUB_RELEASE_DECLARATIONS
+    for gate in (
+        "workflow_product_qualification_qualified",
+        "workflow_api_audit_frozen",
+    ):
+        assert gate in module._GITHUB_RELEASE_DECLARATIONS
+    for check in (
+        "workflow-contract (3.11)",
+        "workflow-contract (3.12)",
+        "workflow-contract (3.13)",
+        "installed-product",
+    ):
+        assert check in module.REQUIRED_CHECKS
     for check in (
         "sparse-mfpca-recovery",
         "sparse-mfpca-sensitivity",
