@@ -1,22 +1,22 @@
 {
   "schema_version": 1,
-  "package_version": "1.1.0",
+  "package_version": "1.2.0rc1",
   "benchmark_kind": "single-package performance envelope",
   "comparative_benchmark": false,
   "profile": "ci-qualification",
   "status": "qualified",
-  "qualification_commit": "cb3ecd82112e41ab1ac2b20961eeb79250da96cb",
-  "qualification_run_id": "37528714581",
+  "qualification_commit": "765f7b5e9277315f8b0d0ddbcbcfe285aca66da1",
+  "qualification_run_id": "37771315492",
   "environment": {
-    "cpu_model": "AMD EPYC 9V74 80-Core Processor",
-    "github_run_id": "37528714581",
+    "cpu_model": "AMD EPYC 7763 64-Core Processor",
+    "github_run_id": "37771315492",
     "github_runner_environment": "github-hosted",
-    "github_runner_name": "GitHub Actions 1000085696",
+    "github_runner_name": "GitHub Actions 1000089142",
     "implementation": "CPython",
     "logical_cpu_count": 4,
     "machine": "x86_64",
     "packages": {
-      "eyetrajectoriespy": "1.1.0",
+      "eyetrajectoriespy": "1.2.0rc1",
       "numpy": "2.5.3",
       "pandas": "3.0.6",
       "scikit-learn": "1.9.1",
@@ -26,7 +26,7 @@
     "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
     "python": "3.12.15",
     "release": "6.17.0-1022-azure",
-    "source_commit": "cb3ecd82112e41ab1ac2b20961eeb79250da96cb",
+    "source_commit": "765f7b5e9277315f8b0d0ddbcbcfe285aca66da1",
     "system": "Linux",
     "thread_limits": {
       "MKL_NUM_THREADS": "1",
@@ -34,7 +34,7 @@
       "OMP_NUM_THREADS": "1",
       "OPENBLAS_NUM_THREADS": "1"
     },
-    "workflow_commit": "485248b0747018f44f36d7ffa1b5d66d6d48a280"
+    "workflow_commit": "fe482100298e892fc0a74a0aef4866efbba134dc"
   },
   "results": [
     {
@@ -42,8 +42,8 @@
       "scale": {"n_bootstrap": 20, "n_participants": 10, "n_time": 41, "n_trials": 3, "q": 3},
       "repeats": 3,
       "observed": {
-        "runtime_seconds": {"all": [3.2564330659999996, 1.513386655000005, 1.5088707929999998], "maximum": 3.2564330659999996, "median": 1.513386655000005, "minimum": 1.5088707929999998, "q1": 1.5111287240000024, "q3": 2.3849098605000023},
-        "peak_memory_mib": {"all": [227.87109375, 222.35546875, 222.64453125], "maximum": 227.87109375, "median": 222.64453125}
+        "runtime_seconds": {"all": [3.061873521999999, 1.941100843000001, 1.955197971000004], "maximum": 3.061873521999999, "median": 1.955197971000004, "minimum": 1.941100843000001, "q1": 1.9481494070000025, "q3": 2.5085357465000016},
+        "peak_memory_mib": {"all": [229.7734375, 224.51953125, 223.95703125], "maximum": 229.7734375, "median": 224.51953125}
       }
     },
     {
@@ -51,8 +51,8 @@
       "scale": {"n_bootstrap": 20, "n_participants": 12, "n_time": 6, "n_trials": 3, "q": 2},
       "repeats": 3,
       "observed": {
-        "runtime_seconds": {"all": [2.1108255980000052, 2.1166336130000047, 2.1025643159999987], "maximum": 2.1166336130000047, "median": 2.1108255980000052, "minimum": 2.1025643159999987, "q1": 2.106694957000002, "q3": 2.113729605500005},
-        "peak_memory_mib": {"all": [230.4375, 230.5234375, 230.50390625], "maximum": 230.5234375, "median": 230.50390625}
+        "runtime_seconds": {"all": [2.992339647999998, 2.9626527789999955, 2.9747778450000055], "maximum": 2.992339647999998, "median": 2.9747778450000055, "minimum": 2.9626527789999955, "q1": 2.9687153120000005, "q3": 2.9835587465000017},
+        "peak_memory_mib": {"all": [228.1796875, 227.75, 228.06640625], "maximum": 228.1796875, "median": 228.06640625}
       }
     },
     {
@@ -60,8 +60,8 @@
       "scale": {"n_participants": 8, "n_time": 5, "n_trials": 3, "q": 2},
       "repeats": 3,
       "observed": {
-        "runtime_seconds": {"all": [1.9977472229999904, 2.003882761, 1.999439197000001], "maximum": 2.003882761, "median": 1.999439197000001, "minimum": 1.9977472229999904, "q1": 1.9985932099999957, "q3": 2.0016609790000004},
-        "peak_memory_mib": {"all": [230.29296875, 229.7421875, 230.26171875], "maximum": 230.29296875, "median": 230.26171875}
+        "runtime_seconds": {"all": [2.651812288000002, 2.6852140390000017, 2.629992182999999], "maximum": 2.6852140390000017, "median": 2.651812288000002, "minimum": 2.629992182999999, "q1": 2.6409022355000005, "q3": 2.668513163500002},
+        "peak_memory_mib": {"all": [227.859375, 227.625, 227.6328125], "maximum": 227.859375, "median": 227.6328125}
       }
     },
     {
@@ -69,8 +69,8 @@
       "scale": {"n_bootstrap": 100, "n_participants": 8, "n_time": 5, "n_trials": 2, "q": 2},
       "repeats": 3,
       "observed": {
-        "runtime_seconds": {"all": [1.6876446859999987, 1.7054626369999966, 1.7110031369999916], "maximum": 1.7110031369999916, "median": 1.7054626369999966, "minimum": 1.6876446859999987, "q1": 1.6965536614999976, "q3": 1.708232886999994},
-        "peak_memory_mib": {"all": [229.48046875, 229.21875, 229.07421875], "maximum": 229.48046875, "median": 229.21875}
+        "runtime_seconds": {"all": [2.2454342279999935, 2.247697860999992, 2.2425986490000014], "maximum": 2.247697860999992, "median": 2.2454342279999935, "minimum": 2.2425986490000014, "q1": 2.2440164384999974, "q3": 2.2465660444999926},
+        "peak_memory_mib": {"all": [226.6640625, 226.55078125, 226.89453125], "maximum": 226.89453125, "median": 226.6640625}
       }
     },
     {
@@ -78,8 +78,8 @@
       "scale": {"n_participants": 1, "n_time": 800, "n_trials": 1, "q": null},
       "repeats": 3,
       "observed": {
-        "runtime_seconds": {"all": [1.6278679329999903, 1.6584541109999975, 1.6491791899999981], "maximum": 1.6584541109999975, "median": 1.6491791899999981, "minimum": 1.6278679329999903, "q1": 1.6385235614999942, "q3": 1.6538166504999978},
-        "peak_memory_mib": {"all": [229.91796875, 229.30859375, 229.2109375], "maximum": 229.91796875, "median": 229.30859375}
+        "runtime_seconds": {"all": [2.086915093999991, 2.1054811669999935, 2.0990727909999976], "maximum": 2.1054811669999935, "median": 2.0990727909999976, "minimum": 2.086915093999991, "q1": 2.0929939424999944, "q3": 2.1022769789999955},
+        "peak_memory_mib": {"all": [228.671875, 228.8046875, 228.90625], "maximum": 228.90625, "median": 228.8046875}
       }
     },
     {
@@ -87,8 +87,8 @@
       "scale": {"n_participants": 1, "n_specifications": 16, "n_time": 300, "n_trials": 1, "q": null},
       "repeats": 3,
       "observed": {
-        "runtime_seconds": {"all": [1.7513390259999966, 1.7510773700000044, 1.7572995280000043], "maximum": 1.7572995280000043, "median": 1.7513390259999966, "minimum": 1.7510773700000044, "q1": 1.7512081980000005, "q3": 1.7543192770000005},
-        "peak_memory_mib": {"all": [224.40234375, 224.18359375, 224.6640625], "maximum": 224.6640625, "median": 224.40234375}
+        "runtime_seconds": {"all": [2.251467353999999, 2.264570902999992, 2.2597772439999915], "maximum": 2.264570902999992, "median": 2.2597772439999915, "minimum": 2.251467353999999, "q1": 2.2556222989999952, "q3": 2.2621740734999918},
+        "peak_memory_mib": {"all": [223.73046875, 223.2109375, 223.984375], "maximum": 223.984375, "median": 223.73046875}
       }
     }
   ],
