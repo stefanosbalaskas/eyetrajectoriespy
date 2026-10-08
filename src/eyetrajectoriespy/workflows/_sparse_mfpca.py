@@ -11,6 +11,7 @@ import pandas as pd
 from ..observation_process import (
     ObservationProcessData,
     ObservationProcessDiagnosticResult,
+    observation_process_reporting_text,
 )
 from ..sparse_multivariate import (
     SparseMFPCAResult,
@@ -362,6 +363,9 @@ def run_sparse_mfpca_workflow(
             uncertainty
         )
     if observation is not None:
+        reports["observation_diagnostics"] = observation_process_reporting_text(
+            observation
+        )
         tables["observation_global"] = observation.global_summary.copy()
         tables["observation_time"] = observation.time_summary.copy()
         tables["observation_associations"] = observation.associations.copy()
