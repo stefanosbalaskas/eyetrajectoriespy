@@ -2,15 +2,15 @@
 
 This file records qualification evidence separately from implementation status. A missing hosted check is never treated as a code pass or code failure.
 
-## Current development target
+## Current release-candidate target
 
-`1.2.0.dev0` is the active **non-publishing development source identity**. Published stable `1.1.0`, published prerelease `1.1.0rc1`, and the frozen 1.0 package-root compatibility boundary remain immutable.
+`1.2.0rc1` is the active **non-publishing release-candidate qualification identity**. Published stable `1.1.0`, published prerelease `1.1.0rc1`, and the frozen 1.0 package-root compatibility boundary remain immutable.
 
 - The complete `1.1.0` cycle is closed: RC qualification/publication/installed observation, fresh literal-final qualification, governance-only arming, final GitHub/PyPI publication with attestations, stable promotion, disarming, and post-publication exact-main closeout all passed.
-- Frozen reference/tolerance/performance evidence remains labelled `1.1.0`. The `1.2.0.dev0` source line may use that evidence only as historical baseline evidence; any future 1.2 release candidate/final release requires fresh exact-version qualification.
-- Issue #205 continues Bayesian sparse FPCA/MFPCA external-comparator/feasibility evidence without approving a native Bayesian estimator.
-- Issue #211 governs the transparent workflow/orchestration programme. Workflow APIs must preserve the scientific contracts of their underlying primitives and must not introduce hidden preprocessing, tuning, family selection, synchronization, or prediction splitting.
-- GitHub/PyPI publication readiness remains jointly false throughout ordinary development.
+- Reference/tolerance ledgers are attributed to the literal RC identity because their underlying qualified tests are unchanged; package-wide performance must be regenerated under exact `1.2.0rc1` and must not be relabelled from `1.1.0`.
+- The Bayesian feasibility programme is closed with B4 recording `native_bayesian_feasibility_warranted=true` outside 1.2; no native Bayesian estimator is part of this release.
+- The W1–W4 workflow programme is complete and exact-main-qualified through commit `11cefc4f81957ab5e3033ba18b993e49ffb01c3d`; the workflow API remains module-scoped under `eyetrajectoriespy.workflows`.
+- GitHub/PyPI publication readiness remains jointly false throughout RC qualification.
 
 ## Locally validated — 2026-09-19
 
