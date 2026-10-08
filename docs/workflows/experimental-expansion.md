@@ -1,7 +1,7 @@
 # Experimental E1–E4 workflow expansion (not an RC1 public API)
 
 !!! warning "Research development; do not treat as a published feature"
-    These APIs are currently on branch `feature/e1-e4-workflow-expansion-rc2` only. Published stable **1.1.0** and frozen qualified candidate source **1.2.0rc1** do **not** promise these interfaces. A new candidate release, compatibility audit and installed-wheel qualification must precede any promotion.
+    These APIs have been integrated into protected `main` as **unpublished experimental development source `1.2.0rc2.dev0`** under [PR #223](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/223). Stable **1.1.0** and frozen qualified source **1.2.0rc1** do **not** promise these interfaces. Fresh literal RC2 qualification and separate publication governance are required.
 
 ## E1 — Executable preprocessing and retained phase information
 
@@ -21,7 +21,7 @@ The analyst explicitly specifies an ordered `PreprocessingPlan`. The experimenta
 
 ## Worked local demonstration
 
-Run `python examples/experimental_workflow_e1_e4.py` after installing **the exact experimental branch** in a disposable research environment. The example uses a synthetic, explicitly seeded trajectory dataset; it saves a preflight CSV, preprocessing audit, descriptive sensitivity CSV and a checksummed Markdown scientific report. It does not publish, promote or select a model.
+Run `python examples/experimental_workflow_e1_e4.py` after installing **the exact unpublished 1.2 development source** in a disposable research environment. The example uses a synthetic, explicitly seeded trajectory dataset; it saves a preflight CSV, preprocessing audit, descriptive sensitivity CSV and a checksummed Markdown scientific report. It does not publish, promote or select a model.
 
 ## Qualification boundary
 

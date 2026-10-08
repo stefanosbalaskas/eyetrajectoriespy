@@ -12,13 +12,13 @@ hide:
     pip install eyetrajectoriespy==1.1.0
     ```
 
-!!! info "1.2.0rc1 — release-candidate qualification, not yet published"
-    W1–W4 are complete and all ten typed workflows passed installed-wheel product qualification. Literal **1.2.0rc1** is merged under [PR #220](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/220) and remains unpublished pending independent exact-main qualification and release governance. Publication is not armed, and candidate workflow APIs are **not** part of the stable 1.1 installation.
+!!! info "1.2 development — experimental source, not a published release"
+    W1–W4 and all ten workflow contracts have passed installed-wheel product qualification. Frozen source **1.2.0rc1** remains unpublished. E1–E4 experimental interfaces were merged to protected `main` as **1.2.0rc2.dev0** under [PR #223](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/223), but a new literal RC2 has **not** been qualified or published. Publication remains disarmed. A plain PyPI installation still gives **stable 1.1.0**, without the 1.2 workflow APIs.
 
 <div class="et-hero" markdown>
 <div markdown>
 
-<!-- Experimental branch source version: 1.2.0rc2.dev0; not a published release. -->
+<!-- Protected-main experimental source version 1.2.0rc2.dev0; not a published release. -->
 
 # Model the viewing process, not only its summaries
 

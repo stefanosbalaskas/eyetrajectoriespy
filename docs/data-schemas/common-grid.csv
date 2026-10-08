@@ -1,0 +1,5 @@
+participant_id,trial_id,time_s,x,y,condition
+P01,T01,0.0,0.45,0.51,A
+P01,T01,0.1,0.47,0.50,A
+P02,T01,0.0,0.53,0.48,B
+P02,T01,0.1,0.54,0.46,B

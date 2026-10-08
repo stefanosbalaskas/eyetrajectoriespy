@@ -1,0 +1,84 @@
+name: real-gaze-usability
+
+on:
+  pull_request:
+    paths:
+      - "examples/real_gaze_e1_e4_usability.py"
+      - "examples/quickstart_*.py"
+      - "docs/guides/input-schemas.md"
+      - "docs/methods/experimental-e1-e4-gallery.md"
+      - "docs/articles/real-gaze-usability.md"
+      - "docs/quickstart.md"
+      - ".github/workflows/real-gaze-usability.yml"
+      - "pyproject.toml"
+  push:
+    branches: [main]
+    paths:
+      - "examples/real_gaze_e1_e4_usability.py"
+      - "docs/articles/real-gaze-usability.md"
+      - "pyproject.toml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  authentic-observations-e1-e4:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install experimental source
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+      - name: Compile real-data case
+        run: python -m py_compile examples/real_gaze_e1_e4_usability.py
+      - name: Verify all three standalone quickstarts
+        run: |
+          python -m py_compile examples/quickstart_dense_fpca.py examples/quickstart_sparse_planar.py examples/quickstart_functional_regression.py
+          python examples/quickstart_dense_fpca.py
+          python examples/quickstart_sparse_planar.py
+          python examples/quickstart_functional_regression.py
+      - name: Execute source-pinned empirical usability case
+        run: |
+          python examples/real_gaze_e1_e4_usability.py --output build/real-gaze-usability
+      - name: Verify descriptive-only empirical evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root = Path("build/real-gaze-usability")
+          evidence = json.loads((root / "usability-evidence.json").read_text())
+          assert evidence["status"] == "empirical_observed_data_workflow_executed_not_oracle_validation"
+          assert evidence["trial_windows_input"] == 16
+          assert evidence["trial_windows_model"] < 16
+          assert evidence["trial_windows_model"] >= 10
+          assert evidence["missing_values_model"] == 0
+          assert evidence["failed_sensitivity_specs"] == ["retained-999"]
+          assert evidence["original_raw_data_redistributed"] is False
+          assert evidence["fabricated_inferential_results"] is False
+          assert (root / "scientific-report/manifest.json").is_file()
+          assert (root / "preprocessing-before-after.svg").is_file()
+          assert (root / "preflight-missingness.svg").is_file()
+          assert (root / "sensitivity-stability.svg").is_file()
+          assert (root / "report-sample-accounting.svg").is_file()
+          assert (root / "input-selection-audit.csv").is_file()
+          print("PASS empirical user-workflow evidence; source files excluded from artifact")
+          PY
+      - name: Retain de-identified derived evidence only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: real-gaze-usability-e1-e4
+          path: build/real-gaze-usability/
+          if-no-files-found: ignore
+          retention-days: 90
