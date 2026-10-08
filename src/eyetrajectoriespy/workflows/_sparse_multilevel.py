@@ -11,6 +11,7 @@ import pandas as pd
 from ..observation_process import (
     ObservationProcessData,
     ObservationProcessDiagnosticResult,
+    observation_process_reporting_text,
 )
 from ..sparse_multilevel import (
     SparseMultilevelFPCAResult,
@@ -206,12 +207,16 @@ def run_sparse_multilevel_workflow(
     if observation_step is not None:
         steps.append(observation_step)
 
+    reports = {"fit": sparse_multilevel_fpca_reporting_text(fit)}
     tables: dict[str, pd.DataFrame] = {
         "participant_scores": fit.participant_scores.copy(),
         "trial_scores": fit.trial_scores.copy(),
         "score_diagnostics": fit.score_diagnostics.copy(),
     }
     if observation is not None:
+        reports["observation_diagnostics"] = observation_process_reporting_text(
+            observation
+        )
         tables["observation_global"] = observation.global_summary.copy()
         tables["observation_time"] = observation.time_summary.copy()
         tables["observation_associations"] = observation.associations.copy()
@@ -264,6 +269,6 @@ def run_sparse_multilevel_workflow(
             "bandwidth_selector_available": False,
             "automatic_model_selection_performed": False,
         },
-        reports={"fit": sparse_multilevel_fpca_reporting_text(fit)},
+        reports=reports,
         tables=tables,
     )
