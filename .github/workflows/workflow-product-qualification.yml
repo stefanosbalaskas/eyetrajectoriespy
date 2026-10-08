@@ -59,6 +59,9 @@ jobs:
             tests/test_workflow_contract_edges.py \
             tests/test_workflow_product_w4.py
 
+      - name: Validate frozen workflow API audit
+        run: python scripts/validate_workflow_api_audit.py
+
       - name: Verify W4 remains module-scoped
         run: |
           python - <<'PY'
@@ -157,6 +160,9 @@ jobs:
           assert not missing, missing
           print("installed 1.2 workflow product evidence OK")
           PY
+
+      - name: Validate workflow API audit in installed environment
+        run: .workflow-wheel/bin/python scripts/validate_workflow_api_audit.py
 
       - name: Compile installed-product harness
         run: python -m py_compile scripts/run_one_dot_two_workflow_product_qualification.py
