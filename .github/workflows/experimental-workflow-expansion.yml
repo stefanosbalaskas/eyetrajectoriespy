@@ -59,11 +59,30 @@ jobs:
           python -m build --wheel --outdir build/dist
           python -m pip install --force-reinstall --no-deps build/dist/*.whl
           cd /tmp
-          python -c "from eyetrajectoriespy.workflows.experimental import run_preprocessing_plan, workflow_preflight, run_workflow_sensitivity, render_workflow_report; print('installed experimental imports PASS')"
+          python - <<'PY'
+          from pathlib import Path
+          import os
+          import eyetrajectoriespy
+          from eyetrajectoriespy.workflows.experimental import (
+              run_preprocessing_plan, workflow_preflight,
+              run_workflow_sensitivity, render_workflow_report,
+          )
+          package_path = Path(eyetrajectoriespy.__file__).resolve()
+          workspace = Path(os.environ["GITHUB_WORKSPACE"]).resolve()
+          assert not package_path.is_relative_to(workspace), (
+              f"Installed-wheel smoke test inadvertently resolved source checkout: {package_path}"
+          )
+          print(f"PASS installed wheel outside checkout: {package_path}")
+          PY
+          python "$GITHUB_WORKSPACE/examples/experimental_workflow_e1_e4.py" \
+            --output "$GITHUB_WORKSPACE/build/e1-e4-installed-case"
+          test -f "$GITHUB_WORKSPACE/build/e1-e4-installed-case/scientific-report/manifest.json"
       - name: Retain synthetic evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: experimental-e1-e4-${{ matrix.python-version }}
-          path: build/e1-e4-case/
+          path: |
+            build/e1-e4-case/
+            build/e1-e4-installed-case/
           if-no-files-found: ignore
