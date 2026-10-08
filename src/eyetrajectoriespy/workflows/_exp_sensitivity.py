@@ -48,6 +48,7 @@ def run_workflow_sensitivity(
     baseline_name: str,
     metrics: Mapping[str, Callable[[Any], float]],
     runner_kwargs: Mapping[str, Any] | None = None,
+    conclusions: Mapping[str, Callable[[Any], str | bool]] | None = None,
 ) -> WorkflowSensitivityResult:
     """Run all declared configs through runner(data, config=..., **kwargs).
 
@@ -67,6 +68,9 @@ def run_workflow_sensitivity(
         raise ValueError("Supply nonempty named scalar metric extractors")
     if not callable(runner):
         raise TypeError("runner must be callable")
+    conclusion_rules = dict(conclusions or {})
+    if any(not name or not callable(fn) for name, fn in conclusion_rules.items()):
+        raise ValueError("Conclusion labels require explicitly declared extraction functions")
     kw = dict(runner_kwargs or {})
     if "config" in kw:
         raise ValueError("config must come only from a declared specification")
@@ -97,10 +101,16 @@ def run_workflow_sensitivity(
             record["workflow_contract"] = contract
             outcomes[spec.name] = result
             metrics_row.update(extracted)
+            for label, rule in conclusion_rules.items():
+                outcome = rule(result)
+                if not isinstance(outcome, (str, bool)) or not str(outcome).strip():
+                    raise TypeError("Analyst-declared conclusions must be nonempty strings or booleans")
+                metrics_row[f"conclusion_{label}"] = str(outcome)
         except Exception as exc:
             errors[spec.name] = f"{type(exc).__name__}: {exc}"
             record.update(status="failed", error_type=type(exc).__name__, error=str(exc))
             metrics_row.update({name: np.nan for name in metrics})
+            metrics_row.update({f"conclusion_{name}": None for name in conclusion_rules})
         ledger.append(record)
         rows.append(metrics_row)
     frame = pd.DataFrame(rows)
@@ -109,13 +119,21 @@ def run_workflow_sensitivity(
         baseline = frame.loc[frame["specification"] == baseline_name].iloc[0]
         for name in metrics:
             frame[f"{name}_delta_from_baseline"] = frame[name] - float(baseline[name])
+        for name in conclusion_rules:
+            column = f"conclusion_{name}"
+            frame[f"conclusion_{name}_changed"] = [
+                pd.NA if pd.isna(value) else bool(value != baseline[column])
+                for value in frame[column]
+            ]
     else:
         warnings.append("Baseline failed; no differences from baseline can be computed.")
         for name in metrics:
             frame[f"{name}_delta_from_baseline"] = np.nan
+        for name in conclusion_rules:
+            frame[f"conclusion_{name}_changed"] = pd.NA
     if errors:
         warnings.append(f"{len(errors)} of {len(specs)} specifications failed; failures retained.")
-    warnings.append("Metrics are descriptive, not inferential evidence or automated model ranking.")
+    warnings.append("Metrics and analyst-extracted conclusion labels are descriptive; no inference or automatic ranking is generated.")
     return WorkflowSensitivityResult(
         estimand_id=specs[0].estimand_id, baseline_name=baseline_name,
         specifications=pd.DataFrame(ledger), metric_frame=frame,
