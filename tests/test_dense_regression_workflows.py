@@ -46,25 +46,41 @@ def _dense_data(seed=2026):
 
 def _mixed_data(seed=2026):
     rng = np.random.default_rng(seed)
-    n_participants = 10
+    n_participants = 12
     trials = 3
-    time = np.linspace(0.0, 1.0, 7)
+    time = np.linspace(0.0, 1.0, 9)
     participants = np.repeat(
         [f"P{i:02d}" for i in range(n_participants)],
         trials,
     )
     condition = np.tile(np.array([0.0, 1.0, 0.5]), n_participants)
-    participant_shift = rng.normal(0.0, 0.12, size=n_participants)
+    intercept = 0.20 + 0.15 * time
+    condition_effect = 0.15 + 0.40 * time
+    covariance = np.array(
+        [
+            [0.030, 0.004],
+            [0.004, 0.020],
+        ]
+    )
+    random_basis_coefficients = rng.multivariate_normal(
+        np.zeros(2),
+        covariance,
+        size=n_participants,
+    )
+    linear_basis = np.column_stack([1.0 - time, time])
+
     values = []
     for participant in range(n_participants):
+        random_function = (
+            random_basis_coefficients[participant] @ linear_basis.T
+        )
         for trial in range(trials):
             index = participant * trials + trial
             response = (
-                0.2
-                + 0.1 * time
-                + condition[index] * (0.2 + 0.25 * time)
-                + participant_shift[participant] * (1.0 - 0.2 * time)
-                + rng.normal(0.0, 0.03, size=time.size)
+                intercept
+                + condition[index] * condition_effect
+                + random_function
+                + rng.normal(0.0, 0.04, size=time.size)
             )
             values.append(response[:, None])
     trajectories = et.TrajectorySet(
@@ -206,13 +222,14 @@ def test_functional_mixed_effects_workflow_executes_declared_model():
             fixed_basis_size=2,
             random_basis_size=2,
             spline_degree=1,
+            reml=True,
             method="lbfgs",
-            maxiter=300,
+            maxiter=500,
         ),
     )
 
     assert result.workflow_contract == "functional_mixed_effects:v1"
-    assert result.fit.n_participants == 10
+    assert result.fit.n_participants == 12
     assert result.decisions["residual_correlation"].value == "iid"
     assert result.provenance["automatic_random_effect_selection"] is False
     assert result.provenance["automatic_optimizer_fallback"] is False
