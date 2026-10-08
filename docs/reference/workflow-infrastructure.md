@@ -4,9 +4,7 @@ title: Workflow infrastructure
 
 # Workflow infrastructure
 
-`eyetrajectoriespy.workflows` is the feature-frozen orchestration surface for the `1.2.0rc1` release-candidate line.
-
-The W1 contract is intentionally infrastructure-only. It does not add a `run_*_workflow()` scientific analysis function, introduce a new estimator, or alter the qualified scientific defaults.
+`eyetrajectoriespy.workflows` provides the completed candidate 1.2 orchestration foundation. The initial **W1 infrastructure tranche** introduced typed contracts without scientific estimators; W2–W4 subsequently added ten module-scoped composed workflows, canonical plot dispatch and installed-wheel product qualification. The published stable release remains 1.1.0 while the literal 1.2.0rc1 undergoes qualification.
 
 ## Design rule
 
@@ -79,7 +77,7 @@ SHA256SUMS
 
 The nested `result/` directory uses the existing portable scientific-result contract. Unsupported backend-native objects therefore remain explicit rather than being silently serialized.
 
-Figure export is intentionally not part of W1. Workflow-level plotting and figure-bundle qualification belong to the later gallery/product tranche so W1 does not silently introduce backend-specific figure serialization.
+Figure export was intentionally **outside W1**. W4 subsequently qualified explicit workflow plot dispatch (`plot_workflow_result()` and `save_workflow_figure()`) over canonical plotting functions, without guessing which scientific plot is appropriate.
 
 ## Public-surface boundary
 
@@ -95,4 +93,4 @@ from eyetrajectoriespy.workflows import (
 )
 ```
 
-These names are not mechanically added to the frozen 1.0 package-root export boundary. Promotion of concrete workflow APIs is a separate 1.2 public-surface decision under issue #209.
+These names are not mechanically added to the frozen 1.0 package-root export boundary. The completed 1.2 candidate retains all ten scientific workflows **module-scoped**, as machine-checked in `WORKFLOW_API_AUDIT.json`; no root export promotion was authorized.

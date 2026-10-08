@@ -4,7 +4,9 @@
 
 The current stable production release is **1.1.0**. It is the stable/default production release and preserves the frozen 1.0 package-root compatibility boundary while promoting the qualified post-1.0 sparse/irregular capabilities as stable **module-scoped 1.1 APIs**.
 
-The current release-candidate line is **1.2.0rc1**. The 1.2 workflow/orchestration surface is feature-frozen and undergoing literal-version qualification. Publication is not armed by this source identity, and stable `1.1.0` remains the default production release until a later explicit publication and final-promotion cycle.
+The current release-candidate line is **1.2.0rc1**. W1–W4 have completed their scientific and product gates; the candidate is unpublished and stable 1.1.0 remains the default.
+
+The protected main source at the start of literal-RC qualification is **1.2.0.dev0**, with W1–W4 completed. [PR #220](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/220) has merged the exact candidate identity **1.2.0rc1** onto protected main at `67c5947`; it is not yet a published production version, and release readiness remains disarmed. Immutable 1.1.0 qualification evidence stays attributed to 1.1.0.
 
 The frozen 1.0 public boundary contains **455 stable public exports** and three explicitly experimental APIs. No deprecations or removals were authorized by the 1.0 stabilization programme, and 1.1 did not mechanically expand that package-root namespace.
 
@@ -19,7 +21,7 @@ The completed release sequence was:
 5. **R5 — RC/final decision and literal-version qualification:** complete through RC publication/observation and fresh final-version qualification.
 6. **Final publication governance:** complete; `1.1.0` was armed separately, published from exact protected main, promoted to stable/default, and publication readiness was disarmed again after closeout.
 
-The post-1.1 Bayesian and workflow programmes are now closed. B4 supports a separate future native Bayesian feasibility/design programme outside 1.2, while W1–W4 delivered the module-scoped transparent workflow layer and completed installed-product qualification. No further feature work is permitted in the `1.2.0rc1` qualification tranche.
+The post-1.1 Bayesian comparator programme (issue #205, B1–B4) and the transparent workflow programme (issue #209, W1–W4) have **both completed their evidence/development gates**. B4 warrants only a separate native Bayesian feasibility/design programme: `native_bayesian_feasibility_warranted=true`, `architecture_winner_selected=false`, `automatic_promotion_decision=false`. W1–W4 qualified ten module-scoped orchestration workflows; the current work is literal 1.2.0rc1 release engineering, not a new scientific-estimator tranche.
 
 Future methodology remains evidence-driven rather than version-number-driven. `eyetrajectoriespy` is intentionally an **eye-tracking functional-analysis layer**, not a reimplementation of every general FDA estimator.
 
@@ -168,21 +170,23 @@ Issue #158 closed after the following evidence-driven sequence completed:
 
 R1–R5 under issue #183 subsequently qualified the integrated product surface through RC and final publication. The 1.1 scientific/release programme is therefore closed and is no longer the active roadmap.
 
-## Active post-1.1 programmes
+## Completed post-1.1 programmes and active release gate
 
-### Bayesian sparse comparator / feasibility — issue #205
+### Bayesian external comparator — B1–B4 completed
 
-B1 external-comparator infrastructure is merged and qualified on protected main. It compares the native sparse FPCA/MFPCA routes against an exact pinned external `bayesFPCA` implementation using neutral known-truth fixtures, invariant subspace/reconstruction metrics, retained uncertainty evidence, and an explicit GPL/runtime boundary. B4 remains deferred until replicated B2 recovery/fairness evidence and B3 uncertainty calibration are complete.
+[Issue #205](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/205) records the completed feasibility decision; [PR #215](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/215) retains definitive B2/B3 evidence. In the primary K=7 comparison, the external Bayesian comparator completed 128/128 fits and achieved lower mean reconstruction error in all eight frozen scenarios. Its repeated-dataset conditional fitted-score covariance nevertheless did **not** provide generally nominal 95% uncertainty coverage. No native implementation, new dependency or product API was promoted.
 
-### Transparent workflow layer — issue #211
+### Transparent 1.2 orchestration — W1–W4 completed
 
-The proposed 1.2 product programme promotes already-qualified analysis chains into explicit, typed, provenance-preserving workflow APIs. The workflow contract is **orchestration, not auto-analysis**: analyst decisions remain explicit; selectors and diagnostics remain inspectable; paired and asynchronous sparse planar routes remain scientifically distinct; preprocessing is declared rather than inferred; and workflow definitions receive their own schema/contract versioning.
+[Issue #209](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/209) is closed. W1 infrastructure, W2 sparse, W3 dense/regression and W4 recurrence, plotting and installed-wheel product qualification are complete on exact protected main. The surface has ten entry points and retained versioned contracts, with 49 module-scoped exports under the frozen 1.2 candidate workflow API audit. Root promotion remains disabled.
 
-The intended sequence is W1 infrastructure, W2 sparse workflows, W3 dense/regression/prediction workflows, then W4 nonlinear/docs/gallery/product qualification.
+### Next gate — literal 1.2.0rc1
+
+[PR #220](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/220) merged after a 29/29 PR-head matrix. Exact protected-main qualification is mandatory before any separate publication-arming decision. Documentation updates do not constitute a release or change the scientific qualification record.
 
 ## Later or conditional methodology
 
-Irregular functional mixed effects, shape/manifold analysis, genuinely functional clustering/classification, and additional nonlinear/state-space methods remain later or conditional work. Bayesian sparse modelling is now an active **external-comparator/feasibility** programme under issue #205 rather than an approved native estimator/API. Device/clock synchronization remains outside the package except for narrow audit interfaces.
+Irregular functional mixed effects, shape/manifold analysis, genuinely functional clustering/classification, and additional nonlinear/state-space methods remain later or conditional work. Bayesian sparse modelling remains a **feasibility/design research direction** under the completed issue #205, not an approved native estimator/API. Device/clock synchronization remains outside the package except for narrow audit interfaces.
 
 For versioning, the intended posture is:
 

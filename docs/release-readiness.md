@@ -2,9 +2,7 @@
 
 ## Current 1.2 release-candidate qualification
 
-`1.2.0rc1` is the active non-publishing qualification identity. The W1–W4 workflow programme is complete, and exact pre-RC protected main `11cefc4f81957ab5e3033ba18b993e49ffb01c3d` passed 29/29 workflow groups with zero failures. Installed-wheel W4 product qualification exercised all ten workflow contracts with zero release-blocking friction and the frozen workflow API audit keeps the new surface module-scoped.
-
-Publication remains jointly disarmed. The current gate is fresh exact-RC performance plus the complete RC pull-request matrix, followed by protected-main merge and complete exact-main requalification. Publication arming is a later governance-only step.
+`1.2.0rc1` is the active unpublished candidate source identity after PR #220 merged at exact protected-main SHA `67c59473cd6ee320298698dd25c1d4929bcf9a96`. The 29/29 successful PR-head workflows and independent post-merge exact-main qualification are distinct gates. No publication is armed by this change; published stable remains `1.1.0`.
 
 ## Current stable release — 1.1.0
 
@@ -28,6 +26,10 @@ Published final assets:
 
 The annotated tag object is `9a59ba37537559b9263d908bcdc9fa1dc129c6f5` and resolves exactly to arming commit `66cfb66798a90950e28401e45ee47e98543ff5c6`.
 
+## Next release gate — 1.2.0rc1 (not yet published)
+
+The 1.2 W1–W4 workflow/orchestration programme is complete on protected main, including all ten typed workflow contracts and installed-wheel product qualification. [PR #220](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/220) merged the **literal** `1.2.0rc1` identity and its fresh evidence; the exact protected-main CI gate is independent. Candidate qualification is not permission to publish: the publication interlocks are disarmed until a subsequent reviewed governance-only arming step. See [workflow product qualification](validation/one-dot-two-workflow-product-qualification.md) and [workflow API](workflows/workflow-orchestration.md).
+
 ## 1.1 qualification and publication basis
 
 The 1.1 sparse/irregular programme (#158) and integration/readiness programme (#183) progressed through the following audited gates:
@@ -43,15 +45,15 @@ The 1.1 sparse/irregular programme (#158) and integration/readiness programme (#
 
 No estimator, numerical method, scientific default, dependency, threshold, comparator method, performance methodology, public export, or frozen 1.0 root-API contract changed during final qualification, arming, or publication.
 
-## Current publication interlock
+## Post-1.1 publication interlock (1.1 closeout snapshot)
 
 The machine-readable authority is `RELEASE_READINESS.json`.
 
-Current post-publication state:
+The following fields record the final **1.1.0 closeout snapshot**, not the newer 1.2 source identity or a claim that 1.2 has been published:
 
 - stable/default published version = `1.1.0`;
 - immutable published prerelease = `1.1.0rc1`;
-- active source identity = `1.1.0`;
+- source identity at **1.1.0 closeout** = `1.1.0` (subsequently advanced to `1.2.0.dev0` on protected main for the 1.2 qualification programme);
 - `production_release_ready = false`;
 - `github_release_ready = false`;
 - exact final-qualified main = `7eaf842214dc26c8cd1cef9eaaa72a55916974de`;
@@ -60,7 +62,7 @@ Current post-publication state:
 - stable 1.0 root API boundary remains frozen and machine-checked; and
 - the qualified 1.1 additions are stable module-scoped APIs.
 
-Both publication-readiness flags are now **false**. This prevents accidental republication of immutable `1.1.0`. Ordinary pushes and merges remain non-publishing; any future release must begin a new reviewed version/readiness cycle.
+Both publication-readiness flags were **false** at 1.1 closeout and remain disarmed in the 1.2 candidate qualification process. Ordinary pushes and merges remain non-publishing; a future release requires its own reviewed version/readiness cycle.
 
 ## Final 1.0 qualification
 

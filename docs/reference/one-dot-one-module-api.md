@@ -1,6 +1,6 @@
 # 1.1 module-scoped API
 
-The `1.1.0.dev0` line adds specialized sparse/irregular capabilities as **supported module-scoped APIs**. These names are intentionally not inserted into the frozen 1.0 root namespace.
+Published **1.1.0** provides specialized sparse/irregular capabilities as **stable module-scoped APIs**. These names are intentionally not inserted into the frozen 1.0 root namespace. Later 1.2 workflow orchestration remains a separately qualified release candidate and is not part of the published 1.1 package.
 
 Use the import paths shown below. The frozen 1.0 root API remains documented in [Public API](api.md); the rationale and integration decisions are recorded in the [1.1 integration audit](one-dot-one-integration-audit.md).
 
