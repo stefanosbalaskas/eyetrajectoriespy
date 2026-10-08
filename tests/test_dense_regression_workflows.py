@@ -12,6 +12,7 @@ from eyetrajectoriespy.workflows import (
     GeneralizedFunctionalWorkflowConfig,
     PreprocessingPlan,
     PreprocessingStepConfig,
+    export_workflow_bundle,
     run_fpca_workflow,
     run_function_on_scalar_workflow,
     run_functional_mixed_effects_workflow,
@@ -125,7 +126,7 @@ def test_w3_surface_is_module_scoped():
     assert all(not hasattr(et, name) for name in names)
 
 
-def test_fpca_workflow_executes_and_retains_derived_component_count():
+def test_fpca_workflow_executes_and_retains_derived_component_count(tmp_path):
     trajectories, _ = _dense_data()
     result = run_fpca_workflow(
         trajectories,
@@ -142,6 +143,13 @@ def test_fpca_workflow_executes_and_retains_derived_component_count():
     assert result.provenance["automatic_model_selection_performed"] is False
     assert [step.name for step in result.steps] == ["fit"]
     assert {"scores", "explained_variance"} <= set(result.tables)
+
+    destination = export_workflow_bundle(result, tmp_path / "dense-fpca")
+    assert (destination / "workflow.json").exists()
+    assert (destination / "config.json").exists()
+    assert (destination / "result" / "manifest.json").exists()
+    assert (destination / "tables" / "scores.csv").exists()
+    assert (destination / "SHA256SUMS").exists()
 
 
 def test_function_on_scalar_workflow_executes_without_hidden_model_changes():
