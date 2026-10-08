@@ -107,15 +107,22 @@ jobs:
       - name: Run installed workflow product qualification outside checkout
         shell: bash
         run: |
+          EXPECTED_VERSION=$(python scripts/verify_release_version.py)
           RUN_DIR=$(mktemp -d)
           cd "$RUN_DIR"
-          "$GITHUB_WORKSPACE/.workflow-wheel/bin/python"             "$GITHUB_WORKSPACE/scripts/run_one_dot_two_workflow_product_qualification.py"             --output-dir "$GITHUB_WORKSPACE/build/workflow-product-qualification"             --expected-version "1.2.0rc1"
+          "$GITHUB_WORKSPACE/.workflow-wheel/bin/python"             "$GITHUB_WORKSPACE/scripts/run_one_dot_two_workflow_product_qualification.py"             --output-dir "$GITHUB_WORKSPACE/build/workflow-product-qualification"             --expected-version "$EXPECTED_VERSION"
 
       - name: Verify installed evidence and performance envelope
         run: |
           .workflow-wheel/bin/python - <<'PY'
           import json
+          from importlib.metadata import version
           from pathlib import Path
+          import tomllib
+
+          with Path("pyproject.toml").open("rb") as stream:
+              expected_version = tomllib.load(stream)["project"]["version"]
+          assert version("eyetrajectoriespy") == expected_version
 
           root = Path("build/workflow-product-qualification")
           summary = json.loads((root / "summary.json").read_text(encoding="utf-8"))
@@ -133,7 +140,7 @@ jobs:
               "recurrence:v1",
           }
           assert summary["programme"] == "1.2-workflow-installed-product-qualification"
-          assert summary["package_version"] == "1.2.0rc1"
+          assert summary["package_version"] == expected_version
           assert summary["installed_package_execution"] is True
           assert summary["repository_private_helpers_used"] is False
           assert summary["empirical_human_data"] is False

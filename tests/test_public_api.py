@@ -1,7 +1,19 @@
+import tomllib
+from pathlib import Path
+
 import eyetrajectoriespy as et
+from packaging.version import Version
+
+ROOT = Path(__file__).resolve().parents[1]
+
 
 def test_version_and_public_symbols():
-    assert et.__version__=="1.2.0rc1"
+    # Source identity must agree exactly with the build metadata, including
+    # the full .dev suffix. Frozen RC1 public-export expectations remain strict.
+    with (ROOT / "pyproject.toml").open("rb") as stream:
+        declared = tomllib.load(stream)["project"]["version"]
+    assert et.__version__ == declared
+    assert Version(declared) >= Version("1.2.0rc1")
     required={
         "GeneralizedFunctionOnScalarPredictionResult","GeneralizedFunctionOnScalarPredictionBootstrapResult","GeneralizedFunctionOnScalarPredictionBandResult","GeneralizedFunctionOnScalarMeanDifferenceResult","generalized_function_on_scalar_predict","bootstrap_generalized_function_on_scalar_predictions","generalized_function_on_scalar_prediction_bands","generalized_function_on_scalar_mean_difference_band","generalized_function_on_scalar_prediction_frame","generalized_function_on_scalar_mean_difference_frame","plot_generalized_function_on_scalar_predictions","plot_generalized_function_on_scalar_mean_difference","generalized_function_on_scalar_prediction_reporting_text","generalized_function_on_scalar_mean_difference_reporting_text",
         "GeneralizedFunctionOnScalarResult","GeneralizedFunctionOnScalarBootstrapResult","GeneralizedFunctionOnScalarBandResult","fit_generalized_function_on_scalar_regression","bootstrap_generalized_function_on_scalar_coefficients","generalized_function_on_scalar_simultaneous_bands","generalized_function_on_scalar_coefficient_frame","generalized_function_on_scalar_exposure_frame","plot_generalized_function_on_scalar_coefficients","generalized_function_on_scalar_reporting_text",
