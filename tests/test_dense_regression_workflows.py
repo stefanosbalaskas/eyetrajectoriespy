@@ -192,7 +192,7 @@ def test_function_on_scalar_participant_unit_is_explicit():
     trajectories, design = _mixed_data()
     participant_design = design.copy()
     participant_design["condition"] = np.repeat(
-        np.linspace(-1.0, 1.0, 10),
+        np.linspace(-1.0, 1.0, 12),
         3,
     )
     result = run_function_on_scalar_workflow(
@@ -206,7 +206,7 @@ def test_function_on_scalar_participant_unit_is_explicit():
     )
 
     assert result.fit.unit == "participant"
-    assert result.fit.n_units == 10
+    assert result.fit.n_units == 12
     assert result.decisions["participant_column"].value == "participant_id"
 
 
