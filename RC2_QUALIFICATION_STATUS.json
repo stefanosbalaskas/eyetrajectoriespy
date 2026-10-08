@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "programme": "fresh-literal-1.2.0rc2-e5-release-qualification",
+  "status": "prequalification_only_not_a_release_candidate",
+  "requested_candidate_version": "1.2.0rc2",
+  "active_development_version": "1.2.0rc2.dev0",
+  "exact_main_e1_e4_commit": "565097d12e184310b44f2737ef41f33a13546996",
+  "exact_main_e1_e4_workflow_groups": {
+    "success": 32,
+    "total": 32,
+    "failed": 0
+  },
+  "researcher_onboarding_merge_commit": "807ee3e131591620f6b1be15e488e80f73dd7c83",
+  "researcher_onboarding_pr_head": "cc4429e5e0d6cc027dc5403722c96182b5713d54",
+  "researcher_onboarding_pr_workflow_groups": {
+    "success": 26,
+    "total": 26,
+    "failed": 0
+  },
+  "researcher_onboarding_exact_main_workflow_groups": {
+    "success": 25,
+    "total": 25,
+    "failed": 0
+  },
+  "empirical_source_kind": "licensed_deidentified_observed_gaze_not_known_truth",
+  "empirical_input_trials": 16,
+  "empirical_model_trials": 15,
+  "empirical_evidence": {
+    "run_id": 37844779652,
+    "artifact_id": 11579516205,
+    "digest": "sha256:61a88a581ac922462ba5f8e9423d19cabe09dabb958cab9b2143f2b64707ad99"
+  },
+  "previous_candidate": "1.2.0rc1",
+  "previous_candidate_evidence_immutable": true,
+  "qualifying_experimental_exports": 12,
+  "legacy_workflows": 10,
+  "literal_rc2_pr_qualified": false,
+  "literal_rc2_exact_main_qualified": false,
+  "literal_rc2_installed_wheel_qualified": false,
+  "literal_rc2_scientific_evidence_qualified": false,
+  "literal_rc2_perf_envelope_qualified": false,
+  "literal_rc2_published": false,
+  "production_release_ready": false,
+  "github_release_ready": false,
+  "release_publication_authorized": false,
+  "notes": [
+    "This record documents completed pre-RC2 development gates; it is not exact-version scientific evidence.",
+    "Real human gaze case documents research usability only, not estimator recovery or population inference.",
+    "Literal 1.2.0rc2 must have newly generated, source-bound artifacts and scientific/performance evidence.",
+    "The frozen 1.2.0rc1 reference-validation, tolerance, performance and API ledgers must never be relabelled.",
+    "Publishing GitHub or PyPI artifacts remains independently gated, with authorization false."
+  ]
+}
