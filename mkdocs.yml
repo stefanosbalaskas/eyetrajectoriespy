@@ -202,6 +202,7 @@ nav:
           - Release process: release-process.md
   - API:
       - API stability & hierarchy: reference/api-stability.md
+      - Workflow infrastructure (1.2 W1): reference/workflow-infrastructure.md
       - Post-0.12 consistency audit: reference/api-consistency-audit.md
       - Capability inventory: reference/capability-inventory.md
       - Public API: reference/api.md
