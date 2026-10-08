@@ -384,6 +384,49 @@ These figures are regenerated from deterministic synthetic data during the docum
 
 </div>
 
+## 1.2 workflow orchestration
+
+The workflow layer delegates to the same canonical plotting functions while retaining
+the orchestration record that produced the scientific result.
+
+<div class="grid cards" markdown>
+
+-   **Dense FPCA workflow**
+
+    ![FPCA component rendered from a workflow result](../assets/gallery/workflow-fpca-component.svg)
+
+    The analyst explicitly chooses the workflow, component and dimension. The workflow
+    dispatcher does not select a component or figure automatically.
+
+    **Workflow API:** `run_fpca_workflow()`, `plot_workflow_result()`
+
+    [1.2 orchestration guide](../workflows/workflow-orchestration.md)
+
+-   **Function-on-scalar workflow**
+
+    ![Function-on-scalar coefficient rendered from a workflow result](../assets/gallery/workflow-function-on-scalar.svg)
+
+    The coefficient and functional dimension remain explicit and the canonical
+    `plot_function_on_scalar_coefficients()` implementation does the rendering.
+
+    **Workflow API:** `run_function_on_scalar_workflow()`, `plot_workflow_result()`
+
+    [1.2 orchestration guide](../workflows/workflow-orchestration.md)
+
+-   **Recurrence workflow**
+
+    ![Recurrence plot rendered from the explicit recurrence workflow](../assets/gallery/workflow-recurrence.svg)
+
+    Delay embedding, fixed epsilon, Theiler window and minimum line lengths are
+    analyst-declared. The figure is the canonical sparse recurrence plot; the workflow
+    does not tune the recurrence specification.
+
+    **Workflow API:** `run_recurrence_workflow()`, `plot_workflow_result()`
+
+    [1.2 orchestration guide](../workflows/workflow-orchestration.md)
+
+</div>
+
 ## Reproduce the gallery
 
 Run:
