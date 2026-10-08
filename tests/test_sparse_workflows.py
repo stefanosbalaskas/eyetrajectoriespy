@@ -443,6 +443,21 @@ def test_prediction_signature_requires_explicit_roles():
     assert "split_fraction" not in config_fields
 
 
+def test_selector_condition_limits_match_primitive_contract():
+    with pytest.raises(ValueError, match="greater than 1"):
+        SparseFPCABandwidthSelectionConfig(
+            mean_bandwidths=(0.2,),
+            covariance_bandwidths=(0.3,),
+            predictive_condition_limit=1.0,
+        )
+    with pytest.raises(ValueError, match="greater than 1"):
+        SparseMFPCABandwidthSelectionConfig(
+            mean_bandwidths=(0.2,),
+            covariance_bandwidths=(0.3,),
+            predictive_condition_limit=1.0,
+        )
+
+
 def test_condition_limits_match_primitive_contract():
     with pytest.raises(ValueError, match="greater than 1"):
         ScoreUncertaintyConfig(condition_limit=1.0)
