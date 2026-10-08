@@ -1,0 +1,49 @@
+name: experimental-workflow-expansion
+
+on:
+  pull_request:
+    paths:
+      - 'src/eyetrajectoriespy/workflows/_exp_*.py'
+      - 'src/eyetrajectoriespy/workflows/experimental.py'
+      - 'tests/test_experimental_workflow_expansion.py'
+      - 'examples/experimental_workflow_e1_e4.py'
+      - '.github/workflows/experimental-workflow-expansion.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  e1-e4-experimental-qualification:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install source and test tools
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[dev]"
+      - name: Run E1-E4 boundary and robustness tests
+        run: python -m pytest -q tests/test_experimental_workflow_expansion.py
+      - name: Run realistic end-to-end synthetic case
+        run: python examples/experimental_workflow_e1_e4.py --output build/e1-e4-case
+      - name: Build and verify out-of-checkout candidate wheel
+        run: |
+          python -m build --wheel --outdir build/dist
+          python -m pip install --force-reinstall --no-deps build/dist/*.whl
+          cd /tmp
+          python -c "from eyetrajectoriespy.workflows.experimental import run_preprocessing_plan, workflow_preflight, run_workflow_sensitivity, render_workflow_report; print('installed experimental imports PASS')"
+      - name: Retain synthetic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: experimental-e1-e4-${{ matrix.python-version }}
+          path: build/e1-e4-case/
+          if-no-files-found: ignore
