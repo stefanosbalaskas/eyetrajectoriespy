@@ -16,6 +16,7 @@ nav:
           - Repeated-trial mixed effects: workflows/repeated-trial-mixed-effects.md
           - Generalized binary/count responses: workflows/generalized-responses.md
           - Nonlinear/recurrence analysis: workflows/nonlinear-recurrence.md
+          - Transparent orchestration (1.2): workflows/workflow-orchestration.md
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md
       - Scientific contracts: concepts/contracts.md
@@ -190,6 +191,7 @@ nav:
           - Sparse partial-trajectory prediction: validation/sparse-partial-prediction.md
           - 1.1 end-to-end product analyses: validation/one-dot-one-product-analyses.md
           - 1.1 development readiness: validation/one-dot-one-development-readiness.md
+          - 1.2 workflow product qualification: validation/one-dot-two-workflow-product-qualification.md
           - Numerical tolerance policy: validation/numerical-tolerance-policy.md
           - Performance envelope: validation/performance-envelope.md
       - Development roadmap:
