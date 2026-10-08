@@ -1,0 +1,78 @@
+name: research-f1-f6-experimental
+
+on:
+  pull_request:
+    paths:
+      - "src/eyetrajectoriespy/research/**"
+      - "tests/test_research_f1_f6.py"
+      - ".github/workflows/research-f1-f6-experimental.yml"
+      - "pyproject.toml"
+  push:
+    branches: [main]
+    paths:
+      - "src/eyetrajectoriespy/research/**"
+      - "tests/test_research_f1_f6.py"
+      - ".github/workflows/research-f1-f6-experimental.yml"
+      - "pyproject.toml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  research-contracts:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install research and build dependencies
+        run: |
+          python -m pip install -U pip build
+          python -m pip install -e ".[dev]"
+      - name: Run F1-F6 boundary tests
+        run: python -m pytest -q tests/test_research_f1_f6.py
+      - name: Compile new experimental implementation
+        run: python -m compileall -q src/eyetrajectoriespy/research
+      - name: Build and inspect distribution
+        run: python -m build --wheel --outdir build/research-dist
+      - name: Verify installed wheel outside checkout
+        shell: bash
+        run: |
+          python -m venv .f-research-wheel
+          .f-research-wheel/bin/python -m pip install -U pip
+          .f-research-wheel/bin/python -m pip install build/research-dist/*.whl
+          .f-research-wheel/bin/python -m pip check
+          ROOT="$PWD"
+          RUN_DIR=$(mktemp -d)
+          cd "$RUN_DIR"
+          "$ROOT/.f-research-wheel/bin/python" - "$ROOT" <<'PY'
+          from pathlib import Path
+          from importlib.metadata import version
+          import sys
+          import eyetrajectoriespy
+          from eyetrajectoriespy import research
+          workspace = Path(sys.argv[1]).resolve()
+          installed_path = Path(eyetrajectoriespy.__file__).resolve()
+          assert not installed_path.is_relative_to(workspace), installed_path
+          assert version("eyetrajectoriespy") == "1.2.0rc2.dev0"
+          for name in (
+              "test_sparse_functional_groups", "audit_gaze_measurement_quality",
+              "from_bids_eyetracking", "compare_aoi_functional_geometries",
+              "detect_ordered_functional_changepoint", "fit_weighted_mfpca",
+          ):
+              assert hasattr(research, name), name
+              assert not hasattr(eyetrajectoriespy, name), name
+          print("PASS: six installed research entrypoints remain opt-in, no package-root promotion")
+          PY
