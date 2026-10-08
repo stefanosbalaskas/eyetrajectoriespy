@@ -1,6 +1,6 @@
 # Authentic gaze E1–E4: research usability qualification
 
-This reproduces a **real published eye-tracking observation** workflow, not a known-truth accuracy benchmark. The runnable source is [real_gaze_e1_e4_usability.py](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/feature/1-2-real-data-usability-onboarding/examples/real_gaze_e1_e4_usability.py). Its [GitHub Actions qualification](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/workflows/real-gaze-usability.yml) retains audit CSVs, the figures and the generated reporting manifest.
+This reproduces a **real published eye-tracking observation** workflow, not a known-truth accuracy benchmark. The runnable source is [real_gaze_e1_e4_usability.py](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/main/examples/real_gaze_e1_e4_usability.py). Its [GitHub Actions qualification](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/workflows/real-gaze-usability.yml) retains audit CSVs, the figures and the generated reporting manifest.
 
 ## Source and permissions
 
