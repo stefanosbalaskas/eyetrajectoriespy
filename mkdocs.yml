@@ -28,6 +28,7 @@ nav:
           - Bayesian feasibility boundary: articles/bayesian-feasibility-boundary.md
           - Authentic-data E1-E4 usability: articles/real-gaze-usability.md
       - Experimental E1-E4 result figures: methods/experimental-e1-e4-gallery.md
+      - Experimental F1-F6 scientific programme (unqualified): development/f1-f6-scientific-expansion.md
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md
       - Scientific contracts: concepts/contracts.md

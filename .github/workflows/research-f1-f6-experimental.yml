@@ -1,0 +1,225 @@
+name: research-f1-f6-experimental
+
+on:
+  pull_request:
+    paths:
+      - "src/eyetrajectoriespy/research/**"
+      - "tests/test_research_f1_f6.py"
+      - "scripts/run_research_f1_f5_pilot.py"
+      - "scripts/run_f1_sparse_pipeline_pilot.py"
+      - "scripts/run_f4_aoi_holdout_pilot.py"
+      - ".github/workflows/research-f1-f6-experimental.yml"
+      - "pyproject.toml"
+  push:
+    branches: [main]
+    paths:
+      - "src/eyetrajectoriespy/research/**"
+      - "tests/test_research_f1_f6.py"
+      - ".github/workflows/research-f1-f6-experimental.yml"
+      - "pyproject.toml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  research-contracts:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install research and build dependencies
+        run: |
+          python -m pip install -U pip build
+          python -m pip install -e ".[dev]"
+      - name: Run F1-F6 boundary tests
+        run: python -m pytest -q tests/test_research_f1_f6.py
+      - name: Compile new experimental implementation
+        run: python -m compileall -q src/eyetrajectoriespy/research
+      - name: Build and inspect distribution
+        run: python -m build --wheel --outdir build/research-dist
+      - name: Verify installed wheel outside checkout
+        shell: bash
+        run: |
+          python -m venv "$RUNNER_TEMP/f-research-wheel"
+          $RUNNER_TEMP/f-research-wheel/bin/python -m pip install -U pip
+          $RUNNER_TEMP/f-research-wheel/bin/python -m pip install build/research-dist/*.whl
+          $RUNNER_TEMP/f-research-wheel/bin/python -m pip check
+          ROOT="$PWD"
+          RUN_DIR=$(mktemp -d)
+          cd "$RUN_DIR"
+          "$RUNNER_TEMP/f-research-wheel/bin/python" - "$ROOT" <<'PY'
+          from pathlib import Path
+          from importlib.metadata import version
+          import sys
+          import eyetrajectoriespy
+          from eyetrajectoriespy import research
+          workspace = Path(sys.argv[1]).resolve()
+          installed_path = Path(eyetrajectoriespy.__file__).resolve()
+          assert not installed_path.is_relative_to(workspace), installed_path
+          assert version("eyetrajectoriespy") == "1.2.0rc2.dev0"
+          for name in (
+              "test_sparse_functional_groups", "audit_gaze_measurement_quality",
+              "from_bids_eyetracking", "compare_aoi_functional_geometries",
+              "detect_ordered_functional_changepoint", "fit_weighted_mfpca",
+          ):
+              assert hasattr(research, name), name
+              assert not hasattr(eyetrajectoriespy, name), name
+          print("PASS: six installed research entrypoints remain opt-in, no package-root promotion")
+          PY
+
+  provisional-null-calibration:
+    needs: research-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install scientific simulator
+        run: python -m pip install -e ".[dev]"
+      - name: Run F1 score-kernel and F5 independent/dependent null pilots
+        run: |
+          python scripts/run_research_f1_f5_pilot.py \
+            --replicates 100 --permutations 199 --f5-bootstrap 99 \
+            --out build/research-pilot
+      - name: Verify pilot provenance and no false qualification
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          p = Path("build/research-pilot/pilot.json")
+          evidence = json.loads(p.read_text())
+          assert evidence["qualification_level"] == "reproducible_pilot_not_population_qualification"
+          assert evidence["full_scientific_qualification_passed"] is False
+          assert evidence["production_promotion_authorized"] is False
+          assert evidence["score_kernel"]["full_sparse_mfpca_fit_per_replicate"] is False
+          assert evidence["score_kernel"]["null_monte_carlo_uncertainty"]["n"] == 100
+          assert 0 <= evidence["ordered_change_AR1"]["null_monte_carlo_uncertainty"]["wilson_95_low"] <= 1
+          assert evidence["ordered_change_AR1"]["serial_dependence_inference_qualified"] is False
+          digest = hashlib.sha256(p.read_bytes()).hexdigest()
+          assert Path("build/research-pilot/sha256.txt").read_text().startswith(digest)
+          print("PASS retained provisional Monte Carlo evidence; no qualification claim")
+          PY
+      - name: Retain synthetic Monte Carlo pilot data
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f1-f5-research-pilot
+          path: build/research-pilot/
+          if-no-files-found: error
+          retention-days: 90
+
+  native-sparse-group-pilot:
+    needs: research-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install native sparse functional estimators
+        run: python -m pip install -e ".[dev]"
+      - name: Execute native sparse-model pilot retaining failed replicates
+        run: |
+          python scripts/run_f1_sparse_pipeline_pilot.py \
+            --replicates 2 --permutations 99 \
+            --output build/f1-sparse-pipeline
+      - name: Verify native refit and failure-accounting contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          root = Path("build/f1-sparse-pipeline")
+          j = json.loads((root / "summary.json").read_text())
+          cases = pd.read_csv(root / "full-pipeline-cases.csv")
+          assert j["full_sparse_refit_per_replicate"] is True
+          assert j["all_failed_fits_retained"] is True
+          assert all(not x["scientific_size_or_power_qualified"] for x in j["scenarios"])
+          assert len(cases) == 6, cases
+          assert all(x["requested_replicates"] == 2 for x in j["scenarios"])
+          assert all(x["successful_replicates"] >= 1 for x in j["scenarios"]), j["scenarios"]
+          assert all("conditional_rejection_monte_carlo_se" in x for x in j["scenarios"])
+          assert j["production_release_authorized"] is False
+          print("PASS: six refit attempts retained, no scientific qualification asserted")
+          PY
+      - name: Retain sparse-model pilot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f1-full-sparse-model-pilot
+          path: build/f1-sparse-pipeline/
+          if-no-files-found: error
+          retention-days: 90
+
+  aoi-heldout-feasibility:
+    needs: research-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install library for AOI geometry study
+        run: python -m pip install -e ".[dev]"
+      - name: Run heldout AOI sensitivity over zeros, epsilon, reference
+        run: |
+          python scripts/run_f4_aoi_holdout_pilot.py --replicates 6 \
+            --out build/f4-holdout
+      - name: Verify no training leakage or false promotion
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import numpy as np
+          import pandas as pd
+          path = Path("build/f4-holdout")
+          data = pd.read_csv(path / "holdout-cases.csv")
+          info = json.loads((path / "summary.json").read_text())
+          assert len(data) == 6 * 2 * 3 * 2 * 2
+          assert set(data["geometry"]) == {
+              "existing_ALR_FPCA", "raw_FPCA_then_simplex_projection"
+          }
+          assert bool(data["leakage_guard_passed"].all())
+          assert np.isfinite(data["heldout_reconstruction_mse"]).all()
+          assert not info["published_Kwan_estimator_implemented"]
+          assert not info["new_constrained_estimator_scientifically_qualified"]
+          assert not info["release_authorized"]
+          print("PASS F4 holdout feasibility; production promotion prohibited")
+          PY
+      - name: Retain reproducible AOI comparison
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f4-aoi-holdout-feasibility
+          path: build/f4-holdout/
+          if-no-files-found: error
+          retention-days: 90

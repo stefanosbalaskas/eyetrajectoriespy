@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "programme": "f1-f6-new-scientific-and-interchange-methods",
+  "source_version": "1.2.0rc2.dev0",
+  "status": "experimental_implementation_plus_reproducible_pilot_under_ci",
+  "implementation_pull_request": 227,
+  "tracking_issue": 226,
+  "legacy_one_dot_two_rc_evidence_relabelled": false,
+  "published_stable_version": "1.1.0",
+  "root_namespace_promoted": false,
+  "release_candidate_qualified": false,
+  "production_publication_authorized": false,
+  "github_release_ready": false,
+  "tranches": {
+    "F1": {
+      "stage": "conditional_score_permutation_prototype",
+      "production_qualified": false,
+      "scientific_inference_qualified": false,
+      "required_evidence": [
+        "null size at multiple alpha",
+        "power under joint x-y alternatives",
+        "unequal independent groups",
+        "heteroscedasticity",
+        "participant/trial resampling",
+        "truth reference and covariance sensitivity"
+      ]
+    },
+    "F2": {
+      "stage": "provenance_audit_prototype",
+      "production_qualified": false,
+      "scientific_inference_qualified": false,
+      "required_evidence": [
+        "target-based accuracy precision reference fixtures",
+        "sessions and coordinate-unit matching",
+        "reporting guideline completeness"
+      ]
+    },
+    "F3": {
+      "stage": "single_stream_bep020_subset",
+      "production_qualified": false,
+      "scientific_inference_qualified": false,
+      "required_evidence": [
+        "pin standard version",
+        "reference physio TSV GZ fixtures",
+        "BIDS validator comparison",
+        "timestamp unit and sample rate stress",
+        "missingness and metadata roundtrip"
+      ]
+    },
+    "F4": {
+      "stage": "ALR_vs_simplex_projection_feasibility",
+      "production_qualified": false,
+      "scientific_inference_qualified": false,
+      "required_evidence": [
+        "actual constrained estimator independent derivation",
+        "holdout reconstruction",
+        "structural zeros and epsilon/reference sensitivity",
+        "known truth"
+      ]
+    },
+    "F5": {
+      "stage": "whole_curve_mean_CUSUM_prototype",
+      "production_qualified": false,
+      "scientific_inference_qualified": false,
+      "required_evidence": [
+        "type I under serial dependence",
+        "block length and weak stationary stress",
+        "multiple break detection",
+        "robust method comparator"
+      ]
+    },
+    "F6": {
+      "stage": "declared_diagonal_weighted_geometry_prototype",
+      "production_qualified": false,
+      "scientific_inference_qualified": false,
+      "required_evidence": [
+        "quadrature weighted orthonormality",
+        "inverse reconstruction",
+        "change of units equivariance",
+        "weight choice sensitivity",
+        "sparse scope explicitly excluded"
+      ]
+    }
+  },
+  "notes": [
+    "Source code is scientific research infrastructure, not scientifically validated inference.",
+    "Neither a passing smoke test nor an installed-wheel import establishes inferential calibration.",
+    "Keep literal RC2 and production publication disarmed pending revised E5 evidence."
+  ],
+  "validation_programme": {
+    "score_kernel_runner": "scripts/run_research_f1_f5_pilot.py",
+    "score_kernel_scenarios": [
+      "exchangeable-unit-score-null",
+      "joint-unit-score-alternative"
+    ],
+    "ordered_curve_cusum_scenarios": [
+      "iid_whole_curve_null_and_change",
+      "AR1_whole_curve_null_and_change"
+    ],
+    "full_sparse_runner": "scripts/run_f1_sparse_pipeline_pilot.py",
+    "sparse_scenarios": [
+      "balanced_null",
+      "imbalanced_null",
+      "balanced_joint_effect"
+    ],
+    "empirical_replicates_sufficient_for_scientific_size_power": false,
+    "declared_full_pipe_failures_retained": true,
+    "independent_holdout_aoi_assessment": "compare_aoi_functional_geometries_holdout",
+    "weighted_hilbert_geometry_tests": [
+      "weighted_quadrature_orthonormality",
+      "inverse_units_invariance"
+    ],
+    "real_world_validation_and_bids_conformance": false,
+    "workgroup_ci_verified": false,
+    "eye_tracking_bids_spec_version": "1.11.2",
+    "bids_reference_fixture": "published_EyeTracking_sample_timestamp_ms_optional_pupil",
+    "gaze_validation_target_derived_accuracy": "explicit_target_pairings_not_free_viewing",
+    "gaze_validation_accuracy_population_verified": false,
+    "weight_snapshot_is_immutable": true
+  }
+}
