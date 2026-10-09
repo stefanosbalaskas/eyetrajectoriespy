@@ -1,11 +1,8 @@
 name: research-empirical-calibration-wave1
+# Historical 13,600-attempt scientific wave: immutable retained evidence.
+# DO NOT automatically rerun for docs or ledger changes. A fresh experiment
+# requires deliberate manual dispatch with a separately versioned protocol.
 on:
-  pull_request:
-    paths:
-      - ".github/workflows/research-empirical-calibration-wave1.yml"
-      - "docs/development/empirical-calibration-wave1.md"
-      - "BAYESIAN_B7_PREDICTION_QUALIFICATION.json"
-      - "SCIENTIFIC_CALIBRATION_BATCH_QUALIFICATION.json"
   workflow_dispatch:
 permissions:
   contents: read

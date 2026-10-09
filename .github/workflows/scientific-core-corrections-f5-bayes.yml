@@ -1,0 +1,83 @@
+name: scientific-core-corrections-f5-bayes
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/scientific-core-corrections-f5-bayes.yml"
+      - "src/eyetrajectoriespy/research/functional_changepoints_ar1_reference.py"
+      - "scripts/run_f5_ar1_reference_validation.py"
+      - "tests/test_f5_ar1_reference.py"
+      - "tests/test_bayesian_independent_gaussian_conditionals.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-gaussian-conditional-reference:
+    name: Independent B6/B7 Gaussian conditional algebra (${{ matrix.python }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_bayesian_independent_gaussian_conditionals.py tests/test_f5_ar1_reference.py
+
+  independent-f5-reference-comparator:
+    name: F5 new data, externally known AR1 phi versus legacy weak-block
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - name: Independent 200 null and 100 alternative datasets per phi, paired with legacy
+        run: |
+          python scripts/run_f5_ar1_reference_validation.py \
+            --null-reps 200 --alt-reps 100 \
+            --bootstrap 199 --master-seed 20261120 \
+            --out build/f5-ar1-independent-validation > build-f5-console.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          root=Path("build/f5-ar1-independent-validation")
+          ev=json.loads((root/"evidence.json").read_text())
+          cases=pd.read_csv(root/"cases.csv")
+          assert ev["total_attempts"]==1800 and len(cases)==1800
+          assert len(ev["results"])==12
+          assert ev["oracle_ar1_coefficients_used"]
+          assert not ev["hypothesis_test_scientifically_qualified"]
+          assert not ev["release_authorized"]
+          assert len(cases.groupby(["scenario","change","replicate"]))==900
+          assert cases.groupby(["scenario","change","replicate"]).size().eq(2).all()
+          print("F5 INDEPENDENT NEW-DATA NULL/POWER EVIDENCE:")
+          for row in ev["results"]:
+              print(json.dumps(row,sort_keys=True))
+          PY
+      - name: Retain every attempt and SHA256 scientific evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f5-conditional-known-phi-oracle-vs-legacy
+          path: build/f5-ar1-independent-validation/
+          retention-days: 90
+          if-no-files-found: warn
