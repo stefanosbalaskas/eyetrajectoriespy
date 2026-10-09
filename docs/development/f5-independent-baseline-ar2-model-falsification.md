@@ -35,6 +35,8 @@ This AR(2) comparator is a focused statistical model-robustness study rather tha
 
 ## Completed first-wave 1,500-fit independent falsification results
 
+![Observed false-positive rejection for independently trained AR1 and AR2 references, 100 independent null datasets per generator](../assets/research/f5-ar2-model-falsification-null-20261010.svg)
+
 The prespecified original [workflow #38000177988](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000177988) completed **9/9 research jobs**: the full independent stationarity/unit-test matrix, five scientific generator shards, and a combined original SHA256 audit. Across **750 distinct independent test data-generating replicates and 1,500 real hypothesis-test fits**, no model raised a fitting error. The exact-source combined verified artifact is `11648842221`. Individual original-shard evidence is also retained.
 
 The independent-baseline AR(1) and new AR(2) reference each used baseline length 80, test length 36, 99 independent-baseline nuisance refits and 119 whole-function null simulations per method fit. Coefficients were never estimated from the tested series; the two methods share exactly the same test dataset within each replicate. For nominal $\alpha=.05$, the true no-mean-change rejection results were:
