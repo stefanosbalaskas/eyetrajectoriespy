@@ -1,0 +1,149 @@
+name: science-f5-independent-baseline-AR2-null
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - ".github/workflows/science-f5-independent-baseline-AR2-null.yml"
+      - "src/eyetrajectoriespy/research/functional_changepoints_baseline_ar2.py"
+      - "scripts/run_f5_independent_baseline_ar2_stress.py"
+      - "tests/test_f5_independent_baseline_ar2_reference.py"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-nuisance-reference:
+    name: AR2 baseline-only nuisance and stationarity contracts (${{ matrix.python }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: |
+          python -m pytest -q \
+            tests/test_f5_independent_baseline_ar2_reference.py \
+            tests/test_f5_unknown_phi_independent_baseline.py \
+            tests/test_f5_baseline_duration_nuisance_ablation.py
+
+  independent-null-contrasts:
+    name: AR2 vs AR1 independently trained F5 true-null and break (${{ matrix.scenario }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario: [iid, ar1_strong, ar2_misspecified, ma1_unmodelled, nonstationary_ar1_transfer]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - name: Exactly 300 actual AR1/AR2 fits per generator, failure-inclusive
+        run: |
+          python scripts/run_f5_independent_baseline_ar2_stress.py \
+            --scenario ${{ matrix.scenario }} \
+            --null-reps 100 --alternative-reps 50 \
+            --n-null 119 --n-parameter 99 --seed 20261207 \
+            --out build/f5-ar2/${{ matrix.scenario }} \
+            > f5-ar2-runlog.json
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd,json
+          path=Path("build/f5-ar2/${{ matrix.scenario }}")
+          frame=pd.read_csv(path/"cases.csv",keep_default_na=False,na_values=[""])
+          ev=json.loads((path/"evidence.json").read_text())
+          assert len(frame)==300==ev["actual_method_attempts"]
+          assert ev["genuine_independent_test_datasets"]==150
+          assert frame.groupby(["scenario","truth","replicate"]).method.nunique().eq(2).all()
+          assert int(frame.status.eq("failed").sum())==ev["method_fit_errors"]
+          assert ev["scientific_inference_qualified"] is False
+          assert ev["release_authorized"] is False
+          for r in ev["summary"]:
+              print("F5 INDEPENDENT AR2 SCIENCE:",json.dumps(r,sort_keys=True))
+          PY
+      - name: Retain all true-null, alternatives, fit errors and SHA256
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f5-AR2-independent-${{ matrix.scenario }}
+          path: build/f5-ar2/${{ matrix.scenario }}/
+          retention-days: 90
+          if-no-files-found: warn
+
+  verify-source:
+    name: Verify 1500 full tests, 750 independent datasets and original checksums
+    needs: independent-null-contrasts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: f5-AR2-independent-*
+          path: build/original
+      - name: Fail closed on missing cases, inconsistent exception counts or checksum differences
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd,json
+          from hashlib import sha256
+          root=Path("build/original")
+          designs=("iid","ar1_strong","ar2_misspecified","ma1_unmodelled",
+                   "nonstationary_ar1_transfer")
+          blocks=[];unique=set()
+          for design in designs:
+              path=root/("f5-AR2-independent-"+design)
+              assert path.is_dir(),design
+              for line in (path/"SHA256SUMS").read_text().splitlines():
+                  digest,name=line.split("  ")
+                  assert sha256((path/name).read_bytes()).hexdigest()==digest
+              frame=pd.read_csv(path/"cases.csv",keep_default_na=False,na_values=[""])
+              ev=json.loads((path/"evidence.json").read_text())
+              assert ev["scenarios"]==[design]
+              assert len(frame)==300
+              assert ev["method_fit_errors"]==int(frame.status.eq("failed").sum())
+              assert not ev["scientific_inference_qualified"]
+              assert not ev["release_authorized"]
+              for _,r in frame[["scenario","truth","replicate","test_seed"]].drop_duplicates().iterrows():
+                  key=(r.scenario,r.truth,int(r.replicate),int(r.test_seed))
+                  assert key not in unique
+                  unique.add(key)
+              blocks.append(frame)
+          frame=pd.concat(blocks,ignore_index=True)
+          assert len(frame)==1500
+          assert len(unique)==750
+          assert frame.groupby(["scenario","truth","replicate"]).method.nunique().eq(2).all()
+          out=Path("build/combined")
+          out.mkdir(parents=True,exist_ok=True)
+          frame.to_csv(out/"cases.csv",index=False)
+          audit={"real_tests":len(frame),"independent_test_series":len(unique),
+                 "fit_failures":int(frame.status.eq("failed").sum()),
+                 "five_original_SHA256_shards_verified":True,
+                 "science_qualified":False,"release_authorized":False}
+          (out/"audit.json").write_text(json.dumps(audit,sort_keys=True,indent=2)+"\n")
+          print("F5 INDEPENDENT AR2 SOURCE AUDIT:",json.dumps(audit,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f5-AR2-1500-test-combined-audit
+          path: build/combined/
+          retention-days: 90
