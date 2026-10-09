@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "programme": "native-bayesian-functional-research-b5-b10",
+  "source_version": "1.2.0rc2.dev0",
+  "stack_base_pr": 235,
+  "stack_base_qualified_head": "013cd05d93a5edeb8515d4f3afce22e44d67c9a9",
+  "stable_distribution": "1.1.0",
+  "published_release": false,
+  "scientific_inference_qualified": false,
+  "architecture_winner_selected": false,
+  "automatic_promotion_decision": false,
+  "release_authorized": false,
+  "native_legacy_fpca_replaced": false,
+  "root_namespace_promoted": false,
+  "prior_comparator": "Nolan_Richardson_Ruffieux_2025_bayesFPCA_external_only",
+  "tranches": {
+    "B5": {
+      "stage": "backend_agnostic_posterior_evidence_prototype",
+      "scientifically_qualified": false
+    },
+    "B6": {
+      "stage": "conditional_fixed_population_sparse_score_baseline_not_full_Bayesian_FPCA",
+      "scientifically_qualified": false
+    },
+    "B7": {
+      "stage": "design_only_planar_and_asynchronous_posterior",
+      "scientifically_qualified": false
+    },
+    "B8": {
+      "stage": "fixed_noise_independent_Gaussian_Bspline_function_on_scalar_pilot",
+      "scientifically_qualified": false
+    },
+    "B9": {
+      "stage": "design_only_future_partial_prediction_and_group_probability",
+      "scientifically_qualified": false
+    },
+    "B10": {
+      "stage": "design_only_AOI_change_point_registration_observation",
+      "scientifically_qualified": false
+    }
+  },
+  "required_evidence": [
+    "SBC prior-drawn replication and rank/coverage reference scenarios",
+    "MCMC convergence/Rhat/ESS/divergence and prior sensitivity",
+    "full learned population covariance/eigenfunction posterior",
+    "sign-rotation and near-tied eigenspace uncertainty",
+    "partial trajectory and time heldout predictive calibration",
+    "participant hierarchical and residual serial-dependence models",
+    "independent external scientific comparator with licensing isolation"
+  ],
+  "current_head_ci_qualified": false,
+  "optional_backends": [
+    "ArviZ diagnostics optional",
+    "PyMC backend optional planned"
+  ]
+}

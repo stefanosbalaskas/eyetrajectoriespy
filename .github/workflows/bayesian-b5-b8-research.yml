@@ -1,0 +1,122 @@
+name: bayesian-b5-b8-research
+
+on:
+  pull_request:
+    paths:
+      - "src/eyetrajectoriespy/bayesian/**"
+      - "tests/test_bayesian_b5_b8.py"
+      - "pyproject.toml"
+      - "docs/development/bayesian-**"
+      - "scripts/generate_bayesian_research_gallery.py"
+      - ".github/workflows/bayesian-b5-b8-research.yml"
+      - "BAYESIAN_RESEARCH_QUALIFICATION.json"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  research-contracts:
+    name: Bayesian B5-B8 native contracts (${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install core (Bayesian extras explicitly omitted)
+        run: python -m pip install -e ".[dev]"
+      - name: Native posterior/known-truth research tests
+        run: |
+          python -m pytest -q tests/test_bayesian_b5_b8.py
+          python -m compileall -q src/eyetrajectoriespy/bayesian
+      - name: Assert no root export or publication promotion
+        run: |
+          python - <<'PY'
+          import json
+          import eyetrajectoriespy
+          from eyetrajectoriespy import bayesian
+          assert not hasattr(eyetrajectoriespy, "fit_bayesian_function_on_scalar")
+          assert hasattr(bayesian, "fit_bayesian_function_on_scalar")
+          assert hasattr(bayesian, "fit_bayesian_sparse_score_baseline")
+          ledger=json.load(open("BAYESIAN_RESEARCH_QUALIFICATION.json"))
+          assert not ledger["scientific_inference_qualified"]
+          assert not ledger["release_authorized"]
+          readiness=json.load(open("RELEASE_READINESS.json"))
+          assert not readiness["production_release_ready"]
+          assert not readiness["github_release_ready"]
+          print("PASS experimental opt-in namespace; production interlocks disarmed")
+          PY
+
+  arviz-optional:
+    name: Optional ArviZ diagnostics on Python 3.12
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install optional diagnostics without PyMC runtime
+        run: python -m pip install -e ".[bayesian]"
+      - name: Inspect real ArviZ per-chain diagnostics
+        run: |
+          python - <<'PY'
+          import numpy as np, arviz as az
+          from eyetrajectoriespy.bayesian import bayesian_diagnostics_frame
+          rng=np.random.default_rng(4205)
+          draws=rng.normal(size=(4,300,3))
+          idata=az.from_dict(
+              posterior={"beta":draws},
+              sample_stats={"diverging":np.zeros((4,300),dtype=bool)},
+          )
+          diagnostics=bayesian_diagnostics_frame(idata)
+          assert len(diagnostics)==1
+          assert np.isfinite(diagnostics.rhat_max.iloc[0])
+          assert np.isfinite(diagnostics.ess_bulk_min.iloc[0])
+          assert diagnostics.divergences.iloc[0] == 0
+          assert not diagnostics.convergence_qualified.any()
+          print(diagnostics.to_string(index=False))
+          PY
+
+  wheel-boundary:
+    name: Installed wheel import and isolated Bayesian APIs
+    needs: research-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build wheel
+        run: |
+          python -m pip install build
+          python -m build --wheel --outdir dist
+      - name: Install wheel to isolated interpreter
+        run: |
+          python -m venv "$RUNNER_TEMP/b5-installed"
+          "$RUNNER_TEMP/b5-installed/bin/python" -m pip install dist/*.whl
+          mkdir -p "$RUNNER_TEMP/b5-smoke"
+          cd "$RUNNER_TEMP/b5-smoke"
+          "$RUNNER_TEMP/b5-installed/bin/python" - <<'PY'
+          from pathlib import Path
+          import eyetrajectoriespy as et
+          from eyetrajectoriespy import bayesian
+          assert "b5-smoke" not in str(Path(et.__file__).resolve())
+          assert "site-packages" in str(Path(et.__file__).resolve())
+          assert hasattr(bayesian,"bayesian_credible_band")
+          assert not hasattr(et,"bayesian_credible_band")
+          assert et.__version__ == "1.2.0rc2.dev0"
+          print("PASS installed Bayesian source scope, not promoted")
+          PY
