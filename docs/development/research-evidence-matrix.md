@@ -20,3 +20,15 @@
 **Open gates:** F1/F5 full type-I error/power/serial-dependence calibration; F2 external validation evidence and session timing; F3 official BIDS conformance and external datasets; F4 constrained AOI eigenspace; F6 weight sensitivity; D4 reliability uncertainty and crossover modelling; D5 fully qualified examples and docs.
 
 [Method finder](method-finder.md) · [Method contracts](research-method-api.md) · [Case studies](research-case-studies.md)
+
+## Retained PR #227 exploratory simulation data (not qualifying)
+
+An exact-head workflow [run #37870154333](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37870154333) retained the following **100-replication** synthetic diagnostic results at alpha = 0.05:
+
+| Pilot | Null rejection | Detection under simulated alternative | Methodological limitation |
+|---|---:|---:|---|
+| F1 isolated pooled-score permutation kernel | 0.01 | 0.77 | No sparse-PACE refit on each replication |
+| F5 independent whole-curve CUSUM | 0.06 | 1.00 | Single independent-generating process and shift |
+| F5 AR(1) weak-block CUSUM | 0.01 | 0.99 | One serial-dependence strength/block setting |
+
+The F1 native-pipeline pilot completed only **two refits per each of three regimes**, all fitted successfully. The F4 held-out feasibility produced **144 sensitivity records**. None constitutes scientific calibration. With only 100 simulation replications the null rejection estimates have wide Monte Carlo uncertainty; the 0.01 estimate has approximately 0.002–0.054 Wilson 95% range, and the 0.06 estimate approximately 0.028–0.125. The target nominal 0.05 is not ruled out by these pilots, nor proven by them. Larger design-gridded refit experiments remain mandatory.
