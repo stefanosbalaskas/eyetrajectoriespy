@@ -27,8 +27,10 @@
       "scientifically_qualified": false
     },
     "B8": {
-      "stage": "fixed_noise_independent_Gaussian_Bspline_function_on_scalar_pilot",
-      "scientifically_qualified": false
+      "stage": "conjugate_known_noise_Bspline_function_on_scalar_plus_fixed_variance_participant_functional_random_intercept",
+      "scientifically_qualified": false,
+      "supported_repeated_participants": "conjugate_gaussian_known_sd_random_functional_intercept_only",
+      "random_slopes_or_serial_covariance_implemented": false
     },
     "B9": {
       "stage": "joint_draw_posterior_group_comparison_plus_fixed_population_no_future_leakage_partial_prediction",

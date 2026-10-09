@@ -36,3 +36,5 @@ The F1 native-pipeline pilot completed only **two refits per each of three regim
 ## B5–B10 native Bayesian research track
 
 [Draft PR #237](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/237) adds **experimental** backend-independent posterior tools, a *known-population conditional sparse score baseline* (not a learned Bayesian FPCA estimator) and a fixed-noise Gaussian B-spline functional regression prototype. No architecture replacement, inference calibration or publication decision is established. See the [Bayesian research catalogue](bayesian-research-programme.md) and [synthetic fitted-model gallery](bayesian-gallery.md).
+
+The B8 *experimental* Bayesian functional random-intercept Gaussian conjugate model (`fit_bayesian_functional_mixed_effects()`) accepts repeated participants, but conditions on fixed noise and random-effect prior SDs; no random slopes, nested trial effects, serial residual model or learned hyperparameter inference is yet qualified.
