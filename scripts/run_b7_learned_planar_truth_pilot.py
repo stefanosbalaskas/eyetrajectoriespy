@@ -20,7 +20,7 @@ from eyetrajectoriespy.types import IrregularTrajectorySet
 from eyetrajectoriespy.research.calibration_seed import (calibration_replicate_seed, calibration_manifest)
 
 
-def _replicate(seed: int, rank: int, asynchronous: bool, draws: int, warmup: int) -> dict:
+def _replicate(seed: int, rank: int, asynchronous: bool, draws: int, warmup: int, *, diagnostics: bool=False) -> dict:
     rng=np.random.default_rng(seed)
     grid=np.linspace(0,1,23)
     n,q=18,5
@@ -83,9 +83,17 @@ def _replicate(seed: int, rank: int, asynchronous: bool, draws: int, warmup: int
         fit,evaluation_indices_x=indices_x,evaluation_indices_y=indices_y,
         observation_noise_sd=tuple(noise),random_state=seed+210)
     summary=prediction.summary_frame()
+    diag=fit.diagnostics_frame() if diagnostics else None
+    max_rhat=float(diag.rhat_max.max()) if diag is not None else None
+    min_bulk=float(diag.ess_bulk_min.min()) if diag is not None else None
     included=(summary.predictive_q05.to_numpy()<=withheld)&(
         withheld<=summary.predictive_q95.to_numpy())
     return {
+        "convergence_rhat_max":max_rhat,
+        "convergence_ess_bulk_min":min_bulk,
+        "x_mean_mid_q90_width":float(qmu[1,0]-qmu[0,0]),
+        "y_mean_mid_q90_width":float(qmu[1,1]-qmu[0,1]),
+        "xy_crosscov_mid_q90_width":float(qcross[1]-qcross[0]),
         "x_mean_mid_90_covered":bool(qmu[0,0]<=true_mean[mid,0]<=qmu[1,0]),
         "y_mean_mid_90_covered":bool(qmu[0,1]<=true_mean[mid,1]<=qmu[1,1]),
         "xy_crosscov_mid_90_covered":bool(

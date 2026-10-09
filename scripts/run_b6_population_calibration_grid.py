@@ -115,7 +115,7 @@ def _projector(cov: np.ndarray, rank: int) -> np.ndarray:
     return top @ top.T
 
 
-def run_one(seed: int, scenario: str, *, draws: int, warmup: int) -> dict:
+def run_one(seed: int, scenario: str, *, draws: int, warmup: int, diagnostics: bool=False) -> dict:
     gaze, truth_mean, truth_cov, indices, holdout = _known_truth(seed, scenario)
     spec = SCENARIOS[scenario]
     fit = fit_bayesian_sparse_fpca(
@@ -149,7 +149,17 @@ def run_one(seed: int, scenario: str, *, draws: int, warmup: int) -> dict:
         covered.append(q05 <= measured <= q95)
     qmu = np.quantile(mu, [.05, .95])
     qcov = np.quantile(cv, [.05, .95])
+    # Optional independent-chain ArviZ diagnostics on rotation-invariant
+    # population summaries. Explicit opt-in avoids extra dependencies
+    # and changing older, archived pilot outputs.
+    diag = fit.diagnostics_frame() if diagnostics else None
+    max_rhat = float(diag.rhat_max.max()) if diag is not None else None
+    min_bulk = float(diag.ess_bulk_min.min()) if diag is not None else None
     return {
+        "convergence_rhat_max":max_rhat,
+        "convergence_ess_bulk_min":min_bulk,
+        "population_mean_mid_q90_width":float(qmu[1]-qmu[0]),
+        "population_covariance_mid_q90_width":float(qcov[1]-qcov[0]),
         "population_mean_mid_90_included": bool(qmu[0] <= truth_mean[mid] <= qmu[1]),
         "population_covariance_mid_90_included": bool(
             qcov[0] <= truth_cov[mid, mid] <= qcov[1]),
