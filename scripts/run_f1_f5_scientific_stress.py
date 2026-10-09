@@ -20,6 +20,7 @@ from eyetrajectoriespy.research import (
     simulate_functional_study_power,
 )
 from eyetrajectoriespy.types import TrajectorySet
+from eyetrajectoriespy.research.calibration_seed import (calibration_replicate_seed, calibration_manifest)
 
 
 F1_DESIGNS = {
@@ -93,15 +94,18 @@ def _ordered_fixture(seed: int, scenario: str, change: str) -> TrajectorySet:
     )
 
 
-def f1_study(replicates: int, permutations: int, seed: int) -> tuple[pd.DataFrame, list[dict]]:
+def f1_study(replicates: int, permutations: int, seed: int, *, shard_id: int = 0) -> tuple[pd.DataFrame, list[dict]]:
     frames = []
     results = []
-    for j, (name, kwargs) in enumerate(F1_DESIGNS.items()):
+    for name, kwargs in F1_DESIGNS.items():
+        design_seed=calibration_replicate_seed("F1",master_seed=seed,
+            shard_id=shard_id,scenario=name,replicate=0)
         result = simulate_functional_study_power(
             n_replicates=replicates, effect_amplitude=.11, noise_sd=.015,
-            n_permutations=permutations, random_state=seed+701*j, **kwargs)
+            n_permutations=permutations, random_state=design_seed, **kwargs)
         one = result.cases.copy()
         one["design"] = name
+        one["shard_id"] = shard_id
         frames.append(one)
         for case in ("null", "alternative"):
             rows = one.loc[one.scenario == case]
@@ -115,19 +119,21 @@ def f1_study(replicates: int, permutations: int, seed: int) -> tuple[pd.DataFram
     return pd.concat(frames, ignore_index=True), results
 
 
-def f5_study(replicates: int, draws: int, seed: int) -> tuple[pd.DataFrame, list[dict]]:
+def f5_study(replicates: int, draws: int, seed: int, *, shard_id: int = 0) -> tuple[pd.DataFrame, list[dict]]:
     rows = []
-    rng = np.random.default_rng(seed)
     for scenario, spec in F5_SCENARIOS.items():
         dependence = "independent" if spec["phi"] == 0 else "weak_block"
         blocks = [None] if dependence == "independent" else [2, 4, 8]
         for block in blocks:
             for case in ("null", "one_break", "two_breaks"):
                 for rep in range(replicates):
-                    simulation_seed = int(rng.integers(1, 2**30))
+                    simulation_seed = calibration_replicate_seed(
+                        "F5",master_seed=seed,shard_id=shard_id,
+                        scenario=f"{scenario}|block{block}|{case}",replicate=rep)
                     item = dict(scenario=scenario, phi=spec["phi"],
                                 block_length=block, change=case,
                                 replicate=rep, seed=simulation_seed,
+                                shard_id=shard_id,
                                 status="failed", p_value=np.nan,
                                 detected_split=np.nan, exception_type=None,
                                 exception=None)
@@ -164,6 +170,8 @@ def f5_study(replicates: int, draws: int, seed: int) -> tuple[pd.DataFrame, list
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--f1-replicates", type=int, default=8)
+    parser.add_argument("--master-seed",type=int,default=622014)
+    parser.add_argument("--shard-id",type=int,default=0)
     parser.add_argument("--f1-permutations", type=int, default=199)
     parser.add_argument("--f5-replicates", type=int, default=25)
     parser.add_argument("--f5-bootstrap", type=int, default=199)
@@ -172,13 +180,21 @@ def main() -> None:
     if (args.f1_replicates < 2 or args.f5_replicates < 2 or
         args.f1_permutations < 99 or args.f5_bootstrap < 99):
         raise ValueError("at least 2 refits and 99 randomization draws are required")
-    f1_cases, f1_summary = f1_study(args.f1_replicates, args.f1_permutations, 622014)
-    f5_cases, f5_summary = f5_study(args.f5_replicates, args.f5_bootstrap, 622015)
+    f1_cases, f1_summary = f1_study(args.f1_replicates, args.f1_permutations,
+        args.master_seed,shard_id=args.shard_id)
+    f5_cases, f5_summary = f5_study(args.f5_replicates, args.f5_bootstrap,
+        args.master_seed,shard_id=args.shard_id)
     args.out.mkdir(parents=True, exist_ok=True)
     f1_cases.to_csv(args.out/"f1-cases.csv", index=False)
     f5_cases.to_csv(args.out/"f5-cases.csv", index=False)
+    (args.out/"manifest.json").write_text(json.dumps(calibration_manifest(
+        "F1_F5",master_seed=args.master_seed,shard_id=args.shard_id,
+        records_per_scenario=args.f1_replicates,
+        case_files=("f1-cases.csv","f5-cases.csv")),
+        sort_keys=True,indent=2)+"\n")
     evidence = {
         "schema_version":1, "programme":"F1_full_fit_F5_ordered_functional_stress",
+        "master_seed":args.master_seed,"shard_id":args.shard_id,
         "F1_test_is_real_native_PACE_pipeline":True,
         "F1_null_conditions_include_nonexchangeable_heteroscedastic_design":True,
         "F5_depends_on_declared_block_length":True,
