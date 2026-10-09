@@ -8,7 +8,7 @@
     const link = root.querySelector("#et-method-link");
     if (!layout || !design || !target || !out || !link) return;
     function update() {
-      let title, caveat, href = "research-method-api/";
+      let title, caveat, href = "../research-method-api/";
       if (target.value === "quality" || layout.value === "bids") {
         title = "Experimental target/BIDS evidence route";
         caveat = "Explicit metadata and target validation required; no clock alignment or full standards certificate.";
@@ -27,15 +27,15 @@
       } else if (target.value === "contrast") {
         title = "No automatic validated contrast selector";
         caveat = "Use a declared regression/mixed design with proper experimental dependence.";
-        href = "../workflows/experimental-functional-regression/";
+        href = "../../workflows/experimental-functional-regression/";
       } else if (layout.value === "sparse") {
         title = "Documented sparse MFPCA exploration";
         caveat = "Preserve irregular observation density and declare error/covariance fitting.";
-        href = "../guides/sparse-multivariate-fpca/";
+        href = "../../guides/sparse-multivariate-fpca/";
       } else {
         title = "Documented common-grid FPCA exploration";
         caveat = "Inspect registration and component uncertainty before interpretation.";
-        href = "../workflows/fpca-exploration/";
+        href = "../../workflows/fpca-exploration/";
       }
       out.textContent = title + ". " + caveat;
       link.textContent = "Read: " + title;
