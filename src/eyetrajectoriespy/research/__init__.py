@@ -23,6 +23,9 @@ from .aoi_feasibility import (
     compare_aoi_functional_geometries,
     project_simplex,
 )
+from .aoi_holdout import (
+    AOIGeometryHoldout, compare_aoi_functional_geometries_holdout,
+)
 from .functional_changepoints import (
     FunctionalChangepointResult,
     detect_ordered_functional_changepoint,
@@ -41,6 +44,7 @@ __all__ = [
     "measurement_quality_reporting_frame", "from_bids_eyetracking",
     "validate_eyetracking_metadata", "AOIGeometryFeasibility",
     "compare_aoi_functional_geometries", "project_simplex",
+    "AOIGeometryHoldout", "compare_aoi_functional_geometries_holdout",
     "FunctionalChangepointResult", "detect_ordered_functional_changepoint",
     "WeightedMFPCAResult", "fit_weighted_mfpca",
     "reconstruct_weighted_mfpca", "weighted_component_geometry",
