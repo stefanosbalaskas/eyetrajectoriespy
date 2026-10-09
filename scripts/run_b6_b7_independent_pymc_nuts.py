@@ -100,7 +100,11 @@ def _identified_chain_diagnostics(draws:np.ndarray)->dict:
         "rank_rhat":float(np.asarray(az.rhat(a,method="rank"))),
         "bulk_ess":float(np.asarray(az.ess(a,method="bulk"))),
         "tail_ess":float(np.asarray(az.ess(a,method="tail"))),
-        "mcse_mean":float(np.asarray(az.mcse(a,method="mean"))),
+        # Portable approximate MCSE from the marginal SD and bulk ESS.
+        # This is NOT ArviZ's spectral MCSE estimator or a convergence gate.
+        "mcse_mean_bulk_ess_approx":float(
+            np.std(a.reshape(-1),ddof=1)/np.sqrt(
+                float(np.asarray(az.ess(a,method="bulk"))))),
     }
     if not all(np.isfinite(v) and v>=0 for v in fields.values()):
         raise ValueError("invalid identifiable population diagnostic")
@@ -269,9 +273,10 @@ def execute(*,replicates:int=2,nuts_draws:int=350,
                     reference_diag=_identified_chain_diagnostics(reference_values)
                     mean_difference=float(np.mean(native_values)-np.mean(reference_values))
                     combined_mcse=float(np.hypot(
-                        native_diag["mcse_mean"],reference_diag["mcse_mean"]))
+                        native_diag["mcse_mean_bulk_ess_approx"],reference_diag["mcse_mean_bulk_ess_approx"]))
                     invariant_diagnostics[name]={
                         "native":native_diag,"independent_nuts":reference_diag,
+                        "mcse_is_bulk_ess_based_approximation_not_spectral_mcse":True,
                         "native_minus_reference_mean":mean_difference,
                         "mean_discrepancy_to_combined_mcse":(
                             mean_difference/combined_mcse
