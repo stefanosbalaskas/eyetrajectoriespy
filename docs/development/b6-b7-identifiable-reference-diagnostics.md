@@ -13,9 +13,9 @@ PyMC worst *raw-parameter* Rhat was 1.836 (B6 rank one), 1.020
 native Gibbs worst monitored Rhat was respectively
 1.381, 1.109 and 1.691. Some native bulk ESS minima were 3.2–14.3.
 The reference B6 loading may exhibit an unresolved
-\(\lambda\mapsto-\lambda,\ z_i\mapsto-z_i\) symmetry: raw
+$\lambda\mapsto-\lambda,\ z_i\mapsto-z_i$ symmetry: raw
 loading Rhat is not the right **scientific** convergence criterion
-for the identified population covariance \(L L^\top\). This
+for the identified population covariance $L L^\top$. This
 hypothesis must be tested rather than assumed to explain bad Rhat.
 
 ## Source-verified original posterior comparisons
@@ -40,8 +40,9 @@ calibration or same-posterior equality.
 ## Additional independent convergence diagnostics
 
 This focused research follow-up calculates **rank-normalized split
-Rhat, bulk ESS, tail ESS and Monte Carlo standard error of the
-posterior mean** on each *identified* midpoint functional in each
+Rhat, bulk ESS, tail ESS and approximate Monte Carlo standard error of the
+posterior mean, calculated as marginal posterior SD / sqrt(bulk ESS)
+for portability across ArviZ versions (not ArviZ spectral MCSE)** on each *identified* midpoint functional in each
 actual sampler: B6 population mean and variance; B7 x population
 mean and x/y cross-covariance. It also reports the difference
 between native and independent posterior means in units of their
@@ -56,7 +57,7 @@ loading-squared distributions, asserting that the scientific
 Rhat is computed on the *identified covariance*, not raw factors.
 
 A prespecified diagnostic flag requires **both** population-functional
-Rhat \(\leq 1.01\) and bulk ESS \(\geq 400\) per pair before
+Rhat $\leq 1.01$ and bulk ESS $\geq 400$ per pair before
 even considering the summaries numerically trustworthy; this is a
 diagnostic screen, **not** a scientific inference or posterior coverage
 qualification. No failed fit is excluded from the attempt ledger.
