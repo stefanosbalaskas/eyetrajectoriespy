@@ -5,6 +5,7 @@ on:
     paths:
       - "src/eyetrajectoriespy/research/**"
       - "tests/test_research_f1_f6.py"
+      - "scripts/run_research_f1_f5_pilot.py"
       - ".github/workflows/research-f1-f6-experimental.yml"
       - "pyproject.toml"
   push:
@@ -76,3 +77,48 @@ jobs:
               assert not hasattr(eyetrajectoriespy, name), name
           print("PASS: six installed research entrypoints remain opt-in, no package-root promotion")
           PY
+
+  provisional-null-calibration:
+    needs: research-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install scientific simulator
+        run: python -m pip install -e ".[dev]"
+      - name: Run F1 score-kernel and F5 independent/dependent null pilots
+        run: |
+          python scripts/run_research_f1_f5_pilot.py \
+            --replicates 100 --permutations 199 --f5-bootstrap 99 \
+            --out build/research-pilot
+      - name: Verify pilot provenance and no false qualification
+        run: |
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          p = Path("build/research-pilot/pilot.json")
+          evidence = json.loads(p.read_text())
+          assert evidence["qualification_level"] == "reproducible_pilot_not_population_qualification"
+          assert evidence["full_scientific_qualification_passed"] is False
+          assert evidence["production_promotion_authorized"] is False
+          assert evidence["score_kernel"]["full_sparse_mfpca_fit_per_replicate"] is False
+          assert evidence["ordered_change_AR1"]["serial_dependence_inference_qualified"] is False
+          digest = hashlib.sha256(p.read_bytes()).hexdigest()
+          assert Path("build/research-pilot/sha256.txt").read_text().startswith(digest)
+          print("PASS retained provisional Monte Carlo evidence; no qualification claim")
+          PY
+      - name: Retain synthetic Monte Carlo pilot data
+        uses: actions/upload-artifact@v4
+        with:
+          name: f1-f5-research-pilot
+          path: build/research-pilot/
+          if-no-files-found: error
+          retention-days: 90
