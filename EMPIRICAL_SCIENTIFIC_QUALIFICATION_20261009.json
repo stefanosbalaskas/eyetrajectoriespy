@@ -220,6 +220,65 @@
     "marginal_posterior_coverage_qualified": false,
     "rank_sbc_completed": false,
     "NUTS_independent_reference_completed": false,
-    "publication_authorized": false
+    "publication_authorized": false,
+    "paired_mixing_study_attempts_completed": 72,
+    "fit_failures": 0,
+    "n_independent_datasets": 36,
+    "paired_mixing_study_source_head_sha": "3d55d101a6fc1a32ffcf7420121b79e3295d95ed",
+    "source_workflow_run_id": 37976468861,
+    "source_artifact_id": 11639357048,
+    "study_medians": [
+      {
+        "scenario": "B6_rank1",
+        "rhat_original": 1.235504,
+        "rhat_mh": 1.176711,
+        "ess_original": 8.39577,
+        "ess_mh": 9.08769
+      },
+      {
+        "scenario": "B6_rank2",
+        "rhat_original": 1.534717,
+        "rhat_mh": 1.588393,
+        "ess_original": 3.92314,
+        "ess_mh": 3.56803
+      },
+      {
+        "scenario": "B7_rank1_paired",
+        "rhat_original": 1.245657,
+        "rhat_mh": 1.260361,
+        "ess_original": 9.64831,
+        "ess_mh": 7.48099
+      },
+      {
+        "scenario": "B7_rank1_async",
+        "rhat_original": 1.778485,
+        "rhat_mh": 1.812926,
+        "ess_original": 3.2519,
+        "ess_mh": 3.1145
+      },
+      {
+        "scenario": "B7_rank2_paired",
+        "rhat_original": 1.736001,
+        "rhat_mh": 1.705675,
+        "ess_original": 3.258,
+        "ess_mh": 3.23913
+      },
+      {
+        "scenario": "B7_rank2_async",
+        "rhat_original": 1.78763,
+        "rhat_mh": 1.843634,
+        "ess_original": 3.2365,
+        "ess_mh": 3.12921
+      }
+    ],
+    "median_proposal_acceptance_range": [
+      0.506,
+      0.571
+    ],
+    "general_mixing_improvement_demonstrated": false,
+    "recommend_as_inferential_remedy": false,
+    "posterior_calibration_qualified": false,
+    "scientific_inference_qualified": false,
+    "release_authorized": false
   }
 }
