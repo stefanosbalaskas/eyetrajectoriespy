@@ -109,6 +109,52 @@ def _draw_gaussian_precision(
     return center + jitter
 
 
+
+def _factor_scale_log_mh_ratio(
+    loading: np.ndarray, scores: np.ndarray, component: int,
+    log_scale: float, loading_prior_sd: float,
+) -> float:
+    """Exact reversible posterior move along likelihood-invariant scale orbit.
+
+    L[:,k] -> exp(a)L[:,k], Z[:,k] -> exp(-a)Z[:,k] leaves every
+    fitted function unchanged. The Gaussian-prior ratio plus Jacobian
+    (number_of_loading_rows - number_of_scores)*a is essential.
+    Both B6 loading (q,k) and B7 loading (channel,q,k) are supported.
+    """
+    columns = np.asarray(loading).reshape(-1,loading.shape[-1])
+    c=component
+    load_norm=float(np.sum(columns[:,c]**2))/loading_prior_sd**2
+    score_norm=float(np.sum(scores[:,c]**2))
+    a=float(log_scale)
+    jacobian=(len(columns)-len(scores))*a
+    return float(-.5*np.expm1(2*a)*load_norm
+                 -.5*np.expm1(-2*a)*score_norm + jacobian)
+
+
+def _metropolis_scale_interweave(
+    loading: np.ndarray, scores: np.ndarray, rng: np.random.Generator,
+    proposal_sd: float, loading_prior_sd: float,
+) -> int:
+    """One Metropolis-Hastings attempt per loading/score factor.
+
+    Proposal in log-scale is symmetric; likelihood cancels exactly.
+    Returns number of accepted scale moves (no release qualification).
+    """
+    if proposal_sd==0.:
+        return 0
+    accepted=0
+    for c in range(scores.shape[1]):
+        a=float(rng.normal(scale=proposal_sd))
+        ratio=_factor_scale_log_mh_ratio(loading,scores,c,a,
+                                         loading_prior_sd)
+        if np.log(rng.random()) < ratio:
+            loading[...,c]*=np.exp(a)
+            scores[:,c]*=np.exp(-a)
+            accepted+=1
+    return accepted
+
+
+
 def fit_bayesian_sparse_fpca(
     trajectories: IrregularTrajectorySet,
     *,
@@ -119,6 +165,7 @@ def fit_bayesian_sparse_fpca(
     noise_sd: float,
     mean_prior_sd: float = 1.0,
     loading_prior_sd: float = 0.3,
+    scale_interweave_proposal_sd: float = 0.0,
     n_chains: int = 2,
     n_draws: int = 60,
     warmup: int = 90,
@@ -167,6 +214,11 @@ def fit_bayesian_sparse_fpca(
     ):
         if not np.isfinite(sd) or sd <= 0:
             raise ValueError(f"{name} must be finite and strictly positive")
+    if (not np.isscalar(scale_interweave_proposal_sd)
+        or isinstance(scale_interweave_proposal_sd,bool)
+        or not np.isfinite(scale_interweave_proposal_sd)
+        or not 0. <= scale_interweave_proposal_sd <= 1.):
+        raise ValueError("scale_interweave_proposal_sd must be finite in [0,1]")
     grid = np.asarray(evaluation_grid, dtype=float)
     if (
         grid.ndim != 1 or len(grid) < max(5, n_basis)
@@ -202,6 +254,8 @@ def fit_bayesian_sparse_fpca(
     loading_saved = np.empty((n_chains, n_draws, k, len(grid)))
     score_saved = np.empty((n_chains, n_draws, n, k))
     latent_saved = np.empty((n_chains, n_draws, n, len(grid)))
+    interweave_accepted=0
+    interweave_attempted=0
     seed_sequence = np.random.SeedSequence(random_state)
     for chain, chain_seed in enumerate(seed_sequence.spawn(n_chains)):
         rng = np.random.default_rng(chain_seed)
@@ -232,6 +286,12 @@ def fit_bayesian_sparse_fpca(
                 precision = np.eye(k)+inv_noise*loading.T @ gram @ loading
                 rhs = inv_noise*loading.T@(xiy-gram@mu)
                 scores[i] = _draw_gaussian_precision(precision, rhs, rng)
+
+            if scale_interweave_proposal_sd > 0:
+                interweave_accepted += _metropolis_scale_interweave(
+                    loading,scores,rng,scale_interweave_proposal_sd,
+                    loading_prior_sd)
+                interweave_attempted += k
 
             if sweep >= warmup and (sweep-warmup)%thin == 0:
                 if retained >= n_draws:
@@ -277,6 +337,14 @@ def fit_bayesian_sparse_fpca(
             "n_components": k, "n_basis": q,
             "n_chains": n_chains, "draws_per_chain": n_draws,
             "warmup": warmup, "thin": thin,
+            "scale_interweave_experimental_opt_in":scale_interweave_proposal_sd>0,
+            "scale_interweave_proposal_sd":float(scale_interweave_proposal_sd),
+            "scale_interweave_accepted":interweave_accepted,
+            "scale_interweave_attempted":interweave_attempted,
+            "scale_interweave_acceptance_rate":(
+                interweave_accepted/interweave_attempted
+                if interweave_attempted else None),
+            "scale_interweave_inferential_qualification":False,
             "chain_diagnostics_checked": False,
             "rank_SBC_and_empirical_coverage_qualified": False,
             "posterior_inference_scientifically_qualified": False,
