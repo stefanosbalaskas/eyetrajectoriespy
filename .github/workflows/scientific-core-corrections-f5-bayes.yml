@@ -1,13 +1,8 @@
 name: scientific-core-corrections-f5-bayes
 
+# Immutable 1800-fit F5 source evidence retained at Actions run 37975560959.
+# Do not repeat on descendant research PRs merely to repair an audit.
 on:
-  pull_request:
-    paths:
-      - ".github/workflows/scientific-core-corrections-f5-bayes.yml"
-      - "src/eyetrajectoriespy/research/functional_changepoints_ar1_reference.py"
-      - "scripts/run_f5_ar1_reference_validation.py"
-      - "tests/test_f5_ar1_reference.py"
-      - "tests/test_bayesian_independent_gaussian_conditionals.py"
   workflow_dispatch:
 
 permissions:
