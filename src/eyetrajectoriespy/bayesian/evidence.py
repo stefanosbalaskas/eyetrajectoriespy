@@ -209,12 +209,12 @@ def bayesian_diagnostics_frame(inference_data: Any, *, var_names: list[str] | No
     rows = []
     for name in names:
         current = posterior[[name]]
-        def read(method: str, **kwargs) -> float:
+        def read(metric: str, **kwargs) -> float:
             try:
-                fn = getattr(az, method)
+                fn = getattr(az, metric)
                 result = fn(current, var_names=[name], **kwargs)
                 raw = np.asarray(result[name], dtype=float)
-                return float(np.nanmin(raw)) if method == "ess" else float(np.nanmax(raw)) if method == "rhat" else float(np.nanmax(raw))
+                return float(np.nanmin(raw)) if metric == "ess" else float(np.nanmax(raw)) if metric == "rhat" else float(np.nanmax(raw))
             except (ValueError, TypeError, RuntimeError):
                 return float("nan")
         n_chains = int(posterior.sizes.get("chain", 0))
