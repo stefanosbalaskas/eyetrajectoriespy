@@ -253,3 +253,20 @@ def test_bids_dataset_audit_checks_eye_labels_and_screen_provenance(tmp_path):
     checked = audit_bids_eyetracking_dataset(tmp_path)
     assert not checked.group_checks.group_valid.any()
     assert checked.files.reason.str.contains("ScreenDistance").all()
+
+
+def test_native_power_design_imbalance_and_variance_stress(monkeypatch):
+    seen = []
+    def fake_test(data, groups, *, unit_ids, fit_kwargs, n_permutations, random_state):
+        seen.append((len(set(unit_ids)), groups.count("A"), groups.count("B")))
+        return SimpleNamespace(p_value=.2, statistic=.6)
+    monkeypatch.setattr(power_planning, "test_sparse_functional_groups", fake_test)
+    result = simulate_functional_study_power(
+        units_per_group=4, other_group_size=7, group_noise_multiplier=2.5,
+        n_replicates=2, samples_per_trial=9, trials_per_participant=2,
+    )
+    assert len(seen) == 4
+    assert all(t == (11, 8, 14) for t in seen)
+    assert result.plan["heteroscedastic_null_test_qualified"] is False
+    assert result.plan["group_noise_multiplier"] == 2.5
+    assert result.recommended_sample_size is None

@@ -8,6 +8,7 @@ on:
       - "docs/development/**"
       - "docs/assets/research/**"
       - "scripts/generate_f1_f6_gallery.py"
+      - "scripts/run_f1_d1_stress_pilot.py"
       - ".github/workflows/experimental-d1-d5-study-design.yml"
       - "mkdocs.yml"
   workflow_dispatch:
@@ -67,3 +68,48 @@ jobs:
           assert readiness["github_release_ready"] is False
           print("PASS: D4 remains opt-in, with publication explicitly disarmed")
           PY
+
+  native-sparse-design-stress:
+    name: F1 full-model multi-design pilot
+    needs: experimental-study-design
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install source and scientific dependencies
+        run: python -m pip install -e ".[dev]"
+      - name: Run five known-truth design scenarios through actual native F1
+        run: |
+          python scripts/run_f1_d1_stress_pilot.py \
+            --replicates 4 --out build/d1-sparse-study-design
+      - name: Verify all scientific failures are counted
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          base = Path("build/d1-sparse-study-design")
+          info = json.loads((base/"evidence.json").read_text())
+          data = pd.read_csv(base/"design-cases.csv")
+          assert len(data) == 40
+          assert info["n_total_fit_attempts"] == 40
+          assert info["n_failed_fit_attempts"] == (data.status == "failed").sum()
+          assert not info["type_one_error_or_power_qualified"]
+          assert not info["release_authorized"]
+          print("PASS full refit attempts retained; null/power NOT qualified")
+          PY
+      - name: Retain full scientific design stress records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f1-native-five-design-stress-pilot
+          path: build/d1-sparse-study-design/
+          if-no-files-found: error
+          retention-days: 90

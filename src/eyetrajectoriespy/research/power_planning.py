@@ -25,13 +25,15 @@ def _generate_sparse_two_group(
     rng: np.random.Generator,
     *,
     units_per_group: int,
+    other_group_size: int | None,
+    group_noise_multiplier: float,
     trials_per_participant: int,
     samples_per_trial: int,
     noise_sd: float,
     effect_amplitude: float,
 ) -> tuple[IrregularTrajectorySet, list[str], list[str]]:
     time, values, names, participants, labels = [], [], [], [], []
-    total = 2 * units_per_group
+    total = units_per_group + (other_group_size if other_group_size is not None else units_per_group)
     for unit in range(total):
         member = f"participant_{unit:04d}"
         condition = "A" if unit < units_per_group else "B"
@@ -49,7 +51,8 @@ def _generate_sparse_two_group(
                     np.sin(np.pi * grid),
                     -.5 * np.cos(np.pi*grid)
                 ))
-            base += rng.normal(scale=noise_sd, size=base.shape)
+            effective_noise_sd = noise_sd * (group_noise_multiplier if condition == "B" else 1.0)
+            base += rng.normal(scale=effective_noise_sd, size=base.shape)
             time.append(grid)
             values.append(base)
             names.append(f"{member}_trial_{trial:02d}")
@@ -72,6 +75,8 @@ def simulate_functional_study_power(
     *,
     units_per_group: int,
     n_replicates: int,
+    other_group_size: int | None = None,
+    group_noise_multiplier: float = 1.0,
     samples_per_trial: int = 19,
     trials_per_participant: int = 1,
     noise_sd: float = .012,
@@ -88,6 +93,10 @@ def simulate_functional_study_power(
     """
     if isinstance(units_per_group, bool) or not isinstance(units_per_group, int) or units_per_group < 4:
         raise ValueError("at least four independent units per group")
+    if other_group_size is not None and (isinstance(other_group_size, bool) or not isinstance(other_group_size, int) or other_group_size < 4):
+        raise ValueError("other_group_size must have at least four independent units")
+    if not np.isfinite(group_noise_multiplier) or group_noise_multiplier <= 0:
+        raise ValueError("group_noise_multiplier must be finite and positive")
     if isinstance(n_replicates, bool) or not isinstance(n_replicates, int) or n_replicates < 2:
         raise ValueError("at least two simulation replicates per scenario")
     if not isinstance(samples_per_trial, int) or samples_per_trial < 7:
@@ -118,6 +127,8 @@ def simulate_functional_study_power(
             data_rng = np.random.default_rng(fixture_seed)
             gaze, labels, unit_ids = _generate_sparse_two_group(
                 data_rng, units_per_group=units_per_group,
+                other_group_size=other_group_size,
+                group_noise_multiplier=group_noise_multiplier,
                 trials_per_participant=trials_per_participant,
                 samples_per_trial=samples_per_trial, noise_sd=noise_sd,
                 effect_amplitude=magnitude,
@@ -161,6 +172,9 @@ def simulate_functional_study_power(
         plan={
             "actual_test": "pooled_PACE_conditional_unit_permutation_F1_experimental",
             "units_per_group": units_per_group,
+            "other_group_size": other_group_size or units_per_group,
+            "group_noise_multiplier": group_noise_multiplier,
+            "heteroscedastic_null_test_qualified": False,
             "trials_per_participant": trials_per_participant,
             "sampling_density": samples_per_trial,
             "effect_amplitude": effect_amplitude, "noise_sd": noise_sd,
