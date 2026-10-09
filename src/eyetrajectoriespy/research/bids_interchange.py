@@ -1,6 +1,6 @@
 """F3: narrow Eye-Tracking-BIDS physio adapter, not full BIDS compliance.
 
-Version basis: BEP020/Szinte et al. 2026 and the declared sidecar fields.
+Version basis: BIDS specification v1.11.2 (2026), Eye-Tracking-BIDS (BEP020).
 Never infers clock alignment, events, calibration accuracy, or missing samples.
 """
 from __future__ import annotations
@@ -63,7 +63,7 @@ def validate_eyetracking_metadata(
     if time_unit not in unit_scales:
         raise ValueError("supported timestamp units are s and ms only")
     return {
-        "specification_basis": "BEP020_2026_subset_not_full_BIDS_conformance",
+        "specification_basis": "BIDS_1.11.2_EyeTracking_subset_not_full_conformance",
         "recorded_eye": metadata["RecordedEye"],
         "coordinate_system": _UNIT_MAP[units[0]],
         "sample_coordinate_system_original": system,
@@ -133,7 +133,7 @@ def from_bids_eyetracking(
         dimension_names=("x", "y"),
         coordinate_system=audit["coordinate_system"], time_unit="s",
         provenance={
-            "import_contract": "BEP020_2026_subset", "source_path": str(path),
+            "import_contract": "BIDS_1.11.2_EyeTracking_subset", "source_path": str(path),
             "source_sidecar": source_sidecar,
             "recorded_eye": audit["recorded_eye"],
             "sample_coordinate_system": audit["sample_coordinate_system_original"],

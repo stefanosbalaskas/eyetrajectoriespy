@@ -384,3 +384,12 @@ def test_target_based_calibration_rejects_undocumented_and_inconsistent_targets(
         summarize_gaze_validation_targets(frame, evidence_source="reference")
     with pytest.raises(ValueError, match="evidence_source"):
         summarize_gaze_validation_targets(frame, evidence_source="")
+
+
+def test_bids_subset_is_pinned_to_stable_specification():
+    audit = validate_eyetracking_metadata(sidecar())
+    assert audit["specification_basis"] == (
+        "BIDS_1.11.2_EyeTracking_subset_not_full_conformance"
+    )
+    assert audit["validated_subset_only"] is True
+    assert audit["clock_alignment_performed"] is False

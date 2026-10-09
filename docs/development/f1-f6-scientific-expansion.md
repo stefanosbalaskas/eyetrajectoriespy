@@ -21,7 +21,7 @@ All six directions requested for the 1.2 programme are represented in the opt-in
 ## F3 — Eye-Tracking-BIDS subset adapter
 
 - `validate_eyetracking_metadata()`, `from_bids_eyetracking()`.
-- A narrow **BEP020-inspired subset**, not complete BIDS compliance: accepts a single continuously sampled physio TSV.GZ and explicit JSON sidecar, with time, x/y column definitions, units, one recorded eye, positive sampling rate and finite origin. It preserves NaNs and rejects nonuniform timestamps.
+- A version-declared, narrow **BIDS v1.11.2 Eye-Tracking-BIDS subset**, not complete BIDS compliance: accepts a single continuously sampled physio TSV.GZ and explicit JSON sidecar, with time, x/y column definitions, units (explicit device timestamps in **s or ms**, converted to s with their device origin retained), one recorded eye, positive sampling rate and finite origin. It preserves NaNs and rejects nonuniform timestamps.
 - Enforces mandatory per-eye `recording-` identity, a matching JSON sidecar filename, explicitly marked `n/a` missing coordinates, and rejects corrupted nonnumeric values; this is checked against the published BEP020 descriptions and MNE-BIDS's single-eye export approach.\n- No asynchronous clock reconciliation, device event inference, binocular fusion, hidden resampling or claim that all BIDS entities are validated. A pinned published standard conformance fixture and validator integration are mandatory before claiming compatibility across datasets.
 - Relevant BIDS preprint is a specification discussion, not itself evidence that this limited adapter passes the BIDS validator.
 
