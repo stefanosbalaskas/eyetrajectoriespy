@@ -6,8 +6,8 @@ a replacement for the legacy functional CUSUM bootstrap.**
 ## Why a third research prototype?
 
 The original weak-block bootstrap reported false-positive rates of
-**99/200=49.5%** under true Gaussian AR(1) \(\phi=.8\) at nominal
-\(\alpha=.05\). The known-true-\(\phi\) comparator lowered this to
+**99/200=49.5%** under true Gaussian AR(1) $\phi=.8$ at nominal
+$\alpha=.05$. The known-true-$\phi$ comparator lowered this to
 **16/200=8.0%**, but it requires a nuisance parameter that real
 eye-tracking users cannot generally know. Original fitted 1,800-test
 evidence is retained in artifact `11639020647`, checksum-recovered in
@@ -43,7 +43,7 @@ This is **not** automatically available in ordinary eye-tracking studies.
    one baseline-estimated coefficient and resampling baseline innovation
    vectors, preserving functional time/channel covariance *within each
    innovation*. Compute the unchanged whole-functional maximum CUSUM scan.
-6. Calculate the Monte Carlo upper-tail p-value with the \((1+k)/(B+1)\)
+6. Calculate the Monte Carlo upper-tail p-value with the $(1+k)/(B+1)$
    adjustment. Return split location, null statistics, nuisance
    estimates/uncertainty and explicit false scientific qualification
    flags.
@@ -61,16 +61,16 @@ generated baseline/test dataset pairs**: five processes ×
 120 true no-change + 60 one-break alternatives. Every baseline has
 80 ordered curves, and each disjoint test set has 36 curves. Methods:
 
-- Baseline-estimated unknown-\(\phi\) AR(1) comparator, with
+- Baseline-estimated unknown-$\phi$ AR(1) comparator, with
   119 baseline nuisance-bootstrap refits and 149 null simulations.
 - The original block-length-4 weak-block method (independent
   permutation under i.i.d. data).
-- The *true oracle-\(\phi\)* comparator for the four processes whose
+- The *true oracle-$\phi$* comparator for the four processes whose
   generator is genuinely scalar AR(1), for benchmarking **only**.
   Never use the oracle result as a practical method.
 
-Scenarios: i.i.d. Gaussian, weak AR(1) \(\phi=.35\), strong AR(1)
-\(\phi=.8\), heavy-tailed AR(1) \(\phi=.65\), and **deliberately
+Scenarios: i.i.d. Gaussian, weak AR(1) $\phi=.35$, strong AR(1)
+$\phi=.8$, heavy-tailed AR(1) $\phi=.65$, and **deliberately
 misspecified AR(2)** (lag coefficients .64 and .24).
 The AR(2) method is a misspecification stress, not a valid AR(1)
 setting. The sinusoidal one-break shift is fixed in advance at
