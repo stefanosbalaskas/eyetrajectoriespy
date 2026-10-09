@@ -8,6 +8,8 @@ on:
       - "BAYESIAN_B6_LEARNED_FACTOR_QUALIFICATION.json"
       - "docs/development/bayesian-research-programme.md"
       - "scripts/run_b6_learned_factor_truth_pilot.py"
+      - "scripts/generate_b6_learned_factor_gallery.py"
+      - "scripts/generate_docs_gallery.py"
       - ".github/workflows/bayesian-b6-learned-factor-research.yml"
   workflow_dispatch:
 
@@ -156,3 +158,51 @@ jobs:
           assert not summary.convergence_qualified.any()
           print(summary.to_string(index=False))
           PY
+
+  learned-population-gallery:
+    name: B6 actual Gibbs fitted mean/covariance figure
+    needs: learned-factor-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install research source and plotting
+        run: python -m pip install -e ".[dev]"
+      - name: Generate learned population figure and verify deterministic evidence
+        run: |
+          python scripts/generate_b6_learned_factor_gallery.py \
+            --out build/b6-figure
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          from hashlib import sha256
+          root=Path("build/b6-figure")
+          figure=root/"b6-learned-population-mean-covariance.svg"
+          table=root/"b6-learned-population-known-truth.csv"
+          assert figure.stat().st_size>2000
+          df=pd.read_csv(table)
+          assert len(df)==49
+          assert df.credible_intervals_not_scientifically_calibrated.all()
+          digest=sha256(figure.read_bytes()).hexdigest()
+          import subprocess
+          subprocess.run([
+              "python","scripts/generate_b6_learned_factor_gallery.py",
+              "--out",str(root)
+          ],check=True)
+          assert sha256(figure.read_bytes()).hexdigest()==digest
+          print("PASS learned Bayesian posterior figure deterministic; no calibrated inference")
+          PY
+      - name: Archive learned-population illustration and known truth
+        uses: actions/upload-artifact@v4
+        with:
+          name: b6-native-learned-population-gallery
+          path: build/b6-figure/
+          if-no-files-found: error
+          retention-days: 90
