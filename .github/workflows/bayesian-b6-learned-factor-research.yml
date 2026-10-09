@@ -1,0 +1,59 @@
+name: bayesian-b6-learned-factor-research
+
+on:
+  pull_request:
+    paths:
+      - "src/eyetrajectoriespy/bayesian/**"
+      - "tests/test_bayesian_b6_gibbs.py"
+      - "BAYESIAN_B6_LEARNED_FACTOR_QUALIFICATION.json"
+      - "docs/development/bayesian-research-programme.md"
+      - "scripts/run_b6_learned_factor_truth_pilot.py"
+      - ".github/workflows/bayesian-b6-learned-factor-research.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  learned-factor-contracts:
+    name: Learned Bayesian factor Gibbs (${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install core research source, no Bayesian external libraries
+        run: python -m pip install -e ".[dev]"
+      - name: Native Gibbs regression and scientific boundary tests
+        run: |
+          python -m pytest -q tests/test_bayesian_b6_gibbs.py
+          python -m compileall -q src/eyetrajectoriespy/bayesian
+      - name: Verify experimental namespace and release controls
+        run: |
+          python - <<'PY'
+          import json
+          import eyetrajectoriespy as et
+          from eyetrajectoriespy import bayesian
+          assert hasattr(bayesian, "fit_bayesian_sparse_fpca")
+          assert not hasattr(et, "fit_bayesian_sparse_fpca")
+          evidence=json.load(open("BAYESIAN_B6_LEARNED_FACTOR_QUALIFICATION.json"))
+          assert evidence["learned_mean_and_covariance_implemented"]
+          assert evidence["fixed_noise_rank_and_priors"]
+          assert not evidence["fully_qualified_Bayesian_FPCA"]
+          assert not evidence["scientific_inference_qualified"]
+          assert not evidence["release_authorized"]
+          flags=json.load(open("RELEASE_READINESS.json"))
+          assert flags["production_release_ready"] is False
+          assert flags["github_release_ready"] is False
+          print("PASS learned-factor model remains an unqualified opt-in research prototype")
+          PY
