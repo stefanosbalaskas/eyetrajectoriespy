@@ -85,6 +85,28 @@ def _summarize_posterior(a:np.ndarray,b:np.ndarray,truth:float, label:str)->dict
     }
 
 
+def _identified_chain_diagnostics(draws:np.ndarray)->dict:
+    """Rank Rhat, bulk/tail ESS and MCSE of an invariant scalar functional.
+
+    This is the only correct level for evaluating rank-1 covariance
+    functionals when loading signs are not identified. Raw loading
+    Rhat remains separately available and is never silently ignored.
+    """
+    import arviz as az
+    a=np.asarray(draws,dtype=float)
+    if a.ndim!=2 or a.shape[0]<2 or a.shape[1]<20 or not np.isfinite(a).all():
+        raise ValueError("need >=2 finite chains with >=20 draws for diagnostics")
+    fields={
+        "rank_rhat":float(np.asarray(az.rhat(a,method="rank"))),
+        "bulk_ess":float(np.asarray(az.ess(a,method="bulk"))),
+        "tail_ess":float(np.asarray(az.ess(a,method="tail"))),
+        "mcse_mean":float(np.asarray(az.mcse(a,method="mean"))),
+    }
+    if not all(np.isfinite(v) and v>=0 for v in fields.values()):
+        raise ValueError("invalid identifiable population diagnostic")
+    return fields
+
+
 def _pymc_marginal(gaze:IrregularTrajectorySet,*,dimensions:tuple[str,...],
                    noise_sd:tuple[float,...],q:int,k:int,
                    mean_sd:float,load_sd:float,
@@ -235,12 +257,40 @@ def execute(*,replicates:int=2,nuts_draws:int=350,
                     _summarize_posterior(center_cov,marginal_cv,truth_cv,
                          "x_mid_covariance" if len(dimensions)==1 else "mid_xy_crosscovariance")
                 ]
+                # Diagnostic chain arrays are specifically the *identifiable*
+                # mean and covariance functionals, not sign-switching L.
+                invariant_diagnostics={}
+                for name,native_values,reference_values in (
+                    ("x_mid_population_mean",center_mu,marginal_mu),
+                    ("x_mid_covariance" if len(dimensions)==1
+                     else "mid_xy_crosscovariance",center_cov,marginal_cv),
+                ):
+                    native_diag=_identified_chain_diagnostics(native_values)
+                    reference_diag=_identified_chain_diagnostics(reference_values)
+                    mean_difference=float(np.mean(native_values)-np.mean(reference_values))
+                    combined_mcse=float(np.hypot(
+                        native_diag["mcse_mean"],reference_diag["mcse_mean"]))
+                    invariant_diagnostics[name]={
+                        "native":native_diag,"independent_nuts":reference_diag,
+                        "native_minus_reference_mean":mean_difference,
+                        "mean_discrepancy_to_combined_mcse":(
+                            mean_difference/combined_mcse
+                            if combined_mcse>0 else None),
+                        "both_chain_mixing_diagnostics_acceptable":(
+                            native_diag["rank_rhat"]<=1.01 and
+                            reference_diag["rank_rhat"]<=1.01 and
+                            native_diag["bulk_ess"]>=400 and
+                            reference_diag["bulk_ess"]>=400),
+                        "scientific_qualified":False,
+                    }
                 mu_diag=az.rhat(idata,var_names=["mean"])
                 L_diag=az.rhat(idata,var_names=["load"])
                 native_frame=native.diagnostics_frame()
                 row.update(
                     status="ok",
                     conditional_nuts_marginal_population_comparison=summary,
+                    rotation_invariant_population_chain_diagnostics=invariant_diagnostics,
+                    rank1_loading_sign_nonidentifiability_preserved=True,
                     native_rhat_max=float(native_frame.rhat_max.max()),
                     native_bulk_ess_min=float(native_frame.ess_bulk_min.min()),
                     nuts_max_parameter_rhat=float(max(
