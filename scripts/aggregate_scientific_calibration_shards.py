@@ -74,6 +74,15 @@ def aggregate(inputs: list[Path]) -> tuple[pd.DataFrame,dict]:
         for case_file, group_columns in CASES[programme].items():
             path=directory/case_file
             df=pd.read_csv(path)
+            # Historical F1 shards from wave #250 wrote `iteration` before
+            # the unified `replicate` key was added. Preserve archived
+            # original case CSV/checksums; normalize only in memory.
+            if case_file=="f1-cases.csv":
+                if "replicate" not in df.columns and "iteration" in df.columns:
+                    df["replicate"]=df["iteration"]
+                if "iteration" in df.columns and "replicate" in df.columns:
+                    if not df["iteration"].equals(df["replicate"]):
+                        raise ValueError("F1 iteration/replicate identifiers disagree")
             required=set(group_columns)|{"seed","replicate","shard_id","status"}
             if not required.issubset(df.columns):
                 raise ValueError(f"missing required case columns: {path}")

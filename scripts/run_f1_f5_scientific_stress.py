@@ -106,6 +106,9 @@ def f1_study(replicates: int, permutations: int, seed: int, *, shard_id: int = 0
         one = result.cases.copy()
         one["design"] = name
         one["shard_id"] = shard_id
+        # Unified scenario/shard/replicate key required by the audit aggregator.
+        # Preserve the existing simulator's iteration identifier too.
+        one["replicate"] = one["iteration"]
         frames.append(one)
         for case in ("null", "alternative"):
             rows = one.loc[one.scenario == case]
