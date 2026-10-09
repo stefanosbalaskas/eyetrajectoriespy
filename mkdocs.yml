@@ -40,6 +40,7 @@ nav:
           - Sparse univariate FPCA / PACE: guides/sparse-irregular-fpca.md
           - Sparse planar MFPCA / joint PACE: guides/sparse-multivariate-fpca.md
           - Native functional simulation: guides/functional-simulation.md
+          - Experimental 3D gaze-hand proximity (unreleased): methods/gaze-hand-attraction-research.md
           - Basis representations: guides/basis-representations.md
           - Derived continuous functions: guides/derived-functions.md
       - FPCA, uncertainty & review:
