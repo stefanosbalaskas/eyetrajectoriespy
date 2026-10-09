@@ -72,6 +72,10 @@ No change to protected main or stable 1.1.0 is part of this experiment.
 
 ## Completed independent 6,000-fit F1 study (source-verified)
 
+![Actual 6,000-F1-fit empirical null-size and moderate-power comparison](../assets/research/f1-6000-null-power.svg)
+
+
+
 [Original exact-source workflow #37977625803](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37977625803)
 completed **5/5 study jobs**, including 4,000 independent native sparse-PACE
 true-null fits and 2,000 moderate-effect alternatives with **zero
