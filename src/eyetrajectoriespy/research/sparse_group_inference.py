@@ -28,6 +28,46 @@ class SparseFunctionalGroupTest:
     evidence: Mapping[str, Any]
 
 
+
+def _conditional_score_permutation(
+    by_unit: np.ndarray,
+    first_group: np.ndarray,
+    *,
+    n_permutations: int,
+    random_state: int,
+) -> tuple[float, np.ndarray, float]:
+    """Conditional Monte Carlo randomization of independent-unit score vectors.
+
+    Only valid if the unit-group allocations were exchangeable under the
+    sharp null. This does not establish validity of learned sparse scores.
+    """
+    scores = np.asarray(by_unit, dtype=float)
+    mask = np.asarray(first_group, dtype=bool)
+    if scores.ndim != 2 or mask.shape != (len(scores),) or not np.isfinite(scores).all():
+        raise ValueError("finite two-dimensional independent-unit scores required")
+    if min(int(mask.sum()), int((~mask).sum())) < 4:
+        raise ValueError("at least four independent units per group required")
+    if not isinstance(n_permutations, int) or n_permutations < 99:
+        raise ValueError("at least 99 permutations required")
+    pooled = np.atleast_2d(np.cov(scores, rowvar=False))
+    inv = np.linalg.pinv(pooled, rcond=1e-10)
+
+    def statistic(m: np.ndarray) -> float:
+        difference = scores[m].mean(axis=0) - scores[~m].mean(axis=0)
+        return float(difference @ inv @ difference)
+
+    observed = statistic(mask)
+    rng = np.random.default_rng(random_state)
+    null = np.empty(n_permutations, dtype=float)
+    for iteration in range(n_permutations):
+        selected = rng.permutation(len(scores))[:int(mask.sum())]
+        draw = np.zeros(len(scores), dtype=bool)
+        draw[selected] = True
+        null[iteration] = statistic(draw)
+    p_value = float((1 + np.count_nonzero(null >= observed - 1e-12)) / (1 + len(null)))
+    return observed, null, p_value
+
+
 def test_sparse_functional_groups(
     trajectories: IrregularTrajectorySet,
     groups: Sequence[str],
@@ -97,24 +137,10 @@ def test_sparse_functional_groups(
     group_mask = unit_groups == names[0]
     group_counts = (int(group_mask.sum()), int((~group_mask).sum()))
     delta = by_unit[group_mask].mean(axis=0) - by_unit[~group_mask].mean(axis=0)
-    def statistic(mask: np.ndarray) -> float:
-        a, b = by_unit[mask], by_unit[~mask]
-        d = a.mean(axis=0) - b.mean(axis=0)
-        # Fixed pooled score-space normalization; covariance estimate is
-        # insensitive to permuted labels, deliberately not a Welch test.
-        return float(d @ inv @ d)
-    pooled = np.cov(by_unit, rowvar=False)
-    pooled = np.atleast_2d(pooled)
-    inv = np.linalg.pinv(pooled, rcond=1e-10)
-    observed = statistic(group_mask)
-    rng = np.random.default_rng(random_state)
-    null = np.empty(int(n_permutations), dtype=float)
-    for k in range(len(null)):
-        perm = rng.permutation(len(unit_names))
-        mask = np.zeros(len(unit_names), dtype=bool)
-        mask[perm[:group_counts[0]]] = True
-        null[k] = statistic(mask)
-    p = float((1 + np.count_nonzero(null >= observed - 1e-12)) / (1 + len(null)))
+    observed, null, p = _conditional_score_permutation(
+        by_unit, group_mask,
+        n_permutations=int(n_permutations), random_state=random_state,
+    )
     eig = np.asarray(fit.eigenfunctions, dtype=float)
     if eig.ndim != 3 or eig.shape[0] != delta.size:
         raise RuntimeError("unexpected component representation; fail closed")
