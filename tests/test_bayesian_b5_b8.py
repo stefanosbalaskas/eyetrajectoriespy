@@ -407,3 +407,41 @@ def test_b8_conjugate_participant_functional_intercepts_and_partial_pooling():
         )
     with pytest.raises(KeyError):
         fit.participant_posterior("missing")
+
+
+def test_b10_predeclared_projection_one_break_posterior_and_null():
+    from eyetrajectoriespy.bayesian import fit_bayesian_functional_changepoints
+    rng=np.random.default_rng(802)
+    t=np.linspace(0,1,21)
+    n=48
+    null=.35+rng.normal(0,.035,(n,len(t),1))
+    shifted=null.copy()
+    shifted[24:]+= .34
+    def make(values):
+        return TrajectorySet(
+            time=t,values=values,curve_ids=tuple(f"trial{i}" for i in range(n)),
+            dimension_names=("x",),time_unit="normalized",coordinate_system="normalized",
+            metadata=pd.DataFrame({"participant_id":[f"P{i}" for i in range(n)]}),
+        )
+    kwargs=dict(functional_projection=np.ones((len(t),1)),
+                observation_noise_sd=.035,segment_mean_prior_sd=1.,
+                prior_probability_one_break=.5,min_segment=6)
+    baseline=fit_bayesian_functional_changepoints(make(null),**kwargs)
+    signal=fit_bayesian_functional_changepoints(make(shifted),**kwargs)
+    assert signal.conditional_map_split_index == 24
+    assert signal.posterior_probability_one_break > .99
+    assert baseline.posterior_probability_one_break < signal.posterior_probability_one_break
+    assert signal.split_posterior.posterior_split_given_exactly_one_break.sum() == pytest.approx(1)
+    assert signal.split_posterior.posterior_split_unconditional.sum() == pytest.approx(
+        signal.posterior_probability_one_break
+    )
+    assert not signal.evidence["full_functional_changepoint_posterior_implemented"]
+    assert not signal.evidence["serial_trial_dependence_modelled"]
+    assert signal.evidence["posterior_probability_not_frequentist_p_value"]
+    repeated=make(shifted)
+    metadata=repeated.metadata.copy()
+    metadata.iloc[1, metadata.columns.get_loc("participant_id")]="P0"
+    invalid=TrajectorySet(repeated.time,repeated.values,repeated.curve_ids,
+                          repeated.dimension_names,metadata=metadata)
+    with pytest.raises(ValueError,match="repeated participants"):
+        fit_bayesian_functional_changepoints(invalid,**kwargs)
