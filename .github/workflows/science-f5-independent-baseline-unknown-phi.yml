@@ -1,0 +1,88 @@
+name: science-f5-independent-baseline-unknown-phi
+
+# Prespecified independent new-data study, not an automatic full-suite rerun.
+on:
+  pull_request:
+    types: [opened]
+    paths:
+      - ".github/workflows/science-f5-independent-baseline-unknown-phi.yml"
+      - "src/eyetrajectoriespy/research/functional_changepoints_baseline_ar1.py"
+      - "scripts/run_f5_unknown_phi_independent_baseline_validation.py"
+      - "tests/test_f5_unknown_phi_independent_baseline.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scientific-baseline-nuisance-contracts:
+    name: F5 independent baseline and failure checks (${{ matrix.python }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_f5_unknown_phi_independent_baseline.py
+
+  fresh-null-vs-one-break:
+    name: True-null AR1, heavy-tail and AR2 with independently estimated phi
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - name: Mandatory native baseline and no-test-leakage preflight
+        run: python -m pytest -q tests/test_f5_unknown_phi_independent_baseline.py
+      - name: New non-oracle independent-baseline F5 scientific null/alternative comparison
+        run: |
+          python scripts/run_f5_unknown_phi_independent_baseline_validation.py \
+            --null-reps 120 --alt-reps 60 --bootstrap 149 \
+            --phi-bootstrap 119 --master-seed 20261204 \
+            --out build/f5-independent-baseline > build-f5-unknown-phi-stdout.json
+          python - <<'PY'
+          from pathlib import Path
+          import json,pandas as pd
+          p=Path("build/f5-independent-baseline")
+          evidence=json.loads((p/"evidence.json").read_text())
+          cases=pd.read_csv(p/"cases.csv",keep_default_na=False,na_values=[""])
+          assert len(cases)==evidence["all_model_attempts"]==2520
+          assert evidence["true_null_attempts_per_scenario"]==120
+          assert evidence["moderate_one_break_attempts_per_scenario"]==60
+          assert set(cases.truth)=={"null","one_break"}
+          assert set(cases.scenario)=={
+            "iid","ar1_weak","ar1_strong","ar2_misspecified","heavy_tail_ar1"}
+          assert (cases.groupby(["scenario","truth","replicate"])
+                    .method.nunique().isin([2,3])).all()
+          assert evidence["fit_failures"]==int(cases.status.eq("failed").sum())
+          assert not evidence["unknown_phi_statistical_calibration_qualified"]
+          assert not evidence["release_authorized"]
+          for row in evidence["results"]:
+              print("F5 REAL UNKNOWN-PHI SCIENCE:",json.dumps(row,sort_keys=True))
+          PY
+      - name: Retain original case-level results, exceptions and SHA256
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f5-independent-baseline-unknown-phi-null-and-alternatives
+          path: build/f5-independent-baseline/
+          retention-days: 90
+          if-no-files-found: warn

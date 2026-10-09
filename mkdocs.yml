@@ -48,6 +48,7 @@ nav:
           - F1 higher-precision null and power: development/f1-high-precision-native-null-power.md
           - Exact partially collapsed Bayesian mean: development/b6-b7-exact-collapsed-mean-gibbs.md
           - Independent B6 B7 PyMC NUTS reference: development/b6-b7-independent-pymc-nuts-reference.md
+          - Independent baseline F5 unknown dependence: development/f5-independent-baseline-unknown-phi.md
           - B6 and F1/F5 scientific calibration: development/b6-f1-f5-calibration-protocol.md
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md

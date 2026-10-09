@@ -1,0 +1,103 @@
+{
+  "scientific_method": "F1 native sparse PACE two-group functional permutation inference",
+  "decision_type": "scope_limited_operating_characteristics_only",
+  "date": "2026-10-09",
+  "source": {
+    "pr": 259,
+    "original_head": "3a0583f48d4727c446fb8050b678eec0203b332c",
+    "workflow_run": 37977625803,
+    "immutable_case_artifact": 11640464273,
+    "full_refits_attempted": 6000,
+    "failures": 0,
+    "truth_null": 4000,
+    "moderate_alternative": 2000,
+    "permutations_per_fit": 199,
+    "new_seed_namespace": 20261125
+  },
+  "nominal_alpha": 0.05,
+  "targeted_null_scenario_rates": [
+    {
+      "scenario": "balanced_equal_covariance",
+      "rejects": 49,
+      "attempted": 1000,
+      "rate": 0.049,
+      "exact_mc95": [
+        0.03646705917204781,
+        0.06426605314016964
+      ]
+    },
+    {
+      "scenario": "clustered_two_trials",
+      "rejects": 51,
+      "attempted": 1000,
+      "rate": 0.051,
+      "exact_mc95": [
+        0.03820523677468617,
+        0.0665134615949348
+      ]
+    },
+    {
+      "scenario": "unequal_heteroscedastic_null",
+      "rejects": 52,
+      "attempted": 1000,
+      "rate": 0.052,
+      "exact_mc95": [
+        0.0390765349439805,
+        0.06763501405050729
+      ]
+    },
+    {
+      "scenario": "very_sparse",
+      "rejects": 44,
+      "attempted": 1000,
+      "rate": 0.044,
+      "exact_mc95": [
+        0.03214949701087143,
+        0.05862041920633091
+      ]
+    }
+  ],
+  "moderate_effect_amplitude": 0.04,
+  "moderate_effect_rejection_rates": [
+    {
+      "scenario": "balanced_equal_covariance",
+      "rejects": 79,
+      "attempted": 500,
+      "rate": 0.158
+    },
+    {
+      "scenario": "clustered_two_trials",
+      "rejects": 91,
+      "attempted": 500,
+      "rate": 0.182
+    },
+    {
+      "scenario": "unequal_heteroscedastic_null",
+      "rejects": 96,
+      "attempted": 500,
+      "rate": 0.192
+    },
+    {
+      "scenario": "very_sparse",
+      "rejects": 71,
+      "attempted": 500,
+      "rate": 0.142
+    }
+  ],
+  "finding": "No numerical counterexample to nominal 5% size in the four specifically tested generators; moderate-effect detection only 14.2%-19.2%.",
+  "qualification_gates": {
+    "f1_implementation_engineering_in_exact_older_head": "passed",
+    "single_design_family_null_operating_characteristics_evidence": "consistent_with_nominal",
+    "mathematical_exchangeability_justified_all_scenarios": false,
+    "cluster_permutation_independent_validation_complete": false,
+    "heterogeneous_nonexchangeable_unconditional_validity_established": false,
+    "realistic_missingness_sample_sizes_covariance_designs_complete": false,
+    "component_selection_multiplicity_policy_qualified": false,
+    "prospective_sample_size_power_surface_qualified": false,
+    "independent_test_method_comparison_complete": false,
+    "f1_experimental_scientific_inference_qualified": false,
+    "f1_release_qualification_authorized": false,
+    "eyetrajectoriespy_1_2_release_authorized": false
+  },
+  "followup_issue": 261
+}
