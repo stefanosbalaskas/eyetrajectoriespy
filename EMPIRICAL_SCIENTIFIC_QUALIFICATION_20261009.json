@@ -600,5 +600,40 @@
     "low_dependence_conservatism_observed": true,
     "AR2_approx_false_positive_above_nominal_observed": true,
     "fully_qualified_generic_unknown_dependence": false
+  },
+  "F5_baseline_length_nuisance_ablation_20261010": {
+    "scientific_stage": "prespecified_source_experiment_pending_original_case_results",
+    "parent_pr": 263,
+    "open_blocker_issue": 256,
+    "planned_true_null_attempts": 2400,
+    "planned_fixed_break_attempts": 1200,
+    "planned_total_full_tests": 3600,
+    "distinct_independent_test_datasets": 600,
+    "independent_baseline_lengths": [
+      40,
+      80,
+      160
+    ],
+    "processes": [
+      "iid",
+      "AR1_phi035",
+      "AR1_phi08",
+      "AR2_064_024"
+    ],
+    "new_seed_namespace": "F5_BASELINE_LENGTH_NUISANCE_ABLATION_INDEPENDENT_V1",
+    "nuisance_coefficient_policies": [
+      "baseline_uncertainty",
+      "baseline_plugin"
+    ],
+    "default_nuisance_policy_unchanged": true,
+    "original_null_bootstrap_random_stream_unchanged": true,
+    "per_method_nuisance_refits": 99,
+    "per_method_null_simulations": 119,
+    "no_threshold_optimization_authorized": true,
+    "original_source_run_verified": false,
+    "source_fit_error_rate_verified": false,
+    "model_calibration_qualified": false,
+    "general_dependent_null_inference_qualified": false,
+    "release_authorized": false
   }
 }
