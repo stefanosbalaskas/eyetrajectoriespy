@@ -4,6 +4,13 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from pathlib import Path
+import sys
+
+# Gallery generation invokes the pytest console script, not 'python -m pytest'.
+# Explicitly add the repository root for research-only scripts imports.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from scripts.run_f1_f5_scientific_stress import (
     F1_DESIGNS, F5_SCENARIOS, _ordered_fixture, _wilson, f5_study,
 )
