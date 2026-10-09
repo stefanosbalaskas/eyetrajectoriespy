@@ -167,3 +167,89 @@ def test_bids_coordinate_enum_contract():
         validate_eyetracking_metadata(meta)
     meta["SampleCoordinateSystemDescription"] = "local participant-centred tracker rays"
     assert validate_eyetracking_metadata(meta)["validated_subset_only"] is True
+
+
+def test_exact_session_and_device_measurement_linkage():
+    from eyetrajectoriespy.research import (
+        audit_gaze_measurement_quality, link_gaze_validation_sessions,
+    )
+    data, _, _ = repeated_fixture(8, 2)
+    selected = data.subset(range(8))
+    metadata = selected.metadata.reset_index(drop=True).copy()
+    metadata["session_id"] = "session1"
+    metadata["device_id"] = "tracker_A"
+    selected = TrajectorySet(
+        time=selected.time, values=selected.values,
+        curve_ids=selected.curve_ids,
+        dimension_names=selected.dimension_names,
+        metadata=metadata, coordinate_system="normalized",
+        time_unit="s",
+    )
+    quality = pd.DataFrame({
+        "participant_id": metadata.participant_id.unique(),
+        "validation_session_id": "session1",
+        "device_id": "tracker_A",
+        "accuracy_deg": .32,
+        "precision_deg": .21,
+        "validation_points": 5,
+        "evidence_source": "measured_target_check",
+    })
+    audited = audit_gaze_measurement_quality(
+        selected, validation_records=quality,
+    )
+    matched = link_gaze_validation_sessions(
+        selected, audited, require_all=True,
+    )
+    assert len(matched) == selected.n_curves
+    assert (matched.link_status == "exact_identifier_match").all()
+    assert not matched.calibration_time_proximity_verified.any()
+    assert not matched.calibration_accuracy_from_free_viewing.any()
+    corrupted = quality.copy()
+    corrupted.loc[0, "device_id"] = "other_tracker"
+    audited_wrong = audit_gaze_measurement_quality(
+        selected, validation_records=corrupted,
+    )
+    with pytest.raises(ValueError, match="no exact"):
+        link_gaze_validation_sessions(
+            selected, audited_wrong, require_all=True,
+        )
+
+
+def test_bids_dataset_audit_checks_eye_labels_and_screen_provenance(tmp_path):
+    import json
+    from eyetrajectoriespy.research import audit_bids_eyetracking_dataset
+    run = tmp_path / "sub-01" / "func"
+    run.mkdir(parents=True)
+    prefix = "sub-01_task-search"
+    event_metadata = {
+        "StimulusPresentation": {
+            "ScreenDistance": .6, "ScreenOrigin": ["top", "left"],
+            "ScreenResolution": [1920, 1080], "ScreenSize": [.51, .29],
+        },
+    }
+    (run / (prefix + "_events.json")).write_text(json.dumps(event_metadata))
+    for recording, eye in (("eye1", "left"), ("eye2", "right")):
+        file = run / f"{prefix}_recording-{recording}_physio.tsv.gz"
+        pd.DataFrame([[0, 100, 200], [10, 101, 201]]).to_csv(
+            file, sep="\t", index=False, header=False, compression="gzip"
+        )
+        metadata = {
+            "Columns": ["timestamp", "x_coordinate", "y_coordinate"],
+            "SamplingFrequency": 100, "StartTime": 0,
+            "PhysioType": "eyetrack", "RecordedEye": eye,
+            "SampleCoordinateSystem": "gaze-on-screen",
+            "timestamp": {"Units": "ms"},
+            "x_coordinate": {"Units": "pixel"},
+            "y_coordinate": {"Units": "pixel"},
+        }
+        file.with_name(file.name.removesuffix(".tsv.gz") + ".json").write_text(
+            json.dumps(metadata)
+        )
+    result = audit_bids_eyetracking_dataset(tmp_path)
+    assert len(result.files) == 2
+    assert result.group_checks.group_valid.all()
+    assert result.provenance["official_bids_validator_executed"] is False
+    (run / (prefix + "_events.json")).unlink()
+    checked = audit_bids_eyetracking_dataset(tmp_path)
+    assert not checked.group_checks.group_valid.any()
+    assert checked.files.reason.str.contains("ScreenDistance").all()
