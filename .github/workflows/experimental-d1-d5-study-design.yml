@@ -1,0 +1,60 @@
+name: experimental-d1-d5-study-design
+
+on:
+  pull_request:
+    paths:
+      - "src/eyetrajectoriespy/research/**"
+      - "tests/test_research_d4.py"
+      - "docs/development/**"
+      - "docs/assets/research/**"
+      - "scripts/generate_f1_f6_gallery.py"
+      - ".github/workflows/experimental-d1-d5-study-design.yml"
+      - "mkdocs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  experimental-study-design:
+    name: D4 contracts (${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install development tools and source
+        run: python -m pip install -e ".[dev,docs]"
+      - name: Verify old F1-F6 and new design contracts
+        run: |
+          python -m pytest -q tests/test_research_f1_f6.py tests/test_research_d4.py
+          python -m compileall -q src/eyetrajectoriespy/research
+      - name: Enforce experimental namespace and release boundaries
+        run: |
+          python - <<'PY'
+          import json
+          import eyetrajectoriespy
+          from eyetrajectoriespy import research
+          for name in (
+            "simulate_functional_study_power",
+            "fit_functional_reliability",
+            "compare_repeated_functional_groups",
+          ):
+              assert hasattr(research, name), name
+              assert not hasattr(eyetrajectoriespy, name), name
+          readiness = json.load(open("RELEASE_READINESS.json"))
+          assert readiness["production_release_ready"] is False
+          assert readiness["github_release_ready"] is False
+          print("PASS: D4 remains opt-in, with publication explicitly disarmed")
+          PY
