@@ -461,5 +461,32 @@
     ],
     "substantive_mixing_improvement_for_some_scenarios": true,
     "adequate_joint_posterior_mixing_demonstrated": false
+  },
+  "independent_B6_B7_PyMC_NUTS_reference_20261009": {
+    "research_stage": "score_marginalized_independent_loglik_crossbackend_posterior_reference",
+    "comparison": "PyMC_autodiff_NUTS_vs_exact_native_collapsed_mean_Gibbs",
+    "rank": 1,
+    "models": [
+      "B6_rank1",
+      "B7_rank1_paired",
+      "B7_rank1_asynchronous"
+    ],
+    "new_independent_datasets_per_scenario": 1,
+    "same_raw_irregular_participants_and_priors_across_backends": true,
+    "PyMC_learned_population_mu_and_loading": true,
+    "PyMC_analytically_integrates_all_subject_scores": true,
+    "fixed_noise_and_spline_dictionary": true,
+    "PyMC_nuts_2_chains_tuning": 500,
+    "PyMC_nuts_2_chains_retained": 300,
+    "native_Gibbs_2_chains_warmup": 650,
+    "native_Gibbs_2_chains_retained": 350,
+    "separate_posterior_target_backend": true,
+    "crossbackend_implementation_verified": false,
+    "independent_NUTS_convergence_qualified": false,
+    "posterior_calibration_qualified": false,
+    "rank_based_simulation_calibration_completed": false,
+    "rank2_crossbackend_verified": false,
+    "scientific_inference_qualified": false,
+    "release_authorized": false
   }
 }
