@@ -111,6 +111,11 @@
       "inverse_units_invariance"
     ],
     "real_world_validation_and_bids_conformance": false,
-    "workgroup_ci_verified": false
+    "workgroup_ci_verified": false,
+    "eye_tracking_bids_spec_version": "1.11.2",
+    "bids_reference_fixture": "published_EyeTracking_sample_timestamp_ms_optional_pupil",
+    "gaze_validation_target_derived_accuracy": "explicit_target_pairings_not_free_viewing",
+    "gaze_validation_accuracy_population_verified": false,
+    "weight_snapshot_is_immutable": true
   }
 }

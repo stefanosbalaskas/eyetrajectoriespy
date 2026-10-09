@@ -393,3 +393,47 @@ def test_bids_subset_is_pinned_to_stable_specification():
     )
     assert audit["validated_subset_only"] is True
     assert audit["clock_alignment_performed"] is False
+
+
+def test_bids_specification_example_supports_four_columns_and_device_ms(tmp_path):
+    """Fixture sampled from BIDS 1.11.2 example with optional pupil_size."""
+    path = tmp_path / "sub-01_task-visualSearch_recording-eye1_physio.tsv.gz"
+    data = [
+        [7186799, 416.29, 267.39, 4612],
+        [7186800, 416.29, 268.10, 4623],
+        [7186801, 416.20, 269.00, 4623],
+    ]
+    pd.DataFrame(data).to_csv(
+        path, sep="\t", index=False, header=False, compression="gzip"
+    )
+    meta = {
+        "Columns": ["timestamp", "x_coordinate", "y_coordinate", "pupil_size"],
+        "SamplingFrequency": 1000,
+        "StartTime": -2532,
+        "PhysioType": "eyetrack",
+        "RecordedEye": "right",
+        "SampleCoordinateSystem": "gaze-on-screen",
+        "timestamp": {"Units": "ms", "Origin": "System startup"},
+        "x_coordinate": {"Units": "pixel"},
+        "y_coordinate": {"Units": "pixel"},
+        "pupil_size": {"Units": "arbitrary"},
+    }
+    sample = from_bids_eyetracking(path, sidecar=meta)
+    np.testing.assert_allclose(sample.time, [7186.799, 7186.800, 7186.801])
+    assert sample.values.shape == (1, 3, 2)
+    assert sample.coordinate_system == "pixels"
+    assert sample.provenance["import_contract"] == (
+        "BIDS_1.11.2_EyeTracking_subset"
+    )
+    assert sample.provenance["full_bids_conformance_tested"] is False
+
+
+def test_weighted_geometry_freezes_analyst_declared_weights():
+    original = np.array([2.0, .5])
+    fitted = fit_weighted_mfpca(dense(), weights=original, n_components=2)
+    reconstruction = reconstruct_weighted_mfpca(fitted).copy()
+    original[0] = 5000
+    np.testing.assert_allclose(reconstruct_weighted_mfpca(fitted), reconstruction)
+    assert fitted.weights.tolist() == [2.0, .5]
+    with pytest.raises(ValueError):
+        fitted.weights[0] = 1.0

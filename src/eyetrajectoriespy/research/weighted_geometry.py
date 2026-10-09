@@ -29,7 +29,7 @@ def fit_weighted_mfpca(
     """Only positive finite scientific weights; no inferred optimal weights."""
     if not isinstance(trajectories, TrajectorySet):
         raise TypeError("weighted geometry currently supports common-grid data only")
-    w = np.asarray(weights, dtype=float)
+    w = np.array(weights, dtype=float, copy=True)
     if w.ndim != 1 or len(w) != trajectories.n_dimensions or (
         not np.isfinite(w).all()
     ) or (w <= 0).any():
@@ -48,6 +48,7 @@ def fit_weighted_mfpca(
                     "weights": w.tolist(), "weight_choice": "analyst_declared"},
     )
     fit = fit_mfpca(transformed, n_components=n_components, scaling="none")
+    w.setflags(write=False)
     return WeightedMFPCAResult(
         fitted_transformed=fit, weights=w,
         dimensions=trajectories.dimension_names,
