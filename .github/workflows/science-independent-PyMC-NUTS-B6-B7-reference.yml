@@ -50,7 +50,7 @@ jobs:
           cache: pip
       - run: python -m pip install -e ".[dev,bayesian-pymc]"
       - name: Native cross-backend prior/likelihood data contracts
-        run: python -m pytest -q tests/test_independent_b6_b7_nuts_reference.py tests/test_bayesian_partially_collapsed_mean.py
+        run: python -m pytest -q tests/test_independent_b6_b7_nuts_reference.py tests/test_bayesian_partially_collapsed_mean.py tests/test_b6_b7_identifiable_posterior_diagnostics.py
       - name: Independent PyMC analytical-score-marginalization and NUTS posterior refits
         run: |
           python scripts/run_b6_b7_independent_pymc_nuts.py \
