@@ -15,10 +15,10 @@ x/y covariance from irregular coordinate observations.
 For independent participant `i`, coordinate `d` in `{x,y}` and its own
 observed timestamp `t_idj`:
 
-\[
+$
  y_{idj}=B(t_{idj})^\top(\mu_d+L_d z_i)+\epsilon_{idj},
  \qquad z_i\sim N(0,I_K).
-\]
+$
 
 Here `B(t)` is a **fixed** cubic B-spline dictionary; each coordinate has
 Gaussian priors on mean and loading coefficients, and
