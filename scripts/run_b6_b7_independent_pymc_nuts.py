@@ -18,6 +18,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import numpy as np
 import pandas as pd
 
+from eyetrajectoriespy.bayesian._posterior_diagnostics import _identified_chain_diagnostics
 from eyetrajectoriespy.bayesian.sparse_factor_gibbs import (
     _spline_basis,fit_bayesian_sparse_fpca)
 from eyetrajectoriespy.bayesian.planar_factor_gibbs import fit_bayesian_planar_factor
@@ -83,32 +84,6 @@ def _summarize_posterior(a:np.ndarray,b:np.ndarray,truth:float, label:str)->dict
         "intervals_overlap":bool(q1[0]<=q2[1] and q2[0]<=q1[1]),
         "scientifically_qualified":False,
     }
-
-
-def _identified_chain_diagnostics(draws:np.ndarray)->dict:
-    """Rank Rhat, bulk/tail ESS and MCSE of an invariant scalar functional.
-
-    This is the only correct level for evaluating rank-1 covariance
-    functionals when loading signs are not identified. Raw loading
-    Rhat remains separately available and is never silently ignored.
-    """
-    import arviz as az
-    a=np.asarray(draws,dtype=float)
-    if a.ndim!=2 or a.shape[0]<2 or a.shape[1]<20 or not np.isfinite(a).all():
-        raise ValueError("need >=2 finite chains with >=20 draws for diagnostics")
-    fields={
-        "rank_rhat":float(np.asarray(az.rhat(a,method="rank"))),
-        "bulk_ess":float(np.asarray(az.ess(a,method="bulk"))),
-        "tail_ess":float(np.asarray(az.ess(a,method="tail"))),
-        # Portable approximate MCSE from the marginal SD and bulk ESS.
-        # This is NOT ArviZ's spectral MCSE estimator or a convergence gate.
-        "mcse_mean_bulk_ess_approx":float(
-            np.std(a.reshape(-1),ddof=1)/np.sqrt(
-                float(np.asarray(az.ess(a,method="bulk"))))),
-    }
-    if not all(np.isfinite(v) and v>=0 for v in fields.values()):
-        raise ValueError("invalid identifiable population diagnostic")
-    return fields
 
 
 def _pymc_marginal(gaze:IrregularTrajectorySet,*,dimensions:tuple[str,...],
