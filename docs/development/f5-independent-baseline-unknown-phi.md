@@ -110,6 +110,8 @@ modified by this draft experiment.
 
 ## Completed 2,520-fit first-wave results — conditional improvement, no qualification
 
+![Observed true-null rejection rates for legacy F5 and independent-baseline unknown coefficient (120 independent datasets per process)](../assets/research/f5-unknown-phi-baseline-null-20261009.svg)
+
 The source [workflow #37987935105](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37987935105)
 ran **2,520 actual F5 tests** on 900 independent baseline/test
 dataset pairs (five scenarios ×120 true nulls +60 artificial
