@@ -303,3 +303,36 @@ def test_grouped_holdout_aoi_geometry_and_no_train_test_leakage():
         compare_aoi_functional_geometries_holdout(
             data.subset(range(18)), data.subset([17, 20]), n_components=2,
         )
+
+
+def test_bids_published_millisecond_timestamp_convention(tmp_path):
+    """BEP020 publishes device timestamps in ms with StartTime in seconds."""
+    path = tmp_path / "sub-01_task-look_recording-eye1_physio.tsv.gz"
+    pd.DataFrame([
+        [1250, 100, 220], [1260, 101, "n/a"], [1270, 102, 225],
+    ]).to_csv(path, sep="\t", index=False, header=False,
+              compression="gzip", na_rep="n/a")
+    meta = sidecar()
+    meta["timestamp"] = {"Units": "ms", "Origin": "System startup"}
+    meta["StartTime"] = -2532.0
+    audit = validate_eyetracking_metadata(meta)
+    assert audit["timestamp_original_unit"] == "ms"
+    assert audit["timestamp_seconds_scale"] == pytest.approx(.001)
+    gaze = from_bids_eyetracking(path, sidecar=meta)
+    np.testing.assert_allclose(gaze.time, [1.25, 1.26, 1.27])
+    assert np.isnan(gaze.values[0, 1, 1])
+    assert gaze.time_unit == "s"
+    assert gaze.provenance["source_timestamp_unit"] == "ms"
+    assert gaze.provenance["timestamp_origin"] == "System startup"
+    assert gaze.provenance["start_time_seconds"] == -2532.0
+    assert gaze.provenance["clock_alignment_performed"] is False
+
+
+def test_bids_timestamp_units_are_not_inferred():
+    meta = sidecar()
+    del meta["timestamp"]["Units"]
+    with pytest.raises(ValueError, match="timestamp metadata"):
+        validate_eyetracking_metadata(meta)
+    meta["timestamp"]["Units"] = "frames"
+    with pytest.raises(ValueError, match="supported timestamp units"):
+        validate_eyetracking_metadata(meta)
