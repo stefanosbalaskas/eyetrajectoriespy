@@ -49,6 +49,7 @@ nav:
           - Exact partially collapsed Bayesian mean: development/b6-b7-exact-collapsed-mean-gibbs.md
           - Independent B6 B7 PyMC NUTS reference: development/b6-b7-independent-pymc-nuts-reference.md
           - Independent baseline F5 unknown dependence: development/f5-independent-baseline-unknown-phi.md
+          - F5 baseline length and nuisance sensitivity: development/f5-baseline-size-nuisance-sensitivity.md
           - B6 and F1/F5 scientific calibration: development/b6-f1-f5-calibration-protocol.md
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md

@@ -63,6 +63,7 @@ def infer_ordered_functional_changepoint_baseline_ar1(
     n_parameter_bootstrap: int = 199,
     min_segment: int = 6,
     random_state: int = 2026,
+    null_coefficient_policy: str = "baseline_uncertainty",
 ) -> FunctionalChangepointResult:
     """Exploratory unknown-phi AR1 inference from disjoint stationary baseline.
 
@@ -75,7 +76,14 @@ def infer_ordered_functional_changepoint_baseline_ar1(
     Approximate empirical Bayes/parametric-bootstrap uncertainty is not a
     calibrated confidence distribution. The baseline must be independent,
     unchanging, and representative of the test-series nuisance process.
+
+    The research-only 'baseline_plugin' mode removes phi uncertainty and
+    bias correction from null simulations, using the same baseline-only
+    OLS coefficient and innovations. It is a diagnostic ablation, never
+    a calibrated inferential alternative. Default behaviour is unchanged.
     """
+    if null_coefficient_policy not in ("baseline_uncertainty", "baseline_plugin"):
+        raise ValueError("research coefficient policy must be baseline_uncertainty or baseline_plugin")
     x,b=_check_independent_baseline(trajectories,independent_stationary_baseline)
     if (isinstance(n_null_simulations,bool) or
         not isinstance(n_null_simulations,int) or n_null_simulations<99):
@@ -126,7 +134,13 @@ def infer_ordered_functional_changepoint_baseline_ar1(
     observed=scan(x)
     null=np.empty(n_null_simulations,float)
     for j in range(n_null_simulations):
-        phi=float(parameter_draws[int(rng.integers(n_parameter_bootstrap))])
+        # Explicit nuisance ablation: same independent baseline and null model.
+        # Do not interpret the plug-in mode as validated inference.
+        # Keep the same random stream for both ablation variants, so
+        # their initial states and innovation resampling are paired.
+        phi_index=int(rng.integers(n_parameter_bootstrap))
+        phi=(float(parameter_draws[phi_index])
+             if null_coefficient_policy=="baseline_uncertainty" else float(phi_hat))
         initial=baseline_centered[int(rng.integers(n_baseline))]
         sample=np.empty_like(x)
         sample[0]=initial
@@ -152,6 +166,8 @@ def infer_ordered_functional_changepoint_baseline_ar1(
             "parameter_fitted_on_test_series":False,
             "innovation_samples_from_test_series":False,
             "unknown_phi_not_oracle":True,
+            "null_coefficient_policy":null_coefficient_policy,
+            "plugin_is_unqualified_nuisance_ablation":null_coefficient_policy=="baseline_plugin",
             "baseline_n_ordered_curves":n_baseline,
             "test_n_ordered_curves":n,
             "baseline_pooled_phi_ols":float(phi_hat),
