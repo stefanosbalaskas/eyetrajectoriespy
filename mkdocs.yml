@@ -46,6 +46,7 @@ nav:
           - Independent core checks and F5 AR1 reference: development/independent-core-computation-and-f5-ar1-reference.md
           - Reversible B6 B7 MH scale move: development/b6-b7-reversible-scale-interweaving.md
           - F1 higher-precision null and power: development/f1-high-precision-native-null-power.md
+          - Exact partially collapsed Bayesian mean: development/b6-b7-exact-collapsed-mean-gibbs.md
           - B6 and F1/F5 scientific calibration: development/b6-f1-f5-calibration-protocol.md
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md
