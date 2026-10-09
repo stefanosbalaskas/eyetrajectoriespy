@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="455" viewBox="0 0 920 455" role="img" aria-label="F5 independent test null rejection rates: old block bootstrap versus externally known AR1 coefficient comparator.">
+<rect width="920" height="455" fill="#fff"/>
+<text x="28" y="42" fill="#283548" font-family="Inter,Arial,sans-serif" font-size="24" font-weight="700">F5 | Serial-dependence null rejection at alpha = 0.05</text>
+<text x="28" y="68" fill="#596778" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="400">200 independent true-null datasets per condition · fresh source run #37975560959</text>
+<rect x="550" y="86" width="16" height="12" fill="#BC794E"/>
+<text x="576" y="97" fill="#283548" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="400">Existing method</text>
+<rect x="715" y="86" width="16" height="12" fill="#4978AD"/>
+<text x="741" y="97" fill="#283548" font-family="Inter,Arial,sans-serif" font-size="13" font-weight="400">Known-phi reference</text>
+<line x1="300" y1="118" x2="300" y2="337" stroke="#DEE4EB" stroke-dasharray="4 5"/>
+<text x="292" y="358" fill="#667687" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="400">0%</text>
+<line x1="401.8181818181818" y1="118" x2="401.8181818181818" y2="337" stroke="#DEE4EB" stroke-dasharray="4 5"/>
+<text x="393.8181818181818" y="358" fill="#667687" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="400">10%</text>
+<line x1="503.6363636363636" y1="118" x2="503.6363636363636" y2="337" stroke="#DEE4EB" stroke-dasharray="4 5"/>
+<text x="495.6363636363636" y="358" fill="#667687" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="400">20%</text>
+<line x1="605.4545454545455" y1="118" x2="605.4545454545455" y2="337" stroke="#DEE4EB" stroke-dasharray="4 5"/>
+<text x="597.4545454545455" y="358" fill="#667687" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="400">30%</text>
+<line x1="707.2727272727273" y1="118" x2="707.2727272727273" y2="337" stroke="#DEE4EB" stroke-dasharray="4 5"/>
+<text x="699.2727272727273" y="358" fill="#667687" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="400">40%</text>
+<line x1="809.090909090909" y1="118" x2="809.090909090909" y2="337" stroke="#DEE4EB" stroke-dasharray="4 5"/>
+<text x="801.090909090909" y="358" fill="#667687" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="400">50%</text>
+<text x="28" y="162" fill="#283548" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="550">Independent</text>
+<rect x="300" y="136" width="35.63636363636363" height="19" rx="2" fill="#BC794E"/>
+<rect x="300" y="162" width="30.545454545454543" height="19" rx="2" fill="#4978AD"/>
+<text x="343.6363636363636" y="151" fill="#283548" font-family="Inter,Arial,sans-serif" font-size="14" font-weight="600">3.5%</text>
+<text x="338.54545454545456" y="177" fill="#283548" font-family="Inter,Arial,sans-serif" font-size="14" font-weight="600">3.0%</text>
+<text x="28" y="238" fill="#283548" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="550">AR(1) 0.35</text>
+<rect x="300" y="212" width="0" height="19" rx="2" fill="#BC794E"/>
+<rect x="300" y="238" width="40.72727272727273" height="19" rx="2" fill="#4978AD"/>
+<text x="308" y="227" fill="#283548" font-family="Inter,Arial,sans-serif" font-size="14" font-weight="600">0.0%</text>
+<text x="348.72727272727275" y="253" fill="#283548" font-family="Inter,Arial,sans-serif" font-size="14" font-weight="600">4.0%</text>
+<text x="28" y="314" fill="#283548" font-family="Inter,Arial,sans-serif" font-size="16" font-weight="550">AR(1) 0.80</text>
+<rect x="300" y="288" width="504" height="19" rx="2" fill="#BC794E"/>
+<rect x="300" y="314" width="81.45454545454545" height="19" rx="2" fill="#4978AD"/>
+<text x="812" y="303" fill="#283548" font-family="Inter,Arial,sans-serif" font-size="14" font-weight="600">49.5%</text>
+<text x="389.45454545454544" y="329" fill="#283548" font-family="Inter,Arial,sans-serif" font-size="14" font-weight="600">8.0%</text>
+<text x="28" y="390" fill="#596778" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="400">Known-phi reference uses the true generating AR(1) coefficient; not qualified when dependence is unknown.</text>
+<text x="28" y="413" fill="#596778" font-family="Inter,Arial,sans-serif" font-size="12" font-weight="400">Source artifact 11639020647; checksum recovery run #37976469318; zero fitting failures.</text>
+</svg>
