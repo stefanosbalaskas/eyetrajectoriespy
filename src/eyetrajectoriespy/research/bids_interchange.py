@@ -54,9 +54,14 @@ def validate_eyetracking_metadata(
         units.append(str(info["Units"]).lower())
     if units[0] != units[1] or units[0] not in _UNIT_MAP:
         raise ValueError("coordinate units must agree and be explicitly supported")
-    time_info = metadata.get("timestamp", {})
-    if not isinstance(time_info, Mapping) or time_info.get("Units", "s") != "s":
-        raise ValueError("this narrow adapter requires timestamp units in seconds")
+    time_info = metadata.get("timestamp")
+    if not isinstance(time_info, Mapping) or "Units" not in time_info:
+        raise ValueError("timestamp metadata must explicitly declare Units")
+    time_unit = str(time_info["Units"]).strip().lower()
+    # BEP020's published example uses ms, despite StartTime being specified in s.
+    unit_scales = {"s": 1.0, "ms": 0.001}
+    if time_unit not in unit_scales:
+        raise ValueError("supported timestamp units are s and ms only")
     return {
         "specification_basis": "BEP020_2026_subset_not_full_BIDS_conformance",
         "recorded_eye": metadata["RecordedEye"],
@@ -65,6 +70,9 @@ def validate_eyetracking_metadata(
         "sampling_frequency_hz": frequency,
         "start_time_seconds": start,
         "column_names": tuple(columns),
+        "timestamp_original_unit": time_unit,
+        "timestamp_seconds_scale": unit_scales[time_unit],
+        "timestamp_origin": str(time_info.get("Origin", "not_declared")),
         "validated_subset_only": True,
         "clock_alignment_performed": False,
     }
@@ -101,7 +109,8 @@ def from_bids_eyetracking(
     )
     if frame.shape[1] != len(audit["column_names"]):
         raise ValueError("sidecar Columns does not match TSV field count")
-    times = pd.to_numeric(frame["timestamp"], errors="coerce").to_numpy(float)
+    raw_times = pd.to_numeric(frame["timestamp"], errors="coerce").to_numpy(float)
+    times = raw_times * audit["timestamp_seconds_scale"]
     if len(times) < 2 or not np.isfinite(times).all() or not np.all(np.diff(times) > 0):
         raise ValueError("timestamps must contain at least two strictly increasing finite samples")
     dt = np.diff(times)
@@ -129,6 +138,9 @@ def from_bids_eyetracking(
             "recorded_eye": audit["recorded_eye"],
             "sample_coordinate_system": audit["sample_coordinate_system_original"],
             "sampling_frequency_hz": audit["sampling_frequency_hz"],
+            "source_timestamp_unit": audit["timestamp_original_unit"],
+            "timestamp_converted_to_seconds": True,
+            "timestamp_origin": audit["timestamp_origin"],
             "start_time_seconds": audit["start_time_seconds"],
             "clock_alignment_performed": False,
             "interpolation_performed": False,
