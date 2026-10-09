@@ -9,7 +9,7 @@ and 600 retained samples. [Blocker #255](https://github.com/stefanosbalaskas/eye
 
 ## Posterior-invariant transformation
 
-For a single latent factor column (k), the native observation model is
+For a single latent factor column $k$, the native observation model is
 (y_i=B_i(\mu+Lz_i)+\varepsilon_i), with
 (L_{\cdot k}\sim N(0,\tau^2 I_q)), (z_{ik}\sim N(0,1))
 and fixed Gaussian observation noise. The planar model has
@@ -18,21 +18,21 @@ channel-specific observation noise.
 
 For a symmetric random-walk proposal (a\sim N(0,s^2)), propose
 
-[
+$$
 L'_{\cdot k}=e^a L_{\cdot k},\quad z'_{\cdot k}=e^{-a}z_{\cdot k}.
-]
+$$
 
 This **leaves all reconstructed latent curves exactly unchanged**.
 It does *not* change the likelihood or the true posterior. The complete
 Metropolis log-acceptance ratio is
 
-[
+$$
 \log R= -\tfrac12(e^{2a}-1)\|L_{\cdot k}\|^2/\tau^2
          -\tfrac12(e^{-2a}-1)\|z_{\cdot k}\|^2
          +(d_L-n)a,
-]
+$$
 
-where (d_L=q) in B6, (d_L=2q) in B7 and (n) is the
+where $d_L=q$ in B6, $d_L=2q$ in B7 and $n$ is the
 number of unique participants. The final **Jacobian factor** is
 essential for detailed balance. Code tests independently recompute
 this ratio from Gaussian densities and verify that applying the
