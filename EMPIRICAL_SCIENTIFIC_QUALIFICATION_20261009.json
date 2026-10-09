@@ -280,5 +280,27 @@
     "posterior_calibration_qualified": false,
     "scientific_inference_qualified": false,
     "release_authorized": false
+  },
+  "F1_larger_native_sparsity_qualification_programme": {
+    "scenario_designs": [
+      "balanced_equal_covariance",
+      "clustered_two_trials",
+      "unequal_heteroscedastic_null",
+      "very_sparse"
+    ],
+    "null_replications_attempted_per_scenario": 1000,
+    "alternative_replications_attempted_per_scenario": 500,
+    "independently_keyed_master_seed": 20261125,
+    "moderate_alternative_effect_amplitude": 0.04,
+    "permutations_per_fit": 199,
+    "planned_total_native_F1_model_fits": 6000,
+    "actual_completed_fits_verified": false,
+    "source_artifacts_held_out_from_previous_wave": true,
+    "exchangeability_broken_in_heteroscedastic_stress": true,
+    "conditional_rejection_not_identical_to_unconditional_size": true,
+    "scientific_null_size_qualified": false,
+    "moderate_effect_power_qualified": false,
+    "cross_estimator_comparison_complete": false,
+    "release_authorized": false
   }
 }
