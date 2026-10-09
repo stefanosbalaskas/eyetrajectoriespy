@@ -67,16 +67,16 @@ the old conditional loadings would not be the same Gibbs transition
 and could fail to preserve the joint posterior.
 
 New optional argument:
-\`collapsed_population_mean_update=True\` in the *experimental*
+`collapsed_population_mean_update=True` in the *experimental*
 B6/B7 fitter only. Its default remains **False**; explicitly False
 and omission must yield bit-identical original posterior draws.
 Factor ranks, priors, fixed observation noise and observation models
 remain unchanged. Every evidence object exposes
-\`collapsed_mean_inferential_qualification=False\`.
+`collapsed_mean_inferential_qualification=False`.
 
 ## Independent math proof checks and empirical study
 
-\`tests/test_bayesian_partially_collapsed_mean.py\` compares the
+`tests/test_bayesian_partially_collapsed_mean.py` compares the
 Woodbury precision and right-hand side to independently formed
 **dense marginal Gaussian likelihoods**, including B7 with
 different x/y observation counts, cross-channel precision,
@@ -90,7 +90,7 @@ The pilot uses 400 warmup sweeps, 200 retained draws/chain,
 and reports invariant R-hat/ESS, failures and scalar posterior
 coverage without promoting a result. Same participant observations,
 noise, rank and priors are used for the two samplers, and new independent
-master seed \`20261126\` is separate from prior study seeds.
+master seed `20261126` is separate from prior study seeds.
 
 **Scientific interpretation boundary:** correct conditional posterior
 algebra is necessary but not sufficient for full posterior mixing.
