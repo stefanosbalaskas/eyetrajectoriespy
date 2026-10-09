@@ -272,3 +272,34 @@ def test_weighted_mfpca_invariance_to_declared_channel_unit_change():
     np.testing.assert_allclose(
         restored, reconstruct_weighted_mfpca(fit_one), atol=1e-8, rtol=1e-8
     )
+
+
+def test_grouped_holdout_aoi_geometry_and_no_train_test_leakage():
+    from eyetrajectoriespy.research import (
+        compare_aoi_functional_geometries_holdout,
+    )
+    rng = np.random.default_rng(914)
+    time = np.linspace(0, 1, 21)
+    raw = rng.normal(0, .5, (28, len(time), 3))
+    compositions = np.exp(raw - raw.max(axis=-1, keepdims=True))
+    compositions /= compositions.sum(axis=-1, keepdims=True)
+    data = TrajectorySet(
+        time=time, values=compositions,
+        curve_ids=tuple(f"AOI_{i:03d}" for i in range(28)),
+        dimension_names=("headword", "definition", "context"),
+        metadata=pd.DataFrame({"participant_id": [f"P{i}" for i in range(28)]}),
+        coordinate_system="probability_simplex",
+    )
+    fit = compare_aoi_functional_geometries_holdout(
+        data.subset(range(18)), data.subset(range(18, 28)),
+        n_components=2, reference_dimension=2,
+    )
+    assert fit.leakage_guard_passed and fit.provisional
+    assert len(fit.summary) == 2
+    assert np.isfinite(fit.summary.holdout_reconstruction_mse).all()
+    np.testing.assert_allclose(fit.alr_reconstruction.sum(axis=2), 1, atol=1e-10)
+    np.testing.assert_allclose(fit.projected_reconstruction.sum(axis=2), 1, atol=1e-10)
+    with pytest.raises(ValueError, match="curve identities"):
+        compare_aoi_functional_geometries_holdout(
+            data.subset(range(18)), data.subset([17, 20]), n_components=2,
+        )
