@@ -1,0 +1,119 @@
+name: research-scientific-calibration-f1-f5-b6
+
+on:
+  pull_request:
+    paths:
+      - "scripts/run_b6_population_calibration_grid.py"
+      - "scripts/run_f1_f5_scientific_stress.py"
+      - "tests/test_b6_population_calibration_grid.py"
+      - "tests/test_f1_f5_scientific_stress.py"
+      - "docs/development/b6-f1-f5-calibration-protocol.md"
+      - "BAYESIAN_RESEARCH_QUALIFICATION.json"
+      - "BAYESIAN_B6_LEARNED_FACTOR_QUALIFICATION.json"
+      - ".github/workflows/research-scientific-calibration-f1-f5-b6.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  b6-prior-coverage-and-stress:
+    name: B6 rank-2 population validation pilot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install development-only research dependencies
+        run: python -m pip install -e ".[dev]"
+      - name: Rank-two, near-tie, predictive mixture and reproducibility contracts
+        run: python -m pytest -q tests/test_b6_population_calibration_grid.py
+      - name: Execute actual Gibbs fits for all declared scenarios
+        run: |
+          python scripts/run_b6_population_calibration_grid.py \
+            --replicates 2 --draws 25 --warmup 40 \
+            --out build/scientific-b6
+      - name: Verify failures are not dropped and scientific gates remain false
+        run: |
+          python - <<'PY'
+          import json
+          import pandas as pd
+          from pathlib import Path
+          p=Path("build/scientific-b6")
+          ev=json.loads((p/"evidence.json").read_text())
+          cases=pd.read_csv(p/"cases.csv")
+          assert ev["n_attempts"] == 12 == len(cases)
+          assert ev["n_failed"] == (cases.status=="failed").sum()
+          assert len(ev["scenarios"]) == 6
+          assert sum(s["matched_prior_likelihood"] for s in ev["scenarios"]) == 3
+          assert all(s["attempted"]==2 for s in ev["scenarios"])
+          assert not ev["scientifically_qualified"]
+          assert not ev["release_authorized"]
+          assert not ev["rank_and_mixing_diagnostics_qualified"]
+          print("PASS scientific evidence retained without calibration or release claim")
+          PY
+      - name: Retain all B6 calibration data, including failed fits
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b6-population-scientific-grid-experimental
+          path: build/scientific-b6/
+          if-no-files-found: warn
+          retention-days: 90
+
+  f1-f5-stress:
+    name: F1 full-fit and F5 serial dependence stress pilot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install native research tests
+        run: python -m pip install -e ".[dev]"
+      - name: Scientific design and block sensitivity contracts
+        run: python -m pytest -q tests/test_f1_f5_scientific_stress.py
+      - name: Exercise native F1 full sparse fits and F5 CUSUM stress
+        run: |
+          python scripts/run_f1_f5_scientific_stress.py \
+            --f1-replicates 2 --f1-permutations 99 \
+            --f5-replicates 2 --f5-bootstrap 99 \
+            --out build/scientific-f1-f5
+      - name: Preserve every failed fit and prohibit inference promotion
+        run: |
+          python - <<'PY'
+          import json
+          import pandas as pd
+          from pathlib import Path
+          p=Path("build/scientific-f1-f5")
+          e=json.loads((p/"evidence.json").read_text())
+          f1=pd.read_csv(p/"f1-cases.csv")
+          f5=pd.read_csv(p/"f5-cases.csv")
+          assert len(f1)==e["f1_n_fit_attempts"]==16
+          assert len(f5)==e["f5_n_fit_attempts"]==48
+          assert e["f1_fit_failures"]==(f1.status=="failed").sum()
+          assert e["f5_fit_failures"]==(f5.status=="failed").sum()
+          assert not e["null_size_scientifically_qualified"]
+          assert not e["power_scientifically_qualified"]
+          assert not e["release_authorized"]
+          print("PASS F1/F5 actual-method stress, not statistical calibration")
+          PY
+      - name: Retain F1/F5 failures, nulls, effects and block scenarios
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f1-f5-scientific-stress-experimental
+          path: build/scientific-f1-f5/
+          if-no-files-found: warn
+          retention-days: 90
