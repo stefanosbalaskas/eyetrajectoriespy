@@ -20,7 +20,8 @@ import pandas as pd
 from scipy.integrate import trapezoid
 
 from eyetrajectoriespy.types import IrregularTrajectorySet
-from .sparse_factor_gibbs import _draw_gaussian_precision, _spline_basis
+from .sparse_factor_gibbs import (_draw_gaussian_precision, _spline_basis,
+                                  _metropolis_scale_interweave)
 
 
 @dataclass(frozen=True)
@@ -92,6 +93,7 @@ def fit_bayesian_planar_factor(
     n_basis: int = 5,
     mean_prior_sd: float = 1.,
     loading_prior_sd: float = .3,
+    scale_interweave_proposal_sd: float = 0.0,
     n_chains: int = 2,
     n_draws: int = 60,
     warmup: int = 90,
@@ -134,6 +136,11 @@ def fit_bayesian_planar_factor(
                     (loading_prior_sd,"loading_prior_sd")):
         if not np.isfinite(sd) or sd<=0:
             raise ValueError(f"{name} must be finite and positive")
+    if (not np.isscalar(scale_interweave_proposal_sd)
+        or isinstance(scale_interweave_proposal_sd,bool)
+        or not np.isfinite(scale_interweave_proposal_sd)
+        or not 0. <= scale_interweave_proposal_sd <= 1.):
+        raise ValueError("scale_interweave_proposal_sd must be finite in [0,1]")
     grid = np.asarray(evaluation_grid,dtype=float)
     if (grid.ndim!=1 or len(grid)<max(5,n_basis) or
         not np.isfinite(grid).all() or not np.all(np.diff(grid)>0)):
@@ -178,6 +185,8 @@ def fit_bayesian_planar_factor(
     saved_z=np.empty((n_chains,n_draws,n,k))
     saved_latent=np.empty((n_chains,n_draws,n,g,2))
     total=warmup+thin*n_draws
+    interweave_accepted=0
+    interweave_attempted=0
     sequence=np.random.SeedSequence(random_state)
     for chain,chain_seed in enumerate(sequence.spawn(n_chains)):
         rng=np.random.default_rng(chain_seed)
@@ -211,6 +220,11 @@ def fit_bayesian_planar_factor(
                     precision += inv_var[d]*load[d].T@gram[d,i]@load[d]
                     targets += inv_var[d]*load[d].T@(cross[d,i]-gram[d,i]@mu[d])
                 scores[i]=_draw_gaussian_precision(precision,targets,rng)
+            if scale_interweave_proposal_sd>0:
+                interweave_accepted += _metropolis_scale_interweave(
+                    load,scores,rng,scale_interweave_proposal_sd,
+                    loading_prior_sd)
+                interweave_attempted += k
             if sweep>=warmup and (sweep-warmup)%thin==0:
                 if retained>=n_draws:
                     raise RuntimeError("invalid retention schedule")
@@ -252,6 +266,14 @@ def fit_bayesian_planar_factor(
             "eigenfunction_rotation_sign_identified":False,
             "hierarchical_participant_trial_modelled":False,
             "posterior_population_coverage_scientifically_qualified":False,
+            "scale_interweave_experimental_opt_in":scale_interweave_proposal_sd>0,
+            "scale_interweave_proposal_sd":float(scale_interweave_proposal_sd),
+            "scale_interweave_accepted":interweave_accepted,
+            "scale_interweave_attempted":interweave_attempted,
+            "scale_interweave_acceptance_rate":(
+                interweave_accepted/interweave_attempted
+                if interweave_attempted else None),
+            "scale_interweave_inferential_qualification":False,
             "posterior_mixing_scientifically_qualified":False,
             "learned_orthonormal_eigenfunction_posterior":False,
             "native_full_Bayesian_planar_MFPCA_scientifically_qualified":False,

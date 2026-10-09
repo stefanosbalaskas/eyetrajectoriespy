@@ -170,6 +170,115 @@
     "supports_unknown_real_world_ar1": false,
     "legacy_f5_methods_unchanged": true,
     "heldout_validation_complete": false,
-    "scientific_inference_qualified": false
+    "scientific_inference_qualified": false,
+    "source_comparator_study_run_id": 37975560959,
+    "source_comparator_artifact_id": 11639020647,
+    "original_comparator_model_fits_1800_retained": true,
+    "original_ci_failure": "literal_null_label_parsed_as_NA_in_final_csv_audit_only",
+    "verified_recovery_no_refits_pending": false,
+    "original_comparator_rates_claimed_calibrated": false,
+    "source_f5_recovery_workflow_run_id": 37976469318,
+    "verified_recovery_artifact_id": 11638977236,
+    "source_original_f5_1800_attempts_verified": true,
+    "source_original_f5_fit_failures": 0,
+    "source_original_SHA256_files_verified": true,
+    "fresh_new_data_5pct_null_results": {
+      "iid_gaussian": {
+        "n": 200,
+        "oracle_rejection": 0.03,
+        "legacy_rejection": 0.035
+      },
+      "weak_AR1_phi_035": {
+        "n": 200,
+        "oracle_rejection": 0.04,
+        "legacy_rejection": 0
+      },
+      "strong_AR1_phi_080": {
+        "n": 200,
+        "oracle_rejection": 0.08,
+        "legacy_rejection": 0.495,
+        "oracle_exact_95_MC_interval": [
+          0.04641760839957808,
+          0.1266648560220818
+        ]
+      }
+    },
+    "synthetic_one_break_rejection_all_100_per_scenario": true,
+    "oracle_AR1_dependence_mean_not_known_in_real_world": true,
+    "ar1_unknown_estimation_calibration_complete": false
+  },
+  "B6_B7_reversible_interweaving_20261009": {
+    "parent_scientific_blocker_issue": 255,
+    "model_parameters_changed_for_existing_default": false,
+    "optional_scale_proposal_sd": 0.25,
+    "prior_posterior_target_preserved_by_likelihood_invariant_jacobian_correct_MH": true,
+    "numerical_gaussian_conditionals_independently_checked_python_311_312_313": true,
+    "independent_gaussian_test_workflow_run_id": 37975560959,
+    "actual_paired_mixing_study_attempts_planned": 72,
+    "independent_matched_truth_dataset_count_planned": 36,
+    "reparameterized_mixing_qualified": false,
+    "marginal_posterior_coverage_qualified": false,
+    "rank_sbc_completed": false,
+    "NUTS_independent_reference_completed": false,
+    "publication_authorized": false,
+    "paired_mixing_study_attempts_completed": 72,
+    "fit_failures": 0,
+    "n_independent_datasets": 36,
+    "paired_mixing_study_source_head_sha": "3d55d101a6fc1a32ffcf7420121b79e3295d95ed",
+    "source_workflow_run_id": 37976468861,
+    "source_artifact_id": 11639357048,
+    "study_medians": [
+      {
+        "scenario": "B6_rank1",
+        "rhat_original": 1.235504,
+        "rhat_mh": 1.176711,
+        "ess_original": 8.39577,
+        "ess_mh": 9.08769
+      },
+      {
+        "scenario": "B6_rank2",
+        "rhat_original": 1.534717,
+        "rhat_mh": 1.588393,
+        "ess_original": 3.92314,
+        "ess_mh": 3.56803
+      },
+      {
+        "scenario": "B7_rank1_paired",
+        "rhat_original": 1.245657,
+        "rhat_mh": 1.260361,
+        "ess_original": 9.64831,
+        "ess_mh": 7.48099
+      },
+      {
+        "scenario": "B7_rank1_async",
+        "rhat_original": 1.778485,
+        "rhat_mh": 1.812926,
+        "ess_original": 3.2519,
+        "ess_mh": 3.1145
+      },
+      {
+        "scenario": "B7_rank2_paired",
+        "rhat_original": 1.736001,
+        "rhat_mh": 1.705675,
+        "ess_original": 3.258,
+        "ess_mh": 3.23913
+      },
+      {
+        "scenario": "B7_rank2_async",
+        "rhat_original": 1.78763,
+        "rhat_mh": 1.843634,
+        "ess_original": 3.2365,
+        "ess_mh": 3.12921
+      }
+    ],
+    "median_proposal_acceptance_range": [
+      0.506,
+      0.571
+    ],
+    "general_mixing_improvement_demonstrated": false,
+    "recommend_as_inferential_remedy": false,
+    "posterior_calibration_qualified": false,
+    "scientific_inference_qualified": false,
+    "release_authorized": false
   }
 }

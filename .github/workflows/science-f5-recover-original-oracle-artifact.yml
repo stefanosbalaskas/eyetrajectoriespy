@@ -1,0 +1,100 @@
+name: science-f5-recover-original-oracle-artifact
+
+# Original scientific evidence is archived; opt-in manual replay only.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  recover-original-F5-study:
+    name: Validate original F5 1800 fits, no reruns
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: 37975560959
+          repository: stefanosbalaskas/eyetrajectoriespy
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: f5-conditional-known-phi-oracle-vs-legacy
+          path: build/original-f5-archive
+      - name: Independently audit exact original SHA and empirical null labels
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          from hashlib import sha256
+          import pandas as pd
+          from scipy.stats import binomtest
+          folder=pathlib.Path("build/original-f5-archive/f5-conditional-known-phi-oracle-vs-legacy")
+          assert folder.is_dir(), "original immutable artifact not retrieved"
+          expected={"cases.csv","evidence.json"}
+          lines=(folder/"sha256.txt").read_text().splitlines()
+          found={}
+          for line in lines:
+              digest,name=line.split("  ",1)
+              assert len(digest)==64 and name not in found and name in expected
+              assert sha256((folder/name).read_bytes()).hexdigest()==digest
+              found[name]=digest
+          assert set(found)==expected
+          ev=json.loads((folder/"evidence.json").read_text())
+          # The literal scientific null label must not become NaN or an empty
+          # scenario as it did during the source run's final CI assertion.
+          cases=pd.read_csv(folder/"cases.csv",keep_default_na=False,na_values=[""])
+          assert len(cases)==ev["total_attempts"]==1800
+          assert len(ev["results"])==12
+          assert set(cases.change)=={"null","one_break"}
+          assert set(cases.scenario)=={"iid_gaussian","weak_AR1","strong_AR1"}
+          assert set(cases.method)=={"AR1_known_coefficient","legacy_block_4"}
+          assert len(cases.groupby(["scenario","change","replicate"]))==900
+          assert cases.groupby(["scenario","change","replicate"]).size().eq(2).all()
+          assert ev["fit_failures"]==int(cases.status.eq("failed").sum())
+          assert not ev["hypothesis_test_scientifically_qualified"]
+          for s in ev["results"]:
+              sample=cases.loc[(cases.scenario==s["scenario"])
+                &(cases.change==s["change"])&(cases.method==s["method"])]
+              assert len(sample)==s["attempted"]
+              assert sample.status.eq("failed").sum()==s["failed"]
+              good=sample.loc[sample.status=="ok"]
+              for alpha in (.01,.05,.10):
+                  original=s[f"alpha_{alpha:g}"]
+                  k=int((good.p_value<=alpha).sum())
+                  assert original["rejections"]==k
+                  assert original["n_successful"]==len(good)
+              print("VERIFIED ORIGINAL F5 SCIENCE:",json.dumps({
+                  "scenario":s["scenario"],"truth":s["change"],
+                  "method":s["method"],"attempted":s["attempted"],
+                  "failed":s["failed"],
+                  "alpha_005":s["alpha_0.05"]},sort_keys=True))
+          recovered={
+              "source_workflow_run_id":37975560959,
+              "source_artifact_id":11639020647,
+              "source_fitted_attempts":1800,
+              "new_model_fits_during_recovery":0,
+              "source_sha256_checksums":found,
+              "all_12_empirical_rate_summaries_verified":True,
+              "literal_scientific_null_label_preserved":True,
+              "scientific_inference_qualified":False,
+              "release_authorized":False,
+              "results":ev["results"],
+          }
+          out=pathlib.Path("build/f5-verification")
+          out.mkdir(parents=True,exist_ok=True)
+          (out/"original-study-recovered.json").write_text(
+              json.dumps(recovered,sort_keys=True,indent=2)+"\n")
+          print("RETAINED VERIFIED ORIGINAL FITS",len(cases))
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: recovered-f5-known-phi-scientific-evidence-no-refits
+          path: build/f5-verification/
+          retention-days: 90
+          if-no-files-found: warn

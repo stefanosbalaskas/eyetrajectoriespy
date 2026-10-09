@@ -20,7 +20,7 @@ from eyetrajectoriespy.types import IrregularTrajectorySet
 from eyetrajectoriespy.research.calibration_seed import (calibration_replicate_seed, calibration_manifest)
 
 
-def _replicate(seed: int, rank: int, asynchronous: bool, draws: int, warmup: int, *, diagnostics: bool=False) -> dict:
+def _replicate(seed: int, rank: int, asynchronous: bool, draws: int, warmup: int, *, diagnostics: bool=False, scale_interweave_proposal_sd: float=0.0) -> dict:
     rng=np.random.default_rng(seed)
     grid=np.linspace(0,1,23)
     n,q=18,5
@@ -61,7 +61,9 @@ def _replicate(seed: int, rank: int, asynchronous: bool, draws: int, warmup: int
     fit=fit_bayesian_planar_factor(
         gaze,evaluation_grid=grid,observation_noise_sd=tuple(noise),
         n_components=rank,n_basis=q,mean_prior_sd=mean_prior_sd,
-        loading_prior_sd=loading_prior_sd,n_chains=2,n_draws=draws,
+        loading_prior_sd=loading_prior_sd,
+        scale_interweave_proposal_sd=scale_interweave_proposal_sd,
+        n_chains=2,n_draws=draws,
         warmup=warmup,thin=1,random_state=seed+109)
     mid=len(grid)//2
     mu_draws=fit.population_mean_draws[:,:,mid,:].reshape(-1,2)
@@ -89,6 +91,7 @@ def _replicate(seed: int, rank: int, asynchronous: bool, draws: int, warmup: int
     included=(summary.predictive_q05.to_numpy()<=withheld)&(
         withheld<=summary.predictive_q95.to_numpy())
     return {
+        "scale_interweave_acceptance_rate":fit.evidence["scale_interweave_acceptance_rate"],
         "convergence_rhat_max":max_rhat,
         "convergence_ess_bulk_min":min_bulk,
         "x_mean_mid_q90_width":float(qmu[1,0]-qmu[0,0]),

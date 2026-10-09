@@ -85,3 +85,46 @@ The exact source-ledger in
 96-fit long-chain convergence failure and the limits of these changes.
 Stable/root exports are unchanged. Protected `main` stays unchanged
 and the 1.2 research candidate is not authorized for publication.
+
+
+## Newly recovered F5 empirical comparison — actual independent data
+
+Exact source [run #37975560959](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37975560959)
+fit **1,800 F5 tests**, with zero model exceptions. The source final
+post-fit audit failed because `pd.read_csv` converted the scientific
+`"null"` truth label to missing; the source artifact
+`11639020647` remained immutable. The descendant
+[recovery workflow #37976469318](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37976469318)
+passed, retained result artifact `11638977236`, verified all source
+SHA256 checksums, all 900 matched datasets and all 12 scenario summaries,
+and refitted **zero** models.
+
+**At alpha 0.05, 200 independent fresh no-change datasets per regime:**
+
+| Generator | Prior experimental method | New reference with known oracle phi | Exact 95% MC interval for reference |
+|---|---:|---:|---:|
+| iid Gaussian phi=0 | 7/200 (3.5%) | 6/200 (3.0%) | 1.11–6.42% |
+| weak Gaussian AR1 phi=0.35 | 0/200 (0%) | 8/200 (4.0%) | 1.74–7.73% |
+| strong Gaussian AR1 phi=0.80 | 99/200 (49.5%) | 16/200 (8.0%) | 4.64–12.67% |
+
+Under the deliberately strong one-break synthetic alternative,
+**both** comparator methods rejected 100/100 per regime. No modest
+effect sizes or multi-break localization qualification follows.
+
+**Scientific interpretation:** the independent conditional-AR1
+comparator improves false-positive behavior over the legacy block-4
+bootstrap on these specific regimes. **It does not achieve demonstrated
+nominal calibration**: strong-AR1 8% has substantial MC uncertainty
+and the procedure used the **actual known generating phi**, which
+cannot generally be supplied for observed human gaze data. Its
+model assumes a single shared stationary scalar AR1 coefficient and
+iid whole-function innovation vectors, not arbitrary residual
+nonstationarity, device artifacts or hierarchical trials. The
+original dependent F5 test therefore remains scientifically blocked
+under [issue #256](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/256).
+
+Next scientific evidence must include independently baseline-estimated
+phi uncertainty (with no leakage from the test sequence),
+non-AR1 dependence stress and adequately replicated true nulls.
+Do **not** choose coefficients or bootstrap schemes merely to make
+the same simulated null rejection match 5%.
