@@ -15,6 +15,7 @@ from typing import Any, Mapping
 import numpy as np
 import pandas as pd
 from scipy.special import logsumexp
+from scipy.integrate import trapezoid
 
 
 @dataclass(frozen=True)
@@ -127,7 +128,7 @@ def bayesian_functional_probability(
     elif event == "below_all":
         success = (selected < threshold).all(axis=-1)
     elif event == "integrated_mean_above":
-        mean = np.trapezoid(selected, x=posterior.time, axis=-1) / (posterior.time[-1]-posterior.time[0])
+        mean = trapezoid(selected, x=posterior.time, axis=-1) / (posterior.time[-1]-posterior.time[0])
         success = mean > threshold
     else:
         raise ValueError("event must be above_all, below_all or integrated_mean_above")
