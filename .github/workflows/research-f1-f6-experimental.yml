@@ -50,14 +50,14 @@ jobs:
       - name: Verify installed wheel outside checkout
         shell: bash
         run: |
-          python -m venv .f-research-wheel
-          .f-research-wheel/bin/python -m pip install -U pip
-          .f-research-wheel/bin/python -m pip install build/research-dist/*.whl
-          .f-research-wheel/bin/python -m pip check
+          python -m venv "$RUNNER_TEMP/f-research-wheel"
+          $RUNNER_TEMP/f-research-wheel/bin/python -m pip install -U pip
+          $RUNNER_TEMP/f-research-wheel/bin/python -m pip install build/research-dist/*.whl
+          $RUNNER_TEMP/f-research-wheel/bin/python -m pip check
           ROOT="$PWD"
           RUN_DIR=$(mktemp -d)
           cd "$RUN_DIR"
-          "$ROOT/.f-research-wheel/bin/python" - "$ROOT" <<'PY'
+          "$ROOT/$RUNNER_TEMP/f-research-wheel/bin/python" - "$ROOT" <<'PY'
           from pathlib import Path
           from importlib.metadata import version
           import sys
