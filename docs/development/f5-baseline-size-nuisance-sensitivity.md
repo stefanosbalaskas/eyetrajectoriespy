@@ -80,3 +80,73 @@ dispatch, not every documentation push.
 
 Scientific issue [#256](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/256)
 remains open. Stable 1.1.0 and protected `main` remain unchanged.
+
+
+## Completed first-wave 3,600-test sensitivity evidence
+
+The four independent source shards and three Python-version contract
+jobs plus the combined checksum audit passed in
+[original exact-head workflow #37992161919](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37992161919),
+source head `ab37e75db841818c7888c3f343195b26d0b48acf`.
+All **3,600 full fits completed with zero model exceptions**:
+600 independent test datasets × three independently generated
+baseline lengths × two paired coefficient policies. The checksum-verified
+original combined case evidence is artifact **11645662411**;
+four retained per-process artifacts are also source-verifiable.
+The methodological unit for Monte Carlo uncertainty is the
+**100 or 50 independent test datasets per scenario**, not the
+number of paired method attempts.
+
+Observed rejection at $\alpha=.05$, **true null**, with 100
+independent test sequences per process/baseline-length cell:
+
+| Generator | Training baseline | Uncertainty-propagating null | Unadjusted plug-in null |
+|---|---:|---:|---:|
+| Independent Gaussian | 40 | 0/100 (0%) | 4/100 (4%) |
+| Independent Gaussian | 80 | 3/100 (3%) | 4/100 (4%) |
+| Independent Gaussian | 160 | 7/100 (7%) | 7/100 (7%) |
+| AR1 φ=.35 | 40 | 1/100 (1%) | 2/100 (2%) |
+| AR1 φ=.35 | 80 | 1/100 (1%) | 3/100 (3%) |
+| AR1 φ=.35 | 160 | 1/100 (1%) | 2/100 (2%) |
+| AR1 φ=.80 | 40 | 3/100 (3%) | 24/100 (24%) |
+| AR1 φ=.80 | 80 | 1/100 (1%) | 12/100 (12%) |
+| AR1 φ=.80 | 160 | 5/100 (5%) | 9/100 (9%) |
+| Misspecified AR2 | 40 | 27/100 (27%) | 68/100 (68%) |
+| Misspecified AR2 | 80 | 12/100 (12%) | 38/100 (38%) |
+| Misspecified AR2 | 160 | 15/100 (15%) | 21/100 (21%) |
+
+In AR1 strong dependence the **plug-in nuisance ablation is plainly
+anti-conservative at shorter baseline sizes**, and uncertainty
+propagation protects against that in the tested generator.
+The longer baseline narrows coefficient uncertainty but does
+**not** guarantee a monotonic finite-sample false-positive rate.
+Crucially, under deliberately misspecified AR2 the main method's
+false-positive rates remain **12–27%**, not nominal 5%.
+Conservatism with weak AR1 remains marked for both policies.
+One hundred null sequences per cell is insufficient to resolve
+very small calibration differences; this table is an explanatory
+pilot, not a definitive calibration estimate.
+
+Under the fixed strong-AR1 one-break alternative, the
+uncertainty-propagating method rejected **32/50 (64%)** at baseline
+40, **40/50 (80%)** at 80 and **40/50 (80%)** at 160; the
+plug-in method rejected **48/50 (96%)**, **47/50 (94%)** and
+**46/50 (92%)**, respectively. These larger plug-in rejection
+rates **cannot be called valid statistical power** where
+the same method is materially anti-conservative under true nulls.
+
+### Formal F5 decision after the ablation
+
+The independent-baseline implementation is useful to understand
+the nuisance-inference mechanism, but **no tested variant can yet
+be called calibrated general unknown-dependence inference**.
+Keep the default uncertainty-propagating path experimental,
+retain the plug-in only as a diagnostic ablation, and do not
+choose between variants by whichever chance observed size is
+closest to five percent. The next methodological work should
+compare calibrated long-run covariance/ARMA or sieve null
+approaches under prespecified AR1, AR2, heterogeneous and
+nonstationary stress, with separate-baseline transferability
+tests. Larger independent samples with explicit Monte Carlo
+precision are needed before considering scientific qualification.
+The core issue #256 stays open and release flags remain false.
