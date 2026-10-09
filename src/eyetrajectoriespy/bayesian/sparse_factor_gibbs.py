@@ -28,6 +28,7 @@ from scipy.interpolate import BSpline
 from scipy.linalg import cho_factor, cho_solve, solve_triangular
 
 from eyetrajectoriespy.types import IrregularTrajectorySet
+from ._score_marginal_loading import _elliptical_slice_score_marginal_loading
 
 
 @dataclass(frozen=True)
@@ -195,6 +196,7 @@ def fit_bayesian_sparse_fpca(
     loading_prior_sd: float = 0.3,
     scale_interweave_proposal_sd: float = 0.0,
     collapsed_population_mean_update: bool = False,
+    score_marginal_loading_ess: bool = False,
     n_chains: int = 2,
     n_draws: int = 60,
     warmup: int = 90,
@@ -250,6 +252,8 @@ def fit_bayesian_sparse_fpca(
         raise ValueError("scale_interweave_proposal_sd must be finite in [0,1]")
     if not isinstance(collapsed_population_mean_update,bool):
         raise ValueError("collapsed_population_mean_update must be bool")
+    if not isinstance(score_marginal_loading_ess,bool):
+        raise ValueError("score_marginal_loading_ess must be bool")
     grid = np.asarray(evaluation_grid, dtype=float)
     if (
         grid.ndim != 1 or len(grid) < max(5, n_basis)
@@ -288,6 +292,7 @@ def fit_bayesian_sparse_fpca(
     interweave_accepted=0
     interweave_attempted=0
     seed_sequence = np.random.SeedSequence(random_state)
+    ess_likelihood_evaluations=0
     for chain, chain_seed in enumerate(seed_sequence.spawn(n_chains)):
         rng = np.random.default_rng(chain_seed)
         mu = cho_solve(cho_factor(mean_precision, lower=True),
@@ -304,15 +309,25 @@ def fit_bayesian_sparse_fpca(
                 mu = _draw_gaussian_precision(mean_precision,
                                               mu_rhs*inv_noise, rng)
 
-            # Conditional posterior p(vec(L) | mu,z,Y).
-            loading_precision = np.eye(q*k)/float(loading_prior_sd)**2
-            loading_rhs = np.zeros((q,k))
-            for gram, xiy, zi in zip(products, cross, scores, strict=True):
-                loading_precision += inv_noise*np.kron(gram, np.outer(zi,zi))
-                loading_rhs += np.outer(xiy-gram @ mu, zi)
-            loading = _draw_gaussian_precision(
-                loading_precision, loading_rhs.ravel()*inv_noise, rng
-            ).reshape(q,k)
+            if score_marginal_loading_ess:
+                # Exact L|mu,Y update, integrating all participant scores.
+                # Sampling z|mu,L,Y below restores the original joint target.
+                new_loading, ess_evals=_elliptical_slice_score_marginal_loading(
+                    loading[None,:,:],np.stack(products)[None,:,:,:],
+                    np.stack(cross)[None,:,:],mu[None,:],
+                    np.asarray([noise_sd]),loading_prior_sd,rng)
+                loading=new_loading[0]
+                ess_likelihood_evaluations+=ess_evals
+            else:
+                # Original conditional L|mu,z,Y is deliberately unchanged.
+                loading_precision = np.eye(q*k)/float(loading_prior_sd)**2
+                loading_rhs = np.zeros((q,k))
+                for gram, xiy, zi in zip(products, cross, scores, strict=True):
+                    loading_precision += inv_noise*np.kron(gram, np.outer(zi,zi))
+                    loading_rhs += np.outer(xiy-gram @ mu, zi)
+                loading = _draw_gaussian_precision(
+                    loading_precision, loading_rhs.ravel()*inv_noise, rng
+                ).reshape(q,k)
 
             if collapsed_population_mean_update:
                 # Partially collapsed schedule:
@@ -382,6 +397,9 @@ def fit_bayesian_sparse_fpca(
             "collapsed_population_mean_experimental_opt_in":collapsed_population_mean_update,
             "collapsed_mean_analytically_marginalizes_participant_scores":collapsed_population_mean_update,
             "collapsed_mean_inferential_qualification":False,
+            "score_marginal_loading_ess_experimental_opt_in":score_marginal_loading_ess,
+            "score_marginal_loading_ess_likelihood_evaluations":ess_likelihood_evaluations,
+            "score_marginal_loading_ess_scientifically_qualified":False,
             "scale_interweave_experimental_opt_in":scale_interweave_proposal_sd>0,
             "scale_interweave_proposal_sd":float(scale_interweave_proposal_sd),
             "scale_interweave_accepted":interweave_accepted,

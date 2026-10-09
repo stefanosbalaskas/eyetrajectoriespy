@@ -20,6 +20,7 @@ import pandas as pd
 from scipy.integrate import trapezoid
 
 from eyetrajectoriespy.types import IrregularTrajectorySet
+from ._score_marginal_loading import _elliptical_slice_score_marginal_loading
 from .sparse_factor_gibbs import (_draw_gaussian_precision, _spline_basis,
                                   _metropolis_scale_interweave)
 
@@ -131,6 +132,7 @@ def fit_bayesian_planar_factor(
     loading_prior_sd: float = .3,
     scale_interweave_proposal_sd: float = 0.0,
     collapsed_population_mean_update: bool = False,
+    score_marginal_loading_ess: bool = False,
     n_chains: int = 2,
     n_draws: int = 60,
     warmup: int = 90,
@@ -180,6 +182,8 @@ def fit_bayesian_planar_factor(
         raise ValueError("scale_interweave_proposal_sd must be finite in [0,1]")
     if not isinstance(collapsed_population_mean_update,bool):
         raise ValueError("collapsed_population_mean_update must be bool")
+    if not isinstance(score_marginal_loading_ess,bool):
+        raise ValueError("score_marginal_loading_ess must be bool")
     grid = np.asarray(evaluation_grid,dtype=float)
     if (grid.ndim!=1 or len(grid)<max(5,n_basis) or
         not np.isfinite(grid).all() or not np.all(np.diff(grid)>0)):
@@ -226,6 +230,7 @@ def fit_bayesian_planar_factor(
     total=warmup+thin*n_draws
     interweave_accepted=0
     interweave_attempted=0
+    ess_likelihood_evaluations=0
     sequence=np.random.SeedSequence(random_state)
     for chain,chain_seed in enumerate(sequence.spawn(n_chains)):
         rng=np.random.default_rng(chain_seed)
@@ -244,15 +249,23 @@ def fit_bayesian_planar_factor(
                 if not collapsed_population_mean_update:
                     mu[d]=_draw_gaussian_precision(
                         mean_precision[d],rhs*inv_var[d],rng)
-                precision=np.eye(q*k)/(loading_prior_sd**2)
-                targets=np.zeros((q,k))
-                for i in range(n):
-                    precision += inv_var[d]*np.kron(
-                        gram[d,i],np.outer(scores[i],scores[i]))
-                    targets += np.outer(cross[d,i]-gram[d,i]@mu[d],scores[i])
-                load[d]=_draw_gaussian_precision(
-                    precision,(targets*inv_var[d]).reshape(-1),rng
-                ).reshape(q,k)
+                if not score_marginal_loading_ess:
+                    precision=np.eye(q*k)/(loading_prior_sd**2)
+                    targets=np.zeros((q,k))
+                    for i in range(n):
+                        precision += inv_var[d]*np.kron(
+                            gram[d,i],np.outer(scores[i],scores[i]))
+                        targets += np.outer(cross[d,i]-gram[d,i]@mu[d],scores[i])
+                    load[d]=_draw_gaussian_precision(
+                        precision,(targets*inv_var[d]).reshape(-1),rng
+                    ).reshape(q,k)
+            if score_marginal_loading_ess:
+                # Exact joint loading block given mu and observed Y,
+                # integrating shared z; subsequent score draw is conditional.
+                load,ess_evals=_elliptical_slice_score_marginal_loading(
+                    load,gram,cross,mu,noise,loading_prior_sd,rng)
+                ess_likelihood_evaluations+=ess_evals
+
             if collapsed_population_mean_update:
                 # Given newly updated channel loadings, draw the joint
                 # x/y mean *after integrating shared z*, then sample
@@ -317,6 +330,9 @@ def fit_bayesian_planar_factor(
             "collapsed_population_mean_experimental_opt_in":collapsed_population_mean_update,
             "collapsed_population_mean_integrates_shared_scores":collapsed_population_mean_update,
             "collapsed_mean_inferential_qualification":False,
+            "score_marginal_loading_ess_experimental_opt_in":score_marginal_loading_ess,
+            "score_marginal_loading_ess_likelihood_evaluations":ess_likelihood_evaluations,
+            "score_marginal_loading_ess_scientifically_qualified":False,
             "scale_interweave_experimental_opt_in":scale_interweave_proposal_sd>0,
             "scale_interweave_proposal_sd":float(scale_interweave_proposal_sd),
             "scale_interweave_accepted":interweave_accepted,

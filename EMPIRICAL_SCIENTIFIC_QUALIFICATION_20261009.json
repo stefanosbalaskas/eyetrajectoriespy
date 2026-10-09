@@ -518,5 +518,86 @@
     "original_invariant_functional_rhat_ess_mcse_not_yet_recorded": true,
     "new_functional_diagnostics_study_submitted": true,
     "new_functional_diagnostics_verified": false
+  },
+  "B6_B7_SCORE_MARGINAL_LOADING_ESS_20261010": {
+    "experimental_only": true,
+    "original_default_retained": true,
+    "independent_pymc_reference_source_run": 37988738287,
+    "latest_identifiable_source_artifact": 11647146899,
+    "scientific_issue": 255,
+    "new_sampler": "exact joint Gaussian loading elliptical-slice given population mean and observed data integrating all participant scores",
+    "proof_task": "independent dense marginal likelihood differences and target-preserving prior ESS transition",
+    "paired_actual_fit_attempts_planned": 36,
+    "prior_generated_independent_truth_datasets": 18,
+    "datasets_per_design": 6,
+    "fixed_model_families": [
+      "B6_rank1",
+      "B7_rank1_paired",
+      "B7_rank1_asynchronous"
+    ],
+    "source_fit_results_verified": true,
+    "mixing_improvement_scientifically_qualified": false,
+    "posterior_coverage_scientifically_qualified": false,
+    "rank2_empirical_qualified": false,
+    "release_authorized": false,
+    "source_study_run": 38000101053,
+    "source_head_before_docs": "58f35a57cbfc8060dd003750386378d5ea3f92e2",
+    "actual_fit_attempts": 36,
+    "actual_fit_errors": 0,
+    "design_artifact_ids": {
+      "B6_rank1": 11649540044,
+      "B7_rank1_paired": 11649325340,
+      "B7_rank1_asynchronous": 11648876398
+    },
+    "score_marginal_ess_inferential_screen_passes": 0,
+    "original_sampler_inferential_screen_passes": 0,
+    "median_identified_covariance_Rhat_and_bulk_ESS": [
+      {
+        "design": "B6_rank1",
+        "original": [
+          1.0835959938193933,
+          22.466903098186172
+        ],
+        "score_marginal_ess": [
+          1.1414379422233005,
+          15.352559934757526
+        ]
+      },
+      {
+        "design": "B7_rank1_paired",
+        "original": [
+          1.406749699442087,
+          4.330391899486004
+        ],
+        "score_marginal_ess": [
+          1.378118003847945,
+          4.942880710949853
+        ]
+      },
+      {
+        "design": "B7_rank1_asynchronous",
+        "original": [
+          1.149258602502249,
+          11.354161610897435
+        ],
+        "score_marginal_ess": [
+          1.4179837889114308,
+          4.350963693472707
+        ]
+      }
+    ],
+    "method_shows_consistent_mixing_improvement": false,
+    "should_promote_score_marginal_ess_as_default": false,
+    "source_run_all_seven_scientific_jobs_passed": true,
+    "sha256_verified_combined_case_artifact": 11649475504,
+    "combined_source_audit_verified": true,
+    "original_study_python_contracts_green": [
+      "3.11",
+      "3.12",
+      "3.13"
+    ],
+    "no_improvement_in_all_three_designs": true,
+    "experimental_option_must_not_be_default": true,
+    "scientific_sampler_qualification": false
   }
 }
