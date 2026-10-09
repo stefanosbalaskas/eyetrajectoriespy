@@ -117,6 +117,7 @@ jobs:
           print("PASS retained provisional Monte Carlo evidence; no qualification claim")
           PY
       - name: Retain synthetic Monte Carlo pilot data
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: f1-f5-research-pilot
@@ -158,10 +159,12 @@ jobs:
           assert all(not x["scientific_size_or_power_qualified"] for x in j["scenarios"])
           assert len(cases) == 6, cases
           assert all(x["requested_replicates"] == 2 for x in j["scenarios"])
+          assert all(x["successful_replicates"] >= 1 for x in j["scenarios"]), j["scenarios"]
           assert j["production_release_authorized"] is False
           print("PASS: six refit attempts retained, no scientific qualification asserted")
           PY
       - name: Retain sparse-model pilot evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: f1-full-sparse-model-pilot
