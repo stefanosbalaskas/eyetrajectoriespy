@@ -139,3 +139,29 @@ def test_b6_covariance_is_invariant_to_latent_factor_rotations():
     rot=np.array([[np.cos(theta),-np.sin(theta)],
                   [np.sin(theta),np.cos(theta)]])
     np.testing.assert_allclose(f@f.T,(f@rot)@(f@rot).T,atol=1e-12)
+
+
+
+def test_b6_learned_factor_requires_explicit_independent_unit_identity():
+    data,grid,_=_fixture(n=12)
+    undocumented=IrregularTrajectorySet(
+        time=data.time,values=data.values,curve_ids=data.curve_ids,
+        dimension_names=data.dimension_names,
+        coordinate_system=data.coordinate_system,time_unit=data.time_unit,
+    )
+    with pytest.raises(ValueError,match="explicit participant_id"):
+        fit_bayesian_sparse_fpca(
+            undocumented,dimension="x",evaluation_grid=grid,noise_sd=.04,
+        )
+    bad_md=data.metadata.reset_index(drop=True).copy()
+    bad_md.iloc[0,0]=None
+    unknown=IrregularTrajectorySet(
+        time=data.time,values=data.values,curve_ids=data.curve_ids,
+        dimension_names=data.dimension_names,
+        metadata=bad_md,
+        coordinate_system=data.coordinate_system,time_unit=data.time_unit,
+    )
+    with pytest.raises(ValueError,match="cannot be missing"):
+        fit_bayesian_sparse_fpca(
+            unknown,dimension="x",evaluation_grid=grid,noise_sd=.04,
+        )

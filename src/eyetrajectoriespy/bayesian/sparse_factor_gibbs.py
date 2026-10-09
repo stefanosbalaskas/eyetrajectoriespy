@@ -151,10 +151,14 @@ def fit_bayesian_sparse_fpca(
         raise ValueError("experimental model supports n_basis <= 12")
     if trajectories.n_curves < max(8, 2*n_components+2):
         raise ValueError("at least eight independent curves required")
-    if (
-        "participant_id" in trajectories.metadata
-        and trajectories.metadata["participant_id"].astype(str).duplicated().any()
-    ):
+    if "participant_id" not in trajectories.metadata:
+        raise ValueError("explicit participant_id metadata is required to establish independent units")
+    participant_ids = trajectories.metadata["participant_id"]
+    if participant_ids.isna().any() or (
+        participant_ids.astype(str).str.strip() == ""
+    ).any():
+        raise ValueError("participant_id cannot be missing or blank")
+    if participant_ids.astype(str).duplicated().any():
         raise ValueError("repeated participants require hierarchical latent scores")
     for sd, name in (
         (noise_sd, "noise_sd"),
