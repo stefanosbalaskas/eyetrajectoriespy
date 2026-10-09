@@ -19,11 +19,11 @@
       "scientifically_qualified": false
     },
     "B6": {
-      "stage": "conditional_fixed_population_sparse_score_baseline_not_full_Bayesian_FPCA",
+      "stage": "conditional fixed-population sparse score benchmark in #237 plus learned finite-basis Gaussian factor Gibbs in #243; not identified calibrated FPCA",
       "scientifically_qualified": false
     },
     "B7": {
-      "stage": "fixed_population_shared_score_paired_and_asynchronous_x_y_baseline_not_full_MFPCA",
+      "stage": "conditional known-population shared-score planar benchmark in #237 plus learned shared Gaussian population factor x/y covariance in stacked B7 branch; not calibrated MFPCA",
       "scientifically_qualified": false
     },
     "B8": {
@@ -70,7 +70,9 @@
     "artifact_attestation_pending": true,
     "B6_learned_population_full_model_in_stacked_PR": 243,
     "B6_new_rank2_and_adversarial_runner": "scripts/run_b6_population_calibration_grid.py",
-    "B6_new_scientific_grid_qualified": false
+    "B6_new_scientific_grid_qualified": false,
+    "B7_learned_planar_factor_runner": "scripts/run_b7_learned_planar_truth_pilot.py",
+    "B7_scientific_calibration_qualified": false
   },
   "engineering_qualification_reference": {
     "pull_request": 237,
