@@ -758,11 +758,52 @@
     "seed_namespace": "F5_INDEPENDENT_BASELINE_AR2_MODEL_STRESS_V1",
     "study_cases_planned": 1500,
     "independent_test_datasets_planned": 750,
-    "source_fit_results_verified": false,
-    "model_misspecification_falsification_complete": false,
+    "source_fit_results_verified": true,
+    "model_misspecification_falsification_complete": true,
     "independent_baseline_transferability_validated": false,
     "scientific_null_calibration_qualified": false,
     "release_authorized": false,
-    "F5_issue": 256
+    "F5_issue": 256,
+    "original_science_workflow_run": 38000177988,
+    "original_sha256_combined_artifact": 11648842221,
+    "science_jobs_all_nine_successful": true,
+    "source_fit_errors": 0,
+    "actual_tests": 1500,
+    "actual_independent_datasets": 750,
+    "nominal_alpha": 0.05,
+    "observed_null_false_rejections_per_100": [
+      {
+        "process": "iid",
+        "AR1": 0,
+        "AR2": 1
+      },
+      {
+        "process": "strong_AR1",
+        "AR1": 3,
+        "AR2": 3
+      },
+      {
+        "process": "true_AR2",
+        "AR1": 15,
+        "AR2": 9
+      },
+      {
+        "process": "MA1",
+        "AR1": 0,
+        "AR2": 11
+      },
+      {
+        "process": "nonstationary_dependency",
+        "AR1": 94,
+        "AR2": 94
+      }
+    ],
+    "true_AR2_fixed_break_rejections_per_50": {
+      "AR1": 19,
+      "AR2": 7
+    },
+    "AR2_improves_true_AR2_null_in_this_pilot": true,
+    "AR2_proves_universal_nominal_size": false,
+    "baseline_transferability_is_unqualified": true
   }
 }
