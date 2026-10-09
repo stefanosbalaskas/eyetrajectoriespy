@@ -1,8 +1,16 @@
 # Three research case studies — synthetic, non-inferential
 
-All demonstrations use deterministic synthetic or explicitly prepared recordings. They are executable starting points on **research 1.2 development source**, not stable 1.1.0, and do **not** establish calibrated p-values.
+All three examples can be run as standalone scripts from the development repository. The scripts generate **synthetic CSV/JSON fixtures, output tables and research figures** in a declared output directory; CI retains those files as downloadable artifacts. All demonstrations use deterministic synthetic or explicitly prepared recordings. They are executable starting points on **research 1.2 development source**, not stable 1.1.0, and do **not** establish calibrated p-values.
 
 ## 1. Sparse independent groups
+
+Run the full source-controlled synthetic case:
+
+```bash
+python examples/research/case_sparse_groups.py --out build/research-cases/sparse --replicates 2
+```
+
+The script writes a case-level CSV, scenario summary, provenance JSON and synthetic SVG; the accompanying 10-replicate code below is for expanded exploration.
 
 ```python
 from eyetrajectoriespy.research import simulate_functional_study_power
@@ -25,6 +33,12 @@ The native test is refitted for both null and effect scenarios; a failed covaria
 
 ## 2. Participant repeatability and paired conditions
 
+```bash
+python examples/research/case_repeated_trials.py --out build/research-cases/repeats
+```
+
+This standalone script generates its own 12-participant, two-condition, three-trial-per-condition synthetic fixture, writes reliability/contrast CSVs and a deterministic research SVG.
+
 Use a common-grid **TrajectorySet** with a metadata row per trial (participant_id and condition). First stratify to one homogeneous condition; compute balanced trial reliability; only then consider a within-participant contrast on the complete paired design.
 
 ```python
@@ -43,6 +57,12 @@ from eyetrajectoriespy.research import (
 No period/carryover inference is provided; participant, not individual trial, is the resampling unit.
 
 ## 3. BIDS ingestion and quality linkage
+
+```bash
+python examples/research/case_bids_quality.py --out build/research-cases/bids
+```
+
+This script creates a complete small synthetic BIDS eye-stream fixture with explicit event-sidecar screen metadata, then writes a file audit, known-target validation, quality report, session linkage and provenance JSON.
 
 ```python
 from eyetrajectoriespy.research import (
