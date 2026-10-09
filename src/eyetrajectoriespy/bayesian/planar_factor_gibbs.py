@@ -83,6 +83,42 @@ class BayesianPlanarFactorFit:
         return bayesian_diagnostics_frame(idata)
 
 
+
+def _collapsed_planar_mean_precision_rhs(
+    gram: np.ndarray, cross: np.ndarray, load: np.ndarray,
+    observation_noise_sd: tuple[float,float] | np.ndarray,
+    mean_prior_sd: float,
+) -> tuple[np.ndarray,np.ndarray]:
+    """Exact p(mu_x,mu_y | L_x,L_y,Y), integrating shared latent scores.
+
+    Unlike independent channel updates, the marginalized shared scores
+    induce nonzero cross-channel blocks. Uses Woodbury per participant
+    and preserves x-grid/y-grid order and asynchronous original times.
+    """
+    _,n,q,_=gram.shape
+    k=load.shape[-1]
+    w=1./np.asarray(observation_noise_sd,dtype=float)**2
+    precision=np.eye(2*q)/mean_prior_sd**2
+    rhs=np.zeros(2*q)
+    for i in range(n):
+        score_precision=np.eye(k)
+        H=np.empty((2*q,k))
+        v=np.zeros(k)
+        for d in range(2):
+            g=gram[d,i]
+            ld=load[d]
+            score_precision += w[d]*ld.T@g@ld
+            H[d*q:(d+1)*q,:]=w[d]*g@ld
+            precision[d*q:(d+1)*q,d*q:(d+1)*q]+=w[d]*g
+            rhs[d*q:(d+1)*q]+=w[d]*cross[d,i]
+            v+=w[d]*ld.T@cross[d,i]
+        precision -= H@np.linalg.solve(score_precision,H.T)
+        rhs -= H@np.linalg.solve(score_precision,v)
+    precision=(precision+precision.T)/2
+    return precision,rhs
+
+
+
 def fit_bayesian_planar_factor(
     trajectories: IrregularTrajectorySet,
     *,
@@ -94,6 +130,7 @@ def fit_bayesian_planar_factor(
     mean_prior_sd: float = 1.,
     loading_prior_sd: float = .3,
     scale_interweave_proposal_sd: float = 0.0,
+    collapsed_population_mean_update: bool = False,
     n_chains: int = 2,
     n_draws: int = 60,
     warmup: int = 90,
@@ -141,6 +178,8 @@ def fit_bayesian_planar_factor(
         or not np.isfinite(scale_interweave_proposal_sd)
         or not 0. <= scale_interweave_proposal_sd <= 1.):
         raise ValueError("scale_interweave_proposal_sd must be finite in [0,1]")
+    if not isinstance(collapsed_population_mean_update,bool):
+        raise ValueError("collapsed_population_mean_update must be bool")
     grid = np.asarray(evaluation_grid,dtype=float)
     if (grid.ndim!=1 or len(grid)<max(5,n_basis) or
         not np.isfinite(grid).all() or not np.all(np.diff(grid)>0)):
@@ -202,8 +241,9 @@ def fit_bayesian_planar_factor(
                 rhs=sum_cross[d].copy()
                 for i in range(n):
                     rhs -= gram[d,i]@load[d]@scores[i]
-                mu[d]=_draw_gaussian_precision(
-                    mean_precision[d],rhs*inv_var[d],rng)
+                if not collapsed_population_mean_update:
+                    mu[d]=_draw_gaussian_precision(
+                        mean_precision[d],rhs*inv_var[d],rng)
                 precision=np.eye(q*k)/(loading_prior_sd**2)
                 targets=np.zeros((q,k))
                 for i in range(n):
@@ -213,6 +253,14 @@ def fit_bayesian_planar_factor(
                 load[d]=_draw_gaussian_precision(
                     precision,(targets*inv_var[d]).reshape(-1),rng
                 ).reshape(q,k)
+            if collapsed_population_mean_update:
+                # Given newly updated channel loadings, draw the joint
+                # x/y mean *after integrating shared z*, then sample
+                # shared z conditional on the new mean and loadings.
+                mean_p,mean_rhs=_collapsed_planar_mean_precision_rhs(
+                    gram,cross,load,noise,mean_prior_sd)
+                mu=_draw_gaussian_precision(mean_p,mean_rhs,rng).reshape(2,q)
+
             for i in range(n):
                 precision=np.eye(k)
                 targets=np.zeros(k)
@@ -266,6 +314,9 @@ def fit_bayesian_planar_factor(
             "eigenfunction_rotation_sign_identified":False,
             "hierarchical_participant_trial_modelled":False,
             "posterior_population_coverage_scientifically_qualified":False,
+            "collapsed_population_mean_experimental_opt_in":collapsed_population_mean_update,
+            "collapsed_population_mean_integrates_shared_scores":collapsed_population_mean_update,
+            "collapsed_mean_inferential_qualification":False,
             "scale_interweave_experimental_opt_in":scale_interweave_proposal_sd>0,
             "scale_interweave_proposal_sd":float(scale_interweave_proposal_sd),
             "scale_interweave_accepted":interweave_accepted,

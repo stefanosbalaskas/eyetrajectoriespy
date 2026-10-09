@@ -89,6 +89,10 @@ and the 1.2 research candidate is not authorized for publication.
 
 ## Newly recovered F5 empirical comparison — actual independent data
 
+![Actual F5 independently simulated strong AR1 type-one error and known-phi comparator](../assets/research/f5-ar1-null-rejection.svg)
+
+
+
 Exact source [run #37975560959](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37975560959)
 fit **1,800 F5 tests**, with zero model exceptions. The source final
 post-fit audit failed because `pd.read_csv` converted the scientific

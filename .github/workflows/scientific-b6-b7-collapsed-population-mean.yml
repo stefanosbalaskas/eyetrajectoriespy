@@ -1,0 +1,84 @@
+name: scientific-b6-b7-collapsed-population-mean
+
+# Real 72-fit study is keyed to the initial draft research PR only.
+on:
+  pull_request:
+    types: [opened]
+    paths:
+      - ".github/workflows/scientific-b6-b7-collapsed-population-mean.yml"
+      - "src/eyetrajectoriespy/bayesian/sparse_factor_gibbs.py"
+      - "src/eyetrajectoriespy/bayesian/planar_factor_gibbs.py"
+      - "scripts/run_bayes_collapsed_mean_probe.py"
+      - "tests/test_bayesian_partially_collapsed_mean.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-marginal-Gaussian-algebra:
+    name: Dense independent Gaussian marginal posterior reference (${{ matrix.python }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_bayesian_partially_collapsed_mean.py tests/test_bayesian_independent_gaussian_conditionals.py
+
+  original-vs-collapsed-Gibbs:
+    name: Actual native B6/B7 fitted posterior with collapsed mean update
+    runs-on: ubuntu-24.04
+    timeout-minutes: 85
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian]"
+      - name: Run 72 matched prior actual Gibbs fits, six independent replicates per design
+        run: |
+          python scripts/run_bayes_collapsed_mean_probe.py \
+            --replicates 6 --draws 200 --warmup 400 \
+            --master-seed 20261126 \
+            --out build/bayesian-collapsed-mean-study \
+            > build-collapsed-console.json
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          root=Path("build/bayesian-collapsed-mean-study")
+          ev=json.loads((root/"evidence.json").read_text())
+          df=pd.read_csv(root/"cases.csv")
+          assert len(df)==ev["attempts"]==72
+          assert len(ev["results"])==12
+          assert df.groupby(["method","scenario","replicate"]).size().eq(2).all()
+          assert not ev["posterior_mixing_qualified"]
+          assert not ev["scientific_inference_qualified"]
+          assert not ev["release_authorized"]
+          print("ACTUAL BAYESIAN SCORE-MARGINALIZED SCIENCE:")
+          for row in ev["results"]:
+              print(json.dumps(row,sort_keys=True))
+          PY
+      - name: Preserve case-level posterior and independent-shard evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-B6-B7-collapsed-mu-72-paired-real-fits
+          path: build/bayesian-collapsed-mean-study/
+          retention-days: 90
+          if-no-files-found: warn

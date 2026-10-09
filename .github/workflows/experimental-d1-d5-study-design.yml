@@ -46,10 +46,13 @@ jobs:
         run: |
           python scripts/generate_f1_f6_gallery.py
           python - <<'PY'
-          from pathlib import Path
-          p = Path("docs/assets/research")
-          assert len(list(p.glob("f?-*.svg"))) == 6
-          print("Six deterministic synthetic scientific illustrations rendered")
+          from scripts.generate_f1_f6_gallery import FILES, ROOT
+          assert len(FILES) == 6, "F1–F6 generator contract changed"
+          assert all((ROOT/name).is_file() and (ROOT/name).stat().st_size>1000
+                     for name in FILES), "one of the six canonical synthetic SVGs is missing"
+          # Evidence-based research figures may legitimately coexist with
+          # the six historical synthetic methods illustrations.
+          print("Six canonical synthetic illustrations verified; independent research figures permitted")
           PY
       - name: Enforce experimental namespace and release boundaries
         run: |

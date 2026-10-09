@@ -294,13 +294,172 @@
     "moderate_alternative_effect_amplitude": 0.04,
     "permutations_per_fit": 199,
     "planned_total_native_F1_model_fits": 6000,
-    "actual_completed_fits_verified": false,
+    "actual_completed_fits_verified": true,
     "source_artifacts_held_out_from_previous_wave": true,
     "exchangeability_broken_in_heteroscedastic_stress": true,
     "conditional_rejection_not_identical_to_unconditional_size": true,
     "scientific_null_size_qualified": false,
     "moderate_effect_power_qualified": false,
     "cross_estimator_comparison_complete": false,
-    "release_authorized": false
+    "release_authorized": false,
+    "original_run_id": 37977625803,
+    "original_source_head_sha": "3a0583f48d4727c446fb8050b678eec0203b332c",
+    "verified_original_combined_artifact_id": 11640464273,
+    "scientific_jobs_passed": 5,
+    "total_attempts_verified": 6000,
+    "null_attempts_verified": 4000,
+    "alternative_attempts_verified": 2000,
+    "fit_failures": 0,
+    "sha256_unique_seeds_verified": true,
+    "null_size_at_alpha_005": [
+      {
+        "design": "balanced_equal_covariance",
+        "rejects": 49,
+        "n": 1000,
+        "p": 0.049
+      },
+      {
+        "design": "clustered_two_trials",
+        "rejects": 51,
+        "n": 1000,
+        "p": 0.051
+      },
+      {
+        "design": "unequal_heteroscedastic_null",
+        "rejects": 52,
+        "n": 1000,
+        "p": 0.052
+      },
+      {
+        "design": "very_sparse",
+        "rejects": 44,
+        "n": 1000,
+        "p": 0.044
+      }
+    ],
+    "moderate_effect_alpha_005": [
+      {
+        "design": "balanced_equal_covariance",
+        "rejects": 79,
+        "n": 500,
+        "p": 0.158
+      },
+      {
+        "design": "clustered_two_trials",
+        "rejects": 91,
+        "n": 500,
+        "p": 0.182
+      },
+      {
+        "design": "unequal_heteroscedastic_null",
+        "rejects": 96,
+        "n": 500,
+        "p": 0.192
+      },
+      {
+        "design": "very_sparse",
+        "rejects": 71,
+        "n": 500,
+        "p": 0.142
+      }
+    ],
+    "no_nominal_size_counterexample_in_the_four_tested_designs": true,
+    "does_not_prove_universal_exchangeability_or_validity": true,
+    "power_low_for_moderate_alternative": true
+  },
+  "B6_B7_partially_collapsed_mean_20261009": {
+    "scientific_blocker": 255,
+    "mathematical_method": "exact Gaussian conditional population mean with all participant latent scores marginalized via Woodbury",
+    "planar_condition": "joint_x_y_2q_dimensional_with_nonzero_cross_channel_score_covariance",
+    "Gibbs_update_order": "loading_conditional_then_population_mean_collapsed_then_scores_conditional",
+    "default_original_behavior_preserved": true,
+    "opt_in_argument": "collapsed_population_mean_update",
+    "independent_dense_marginal_gaussian_algebra_tests_completed": true,
+    "actual_paired_Gibbs_fit_attempts_planned": 72,
+    "independent_matched_truth_datasets_planned": 36,
+    "fresh_master_seed": 20261126,
+    "mixing_improvement_qualified": false,
+    "posterior_calibration_qualified": false,
+    "rank_sbc_completed": false,
+    "independent_NUTS_reference_completed": false,
+    "scientific_inference_qualified": false,
+    "release_authorized": false,
+    "original_run_id": 37978244822,
+    "original_source_head_sha": "c9335571451af7de142c594baa7981285e17c42a",
+    "original_artifact_id": 11639857546,
+    "independent_gaussian_algebra_python_versions_passed": [
+      "3.11",
+      "3.12",
+      "3.13"
+    ],
+    "actual_Gibbs_fit_attempts_completed": 72,
+    "independent_matched_truth_datasets": 36,
+    "fit_failures": 0,
+    "median_worst_monitored_Rhat": [
+      {
+        "scenario": "B6_rank1",
+        "original": 1.114033,
+        "collapsed": 1.141897
+      },
+      {
+        "scenario": "B6_rank2",
+        "original": 1.669951,
+        "collapsed": 1.271658
+      },
+      {
+        "scenario": "B7_rank1_paired",
+        "original": 1.963784,
+        "collapsed": 1.495516
+      },
+      {
+        "scenario": "B7_rank1_async",
+        "original": 1.469855,
+        "collapsed": 1.066569
+      },
+      {
+        "scenario": "B7_rank2_paired",
+        "original": 1.937448,
+        "collapsed": 1.536657
+      },
+      {
+        "scenario": "B7_rank2_async",
+        "original": 1.667606,
+        "collapsed": 1.469933
+      }
+    ],
+    "median_minimum_bulk_ESS": [
+      {
+        "scenario": "B6_rank1",
+        "original": 12.68169,
+        "collapsed": 13.42983
+      },
+      {
+        "scenario": "B6_rank2",
+        "original": 3.46332,
+        "collapsed": 6.29292
+      },
+      {
+        "scenario": "B7_rank1_paired",
+        "original": 2.89854,
+        "collapsed": 4.025665
+      },
+      {
+        "scenario": "B7_rank1_async",
+        "original": 4.066583,
+        "collapsed": 15.34569
+      },
+      {
+        "scenario": "B7_rank2_paired",
+        "original": 2.924546,
+        "collapsed": 3.806127
+      },
+      {
+        "scenario": "B7_rank2_async",
+        "original": 3.42305,
+        "collapsed": 4.187629
+      }
+    ],
+    "substantive_mixing_improvement_for_some_scenarios": true,
+    "adequate_joint_posterior_mixing_demonstrated": false
   }
 }

@@ -115,7 +115,7 @@ def _projector(cov: np.ndarray, rank: int) -> np.ndarray:
     return top @ top.T
 
 
-def run_one(seed: int, scenario: str, *, draws: int, warmup: int, diagnostics: bool=False, scale_interweave_proposal_sd: float=0.0) -> dict:
+def run_one(seed: int, scenario: str, *, draws: int, warmup: int, diagnostics: bool=False, scale_interweave_proposal_sd: float=0.0, collapsed_population_mean_update: bool=False) -> dict:
     gaze, truth_mean, truth_cov, indices, holdout = _known_truth(seed, scenario)
     spec = SCENARIOS[scenario]
     fit = fit_bayesian_sparse_fpca(
@@ -124,6 +124,7 @@ def run_one(seed: int, scenario: str, *, draws: int, warmup: int, diagnostics: b
         mean_prior_sd=MEAN_PRIOR_SD,
         loading_prior_sd=spec["fitted_loading_prior"],
         scale_interweave_proposal_sd=scale_interweave_proposal_sd,
+        collapsed_population_mean_update=collapsed_population_mean_update,
         n_chains=2, n_draws=draws, warmup=warmup, thin=1,
         random_state=seed+937,
     )

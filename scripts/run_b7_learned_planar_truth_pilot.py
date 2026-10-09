@@ -20,7 +20,7 @@ from eyetrajectoriespy.types import IrregularTrajectorySet
 from eyetrajectoriespy.research.calibration_seed import (calibration_replicate_seed, calibration_manifest)
 
 
-def _replicate(seed: int, rank: int, asynchronous: bool, draws: int, warmup: int, *, diagnostics: bool=False, scale_interweave_proposal_sd: float=0.0) -> dict:
+def _replicate(seed: int, rank: int, asynchronous: bool, draws: int, warmup: int, *, diagnostics: bool=False, scale_interweave_proposal_sd: float=0.0, collapsed_population_mean_update: bool=False) -> dict:
     rng=np.random.default_rng(seed)
     grid=np.linspace(0,1,23)
     n,q=18,5
@@ -63,6 +63,7 @@ def _replicate(seed: int, rank: int, asynchronous: bool, draws: int, warmup: int
         n_components=rank,n_basis=q,mean_prior_sd=mean_prior_sd,
         loading_prior_sd=loading_prior_sd,
         scale_interweave_proposal_sd=scale_interweave_proposal_sd,
+        collapsed_population_mean_update=collapsed_population_mean_update,
         n_chains=2,n_draws=draws,
         warmup=warmup,thin=1,random_state=seed+109)
     mid=len(grid)//2

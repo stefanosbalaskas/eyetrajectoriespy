@@ -142,11 +142,13 @@ jobs:
         run: |
           python scripts/generate_bayesian_research_gallery.py
           python - <<'PY'
-          from pathlib import Path
           from hashlib import sha256
-          root=Path("docs/assets/research")
-          files=sorted(root.glob("b*-*.svg"))
-          assert len(files) == 6, [p.name for p in files]
+          from scripts.generate_bayesian_research_gallery import FILES, OUTPUT
+          # Only the six canonical B5–B10 scientific illustrations are
+          # contractually generated. New source-evidence figures may coexist.
+          assert len(FILES) == 6
+          files=[OUTPUT / name for name in FILES]
+          assert all(f.is_file() for f in files), [p.name for p in files]
           hashes=[sha256(f.read_bytes()).hexdigest() for f in files]
           assert all(f.stat().st_size > 1000 for f in files)
           import subprocess
