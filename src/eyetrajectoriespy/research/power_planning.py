@@ -123,7 +123,9 @@ def simulate_functional_study_power(
     rows = []
     for scenario, magnitude in (("null", 0.0), ("alternative", effect_amplitude)):
         for iteration in range(n_replicates):
-            fixture_seed = int(rng.integers(0, 2**31 - 1))
+            # Large 63-bit seed space limits accidental duplicate fixtures in
+            # scientific multi-shard studies; aggregation also checks collisions.
+            fixture_seed = int(rng.integers(0, 2**63 - 1, dtype=np.int64))
             data_rng = np.random.default_rng(fixture_seed)
             gaze, labels, unit_ids = _generate_sparse_two_group(
                 data_rng, units_per_group=units_per_group,
