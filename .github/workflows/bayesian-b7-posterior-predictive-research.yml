@@ -1,0 +1,108 @@
+name: bayesian-b7-posterior-predictive-research
+
+on:
+  pull_request:
+    paths:
+      - "src/eyetrajectoriespy/bayesian/planar_population_prediction.py"
+      - "src/eyetrajectoriespy/bayesian/__init__.py"
+      - "tests/test_b7_population_prediction.py"
+      - "scripts/run_b7_learned_planar_truth_pilot.py"
+      - "docs/development/b7-prediction-calibration.md"
+      - "BAYESIAN_B7_PREDICTION_QUALIFICATION.json"
+      - ".github/workflows/bayesian-b7-posterior-predictive-research.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-predictive-contracts:
+    name: Learned population B7/B9 posterior predictive (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install independent research implementation
+        run: python -m pip install -e ".[dev]"
+      - name: Test independent new participant, shared x/y factors and no leakage
+        run: |
+          python -m pytest -q tests/test_bayesian_b7_planar_factor.py tests/test_b7_population_prediction.py
+      - name: Require opt-in namespace and non-release status
+        run: |
+          python - <<'PY'
+          import eyetrajectoriespy as stable
+          from eyetrajectoriespy import bayesian
+          import json
+          assert hasattr(bayesian, "predict_bayesian_planar_new_participant")
+          assert not hasattr(stable, "predict_bayesian_planar_new_participant")
+          ledger=json.load(open("BAYESIAN_B7_PREDICTION_QUALIFICATION.json"))
+          assert ledger["full_population_posterior_propagated"]
+          assert not ledger["predictive_calibration_qualified"]
+          assert not ledger["scientific_inference_qualified"]
+          assert not ledger["release_authorized"]
+          readiness=json.load(open("RELEASE_READINESS.json"))
+          assert not readiness["production_release_ready"]
+          assert not readiness["github_release_ready"]
+          print("PASS experimental B7/B9 independent participant predictive gate")
+          PY
+
+  known-truth-predictive-pilot:
+    name: B7 heldout new-participant prediction with actual Gibbs posterior
+    needs: native-predictive-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Draw independent participant and evaluate posterior predictive intervals
+        run: |
+          python scripts/run_b7_learned_planar_truth_pilot.py \
+            --replicates 2 --draws 25 --warmup 40 \
+            --out build/b7-predictive-pilot
+      - name: Validate evidence and prohibit false independent-binomial inference
+        run: |
+          python - <<'PY'
+          import json
+          import pandas as pd
+          from pathlib import Path
+          root=Path("build/b7-predictive-pilot")
+          ev=json.loads((root/"evidence.json").read_text())
+          cases=pd.read_csv(root/"cases.csv")
+          assert ev["attempts"]==8==len(cases)
+          assert ev["failed"]==(cases.status=="failed").sum()
+          assert (cases.status=="ok").sum()>=6
+          assert all((one.status=="ok").any() for _,one in cases.groupby(["rank","asynchronous"]))
+          assert ev["heldout_truth_not_in_training"]
+          assert ev["heldout_pointwise_fraction_not_binomial_independent_points"]
+          assert ev["all_pointwise_bands_not_a_simultaneous_credible_band"]
+          assert all(cases.loc[cases.status=="ok","new_participant_evaluation_rows"]==8)
+          assert not ev["predictive_calibration_qualified"]
+          assert not ev["scientific_coverage_qualified"]
+          assert not ev["publication_authorized"]
+          print("PASS heldout predictive evidence, with no calibrated predictive claim")
+          PY
+      - name: Retain B7/B9 fitted population and heldout predictive evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b7-new-participant-posterior-predictive-experimental
+          path: build/b7-predictive-pilot/
+          if-no-files-found: warn
+          retention-days: 90

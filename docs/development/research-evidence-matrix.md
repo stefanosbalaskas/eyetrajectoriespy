@@ -11,11 +11,11 @@
 | F4 AOI geometry | compare_aoi_functional_geometries_holdout() | Original #227 27/27 | Not a constrained eigenfunction estimator |
 | F5 whole-curve changes | detect_ordered_functional_changepoint() | Original #227 27/27 | Bootstrap p-values **unqualified** |
 | F6 weighted L2 | fit_weighted_mfpca() | Original #227 27/27 | Declared weights, no optimal weighting |
-| D4 sample-size/power | simulate_functional_study_power() | Stacked #235 checks pending | Actual F1 experimental test; no certified power |
-| D4 repeatability | fit_functional_reliability() | Stacked #235 checks pending | Balanced moments, no generic functional ICC |
-| D4 paired groups | compare_repeated_functional_groups() | Stacked #235 checks pending | Sign-symmetric participant differences only |
-| D2 quality linkage | link_gaze_validation_sessions() | Stacked #235 checks pending | Identifier match, no clock or drift proof |
-| D2 multi-stream BIDS audit | audit_bids_eyetracking_dataset() | Stacked #235 checks pending | Not official bids-validator |
+| D4 sample-size/power | simulate_functional_study_power() | PR #235 exact-head 27/27 green (013cd05d) | Actual F1 experimental test; no certified power |
+| D4 repeatability | fit_functional_reliability() | PR #235 exact-head 27/27 green (013cd05d) | Balanced moments, no generic functional ICC |
+| D4 paired groups | compare_repeated_functional_groups() | PR #235 exact-head 27/27 green (013cd05d) | Sign-symmetric participant differences only |
+| D2 quality linkage | link_gaze_validation_sessions() | PR #235 exact-head 27/27 green (013cd05d) | Identifier match, no clock or drift proof |
+| D2 multi-stream BIDS audit | audit_bids_eyetracking_dataset() | PR #235 exact-head 27/27 green (013cd05d) | Not official bids-validator |
 
 **Open gates:** F1/F5 full type-I error/power/serial-dependence calibration; F2 external validation evidence and session timing; F3 official BIDS conformance and external datasets; F4 constrained AOI eigenspace; F6 weight sensitivity; D4 reliability uncertainty and crossover modelling; D5 fully qualified examples and docs.
 
@@ -32,6 +32,35 @@ An exact-head workflow [run #37870154333](https://github.com/stefanosbalaskas/ey
 | F5 AR(1) weak-block CUSUM | 0.01 | 0.99 | One serial-dependence strength/block setting |
 
 The F1 native-pipeline pilot completed only **two refits per each of three regimes**, all fitted successfully. The F4 held-out feasibility produced **144 sensitivity records**. None constitutes scientific calibration. With only 100 simulation replications the null rejection estimates have wide Monte Carlo uncertainty; the 0.01 estimate has approximately 0.002–0.054 Wilson 95% range, and the 0.06 estimate approximately 0.028–0.125. The target nominal 0.05 is not ruled out by these pilots, nor proven by them. Larger design-gridded refit experiments remain mandatory.
+
+## New scientific research development (staged, not published)
+
+The original F1–F6 PR #227 completed 27/27; stacked D1–D5 PR #235 completed
+27/27; Bayesian foundation PR #237 completed 32/32; and native learned B6
+PR #243 completed 27/27 on their **separate exact GitHub heads**.
+[Draft #244](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/244)
+also completed its 28/28 exact-head engineering workflows. It adds
+six-scenario learned B6 population calibration and full-fit F1/F5 stress
+runners. Its short engineering run completed 12 B6 refits, 16 F1 full sparse
+refits, and 48 F5 stress evaluations without execution failure.
+None of those small-run totals certifies coverage, nominal null size or power.
+
+[Draft #245](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/245)
+introduces the learned **joint x/y** Gaussian latent functional factor
+posterior on native paired/asynchronous observations. The component columns
+remain sign/rotation unidentified; joint covariance is learned, but fully
+calibrated eigenfunction inference is **not** established. Its strict
+documentation contract was repaired on a later head; retain CI status by
+exact head, not by assuming older green matrices apply automatically.
+
+The further B7/B9 research extension predicts genuinely new participants
+using learned population posterior draws, a fresh shared x/y latent factor
+and channel-specific observation noise. It does not borrow training
+participants' fitted scores. See [new participant prediction](b7-prediction-calibration.md)
+and the [B6/F1/F5 protocol](b6-f1-f5-calibration-protocol.md).
+Prediction intervals are pointwise, **not** jointly calibrated functional
+bands. CI passing and synthetic pilot success never change
+`scientific_inference_qualified` or publication interlocks.
 
 ## B5–B10 native Bayesian research track
 
