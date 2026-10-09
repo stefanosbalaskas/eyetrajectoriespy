@@ -302,5 +302,23 @@
     "moderate_effect_power_qualified": false,
     "cross_estimator_comparison_complete": false,
     "release_authorized": false
+  },
+  "B6_B7_partially_collapsed_mean_20261009": {
+    "scientific_blocker": 255,
+    "mathematical_method": "exact Gaussian conditional population mean with all participant latent scores marginalized via Woodbury",
+    "planar_condition": "joint_x_y_2q_dimensional_with_nonzero_cross_channel_score_covariance",
+    "Gibbs_update_order": "loading_conditional_then_population_mean_collapsed_then_scores_conditional",
+    "default_original_behavior_preserved": true,
+    "opt_in_argument": "collapsed_population_mean_update",
+    "independent_dense_marginal_gaussian_algebra_tests_completed": false,
+    "actual_paired_Gibbs_fit_attempts_planned": 72,
+    "independent_matched_truth_datasets_planned": 36,
+    "fresh_master_seed": 20261126,
+    "mixing_improvement_qualified": false,
+    "posterior_calibration_qualified": false,
+    "rank_sbc_completed": false,
+    "independent_NUTS_reference_completed": false,
+    "scientific_inference_qualified": false,
+    "release_authorized": false
   }
 }
