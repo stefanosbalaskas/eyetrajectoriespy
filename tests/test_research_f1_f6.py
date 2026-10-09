@@ -172,3 +172,63 @@ def test_sparse_group_prototype_unit_permutation():
         sparse_group_test(sparse, ["A"]*8 + ["B"]*8,
                           fit_kwargs=kwargs, unit_ids=["same"]*16,
                           n_permutations=99)
+
+
+def test_bids_rejects_missing_eye_recording_entity(tmp_path):
+    path = tmp_path / "sub-01_task-look_physio.tsv.gz"
+    pd.DataFrame([[0, 100, 220], [.01, 120, 240]]).to_csv(
+        path, sep="\t", index=False, header=False, compression="gzip"
+    )
+    with pytest.raises(ValueError, match="recording"):
+        from_bids_eyetracking(path, sidecar=sidecar())
+
+
+def test_changepoint_independent_rejects_repeated_participants():
+    d = dense(n=16)
+    md = d.metadata.reset_index(drop=True).copy()
+    md["participant_id"] = [f"P{i // 2}" for i in range(16)]
+    shared = TrajectorySet(
+        time=d.time, values=d.values, curve_ids=d.curve_ids,
+        dimension_names=d.dimension_names, metadata=md,
+        coordinate_system=d.coordinate_system, time_unit=d.time_unit,
+    )
+    with pytest.raises(ValueError, match="repeated participants"):
+        detect_ordered_functional_changepoint(
+            shared, dependence="independent", n_bootstrap=99,
+        )
+
+
+def test_group_unit_ids_cannot_split_same_participant():
+    rng = np.random.default_rng(111)
+    times, values, ids = [], [], []
+    for i in range(10):
+        t = np.r_[0., np.sort(rng.uniform(.1, .9, 6)), 1.]
+        times.append(t)
+        values.append(np.column_stack((.4 + .03 * np.sin(t), .5 + .04 * np.cos(t))))
+        ids.append(f"curve{i}")
+    sparse = IrregularTrajectorySet(
+        time=tuple(times), values=tuple(values), curve_ids=tuple(ids),
+        dimension_names=("x", "y"),
+        metadata=pd.DataFrame({"participant_id": [f"P{i // 2}" for i in range(10)]}),
+    )
+    kwargs = {
+        "n_components": 1, "evaluation_grid": np.linspace(0, 1, 11),
+        "mean_bandwidth": .3, "covariance_bandwidth": .4,
+        "measurement_error": "diagonal",
+        "measurement_error_variance": (.0001, .0001),
+    }
+    with pytest.raises(ValueError, match="one independent unit_id"):
+        sparse_group_test(
+            sparse, ["A"] * 4 + ["B"] * 6, fit_kwargs=kwargs,
+            unit_ids=ids, n_permutations=99,
+        )
+
+
+def test_quality_rejects_out_of_range_calibration():
+    with pytest.raises(ValueError, match="fraction"):
+        audit_gaze_measurement_quality(
+            dense(), validation_records=pd.DataFrame({
+                "participant_id": ["P1"], "data_loss_fraction": [1.3],
+                "evidence_source": ["calibration-validation-log"],
+            })
+        )
