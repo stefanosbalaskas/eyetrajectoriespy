@@ -10,6 +10,7 @@ from generate_workflow_gallery import main as _workflow_main
 from generate_e1_e4_docs_gallery import main as _experimental_workflow_gallery_main
 from generate_f1_f6_gallery import main as _experimental_f1_f6_gallery_main
 from generate_bayesian_research_gallery import main as _bayesian_gallery_main
+from generate_b6_learned_factor_gallery import main as _b6_learned_gallery_main
 
 
 def main() -> None:
@@ -23,6 +24,7 @@ def main() -> None:
     _experimental_workflow_gallery_main()
     _experimental_f1_f6_gallery_main()
     _bayesian_gallery_main()
+    _b6_learned_gallery_main()
 
 
 if __name__ == "__main__":

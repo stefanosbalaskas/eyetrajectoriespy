@@ -8,6 +8,7 @@ from .prediction_and_groups import (
     BayesianPartialTrajectoryPrediction, predict_bayesian_trajectory,
 )
 from .changepoint_pilot import BayesianFunctionalChangepointPilot, fit_bayesian_functional_changepoints
+from .sparse_factor_gibbs import BayesianSparseFactorFPCAFit, fit_bayesian_sparse_fpca
 from .evidence import (
     BayesianFunctionalDraws, BayesianCredibleBand,
     bayesian_prior_predictive_check, bayesian_posterior_predictive_check,
@@ -16,6 +17,7 @@ from .evidence import (
     bayesian_predictive_comparison, export_bayesian_analysis,
 )
 __all__ = [
+    "BayesianSparseFactorFPCAFit", "fit_bayesian_sparse_fpca",
     "BayesianFunctionalChangepointPilot", "fit_bayesian_functional_changepoints",
     "BayesianPlanarScoreBenchmark", "fit_bayesian_planar_score_baseline",
     "BayesianFunctionalGroupComparison", "compare_bayesian_functional_groups",

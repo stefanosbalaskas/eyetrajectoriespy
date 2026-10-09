@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "programme": "B6_native_finite_basis_Gaussian_latent_factor_Gibbs",
+  "source_version": "1.2.0rc2.dev0",
+  "independent_scientific_design": "Gaussian functional factor model with cubic B-spline dictionary and exact precision-form Gibbs conditionals",
+  "learned_mean_and_covariance_implemented": true,
+  "full_population_uncertainty_within_fixed_hyperparameters": true,
+  "fixed_noise_rank_and_priors": true,
+  "stable_root_exports_modified": false,
+  "existing_native_PACE_estimators_modified": false,
+  "learned_orthonormal_eigenfunction_posterior": false,
+  "component_rotation_and_sign_identified": false,
+  "rank_selection_and_hyperparameter_learning": false,
+  "serial_and_multilevel_dependence_modelled": false,
+  "irregular_observations_interpolated": false,
+  "conditioning_baseline": "fit_bayesian_sparse_score_baseline fixed known population in parent PR #237",
+  "publication_candidate": false,
+  "fully_qualified_Bayesian_FPCA": false,
+  "scientific_inference_qualified": false,
+  "release_authorized": false,
+  "required_evidence": [
+    "known prior model SBC with actual Gibbs posterior and convergence diagnostics",
+    "near tied eigenvalues and sign rotation invariant subspace validation",
+    "prior and noise misspecification sensitivity",
+    "sparse observation pattern and heterogeneous density stress",
+    "independent native PACE and isolated external Bayesian comparator recovery",
+    "credible interval coverage and heldout predictive assessment",
+    "repeat participant hierarchical extension and incomplete x/y separately"
+  ],
+  "engineering_ci_qualified": false,
+  "scientific_validation_pilot": {
+    "script": "scripts/run_b6_learned_factor_truth_pilot.py",
+    "prior_likelihood_from_actual_declared_model": true,
+    "refit_each_replication": true,
+    "assessed_targets": [
+      "population_mean_at_prespecified_grid_point",
+      "population_covariance_diagonal_at_prespecified_grid_point"
+    ],
+    "default_replicates": 8,
+    "empirical_monte_carlo_adequacy": false,
+    "scientific_inference_qualified": false,
+    "posterior_chain_diagnostics_benchmark": "optional-arviz-population-diagnostics",
+    "artifacts_pending": true
+  }
+}
