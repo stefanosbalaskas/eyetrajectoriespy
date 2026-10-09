@@ -12,6 +12,11 @@ import argparse
 from hashlib import sha256
 import json
 from pathlib import Path
+import sys
+
+# Direct `python scripts/runner.py` execution must resolve sibling research
+# scripts without relying on editable install path side effects.
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 
 import numpy as np
 import pandas as pd
