@@ -18,6 +18,7 @@ sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import numpy as np
 import pandas as pd
 
+from eyetrajectoriespy.bayesian._posterior_diagnostics import _identified_chain_diagnostics
 from eyetrajectoriespy.bayesian.sparse_factor_gibbs import (
     _spline_basis,fit_bayesian_sparse_fpca)
 from eyetrajectoriespy.bayesian.planar_factor_gibbs import fit_bayesian_planar_factor
@@ -235,12 +236,41 @@ def execute(*,replicates:int=2,nuts_draws:int=350,
                     _summarize_posterior(center_cov,marginal_cv,truth_cv,
                          "x_mid_covariance" if len(dimensions)==1 else "mid_xy_crosscovariance")
                 ]
+                # Diagnostic chain arrays are specifically the *identifiable*
+                # mean and covariance functionals, not sign-switching L.
+                invariant_diagnostics={}
+                for name,native_values,reference_values in (
+                    ("x_mid_population_mean",center_mu,marginal_mu),
+                    ("x_mid_covariance" if len(dimensions)==1
+                     else "mid_xy_crosscovariance",center_cov,marginal_cv),
+                ):
+                    native_diag=_identified_chain_diagnostics(native_values)
+                    reference_diag=_identified_chain_diagnostics(reference_values)
+                    mean_difference=float(np.mean(native_values)-np.mean(reference_values))
+                    combined_mcse=float(np.hypot(
+                        native_diag["mcse_mean_bulk_ess_approx"],reference_diag["mcse_mean_bulk_ess_approx"]))
+                    invariant_diagnostics[name]={
+                        "native":native_diag,"independent_nuts":reference_diag,
+                        "mcse_is_bulk_ess_based_approximation_not_spectral_mcse":True,
+                        "native_minus_reference_mean":mean_difference,
+                        "mean_discrepancy_to_combined_mcse":(
+                            mean_difference/combined_mcse
+                            if combined_mcse>0 else None),
+                        "both_chain_mixing_diagnostics_acceptable":(
+                            native_diag["rank_rhat"]<=1.01 and
+                            reference_diag["rank_rhat"]<=1.01 and
+                            native_diag["bulk_ess"]>=400 and
+                            reference_diag["bulk_ess"]>=400),
+                        "scientific_qualified":False,
+                    }
                 mu_diag=az.rhat(idata,var_names=["mean"])
                 L_diag=az.rhat(idata,var_names=["load"])
                 native_frame=native.diagnostics_frame()
                 row.update(
                     status="ok",
                     conditional_nuts_marginal_population_comparison=summary,
+                    rotation_invariant_population_chain_diagnostics=invariant_diagnostics,
+                    rank1_loading_sign_nonidentifiability_preserved=True,
                     native_rhat_max=float(native_frame.rhat_max.max()),
                     native_bulk_ess_min=float(native_frame.ess_bulk_min.min()),
                     nuts_max_parameter_rhat=float(max(

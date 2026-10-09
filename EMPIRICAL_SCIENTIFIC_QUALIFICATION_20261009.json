@@ -487,6 +487,36 @@
     "rank_based_simulation_calibration_completed": false,
     "rank2_crossbackend_verified": false,
     "scientific_inference_qualified": false,
-    "release_authorized": false
+    "release_authorized": false,
+    "initial_source_workflow_run": 37988738287,
+    "initial_source_artifact_id": 11645572128,
+    "source_head_sha": "5077c337fb03cde2236c3490f6efd7cd8b4bee30",
+    "original_three_reference_fits_completed": 3,
+    "original_reference_fit_errors": 0,
+    "original_reference_nuts_divergences": [
+      0,
+      0,
+      0
+    ],
+    "initial_native_worst_rhat": [
+      1.3811265619773885,
+      1.1090769731168728,
+      1.690645864538083
+    ],
+    "initial_reference_max_raw_parameter_rhat": [
+      1.8356787231023524,
+      1.0199280773408546,
+      1.0334598279315064
+    ],
+    "initial_native_bulk_ess_min": [
+      4.976333457954721,
+      14.297926821235773,
+      3.2317708296791987
+    ],
+    "initial_B7_paired_both_covariance_intervals_missed_known_truth": true,
+    "initial_B7_async_covariance_mean_difference_reference_sd": 0.9626326413501254,
+    "original_invariant_functional_rhat_ess_mcse_not_yet_recorded": true,
+    "new_functional_diagnostics_study_submitted": true,
+    "new_functional_diagnostics_verified": false
   }
 }

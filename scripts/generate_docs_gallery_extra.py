@@ -179,9 +179,19 @@ def main() -> None:
     try:
         if "plot_surrogate_nonlinearity" in targets:
             _generate_surrogate_nonlinearity_case()
+        # Select candidate files *before* pytest imports test modules.
+        # A global collection can import unrelated optional research scripts
+        # (and can fail without ever reaching the plot-selection plugin).
+        tests_dir = ROOT / "tests"
+        candidates = sorted(
+            p for p in tests_dir.glob("test_*.py")
+            if any(name in p.read_text(encoding="utf-8") for name in targets)
+        )
+        if not candidates:
+            raise RuntimeError("no plotting-contract test module references target plots")
         exit_code = pytest.main(
             [
-                str(ROOT / "tests"),
+                *(str(p) for p in candidates),
                 "-q",
                 "--disable-warnings",
                 "--maxfail=1",
