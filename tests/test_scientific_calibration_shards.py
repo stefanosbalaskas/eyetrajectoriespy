@@ -117,3 +117,46 @@ def test_aggregator_will_not_count_failed_fit_as_success(tmp_path):
     assert scenario["matched_rank2"]["n_attempted"]==2
     assert scenario["matched_rank2"]["n_successful"]==1
     assert scenario["matched_rank2"]["population_mean_mid_90_included"]["n"]==1
+
+
+def test_actual_f1_and_f5_full_refit_cases_aggregate_with_original_iteration_alias(tmp_path):
+    """Regression for empirical wave #250: F1 persisted iteration, not replicate."""
+    from scripts.run_f1_f5_scientific_stress import f1_study,f5_study
+    folder=tmp_path/"real-F1-F5"
+    folder.mkdir()
+    f1,_=f1_study(2,99,20261009,shard_id=0)
+    f5,_=f5_study(2,99,20261009,shard_id=0)
+    assert len(f1)==16 and len(f5)==48
+    assert "iteration" in f1.columns and "replicate" in f1.columns
+    assert f1["replicate"].equals(f1["iteration"])
+    # Simulate exact archived pre-repair F1 artifact without any edits to it.
+    f1.drop(columns=["replicate"]).to_csv(folder/"f1-cases.csv",index=False)
+    f5.to_csv(folder/"f5-cases.csv",index=False)
+    manifest=calibration_manifest(
+        "F1_F5",master_seed=20261009,shard_id=0,
+        records_per_scenario=2,case_files=("f1-cases.csv","f5-cases.csv"))
+    (folder/"manifest.json").write_text(json.dumps(manifest)+"\n")
+    (folder/"sha256.txt").write_text("".join(
+        sha256((folder/name).read_bytes()).hexdigest()+"  "+name+"\n"
+        for name in ("f1-cases.csv","f5-cases.csv","manifest.json")))
+    combined,ev=aggregate([folder])
+    assert ev["total_attempts"]==64
+    assert ev["total_fit_failures"]==int((combined.status=="failed").sum())
+    assert ev["n_shards"]==1 and not ev["scientific_inference_qualified"]
+    actual_f1=combined.loc[combined.calibration_method=="f1-cases.csv"]
+    assert len(actual_f1)==16
+    assert actual_f1.replicate.astype(int).equals(actual_f1.iteration.astype(int))
+    assert len([x for x in ev["scenario_summaries"]
+                if x["case_file"]=="f1-cases.csv"])==8
+    assert len([x for x in ev["scenario_summaries"]
+                if x["case_file"]=="f5-cases.csv"])==24
+    # Invalid dual aliases must be rejected even with valid file checksums.
+    edited=pd.read_csv(folder/"f1-cases.csv")
+    edited["replicate"]=edited["iteration"]
+    edited.loc[0,"replicate"]=99
+    edited.to_csv(folder/"f1-cases.csv",index=False)
+    (folder/"sha256.txt").write_text("".join(
+        sha256((folder/name).read_bytes()).hexdigest()+"  "+name+"\n"
+        for name in ("f1-cases.csv","f5-cases.csv","manifest.json")))
+    with pytest.raises(ValueError,match="identifiers disagree"):
+        aggregate([folder])
