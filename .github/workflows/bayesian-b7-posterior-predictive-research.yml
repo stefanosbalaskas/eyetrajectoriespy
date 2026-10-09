@@ -87,6 +87,8 @@ jobs:
           cases=pd.read_csv(root/"cases.csv")
           assert ev["attempts"]==8==len(cases)
           assert ev["failed"]==(cases.status=="failed").sum()
+          assert (cases.status=="ok").sum()>=6
+          assert all((one.status=="ok").any() for _,one in cases.groupby(["rank","asynchronous"]))
           assert ev["heldout_truth_not_in_training"]
           assert ev["heldout_pointwise_fraction_not_binomial_independent_points"]
           assert ev["all_pointwise_bands_not_a_simultaneous_credible_band"]
