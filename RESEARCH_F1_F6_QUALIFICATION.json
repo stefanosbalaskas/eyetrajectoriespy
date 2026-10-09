@@ -2,7 +2,7 @@
   "schema_version": 1,
   "programme": "f1-f6-new-scientific-and-interchange-methods",
   "source_version": "1.2.0rc2.dev0",
-  "status": "experimental_implementation_plus_reproducible_pilot_under_ci",
+  "status": "F1-F6_engineering_qualified_on_exact_head_scientific_gate_open_stacked_research",
   "implementation_pull_request": 227,
   "tracking_issue": 226,
   "legacy_one_dot_two_rc_evidence_relabelled": false,
@@ -111,11 +111,24 @@
       "inverse_units_invariance"
     ],
     "real_world_validation_and_bids_conformance": false,
-    "workgroup_ci_verified": false,
+    "workgroup_ci_verified": true,
     "eye_tracking_bids_spec_version": "1.11.2",
     "bids_reference_fixture": "published_EyeTracking_sample_timestamp_ms_optional_pupil",
     "gaze_validation_target_derived_accuracy": "explicit_target_pairings_not_free_viewing",
     "gaze_validation_accuracy_population_verified": false,
-    "weight_snapshot_is_immutable": true
+    "weight_snapshot_is_immutable": true,
+    "workgroup_ci_verified_exact_head": "d48c939b01fbfa19f0e060902b6a61ebddbe7aa6",
+    "workgroup_ci_verified_workflow_groups": 27,
+    "workgroup_ci_verified_workflow_failures": 0,
+    "current_stacked_development_ci_verified": false,
+    "scientific_inference_qualified": false,
+    "dataset_bids_validator_executed": false,
+    "experimental_new_design_methods": [
+      "simulate_functional_study_power",
+      "fit_functional_reliability",
+      "compare_repeated_functional_groups",
+      "link_gaze_validation_sessions",
+      "audit_bids_eyetracking_dataset"
+    ]
   }
 }
