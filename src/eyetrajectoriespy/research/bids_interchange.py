@@ -82,8 +82,8 @@ def from_bids_eyetracking(
     resampling, interpolation, or across-trial segmentation is performed.
     """
     path = Path(tsv_gz)
-    if not path.name.endswith("_physio.tsv.gz"):
-        raise ValueError("requires a *_physio.tsv.gz file")
+    if not path.name.endswith("_physio.tsv.gz") or "_recording-" not in path.name:
+        raise ValueError("requires a *_recording-<eye>_physio.tsv.gz file")
     if isinstance(sidecar, Mapping):
         meta = dict(sidecar)
     else:
