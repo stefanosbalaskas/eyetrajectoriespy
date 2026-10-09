@@ -79,3 +79,36 @@ AR1 phi**, not in-sample estimated dependence.
 No root namespace, stable 1.1.0 functionality, protected main,
 production release flags or public deployment are promoted by this
 research tranche.
+
+
+## Completed paired computation: no reliable mixing improvement
+
+The actual [source run #37976468861](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37976468861)
+completed **72/72** original-versus-scale-MH Bayesian Gibbs fits with **zero
+fitting exceptions**. Its original immutable evidence artifact is
+`11639357048`, using exact code head
+`3d55d101a6fc1a32ffcf7420121b79e3295d95ed`.
+The paired 36 independent matched-prior datasets are the independent units,
+**six per scenario**, not 72 independent replications of the same effect.
+
+| Matched-prior scenario | Median worst R-hat original → MH | Median minimum bulk ESS original → MH |
+|---|---|---|
+| B6 rank 1 | 1.236 → 1.177 | 8.40 → 9.09 |
+| B6 rank 2 | 1.535 → 1.588 | 3.92 → 3.57 |
+| B7 rank 1 paired | 1.246 → 1.260 | 9.65 → 7.48 |
+| B7 rank 1 asynchronous | 1.778 → 1.813 | 3.25 → 3.11 |
+| B7 rank 2 paired | 1.736 → 1.706 | 3.26 → 3.24 |
+| B7 rank 2 asynchronous | 1.788 → 1.844 | 3.24 → 3.13 |
+
+The scale-MH acceptance-rate medians were approximately **0.51–0.57**
+across the six scenarios. Despite the correct invariant target and
+active proposals, these results **do not show a general mixing improvement**;
+rank-2 and asynchronous conditions frequently worsened. Neither variant
+comes close to adequate R-hat and ESS for inferential qualification.
+
+**Decision: do not recommend enabling scale interweaving as a solution to
+the Bayesian blocker.** Preserve its mathematically reversible
+implementation only as opt-in, unqualified experimental research, and
+prioritize more fundamental posterior parameterization and
+independent reference MCMC. This small pilot cannot prove equivalence
+or superiority of posterior uncertainty, and it is not a rank-based SBC.
