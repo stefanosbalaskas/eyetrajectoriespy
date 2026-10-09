@@ -31,6 +31,13 @@ def detect_ordered_functional_changepoint(
     n = len(x)
     if not np.isfinite(x).all():
         raise ValueError("missing values require declared preprocessing")
+    if dependence == "independent" and "participant_id" in trajectories.metadata:
+        ids = trajectories.metadata["participant_id"].astype(str)
+        if ids.duplicated().any():
+            raise ValueError(
+                "independent curve resampling is invalid for repeated participants; "
+                "use a design-specific hierarchical inference model"
+            )
     if dependence not in ("independent", "weak_block"):
         raise ValueError("declare independent or weak_block dependence")
     if isinstance(n_bootstrap, bool) or n_bootstrap < 99:
