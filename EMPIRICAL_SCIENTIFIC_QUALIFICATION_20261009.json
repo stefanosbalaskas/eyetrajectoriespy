@@ -630,10 +630,114 @@
     "per_method_nuisance_refits": 99,
     "per_method_null_simulations": 119,
     "no_threshold_optimization_authorized": true,
-    "original_source_run_verified": false,
-    "source_fit_error_rate_verified": false,
+    "original_source_run_verified": true,
+    "source_fit_error_rate_verified": true,
     "model_calibration_qualified": false,
     "general_dependent_null_inference_qualified": false,
-    "release_authorized": false
+    "release_authorized": false,
+    "original_source_run": 37992161919,
+    "original_source_head": "ab37e75db841818c7888c3f343195b26d0b48acf",
+    "original_combined_case_artifact_id": 11645662411,
+    "original_source_science_jobs_successful": 8,
+    "actual_total_full_tests": 3600,
+    "actual_distinct_test_datasets": 600,
+    "actual_source_fit_errors": 0,
+    "original_case_sha256_verified": true,
+    "source_run_completed": true,
+    "null_rejection_at_005_per_100_dataset_cell": [
+      {
+        "scenario": "iid",
+        "baseline_lengths": [
+          40,
+          80,
+          160
+        ],
+        "uncertainty": [
+          0,
+          3,
+          7
+        ],
+        "plugin": [
+          4,
+          4,
+          7
+        ]
+      },
+      {
+        "scenario": "AR1_phi035",
+        "baseline_lengths": [
+          40,
+          80,
+          160
+        ],
+        "uncertainty": [
+          1,
+          1,
+          1
+        ],
+        "plugin": [
+          2,
+          3,
+          2
+        ]
+      },
+      {
+        "scenario": "AR1_phi080",
+        "baseline_lengths": [
+          40,
+          80,
+          160
+        ],
+        "uncertainty": [
+          3,
+          1,
+          5
+        ],
+        "plugin": [
+          24,
+          12,
+          9
+        ]
+      },
+      {
+        "scenario": "AR2_misspecified",
+        "baseline_lengths": [
+          40,
+          80,
+          160
+        ],
+        "uncertainty": [
+          27,
+          12,
+          15
+        ],
+        "plugin": [
+          68,
+          38,
+          21
+        ]
+      }
+    ],
+    "strong_ar1_break_rejections_per_50_dataset_cell": {
+      "baseline_lengths": [
+        40,
+        80,
+        160
+      ],
+      "uncertainty": [
+        32,
+        40,
+        40
+      ],
+      "plugin": [
+        48,
+        47,
+        46
+      ]
+    },
+    "plugin_appears_anti_conservative_in_strong_AR1": true,
+    "uncertainty_method_AR2_stress_remains_miscalibrated_in_pilot": true,
+    "no_method_selection_or_threshold_tuning_authorized": true,
+    "general_unknown_dependence_inference_qualified": false
   }
 }
