@@ -170,6 +170,27 @@
     "supports_unknown_real_world_ar1": false,
     "legacy_f5_methods_unchanged": true,
     "heldout_validation_complete": false,
-    "scientific_inference_qualified": false
+    "scientific_inference_qualified": false,
+    "source_comparator_study_run_id": 37975560959,
+    "source_comparator_artifact_id": 11639020647,
+    "original_comparator_model_fits_1800_retained": true,
+    "original_ci_failure": "literal_null_label_parsed_as_NA_in_final_csv_audit_only",
+    "verified_recovery_no_refits_pending": true,
+    "original_comparator_rates_claimed_calibrated": false
+  },
+  "B6_B7_reversible_interweaving_20261009": {
+    "parent_scientific_blocker_issue": 255,
+    "model_parameters_changed_for_existing_default": false,
+    "optional_scale_proposal_sd": 0.25,
+    "prior_posterior_target_preserved_by_likelihood_invariant_jacobian_correct_MH": true,
+    "numerical_gaussian_conditionals_independently_checked_python_311_312_313": true,
+    "independent_gaussian_test_workflow_run_id": 37975560959,
+    "actual_paired_mixing_study_attempts_planned": 72,
+    "independent_matched_truth_dataset_count_planned": 36,
+    "reparameterized_mixing_qualified": false,
+    "marginal_posterior_coverage_qualified": false,
+    "rank_sbc_completed": false,
+    "NUTS_independent_reference_completed": false,
+    "publication_authorized": false
   }
 }
