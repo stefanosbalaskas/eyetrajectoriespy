@@ -4,12 +4,16 @@
     if (!root || root.dataset.bound === "yes") return;
     root.dataset.bound = "yes";
     const layout = root.querySelector("#et-layout"), design = root.querySelector("#et-design");
-    const target = root.querySelector("#et-target"), out = root.querySelector("#et-method-outcome");
+    const target = root.querySelector("#et-target"), inference = root.querySelector("#et-inference"), out = root.querySelector("#et-method-outcome");
     const link = root.querySelector("#et-method-link");
-    if (!layout || !design || !target || !out || !link) return;
+    if (!layout || !design || !target || !inference || !out || !link) return;
     function update() {
       let title, caveat, href = "../research-method-api/";
-      if (target.value === "quality" || layout.value === "bids") {
+      if (inference.value === "bayesian") {
+        title = "Unpublished B5–B10 Bayesian research methods";
+        caveat = "B5 posterior tools and fixed-population B6/B7, fixed-noise B8, conditional B9 baselines are experimental. Full learned Bayesian FPCA, repeated-participant hierarchies and B10 models are not yet qualified. No production recommendation.";
+        href = "../bayesian-research-programme/";
+      } else if (target.value === "quality" || layout.value === "bids") {
         title = "Experimental target/BIDS evidence route";
         caveat = "Explicit metadata and target validation required; no clock alignment or full standards certificate.";
       } else if (target.value === "reliability") {
@@ -41,7 +45,7 @@
       link.textContent = "Read: " + title;
       link.href = href;
     }
-    for (const element of [layout, design, target]) element.addEventListener("change", update);
+    for (const element of [layout, design, target, inference]) element.addEventListener("change", update);
     update();
   }
   if (typeof document$ !== "undefined" && document$.subscribe) document$.subscribe(boot);
