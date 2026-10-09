@@ -162,6 +162,21 @@
         "full_sparse": 11590552856,
         "f4": 11589938548
       }
+    },
+    "F1_F5_scientific_extension": {
+      "full_sparse_and_block_stress_runner": "scripts/run_f1_f5_scientific_stress.py",
+      "scope": [
+        "balanced_and_heteroscedastic_full_model",
+        "unequal_groups",
+        "participant_cluster_resampling",
+        "very_sparse",
+        "AR1_block_length_sensitivity",
+        "heavy_tailed_independent_curves",
+        "single_and_two_break_stress"
+      ],
+      "scientific_size_and_power_qualified": false,
+      "new_followon_branch_ci_qualified": false,
+      "original_exact_head_ci_evidence_preserved": "d48c939b01fbfa19f0e060902b6a61ebddbe7aa6"
     }
   }
 }
