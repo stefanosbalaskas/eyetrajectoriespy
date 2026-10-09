@@ -1,0 +1,166 @@
+name: research-f1-independent-null-and-moderate-power
+
+# Expensive native sparse-PACE fits start exactly once when the new research PR
+# is opened. Later docs/governance pushes must not silently replay the study.
+on:
+  pull_request:
+    types: [opened]
+    paths:
+      - ".github/workflows/research-f1-independent-null-and-moderate-power.yml"
+      - "scripts/run_f1_larger_operating_characteristics.py"
+      - "tests/test_f1_larger_operating_characteristics.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  full-native-sparse-pace:
+    name: F1 1000 null 500 alternative (${{ matrix.design }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 110
+    strategy:
+      fail-fast: false
+      matrix:
+        design: [balanced_equal_covariance, clustered_two_trials, unequal_heteroscedastic_null, very_sparse]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      DESIGN: ${{ matrix.design }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - name: Preflight actual native F1 full-fit runner
+        run: python -m pytest -q tests/test_f1_larger_operating_characteristics.py
+      - name: Actual 1500 full fits per prespecified design
+        run: |
+          python scripts/run_f1_larger_operating_characteristics.py \
+            --design "$DESIGN" --null-replicates 1000 \
+            --alternative-replicates 500 \
+            --permutations 199 --effect-amplitude .04 \
+            --master-seed 20261125 --out "build/f1-$DESIGN" \
+            > build-f1-console.json
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          import pandas as pd
+          x=os.environ["DESIGN"]
+          root=Path("build")/f"f1-{x}"
+          ev=json.loads((root/"evidence.json").read_text())
+          cases=pd.read_csv(root/"cases.csv",keep_default_na=False,na_values=[""])
+          assert ev["total_attempts"]==1500 and len(cases)==1500
+          assert set(cases.condition)=={"null","alternative"}
+          assert cases.condition.value_counts().to_dict()=={"null":1000,"alternative":500}
+          assert cases.seed.nunique()==1500
+          assert ev["native_real_full_sparse_PACE_fit_for_each_attempt"]
+          assert not ev["statistical_null_size_qualified"]
+          assert not ev["statistical_power_qualified"]
+          assert not ev["release_authorized"]
+          for result in ev["summary"]:
+              print("ACTUAL F1 SCIENCE",json.dumps({
+                "design":ev["design"],"condition":result["condition"],
+                "attempted":result["attempted"],"failed":result["failed"],
+                "alpha_005":result["alpha_0.05"]},sort_keys=True))
+          PY
+      - name: Preserve every case, including failures, and SHA256
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f1-qualification-${{ matrix.design }}
+          path: build/f1-${{ matrix.design }}/
+          retention-days: 90
+          if-no-files-found: warn
+
+  aggregate-four-designs:
+    name: Fail-closed F1 4000 null 2000 moderate alternative evidence
+    needs: full-native-sparse-pace
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: f1-qualification-*
+          path: build/f1-shards
+      - name: Independent hash audit with exact all-attempt/failure denominator
+        run: |
+          python - <<'PY'
+          import json,pathlib
+          from hashlib import sha256
+          import pandas as pd
+          from scipy.stats import binomtest
+          base=pathlib.Path("build/f1-shards")
+          folders=sorted(p for p in base.iterdir() if p.is_dir())
+          assert len(folders)==4
+          designs=set();seeds=set();rows=[]
+          results=[]
+          for folder in folders:
+              listed=(folder/"sha256.txt").read_text().splitlines()
+              files={}
+              for line in listed:
+                  hashcode,name=line.split("  ",1)
+                  assert name in {"cases.csv","evidence.json"} and name not in files
+                  assert sha256((folder/name).read_bytes()).hexdigest()==hashcode
+                  files[name]=hashcode
+              assert set(files)=={"cases.csv","evidence.json"}
+              ev=json.loads((folder/"evidence.json").read_text())
+              cases=pd.read_csv(folder/"cases.csv",keep_default_na=False,na_values=[""])
+              design=ev["design"]
+              assert design not in designs
+              designs.add(design)
+              assert len(cases)==ev["total_attempts"]==1500
+              assert cases.condition.value_counts().to_dict()=={"null":1000,"alternative":500}
+              assert ev["fit_failures"]==int(cases.status.eq("failed").sum())
+              for seed in cases.seed:
+                  assert int(seed) not in seeds
+                  seeds.add(int(seed))
+              for item in ev["summary"]:
+                  cases_one=cases[cases.condition==item["condition"]]
+                  good=cases_one[cases_one.status=="ok"]
+                  assert len(cases_one)==item["attempted"]
+                  for alpha in (.01,.05,.10):
+                      assert int((good.p_value<=alpha).sum())==item[f"alpha_{alpha:g}"]["rejections"]
+                  results.append({"design":design,**item})
+              cases["design"]=design
+              rows.append(cases)
+          assert len(seeds)==6000 and len(results)==8
+          combined=pd.concat(rows,ignore_index=True)
+          assert int(combined.status.eq("failed").sum())>=0
+          record={"programme":"F1_4000_null_2000_moderate_alternative",
+                  "independent_shards":4,"attempts":6000,
+                  "null_attempts":4000,"alternative_attempts":2000,
+                  "fit_failures":int(combined.status.eq("failed").sum()),
+                  "all_sha256_verified":True,
+                  "unique_simulation_seed_streams_verified":True,
+                  "scientific_null_size_qualified":False,
+                  "scientific_power_qualified":False,
+                  "release_authorized":False,
+                  "results":results}
+          out=pathlib.Path("build/f1-high-precision-evidence")
+          out.mkdir(parents=True,exist_ok=True)
+          (out/"evidence-combined.json").write_text(json.dumps(record,indent=2,sort_keys=True)+"\n")
+          combined.to_csv(out/"cases-combined.csv",index=False)
+          for item in results:
+              print("F1 HIGH-PRECISION (unqualified)",json.dumps({
+                  "design":item["design"],"truth":item["condition"],
+                  "attempts":item["attempted"],"failed":item["failed"],
+                  "alpha_0.05":item["alpha_0.05"]},sort_keys=True))
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f1-6000-cases-combined-verified
+          path: build/f1-high-precision-evidence/
+          retention-days: 90
+          if-no-files-found: warn
