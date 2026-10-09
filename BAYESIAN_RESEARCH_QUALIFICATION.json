@@ -51,7 +51,7 @@
     "participant hierarchical and residual serial-dependence models",
     "independent external scientific comparator with licensing isolation"
   ],
-  "current_head_ci_qualified": false,
+  "current_head_ci_qualified": true,
   "optional_backends": [
     "ArviZ diagnostics optional",
     "PyMC backend optional planned"
@@ -67,6 +67,27 @@
     "full_Bayesian_FPCA_qualified": false,
     "chain_diagnostics_qualified": false,
     "scientific_qualification": false,
-    "artifact_attestation_pending": true
+    "artifact_attestation_pending": true,
+    "B6_learned_population_full_model_in_stacked_PR": 243,
+    "B6_new_rank2_and_adversarial_runner": "scripts/run_b6_population_calibration_grid.py",
+    "B6_new_scientific_grid_qualified": false
+  },
+  "engineering_qualification_reference": {
+    "pull_request": 237,
+    "qualified_exact_head": "2a7a3c03211cf4e4754b96406563e4d8b0a1acd2",
+    "workflow_groups_passed": 32,
+    "workflow_groups_failed": 0,
+    "sampled_workflow_runs": {
+      "bayesian_b5_b8": 37906280852,
+      "comparator": 37906281231,
+      "docs": 37906280597,
+      "tests": 37906280905
+    },
+    "retained_artifact_ids": {
+      "conjugate_sbc_pilot": 11605712009,
+      "bayesian_synthetic_gallery": 11605901288
+    },
+    "qualification_scope": "PR237 source head only, NOT new validation branch or scientific validity",
+    "new_validation_branch_head_ci_qualified": false
   }
 }
