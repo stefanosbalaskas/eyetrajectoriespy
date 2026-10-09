@@ -31,8 +31,8 @@ distribution used in the default route is itself only approximate.
 ## Prespecified matched design
 
 There are four data-generating processes: Gaussian iid, AR1
-\(\phi=.35\), AR1 \(\phi=.80\), and misspecified Gaussian AR2
-\((\phi_1=.64,\phi_2=.24)\).
+$\phi=.35$, AR1 $\phi=.80$, and misspecified Gaussian AR2
+$(\phi_1=.64,\phi_2=.24)$.
 Each process has 100 independently generated no-change test sequences
 and 50 sequences with the same prespecified sinusoidal break of
 amplitude 0.12. Each test sequence has 36 ordered whole functions;
