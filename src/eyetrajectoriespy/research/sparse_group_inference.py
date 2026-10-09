@@ -66,6 +66,16 @@ def test_sparse_functional_groups(
         ids = np.asarray(unit_ids, dtype=str)
         if ids.ndim != 1 or ids.size != n or any(not x.strip() for x in ids):
             raise ValueError("unit_ids must identify every independent unit")
+    if "participant_id" in trajectories.metadata.columns:
+        participant_ids = trajectories.metadata["participant_id"].astype(str).to_numpy()
+        for participant in set(participant_ids):
+            assigned_units = set(ids[participant_ids == participant])
+            if len(assigned_units) != 1:
+                raise ValueError(
+                    "all repeated curves from each participant must share one independent unit_id"
+                )
+    if any(not unit.strip() for unit in ids):
+        raise ValueError("independent unit identifiers cannot be blank")
     unit_names = list(dict.fromkeys(ids))
     unit_scores_index = [np.flatnonzero(ids == name) for name in unit_names]
     unit_groups = []
