@@ -68,3 +68,37 @@ comparison with a second test. Until then
 `release_authorized=false`.
 
 No change to protected main or stable 1.1.0 is part of this experiment.
+
+
+## Completed independent 6,000-fit F1 study (source-verified)
+
+[Original exact-source workflow #37977625803](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37977625803)
+completed **5/5 study jobs**, including 4,000 independent native sparse-PACE
+true-null fits and 2,000 moderate-effect alternatives with **zero
+exceptions**. The original immutable combined archive artifact is
+`11640464273`; four separately SHA256-audited design artifacts were retained.
+
+| Predeclared design | α=.05 true-null rejects/1,000 | Exact 95% MC interval | α=.05 moderate alternative rejects/500 | Exact 95% MC interval |
+|---|---:|---|---:|---|
+| Balanced equal covariance | 49/1000 = 4.9% | 3.65–6.43% | 79/500 = 15.8% | 12.71–19.30% |
+| Repeated two trials/participant | 51/1000 = 5.1% | 3.82–6.65% | 91/500 = 18.2% | 14.91–21.87% |
+| Unequal heterogeneous noise | 52/1000 = 5.2% | 3.91–6.76% | 96/500 = 19.2% | 15.84–22.93% |
+| Very sparse | 44/1000 = 4.4% | 3.21–5.86% | 71/500 = 14.2% | 11.26–17.57% |
+
+**Interpretation:** the new independent null sizes are all statistically
+consistent with nominal 5% at this single sample-size/parameter setting.
+The previous balanced 23/300=7.67% null rate is less precise and does
+not establish a stable anti-conservative pattern. Neither apparent null
+alignment nor zero fit failures guarantees universal valid inference.
+The unequal heteroscedastic condition intentionally breaks pooled
+permutation exchangeability, so its approximately nominal observed
+size is an empirical outcome, **not** a mathematical validity proof.
+
+Moderate effect `0.04` detection was only **14.2–19.2%** at α=.05.
+The previous 0.11-effect pilot's ~98–99% rejection is not general
+power. The native sparse-PACE method's inferential use now needs a
+power/size curve across realistic amplitude, independent participant
+sample size, and missingness, plus separate cluster and
+heteroscedasticity validity review. **No scientific or release gate
+is automatically promoted.** All original cases and scientific
+exceptions remain retained for independent review.
