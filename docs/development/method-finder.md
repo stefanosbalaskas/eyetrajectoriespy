@@ -11,7 +11,7 @@
   <p><label for="et-target">Scientific target</label>
     <select id="et-target"><option value="variation">Functional variation</option><option value="contrast">Group/condition contrast</option><option value="quality">Quality and interoperability</option><option value="reliability">Repeated-trial reliability</option><option value="power">Power/study planning</option></select></p>
   <p id="et-method-outcome" role="status" aria-live="polite">Choose a route to see its assumptions.</p>
-  <p><a id="et-method-link" href="../articles/choosing-the-ten-workflows/">Review static workflow selection</a></p>
+  <p><a id="et-method-link" href="../../articles/choosing-the-ten-workflows/">Review static workflow selection</a></p>
 </div>
 
 [Static workflow chooser](../articles/choosing-the-ten-workflows.md) · [Scientific evidence matrix](research-evidence-matrix.md)
