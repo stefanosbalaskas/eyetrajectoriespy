@@ -1,12 +1,8 @@
 name: science-f5-recover-original-oracle-artifact
-on:
-  pull_request:
-    paths:
-      - ".github/workflows/science-f5-recover-original-oracle-artifact.yml"
-      - "docs/development/independent-core-computation-and-f5-ar1-reference.md"
-      - "tests/test_f5_ar1_reference.py"
-  workflow_dispatch:
 
+# Original scientific evidence is archived; opt-in manual replay only.
+on:
+  workflow_dispatch:
 permissions:
   contents: read
   actions: read
