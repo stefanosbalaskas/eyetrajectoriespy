@@ -1,0 +1,145 @@
+name: science-b6-b7-score-marginal-loading-ESS
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - ".github/workflows/science-b6-b7-score-marginal-loading-ESS.yml"
+      - "src/eyetrajectoriespy/bayesian/_score_marginal_loading.py"
+      - "src/eyetrajectoriespy/bayesian/sparse_factor_gibbs.py"
+      - "src/eyetrajectoriespy/bayesian/planar_factor_gibbs.py"
+      - "scripts/run_b6_b7_score_marginal_loading_pilot.py"
+      - "tests/test_b6_b7_score_marginal_loading_ess.py"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  conditional-truth-contract:
+    name: Independent dense marginal likelihood/ESS checks (${{ matrix.python }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian]"
+      - run: |
+          python -m pytest -q \
+            tests/test_b6_b7_score_marginal_loading_ess.py \
+            tests/test_independent_b6_b7_nuts_reference.py \
+            tests/test_b6_b7_identifiable_posterior_diagnostics.py \
+            tests/test_bayesian_partially_collapsed_mean.py
+
+  paired-real-native-fits:
+    name: Paired B6/B7 actual posterior fits (${{ matrix.design }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 115
+    strategy:
+      fail-fast: false
+      matrix:
+        design: [B6_rank1, B7_rank1_paired, B7_rank1_asynchronous]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian]"
+      - name: Pair six actual independent prior-generated datasets, old conditional loading vs score-integrated ESS
+        run: |
+          python scripts/run_b6_b7_score_marginal_loading_pilot.py \
+            --design ${{ matrix.design }} --replicates 6 \
+            --draws 250 --warmup 350 --seed 20261206 \
+            --out build/science-score-marginal/${{ matrix.design }} \
+            > actual-paired-native-science.json
+          python - <<'PY'
+          from pathlib import Path
+          import json,pandas as pd
+          p=Path("build/science-score-marginal/${{ matrix.design }}")
+          cases=pd.read_csv(p/"cases.csv",keep_default_na=False,na_values=[""])
+          e=json.loads((p/"evidence.json").read_text())
+          assert len(cases)==e["attempts"]==12
+          assert cases.replicate.nunique()==6
+          assert cases.groupby("replicate").method.nunique().eq(2).all()
+          assert cases.groupby("replicate").seed.nunique().eq(1).all()
+          assert e["failed_attempts"]==int(cases.status.eq("failed").sum())
+          assert e["native_sampler_scientifically_qualified"] is False
+          assert e["release_authorized"] is False
+          for row in e["summary"]:
+              print("B6 B7 EXACT ESS RESEARCH:",json.dumps(row,sort_keys=True))
+          PY
+      - name: Retain all actual pairs, errors, truth and source checksum
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b6-b7-score-integrated-loading-${{ matrix.design }}
+          path: build/science-score-marginal/${{ matrix.design }}/
+          retention-days: 90
+          if-no-files-found: warn
+
+  cross-shard-failure-audit:
+    name: Confirm 36 real B6/B7 paired fits and source SHA256
+    runs-on: ubuntu-24.04
+    needs: paired-real-native-fits
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pandas
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b6-b7-score-integrated-loading-*
+          path: build/retained-research
+      - run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from hashlib import sha256
+          import pandas as pd
+          root=Path("build/retained-research")
+          frames=[]
+          designs=("B6_rank1","B7_rank1_paired","B7_rank1_asynchronous")
+          for design in designs:
+              folder=root/("b6-b7-score-integrated-loading-"+design)
+              assert folder.is_dir(),design
+              for line in (folder/"SHA256SUMS").read_text().splitlines():
+                  digest,name=line.split("  ")
+                  assert sha256((folder/name).read_bytes()).hexdigest()==digest
+              data=pd.read_csv(folder/"cases.csv",keep_default_na=False,na_values=[""])
+              ev=json.loads((folder/"evidence.json").read_text())
+              assert len(data)==ev["attempts"]==12
+              assert ev["failed_attempts"]==int(data.status.eq("failed").sum())
+              assert not ev["release_authorized"]
+              frames.append(data)
+          combined=pd.concat(frames,ignore_index=True)
+          assert len(combined)==36
+          assert combined.groupby(["design","replicate"]).method.nunique().eq(2).all()
+          out=Path("build/score-marginal-combined")
+          out.mkdir(parents=True,exist_ok=True)
+          combined.to_csv(out/"cases.csv",index=False)
+          audit={"actual_fits":36,"independent_generated_datasets":18,
+                 "fitting_errors":int(combined.status.eq("failed").sum()),
+                 "verified_all_shard_sha256":True,
+                 "scientific_inference_qualified":False,"release_authorized":False}
+          (out/"audit.json").write_text(json.dumps(audit,sort_keys=True,indent=2)+"\n")
+          print("SCORE MARGINAL EXACT RESEARCH AUDIT",audit)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: b6-b7-score-marginal-36-fit-source-audit
+          path: build/score-marginal-combined/
+          retention-days: 90

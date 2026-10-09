@@ -49,6 +49,7 @@ nav:
           - Exact partially collapsed Bayesian mean: development/b6-b7-exact-collapsed-mean-gibbs.md
           - Independent B6 B7 PyMC NUTS reference: development/b6-b7-independent-pymc-nuts-reference.md
           - Bayesian identifiable functional posterior diagnostics: development/b6-b7-identifiable-reference-diagnostics.md
+          - Bayesian joint score-marginal loading ESS pilot: development/b6-b7-joint-score-marginal-loading-ess.md
           - B6 and F1/F5 scientific calibration: development/b6-f1-f5-calibration-protocol.md
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md
