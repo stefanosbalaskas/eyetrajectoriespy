@@ -44,6 +44,7 @@ nav:
           - Empirical calibration first wave: development/empirical-calibration-wave1.md
           - Empirical scientific results and failure gates: development/first-empirical-calibration-findings.md
           - Independent core checks and F5 AR1 reference: development/independent-core-computation-and-f5-ar1-reference.md
+          - Reversible B6 B7 MH scale move: development/b6-b7-reversible-scale-interweaving.md
           - B6 and F1/F5 scientific calibration: development/b6-f1-f5-calibration-protocol.md
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md
