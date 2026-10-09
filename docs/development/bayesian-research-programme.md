@@ -9,9 +9,9 @@ The [historical B4 feasibility decision](../articles/bayesian-feasibility-bounda
 |---|---|---|
 | B5 evidence infrastructure | `BayesianFunctionalDraws`, `bayesian_credible_band()`, `bayesian_functional_probability()`, prior/posterior predictive checks, `bayesian_diagnostics_frame()`, `bayesian_calibration_study()`, predictive comparison, portable export | No claim of validated posterior coverage, inference-algorithm correctness, or model adequacy |
 | B6 sparse Bayesian FPCA | `fit_bayesian_sparse_score_baseline()` | Fixed supplied population mean, eigenfunctions, eigenvalues and noise. **Not** learned Bayesian FPCA, no population-parameter posterior |
-| B7 Bayesian x/y multivariate FPCA | Design and validation specification only | No paired or asynchronous joint Bayesian estimator |
+| B7 Bayesian x/y multivariate FPCA | Fixed-population shared-score conjugate benchmark via `fit_bayesian_planar_score_baseline()` | Paired and asynchronous observations accepted **conditionally on known functions**; no learned joint Bayesian MFPCA |
 | B8 functional regression | `fit_bayesian_function_on_scalar()` independent Gaussian spline posterior | Observation noise SD fixed, no serial covariance, participant random effect or repeated-measures model |
-| B9 prediction and groups | Design only | No calibrated posterior group test or partial-trajectory prediction |
+| B9 prediction and groups | `compare_bayesian_functional_groups()` and `predict_bayesian_trajectory()` experimental | Jointly paired posterior draws required for group contrasts; partial completion uses **fixed known population basis** only; no calibrated prediction or group test |
 | B10 AOI, registration, observation-process, changepoints | Design only | No fitted probabilistic estimator |
 
 ## Scientific definitions and limitations
@@ -34,6 +34,6 @@ The [historical B4 feasibility decision](../articles/bayesian-feasibility-bounda
 
 The package root and native FPCA estimators are unchanged. The `bayesian` extra installs ArviZ diagnostics; `bayesian-pymc` additionally installs optional PyMC for future sampler-based models. None is required for standard users, and the current B8 conjugate fitter does not claim to have run MCMC.
 
-B6 learned-eigensystem modelling, B7 paired/asynchronous planar inference, B8 participant/trial hierarchical regression, B9 partial-trajectory prediction and B10 AOI/change-point/registration/observation models need independent scientific and engineering gates.
+B6 learned-eigensystem modelling, B7 **learned-population** paired/asynchronous planar inference, B8 participant/trial hierarchical regression, B9 **learned-population calibrated** partial prediction and B10 AOI/change-point/registration/observation models need independent scientific and engineering gates.
 
 [Bayesian synthetic figures](bayesian-gallery.md) · [Historical B4 evidence](../validation/bayesian-fpca-b2-b3.md) · [Research evidence matrix](research-evidence-matrix.md)

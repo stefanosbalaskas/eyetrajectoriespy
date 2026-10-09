@@ -120,3 +120,43 @@ jobs:
           assert et.__version__ == "1.2.0rc2.dev0"
           print("PASS installed Bayesian source scope, not promoted")
           PY
+
+  fitted-synthetic-figures:
+    name: Bayesian B5-B9 real-fitting synthetic gallery
+    needs: research-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Bayesian source without optional sampler
+        run: python -m pip install -e ".[dev]"
+      - name: Build and verify deterministic fitted-object SVG figures
+        run: |
+          python scripts/generate_bayesian_research_gallery.py
+          python - <<'PY'
+          from pathlib import Path
+          from hashlib import sha256
+          root=Path("docs/assets/research")
+          files=sorted(root.glob("b[568]-*.svg"))
+          assert len(files) == 5, [p.name for p in files]
+          hashes=[sha256(f.read_bytes()).hexdigest() for f in files]
+          assert all(f.stat().st_size > 1000 for f in files)
+          import subprocess
+          subprocess.run(["python","scripts/generate_bayesian_research_gallery.py"],check=True)
+          assert hashes == [sha256(f.read_bytes()).hexdigest() for f in files]
+          print("PASS 5 reproducible SVGs generated from actual B5/B6/B8 evidence objects")
+          PY
+      - name: Retain fitted synthetic research figures
+        uses: actions/upload-artifact@v4
+        with:
+          name: bayesian-research-fitted-synthetic-figures
+          path: docs/assets/research/b*.svg
+          if-no-files-found: error
+          retention-days: 90
