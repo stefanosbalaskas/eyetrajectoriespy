@@ -4,6 +4,13 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
+from pathlib import Path
+import sys
+
+# Gallery generation invokes the pytest console script, not 'python -m pytest'.
+# Explicitly add the repository root for research-only scripts imports.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from scripts.run_b6_population_calibration_grid import (
     SCENARIOS, _known_truth, _mixture_quantile, _projector, run_one,
 )
