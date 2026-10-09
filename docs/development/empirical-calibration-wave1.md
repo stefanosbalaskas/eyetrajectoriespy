@@ -84,3 +84,6 @@ The validation flags in
 their **historical #248/#249 exact-head engineering checks only**.
 They retain `scientific_inference_qualified=false`, and the
 descendant research branch requires its own engineering CI.
+
+
+**Results are now available.** Read the [actual first-wave B6/B7/F1/F5 scientific findings](first-empirical-calibration-findings.md) before interpreting any experimental 1.2 inference. The 400-refit matched Bayesian credible intervals undercovered severely and the F5 weak-block bootstrap failed nominal size under strong AR(1), depending on block length. All scientific and publication gates remain false.

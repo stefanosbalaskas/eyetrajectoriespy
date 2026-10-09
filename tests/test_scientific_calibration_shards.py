@@ -150,6 +150,16 @@ def test_actual_f1_and_f5_full_refit_cases_aggregate_with_original_iteration_ali
                 if x["case_file"]=="f1-cases.csv"])==8
     assert len([x for x in ev["scenario_summaries"]
                 if x["case_file"]=="f5-cases.csv"])==24
+    # "null" is the literal predeclared scenario label, not a missing value.
+    # Pandas' default read_csv would silently convert it to NaN.
+    f1_scenarios={json.loads(x["scenario_key"])[1]
+                  for x in ev["scenario_summaries"]
+                  if x["case_file"]=="f1-cases.csv"}
+    f5_changes={json.loads(x["scenario_key"])[2]
+                for x in ev["scenario_summaries"]
+                if x["case_file"]=="f5-cases.csv"}
+    assert f1_scenarios=={"null","alternative"}
+    assert f5_changes=={"null","one_break","two_breaks"}
     # Invalid dual aliases must be rejected even with valid file checksums.
     edited=pd.read_csv(folder/"f1-cases.csv")
     edited["replicate"]=edited["iteration"]
