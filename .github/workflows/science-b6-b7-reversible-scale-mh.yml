@@ -1,0 +1,83 @@
+name: science-b6-b7-reversible-scale-mh
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/science-b6-b7-reversible-scale-mh.yml"
+      - "src/eyetrajectoriespy/bayesian/sparse_factor_gibbs.py"
+      - "src/eyetrajectoriespy/bayesian/planar_factor_gibbs.py"
+      - "scripts/run_bayes_scale_interweave_probe.py"
+      - "tests/test_bayes_reversible_scale_interweave.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  precise-reversible-mh-algebra:
+    name: MH likelihood/Jacobian and real B6/B7 fits (${{ matrix.python }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_bayes_reversible_scale_interweave.py tests/test_bayesian_independent_gaussian_conditionals.py
+
+  actual-Gibbs-compare:
+    name: B6/B7 identical prior-truth datasets original versus scale-MH
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian]"
+      - name: Compare 72 actual B6/B7 Gibbs fits, 6 independent matched datasets per scenario
+        run: |
+          python scripts/run_bayes_scale_interweave_probe.py \
+            --replicates 6 --draws 200 --warmup 400 \
+            --proposal-sd .25 --master-seed 20261121 \
+            --out build/bayes-scale-reversible-probe \
+            > build-bayes-compare-console.json
+          python - <<'PY'
+          import json, pandas as pd
+          from pathlib import Path
+          root=Path("build/bayes-scale-reversible-probe")
+          ev=json.loads((root/"evidence.json").read_text())
+          cases=pd.read_csv(root/"cases.csv")
+          assert ev["attempts"]==72 and len(cases)==72
+          assert len(ev["results"])==12
+          assert cases.groupby(["method","scenario","replicate"]).size().eq(2).all()
+          assert not ev["reparameterized_sampler_mixing_qualified"]
+          assert not ev["posterior_coverage_qualified"]
+          assert not ev["release_authorized"]
+          print("BAYESIAN REPARAMETERIZATION SCIENTIFIC DIAGNOSIS")
+          for item in ev["results"]:
+              print(json.dumps(item,sort_keys=True))
+          PY
+      - name: Retain complete paired posterior diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b6-b7-reversible-MH-72-fits-unqualified
+          path: build/bayes-scale-reversible-probe/
+          retention-days: 90
+          if-no-files-found: warn
