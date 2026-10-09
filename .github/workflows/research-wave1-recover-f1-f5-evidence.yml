@@ -1,0 +1,77 @@
+name: research-wave1-recover-f1-f5-evidence
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/research-wave1-recover-f1-f5-evidence.yml"
+      - "docs/development/first-empirical-calibration-findings.md"
+      - "scripts/run_bayesian_convergence_probe.py"
+      - "tests/test_bayesian_convergence_probe.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  recover-f1-f5:
+    name: Audit 9600 original F1/F5 tests without model reruns
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Retrieve the exact original source-run F1/F5 shard artifacts
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 37965949039
+          repository: stefanosbalaskas/eyetrajectoriespy
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: wave1-f1-f5-shard-*
+          path: build/wave1-recovered
+      - name: Independently audit archived SHA256 and regenerate failure-inclusive summaries
+        run: |
+          python scripts/aggregate_scientific_calibration_shards.py \
+            --inputs build/wave1-recovered/wave1-f1-f5-shard-* \
+            --out build/wave1-f1-f5-recovered-aggregate
+          python - <<'PY'
+          import json,pathlib
+          base=pathlib.Path("build/wave1-f1-f5-recovered-aggregate")
+          ev=json.loads((base/"evidence-combined.json").read_text())
+          assert ev["programme"]=="F1_F5"
+          assert ev["n_shards"]==2
+          assert ev["total_attempts"]==9600
+          assert ev["data_integrity_hashes_verified"]
+          assert ev["observed_duplicate_seeds_rejected"]
+          assert not ev["scientific_inference_qualified"]
+          f1=[x for x in ev["scenario_summaries"] if x["case_file"]=="f1-cases.csv"]
+          f5=[x for x in ev["scenario_summaries"] if x["case_file"]=="f5-cases.csv"]
+          assert len(f1)==8 and len(f5)==24,(len(f1),len(f5))
+          assert all(x["n_attempted"]==300 for x in [*f1,*f5])
+          assert not ev["publication_authorized"]
+          print("INDEPENDENTLY VERIFIED ORIGINAL SHA256 - F1/F5:")
+          for method,cases in [("F1",f1),("F5",f5)]:
+            for rec in cases:
+              print("ORIGINAL SCIENTIFIC RESULTS",json.dumps({
+                "method":method,"case":rec["scenario_key"],"attempts":rec["n_attempted"],
+                "failures":rec["n_failed"],
+                "alpha_levels":rec.get("rejection_rates_by_alpha")},sort_keys=True))
+          print("RETAINED:",json.dumps({"total":ev["total_attempts"],
+            "failures":ev["total_fit_failures"],
+            "n_shards":ev["n_shards"],
+            "scientific_inference_qualified":False},sort_keys=True))
+          PY
+      - name: Preserve complete original independent-case evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: original-wave1-f1-f5-9600-recovered-verified
+          path: build/wave1-f1-f5-recovered-aggregate/
+          retention-days: 90
+          if-no-files-found: warn
