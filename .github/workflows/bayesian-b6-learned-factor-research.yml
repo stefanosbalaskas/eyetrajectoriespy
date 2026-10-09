@@ -57,3 +57,102 @@ jobs:
           assert flags["github_release_ready"] is False
           print("PASS learned-factor model remains an unqualified opt-in research prototype")
           PY
+
+  prior-generated-scientific-pilot:
+    name: B6 learned population prior/likelihood posterior simulation
+    needs: learned-factor-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install native learned Bayesian Gibbs research
+        run: python -m pip install -e ".[dev]"
+      - name: Draw population truth from prior and refit per known-truth replicate
+        run: |
+          python scripts/run_b6_learned_factor_truth_pilot.py \
+            --replicates 8 --draws 35 --warmup 60 \
+            --out build/b6-learned-truth
+      - name: Prohibit false scientific qualification and count failed fits
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          root=Path("build/b6-learned-truth")
+          evidence=json.loads((root/"evidence.json").read_text())
+          data=pd.read_csv(root/"cases.csv")
+          assert evidence["population_mean_and_covariance_LEARNED"]
+          assert evidence["n_attempted"]==8 and len(data)==8
+          assert evidence["n_successful"]>=5
+          assert evidence["n_successful"]+evidence["n_failed"]==8
+          assert evidence["n_failed"] == (data.status=="failed").sum()
+          assert not evidence["posterior_coverage_scientifically_qualified"]
+          assert not evidence["release_authorized"]
+          assert evidence["mean_location_90"]["coverage_exact_95_CI"] is not None
+          assert evidence["population_covariance_90"]["coverage_exact_95_CI"] is not None
+          print("PASS B6 actual learned population Gaussian Gibbs prior/likelihood pilot, NOT scientifically qualified")
+          PY
+      - name: Retain genuine learned population known-truth evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b6-learned-mean-covariance-truth-pilot
+          path: build/b6-learned-truth/
+          if-no-files-found: error
+          retention-days: 90
+
+  optional-arviz-population-diagnostics:
+    name: B6 identifiable population Rhat/ESS via ArviZ
+    needs: learned-factor-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install optional external diagnostics only
+        run: python -m pip install -e ".[bayesian]"
+      - name: Summarize honest chain diagnostics for rotation-invariant targets
+        run: |
+          python - <<'PY'
+          import numpy as np
+          from eyetrajectoriespy.types import IrregularTrajectorySet
+          from eyetrajectoriespy.bayesian import fit_bayesian_sparse_fpca
+          from eyetrajectoriespy.bayesian.sparse_factor_gibbs import _spline_basis
+          import pandas as pd
+          rng=np.random.default_rng(88)
+          grid=np.linspace(0,1,23)
+          times=tuple(np.sort(rng.uniform(.04,.96,12)) for _ in range(12))
+          values=tuple(
+              (_spline_basis(t,0,1,5)@np.array([.2,.3,.35,.29,.2])
+               +rng.normal(0,.04,len(t)))[:,None] for t in times
+          )
+          gaze=IrregularTrajectorySet(
+              time=times,values=values,
+              curve_ids=tuple(f"u{i}" for i in range(len(times))),
+              dimension_names=("x",),
+              metadata=pd.DataFrame({"participant_id":[f"p{i}" for i in range(len(times))]}),
+          )
+          fitted=fit_bayesian_sparse_fpca(
+              gaze,dimension="x",evaluation_grid=grid,noise_sd=.04,
+              n_basis=5,n_components=1,n_chains=2,n_draws=50,
+              warmup=80,random_state=88,
+          )
+          summary=fitted.diagnostics_frame()
+          assert len(summary)==2
+          assert np.isfinite(summary.rhat_max).all()
+          assert np.isfinite(summary.ess_bulk_min).all()
+          assert not summary.convergence_qualified.any()
+          print(summary.to_string(index=False))
+          PY
