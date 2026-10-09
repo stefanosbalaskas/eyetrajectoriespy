@@ -155,6 +155,34 @@ def _metropolis_scale_interweave(
 
 
 
+
+def _collapsed_sparse_mean_precision_rhs(
+    products: list[np.ndarray], cross: list[np.ndarray],
+    loading: np.ndarray, noise_sd: float, mean_prior_sd: float,
+) -> tuple[np.ndarray,np.ndarray]:
+    """Exact p(mu | L, Y), analytically integrating all latent participant z.
+
+    For participant i the marginal covariance is
+    sigma**2 I + B_i L L.T B_i.T. Woodbury reduces its inverse to
+    q-by-q Gram and cross statistics, without interpolation or
+    participant score plug-in; mean prior is N(0,mean_prior_sd**2 I).
+    """
+    q,k=loading.shape
+    w=1./float(noise_sd)**2
+    precision=np.eye(q)/float(mean_prior_sd)**2
+    rhs=np.zeros(q)
+    for gram,target in zip(products,cross,strict=True):
+        score_precision=np.eye(k)+w*loading.T@gram@loading
+        b=w*gram@loading
+        precision += w*gram-b@np.linalg.solve(score_precision,b.T)
+        rhs += w*target-b@np.linalg.solve(
+            score_precision,w*loading.T@target)
+    # Numerical roundoff can yield asymmetric 1e-15 noise after Woodbury.
+    precision=(precision+precision.T)/2
+    return precision,rhs
+
+
+
 def fit_bayesian_sparse_fpca(
     trajectories: IrregularTrajectorySet,
     *,
@@ -166,6 +194,7 @@ def fit_bayesian_sparse_fpca(
     mean_prior_sd: float = 1.0,
     loading_prior_sd: float = 0.3,
     scale_interweave_proposal_sd: float = 0.0,
+    collapsed_population_mean_update: bool = False,
     n_chains: int = 2,
     n_draws: int = 60,
     warmup: int = 90,
@@ -219,6 +248,8 @@ def fit_bayesian_sparse_fpca(
         or not np.isfinite(scale_interweave_proposal_sd)
         or not 0. <= scale_interweave_proposal_sd <= 1.):
         raise ValueError("scale_interweave_proposal_sd must be finite in [0,1]")
+    if not isinstance(collapsed_population_mean_update,bool):
+        raise ValueError("collapsed_population_mean_update must be bool")
     grid = np.asarray(evaluation_grid, dtype=float)
     if (
         grid.ndim != 1 or len(grid) < max(5, n_basis)
@@ -269,7 +300,9 @@ def fit_bayesian_sparse_fpca(
             mu_rhs = sum_cross.copy()
             for gram, zi in zip(products, scores, strict=True):
                 mu_rhs -= gram @ loading @ zi
-            mu = _draw_gaussian_precision(mean_precision, mu_rhs*inv_noise, rng)
+            if not collapsed_population_mean_update:
+                mu = _draw_gaussian_precision(mean_precision,
+                                              mu_rhs*inv_noise, rng)
 
             # Conditional posterior p(vec(L) | mu,z,Y).
             loading_precision = np.eye(q*k)/float(loading_prior_sd)**2
@@ -280,6 +313,15 @@ def fit_bayesian_sparse_fpca(
             loading = _draw_gaussian_precision(
                 loading_precision, loading_rhs.ravel()*inv_noise, rng
             ).reshape(q,k)
+
+            if collapsed_population_mean_update:
+                # Partially collapsed schedule:
+                # load | old(mu,z), then mu | load,Y (z marginalized),
+                # then z | load,new_mu,Y. This samples the exact joint
+                # conditional (mu,z) without breaking Gibbs invariance.
+                collapsed_p,collapsed_b=_collapsed_sparse_mean_precision_rhs(
+                    products,cross,loading,noise_sd,mean_prior_sd)
+                mu=_draw_gaussian_precision(collapsed_p,collapsed_b,rng)
 
             # Conditional posterior p(z_i | mu,L,Y_i).
             for i,(gram,xiy) in enumerate(zip(products,cross,strict=True)):
@@ -337,6 +379,9 @@ def fit_bayesian_sparse_fpca(
             "n_components": k, "n_basis": q,
             "n_chains": n_chains, "draws_per_chain": n_draws,
             "warmup": warmup, "thin": thin,
+            "collapsed_population_mean_experimental_opt_in":collapsed_population_mean_update,
+            "collapsed_mean_analytically_marginalizes_participant_scores":collapsed_population_mean_update,
+            "collapsed_mean_inferential_qualification":False,
             "scale_interweave_experimental_opt_in":scale_interweave_proposal_sd>0,
             "scale_interweave_proposal_sd":float(scale_interweave_proposal_sd),
             "scale_interweave_accepted":interweave_accepted,
