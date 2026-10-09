@@ -80,3 +80,100 @@ heteroscedastic-unbalanced design violates pooled-label exchangeability and
 is a sensitivity scenario rather than a validity-guaranteed null.
 
 **No release, stable API or protected-main promotion.**
+
+
+## Recovered F1/F5 complete scenario-level operating characteristics
+
+**Recovery source:** [workflow #37969068128](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37969068128)
+on draft #252, which fetched and verified the original 9,600 case-level
+samples from workflow #37965949039, and refitted **zero** models.
+Every scenario below has **300** independently seeded attempted fits,
+no fitting exceptions, and is a *separate* operating-characteristic
+estimate. Monte Carlo exact 95% intervals are provided in the retained
+`evidence-combined.json` artifact, not silently collapsed to this table.
+Rates are rejection proportions, **not effect estimates**.
+
+### F1 native sparse-group PACE test (2,400 model fits)
+
+| F1 design | Truth | α=.01 | α=.05 | α=.10 | Failed |
+|---|---|---|---|---|---|
+| balanced_equal_covariance | alternative | 87.67% | 99.33% | 99.67% | 0 |
+| balanced_equal_covariance | null | 2.33% | 7.67% | 12.00% | 0 |
+| clustered_two_trials | alternative | 90.33% | 99.33% | 99.67% | 0 |
+| clustered_two_trials | null | 0.67% | 6.67% | 11.33% | 0 |
+| unequal_heteroscedastic_null | alternative | 95.33% | 99.33% | 99.67% | 0 |
+| unequal_heteroscedastic_null | null | 0.00% | 4.33% | 8.67% | 0 |
+| very_sparse | alternative | 87.33% | 98.00% | 99.67% | 0 |
+| very_sparse | null | 1.33% | 4.33% | 9.67% | 0 |
+
+
+The balanced independent null is 23/300 = 7.67% at α=.05 (exact
+95% Monte Carlo interval 4.92–11.28%), and the clustered two-trial
+null 20/300 = 6.67% (4.12–10.11%). The sparse and heterogeneous-unbalanced
+null scenarios are both 13/300 = 4.33% (2.33–7.30%). These scenarios
+do not yet establish a universal valid type-I error rate, and the
+heterogeneous-unbalanced labels are not exchangeable under pooled
+permutation. The strong synthetic alternative has 98%–99.33%
+rejection, **not** representative power across realistic effect sizes.
+
+### F5 functional ordered-change CUSUM bootstrap (7,200 tests)
+
+| F5 generating errors | Block | Truth | α=.01 | α=.05 | α=.10 |
+|---|---|---|---|---|---|
+| iid_gaussian | independent | one_break | 100.00% | 100.00% | 100.00% |
+| iid_gaussian | independent | two_breaks | 22.33% | 95.67% | 100.00% |
+| iid_gaussian | independent | null | 0.33% | 3.33% | 7.67% |
+| iid_heavy_tail | independent | one_break | 100.00% | 100.00% | 100.00% |
+| iid_heavy_tail | independent | two_breaks | 16.33% | 92.33% | 100.00% |
+| iid_heavy_tail | independent | null | 1.33% | 5.00% | 7.00% |
+| strong_AR1 | block 2 | one_break | 100.00% | 100.00% | 100.00% |
+| strong_AR1 | block 2 | two_breaks | 36.33% | 90.67% | 99.67% |
+| strong_AR1 | block 2 | null | 84.33% | 100.00% | 100.00% |
+| strong_AR1 | block 4 | one_break | 72.33% | 100.00% | 100.00% |
+| strong_AR1 | block 4 | two_breaks | 0.00% | 6.00% | 30.33% |
+| strong_AR1 | block 4 | null | 1.33% | 42.67% | 77.33% |
+| strong_AR1 | block 8 | one_break | 7.00% | 95.00% | 100.00% |
+| strong_AR1 | block 8 | two_breaks | 0.00% | 0.00% | 1.00% |
+| strong_AR1 | block 8 | null | 0.00% | 2.33% | 26.00% |
+| weak_AR1 | block 2 | one_break | 100.00% | 100.00% | 100.00% |
+| weak_AR1 | block 2 | two_breaks | 0.00% | 9.00% | 44.00% |
+| weak_AR1 | block 2 | null | 0.33% | 12.00% | 32.00% |
+| weak_AR1 | block 4 | one_break | 81.67% | 100.00% | 100.00% |
+| weak_AR1 | block 4 | two_breaks | 0.00% | 0.00% | 0.33% |
+| weak_AR1 | block 4 | null | 0.00% | 0.33% | 3.67% |
+| weak_AR1 | block 8 | one_break | 17.67% | 99.00% | 100.00% |
+| weak_AR1 | block 8 | two_breaks | 0.00% | 0.00% | 0.00% |
+| weak_AR1 | block 8 | null | 0.00% | 0.00% | 1.33% |
+
+
+The scientifically consequential result is the strong-AR(1) null:
+with block length **2**, 300/300 false rejections at 5%;
+with block length **4**, 128/300 (42.67%);
+and with block length **8**, 7/300 (2.33%).
+The weak-AR(1) null ranges from 12.00% (block 2) to 0%
+(block 8). At the tested sample length (36 ordered curves),
+the declared block-resampling choice can convert a severely liberal
+test into a strongly conservative one. Neither green CI nor successful
+bootstrap execution rescues nominal inference. Other effect/null
+generating conditions may behave differently; do not promote an
+automatic universally optimal block length based on these examples.
+
+### Data-representation issue discovered in the recovered report
+
+The original SHA256-verified data has the **literal text**
+`scenario="null"` (F1) and `change="null"` (F5). The historical
+aggregator used default `pandas.read_csv` missing-value vocabulary,
+which silently mapped the literal string `"null"` to missing data.
+This **did not change rejection counts or fitting outcomes**, because
+grouping explicitly retained missing-group keys, but it did alter
+the reported scenario names. The follow-on fix reads CSV with
+`keep_default_na=False, na_values=[""]`, preserving the categorical
+`"null"` truth while retaining truly empty numeric cells as NA.
+New regression tests reject loss of the `"null"` truth label. The
+source-simulation CSVs are never modified.
+
+**Methods decision:** F5 dependence-adjusted p-values are not
+qualified; F1 remains restricted to scientifically predeclared,
+design-specific null simulations. B6/B7 remain scientifically
+unqualified after the substantial matched-prior posterior undercoverage.
+No root API or production release promotion is authorized.

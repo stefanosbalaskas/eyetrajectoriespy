@@ -73,7 +73,11 @@ def aggregate(inputs: list[Path]) -> tuple[pd.DataFrame,dict]:
             raise ValueError("cannot aggregate promoted research evidence")
         for case_file, group_columns in CASES[programme].items():
             path=directory/case_file
-            df=pd.read_csv(path)
+            # Pandas' default NA vocabulary includes the literal string
+            # "null": that is the science runner's actual null-hypothesis
+            # scenario label for both F1 and F5. Preserve it as a category;
+            # represent genuinely empty CSV cells as missing values.
+            df=pd.read_csv(path,keep_default_na=False,na_values=[""])
             # Historical F1 shards from wave #250 wrote `iteration` before
             # the unified `replicate` key was added. Preserve archived
             # original case CSV/checksums; normalize only in memory.

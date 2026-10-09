@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "study": "eyetrajectoriespy_1_2_empirical_scientific_failure_checkpoint",
+  "run_source": {
+    "source_exact_head_sha": "5038b7c5c35ee189e516189dee110d8aeb9b0d4d",
+    "source_pr": 250,
+    "scientific_workflow_run_id": 37965949039,
+    "successful_fitted_shards": 6,
+    "model_or_test_attempts": 13600,
+    "fit_exceptions": 0,
+    "b6_aggregate_artifact_id": 11634318292,
+    "b7_aggregate_artifact_id": 11634745632,
+    "f1_f5_original_shard_artifacts": [
+      11634032860,
+      11633389007
+    ],
+    "source_f1_f5_aggregate_failure": "archived_iteration_vs_replicate_schema_mismatch",
+    "recovered_f1_f5_workflow_run_id": 37969068128,
+    "recovered_f1_f5_checksums_verified": true,
+    "f1_f5_simulations_rerun_during_recovery": false
+  },
+  "method_decisions": {
+    "B6": {
+      "nominal_marginal_coverage": 0.9,
+      "matched_prior_rank1_mean_coverage": 0.7075,
+      "matched_prior_rank1_covariance_coverage": 0.77,
+      "matched_prior_rank2_mean_coverage": 0.62,
+      "matched_prior_rank2_covariance_coverage": 0.67,
+      "attempts_per_scenario": 400,
+      "matched_prior_undercoverage_observed": true,
+      "posterior_calibrated": false,
+      "convergence_diagnosed": false,
+      "long_chain_comparator_pr": 253,
+      "scientific_inference_qualified": false
+    },
+    "B7": {
+      "nominal_marginal_coverage": 0.9,
+      "paired_rank1_xmean_coverage": 0.615,
+      "paired_rank1_ymean_coverage": 0.67,
+      "paired_rank1_xy_crosscovariance_coverage": 0.74,
+      "async_rank2_xmean_coverage": 0.575,
+      "async_rank2_ymean_coverage": 0.595,
+      "async_rank2_xy_crosscovariance_coverage": 0.6775,
+      "heldout_average_pointwise_coverage_range": [
+        0.8640625,
+        0.8759375
+      ],
+      "attempts_per_scenario": 400,
+      "heldout_outcomes_within_participant_dependent": true,
+      "all_eight_marginal_bands_not_simultaneous_prediction_region": true,
+      "matched_prior_undercoverage_observed": true,
+      "posterior_calibrated": false,
+      "convergence_diagnosed": false,
+      "long_chain_comparator_pr": 253,
+      "scientific_inference_qualified": false
+    },
+    "F1": {
+      "attempts_per_truth_design": 300,
+      "balanced_null_rejection_at_005": 0.07666666666666666,
+      "clustered_two_trial_null_rejection_at_005": 0.06666666666666667,
+      "heteroscedastic_unbalanced_null_rejection_at_005": 0.043333333333333335,
+      "very_sparse_null_rejection_at_005": 0.043333333333333335,
+      "exchangeability_may_fail_under_heteroscedasticity": true,
+      "null_size_qualified": false,
+      "alternative_power_qualified": false,
+      "scientific_inference_qualified": false
+    },
+    "F5": {
+      "attempts_per_truth_block_combination": 300,
+      "iid_Gaussian_null_rejection_at_005": 0.03333333333333333,
+      "weak_AR1_block2_null_rejection_at_005": 0.12,
+      "weak_AR1_block4_null_rejection_at_005": 0.0033333333333333335,
+      "weak_AR1_block8_null_rejection_at_005": 0,
+      "strong_AR1_block2_null_rejection_at_005": 1,
+      "strong_AR1_block4_null_rejection_at_005": 0.4266666666666667,
+      "strong_AR1_block8_null_rejection_at_005": 0.023333333333333334,
+      "block_length_dependence_strong_scientific_failure": true,
+      "serial_null_calibration_qualified": false,
+      "multiple_break_inference_qualified": false,
+      "scientific_inference_qualified": false
+    }
+  },
+  "checks": {
+    "bayesian_400_replications_per_scenario_completed": true,
+    "f1_f5_larger_null_1000_replications_per_scenario_completed": false,
+    "f1_f5_alt_500_replications_per_scenario_completed": false,
+    "long_chain_convergence_qualified": false,
+    "rank_SBC_completed": false,
+    "independent_reference_estimator_comparison_completed": false,
+    "official_BIDS_validation_completed": false,
+    "experimental_new_methods_qualified_for_stable_API": false,
+    "publication_authorized": false,
+    "release_1_2_ready": false
+  },
+  "provenance_notes": [
+    "source original prior/likelihood synthetic model with fixed noise, rank and Gaussian priors",
+    "source B6/B7 2 chains x 70 retained draws and 160 warmup insufficient to diagnose convergence",
+    "pointwise 90 percent credible intervals and held-out interval inclusion are not simultaneous 90 percent bands",
+    "F1 F5 null scenario string parsed as missing by original aggregator: corrected only in descendant reader; raw cases unchanged",
+    "F5 block 2 under strong AR(1) is severely liberal, block 8 conservative; no universal block selection result",
+    "recovered original F1 F5 rejection probabilities from SHA256-verified historical artifacts"
+  ]
+}
