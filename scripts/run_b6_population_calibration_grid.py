@@ -115,7 +115,7 @@ def _projector(cov: np.ndarray, rank: int) -> np.ndarray:
     return top @ top.T
 
 
-def run_one(seed: int, scenario: str, *, draws: int, warmup: int, diagnostics: bool=False) -> dict:
+def run_one(seed: int, scenario: str, *, draws: int, warmup: int, diagnostics: bool=False, scale_interweave_proposal_sd: float=0.0) -> dict:
     gaze, truth_mean, truth_cov, indices, holdout = _known_truth(seed, scenario)
     spec = SCENARIOS[scenario]
     fit = fit_bayesian_sparse_fpca(
@@ -123,6 +123,7 @@ def run_one(seed: int, scenario: str, *, draws: int, warmup: int, diagnostics: b
         n_basis=N_BASIS, noise_sd=spec["fitted_noise"],
         mean_prior_sd=MEAN_PRIOR_SD,
         loading_prior_sd=spec["fitted_loading_prior"],
+        scale_interweave_proposal_sd=scale_interweave_proposal_sd,
         n_chains=2, n_draws=draws, warmup=warmup, thin=1,
         random_state=seed+937,
     )
@@ -156,6 +157,7 @@ def run_one(seed: int, scenario: str, *, draws: int, warmup: int, diagnostics: b
     max_rhat = float(diag.rhat_max.max()) if diag is not None else None
     min_bulk = float(diag.ess_bulk_min.min()) if diag is not None else None
     return {
+        "scale_interweave_acceptance_rate":fit.evidence["scale_interweave_acceptance_rate"],
         "convergence_rhat_max":max_rhat,
         "convergence_ess_bulk_min":min_bulk,
         "population_mean_mid_q90_width":float(qmu[1]-qmu[0]),
