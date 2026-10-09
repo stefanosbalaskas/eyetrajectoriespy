@@ -37,3 +37,7 @@ The package root and native FPCA estimators are unchanged. The `bayesian` extra 
 B6 learned-eigensystem modelling, B7 **learned-population** paired/asynchronous planar inference, B8 participant/trial hierarchical regression, B9 **learned-population calibrated** partial prediction and B10 AOI/change-point/registration/observation models need independent scientific and engineering gates.
 
 [Bayesian synthetic figures](bayesian-gallery.md) · [Historical B4 evidence](../validation/bayesian-fpca-b2-b3.md) · [Research evidence matrix](research-evidence-matrix.md)
+
+## Exact-model B5 simulation-based calibration pilot
+
+The research CI executes `scripts/run_bayesian_conjugate_sbc_pilot.py`, drawing score truth or spline coefficients from each *implemented* conjugate model prior, constructing observations from its known Gaussian likelihood, then independently refitting each posterior. This creates rank histograms, observed 90% interval inclusion and exact binomial uncertainty for two **restricted baselines** (B6 fixed population and B8 known noise). The default small pilot of 30 replicates per baseline is a pipeline check, not an adequate SBC study; it does not validate learned Bayesian eigenfunctions, participant covariance, asynchronous noise, posterior MCMC, model misspecification or population-level inferential calibration. Every fit failure is retained as its own record.

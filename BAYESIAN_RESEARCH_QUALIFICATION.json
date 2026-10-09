@@ -54,5 +54,16 @@
     "PyMC backend optional planned"
   ],
   "sampler_based_PyMC_fitter_implemented": false,
-  "population_FPCA_eigensystem_posterior_implemented": false
+  "population_FPCA_eigensystem_posterior_implemented": false,
+  "validation_programme": {
+    "B5_known_prior_SBC_runner": "scripts/run_bayesian_conjugate_sbc_pilot.py",
+    "B6_model": "Gaussian known population fixed basis score posterior",
+    "B8_model": "Gaussian known observation noise and spline basis regression posterior",
+    "empirical_coverage_qualified": false,
+    "model_misspecification_stress_qualified": false,
+    "full_Bayesian_FPCA_qualified": false,
+    "chain_diagnostics_qualified": false,
+    "scientific_qualification": false,
+    "artifact_attestation_pending": true
+  }
 }

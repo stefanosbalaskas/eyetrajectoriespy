@@ -10,6 +10,7 @@ on:
       - "scripts/generate_bayesian_research_gallery.py"
       - ".github/workflows/bayesian-b5-b8-research.yml"
       - "BAYESIAN_RESEARCH_QUALIFICATION.json"
+      - "scripts/run_bayesian_conjugate_sbc_pilot.py"
   workflow_dispatch:
 
 permissions:
@@ -158,5 +159,57 @@ jobs:
         with:
           name: bayesian-research-fitted-synthetic-figures
           path: docs/assets/research/b*.svg
+          if-no-files-found: error
+          retention-days: 90
+
+  conjugate-sbc-pilot:
+    name: B6/B8 actual-prior conditional Gaussian SBC pilot
+    needs: research-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Bayesian research core
+        run: python -m pip install -e ".[dev]"
+      - name: Run genuine known-prior Gaussian score and B-spline SBC pilot
+        run: |
+          python scripts/run_bayesian_conjugate_sbc_pilot.py \
+            --replicates 30 --posterior-draws 99 \
+            --out build/bayesian-conjugate-sbc
+      - name: Inspect failure ledger, ranks and coverage uncertainty
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          root=Path("build/bayesian-conjugate-sbc")
+          details=json.loads((root/"qualification.json").read_text())
+          assert len(details["scenarios"])==2
+          assert details["scientific_qualification"] is False
+          assert details["release_authorized"] is False
+          for scenario, evid in details["scenarios"].items():
+              assert evid["n_attempted"]==30
+              assert evid["n_success"]>=5, evid
+              assert evid["n_success"]+evid["n_failed"]==30
+              assert evid["coverage_90_exact_95_interval"] is not None
+              cases=pd.read_csv(root/f"{scenario}_cases.csv")
+              ranks=pd.read_csv(root/f"{scenario}_sbc_ranks.csv")
+              assert len(cases)==30 and ranks["count"].sum()==evid["n_success"]
+              assert not evid["full_population_Bayesian_FPCA_qualified"]
+          print("PASS: known-prior / actual likelihood simulation and posterior refits; no population inference certification")
+          PY
+      - name: Retain simulation-based calibration datasets
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bayesian-exact-conjugate-sbc-pilot
+          path: build/bayesian-conjugate-sbc/
           if-no-files-found: error
           retention-days: 90
