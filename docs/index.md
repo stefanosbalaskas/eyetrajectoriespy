@@ -34,10 +34,11 @@ y_i(t)
 \end{bmatrix}.
 $$
 
-<span class="et-version-pill">stable 1.1.0 · 1.2 workflow RC qualification · Python 3.11–3.13</span>
+<span class="et-version-pill">Stable: 1.1.0 · Research development: 1.2 (unpublished) · Python 3.11–3.13</span>
 
 [Install and get started](quickstart.md){ .md-button .md-button--primary }
 [Choose an analysis](articles/choosing-the-ten-workflows.md){ .md-button }
+[Research method finder](development/method-finder.md){ .md-button }
 [Explore figures](methods/visual-gallery.md){ .md-button }
 
 </div>
