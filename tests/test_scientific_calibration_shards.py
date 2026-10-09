@@ -4,6 +4,10 @@ from __future__ import annotations
 from hashlib import sha256
 import json
 from pathlib import Path
+import sys
+
+# Gallery validation executes pytest via its console entry point.
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 
 import numpy as np
 import pandas as pd
