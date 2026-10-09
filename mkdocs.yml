@@ -29,6 +29,13 @@ nav:
           - Authentic-data E1-E4 usability: articles/real-gaze-usability.md
       - Experimental E1-E4 result figures: methods/experimental-e1-e4-gallery.md
       - Experimental F1-F6 scientific programme (unqualified): development/f1-f6-scientific-expansion.md
+      - Unpublished research development:
+          - Interactive method finder: development/method-finder.md
+          - Live evidence/status matrix: development/research-evidence-matrix.md
+          - F1–F6 synthetic figure gallery: development/f1-f6-gallery.md
+          - Three reproducible research tutorials: development/research-case-studies.md
+          - Experimental API and method contracts: development/research-method-api.md
+          - Unpublished candidate history: development/unpublished-candidate-history.md
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md
       - Scientific contracts: concepts/contracts.md
@@ -223,7 +230,6 @@ nav:
       - Function → equation index: reference/function-equation-index.md
       - Object contracts: reference/objects.md
   - Releases:
-      - 1.2.0rc1: releases/1.2.0rc1.md
       - 1.1.0: releases/1.1.0.md
       - 1.1.0rc1: releases/1.1.0rc1.md
       - 1.0.0: releases/1.0.0.md
@@ -312,6 +318,7 @@ markdown_extensions:
 
 extra_javascript:
   - javascripts/mathjax.js
+  - assets/research/method-finder.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 extra_css:
   - assets/extra.css

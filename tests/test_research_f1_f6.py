@@ -59,7 +59,7 @@ def sidecar():
         "Columns": ["timestamp", "x_coordinate", "y_coordinate"],
         "SamplingFrequency": 100., "StartTime": 0.,
         "PhysioType": "eyetrack", "RecordedEye": "left",
-        "SampleCoordinateSystem": "screen-pixel",
+        "SampleCoordinateSystem": "gaze-on-screen",
         "x_coordinate": {"Units": "px"},
         "y_coordinate": {"Units": "px"},
         "timestamp": {"Units": "s"},

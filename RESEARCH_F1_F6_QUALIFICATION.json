@@ -2,7 +2,7 @@
   "schema_version": 1,
   "programme": "f1-f6-new-scientific-and-interchange-methods",
   "source_version": "1.2.0rc2.dev0",
-  "status": "experimental_implementation_plus_reproducible_pilot_under_ci",
+  "status": "F1-F6_engineering_qualified_on_exact_head_scientific_gate_open_stacked_research",
   "implementation_pull_request": 227,
   "tracking_issue": 226,
   "legacy_one_dot_two_rc_evidence_relabelled": false,
@@ -111,11 +111,57 @@
       "inverse_units_invariance"
     ],
     "real_world_validation_and_bids_conformance": false,
-    "workgroup_ci_verified": false,
+    "workgroup_ci_verified": true,
     "eye_tracking_bids_spec_version": "1.11.2",
     "bids_reference_fixture": "published_EyeTracking_sample_timestamp_ms_optional_pupil",
     "gaze_validation_target_derived_accuracy": "explicit_target_pairings_not_free_viewing",
     "gaze_validation_accuracy_population_verified": false,
-    "weight_snapshot_is_immutable": true
+    "weight_snapshot_is_immutable": true,
+    "workgroup_ci_verified_exact_head": "d48c939b01fbfa19f0e060902b6a61ebddbe7aa6",
+    "workgroup_ci_verified_workflow_groups": 27,
+    "workgroup_ci_verified_workflow_failures": 0,
+    "current_stacked_development_ci_verified": false,
+    "scientific_inference_qualified": false,
+    "dataset_bids_validator_executed": false,
+    "experimental_new_design_methods": [
+      "simulate_functional_study_power",
+      "fit_functional_reliability",
+      "compare_repeated_functional_groups",
+      "link_gaze_validation_sessions",
+      "audit_bids_eyetracking_dataset"
+    ],
+    "exploratory_exact_head_pilot": {
+      "source_commit": "d48c939b01fbfa19f0e060902b6a61ebddbe7aa6",
+      "workflow_run_id": 37870154333,
+      "alpha": 0.05,
+      "n_replicates_per_kernel_and_cusum_scenario": 100,
+      "score_kernel": {
+        "null_reject_rate": 0.01,
+        "alternative_reject_rate": 0.77,
+        "full_sparse_refit_per_replicate": false
+      },
+      "change_independent": {
+        "null_reject_rate": 0.06,
+        "alternative_reject_rate": 1
+      },
+      "change_AR1_block": {
+        "null_reject_rate": 0.01,
+        "alternative_reject_rate": 0.99
+      },
+      "native_sparse_refit_attempts": {
+        "balanced_null": 2,
+        "imbalanced_null": 2,
+        "balanced_effect": 2,
+        "all_succeeded": true,
+        "size_power_qualification": false
+      },
+      "aoi_holdout_cases": 144,
+      "scientific_inference_qualified": false,
+      "artifact_ids": {
+        "f1_f5": 11590931697,
+        "full_sparse": 11590552856,
+        "f4": 11589938548
+      }
+    }
   }
 }
