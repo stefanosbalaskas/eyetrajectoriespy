@@ -1,0 +1,166 @@
+name: science-f5-baseline-length-phi-ablation
+
+on:
+  pull_request:
+    types: [opened]
+    paths:
+      - ".github/workflows/science-f5-baseline-length-phi-ablation.yml"
+      - "scripts/run_f5_baseline_duration_nuisance_ablation.py"
+      - "tests/test_f5_baseline_duration_nuisance_ablation.py"
+      - "src/eyetrajectoriespy/research/functional_changepoints_baseline_ar1.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  policy-contract-tests:
+    name: F5 independent baseline coefficient ablation contracts (${{ matrix.python }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: |
+          python -m pytest -q \
+            tests/test_f5_baseline_duration_nuisance_ablation.py \
+            tests/test_f5_unknown_phi_independent_baseline.py
+
+  actual-null-power:
+    name: Independently fitted F5 baseline length ablation (${{ matrix.scenario }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario: [iid, ar1_weak, ar1_strong, ar2_misspecified]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - name: Actual independently generated null and effect data, all 3 baseline lengths and 2 nuisance policies
+        run: |
+          python scripts/run_f5_baseline_duration_nuisance_ablation.py \
+            --scenario ${{ matrix.scenario }} \
+            --null-replicates 100 --alternative-replicates 50 \
+            --bootstrap 119 --phi-bootstrap 99 --master-seed 20261205 \
+            --out build/f5-sensitivity/${{ matrix.scenario }} \
+            > actual-f5-study-console.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          root=Path("build/f5-sensitivity/${{ matrix.scenario }}")
+          ev=json.loads((root/"evidence.json").read_text())
+          cases=pd.read_csv(root/"cases.csv",keep_default_na=False,na_values=[""])
+          assert len(cases)==ev["method_attempts"]==900
+          assert ev["independent_test_datasets"]==150
+          assert len(set(cases.n_baseline))==3
+          assert len(set(cases.policy))==2
+          assert cases.groupby(["scenario","truth","replicate"]).size().eq(6).all()
+          assert ev["fit_errors"]==int((cases.status=="failed").sum())
+          assert not ev["power_or_calibration_qualified"]
+          assert not ev["production_release_authorized"]
+          for row in ev["scenario_results"]:
+              print("F5 DURATION ABLATION ORIGINAL EVIDENCE:",json.dumps(row,sort_keys=True))
+          PY
+      - name: Retain every actual fit and exact source checksum, including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: f5-duration-${{ matrix.scenario }}
+          path: build/f5-sensitivity/${{ matrix.scenario }}/
+          retention-days: 90
+          if-no-files-found: warn
+
+  verify-combined-evidence:
+    name: Fail-closed F5 3600 real test attempts and original digest audit
+    needs: actual-null-power
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install pandas
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: f5-duration-*
+          path: build/f5-recovered
+          merge-multiple: false
+      - name: Verify case counts and artifact SHA256, retain failures
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from hashlib import sha256
+          import pandas as pd
+          import json
+          root=Path("build/f5-recovered")
+          scenarios=("iid","ar1_weak","ar1_strong","ar2_misspecified")
+          unique=set()
+          total=0
+          rows=[]
+          for scenario in scenarios:
+              d=root/("f5-duration-"+scenario)
+              assert d.is_dir(),scenario
+              sums=(d/"SHA256SUMS").read_text().splitlines()
+              for line in sums:
+                  digest,name=line.split("  ")
+                  assert sha256((d/name).read_bytes()).hexdigest()==digest,scenario
+              ev=json.loads((d/"evidence.json").read_text())
+              df=pd.read_csv(d/"cases.csv",keep_default_na=False,na_values=[""])
+              assert ev["processes"]==[scenario]
+              assert len(df)==ev["method_attempts"]==900
+              assert ev["independent_test_datasets"]==150
+              assert df.groupby(["scenario","truth","replicate"]).size().eq(6).all()
+              assert ev["fit_errors"]==int(df.status.eq("failed").sum())
+              assert not ev["power_or_calibration_qualified"]
+              assert not ev["production_release_authorized"]
+              for _,z in df[["scenario","truth","replicate","test_seed"]].drop_duplicates().iterrows():
+                  key=(z.scenario,z.truth,int(z.replicate),int(z.test_seed))
+                  assert key not in unique
+                  unique.add(key)
+              rows.append(df)
+              total+=len(df)
+          assert total==3600
+          assert len(unique)==600
+          result=pd.concat(rows,ignore_index=True)
+          assert len(result)==3600
+          assert set(result.n_baseline)=={40,80,160}
+          assert set(result.policy)=={"baseline_plugin","baseline_uncertainty"}
+          assert set(result.truth)=={"null","one_break"}
+          out=Path("build/f5-combined")
+          out.mkdir(parents=True,exist_ok=True)
+          result.to_csv(out/"cases.csv",index=False)
+          audit={"total_fits":total,"distinct_test_series":len(unique),
+                 "source_artifacts_sha256_verified":True,
+                 "all_failures_included":int(result.status.eq("failed").sum()),
+                 "scientific_inference_qualified":False,
+                 "release_authorized":False}
+          (out/"audit.json").write_text(json.dumps(audit,sort_keys=True,indent=2)+"\n")
+          print("F5 ORIGINAL SOURCE COMBINED AUDIT",audit)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: f5-baseline-duration-3600-source-verified
+          path: build/f5-combined/
+          retention-days: 90
