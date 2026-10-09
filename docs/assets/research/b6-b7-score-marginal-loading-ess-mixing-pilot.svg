@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1130" height="550" viewBox="0 0 1130 550" role="img" aria-label="Six-condition pairwise comparison of old collapsed Gibbs and opt-in score-marginal ESS rank invariant covariance mixing across B6 and B7 designs.">
+<rect width="1130" height="550" fill="#fff"/>
+<text x="30" y="43" fill="#273648" font-size="24" font-weight="700" font-family="Arial,sans-serif">B6/B7 | Score-marginal loading ESS did not resolve covariance mixing</text>
+<text x="30" y="69" fill="#5F6C7A" font-size="13" font-weight="400" font-family="Arial,sans-serif">Paired 36 fitted posteriors · 6 independent known-prior datasets per design · two chains per fit</text>
+<rect x="33" y="85" width="15" height="14" rx="2" fill="#4377A6"/>
+<text x="55" y="97" fill="#273648" font-size="13" font-weight="400" font-family="Arial,sans-serif">Existing exact collapsed-mean Gibbs</text>
+<rect x="330" y="85" width="15" height="14" rx="2" fill="#D28A52"/>
+<text x="225" y="128" fill="#273648" font-size="15" font-weight="700" font-family="Arial,sans-serif">Median rank R-hat (baseline 1.00)</text>
+<text x="747" y="128" fill="#273648" font-size="15" font-weight="700" font-family="Arial,sans-serif">Median bulk ESS (higher is better)</text>
+<text x="350" y="97" fill="#273648" font-size="13" font-weight="400" font-family="Arial,sans-serif">Experimental joint-loading ESS</text>
+<text x="32" y="168" fill="#273648" font-size="16" font-weight="600" font-family="Arial,sans-serif">B6 rank 1</text>
+<rect x="226" y="157" width="34.48334745049974" height="19" rx="3" fill="#4377A6"/>
+<rect x="226" y="183" width="58.343151167111465" height="19" rx="3" fill="#D28A52"/>
+<text x="263.48334745049976" y="171" fill="#273648" font-size="12" font-weight="600" font-family="Arial,sans-serif">1.084</text>
+<text x="287.34315116711144" y="197" fill="#273648" font-size="12" font-weight="600" font-family="Arial,sans-serif">1.141</text>
+<rect x="749" y="157" width="224.66903098186174" height="19" rx="3" fill="#4377A6"/>
+<rect x="749" y="183" width="153.52559934757525" height="19" rx="3" fill="#D28A52"/>
+<text x="976.6690309818617" y="171" fill="#273648" font-size="12" font-weight="600" font-family="Arial,sans-serif">22.5</text>
+<text x="905.5255993475753" y="197" fill="#273648" font-size="12" font-weight="600" font-family="Arial,sans-serif">15.4</text>
+<text x="32" y="264" fill="#273648" font-size="16" font-weight="600" font-family="Arial,sans-serif">B7 paired</text>
+<rect x="226" y="253" width="167.78425101986087" height="19" rx="3" fill="#4377A6"/>
+<rect x="226" y="279" width="155.9736765872773" height="19" rx="3" fill="#D28A52"/>
+<text x="396.7842510198609" y="267" fill="#273648" font-size="12" font-weight="600" font-family="Arial,sans-serif">1.407</text>
+<text x="384.9736765872773" y="293" fill="#273648" font-size="12" font-weight="600" font-family="Arial,sans-serif">1.378</text>
+<rect x="749" y="253" width="43.303918994860034" height="19" rx="3" fill="#4377A6"/>
+<rect x="749" y="279" width="49.42880710949853" height="19" rx="3" fill="#D28A52"/>
+<text x="795.30391899486" y="267" fill="#273648" font-size="12" font-weight="600" font-family="Arial,sans-serif">4.3</text>
+<text x="801.4288071094985" y="293" fill="#273648" font-size="12" font-weight="600" font-family="Arial,sans-serif">4.9</text>
+<text x="32" y="360" fill="#273648" font-size="16" font-weight="600" font-family="Arial,sans-serif">B7 asynchronous</text>
+<rect x="226" y="349" width="61.56917353217775" height="19" rx="3" fill="#4377A6"/>
+<rect x="226" y="375" width="172.4183129259652" height="19" rx="3" fill="#D28A52"/>
+<text x="290.56917353217773" y="363" fill="#273648" font-size="12" font-weight="600" font-family="Arial,sans-serif">1.149</text>
+<text x="401.4183129259652" y="389" fill="#273648" font-size="12" font-weight="600" font-family="Arial,sans-serif">1.418</text>
+<rect x="749" y="349" width="113.54161610897435" height="19" rx="3" fill="#4377A6"/>
+<rect x="749" y="375" width="43.50963693472707" height="19" rx="3" fill="#D28A52"/>
+<text x="865.5416161089744" y="363" fill="#273648" font-size="12" font-weight="600" font-family="Arial,sans-serif">11.4</text>
+<text x="795.509636934727" y="389" fill="#273648" font-size="12" font-weight="600" font-family="Arial,sans-serif">4.4</text>
+<line x1="226" y1="144" x2="226" y2="451" stroke="#A3ADB8" stroke-width="1"/>
+<text x="30" y="482" fill="#9F493C" font-size="14" font-weight="600" font-family="Arial,sans-serif">Interpretation: none of 36 fits passed the predeclared R-hat ≤ 1.01 AND bulk ESS ≥ 400 screen.</text>
+<text x="30" y="509" fill="#586675" font-size="13" font-weight="400" font-family="Arial,sans-serif">Posterior intervals, coverage and population uncertainty remain unqualified; source run #38000101053.</text>
+</svg>

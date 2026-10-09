@@ -1,0 +1,55 @@
+# Scientific evidence dashboard — unreleased 1.2
+
+!!! danger "Evidence is not inferential qualification"
+    **Stable PyPI: 1.1.0. Development research: unpublished.** Source simulations and CI provide reproducible experimental *evidence*, not proof that reported p-values, credible intervals or predictive intervals are valid across real eye-tracking designs. Research implementation code stays in **draft branches**, not in stable 1.1.0 or the public-main default.
+
+**Evidence checkpoint:** October 10, 2026. Counts below refer to actual source-run attempts, not distinct human participants. When two methods share a test dataset, the *test dataset* is the independent simulation unit.
+
+| Research gate | Original source run | Actual method fits | Critical evidence | Qualification |
+|---|---|---:|---|---|
+| F1 sparse group inference | [#37977625803](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37977625803), artifact `11640464273` | **6,000**, 0 failures | 4,000 null and 2,000 fixed moderate-effect alternatives, 199 permutations each; observed null rejection 4.4–5.2% at nominal 5% across four tested regimes, moderate-effect detection 14.2–19.2% | **Limited evidence, not general qualification** |
+| B6/B7 independent NUTS | [#37988738287](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37988738287), artifact `11645572128` | **3 PyMC posterior fits**, no divergences | Genuine separate PyMC likelihood works; intervals overlap, but native covariance chains mix inadequately | **Blocked: #255** |
+| B6/B7 identifiable diagnostics | [#37992812846](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37992812846), artifact `11647146899` | 3 independent posterior comparisons | B6 covariance native R-hat/ESS 1.357/5 versus PyMC 1.001/183; async B7 covariance native 1.718/3 versus PyMC 1.006/249 | **Blocked: #255** |
+| B6/B7 joint-loading ESS | [#38000101053](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000101053), artifact `11649475504` | **36** (18 independently generated datasets × 2 methods), 0 failures | No fit passed identifiable-covariance R-hat ≤1.01 and bulk ESS ≥400; no consistent mixing improvement | **Negative comparator, not promoted** |
+| F5 independent-baseline unknown AR(1) | [#37987935105](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37987935105), artifact `11643259568` | **2,520**, 0 failures | Strong-AR(1) null false positives reduced, but iid/weak-AR(1) conservatism and AR(2) misspecification remained | **Blocked: #256** |
+| F5 baseline-size uncertainty ablation | [#37992161919](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37992161919), artifact `11645662411` | **3,600** (600 independent test datasets × 6 paired conditions), 0 failures | Strong-AR(1) plug-in false positive 24/12/9% for training n=40/80/160; uncertainty propagation 3/1/5%; true-AR(2) under uncertainty propagation 27/12/15% | **Blocked: #256** |
+| F5 independently trained AR(2) stress | [#38000177988](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000177988), artifact `11648842221` | **1,500** (750 independent test datasets × 2 methods), 0 failures | Under true AR(2), null 15% AR(1) vs 9% AR(2); MA(1) 0% vs 11%; within-test nonstationarity **94% false rejection for both** | **Blocked: #256** |
+
+### F1: limited null calibration, modest sensitivity
+
+| Sparse regime | Observed null rejection (1,000 independent datasets) | Fixed moderate-effect rejection (500 datasets) |
+|---|---:|---:|
+| Balanced | 49/1,000 (4.9%) | 79/500 (15.8%) |
+| Clustered two trials | 51/1,000 (5.1%) | 91/500 (18.2%) |
+| Unequal heteroscedastic | 52/1,000 (5.2%) | 96/500 (19.2%) |
+| Very sparse | 44/1,000 (4.4%) | 71/500 (14.2%) |
+
+The results **do not** identify useful power across other sample sizes, effect shapes, missingness mechanisms, nuisance covariance choices or participant-exchangeability structures. Do not promote this as a generally calibrated test based only on one simulation grid. [Method and source figure](f1-high-precision-native-null-power.md).
+
+### Bayesian convergence: identifiable covariance, not raw sign-ambiguous factors
+
+| Quantity | Independent PyMC rank R-hat / bulk ESS | Native Gibbs rank R-hat / bulk ESS |
+|---|---:|---:|
+| B6 midpoint population covariance | 1.001 / 183 | **1.357 / 5** |
+| B7 paired midpoint x/y covariance | 1.002 / 281 | **1.062 / 34** |
+| B7 asynchronous midpoint x/y covariance | 1.006 / 249 | **1.718 / 3** |
+
+The PyMC reference is **not fully qualified** either: bulk ESS <400 in these cases, and R-hat on identified quantities does not guarantee valid credible-interval coverage. The native sampler remains a serious scientific blocker. [Independent comparison](b6-b7-identifiable-reference-diagnostics.md), [negative sampler experiment](b6-b7-joint-score-marginal-loading-ess.md).
+
+### F5: falsification matters more than the best-looking model
+
+At nominal 5%, independently trained AR(1) vs AR(2) mean-null rejection counts per **100 independent datasets** were iid **0 vs 1**, strong AR(1) **3 vs 3**, true AR(2) **15 vs 9**, stationary MA(1) **0 vs 11**, and dependence changing within the test **94 vs 94**. The 9/100 nominal-rate estimate has a wide exact Monte Carlo interval (approximately **4.2–16.4%**). Inflated true-null rejection makes higher alternative-rejection proportions unsuitable as calibrated power comparisons.
+
+[AR(2)/nonstationary falsification](f5-independent-baseline-ar2-model-falsification.md) · [Baseline duration](f5-baseline-size-nuisance-sensitivity.md).
+
+## Unresolved gates
+
+| Work | Independent validation still required |
+|---|---|
+| Bayesian B6/B7 | Adequate identified covariance mixing; independently converged comparisons, prior-rank SBC, repeat nominal coverage, rank 2 and held-out predictive calibration |
+| F5 | A theoretically defensible dependence-robust null with stationary assumptions, external diagnostics, transportability constraints, nonstationary counterexamples and larger independent null simulations |
+| F1 | Sample-size/effect-size power surfaces, missingness/covariance stress, permutation exchangeability and independent comparators |
+| F2/F3/F4/F6 | Target/coordinate provenance, official Eye-Tracking-BIDS validator and real-data checks, constrained AOI estimator validation, weighted geometry verification |
+| Real recordings | Independent dense, asynchronous sparse and repeated-participant examples with source data, failure cases, reproducible outputs and appropriate permissions |
+
+**The 1.2 release and all scientific promotion flags remain false.** Public documentation of these findings changes none of those gates.

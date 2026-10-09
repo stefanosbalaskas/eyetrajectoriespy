@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="610" viewBox="0 0 1080 610" role="img" aria-label="True-null F5 rejection percentages for legacy block bootstrap and independent-baseline unknown coefficient method, five simulated dependence scenarios.">
+<rect width="1080" height="610" fill="#FFFFFF"/>
+<text x="30" y="42" fill="#29354A" font-size="25" font-weight="700" font-family="Inter,Arial,sans-serif">F5 | Unknown-dependence false positives, new independent baselines</text>
+<text x="30" y="70" fill="#566777" font-size="13" font-weight="400" font-family="Inter,Arial,sans-serif">120 independently generated true-null datasets per regime • source run #37987935105 • 2,520 total tests</text>
+<rect x="634" y="92" width="15" height="13" fill="#BE7A4D"/>
+<text x="655" y="103" fill="#29354A" font-size="14" font-weight="400" font-family="Inter,Arial,sans-serif">Legacy test</text>
+<rect x="794" y="92" width="15" height="13" fill="#4772A5"/>
+<text x="815" y="103" fill="#29354A" font-size="14" font-weight="400" font-family="Inter,Arial,sans-serif">Baseline-estimated phi</text>
+<line x1="300" y1="140" x2="300" y2="505" stroke="#E6EAF0" stroke-dasharray="2 5" stroke-width="1"/>
+<text x="290" y="530" fill="#62707D" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">0%</text>
+<line x1="334.5" y1="140" x2="334.5" y2="505" stroke="#5B6470" stroke-dasharray="5 4" stroke-width="2"/>
+<text x="324.5" y="530" fill="#62707D" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">5%</text>
+<line x1="438" y1="140" x2="438" y2="505" stroke="#E6EAF0" stroke-dasharray="2 5" stroke-width="1"/>
+<text x="428" y="530" fill="#62707D" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">20%</text>
+<line x1="576" y1="140" x2="576" y2="505" stroke="#E6EAF0" stroke-dasharray="2 5" stroke-width="1"/>
+<text x="566" y="530" fill="#62707D" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">40%</text>
+<line x1="714" y1="140" x2="714" y2="505" stroke="#E6EAF0" stroke-dasharray="2 5" stroke-width="1"/>
+<text x="704" y="530" fill="#62707D" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">60%</text>
+<line x1="852" y1="140" x2="852" y2="505" stroke="#E6EAF0" stroke-dasharray="2 5" stroke-width="1"/>
+<text x="842" y="530" fill="#62707D" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">80%</text>
+<line x1="990" y1="140" x2="990" y2="505" stroke="#E6EAF0" stroke-dasharray="2 5" stroke-width="1"/>
+<text x="980" y="530" fill="#62707D" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">100%</text>
+<text x="29" y="183" fill="#29354A" font-size="15" font-weight="500" font-family="Inter,Arial,sans-serif">iid Gaussian</text>
+<rect x="300" y="157" width="28.980000000000018" height="18" rx="3" fill="#BE7A4D"/>
+<rect x="300" y="181" width="5.519999999999982" height="18" rx="3" fill="#4772A5"/>
+<text x="336.98" y="173" fill="#29354A" font-size="13" font-weight="600" font-family="Inter,Arial,sans-serif">4.2%</text>
+<text x="313.52" y="198" fill="#29354A" font-size="13" font-weight="600" font-family="Inter,Arial,sans-serif">0.8%</text>
+<text x="29" y="253" fill="#29354A" font-size="15" font-weight="500" font-family="Inter,Arial,sans-serif">AR(1) phi=0.35</text>
+<rect x="300" y="227" width="1" height="18" rx="3" fill="#BE7A4D"/>
+<rect x="300" y="251" width="11.730000000000018" height="18" rx="3" fill="#4772A5"/>
+<text x="308" y="243" fill="#29354A" font-size="13" font-weight="600" font-family="Inter,Arial,sans-serif">0.0%</text>
+<text x="319.73" y="268" fill="#29354A" font-size="13" font-weight="600" font-family="Inter,Arial,sans-serif">1.7%</text>
+<text x="29" y="323" fill="#29354A" font-size="15" font-weight="500" font-family="Inter,Arial,sans-serif">AR(1) phi=0.80</text>
+<rect x="300" y="297" width="229.76999999999998" height="18" rx="3" fill="#BE7A4D"/>
+<rect x="300" y="321" width="22.769999999999982" height="18" rx="3" fill="#4772A5"/>
+<text x="537.77" y="313" fill="#29354A" font-size="13" font-weight="600" font-family="Inter,Arial,sans-serif">33.3%</text>
+<text x="330.77" y="338" fill="#29354A" font-size="13" font-weight="600" font-family="Inter,Arial,sans-serif">3.3%</text>
+<text x="29" y="393" fill="#29354A" font-size="15" font-weight="500" font-family="Inter,Arial,sans-serif">heavy-tail AR(1)</text>
+<rect x="300" y="367" width="28.980000000000018" height="18" rx="3" fill="#BE7A4D"/>
+<rect x="300" y="391" width="22.769999999999982" height="18" rx="3" fill="#4772A5"/>
+<text x="336.98" y="383" fill="#29354A" font-size="13" font-weight="600" font-family="Inter,Arial,sans-serif">4.2%</text>
+<text x="330.77" y="408" fill="#29354A" font-size="13" font-weight="600" font-family="Inter,Arial,sans-serif">3.3%</text>
+<text x="29" y="463" fill="#29354A" font-size="15" font-weight="500" font-family="Inter,Arial,sans-serif">AR(2) misspecified</text>
+<rect x="300" y="437" width="615.48" height="18" rx="3" fill="#BE7A4D"/>
+<rect x="300" y="461" width="57.26999999999998" height="18" rx="3" fill="#4772A5"/>
+<text x="923.48" y="453" fill="#29354A" font-size="13" font-weight="600" font-family="Inter,Arial,sans-serif">89.2%</text>
+<text x="365.27" y="478" fill="#29354A" font-size="13" font-weight="600" font-family="Inter,Arial,sans-serif">8.3%</text>
+<text x="30" y="568" fill="#596879" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">Alpha=0.05 reference is the dashed 5% line. Baseline method remains unqualified: conservative iid, AR(2) uncertainty.</text>
+<text x="30" y="590" fill="#596879" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">Original evidence: GitHub Actions run #37987935105 · retained SHA256 artifact 11643259568 · zero fitting exceptions</text>
+</svg>

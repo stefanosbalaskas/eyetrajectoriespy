@@ -32,6 +32,39 @@ nav:
       - Choose a representation: concepts/representations.md
       - Scientific contracts: concepts/contracts.md
       - Analysis decision map: concepts/decision-map.md
+  - Research development (unreleased):
+      - Overview and qualification: development/research-development-hub.md
+      - Evidence dashboard: development/research-scientific-dashboard.md
+      - Original source figures: development/research-original-figures.md
+      - Reproduce from draft source: development/research-reproducibility.md
+      - Methods and contracts:
+          - F1–F6 overview: development/f1-f6-scientific-expansion.md
+          - Experimental API contracts: development/research-method-api.md
+          - Scientific evidence matrix: development/research-evidence-matrix.md
+          - Study design and calibration: development/b6-f1-f5-calibration-protocol.md
+          - Independent calibration shards: development/scientific-calibration-shards.md
+          - First empirical findings: development/first-empirical-calibration-findings.md
+          - Calibration wave 1: development/empirical-calibration-wave1.md
+          - Reproducible source case studies: development/research-case-studies.md
+          - Method finder: development/method-finder.md
+          - Candidate history: development/unpublished-candidate-history.md
+      - F1 sparse group inference:
+          - 6,000-fit null and power: development/f1-high-precision-native-null-power.md
+      - F5 dependence-aware changes:
+          - Independent computation and AR1: development/independent-core-computation-and-f5-ar1-reference.md
+          - Unknown AR1 baseline: development/f5-independent-baseline-unknown-phi.md
+          - Baseline-size sensitivity: development/f5-baseline-size-nuisance-sensitivity.md
+          - AR2, MA1 and nonstationarity: development/f5-independent-baseline-ar2-model-falsification.md
+      - Bayesian B5–B10 experiments:
+          - Bayesian research programme: development/bayesian-research-programme.md
+          - B7 learned planar population: development/b7-learned-planar-model.md
+          - B7 predictive calibration: development/b7-prediction-calibration.md
+          - Convergence after undercoverage: development/b6-b7-convergence-after-undercoverage.md
+          - Reversible scale interweaving: development/b6-b7-reversible-scale-interweaving.md
+          - Exact collapsed-mean Gibbs: development/b6-b7-exact-collapsed-mean-gibbs.md
+          - Independent PyMC NUTS: development/b6-b7-independent-pymc-nuts-reference.md
+          - Identifiable posterior diagnostics: development/b6-b7-identifiable-reference-diagnostics.md
+          - Score-marginal ESS negative result: development/b6-b7-joint-score-marginal-loading-ess.md
   - Guides:
       - Overview: guides/index.md
       - Data & representation:

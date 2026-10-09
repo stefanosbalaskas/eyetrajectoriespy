@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 620" width="1080" height="620" role="img" aria-label="F5 empirical true mean-null rejection percentages for independently estimated AR1 and AR2 null references across five dependence models, 100 datasets per case">
+<rect width="1080" height="620" fill="#fff"/>
+<text x="30" y="43" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#283A4F">F5 | AR(2) extension does not solve unknown dependence</text>
+<text x="30" y="72" font-family="Arial,sans-serif" font-size="14" font-weight="400" fill="#657286">100 independent true no-mean-change datasets per generator · nominal alpha = .05</text>
+<rect x="31" y="94" width="16" height="15" rx="2" fill="#4277A4"/>
+<text x="54" y="107" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#283A4F">Independent-baseline AR(1)</text>
+<rect x="308" y="94" width="16" height="15" rx="2" fill="#C7874A"/>
+<text x="331" y="107" font-family="Arial,sans-serif" font-size="13" font-weight="400" fill="#283A4F">Independent-baseline AR(2)</text>
+<line x1="310" x2="310" y1="155" y2="540" stroke="#E4E9EF" stroke-width="1" stroke-dasharray="2 5"/>
+<text x="302" y="554" font-family="Arial,sans-serif" font-size="11" font-weight="400" fill="#66707E">0%</text>
+<line x1="345.25" x2="345.25" y1="155" y2="540" stroke="#9F4B42" stroke-width="2" stroke-dasharray="5 4"/>
+<text x="337.25" y="554" font-family="Arial,sans-serif" font-size="11" font-weight="400" fill="#66707E">5%</text>
+<line x1="451" x2="451" y1="155" y2="540" stroke="#E4E9EF" stroke-width="1" stroke-dasharray="2 5"/>
+<text x="443" y="554" font-family="Arial,sans-serif" font-size="11" font-weight="400" fill="#66707E">20%</text>
+<line x1="592" x2="592" y1="155" y2="540" stroke="#E4E9EF" stroke-width="1" stroke-dasharray="2 5"/>
+<text x="584" y="554" font-family="Arial,sans-serif" font-size="11" font-weight="400" fill="#66707E">40%</text>
+<line x1="733" x2="733" y1="155" y2="540" stroke="#E4E9EF" stroke-width="1" stroke-dasharray="2 5"/>
+<text x="725" y="554" font-family="Arial,sans-serif" font-size="11" font-weight="400" fill="#66707E">60%</text>
+<line x1="874" x2="874" y1="155" y2="540" stroke="#E4E9EF" stroke-width="1" stroke-dasharray="2 5"/>
+<text x="866" y="554" font-family="Arial,sans-serif" font-size="11" font-weight="400" fill="#66707E">80%</text>
+<line x1="1015" x2="1015" y1="155" y2="540" stroke="#E4E9EF" stroke-width="1" stroke-dasharray="2 5"/>
+<text x="1007" y="554" font-family="Arial,sans-serif" font-size="11" font-weight="400" fill="#66707E">100%</text>
+<text x="30" y="187" font-family="Arial,sans-serif" font-size="15" font-weight="600" fill="#283A4F">Iid Gaussian</text>
+<rect x="310" y="169" width="1" height="19" rx="2" fill="#4277A4"/>
+<text x="318" y="183" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#283A4F">0%</text>
+<rect x="310" y="196" width="7.05" height="19" rx="2" fill="#C7874A"/>
+<text x="325.05" y="210" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#283A4F">1%</text>
+<text x="30" y="259" font-family="Arial,sans-serif" font-size="15" font-weight="600" fill="#283A4F">Strong AR(1)</text>
+<rect x="310" y="241" width="21.15" height="19" rx="2" fill="#4277A4"/>
+<text x="339.15" y="255" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#283A4F">3%</text>
+<rect x="310" y="268" width="21.15" height="19" rx="2" fill="#C7874A"/>
+<text x="339.15" y="282" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#283A4F">3%</text>
+<text x="30" y="331" font-family="Arial,sans-serif" font-size="15" font-weight="600" fill="#283A4F">True AR(2)</text>
+<rect x="310" y="313" width="105.75" height="19" rx="2" fill="#4277A4"/>
+<text x="423.75" y="327" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#283A4F">15%</text>
+<rect x="310" y="340" width="63.45" height="19" rx="2" fill="#C7874A"/>
+<text x="381.45" y="354" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#283A4F">9%</text>
+<text x="30" y="403" font-family="Arial,sans-serif" font-size="15" font-weight="600" fill="#283A4F">Stationary MA(1)</text>
+<rect x="310" y="385" width="1" height="19" rx="2" fill="#4277A4"/>
+<text x="318" y="399" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#283A4F">0%</text>
+<rect x="310" y="412" width="77.55" height="19" rx="2" fill="#C7874A"/>
+<text x="395.55" y="426" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#283A4F">11%</text>
+<text x="30" y="475" font-family="Arial,sans-serif" font-size="15" font-weight="600" fill="#283A4F">AR(1) dependence change</text>
+<rect x="310" y="457" width="662.7" height="19" rx="2" fill="#4277A4"/>
+<text x="980.7" y="471" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#283A4F">94%</text>
+<rect x="310" y="484" width="662.7" height="19" rx="2" fill="#C7874A"/>
+<text x="980.7" y="498" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#283A4F">94%</text>
+<text x="30" y="584" font-family="Arial,sans-serif" font-size="13" font-weight="600" fill="#A04C42">Both methods rejected 94% of null means when dependence changed within the test; the baseline law failed to transfer.</text>
+<text x="30" y="607" font-family="Arial,sans-serif" font-size="12" font-weight="400" fill="#657286">Original source: GitHub Actions #38000177988 · 1,500 fitted tests · SHA256 audit artifact 11648842221.</text>
+</svg>

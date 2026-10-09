@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="615" viewBox="0 0 1040 615" role="img" aria-label="Original versus score-marginalized B6 and B7 Gibbs median maximum R-hat for 72 actual fits">
+<rect width="1040" height="615" fill="#fff"/>
+<text x="35" y="45" text-anchor="start" fill="#263449" font-size="25" font-weight="700" font-family="Inter,Arial,sans-serif">B6/B7 | Exact partially collapsed Gibbs: mixing diagnostics</text>
+<text x="35" y="73" text-anchor="start" fill="#596778" font-size="13" font-weight="400" font-family="Inter,Arial,sans-serif">36 independent prior-generated paired datasets · 72 actual posterior fits · source run #37978244822</text>
+<rect x="687" y="100" width="17" height="11" fill="#A56B47"/>
+<text x="712" y="110" text-anchor="start" fill="#263449" font-size="13" font-weight="400" font-family="Inter,Arial,sans-serif">Original Gibbs</text>
+<rect x="843" y="100" width="17" height="11" fill="#426FAA"/>
+<text x="868" y="110" text-anchor="start" fill="#263449" font-size="13" font-weight="400" font-family="Inter,Arial,sans-serif">Collapsed mean</text>
+<text x="265" y="128" text-anchor="start" fill="#263449" font-size="14" font-weight="600" font-family="Inter,Arial,sans-serif">Median worst-monitored R-hat | 1.00 is ideal; lower is better</text>
+<line x1="260" y1="141" x2="260" y2="540" stroke="#8592A4" stroke-width="1" stroke-dasharray=""/>
+<text x="260" y="565" text-anchor="middle" fill="#596778" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">1.0</text>
+<line x1="391.81818181818176" y1="141" x2="391.81818181818176" y2="540" stroke="#E1E5EA" stroke-width="1" stroke-dasharray="4 5"/>
+<text x="391.81818181818176" y="565" text-anchor="middle" fill="#596778" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">1.2</text>
+<line x1="523.6363636363635" y1="141" x2="523.6363636363635" y2="540" stroke="#E1E5EA" stroke-width="1" stroke-dasharray="4 5"/>
+<text x="523.6363636363635" y="565" text-anchor="middle" fill="#596778" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">1.4</text>
+<line x1="655.4545454545455" y1="141" x2="655.4545454545455" y2="540" stroke="#E1E5EA" stroke-width="1" stroke-dasharray="4 5"/>
+<text x="655.4545454545455" y="565" text-anchor="middle" fill="#596778" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">1.6</text>
+<line x1="787.2727272727273" y1="141" x2="787.2727272727273" y2="540" stroke="#E1E5EA" stroke-width="1" stroke-dasharray="4 5"/>
+<text x="787.2727272727273" y="565" text-anchor="middle" fill="#596778" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">1.8</text>
+<line x1="919.0909090909091" y1="141" x2="919.0909090909091" y2="540" stroke="#E1E5EA" stroke-width="1" stroke-dasharray="4 5"/>
+<text x="919.0909090909091" y="565" text-anchor="middle" fill="#596778" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">2.0</text>
+<text x="35" y="182" text-anchor="start" fill="#263449" font-size="15" font-weight="500" font-family="Inter,Arial,sans-serif">B6 rank 1</text>
+<line x1="335.1363636363637" y1="166" x2="335.1363636363637" y2="192" stroke="#B1B5BC" stroke-width="1"/>
+<rect x="260" y="161" height="13" width="75.13636363636368" rx="2" fill="#A56B47"/>
+<rect x="260" y="181" height="13" width="93.59090909090901" rx="2" fill="#426FAA"/>
+<text x="343.1363636363637" y="172" text-anchor="start" fill="#874626" font-size="12" font-weight="500" font-family="Inter,Arial,sans-serif">1.114</text>
+<text x="361.590909090909" y="192" text-anchor="start" fill="#245C9F" font-size="12" font-weight="500" font-family="Inter,Arial,sans-serif">1.142</text>
+<text x="35" y="247" text-anchor="start" fill="#263449" font-size="15" font-weight="500" font-family="Inter,Arial,sans-serif">B6 rank 2</text>
+<line x1="701.590909090909" y1="231" x2="701.590909090909" y2="257" stroke="#B1B5BC" stroke-width="1"/>
+<rect x="260" y="226" height="13" width="441.590909090909" rx="2" fill="#A56B47"/>
+<rect x="260" y="246" height="13" width="179.27272727272725" rx="2" fill="#426FAA"/>
+<text x="709.590909090909" y="237" text-anchor="start" fill="#874626" font-size="12" font-weight="500" font-family="Inter,Arial,sans-serif">1.670</text>
+<text x="447.27272727272725" y="257" text-anchor="start" fill="#245C9F" font-size="12" font-weight="500" font-family="Inter,Arial,sans-serif">1.272</text>
+<text x="35" y="312" text-anchor="start" fill="#263449" font-size="15" font-weight="500" font-family="Inter,Arial,sans-serif">B7 rank 1 paired</text>
+<line x1="895.3636363636363" y1="296" x2="895.3636363636363" y2="322" stroke="#B1B5BC" stroke-width="1"/>
+<rect x="260" y="291" height="13" width="635.3636363636363" rx="2" fill="#A56B47"/>
+<rect x="260" y="311" height="13" width="326.9090909090909" rx="2" fill="#426FAA"/>
+<text x="903.3636363636363" y="302" text-anchor="start" fill="#874626" font-size="12" font-weight="500" font-family="Inter,Arial,sans-serif">1.964</text>
+<text x="594.9090909090909" y="322" text-anchor="start" fill="#245C9F" font-size="12" font-weight="500" font-family="Inter,Arial,sans-serif">1.496</text>
+<text x="35" y="377" text-anchor="start" fill="#263449" font-size="15" font-weight="500" font-family="Inter,Arial,sans-serif">B7 rank 1 async</text>
+<line x1="569.7727272727273" y1="361" x2="569.7727272727273" y2="387" stroke="#B1B5BC" stroke-width="1"/>
+<rect x="260" y="356" height="13" width="309.77272727272725" rx="2" fill="#A56B47"/>
+<rect x="260" y="376" height="13" width="44.15909090909088" rx="2" fill="#426FAA"/>
+<text x="577.7727272727273" y="367" text-anchor="start" fill="#874626" font-size="12" font-weight="500" font-family="Inter,Arial,sans-serif">1.470</text>
+<text x="312.1590909090909" y="387" text-anchor="start" fill="#245C9F" font-size="12" font-weight="500" font-family="Inter,Arial,sans-serif">1.067</text>
+<text x="35" y="442" text-anchor="start" fill="#263449" font-size="15" font-weight="500" font-family="Inter,Arial,sans-serif">B7 rank 2 paired</text>
+<line x1="877.5681818181818" y1="426" x2="877.5681818181818" y2="452" stroke="#B1B5BC" stroke-width="1"/>
+<rect x="260" y="421" height="13" width="617.5681818181818" rx="2" fill="#A56B47"/>
+<rect x="260" y="441" height="13" width="353.931818181818" rx="2" fill="#426FAA"/>
+<text x="885.5681818181818" y="432" text-anchor="start" fill="#874626" font-size="12" font-weight="500" font-family="Inter,Arial,sans-serif">1.937</text>
+<text x="621.931818181818" y="452" text-anchor="start" fill="#245C9F" font-size="12" font-weight="500" font-family="Inter,Arial,sans-serif">1.537</text>
+<text x="35" y="507" text-anchor="start" fill="#263449" font-size="15" font-weight="500" font-family="Inter,Arial,sans-serif">B7 rank 2 async</text>
+<line x1="700.2727272727273" y1="491" x2="700.2727272727273" y2="517" stroke="#B1B5BC" stroke-width="1"/>
+<rect x="260" y="486" height="13" width="440.27272727272725" rx="2" fill="#A56B47"/>
+<rect x="260" y="506" height="13" width="309.77272727272725" rx="2" fill="#426FAA"/>
+<text x="708.2727272727273" y="497" text-anchor="start" fill="#874626" font-size="12" font-weight="500" font-family="Inter,Arial,sans-serif">1.668</text>
+<text x="577.7727272727273" y="517" text-anchor="start" fill="#245C9F" font-size="12" font-weight="500" font-family="Inter,Arial,sans-serif">1.470</text>
+<text x="35" y="594" text-anchor="start" fill="#596778" font-size="12" font-weight="400" font-family="Inter,Arial,sans-serif">Source artifact 11639857546 · Mathematically valid conditional; still unqualified posterior mixing (several R-hat &gt; 1.4).</text>
+</svg>
