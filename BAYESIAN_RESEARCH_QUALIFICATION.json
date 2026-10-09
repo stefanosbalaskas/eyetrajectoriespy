@@ -37,8 +37,9 @@
       "scientifically_qualified": false
     },
     "B10": {
-      "stage": "design_only_AOI_change_point_registration_observation",
-      "scientifically_qualified": false
+      "stage": "single_known_projection_Gaussian_one_break_conditional_feasibility_only_plus_other_models_design",
+      "scientifically_qualified": false,
+      "full_functional_changepoint_implemented": false
     }
   },
   "required_evidence": [

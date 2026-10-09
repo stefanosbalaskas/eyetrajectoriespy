@@ -36,3 +36,9 @@ The SBC simulator uses an explicit scalar Gaussian prior, Gaussian likelihood an
 The next figure tranche requires a **learned** eigenbasis, component sign/rotation alignment, near-tied posterior eigenspaces and empirical functional-model SBC.
 
 [Research roadmap](bayesian-research-programme.md) · [Programme #236](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/236)
+
+## B10 conditional single-change location posterior
+
+![Known split posterior from a declared scalar functional projection](../assets/research/b10-projected-one-break-posterior.svg)
+
+The model projects complete whole-trial functional curves onto a **prespecified fixed direction**, then analytically integrates independent Gaussian segment means under one-break and no-break alternatives with known residual SD. The graph shows posterior split-location probabilities **conditional on exactly one break**, alongside the injected truth. This is not Li–Ghosal's general functional changepoint procedure, does not allow serial correlation/multiple breaks, and carries no calibration guarantee.

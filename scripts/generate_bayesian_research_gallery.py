@@ -1,4 +1,4 @@
-"""Create five fitted/simulated Bayesian research SVGs from actual B5/B6/B8 objects.
+"""Create six fitted/simulated Bayesian research SVGs from actual B5/B6/B8 objects.
 
 All generated data are synthetic. This gallery never claims population
 posterior calibration of native sparse Bayesian FPCA or hierarchical models.
@@ -15,6 +15,7 @@ from eyetrajectoriespy.bayesian import (
     bayesian_credible_band, bayesian_calibration_study,
     bayesian_posterior_predictive_check,
     fit_bayesian_function_on_scalar, fit_bayesian_sparse_score_baseline,
+    fit_bayesian_functional_changepoints,
 )
 from eyetrajectoriespy.bayesian.function_on_scalar import _bspline_basis
 
@@ -25,6 +26,7 @@ FILES = (
     "b6-fixed-population-sparse-scores.svg",
     "b5-posterior-predictive-check.svg",
     "b5-exact-normal-sbc-ranks.svg",
+    "b10-projected-one-break-posterior.svg",
 )
 
 
@@ -146,6 +148,35 @@ def main() -> None:
            title="B5 known-prior Gaussian SBC demonstration (not FPCA calibration)")
     ax.legend(fontsize=7)
     _save(fig,FILES[4])
+
+
+    # B10: posterior of a predeclared scalar functional projection, ONE split.
+    sequence=np.full((42,len(t),1),.32)
+    sequence[21:]+=.30
+    sequence+=rng.normal(0,.03,size=sequence.shape)
+    ordered=TrajectorySet(
+        time=t,values=sequence,
+        curve_ids=tuple(f"ordered-{i}" for i in range(len(sequence))),
+        dimension_names=("x",),coordinate_system="normalized",
+        time_unit="normalized",
+        metadata=pd.DataFrame({"participant_id":[f"unit{i}" for i in range(len(sequence))]}),
+    )
+    cp=fit_bayesian_functional_changepoints(
+        ordered,functional_projection=np.ones((len(t),1)),
+        observation_noise_sd=.03,segment_mean_prior_sd=1.,
+        prior_probability_one_break=.5,min_segment=6,
+    )
+    fig,ax=plt.subplots(figsize=(6.2,3.1))
+    ax.plot(cp.split_posterior.split_index,
+            cp.split_posterior.posterior_split_given_exactly_one_break,
+            marker="o",markersize=3,
+            label="Posterior location, conditional on one break")
+    ax.axvline(21,ls="--",color="black",label="Known synthetic split")
+    ax.set(xlabel="Ordered whole-trial split index",
+           ylabel="Posterior location probability",
+           title="B10 fixed functional projection / i.i.d. Gaussian one-break pilot")
+    ax.legend(fontsize=7)
+    _save(fig,FILES[5])
 
     assert not information["sbc_uniformity_qualified"]
     for name in FILES:

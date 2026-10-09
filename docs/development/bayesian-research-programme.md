@@ -12,7 +12,7 @@ The [historical B4 feasibility decision](../articles/bayesian-feasibility-bounda
 | B7 Bayesian x/y multivariate FPCA | Fixed-population shared-score conjugate benchmark via `fit_bayesian_planar_score_baseline()` | Paired and asynchronous observations accepted **conditionally on known functions**; no learned joint Bayesian MFPCA |
 | B8 functional regression | `fit_bayesian_function_on_scalar()` independent Gaussian spline posterior | Observation-noise and random-effect prior SDs fixed, no serial covariance, participant random **slopes** or nested trial effects; repeated participants supported only through the separately named functional random-intercept model |
 | B9 prediction and groups | `compare_bayesian_functional_groups()` and `predict_bayesian_trajectory()` experimental | Jointly paired posterior draws required for group contrasts; partial completion uses **fixed known population basis** only; no calibrated prediction or group test |
-| B10 AOI, registration, observation-process, changepoints | Design only | No fitted probabilistic estimator |
+| B10 AOI, registration, observation-process, changepoints | Fixed-projection **one-break Gaussian** feasibility via `fit_bayesian_functional_changepoints()` only | No fully functional change-point posterior, serial dependence, multiple breaks, AOI simplex, registration or informative missingness models |
 
 ## Scientific definitions and limitations
 
@@ -41,3 +41,5 @@ B6 learned-eigensystem modelling, B7 **learned-population** paired/asynchronous 
 ## Exact-model B5 simulation-based calibration pilot
 
 The research CI executes `scripts/run_bayesian_conjugate_sbc_pilot.py`, drawing score truth or spline coefficients from each *implemented* conjugate model prior, constructing observations from its known Gaussian likelihood, then independently refitting each posterior. This creates rank histograms, observed 90% interval inclusion and exact binomial uncertainty for two **restricted baselines** (B6 fixed population and B8 known noise). The default small pilot of 30 replicates per baseline is a pipeline check, not an adequate SBC study; it does not validate learned Bayesian eigenfunctions, participant covariance, asynchronous noise, posterior MCMC, model misspecification or population-level inferential calibration. Every fit failure is retained as its own record.
+
+**B10 boundary:** The opt-in `fit_bayesian_functional_changepoints()` is a restricted one-break posterior on *analyst-predeclared scalar projections of whole functional curves*, using fixed scalar noise and Gaussian segment-mean priors. It compares an integrated no-break model against uniformly located one-break alternatives. It does **not** learn functional projections, support multiple breaks, serial correlations, posterior phase registration, simplex AOIs or informative observation processes. Its posterior change probability is **not a frequentist p-value**.
