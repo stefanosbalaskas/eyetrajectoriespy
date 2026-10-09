@@ -21,6 +21,7 @@ from scipy.stats import binomtest
 from eyetrajectoriespy.bayesian import fit_bayesian_sparse_fpca
 from eyetrajectoriespy.bayesian.sparse_factor_gibbs import _spline_basis
 from eyetrajectoriespy.types import IrregularTrajectorySet
+from eyetrajectoriespy.research.calibration_seed import (calibration_replicate_seed, calibration_manifest)
 
 
 SCENARIOS = {
@@ -185,6 +186,8 @@ def _binomial(records: pd.DataFrame, key: str) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--replicates", type=int, default=8)
+    parser.add_argument("--master-seed",type=int,default=249103)
+    parser.add_argument("--shard-id",type=int,default=0)
     parser.add_argument("--draws", type=int, default=60)
     parser.add_argument("--warmup", type=int, default=120)
     parser.add_argument("--scenarios", nargs="+", choices=tuple(SCENARIOS),
@@ -193,12 +196,13 @@ def main() -> None:
     args = parser.parse_args()
     if args.replicates < 2 or args.draws < 20 or args.warmup < 20:
         raise ValueError("at least two replications and 20 posterior/warmup draws")
-    rng = np.random.default_rng(249103)
     rows = []
     for scenario in args.scenarios:
         for rep in range(args.replicates):
-            seed = int(rng.integers(1000, 2**30))
+            seed = calibration_replicate_seed("B6",master_seed=args.master_seed,
+                shard_id=args.shard_id,scenario=scenario,replicate=rep)
             record = dict(scenario=scenario, replicate=rep, seed=seed,
+                          shard_id=args.shard_id,
                           status="failed", exception_type=None, exception=None)
             try:
                 record.update(run_one(seed, scenario, draws=args.draws, warmup=args.warmup))
@@ -230,6 +234,7 @@ def main() -> None:
         })
     evidence = {
         "schema_version": 1, "programme": "B6_learned_population_calibration_grid",
+        "master_seed":args.master_seed,"shard_id":args.shard_id,
         "not_rank_based_SBC": True,
         "matched_scenarios_generate_exact_declared_prior_and_likelihood": True,
         "near_tie_and_misspecified_scenarios_are_STRESS_NOT_SBC": True,
@@ -246,10 +251,15 @@ def main() -> None:
     cases = args.out/"cases.csv"
     case_summary = args.out/"evidence.json"
     frame.to_csv(cases, index=False)
+    (args.out/"manifest.json").write_text(json.dumps(calibration_manifest(
+        "B6",master_seed=args.master_seed,shard_id=args.shard_id,
+        records_per_scenario=args.replicates,case_files=("cases.csv",)),
+        indent=2,sort_keys=True)+"\n")
     case_summary.write_text(json.dumps(evidence, indent=2, sort_keys=True)+"\n")
     (args.out/"sha256.txt").write_text(
         sha256(cases.read_bytes()).hexdigest()+"  cases.csv\n"+
-        sha256(case_summary.read_bytes()).hexdigest()+"  evidence.json\n")
+        sha256(case_summary.read_bytes()).hexdigest()+"  evidence.json\n"+
+        sha256((args.out/"manifest.json").read_bytes()).hexdigest()+"  manifest.json\n")
     print(json.dumps(evidence, indent=2, sort_keys=True))
 
 

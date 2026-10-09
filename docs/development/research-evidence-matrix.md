@@ -62,6 +62,15 @@ Prediction intervals are pointwise, **not** jointly calibrated functional
 bands. CI passing and synthetic pilot success never change
 `scientific_inference_qualified` or publication interlocks.
 
+### Reproducible large-sample calibration preparation
+
+The independent-shard research procedure supports versioned, seed-separated
+B6/B7/F1/F5 simulations, audits checksums, rejects repeated scenario/replicate
+keys and observed random-seed collisions, and preserves failed fits.
+See [calibration batches](scientific-calibration-shards.md). The availability
+of a repeatable study framework does **not** establish actual large-sample
+simulation evidence or scientific qualification.
+
 ## B5–B10 native Bayesian research track
 
 [Draft PR #237](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/237) adds **experimental** backend-independent posterior tools, a *known-population conditional sparse score baseline* (not a learned Bayesian FPCA estimator) and a fixed-noise Gaussian B-spline functional regression prototype. No architecture replacement, inference calibration or publication decision is established. See the [Bayesian research catalogue](bayesian-research-programme.md) and [synthetic fitted-model gallery](bayesian-gallery.md).

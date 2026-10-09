@@ -17,6 +17,7 @@ from scipy.stats import binomtest
 from eyetrajectoriespy.bayesian import (fit_bayesian_planar_factor, predict_bayesian_planar_new_participant)
 from eyetrajectoriespy.bayesian.sparse_factor_gibbs import _spline_basis
 from eyetrajectoriespy.types import IrregularTrajectorySet
+from eyetrajectoriespy.research.calibration_seed import (calibration_replicate_seed, calibration_manifest)
 
 
 def _replicate(seed: int, rank: int, asynchronous: bool, draws: int, warmup: int) -> dict:
@@ -117,19 +118,23 @@ def _coverage(df: pd.DataFrame, name: str) -> dict:
 def main() -> None:
     parser=argparse.ArgumentParser()
     parser.add_argument("--replicates",type=int,default=4)
+    parser.add_argument("--master-seed",type=int,default=306700)
+    parser.add_argument("--shard-id",type=int,default=0)
     parser.add_argument("--draws",type=int,default=35)
     parser.add_argument("--warmup",type=int,default=60)
     parser.add_argument("--out",type=Path,required=True)
     args=parser.parse_args()
     if args.replicates<2 or args.draws<20 or args.warmup<20:
         raise ValueError("at least 2 replicates, 20 retained draws and 20 warmup sweeps")
-    rng=np.random.default_rng(306700)
     records=[]
     for rank in (1,2):
         for asynchronous in (False,True):
             for iteration in range(args.replicates):
-                seed=int(rng.integers(1000,2**30))
+                seed=calibration_replicate_seed("B7",master_seed=args.master_seed,
+                    shard_id=args.shard_id,
+                    scenario=f"rank{rank}_async{int(asynchronous)}",replicate=iteration)
                 record=dict(rank=rank,asynchronous=asynchronous,
+                            shard_id=args.shard_id,
                             replicate=iteration,seed=seed,status="failed",
                             exception_type=None,exception=None)
                 try:
@@ -173,16 +178,22 @@ def main() -> None:
         "residual_serial_or_cross_channel_noise_learned":False,
         "publication_authorized":False,
         "attempts":len(frame),"failed":int((frame.status=="failed").sum()),
+        "master_seed":args.master_seed,"shard_id":args.shard_id,
         "scenarios":scenarios,
     }
     args.out.mkdir(parents=True,exist_ok=True)
     cases=args.out/"cases.csv"
     source=args.out/"evidence.json"
     frame.to_csv(cases,index=False)
+    (args.out/"manifest.json").write_text(json.dumps(calibration_manifest(
+        "B7",master_seed=args.master_seed,shard_id=args.shard_id,
+        records_per_scenario=args.replicates,case_files=("cases.csv",)),
+        indent=2,sort_keys=True)+"\n")
     source.write_text(json.dumps(evidence,indent=2,sort_keys=True)+"\n")
     (args.out/"sha256.txt").write_text(
         sha256(cases.read_bytes()).hexdigest()+"  cases.csv\n"+
-        sha256(source.read_bytes()).hexdigest()+"  evidence.json\n")
+        sha256(source.read_bytes()).hexdigest()+"  evidence.json\n"+
+        sha256((args.out/"manifest.json").read_bytes()).hexdigest()+"  manifest.json\n")
     print(json.dumps(evidence,sort_keys=True,indent=2))
 
 

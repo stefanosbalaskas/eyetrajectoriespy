@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "programme": "B6_B7_F1_F5_sharded_scientific_calibration_evidence",
+  "source_version": "1.2.0rc2.dev0",
+  "stable_version": "1.1.0",
+  "seed_stream": "blake2b_63bit_deterministic_per_programme_master_shard_scenario_replicate",
+  "statistical_independence_of_randomized_streams_by_design": true,
+  "mathematical_uniqueness_of_63bit_seeds_guaranteed": false,
+  "observed_seed_collisions_rejected": true,
+  "duplicate_shard_ids_rejected": true,
+  "duplicate_replicate_keys_rejected": true,
+  "manifest_and_checksums_verified": true,
+  "fit_failures_retained": true,
+  "conditional_rejection_not_unconditional_size": true,
+  "within_participant_time_samples_not_binomial_independent": true,
+  "pilot_script_paths": [
+    "scripts/run_b6_population_calibration_grid.py",
+    "scripts/run_b7_learned_planar_truth_pilot.py",
+    "scripts/run_f1_f5_scientific_stress.py"
+  ],
+  "aggregate_script": "scripts/aggregate_scientific_calibration_shards.py",
+  "large_scale_simulations_completed": false,
+  "independent_external_recovery_completed": false,
+  "adequate_MC_precision_certified": false,
+  "MCMC_convergence_qualified": false,
+  "scientific_inference_qualified": false,
+  "engineering_ci_qualified": false,
+  "release_authorized": false,
+  "root_namespace_promoted": false,
+  "required_future_evidence": [
+    "predeclared accepted scenario grid and seeds across independent shards",
+    "long-chain identifiability-preserving diagnostics and rank SBC B6/B7",
+    "adequate Monte Carlo precision accounting for fit failures",
+    "F1 F5 type-I and power at multiple alpha levels and dependence settings",
+    "independent PACE and external Bayesian estimator comparators",
+    "credible and predictive coverage conditional on misspecification",
+    "independent real-participant and BIDS datasets"
+  ]
+}
