@@ -86,11 +86,21 @@ def from_bids_eyetracking(
         raise ValueError("requires a *_recording-<eye>_physio.tsv.gz file")
     if isinstance(sidecar, Mapping):
         meta = dict(sidecar)
+        source_sidecar = "explicit_in_memory_mapping"
     else:
-        meta = json.loads(Path(sidecar).read_text(encoding="utf-8"))
+        sidecar_path = Path(sidecar)
+        expected_name = path.name.removesuffix(".tsv.gz") + ".json"
+        if sidecar_path.name != expected_name:
+            raise ValueError("sidecar JSON basename must match physio TSV.GZ exactly")
+        meta = json.loads(sidecar_path.read_text(encoding="utf-8"))
+        source_sidecar = str(sidecar_path)
     audit = validate_eyetracking_metadata(meta, sampling_tolerance=sampling_tolerance)
-    frame = pd.read_csv(path, sep="\t", compression="gzip", header=None,
-                        names=list(audit["column_names"]), na_values=["n/a"])
+    frame = pd.read_csv(
+        path, sep="\t", compression="gzip", header=None,
+        names=list(audit["column_names"]), dtype=str, na_filter=False,
+    )
+    if frame.shape[1] != len(audit["column_names"]):
+        raise ValueError("sidecar Columns does not match TSV field count")
     times = pd.to_numeric(frame["timestamp"], errors="coerce").to_numpy(float)
     if len(times) < 2 or not np.isfinite(times).all() or not np.all(np.diff(times) > 0):
         raise ValueError("timestamps must contain at least two strictly increasing finite samples")
@@ -98,9 +108,14 @@ def from_bids_eyetracking(
     expected = 1.0 / audit["sampling_frequency_hz"]
     if not np.all(np.abs(dt / expected - 1.0) <= sampling_tolerance):
         raise ValueError("nonuniform or incompatible timestamps; no hidden resampling")
-    coords = frame[["x_coordinate", "y_coordinate"]].apply(
-        pd.to_numeric, errors="coerce"
-    ).to_numpy(float)
+    coords = np.empty((len(times), 2), dtype=float)
+    for j, column in enumerate(("x_coordinate", "y_coordinate")):
+        raw = frame[column].astype(str).str.strip()
+        explicit_missing = raw.isin(["n/a", "N/A", ""])
+        values = pd.to_numeric(raw.mask(explicit_missing, other=np.nan), errors="coerce")
+        if values.isna().ne(explicit_missing).any():
+            raise ValueError(f"invalid nonnumeric {column} token in BIDS stream")
+        coords[:, j] = values.to_numpy(float)
     if np.isinf(coords).any():
         raise ValueError("infinite gaze coordinates are not supported")
     return TrajectorySet(
@@ -110,6 +125,7 @@ def from_bids_eyetracking(
         coordinate_system=audit["coordinate_system"], time_unit="s",
         provenance={
             "import_contract": "BEP020_2026_subset", "source_path": str(path),
+            "source_sidecar": source_sidecar,
             "recorded_eye": audit["recorded_eye"],
             "sample_coordinate_system": audit["sample_coordinate_system_original"],
             "sampling_frequency_hz": audit["sampling_frequency_hz"],
