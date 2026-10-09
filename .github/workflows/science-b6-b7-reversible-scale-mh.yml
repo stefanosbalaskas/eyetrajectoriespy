@@ -1,15 +1,9 @@
 name: science-b6-b7-reversible-scale-mh
 
-on:
-  pull_request:
-    paths:
-      - ".github/workflows/science-b6-b7-reversible-scale-mh.yml"
-      - "src/eyetrajectoriespy/bayesian/sparse_factor_gibbs.py"
-      - "src/eyetrajectoriespy/bayesian/planar_factor_gibbs.py"
-      - "scripts/run_bayes_scale_interweave_probe.py"
-      - "tests/test_bayes_reversible_scale_interweave.py"
-  workflow_dispatch:
 
+# Original scientific evidence is archived; opt-in manual replay only.
+on:
+  workflow_dispatch:
 permissions:
   contents: read
 
