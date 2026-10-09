@@ -3,6 +3,21 @@
 !!! warning "Stable release versus prototypes"
     **Stable 1.1.0** is available from PyPI. **Research 1.2** (source 1.2.0rc2.dev0) is unpublished. The **27/27** engineering workflow success refers exclusively to [PR #227](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/227) commit d48c939b01fbfa19f0e060902b6a61ebddbe7aa6. It does not certify newer commits or scientific inference.
 
+## Further exact-source scientific findings — 9 October 2026
+
+**Scientific qualification remains failed/unestablished, irrespective of green CI.**
+
+- **B6/B7 exact conditionals:** [PR #257](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/257) independently constructed dense observation-row Gaussian reference posteriors; loading/mean/asynchronous shared-score conditional precision and mean tests passed on Python 3.11, 3.12 and 3.13. This is **conditional-update algebra**, not proof that the whole Gibbs posterior mixes or has nominal coverage.
+- **B6/B7 scale interweaving:** [source run #37976468861](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37976468861) completed **72** matched-prior genuine Gibbs refits with no exceptions. A mathematically reversible likelihood-invariant MH factor-scale proposal had **no consistent R-hat or ESS improvement**, and most rank-2/asynchronous comparisons deteriorated. The implementation remains opt-in and unqualified. [Detailed results](b6-b7-reversible-scale-interweaving.md).
+- **F5 fresh independent nulls:** [source study #37975560959](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37975560959), SHA256 recovered in [#37976469318](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37976469318), produced 1,800 real hypothesis tests, with no fitting exceptions and no recovery refits. At alpha .05, true phi=.8 null rejection was **99/200 = 49.5%** for old block-4 but **16/200 = 8.0%** for the reference using **known oracle phi**. This is an improvement in one conditional simulation regime, **not** a calibrated test for unknown serial dependence. [Detailed model and limits](independent-core-computation-and-f5-ar1-reference.md).
+- **F1 larger qualification:** [draft #259](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/259) has started an independent, fully fitted **4,000 null + 2,000 moderate alternative** programme across balanced, clustered, nonexchangeable-heteroscedastic and sparse designs. Results require the actual retained case archive; no early claim.
+- **Bayesian partially collapsed mean:** [draft #260](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/260) introduces opt-in *exact* score-marginalized B6 and joint cross-channel B7 mean conditionals, with direct Gaussian reference tests and a new **72-fitted-model** paired mixing study. The original sampler remains default; no advance claim of convergence or coverage. [Mathematical protocol](b6-b7-exact-collapsed-mean-gibbs.md).
+
+The earlier [B6/B7 blocker #255](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/255)
+and [F5 dependence blocker #256](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/256)
+stay open. **Stable 1.1.0 is unchanged; 1.2 research and its source pages are
+not a production release or independently deployed public website.**
+
 | Route | Opt-in API | Engineering | Scientific status |
 |---|---|---|---|
 | F1 sparse independent groups | test_sparse_functional_groups() | Original #227 27/27 | Null size and exchangeability **not qualified** |
