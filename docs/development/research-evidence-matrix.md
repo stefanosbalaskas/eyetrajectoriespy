@@ -71,6 +71,42 @@ See [calibration batches](scientific-calibration-shards.md). The availability
 of a repeatable study framework does **not** establish actual large-sample
 simulation evidence or scientific qualification.
 
+## Actual 13,600-attempt scientific calibration (9 October 2026)
+
+!!! warning "Large empirical simulation did not qualify Bayesian or dependent F5 inference"
+    [Original full simulation #37965949039](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37965949039)
+    performed **13,600** native fitted-model/test attempts in six independent
+    shards with **zero fitting exceptions**. Bayesian B6 and B7 aggregate
+    jobs passed; F1/F5 original aggregate had an evidence-schema defect,
+    then [recovery run #37969068128](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37969068128)
+    verified and recovered all **9,600** archived F1/F5 tests without
+    refitting models. This evidence is **not** 1.2 release authorization.
+
+- **B6 (400 genuine refits per scenario):** under matched priors, nominal
+  90% population mean/covariance intervals covered **70.75%/77.00%**
+  (rank 1) and **62.00%/67.00%** (rank 2), with zero exceptions.
+- **B7 (400 refits per scenario):** paired rank-1 x/y mean intervals covered
+  **61.50%/67.00%**, joint x/y cross-covariance **74.00%**;
+  asynchronous rank-2 x/y means covered **57.50%/59.50%**,
+  cross covariance **67.75%**. Held-out person average pointwise
+  predictive inclusion was **86.41%–87.59%**, not a simultaneous band.
+  Severe undercoverage cannot be attributed to implementation versus
+  poor MCMC mixing until long-chain diagnostic [#253](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/253)
+  and independent reference comparisons finish.
+- **F1 (300 attempts per truth/design):** α=.05 null rejection **4.33%–7.67%**;
+  no nominal-size qualification or general-power claim. Alternative
+  detection **98%–99.33%** under the deliberately strong simulated effect.
+- **F5 (300 per scenario, α=.05):** true strong AR(1) stationary
+  **no-change** false rejection was **100%** (block 2),
+  **42.67%** (block 4), and **2.33%** (block 8).
+  Dependence-calibrated p-values fail under the tested regimes and
+  cannot be recommended as nominally calibrated.
+
+See [complete design-by-regime scientific evidence](first-empirical-calibration-findings.md)
+and governance issues [Bayesian undercoverage #255](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/255)
+and [F5 null-size failure #256](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/256).
+**Scientific inference, stable API, deployment and publication gates stay false.**
+
 ## B5–B10 native Bayesian research track
 
 [Draft PR #237](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/237) adds **experimental** backend-independent posterior tools, a *known-population conditional sparse score baseline* (not a learned Bayesian FPCA estimator) and a fixed-noise Gaussian B-spline functional regression prototype. No architecture replacement, inference calibration or publication decision is established. See the [Bayesian research catalogue](bayesian-research-programme.md) and [synthetic fitted-model gallery](bayesian-gallery.md).
