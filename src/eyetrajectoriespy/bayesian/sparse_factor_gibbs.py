@@ -178,7 +178,7 @@ def fit_bayesian_sparse_fpca(
             raise ValueError("each curve needs >=4 finite observations and no infinities")
         t = np.asarray(times)[valid]
         if t[0] < grid[0] or t[-1] > grid[-1]:
-            raise ValueError("observed times exceed declared dictionary support")
+            raise ValueError("observed times exceed declared evaluation_grid support")
         bs = _spline_basis(t, grid[0], grid[-1], n_basis)
         tables.append(bs)
         products.append(bs.T @ bs)
