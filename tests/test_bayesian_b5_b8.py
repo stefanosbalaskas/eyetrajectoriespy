@@ -254,3 +254,101 @@ def test_b8_rejects_pseudoreplication_and_bad_design():
             gaze, design=design,
             predictors=("intercept","condition"), noise_sd=0,
         )
+
+
+def test_b7_shared_planar_score_posterior_with_asynchronous_native_observations():
+    from eyetrajectoriespy.bayesian import fit_bayesian_planar_score_baseline
+    rng = np.random.default_rng(641)
+    grid = np.linspace(0, 1, 51)
+    mean = np.column_stack((.4+.08*np.sin(np.pi*grid), .5+.06*np.cos(np.pi*grid)))
+    mode = np.array([np.column_stack((
+        np.sqrt(2)*np.sin(np.pi*grid),
+        np.sqrt(2)*np.cos(np.pi*grid),
+    ))])
+    score = rng.normal(0, .25, 12)
+    times, values = [], []
+    for i in range(12):
+        t = np.linspace(.03, .97, 17)
+        measured = np.column_stack([
+            np.interp(t, grid, mean[:, j] + score[i]*mode[0,:,j])
+            for j in range(2)
+        ]) + rng.normal(0, .02, (len(t), 2))
+        measured[::2, 1] = np.nan
+        measured[1::2, 0] = np.nan
+        times.append(t)
+        values.append(measured)
+    data = IrregularTrajectorySet(
+        time=tuple(times), values=tuple(values),
+        curve_ids=tuple(f"p{i}" for i in range(12)),
+        dimension_names=("x","y"), coordinate_system="normalized",
+        time_unit="s",
+    )
+    a = fit_bayesian_planar_score_baseline(
+        data, evaluation_grid=grid, population_mean=mean,
+        population_components=mode, score_prior_variances=np.array([.0625]),
+        observation_noise_sd=(.02,.02), n_draws=120, random_state=24,
+    )
+    assert a.posterior_score_mean.shape == (12,1)
+    assert a.posterior_score_covariance.shape == (12,1,1)
+    assert a.latent_trajectory_draws.shape == (12,120,51,2)
+    assert np.mean(np.abs(a.posterior_score_mean[:,0]-score)) < .1
+    assert a.evidence["observation_layout"] == "asynchronous_per_coordinate"
+    assert a.evidence["raw_observation_times_resampled"] is False
+    assert a.evidence["native_full_Bayesian_planar_MFPCA_implemented"] is False
+    with pytest.raises(ValueError, match="per channel"):
+        fit_bayesian_planar_score_baseline(
+            data, evaluation_grid=grid, population_mean=mean,
+            population_components=mode, score_prior_variances=np.array([.0625]),
+            observation_noise_sd=(.02,0), n_draws=120,
+        )
+
+
+def test_b9_paired_joint_posterior_group_contrast_not_a_p_value():
+    from eyetrajectoriespy.bayesian import compare_bayesian_functional_groups
+    base = posterior_fixture()
+    a = BayesianFunctionalDraws(base.values + .25, base.time, base.dimension_names)
+    with pytest.raises(ValueError, match="joint_posterior_draw_pairing"):
+        compare_bayesian_functional_groups(
+            a, base, joint_posterior_draw_pairing_verified=False,
+        )
+    result = compare_bayesian_functional_groups(
+        a, base, joint_posterior_draw_pairing_verified=True, margin=.15,
+        simultaneous=True,
+    )
+    assert result.posterior_difference.values.shape == base.values.shape
+    assert result.probability_above_margin_everywhere == pytest.approx(1.0)
+    assert result.credible_band.scope == "posterior_gridwise_joint_all_time_and_dimensions"
+    assert result.evidence["posterior_probability_is_not_a_p_value"]
+
+
+def test_b9_partial_trajectory_prediction_does_not_use_future_samples():
+    from eyetrajectoriespy.bayesian import predict_bayesian_trajectory
+    gaze, grid, mean, basis, _ = sparse_fixture()
+    cutoff = .48
+    kwargs = dict(
+        dimension="x", observation_cutoff=cutoff, evaluation_grid=grid,
+        population_mean=mean, population_components=basis,
+        score_prior_variances=np.array([.09]), noise_sd=.03,
+        n_draws=80, random_state=19,
+    )
+    first = predict_bayesian_trajectory(gaze, **kwargs)
+    altered = IrregularTrajectorySet(
+        time=gaze.time,
+        values=tuple(np.where((t > cutoff)[:,None], v + 100., v)
+                     for t,v in zip(gaze.time,gaze.values)),
+        curve_ids=gaze.curve_ids,
+        dimension_names=gaze.dimension_names,
+        metadata=gaze.metadata, coordinate_system=gaze.coordinate_system,
+        time_unit=gaze.time_unit,
+    )
+    second = predict_bayesian_trajectory(altered, **kwargs)
+    np.testing.assert_array_equal(first.posterior_latent_draws,
+                                  second.posterior_latent_draws)
+    assert first.future_mask.any()
+    assert all(n >= 2 for n in first.n_used_observations_per_curve)
+    assert first.evidence["future_observations_leakage_guard"]
+    assert not first.evidence["predictive_coverage_qualified"]
+    with pytest.raises(ValueError, match="at least two"):
+        predict_bayesian_trajectory(
+            gaze, **dict(kwargs, observation_cutoff=.001),
+        )
