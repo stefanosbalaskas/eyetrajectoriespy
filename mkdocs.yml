@@ -41,6 +41,7 @@ nav:
           - B7 learned planar research: development/b7-learned-planar-model.md
           - B7/B9 new-participant prediction: development/b7-prediction-calibration.md
           - Scientific calibration batches: development/scientific-calibration-shards.md
+          - Empirical calibration first wave: development/empirical-calibration-wave1.md
           - B6 and F1/F5 scientific calibration: development/b6-f1-f5-calibration-protocol.md
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md
