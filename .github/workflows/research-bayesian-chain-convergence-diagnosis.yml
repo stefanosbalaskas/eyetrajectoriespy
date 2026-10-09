@@ -1,0 +1,67 @@
+name: research-bayesian-chain-convergence-diagnosis
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/research-bayesian-chain-convergence-diagnosis.yml"
+      - "scripts/run_bayesian_convergence_probe.py"
+      - "scripts/run_b6_population_calibration_grid.py"
+      - "scripts/run_b7_learned_planar_truth_pilot.py"
+      - "tests/test_bayesian_convergence_probe.py"
+      - "docs/development/b6-b7-convergence-after-undercoverage.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  paired-matched-prior-chain-comparison:
+    name: Matched-prior B6/B7 2x-chain comparison (actual refits)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian]"
+      - name: Check actual conjugate B6 B7 posterior diagnostics
+        run: python -m pytest -q tests/test_bayesian_convergence_probe.py
+      - name: Paired short-vs-long actual Gibbs posterior calibration probe
+        run: |
+          python scripts/run_bayesian_convergence_probe.py \
+            --replicates 8 \
+            --short-draws 70 --short-warmup 160 \
+            --long-draws 600 --long-warmup 1200 \
+            --master-seed 20261010 \
+            --out build/b6-b7-chain-diagnosis
+          python - <<'PY'
+          import json,pandas as pd
+          from pathlib import Path
+          root=Path("build/b6-b7-chain-diagnosis")
+          ev=json.loads((root/"evidence.json").read_text())
+          cases=pd.read_csv(root/"cases.csv")
+          assert ev["attempts"]==96
+          assert len(cases)==96
+          assert ev["short_settings"]["draws_per_chain"]==70
+          assert ev["long_settings"]["draws_per_chain"]==600
+          assert not ev["scientific_inference_qualified"]
+          assert not ev["posterior_coverage_qualified"]
+          assert not ev["release_authorized"]
+          assert cases.groupby(["method","scenario","replicate"]).size().eq(2).all()
+          assert cases.status.eq("ok").sum()>=80
+          print("TRUE MCMC SCIENCE DIAGNOSIS:",
+                json.dumps(ev["results"],sort_keys=True))
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b6-b7-actual-long-chain-comparison-no-qualification
+          path: build/b6-b7-chain-diagnosis/
+          retention-days: 90
+          if-no-files-found: warn
