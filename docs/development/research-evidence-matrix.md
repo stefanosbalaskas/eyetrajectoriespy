@@ -32,3 +32,9 @@ An exact-head workflow [run #37870154333](https://github.com/stefanosbalaskas/ey
 | F5 AR(1) weak-block CUSUM | 0.01 | 0.99 | One serial-dependence strength/block setting |
 
 The F1 native-pipeline pilot completed only **two refits per each of three regimes**, all fitted successfully. The F4 held-out feasibility produced **144 sensitivity records**. None constitutes scientific calibration. With only 100 simulation replications the null rejection estimates have wide Monte Carlo uncertainty; the 0.01 estimate has approximately 0.002–0.054 Wilson 95% range, and the 0.06 estimate approximately 0.028–0.125. The target nominal 0.05 is not ruled out by these pilots, nor proven by them. Larger design-gridded refit experiments remain mandatory.
+
+## B5–B10 native Bayesian research track
+
+[Draft PR #237](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/237) adds **experimental** backend-independent posterior tools, a *known-population conditional sparse score baseline* (not a learned Bayesian FPCA estimator) and a fixed-noise Gaussian B-spline functional regression prototype. No architecture replacement, inference calibration or publication decision is established. See the [Bayesian research catalogue](bayesian-research-programme.md) and [synthetic fitted-model gallery](bayesian-gallery.md).
+
+The B8 *experimental* Bayesian functional random-intercept Gaussian conjugate model (`fit_bayesian_functional_mixed_effects()`) accepts repeated participants, but conditions on fixed noise and random-effect prior SDs; no random slopes, nested trial effects, serial residual model or learned hyperparameter inference is yet qualified.

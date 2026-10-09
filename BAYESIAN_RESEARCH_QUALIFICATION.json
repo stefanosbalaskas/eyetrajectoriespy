@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "programme": "native-bayesian-functional-research-b5-b10",
+  "source_version": "1.2.0rc2.dev0",
+  "stack_base_pr": 235,
+  "stack_base_qualified_head": "013cd05d93a5edeb8515d4f3afce22e44d67c9a9",
+  "stable_distribution": "1.1.0",
+  "published_release": false,
+  "scientific_inference_qualified": false,
+  "architecture_winner_selected": false,
+  "automatic_promotion_decision": false,
+  "release_authorized": false,
+  "native_legacy_fpca_replaced": false,
+  "root_namespace_promoted": false,
+  "prior_comparator": "Nolan_Richardson_Ruffieux_2025_bayesFPCA_external_only",
+  "tranches": {
+    "B5": {
+      "stage": "backend_agnostic_posterior_evidence_prototype",
+      "scientifically_qualified": false
+    },
+    "B6": {
+      "stage": "conditional_fixed_population_sparse_score_baseline_not_full_Bayesian_FPCA",
+      "scientifically_qualified": false
+    },
+    "B7": {
+      "stage": "fixed_population_shared_score_paired_and_asynchronous_x_y_baseline_not_full_MFPCA",
+      "scientifically_qualified": false
+    },
+    "B8": {
+      "stage": "conjugate_known_noise_Bspline_function_on_scalar_plus_fixed_variance_participant_functional_random_intercept",
+      "scientifically_qualified": false,
+      "supported_repeated_participants": "conjugate_gaussian_known_sd_random_functional_intercept_only",
+      "random_slopes_or_serial_covariance_implemented": false
+    },
+    "B9": {
+      "stage": "joint_draw_posterior_group_comparison_plus_fixed_population_no_future_leakage_partial_prediction",
+      "scientifically_qualified": false
+    },
+    "B10": {
+      "stage": "single_known_projection_Gaussian_one_break_conditional_feasibility_only_plus_other_models_design",
+      "scientifically_qualified": false,
+      "full_functional_changepoint_implemented": false
+    }
+  },
+  "required_evidence": [
+    "SBC prior-drawn replication and rank/coverage reference scenarios",
+    "MCMC convergence/Rhat/ESS/divergence and prior sensitivity",
+    "full learned population covariance/eigenfunction posterior",
+    "sign-rotation and near-tied eigenspace uncertainty",
+    "partial trajectory and time heldout predictive calibration",
+    "participant hierarchical and residual serial-dependence models",
+    "independent external scientific comparator with licensing isolation"
+  ],
+  "current_head_ci_qualified": false,
+  "optional_backends": [
+    "ArviZ diagnostics optional",
+    "PyMC backend optional planned"
+  ],
+  "sampler_based_PyMC_fitter_implemented": false,
+  "population_FPCA_eigensystem_posterior_implemented": false,
+  "validation_programme": {
+    "B5_known_prior_SBC_runner": "scripts/run_bayesian_conjugate_sbc_pilot.py",
+    "B6_model": "Gaussian known population fixed basis score posterior",
+    "B8_model": "Gaussian known observation noise and spline basis regression posterior",
+    "empirical_coverage_qualified": false,
+    "model_misspecification_stress_qualified": false,
+    "full_Bayesian_FPCA_qualified": false,
+    "chain_diagnostics_qualified": false,
+    "scientific_qualification": false,
+    "artifact_attestation_pending": true
+  }
+}

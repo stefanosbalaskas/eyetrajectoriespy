@@ -1,0 +1,215 @@
+name: bayesian-b5-b8-research
+
+on:
+  pull_request:
+    paths:
+      - "src/eyetrajectoriespy/bayesian/**"
+      - "tests/test_bayesian_b5_b8.py"
+      - "pyproject.toml"
+      - "docs/development/bayesian-**"
+      - "scripts/generate_bayesian_research_gallery.py"
+      - ".github/workflows/bayesian-b5-b8-research.yml"
+      - "BAYESIAN_RESEARCH_QUALIFICATION.json"
+      - "scripts/run_bayesian_conjugate_sbc_pilot.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  research-contracts:
+    name: Bayesian B5-B8 native contracts (${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - name: Install core (Bayesian extras explicitly omitted)
+        run: python -m pip install -e ".[dev]"
+      - name: Native posterior/known-truth research tests
+        run: |
+          python -m pytest -q tests/test_bayesian_b5_b8.py
+          python -m compileall -q src/eyetrajectoriespy/bayesian
+      - name: Assert no root export or publication promotion
+        run: |
+          python - <<'PY'
+          import json
+          import eyetrajectoriespy
+          from eyetrajectoriespy import bayesian
+          assert not hasattr(eyetrajectoriespy, "fit_bayesian_function_on_scalar")
+          assert hasattr(bayesian, "fit_bayesian_function_on_scalar")
+          assert hasattr(bayesian, "fit_bayesian_sparse_score_baseline")
+          ledger=json.load(open("BAYESIAN_RESEARCH_QUALIFICATION.json"))
+          assert not ledger["scientific_inference_qualified"]
+          assert not ledger["release_authorized"]
+          readiness=json.load(open("RELEASE_READINESS.json"))
+          assert not readiness["production_release_ready"]
+          assert not readiness["github_release_ready"]
+          print("PASS experimental opt-in namespace; production interlocks disarmed")
+          PY
+
+  arviz-optional:
+    name: Optional ArviZ diagnostics on Python 3.12
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install optional diagnostics without PyMC runtime
+        run: python -m pip install -e ".[bayesian]"
+      - name: Inspect real ArviZ per-chain diagnostics
+        run: |
+          python - <<'PY'
+          import numpy as np, arviz as az
+          from eyetrajectoriespy.bayesian import bayesian_diagnostics_frame
+          rng=np.random.default_rng(4205)
+          draws=rng.normal(size=(4,300,3))
+          idata=az.from_dict(
+              posterior={"beta":draws},
+              sample_stats={"diverging":np.zeros((4,300),dtype=bool)},
+          )
+          diagnostics=bayesian_diagnostics_frame(idata)
+          assert len(diagnostics)==1
+          assert np.isfinite(diagnostics.rhat_max.iloc[0])
+          assert np.isfinite(diagnostics.ess_bulk_min.iloc[0])
+          assert diagnostics.divergences.iloc[0] == 0
+          assert not diagnostics.convergence_qualified.any()
+          print(diagnostics.to_string(index=False))
+          PY
+
+  wheel-boundary:
+    name: Installed wheel import and isolated Bayesian APIs
+    needs: research-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build wheel
+        run: |
+          python -m pip install build
+          python -m build --wheel --outdir dist
+      - name: Install wheel to isolated interpreter
+        run: |
+          python -m venv "$RUNNER_TEMP/b5-installed"
+          "$RUNNER_TEMP/b5-installed/bin/python" -m pip install dist/*.whl
+          mkdir -p "$RUNNER_TEMP/b5-smoke"
+          cd "$RUNNER_TEMP/b5-smoke"
+          "$RUNNER_TEMP/b5-installed/bin/python" - <<'PY'
+          from pathlib import Path
+          import eyetrajectoriespy as et
+          from eyetrajectoriespy import bayesian
+          assert "b5-smoke" not in str(Path(et.__file__).resolve())
+          assert "site-packages" in str(Path(et.__file__).resolve())
+          assert hasattr(bayesian,"bayesian_credible_band")
+          assert not hasattr(et,"bayesian_credible_band")
+          assert et.__version__ == "1.2.0rc2.dev0"
+          print("PASS installed Bayesian source scope, not promoted")
+          PY
+
+  fitted-synthetic-figures:
+    name: Bayesian B5-B9 real-fitting synthetic gallery
+    needs: research-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Bayesian source without optional sampler
+        run: python -m pip install -e ".[dev]"
+      - name: Build and verify deterministic fitted-object SVG figures
+        run: |
+          python scripts/generate_bayesian_research_gallery.py
+          python - <<'PY'
+          from pathlib import Path
+          from hashlib import sha256
+          root=Path("docs/assets/research")
+          files=sorted(root.glob("b*-*.svg"))
+          assert len(files) == 6, [p.name for p in files]
+          hashes=[sha256(f.read_bytes()).hexdigest() for f in files]
+          assert all(f.stat().st_size > 1000 for f in files)
+          import subprocess
+          subprocess.run(["python","scripts/generate_bayesian_research_gallery.py"],check=True)
+          assert hashes == [sha256(f.read_bytes()).hexdigest() for f in files]
+          print("PASS 6 reproducible SVGs generated from actual B5/B6/B8/B10 evidence objects")
+          PY
+      - name: Retain fitted synthetic research figures
+        uses: actions/upload-artifact@v4
+        with:
+          name: bayesian-research-fitted-synthetic-figures
+          path: docs/assets/research/b*.svg
+          if-no-files-found: error
+          retention-days: 90
+
+  conjugate-sbc-pilot:
+    name: B6/B8 actual-prior conditional Gaussian SBC pilot
+    needs: research-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Bayesian research core
+        run: python -m pip install -e ".[dev]"
+      - name: Run genuine known-prior Gaussian score and B-spline SBC pilot
+        run: |
+          python scripts/run_bayesian_conjugate_sbc_pilot.py \
+            --replicates 30 --posterior-draws 99 \
+            --out build/bayesian-conjugate-sbc
+      - name: Inspect failure ledger, ranks and coverage uncertainty
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          root=Path("build/bayesian-conjugate-sbc")
+          details=json.loads((root/"qualification.json").read_text())
+          assert len(details["scenarios"])==2
+          assert details["scientific_qualification"] is False
+          assert details["release_authorized"] is False
+          for scenario, evid in details["scenarios"].items():
+              assert evid["n_attempted"]==30
+              assert evid["n_success"]>=5, evid
+              assert evid["n_success"]+evid["n_failed"]==30
+              assert evid["coverage_90_exact_95_interval"] is not None
+              cases=pd.read_csv(root/f"{scenario}_cases.csv")
+              ranks=pd.read_csv(root/f"{scenario}_sbc_ranks.csv")
+              assert len(cases)==30 and ranks["count"].sum()==evid["n_success"]
+              assert not evid["full_population_Bayesian_FPCA_qualified"]
+          print("PASS: known-prior / actual likelihood simulation and posterior refits; no population inference certification")
+          PY
+      - name: Retain simulation-based calibration datasets
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bayesian-exact-conjugate-sbc-pilot
+          path: build/bayesian-conjugate-sbc/
+          if-no-files-found: error
+          retention-days: 90
