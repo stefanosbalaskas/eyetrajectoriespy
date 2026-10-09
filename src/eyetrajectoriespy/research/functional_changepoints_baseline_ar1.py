@@ -136,7 +136,10 @@ def infer_ordered_functional_changepoint_baseline_ar1(
     for j in range(n_null_simulations):
         # Explicit nuisance ablation: same independent baseline and null model.
         # Do not interpret the plug-in mode as validated inference.
-        phi=(float(parameter_draws[int(rng.integers(n_parameter_bootstrap))])
+        # Keep the same random stream for both ablation variants, so
+        # their initial states and innovation resampling are paired.
+        phi_index=int(rng.integers(n_parameter_bootstrap))
+        phi=(float(parameter_draws[phi_index])
              if null_coefficient_policy=="baseline_uncertainty" else float(phi_hat))
         initial=baseline_centered[int(rng.integers(n_baseline))]
         sample=np.empty_like(x)
