@@ -58,7 +58,7 @@ jobs:
           ROOT="$PWD"
           RUN_DIR=$(mktemp -d)
           cd "$RUN_DIR"
-          "$ROOT/$RUNNER_TEMP/f-research-wheel/bin/python" - "$ROOT" <<'PY'
+          "$RUNNER_TEMP/f-research-wheel/bin/python" - "$ROOT" <<'PY'
           from pathlib import Path
           from importlib.metadata import version
           import sys
