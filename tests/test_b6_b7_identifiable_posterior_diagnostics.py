@@ -20,7 +20,7 @@ def test_identified_covariance_can_mix_despite_unidentified_loading_sign():
     assert invariant["rank_rhat"]<1.05
     assert invariant["bulk_ess"]>100
     assert invariant["tail_ess"]>100
-    assert invariant["mcse_mean"]>=0
+    assert invariant["mcse_mean_bulk_ess_approx"]>=0
 
 
 def test_mean_population_diagnostics_have_all_four_convergence_metrics():
@@ -28,11 +28,11 @@ def test_mean_population_diagnostics_have_all_four_convergence_metrics():
     rng=np.random.default_rng(303)
     x=rng.normal(size=(2,250))
     d=_identified_chain_diagnostics(x)
-    assert set(d)=={"rank_rhat","bulk_ess","tail_ess","mcse_mean"}
+    assert set(d)=={"rank_rhat","bulk_ess","tail_ess","mcse_mean_bulk_ess_approx"}
     assert d["rank_rhat"]>=0
     assert d["bulk_ess"]>0
     assert d["tail_ess"]>0
-    assert d["mcse_mean"]>=0
+    assert d["mcse_mean_bulk_ess_approx"]>=0
     with pytest.raises(ValueError,match="finite"):
         _identified_chain_diagnostics(np.full((2,30),np.nan))
     with pytest.raises(ValueError,match=">=2"):
