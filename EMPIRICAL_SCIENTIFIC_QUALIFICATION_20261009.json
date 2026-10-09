@@ -488,5 +488,117 @@
     "rank2_crossbackend_verified": false,
     "scientific_inference_qualified": false,
     "release_authorized": false
+  },
+  "F5_Independent_Baseline_Unknown_Phi_20261009": {
+    "issue": 256,
+    "new_opt_in_experimental_method": "infer_ordered_functional_changepoint_baseline_ar1",
+    "independent_baseline_disjoint_participants_required": true,
+    "coefficient_estimated_from_test_sequence": false,
+    "nuisance_training_data_used_for_null": true,
+    "baseline_length": 80,
+    "test_length": 36,
+    "independent_test_dataset_pairs_planned": 900,
+    "native_F5_test_attempts_planned": 2520,
+    "new_seed_namespace": 20261204,
+    "nuisance_parameter_bootstrap": 119,
+    "null_simulations_per_fit": 149,
+    "prespecified_processes": [
+      "iid",
+      "AR1_phi_035",
+      "AR1_phi_080",
+      "AR1_phi_065_heavy_tail",
+      "AR2_phi1_064_phi2_024"
+    ],
+    "non_AR1_misspecification_included": true,
+    "original_1800_case_oracle_study_reused": false,
+    "estimated_nuisance_confidence_validated": false,
+    "baseline_transferability_validated": false,
+    "unknown_phi_scientific_inference_qualified": false,
+    "non_AR1_scientific_inference_qualified": false,
+    "release_authorized": false,
+    "source_study_run_id": 37987935105,
+    "source_study_head_sha": "c5fa4eaac180577959ad6cbcb7fbf169185b828f",
+    "original_study_artifact_id": 11643259568,
+    "completed_fit_attempts": 2520,
+    "fit_failures": 0,
+    "independent_baseline_test_pairs_completed": 900,
+    "null_alpha_005_empirical": [
+      {
+        "process": "iid",
+        "n": 120,
+        "legacy_rejects": 5,
+        "baseline_rejects": 1,
+        "oracle_rejects": 5
+      },
+      {
+        "process": "ar1_weak_phi_035",
+        "n": 120,
+        "legacy_rejects": 0,
+        "baseline_rejects": 2,
+        "oracle_rejects": 3
+      },
+      {
+        "process": "ar1_strong_phi_080",
+        "n": 120,
+        "legacy_rejects": 40,
+        "baseline_rejects": 4,
+        "oracle_rejects": 4
+      },
+      {
+        "process": "ar1_heavy_tail_phi_065",
+        "n": 120,
+        "legacy_rejects": 5,
+        "baseline_rejects": 4,
+        "oracle_rejects": 3
+      },
+      {
+        "process": "ar2_misspecified",
+        "n": 120,
+        "legacy_rejects": 107,
+        "baseline_rejects": 10,
+        "oracle_rejects": null
+      }
+    ],
+    "one_break_alpha_005_empirical": [
+      {
+        "process": "iid",
+        "n": 60,
+        "legacy_rejects": 60,
+        "baseline_rejects": 60,
+        "oracle_rejects": 60
+      },
+      {
+        "process": "ar1_weak_phi_035",
+        "n": 60,
+        "legacy_rejects": 57,
+        "baseline_rejects": 60,
+        "oracle_rejects": 60
+      },
+      {
+        "process": "ar1_strong_phi_080",
+        "n": 60,
+        "legacy_rejects": 59,
+        "baseline_rejects": 45,
+        "oracle_rejects": 54
+      },
+      {
+        "process": "ar1_heavy_tail_phi_065",
+        "n": 60,
+        "legacy_rejects": 57,
+        "baseline_rejects": 56,
+        "oracle_rejects": 60
+      },
+      {
+        "process": "ar2_misspecified",
+        "n": 60,
+        "legacy_rejects": 59,
+        "baseline_rejects": 22,
+        "oracle_rejects": null
+      }
+    ],
+    "under_tested_conditions_strong_AR1_false_positive_reduction": true,
+    "low_dependence_conservatism_observed": true,
+    "AR2_approx_false_positive_above_nominal_observed": true,
+    "fully_qualified_generic_unknown_dependence": false
   }
 }
