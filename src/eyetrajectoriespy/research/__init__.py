@@ -3,6 +3,9 @@
 These symbols are deliberately opt-in under eyetrajectoriespy.research and
 must not be presented as validated production inferential procedures.
 """
+from .power_planning import FunctionalPowerSimulation, simulate_functional_study_power
+from .reliability import FunctionalReliabilityResult, fit_functional_reliability, functional_reliability_frame
+from .paired_contrasts import PairedFunctionalContrast, compare_repeated_functional_groups, repeated_functional_contrast_frame
 from .sparse_group_inference import (
     SparseFunctionalGroupTest,
     test_sparse_functional_groups,
@@ -39,6 +42,9 @@ from .weighted_geometry import (
 )
 
 __all__ = [
+    "FunctionalPowerSimulation", "simulate_functional_study_power",
+    "FunctionalReliabilityResult", "fit_functional_reliability", "functional_reliability_frame",
+    "PairedFunctionalContrast", "compare_repeated_functional_groups", "repeated_functional_contrast_frame",
     "SparseFunctionalGroupTest", "test_sparse_functional_groups",
     "functional_group_contrast_frame", "plot_functional_group_contrast",
     "summarize_gaze_validation_targets",
