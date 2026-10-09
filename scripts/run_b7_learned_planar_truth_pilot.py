@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import binomtest
 
-from eyetrajectoriespy.bayesian import fit_bayesian_planar_factor
+from eyetrajectoriespy.bayesian import (fit_bayesian_planar_factor, predict_bayesian_planar_new_participant)
 from eyetrajectoriespy.bayesian.sparse_factor_gibbs import _spline_basis
 from eyetrajectoriespy.types import IrregularTrajectorySet
 
@@ -67,6 +67,23 @@ def _replicate(seed: int, rank: int, asynchronous: bool, draws: int, warmup: int
     cross_draws=fit.joint_population_covariance_draws[:,:,mid,len(grid)+mid].reshape(-1)
     qmu=np.quantile(mu_draws,[.05,.95],axis=0)
     qcross=np.quantile(cross_draws,[.05,.95])
+    # A genuinely held-out participant is generated AFTER fitting; never
+    # included in the learned population likelihood or fitted score tensor.
+    indices_x=np.asarray([3,8,12,18])
+    indices_y=np.asarray([5,9,14,20])
+    new_score=rng.normal(size=rank)
+    expected_x=(b[indices_x]@(mu[0]+load[0]@new_score))
+    expected_y=(b[indices_y]@(mu[1]+load[1]@new_score))
+    withheld=np.r_[
+        expected_x+rng.normal(0,noise[0],len(indices_x)),
+        expected_y+rng.normal(0,noise[1],len(indices_y)),
+    ]
+    prediction=predict_bayesian_planar_new_participant(
+        fit,evaluation_indices_x=indices_x,evaluation_indices_y=indices_y,
+        observation_noise_sd=tuple(noise),random_state=seed+210)
+    summary=prediction.summary_frame()
+    included=(summary.predictive_q05.to_numpy()<=withheld)&(
+        withheld<=summary.predictive_q95.to_numpy())
     return {
         "x_mean_mid_90_covered":bool(qmu[0,0]<=true_mean[mid,0]<=qmu[1,0]),
         "y_mean_mid_90_covered":bool(qmu[0,1]<=true_mean[mid,1]<=qmu[1,1]),
@@ -77,6 +94,11 @@ def _replicate(seed: int, rank: int, asynchronous: bool, draws: int, warmup: int
         "population_joint_covariance_psd_draws":bool(all(
             np.linalg.eigvalsh(c).min()>-1e-8 for c in
             fit.joint_population_covariance_draws.reshape(-1,2*len(grid),2*len(grid)))),
+        "new_participant_pointwise_90_included":int(included.sum()),
+        "new_participant_evaluation_rows":int(len(included)),
+        "new_participant_average_pointwise_inclusion":float(included.mean()),
+        "new_participant_all_points_within_marginal_bands":bool(included.all()),
+        "new_participant_evaluation_heldout":True,
         "source_asynchronous":bool(asynchronous),
         "observations_resampled":bool(fit.evidence["native_observation_times_interpolated"]),
     }
@@ -127,6 +149,11 @@ def main() -> None:
             "x_mean_90":_coverage(good,"x_mean_mid_90_covered"),
             "y_mean_90":_coverage(good,"y_mean_mid_90_covered"),
             "xy_crosscovariance_90":_coverage(good,"xy_crosscov_mid_90_covered"),
+            "new_participant_all_pointwise_bands":_coverage(
+                good,"new_participant_all_points_within_marginal_bands"),
+            "new_participant_mean_pointwise_fraction":(
+                float(good.new_participant_average_pointwise_inclusion.mean())
+                if len(good) else None),
         })
     evidence={
         "programme":"B7_planar_shared_factor_learned_population_prior_truth",
@@ -135,6 +162,12 @@ def main() -> None:
         "rank1_and_rank2":True,
         "population_joint_xy_covariance_learned":True,
         "full_rank_based_SBC_qualified":False,
+        "heldout_new_participant_predictions_included":True,
+        "heldout_truth_not_in_training":True,
+        "posterior_population_and_shared_new_scores_propagated":True,
+        "heldout_pointwise_fraction_not_binomial_independent_points":True,
+        "all_pointwise_bands_not_a_simultaneous_credible_band":True,
+        "predictive_calibration_qualified":False,
         "scientific_coverage_qualified":False,
         "individual_eigenfunctions_identified":False,
         "residual_serial_or_cross_channel_noise_learned":False,
