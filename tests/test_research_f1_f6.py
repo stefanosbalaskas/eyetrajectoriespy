@@ -232,3 +232,43 @@ def test_quality_rejects_out_of_range_calibration():
                 "evidence_source": ["calibration-validation-log"],
             })
         )
+
+
+def test_bids_rejects_undocumented_nonnumeric_tokens_and_wrong_sidecar(tmp_path):
+    path = tmp_path / "sub-01_task-look_recording-eye1_physio.tsv.gz"
+    pd.DataFrame([[0, 100, 220], [.01, "corrupt", 230], [.02, 102, 240]]).to_csv(
+        path, sep="\t", index=False, header=False, compression="gzip"
+    )
+    with pytest.raises(ValueError, match="invalid nonnumeric"):
+        from_bids_eyetracking(path, sidecar=sidecar())
+    alternative = tmp_path / "unrelated_physio.json"
+    alternative.write_text(json.dumps(sidecar()))
+    with pytest.raises(ValueError, match="basename"):
+        from_bids_eyetracking(path, sidecar=alternative)
+
+
+def test_weighted_mfpca_orthogonality_under_declared_geometry():
+    data = dense(n=18)
+    weights = np.array([1.8, .32])
+    result = fit_weighted_mfpca(data, weights=weights, n_components=3)
+    basis = weighted_component_geometry(result)
+    quad = result.fitted_transformed.weights
+    gram = np.einsum("ktd,ltd,t,d->kl", basis, basis, quad, weights)
+    np.testing.assert_allclose(gram, np.eye(3), atol=1e-9)
+    reconstituted = reconstruct_weighted_mfpca(result)
+    assert np.isfinite(reconstituted).all()
+    assert reconstituted.shape == data.values.shape
+
+
+def test_weighted_mfpca_invariance_to_declared_channel_unit_change():
+    data = dense(n=16)
+    fit_one = fit_weighted_mfpca(data, weights=(2.0, .5), n_components=2)
+    new_values = data.values.copy()
+    new_values[:, :, 0] *= 1000
+    scaled = data.with_values(new_values)
+    fit_two = fit_weighted_mfpca(scaled, weights=(2e-6, .5), n_components=2)
+    restored = reconstruct_weighted_mfpca(fit_two)
+    restored[:, :, 0] /= 1000
+    np.testing.assert_allclose(
+        restored, reconstruct_weighted_mfpca(fit_one), atol=1e-8, rtol=1e-8
+    )
