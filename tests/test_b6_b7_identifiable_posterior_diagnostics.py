@@ -4,7 +4,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from scripts.run_b6_b7_independent_pymc_nuts import _identified_chain_diagnostics
+from eyetrajectoriespy.bayesian._posterior_diagnostics import _identified_chain_diagnostics
 
 
 def test_identified_covariance_can_mix_despite_unidentified_loading_sign():
