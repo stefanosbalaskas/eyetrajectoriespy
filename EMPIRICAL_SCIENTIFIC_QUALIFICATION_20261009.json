@@ -99,5 +99,77 @@
     "F1 F5 null scenario string parsed as missing by original aggregator: corrected only in descendant reader; raw cases unchanged",
     "F5 block 2 under strong AR(1) is severely liberal, block 8 conservative; no universal block selection result",
     "recovered original F1 F5 rejection probabilities from SHA256-verified historical artifacts"
-  ]
+  ],
+  "long_chain_diagnostic_20261009": {
+    "parent_scientific_blocker_issue": 255,
+    "source_pr": 253,
+    "source_head_sha": "76980257059aecd49bcec1ed58f3dbde0f2876ff",
+    "workflow_run_id": 37969903148,
+    "exact_head_workflow_groups_passed": 30,
+    "simulated_datasets": 48,
+    "paired_sampler_fits": 96,
+    "failed_sampler_fits": 0,
+    "short_schedule": {
+      "n_chains": 2,
+      "warmup": 160,
+      "draws_per_chain": 70
+    },
+    "long_schedule": {
+      "n_chains": 2,
+      "warmup": 1200,
+      "draws_per_chain": 600
+    },
+    "diagnostics_description": "Median within-scenario maximum Rhat and minimum bulk ESS for rotation-invariant summary quantities",
+    "selected_pairs": [
+      {
+        "scenario": "B6_matched_rank1",
+        "rhat_short": 1.9313,
+        "rhat_long": 1.3004,
+        "ess_bulk_short": 3.0568,
+        "ess_bulk_long": 5.6476
+      },
+      {
+        "scenario": "B6_matched_rank2",
+        "rhat_short": 2.0649,
+        "rhat_long": 1.5161,
+        "ess_bulk_short": 2.8747,
+        "ess_bulk_long": 3.8913
+      },
+      {
+        "scenario": "B7_rank1_async",
+        "rhat_short": 1.8106,
+        "rhat_long": 1.3446,
+        "ess_bulk_short": 3.2084,
+        "ess_bulk_long": 5.108
+      },
+      {
+        "scenario": "B7_rank2_paired",
+        "rhat_short": 2.2431,
+        "rhat_long": 1.5912,
+        "ess_bulk_short": 2.7573,
+        "ess_bulk_long": 3.5848
+      }
+    ],
+    "convergence_not_qualified": true,
+    "mixing_diagnostics_failed": true,
+    "posterior_undercoverage_not_explained_solely_by_mixing": true,
+    "independent_gaussian_conditional_reference_checks": "pending_own_head_ci",
+    "reparameterized_sampler_validated": false,
+    "pymc_nuts_reference_validated": false,
+    "rank_sbc_completed": false,
+    "scientific_inference_qualified": false,
+    "release_authorized": false
+  },
+  "workflow_governance": {
+    "original_13600_case_workflow_manual_dispatch_only_on_research_branch": true,
+    "immutable_first_wave_evidence_retained": true
+  },
+  "F5_reference_development": {
+    "new_optional_method": "eyetrajectoriespy.research.functional_changepoints_ar1_reference.infer_ordered_functional_changepoint_ar1_reference",
+    "depends_on_independently_known_scalar_ar1_coefficient": true,
+    "supports_unknown_real_world_ar1": false,
+    "legacy_f5_methods_unchanged": true,
+    "heldout_validation_complete": false,
+    "scientific_inference_qualified": false
+  }
 }
