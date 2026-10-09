@@ -15,6 +15,7 @@ All six directions requested for the 1.2 programme are represented in the opt-in
 
 - `audit_gaze_measurement_quality()`, `measurement_quality_reporting_frame()`.
 - Distinguishes externally measured accuracy/precision and observed missing-coordinate support. Without calibration/validation records, measurement quality is **not available**; it cannot be reverse-engineered from observed gaze alone.
+- `summarize_gaze_validation_targets()` additionally computes **descriptive** target-based positional accuracy (mean planar angular target error), within-target spatial precision (radial RMS), validation data-loss fraction and observed validation-target count from explicit gaze/target pairs in degrees. It does **not** infer accuracy from ordinary free-viewing trajectories or align calibration sessions to experimental trials.
 - Participant identifiers and source evidence are mandatory for supplied calibration records. Match calibration session/device/target provenance in subsequent iterations. Not a vendor-specific QC replacement.
 
 ## F3 — Eye-Tracking-BIDS subset adapter

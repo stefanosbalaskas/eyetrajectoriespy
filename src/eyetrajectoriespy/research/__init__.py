@@ -9,6 +9,7 @@ from .sparse_group_inference import (
     functional_group_contrast_frame,
     plot_functional_group_contrast,
 )
+from .validation_targets import summarize_gaze_validation_targets
 from .measurement_quality import (
     GazeMeasurementQualityAudit,
     audit_gaze_measurement_quality,
@@ -40,6 +41,7 @@ from .weighted_geometry import (
 __all__ = [
     "SparseFunctionalGroupTest", "test_sparse_functional_groups",
     "functional_group_contrast_frame", "plot_functional_group_contrast",
+    "summarize_gaze_validation_targets",
     "GazeMeasurementQualityAudit", "audit_gaze_measurement_quality",
     "measurement_quality_reporting_frame", "from_bids_eyetracking",
     "validate_eyetracking_metadata", "AOIGeometryFeasibility",

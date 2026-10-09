@@ -336,3 +336,51 @@ def test_bids_timestamp_units_are_not_inferred():
     meta["timestamp"]["Units"] = "frames"
     with pytest.raises(ValueError, match="supported timestamp units"):
         validate_eyetracking_metadata(meta)
+
+
+def test_target_based_calibration_accuracy_precision_and_data_loss():
+    from eyetrajectoriespy.research import summarize_gaze_validation_targets
+    # Known target offsets 0.3/0.7 deg imply 0.5-degree mean
+    # positional error and 0.2-degree within-target radial RMS.
+    data = pd.DataFrame({
+        "participant_id": ["P1"] * 5,
+        "validation_session_id": ["S1"] * 5,
+        "target_id": ["A", "A", "B", "B", "B"],
+        "target_x_deg": [0., 0., 3., 3., 3.],
+        "target_y_deg": [0., 0., 2., 2., 2.],
+        "gaze_x_deg": [.3, .7, 3.3, 3.7, np.nan],
+        "gaze_y_deg": [0., 0., 2., 2., np.nan],
+    })
+    measured = summarize_gaze_validation_targets(
+        data, evidence_source="known_targets_validation_S1"
+    )
+    assert len(measured) == 1
+    row = measured.iloc[0]
+    assert row.accuracy_deg == pytest.approx(.5)
+    assert row.precision_deg == pytest.approx(.2)
+    assert row.validation_points == 2
+    assert row.data_loss_fraction == pytest.approx(.2)
+    assert row.validation_samples_valid == 4
+    audit = audit_gaze_measurement_quality(
+        dense(), validation_records=measured,
+        source_description="independent target validation fixture",
+    )
+    assert measurement_quality_reporting_frame(audit).iloc[0]["mean"] == pytest.approx(.5)
+    assert audit.provenance["absolute_accuracy_inferred_from_gaze"] is False
+
+
+def test_target_based_calibration_rejects_undocumented_and_inconsistent_targets():
+    from eyetrajectoriespy.research import summarize_gaze_validation_targets
+    frame = pd.DataFrame({
+        "participant_id": ["P0", "P0"],
+        "validation_session_id": ["S1", "S1"],
+        "target_id": ["A", "A"],
+        "target_x_deg": [0., 1.],
+        "target_y_deg": [0., 0.],
+        "gaze_x_deg": [.2, .3],
+        "gaze_y_deg": [.1, .2],
+    })
+    with pytest.raises(ValueError, match="inconsistent target"):
+        summarize_gaze_validation_targets(frame, evidence_source="reference")
+    with pytest.raises(ValueError, match="evidence_source"):
+        summarize_gaze_validation_targets(frame, evidence_source="")
