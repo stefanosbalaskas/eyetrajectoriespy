@@ -44,8 +44,21 @@ def validate_eyetracking_metadata(
     if not np.isfinite(sampling_tolerance) or not 0 <= sampling_tolerance < 0.5:
         raise ValueError("sampling_tolerance must be between 0 and 0.5")
     system = metadata["SampleCoordinateSystem"]
-    if not isinstance(system, str) or not system.strip():
-        raise ValueError("SampleCoordinateSystem must be documented")
+    permitted_systems = {"gaze-on-screen", "eye-in-head", "gaze-in-world", "custom"}
+    if system not in permitted_systems:
+        raise ValueError(
+            "SampleCoordinateSystem must be gaze-on-screen, eye-in-head, "
+            "gaze-in-world or custom according to BIDS 1.11.2"
+        )
+    if system == "custom":
+        # This is an explicitly declared adapter requirement, not a BIDS
+        # standard metadata key. Full BIDS conformance is assessed separately.
+        description = metadata.get("SampleCoordinateSystemDescription")
+        if not isinstance(description, str) or not description.strip():
+            raise ValueError(
+                "custom coordinate systems require a nonempty "
+                "SampleCoordinateSystemDescription for this narrow adapter"
+            )
     units = []
     for col in ("x_coordinate", "y_coordinate"):
         info = metadata.get(col)
