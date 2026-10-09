@@ -16,7 +16,7 @@
   "posterior_predictive_monte_carlo": true,
   "predictive_calibration_qualified": false,
   "scientific_inference_qualified": false,
-  "engineering_ci_qualified": false,
+  "engineering_ci_qualified": true,
   "stable_root_namespace_export_modified": false,
   "native_PACE_modified": false,
   "release_authorized": false,
@@ -44,5 +44,15 @@
     "near-tied multivariate covariance subspace stability",
     "fully held-out real participant recordings and baseline comparisons",
     "new participant conditioning on partial x-y observations is separate from unconditional forecast"
-  ]
+  ],
+  "engineering_ci_evidence": {
+    "verified_source_pr": 248,
+    "source_head_sha": "6c6468fabe8dacf64106d25f9cd6569121ba7daf",
+    "source_head_full_workflow_matrix": "all_passed",
+    "dedicated_workflow_run_id": 37922273789,
+    "dedicated_workflow_url": "https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37922273789",
+    "basis": "Native new independent participant posterior predictive contracts, Python 3.11-3.13 and 8 known-truth pilot refits; passed source-head 30/30",
+    "current_descendant_head_engineering_ci_qualified": false,
+    "scientific_inference_implication": "none"
+  }
 }

@@ -24,7 +24,7 @@
   "adequate_MC_precision_certified": false,
   "MCMC_convergence_qualified": false,
   "scientific_inference_qualified": false,
-  "engineering_ci_qualified": false,
+  "engineering_ci_qualified": true,
   "release_authorized": false,
   "root_namespace_promoted": false,
   "required_future_evidence": [
@@ -35,5 +35,15 @@
     "independent PACE and external Bayesian estimator comparators",
     "credible and predictive coverage conditional on misspecification",
     "independent real-participant and BIDS datasets"
-  ]
+  ],
+  "engineering_ci_evidence": {
+    "verified_source_pr": 249,
+    "source_head_sha": "7b970fa6dd91139a18036a4accb5dcfc66ec41d5",
+    "source_head_full_workflow_matrix": "all_passed",
+    "dedicated_workflow_run_id": 37922996144,
+    "dedicated_workflow_url": "https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37922996144",
+    "basis": "Three-Python batch-integrity tests, duplicate seed/shard rejection, checksum verification; passed source-head 31/31",
+    "current_descendant_head_engineering_ci_qualified": false,
+    "scientific_inference_implication": "none"
+  }
 }
