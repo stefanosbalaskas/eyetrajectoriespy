@@ -112,6 +112,13 @@ def main() -> None:
                 float(np.mean([r["p_value"] <= .05 for r in successful]))
                 if successful else None
             ),
+            "conditional_rejection_monte_carlo_se": (
+                float(np.sqrt(r * (1-r) / len(successful)))
+                if successful and (r := float(np.mean(
+                    [entry["p_value"] <= .05 for entry in successful]
+                ))) >= 0 else None
+            ),
+            "type_i_and_power_population_inference_warranted": False,
             "scientific_size_or_power_qualified": False,
         })
     evidence = {

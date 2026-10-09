@@ -112,6 +112,8 @@ jobs:
           assert evidence["full_scientific_qualification_passed"] is False
           assert evidence["production_promotion_authorized"] is False
           assert evidence["score_kernel"]["full_sparse_mfpca_fit_per_replicate"] is False
+          assert evidence["score_kernel"]["null_monte_carlo_uncertainty"]["n"] == 100
+          assert 0 <= evidence["ordered_change_AR1"]["null_monte_carlo_uncertainty"]["wilson_95_low"] <= 1
           assert evidence["ordered_change_AR1"]["serial_dependence_inference_qualified"] is False
           digest = hashlib.sha256(p.read_bytes()).hexdigest()
           assert Path("build/research-pilot/sha256.txt").read_text().startswith(digest)
@@ -161,6 +163,7 @@ jobs:
           assert len(cases) == 6, cases
           assert all(x["requested_replicates"] == 2 for x in j["scenarios"])
           assert all(x["successful_replicates"] >= 1 for x in j["scenarios"]), j["scenarios"]
+          assert all("conditional_rejection_monte_carlo_se" in x for x in j["scenarios"])
           assert j["production_release_authorized"] is False
           print("PASS: six refit attempts retained, no scientific qualification asserted")
           PY

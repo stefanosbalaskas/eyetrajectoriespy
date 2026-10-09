@@ -20,6 +20,25 @@ from eyetrajectoriespy.research.sparse_group_inference import (
 from eyetrajectoriespy.research import detect_ordered_functional_changepoint
 
 
+
+def _mc_binomial(p_values: list[float], alpha: float = .05) -> dict[str, float | int]:
+    """Wilson Monte Carlo interval describes simulation uncertainty, NOT method validity."""
+    n = len(p_values)
+    if n < 1:
+        raise ValueError("at least one completed replicate is required")
+    k = int(np.count_nonzero(np.asarray(p_values, dtype=float) <= alpha))
+    rate = k / n
+    z = 1.959963984540054
+    denominator = 1 + z*z/n
+    center = (rate + z*z/(2*n)) / denominator
+    radius = z / denominator * np.sqrt(rate*(1-rate)/n + z*z/(4*n*n))
+    return {
+        "n": n, "rejections": k, "rate": rate,
+        "monte_carlo_standard_error": float(np.sqrt(rate*(1-rate)/n)),
+        "wilson_95_low": float(max(0, center-radius)),
+        "wilson_95_high": float(min(1, center+radius)),
+    }
+
 def score_pilot(
     *,
     seed: int,
@@ -61,6 +80,8 @@ def score_pilot(
         "alternative_rejection_rate_at_005": float(
             np.mean(np.asarray(rates["alternative"]) <= .05)
         ),
+        "null_monte_carlo_uncertainty": _mc_binomial(rates["null"]),
+        "alternative_monte_carlo_uncertainty": _mc_binomial(rates["alternative"]),
         "null_p_values": rates["null"],
         "alternative_p_values": rates["alternative"],
         "full_sparse_mfpca_fit_per_replicate": False,
@@ -127,6 +148,8 @@ def change_pilot(
         "alternative_median_estimated_split": float(np.median(
             [x["change_location"] for x in rates["alternative"]]
         )),
+        "null_monte_carlo_uncertainty": _mc_binomial([x["p"] for x in rates["null"]]),
+        "alternative_monte_carlo_uncertainty": _mc_binomial([x["p"] for x in rates["alternative"]]),
         "scenario_records": rates,
         "serial_dependence_inference_qualified": False,
         "not_wendler_robust_test": True,
@@ -175,6 +198,9 @@ def main() -> None:
             "n_replicates": args.replicates,
             "null_rejection_005": evidence["null_rejection_rate_at_005"],
             "alternative_rejection_005": evidence["alternative_rejection_rate_at_005"],
+            "null_monte_carlo_se": evidence["null_monte_carlo_uncertainty"]["monte_carlo_standard_error"],
+            "null_wilson_95_low": evidence["null_monte_carlo_uncertainty"]["wilson_95_low"],
+            "null_wilson_95_high": evidence["null_monte_carlo_uncertainty"]["wilson_95_high"],
             "full_qualification": False,
         })
     pd.DataFrame(rows).to_csv(args.out / "pilot-summary.csv", index=False)
