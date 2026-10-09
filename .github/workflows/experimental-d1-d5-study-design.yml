@@ -8,6 +8,7 @@ on:
       - "docs/development/**"
       - "docs/assets/research/**"
       - "scripts/generate_f1_f6_gallery.py"
+      - "examples/research/**"
       - "scripts/run_f1_d1_stress_pilot.py"
       - ".github/workflows/experimental-d1-d5-study-design.yml"
       - "mkdocs.yml"
@@ -111,5 +112,53 @@ jobs:
         with:
           name: f1-native-five-design-stress-pilot
           path: build/d1-sparse-study-design/
+          if-no-files-found: error
+          retention-days: 90
+
+  reproducible-research-cases:
+    name: Three isolated synthetic research case studies
+    needs: experimental-study-design
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install research source
+        run: python -m pip install -e ".[dev]"
+      - name: Run all synthetic case study scripts
+        run: |
+          python examples/research/case_sparse_groups.py --out build/research-cases/sparse --replicates 2
+          python examples/research/case_repeated_trials.py --out build/research-cases/repeats
+          python examples/research/case_bids_quality.py --out build/research-cases/bids
+      - name: Verify provenance and boundaries in case outputs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          root=Path("build/research-cases")
+          assert len(pd.read_csv(root/"sparse/cases.csv")) == 4
+          assert len(pd.read_csv(root/"repeats/reliability.csv")) > 20
+          assert len(pd.read_csv(root/"bids/quality-summary.csv")) >= 4
+          p=json.loads((root/"bids/provenance.json").read_text())
+          assert not p["clock_alignment_performed"]
+          assert not p["official_bids_validator_executed"]
+          assert not json.loads((root/"repeats/provenance.json").read_text())["calibrated_inference"]
+          for file in ("sparse/synthetic-pilot.svg", "repeats/synthetic-reliability.svg"):
+              assert (root/file).stat().st_size > 500
+          print("PASS runnable synthetic research examples; no inferential claims")
+          PY
+      - name: Archive downloadable synthetic datasets and figures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: experimental-research-case-studies
+          path: build/research-cases/
           if-no-files-found: error
           retention-days: 90
