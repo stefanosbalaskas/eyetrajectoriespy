@@ -352,3 +352,58 @@ def test_b9_partial_trajectory_prediction_does_not_use_future_samples():
         predict_bayesian_trajectory(
             gaze, **dict(kwargs, observation_cutoff=.001),
         )
+
+
+def test_b8_conjugate_participant_functional_intercepts_and_partial_pooling():
+    from eyetrajectoriespy.bayesian import fit_bayesian_functional_mixed_effects
+    rng=np.random.default_rng(634)
+    t=np.linspace(0,1,21)
+    values, person, cond, curve = [], [], [], []
+    n=9
+    participant_effect=rng.normal(0,.12,n)
+    for i in range(n):
+        for condition in (0,1):
+            for trial in range(2):
+                y=(.42 + participant_effect[i]*np.sin(np.pi*t)
+                   + .24*condition*np.sin(np.pi*t)
+                   + rng.normal(0,.04,len(t)))
+                values.append(y[:,None])
+                person.append(f"p{i}")
+                cond.append(condition)
+                curve.append(f"p{i}_condition{condition}_trial{trial}")
+    gaze=TrajectorySet(
+        time=t, values=np.stack(values), curve_ids=tuple(curve),
+        dimension_names=("x",), time_unit="normalized",
+        coordinate_system="normalized",
+        metadata=pd.DataFrame({"participant_id":person,"condition":cond}),
+    )
+    design=pd.DataFrame({
+        "curve_id":gaze.curve_ids,
+        "intercept":np.ones(len(curve)),
+        "condition":cond,
+    })
+    fit=fit_bayesian_functional_mixed_effects(
+        gaze,design=design,predictors=("intercept","condition"),
+        noise_sd=.04, fixed_prior_sd=1.0, participant_prior_sd=.2,
+        n_basis=5,n_draws=120,random_state=20,
+    )
+    assert fit.fixed_effect_draws.shape==(120,2,21,1)
+    assert fit.participant_random_intercept_draws.shape==(120,9,21,1)
+    assert fit.fitted_mean.shape==gaze.values.shape
+    assert fit.fixed_effect_posterior("condition").sample_count==120
+    assert fit.participant_posterior("p0").sample_count==120
+    assert np.mean(np.abs(
+        fit.posterior_mean_fixed_effects[1,:,0]-.24*np.sin(np.pi*t)
+    )) < .08
+    assert fit.evidence["n_independent_participants"]==9
+    assert fit.evidence["n_repeated_curves"]==36
+    assert fit.evidence["participant_random_intercepts_modelled"]
+    assert not fit.evidence["within_curve_serial_noise_modelled"]
+    assert not fit.evidence["posterior_coverage_scientifically_calibrated"]
+    with pytest.raises(ValueError,match="noise_sd"):
+        fit_bayesian_functional_mixed_effects(
+            gaze,design=design,predictors=("intercept","condition"),
+            noise_sd=0,
+        )
+    with pytest.raises(KeyError):
+        fit.participant_posterior("missing")
