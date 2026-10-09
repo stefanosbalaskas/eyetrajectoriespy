@@ -103,6 +103,10 @@ original blocker. All statistical and 1.2 release flags remain false.
 
 ## Actual first paired posterior experiment: qualified algebra, better mixing in some cases
 
+![Actual 72-fit original versus exact collapsed mean Gibbs Rhat diagnostic, with scientific warning](../assets/research/b6-b7-collapsed-mixing.svg)
+
+
+
 [Workflow #37978244822](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37978244822)
 completed **72/72** actual Gibbs refits, six independent prior-generated
 datasets per each of six B6/B7 scenarios, each refitted under original
