@@ -1,4 +1,4 @@
-"""Unpublished B5/B6/B8 Bayesian research layer; never a stable root export."""
+"""Unpublished B5/B6/B7/B8 Bayesian research layer; never a stable root export."""
 from .sparse_score_baseline import BayesianSparseScoreBenchmark, fit_bayesian_sparse_score_baseline
 from .function_on_scalar import BayesianFunctionOnScalarFit, fit_bayesian_function_on_scalar
 from .functional_mixed_effects import BayesianFunctionalMixedEffectsFit, fit_bayesian_functional_mixed_effects
@@ -9,6 +9,7 @@ from .prediction_and_groups import (
 )
 from .changepoint_pilot import BayesianFunctionalChangepointPilot, fit_bayesian_functional_changepoints
 from .sparse_factor_gibbs import BayesianSparseFactorFPCAFit, fit_bayesian_sparse_fpca
+from .planar_factor_gibbs import BayesianPlanarFactorFit, fit_bayesian_planar_factor
 from .evidence import (
     BayesianFunctionalDraws, BayesianCredibleBand,
     bayesian_prior_predictive_check, bayesian_posterior_predictive_check,
@@ -17,6 +18,7 @@ from .evidence import (
     bayesian_predictive_comparison, export_bayesian_analysis,
 )
 __all__ = [
+    "BayesianPlanarFactorFit", "fit_bayesian_planar_factor",
     "BayesianSparseFactorFPCAFit", "fit_bayesian_sparse_fpca",
     "BayesianFunctionalChangepointPilot", "fit_bayesian_functional_changepoints",
     "BayesianPlanarScoreBenchmark", "fit_bayesian_planar_score_baseline",

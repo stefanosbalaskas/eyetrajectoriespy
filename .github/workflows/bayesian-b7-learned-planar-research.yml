@@ -1,0 +1,103 @@
+name: bayesian-b7-learned-planar-research
+
+on:
+  pull_request:
+    paths:
+      - "src/eyetrajectoriespy/bayesian/planar_factor_gibbs.py"
+      - "src/eyetrajectoriespy/bayesian/__init__.py"
+      - "tests/test_bayesian_b7_planar_factor.py"
+      - "scripts/run_b7_learned_planar_truth_pilot.py"
+      - "BAYESIAN_B7_PLANAR_LEARNED_FACTOR_QUALIFICATION.json"
+      - "docs/development/b7-learned-planar-model.md"
+      - ".github/workflows/bayesian-b7-learned-planar-research.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  b7-learned-planar-contracts:
+    name: B7 shared latent planar Gibbs (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install core research dependencies
+        run: python -m pip install -e ".[dev]"
+      - name: Validate native Gibbs model, asynchronous x-y, PSD and failure guards
+        run: python -m pytest -q tests/test_bayesian_b7_planar_factor.py
+      - name: Fail closed if Bayes model appears in production root exports
+        run: |
+          python - <<'PY'
+          import json
+          import eyetrajectoriespy as et
+          from eyetrajectoriespy import bayesian
+          assert hasattr(bayesian, "fit_bayesian_planar_factor")
+          assert not hasattr(et, "fit_bayesian_planar_factor")
+          ledger=json.load(open("BAYESIAN_B7_PLANAR_LEARNED_FACTOR_QUALIFICATION.json"))
+          assert ledger["posterior_joint_xy_covariance_learned"]
+          assert ledger["shared_scores_for_paired_and_async_data"]
+          assert not ledger["eigensystem_identification_qualified"]
+          assert not ledger["scientific_inference_qualified"]
+          assert not ledger["release_authorized"]
+          release=json.load(open("RELEASE_READINESS.json"))
+          assert not release["production_release_ready"]
+          assert not release["github_release_ready"]
+          print("PASS B7 remains native research-only")
+          PY
+
+  b7-known-prior-joint-pilot:
+    name: B7 learned planar posterior prior/likelihood pilot
+    runs-on: ubuntu-24.04
+    needs: b7-learned-planar-contracts
+    timeout-minutes: 40
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install B7 native research model
+        run: python -m pip install -e ".[dev]"
+      - name: Execute known-population truth and posterior refits
+        run: |
+          python scripts/run_b7_learned_planar_truth_pilot.py \
+            --replicates 2 --draws 25 --warmup 40 \
+            --out build/b7-prior-knowledge
+      - name: Check truth ledger and failure retention, not coverage thresholds
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json, pandas as pd
+          root=Path("build/b7-prior-knowledge")
+          evidence=json.loads((root/"evidence.json").read_text())
+          cases=pd.read_csv(root/"cases.csv")
+          assert len(cases)==evidence["attempts"]==8
+          assert len(evidence["scenarios"])==4
+          assert evidence["failed"]==(cases.status=="failed").sum()
+          assert not evidence["scientific_coverage_qualified"]
+          assert not evidence["individual_eigenfunctions_identified"]
+          assert not evidence["publication_authorized"]
+          print("PASS B7 actual learned-population Gibbs pilot; no scientific qualification")
+          PY
+      - name: Retain actual Bayesian planar truth and failed refits
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: b7-learned-planar-known-truth-experimental
+          path: build/b7-prior-knowledge/
+          if-no-files-found: warn
+          retention-days: 90
