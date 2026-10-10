@@ -47,7 +47,7 @@ def test_four_chain_identified_functionals_invariant_under_loading_sign():
     assert set(obj) == set(changed)
     for key in obj:
         np.testing.assert_array_equal(obj[key][0], changed[key][0])
-    assert all(np.min(v[0]) >= 0 for k, v in obj.items() if "variance" in k)
+    assert all(np.min(v[0]) >= 0 for k, v in obj.items() if "_variance_" in k)
     assert obj["xy_covariance_midpoint"][0].shape == (4, 600)
 
 
