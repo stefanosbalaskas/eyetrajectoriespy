@@ -89,7 +89,8 @@ def _summarize_posterior(a:np.ndarray,b:np.ndarray,truth:float, label:str)->dict
 def _pymc_marginal(gaze:IrregularTrajectorySet,*,dimensions:tuple[str,...],
                    noise_sd:tuple[float,...],q:int,k:int,
                    mean_sd:float,load_sd:float,
-                   draws:int,warmup:int,random_state:int):
+                   draws:int,warmup:int,random_state:int,
+                   chains:int=2,cores:int=2):
     """PyMC posterior using independently derived observation marginal density.
 
     Integration over z_i is done via the determinant lemma and a small
@@ -103,6 +104,8 @@ def _pymc_marginal(gaze:IrregularTrajectorySet,*,dimensions:tuple[str,...],
         raise ImportError("requires optional [bayesian-pymc] install") from exc
     if k!=1:
         raise ValueError("independent reference currently supports rank 1 only")
+    if chains < 2 or cores < 1 or cores > chains:
+        raise ValueError("NUTS requires >=2 chains and 1 <= cores <= chains")
     d=len(dimensions)
     col=[gaze.dimension_names.index(c) for c in dimensions]
     G=np.empty((gaze.n_curves,d,q,q),float)
@@ -155,7 +158,7 @@ def _pymc_marginal(gaze:IrregularTrajectorySet,*,dimensions:tuple[str,...],
         marginal_ll=-.5*pt.sum(weighted-v*v/Q+pt.log(Q)+log_noise)
         pm.Potential("known_noise_marginal_loglik",marginal_ll)
         inference=pm.sample(
-            draws=draws,tune=warmup,chains=2,cores=2,random_seed=random_state,
+            draws=draws,tune=warmup,chains=chains,cores=cores,random_seed=random_state,
             target_accept=.94,progressbar=False,compute_convergence_checks=True,
             return_inferencedata=True)
 
