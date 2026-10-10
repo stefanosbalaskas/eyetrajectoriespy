@@ -35,6 +35,14 @@
 
 *All six four-chain fits passed the exploratory mixing diagnostics; this is not evidence of 90% interval coverage or rank-two validity. The plot depicts one rank-one fit per replicate (six independently generated datasets), not independent posterior interval calibration.*
 
+### Rank-two actual PyMC log posterior and automatic-gradient contract (R2)
+
+![Original four-condition PyMC rank-two maximum scaled AD gradient discrepancies against independently evaluated numerical derivatives](../assets/research/b6-b7-rank2-pymc-gradient-r2-20261011.svg)
+
+[Source-verified mathematical comparisons and four artifact identifiers](b6-b7-rank2-pymc-r2-research-protocol.md) · [Original scientific workflow #38095088126](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38095088126).
+
+*This is an original plot of the four actual source-run numerical derivative comparisons. It is not a completed rank-two NUTS fit, inference validation, or an independent human eye-tracking study.*
+
 ### Rank-one prior-SBC pilot: original four-dataset midpoint ranks
 
 ![Original B6 rank-one truth ranks and screening R-hat for four prior-generated datasets](../assets/research/b6-rank1-sbc-stage0-source-ranks-20261011.svg)
