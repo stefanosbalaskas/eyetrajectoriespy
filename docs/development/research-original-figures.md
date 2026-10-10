@@ -1,7 +1,7 @@
 # Original experimental research figures
 
 !!! warning "Interpretation and provenance"
-    These are **original research SVG assets copied from the named draft branches**, not generic stock illustrations. They visualize simulation evidence, not results from human-subject recordings. Their presence here does not make the underlying experimental methods available in the stable 1.1.0 installation.
+    These are **original source-verified research SVG assets**; the earlier figures were copied from their named draft branches and the newer long-chain plot was constructed from the original retained scientific case results, not generic stock illustrations. They visualize simulation evidence, not results from human-subject recordings. Their presence here does not make the underlying experimental methods available in the stable 1.1.0 installation.
 
 ## Sparse-group inference F1
 
@@ -18,6 +18,14 @@
 ![Comparison of covariance R-hat and ESS from 36 actual native Bayesian posterior fits](../assets/research/b6-b7-score-marginal-loading-ess-mixing-pilot.svg)
 
 [Negative joint-loading sampler experiment](b6-b7-joint-score-marginal-loading-ess.md) · [Original source #38000101053](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000101053)
+
+### Longer-chain independent covariance reference: nine source fits
+
+![Nine original fitting results comparing B6 and B7 Gibbs, elliptical-slice and independent NUTS identified covariance diagnostics](../assets/research/b6-b7-longchain-identified-covariance-20261010.svg)
+
+[Full original-source study, B6/B7 results and limitations](b6-b7-longchain-identified-covariance-geometry.md) · [Original workflow #38039822342](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38039822342) · Original artifacts: `11665746776`, `11665707552`, `11665607799`.
+
+*This added scientific SVG is source-accurately constructed from the nine original fitted case results; it is not an independently collected dataset and does not establish posterior coverage.*
 
 ## F5 change-point null behavior
 
