@@ -67,6 +67,8 @@ nav:
           - Score-marginal ESS negative result: development/b6-b7-joint-score-marginal-loading-ess.md
           - Long-chain Gibbs versus independent NUTS: development/b6-b7-longchain-identified-covariance-geometry.md
           - Four-chain independent NUTS replication (R1): development/b6-b7-four-chain-nuts-r1-reference.md
+          - Rank-two dense versus Woodbury mathematics (R2): development/b6-b7-rank2-marginal-mathematics.md
+          - B6 rank-one SBC pilot (stage 0): development/b6-rank1-prior-sbc-stage0.md
   - Guides:
       - Overview: guides/index.md
       - Data & representation:

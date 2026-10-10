@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc" width="1320" height="690" viewBox="0 0 1320 690">
+<title id="title">B6 rank-one stage-zero simulation-based calibration pilot: eight midpoint truth ranks from four independent datasets</title>
+<desc id="desc">Four prior-generated datasets: x-mean midpoint ranks 1198, 912, 124, 324, x-variance midpoint ranks 1395, 953, 1353, 1132, each out of 1600 posterior draws. Exploratory computational screen failed for replicate one: worst R-hat 1.0158 above ceiling 1.01. Only four datasets, insufficient for rank-uniformity inference.</desc>
+<rect width="1320" height="690" fill="#fff"/>
+<text x="64" y="63" fill="#182940" font-family="Arial,sans-serif" font-size="29" font-weight="700">B6 rank-one: initial posterior rank pilot</text>
+<text x="64" y="96" fill="#53677D" font-family="Arial,sans-serif" font-size="16">Four new prior-generated datasets · 1,600 draws per posterior · source run #38087405506</text>
+<circle cx="75" cy="142" r="9" fill="#205E91"/><text x="94" y="148" fill="#293E55" font-family="Arial,sans-serif" font-size="17">Midpoint population mean</text>
+<rect x="338" y="133" width="18" height="18" rx="3" fill="#149483"/><text x="365" y="148" fill="#293E55" font-family="Arial,sans-serif" font-size="17">Midpoint population variance</text>
+<text x="65" y="195" fill="#182940" font-family="Arial,sans-serif" font-size="16" font-weight="700">Independent dataset</text>
+<text x="340" y="195" fill="#182940" font-family="Arial,sans-serif" font-size="16" font-weight="700">Posterior truth rank (0–1600)</text>
+<text x="1028" y="195" fill="#182940" font-family="Arial,sans-serif" font-size="16" font-weight="700">Worst R-hat / screen</text>
+<line x1="340" y1="219" x2="340" y2="556" stroke="#E2E8EE" stroke-width="1"/>
+<text x="340" y="215" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#51647B">0</text>
+<line x1="490" y1="219" x2="490" y2="556" stroke="#E2E8EE" stroke-width="1"/>
+<text x="490" y="215" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#51647B">400</text>
+<line x1="640" y1="219" x2="640" y2="556" stroke="#E2E8EE" stroke-width="1"/>
+<text x="640" y="215" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#51647B">800</text>
+<line x1="790" y1="219" x2="790" y2="556" stroke="#E2E8EE" stroke-width="1"/>
+<text x="790" y="215" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#51647B">1200</text>
+<line x1="940" y1="219" x2="940" y2="556" stroke="#E2E8EE" stroke-width="1"/>
+<text x="940" y="215" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#51647B">1600</text>
+<line x1="64" x2="1262" y1="298" y2="298" stroke="#E8EDF1"/>
+<text x="64" y="253" font-size="18" font-family="Arial,sans-serif" fill="#182940">Replicate 0</text>
+<line x1="340" y1="247" x2="940" y2="247" stroke="#C5D2DC" stroke-width="2"/>
+<circle cx="789.3" cy="237" r="9" fill="#205E91"/>
+<rect x="856.1" y="253" width="14" height="14" rx="2" fill="#149483"/>
+<text x="1028" y="253" font-family="Arial,sans-serif" font-size="18" fill="#246B61" font-weight="700">1.0043 · Pass</text>
+<line x1="64" x2="1262" y1="393" y2="393" stroke="#E8EDF1"/>
+<text x="64" y="348" font-size="18" font-family="Arial,sans-serif" fill="#182940">Replicate 1</text>
+<line x1="340" y1="342" x2="940" y2="342" stroke="#C5D2DC" stroke-width="2"/>
+<circle cx="682.0" cy="332" r="9" fill="#205E91"/>
+<rect x="690.4" y="348" width="14" height="14" rx="2" fill="#149483"/>
+<text x="1028" y="348" font-family="Arial,sans-serif" font-size="18" fill="#9B462F" font-weight="700">1.0158 · Fail</text>
+<line x1="64" x2="1262" y1="488" y2="488" stroke="#E8EDF1"/>
+<text x="64" y="443" font-size="18" font-family="Arial,sans-serif" fill="#182940">Replicate 2</text>
+<line x1="340" y1="437" x2="940" y2="437" stroke="#C5D2DC" stroke-width="2"/>
+<circle cx="386.5" cy="427" r="9" fill="#205E91"/>
+<rect x="840.4" y="443" width="14" height="14" rx="2" fill="#149483"/>
+<text x="1028" y="443" font-family="Arial,sans-serif" font-size="18" fill="#246B61" font-weight="700">1.0045 · Pass</text>
+<line x1="64" x2="1262" y1="583" y2="583" stroke="#E8EDF1"/>
+<text x="64" y="538" font-size="18" font-family="Arial,sans-serif" fill="#182940">Replicate 3</text>
+<line x1="340" y1="532" x2="940" y2="532" stroke="#C5D2DC" stroke-width="2"/>
+<circle cx="461.5" cy="522" r="9" fill="#205E91"/>
+<rect x="757.5" y="538" width="14" height="14" rx="2" fill="#149483"/>
+<text x="1028" y="538" font-family="Arial,sans-serif" font-size="18" fill="#246B61" font-weight="700">1.0042 · Pass</text>
+<text x="64" y="601" font-family="Arial,sans-serif" font-size="15" fill="#53677D">All 4 NUTS fits completed without divergences. One fit failed the predeclared identified-functionals R-hat ≤ 1.01 screen.</text>
+<text x="64" y="625" font-family="Arial,sans-serif" font-size="15" fill="#53677D">These are eight ranks from four independent datasets—not a rank-uniformity test or estimated posterior interval coverage.</text>
+<text x="64" y="656" font-family="Arial,sans-serif" font-size="14" fill="#53677D">Source: PR #274, original workflow #38087405506, four SHA256-audited `B6 PRIOR-SBC STAGE-0 CASE` records.</text>
+</svg>
