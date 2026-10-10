@@ -1,0 +1,40 @@
+name: science-b6-b7-rank2-dense-likelihood-contract
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_b6_b7_rank2_likelihood_contract.py"
+      - "tests/test_b6_b7_rank2_likelihood_contract.py"
+      - ".github/workflows/science-b6-b7-rank2-dense-likelihood-contract.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mathematics:
+    name: Independent rank-two dense-vs-Woodbury falsification (Python ${{ matrix.python }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_b6_b7_rank2_likelihood_contract.py
+      - run: python scripts/run_b6_b7_rank2_likelihood_contract.py --out build/rank2-math
+      - name: Preserve independent source evidence including failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rank2-dense-woodbury-Python-${{ matrix.python }}
+          path: build/rank2-math/
+          retention-days: 90
+          if-no-files-found: warn
