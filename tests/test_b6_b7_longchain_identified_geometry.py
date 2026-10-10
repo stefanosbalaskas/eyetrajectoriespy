@@ -2,6 +2,11 @@
 import numpy as np
 import pytest
 
+# ArviZ is an optional research dependency. Ordinary package pytest
+# collection must not fail when the Bayesian extra is not installed;
+# dedicated scientific workflows install ArviZ and execute these tests.
+pytest.importorskip("arviz")
+
 from scripts.run_b6_b7_longchain_identified_geometry import (
     identified_mcse_geometry, DESIGNS, METHODS, run_design,
 )
