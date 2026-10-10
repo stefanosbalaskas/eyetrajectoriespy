@@ -3,6 +3,7 @@ from hashlib import sha256
 import json
 
 import pytest
+pytest.importorskip("arviz")  # optional Bayesian dependency absent from core CI
 
 from scripts.run_b6_rank1_prior_sbc_pilot import SEED, fresh_seed
 from scripts.run_b6_rank1_sbc_r2_refit import (
