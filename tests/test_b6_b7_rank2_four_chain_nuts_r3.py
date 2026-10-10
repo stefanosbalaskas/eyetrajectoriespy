@@ -1,11 +1,10 @@
 """Research-only rank-two four-chain rotation-invariant population contracts."""
-from dataclasses import replace
 from hashlib import sha256
 import json
 import numpy as np
 import pytest
 
-from scripts.run_b6_b7_rank2_likelihood_contract import generate_case, rotate_factor
+from scripts.run_b6_b7_rank2_likelihood_contract import generate_case
 from scripts.run_b6_b7_rank2_four_chain_nuts_r3 import (
     STUDY, DESIGNS, source_seed, invariant_functionals, write_case,
 )
