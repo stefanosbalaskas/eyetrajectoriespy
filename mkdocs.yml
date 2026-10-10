@@ -66,6 +66,7 @@ nav:
           - Identifiable posterior diagnostics: development/b6-b7-identifiable-reference-diagnostics.md
           - Score-marginal ESS negative result: development/b6-b7-joint-score-marginal-loading-ess.md
           - Long-chain Gibbs versus independent NUTS: development/b6-b7-longchain-identified-covariance-geometry.md
+          - Four-chain independent NUTS replication (R1): development/b6-b7-four-chain-nuts-r1-reference.md
   - Guides:
       - Overview: guides/index.md
       - Data & representation:
