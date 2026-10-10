@@ -1,0 +1,62 @@
+name: science-b6-b7-rank2-pymc-logp-gradient-r2
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_b6_b7_rank2_pymc_graph_contract.py"
+      - "tests/test_b6_b7_rank2_pymc_graph_contract.py"
+      - ".github/workflows/science-b6-b7-rank2-pymc-logp-gradient-r2.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dense-reference-tests:
+    name: Independent dense finite-difference reference contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian]"
+      - run: python -m pytest -q tests/test_b6_b7_rank2_pymc_graph_contract.py
+
+  actual-pymc-graph:
+    name: Actual PyMC rank-two log posterior and AD paired ${{ matrix.paired }} near-tied ${{ matrix.tied }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        paired: [0,1]
+        tied: [0,1]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      PYTENSOR_FLAGS: "cxx="
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian-pymc]"
+      - name: Source-independent dense Gaussian and autodiff comparisons
+        run: |
+          python scripts/run_b6_b7_rank2_pymc_graph_contract.py \
+            --paired ${{ matrix.paired }} --near-tied ${{ matrix.tied }} \
+            --out build/rank2-graph/paired-${{ matrix.paired }}-tied-${{ matrix.tied }}
+      - name: Retain successes and mathematical failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rank2-pymc-graph-paired-${{ matrix.paired }}-tied-${{ matrix.tied }}
+          path: build/rank2-graph/paired-${{ matrix.paired }}-tied-${{ matrix.tied }}/
+          retention-days: 90
+          if-no-files-found: warn
