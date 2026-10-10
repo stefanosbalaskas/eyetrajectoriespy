@@ -1,0 +1,129 @@
+name: science-b6-b7-longchain-covariance-geometry
+
+on:
+  pull_request:
+    types: [opened]
+    paths:
+      - ".github/workflows/science-b6-b7-longchain-covariance-geometry.yml"
+      - "scripts/run_b6_b7_longchain_identified_geometry.py"
+      - "tests/test_b6_b7_longchain_identified_geometry.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  identified-mcse-contract:
+    name: Exact ArviZ rank Rhat, ESS and spectral MCSE contract (${{ matrix.python }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian]"
+      - run: python -m pytest -q tests/test_b6_b7_longchain_identified_geometry.py
+
+  independent-reference-long-chains:
+    name: Longer native B6/B7 and independent PyMC/NUTS (${{ matrix.design }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 170
+    strategy:
+      fail-fast: false
+      matrix:
+        design: [B6_rank1, B7_rank1_paired, B7_rank1_asynchronous]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      PYTENSOR_FLAGS: "cxx="
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian-pymc]"
+      - name: Independent dense score-integrated model contracts
+        run: python -m pytest -q tests/test_independent_b6_b7_nuts_reference.py tests/test_b6_b7_longchain_identified_geometry.py
+      - name: Six longer 4-chain native and three separate 2-chain NUTS targets, actual fits
+        run: |
+          python scripts/run_b6_b7_longchain_identified_geometry.py \
+            --design ${{ matrix.design }} --native-draws 800 \
+            --native-warmup 1000 --nuts-draws 800 --nuts-warmup 1200 \
+            --seed 20261212 --out build/b6-b7-longchain/${{ matrix.design }} \
+            > build-longchain-report.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path=Path("build/b6-b7-longchain/${{ matrix.design }}")
+          rows=json.loads((path/"cases.json").read_text())
+          ev=json.loads((path/"evidence.json").read_text())
+          assert len(rows)==ev["full_posterior_fit_attempts"]==3
+          assert len({r["method"] for r in rows})==3
+          assert not ev["coverage_qualified"]
+          assert not ev["SBC_completed"]
+          assert not ev["release_authorized"]
+          for row in rows:
+              print("B6/B7 IDENTIFIED LONGCHAIN:",json.dumps(row,sort_keys=True))
+          assert ev["failed_attempts"]==0,"Retain failed actual fits, do not qualify"
+          PY
+      - name: Retain all real posterior comparisons and SHA256 source audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b6-b7-longchain-${{ matrix.design }}
+          path: build/b6-b7-longchain/${{ matrix.design }}/
+          retention-days: 90
+          if-no-files-found: warn
+
+  verify-source:
+    name: Verify nine actual posterior fits and original source SHA256s
+    needs: independent-reference-long-chains
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: b6-b7-longchain-*
+          path: build/original
+      - run: |
+          python - <<'PY'
+          from pathlib import Path
+          from hashlib import sha256
+          import json
+          root=Path("build/original")
+          cases=[]
+          for design in ("B6_rank1","B7_rank1_paired","B7_rank1_asynchronous"):
+              folder=root/("b6-b7-longchain-"+design)
+              assert folder.is_dir(),design
+              for line in (folder/"SHA256SUMS").read_text().splitlines():
+                  value,path=line.split("  ")
+                  assert sha256((folder/path).read_bytes()).hexdigest()==value
+              rows=json.loads((folder/"cases.json").read_text())
+              evidence=json.loads((folder/"evidence.json").read_text())
+              assert len(rows)==evidence["full_posterior_fit_attempts"]==3
+              assert evidence["n_independent_truth_datasets"]==1
+              assert not evidence["release_authorized"]
+              assert not evidence["coverage_qualified"]
+              cases.extend(rows)
+          assert len(cases)==9
+          assert all(r["status"]=="ok" for r in cases),"Do not mask failed fits"
+          print("B6/B7 LONGCHAIN ORIGINAL SOURCE AUDIT:",
+                json.dumps({"fits":len(cases),"prior_drawn_datasets":3,
+                "actual_errors":0,"rank2_qualified":False,
+                "SBC_qualified":False,"release_authorized":False}))
+          PY
