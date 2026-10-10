@@ -27,6 +27,14 @@
 
 *This added scientific SVG is source-accurately constructed from the nine original fitted case results; it is not an independently collected dataset and does not establish posterior coverage.*
 
+### Four-chain independent reference, two fresh datasets per rank-one design
+
+![Minimum identified population bulk ESS and worst R-hat from six source-verified four-chain NUTS posterior fits](../assets/research/b6-b7-four-chain-nuts-r1-20261010.svg)
+
+[Six-fit source results, full provenance and unqualified inference limits](b6-b7-four-chain-nuts-r1-reference.md) · [Original workflow #38047872726](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38047872726).
+
+*All six four-chain fits passed the exploratory mixing diagnostics; this is not evidence of 90% interval coverage or rank-two validity. The plot depicts one rank-one fit per replicate (six independently generated datasets), not independent posterior interval calibration.*
+
 ## F5 change-point null behavior
 
 ![F5 original dependence-aware AR1 research null rejection evidence](../assets/research/f5-ar1-null-rejection.svg)
