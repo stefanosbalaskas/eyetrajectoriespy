@@ -32,4 +32,4 @@ This pilot is intentionally limited to rank one. Rank-two independent posterior 
 
 ## Reproducibility
 
-Source script: \`scripts/run_b6_b7_longchain_identified_geometry.py\`; dedicated CI \`.github/workflows/science-b6-b7-longchain-covariance-geometry.yml\`. The original source study creates per-design \`cases.json\`, \`evidence.json\`, \`SHA256SUMS\`, independently verifies the complete experiment in a combined job, and preserves failures. Once completed, record the exact-head CI run and retained artifact IDs here. **Do not change the underlying sampler default or promote posterior inferential validity based on these results.**
+Source script: `scripts/run_b6_b7_longchain_identified_geometry.py`; dedicated CI `.github/workflows/science-b6-b7-longchain-covariance-geometry.yml`. The original source study creates per-design `cases.json`, `evidence.json`, `SHA256SUMS`, independently verifies the complete experiment in a combined job, and preserves failures. Once completed, record the exact-head CI run and retained artifact IDs here. **Do not change the underlying sampler default or promote posterior inferential validity based on these results.**
