@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d" viewBox="0 0 1300 650" width="1300" height="650">
+<title id="t">Rank-two PyMC gradient verification, four mathematical configurations</title>
+<desc id="d">Maximum independently checked scaled automatic-gradient error across 30 parameter derivatives per configuration, reported in units of ten to the minus eight. Matched-prior asynchronous 1.062, matched-prior paired 1.111, near-tied asynchronous 0.496, near-tied paired 0.845. All passed predeclared mathematical tolerances; no posterior NUTS sampling or credible-interval calibration was conducted.</desc>
+<rect width="1300" height="650" fill="#fff"/>
+<text x="65" y="62" fill="#14253B" font-family="Arial,sans-serif" font-size="29" font-weight="700">Rank-two PyMC: gradient agreement with an independent reference</text>
+<text x="65" y="95" fill="#52677E" font-family="Arial,sans-serif" font-size="17">Four observed-data designs · all 30 parameter derivatives evaluated · original workflow #38095088126</text>
+<text x="65" y="165" fill="#14253B" font-family="Arial,sans-serif" font-size="17" font-weight="700">Mathematical configuration</text>
+<text x="550" y="165" fill="#14253B" font-family="Arial,sans-serif" font-size="17" font-weight="700">Maximum scaled gradient discrepancy (×10⁻⁸)</text>
+<line x1="550.0" y1="196" x2="550.0" y2="525" stroke="#E1E8EF"/>
+<text x="550.0" y="189" text-anchor="middle" fill="#52677E" font-family="Arial,sans-serif" font-size="14">0.0</text>
+<line x1="672.5" y1="196" x2="672.5" y2="525" stroke="#E1E8EF"/>
+<text x="672.5" y="189" text-anchor="middle" fill="#52677E" font-family="Arial,sans-serif" font-size="14">0.3</text>
+<line x1="795.0" y1="196" x2="795.0" y2="525" stroke="#E1E8EF"/>
+<text x="795.0" y="189" text-anchor="middle" fill="#52677E" font-family="Arial,sans-serif" font-size="14">0.6</text>
+<line x1="917.5" y1="196" x2="917.5" y2="525" stroke="#E1E8EF"/>
+<text x="917.5" y="189" text-anchor="middle" fill="#52677E" font-family="Arial,sans-serif" font-size="14">0.9</text>
+<line x1="1040.0" y1="196" x2="1040.0" y2="525" stroke="#E1E8EF"/>
+<text x="1040.0" y="189" text-anchor="middle" fill="#52677E" font-family="Arial,sans-serif" font-size="14">1.2</text>
+<text x="65" y="258" fill="#14253B" font-family="Arial,sans-serif" font-size="17">Asynchronous · matched-prior</text>
+<rect x="550" y="235" width="433.61" height="32" fill="#275B89" rx="4"/>
+<text x="995.6" y="257" fill="#14253B" font-family="Arial,sans-serif" font-weight="700" font-size="16">1.062</text>
+<text x="65" y="339" fill="#14253B" font-family="Arial,sans-serif" font-size="17">Paired · matched-prior</text>
+<rect x="550" y="316" width="453.78" height="32" fill="#275B89" rx="4"/>
+<text x="1015.8" y="338" fill="#14253B" font-family="Arial,sans-serif" font-weight="700" font-size="16">1.111</text>
+<text x="65" y="420" fill="#14253B" font-family="Arial,sans-serif" font-size="17">Asynchronous · near-tied stress</text>
+<rect x="550" y="397" width="202.65" height="32" fill="#168B7C" rx="4"/>
+<text x="764.7" y="419" fill="#14253B" font-family="Arial,sans-serif" font-weight="700" font-size="16">0.496</text>
+<text x="65" y="501" fill="#14253B" font-family="Arial,sans-serif" font-size="17">Paired · near-tied stress</text>
+<rect x="550" y="478" width="345.05" height="32" fill="#168B7C" rx="4"/>
+<text x="907.0" y="500" fill="#14253B" font-family="Arial,sans-serif" font-weight="700" font-size="16">0.845</text>
+<line x1="65" y1="557" x2="1220" y2="557" stroke="#C6D2DD"/>
+<text x="65" y="584" fill="#53677E" font-family="Arial,sans-serif" font-size="15">All four full log-posterior comparisons differ by at most 8.53×10⁻¹⁴; all gradient contracts passed.</text>
+<text x="65" y="608" fill="#53677E" font-family="Arial,sans-serif" font-size="15">Near-tied cases are out-of-prior numerical stresses, not SBC datasets. This chart does not demonstrate NUTS convergence.</text>
+<text x="65" y="632" fill="#53677E" font-family="Arial,sans-serif" font-size="14">Source: four original actual PyMC graph job JSON records, PR #277, exact source run #38095088126.</text>
+</svg>
