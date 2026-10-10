@@ -15,6 +15,9 @@ hide:
 !!! info "1.2 development — experimental source, not a published release"
     W1–W4 and all ten workflow contracts have passed installed-wheel product qualification. Frozen source **1.2.0rc1** remains unpublished. E1–E4 experimental interfaces were merged to protected `main` as **1.2.0rc2.dev0** under [PR #223](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/223), but a new literal RC2 has **not** been qualified or published. Publication remains disarmed. A plain PyPI installation still gives **stable 1.1.0**, without the 1.2 workflow APIs.
 
+!!! warning "Research development is available separately from stable 1.1.0"
+    [**Explore the 1.2 research evidence hub**](development/research-development-hub.md), including [original F1/F5/B6/B7 figures](development/research-original-figures.md), [simulation evidence and limitations](development/research-scientific-dashboard.md), and [source-code reproduction instructions](development/research-reproducibility.md). Research inference remains unqualified; these pages **do not** indicate that the experimental APIs are included in stable 1.1.0 or authorize a new package release.
+
 <div class="et-hero" markdown>
 <div markdown>
 
