@@ -10,10 +10,27 @@
 | F1 sparse group inference | [#37977625803](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37977625803), artifact `11640464273` | **6,000**, 0 failures | 4,000 null and 2,000 fixed moderate-effect alternatives, 199 permutations each; observed null rejection 4.4–5.2% at nominal 5% across four tested regimes, moderate-effect detection 14.2–19.2% | **Limited evidence, not general qualification** |
 | B6/B7 independent NUTS | [#37988738287](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37988738287), artifact `11645572128` | **3 PyMC posterior fits**, no divergences | Genuine separate PyMC likelihood works; intervals overlap, but native covariance chains mix inadequately | **Blocked: #255** |
 | B6/B7 identifiable diagnostics | [#37992812846](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37992812846), artifact `11647146899` | 3 independent posterior comparisons | B6 covariance native R-hat/ESS 1.357/5 versus PyMC 1.001/183; async B7 covariance native 1.718/3 versus PyMC 1.006/249 | **Blocked: #255** |
+| B6/B7 longer-chain original Gibbs, elliptical slice and independent NUTS | [#38039822342](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38039822342); B6 artifact `11665746776`, paired B7 `11665707552`, asynchronous B7 `11665607799` | **9 actual posterior fits** on 3 newly prior-generated datasets; 0 exceptions; SHA256 audit passed | Native midpoint covariance bulk ESS **45.6/11.7/19.9** (B6/paired/async); score-marginal ESS **13.4/8.5/6.8**; independent NUTS **399.6/705.7/699.2**, all NUTS 0 divergences; no per-method fit times | **Native covariance not qualified; NUTS promising, not coverage-qualified. Blocker #255 open** |
 | B6/B7 joint-loading ESS | [#38000101053](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000101053), artifact `11649475504` | **36** (18 independently generated datasets × 2 methods), 0 failures | No fit passed identifiable-covariance R-hat ≤1.01 and bulk ESS ≥400; no consistent mixing improvement | **Negative comparator, not promoted** |
 | F5 independent-baseline unknown AR(1) | [#37987935105](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37987935105), artifact `11643259568` | **2,520**, 0 failures | Strong-AR(1) null false positives reduced, but iid/weak-AR(1) conservatism and AR(2) misspecification remained | **Blocked: #256** |
 | F5 baseline-size uncertainty ablation | [#37992161919](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/37992161919), artifact `11645662411` | **3,600** (600 independent test datasets × 6 paired conditions), 0 failures | Strong-AR(1) plug-in false positive 24/12/9% for training n=40/80/160; uncertainty propagation 3/1/5%; true-AR(2) under uncertainty propagation 27/12/15% | **Blocked: #256** |
 | F5 independently trained AR(2) stress | [#38000177988](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000177988), artifact `11648842221` | **1,500** (750 independent test datasets × 2 methods), 0 failures | Under true AR(2), null 15% AR(1) vs 9% AR(2); MA(1) 0% vs 11%; within-test nonstationarity **94% false rejection for both** | **Blocked: #256** |
+
+### B6/B7 long-chain completed posterior pilot: native covariance mixing still unqualified
+
+The [nine-fit source-verified study](b6-b7-longchain-identified-covariance-geometry.md) uses **three new prior-generated rank-one datasets**, not nine independent subjects or nine independent posterior-truth replications. Identifiable covariance posterior fit outcomes:
+
+| Design | Original Gibbs R-hat / bulk ESS | Score-marginal elliptical slice R-hat / bulk ESS | Independent NUTS R-hat / bulk ESS |
+|---|---|---|---|
+| B6 univariate | 1.090 / 45.6 | 1.205 / 13.4 | **1.006 / 399.6** |
+| B7 paired | 1.293 / 11.7 | 1.425 / 8.5 | **1.001 / 705.7** |
+| B7 asynchronous | 1.159 / 19.9 | 1.601 / 6.8 | **1.000 / 699.2** |
+
+![Actual B6/B7 identified covariance mixing from original scientific source JSON](../assets/research/b6-b7-longchain-identified-covariance-20261010.svg)
+
+The prespecified exploratory covariance mixing screen (rank R-hat ≤1.01 and bulk ESS ≥400) was met **only by both B7 NUTS studies**. B6 NUTS had ESS **399.6**, effectively at—but formally below—the threshold. All three NUTS runs reported zero divergences. The native covariance chains remained poorly mixed in every design; **fitted posterior means being similar to NUTS does not make those native results reliable**. All reported 90% intervals happened to contain their single generated truth; *this is not an estimate of repeated-sampling coverage*. These absolute ESS values also **cannot** establish runtime efficiency because native uses four chains and NUTS two, with no per-method timing recorded.
+
+[Scientific blocker #255](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/255) remains unresolved; independently converged four-chain posterior references, rank-2 and SBC/coverage simulations remain necessary.
 
 ### F1: limited null calibration, modest sensitivity
 

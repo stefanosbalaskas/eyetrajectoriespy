@@ -25,6 +25,7 @@ See [F1–F6 method inventory](f1-f6-scientific-expansion.md), [experimental API
 
 - [F1 — 6,000 full sparse-PACE null/power fits](f1-high-precision-native-null-power.md): failure-inclusive scenario results and a limitation-oriented power assessment.
 - [B6/B7 — independent PyMC/NUTS posterior](b6-b7-identifiable-reference-diagnostics.md): identifiable mean and covariance diagnostics, raw loading sign ambiguity and inadequate native ESS.
+- [B6/B7 — nine-fit longer-chain Gibbs versus independent NUTS](b6-b7-longchain-identified-covariance-geometry.md): source-verified B6, B7 paired and B7 asynchronous covariance mixing diagnostics, original figure and failure-inclusive reference evidence. All native covariance chains fail exploratory mixing; both B7 NUTS runs pass the diagnostic screen without establishing nominal coverage.
 - [B6/B7 — joint-loading elliptical-slice experiment](b6-b7-joint-score-marginal-loading-ess.md): a valid research transition that **failed to improve covariance mixing consistently**.
 - [F5 — independent-baseline unknown AR(1)](f5-independent-baseline-unknown-phi.md), [training baseline sensitivity](f5-baseline-size-nuisance-sensitivity.md) and [AR(2)/MA(1)/nonstationarity falsification](f5-independent-baseline-ar2-model-falsification.md).
 - [Research figures](research-original-figures.md): original checked-in scientific SVGs, including negative results.
