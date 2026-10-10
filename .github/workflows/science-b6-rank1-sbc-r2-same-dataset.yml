@@ -1,0 +1,55 @@
+name: science-b6-rank1-sbc-r2-same-dataset
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_b6_rank1_sbc_r2_refit.py"
+      - "tests/test_b6_rank1_sbc_r2_refit.py"
+      - ".github/workflows/science-b6-rank1-sbc-r2-same-dataset.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  protocol:
+    name: Same-seed and separate-denominator contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian]"
+      - run: python -m pytest -q tests/test_b6_rank1_sbc_r2_refit.py
+
+  actual-refit:
+    name: Full-R1-budget four-chain refit of stage-0 replicate 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      PYTENSOR_FLAGS: "cxx="
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian-pymc]"
+      - run: python -m pytest -q tests/test_b6_rank1_sbc_r2_refit.py
+      - name: Same-generation-seed longer-budget posterior fit
+        run: python scripts/run_b6_rank1_sbc_r2_refit.py --out build/b6-sbc-r2-same-dataset
+      - name: Preserve all source cases including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: b6-sbc-r2-replicate1-full-budget
+          path: build/b6-sbc-r2-same-dataset/
+          retention-days: 90
+          if-no-files-found: warn
