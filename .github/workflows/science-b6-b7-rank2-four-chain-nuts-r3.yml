@@ -1,0 +1,140 @@
+name: science-b6-b7-rank2-four-chain-nuts-r3
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_b6_b7_rank2_four_chain_nuts_r3.py"
+      - "tests/test_b6_b7_rank2_four_chain_nuts_r3.py"
+      - ".github/workflows/science-b6-b7-rank2-four-chain-nuts-r3.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  invariant-contracts:
+    name: Rank-two rotation-invariant research contracts (Python ${{ matrix.python }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian]"
+      - run: python -m pytest -q tests/test_b6_b7_rank2_four_chain_nuts_r3.py
+
+  actual-rank-two-nuts:
+    name: Rank-two four-chain NUTS (${{ matrix.design }}, fresh rank-two dataset)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        design: [paired, asynchronous]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      PYTENSOR_FLAGS: "cxx="
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian-pymc]"
+      - run: python -m pytest -q tests/test_b6_b7_rank2_four_chain_nuts_r3.py tests/test_b6_b7_rank2_pymc_graph_contract.py
+      - name: Original four-chain PyMC NUTS fit, no post-hoc convergence filtering
+        run: |
+          python scripts/run_b6_b7_rank2_four_chain_nuts_r3.py \
+            --design ${{ matrix.design }} --draws 400 --tune 700 --cores 2 \
+            --master-seed 20261011 \
+            --out build/rank2-nuts-r3/${{ matrix.design }}
+      - name: Retain all original posterior outcomes and errors
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rank2-nuts-r3-${{ matrix.design }}
+          path: build/rank2-nuts-r3/${{ matrix.design }}/
+          retention-days: 90
+          if-no-files-found: warn
+
+  audit-original-evidence:
+    name: Verify both rank-two original posterior attempts and hashes
+    needs: actual-rank-two-nuts
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rank2-nuts-r3-*
+          path: build/original
+      - name: Failure-inclusive two-dataset evidence audit
+        run: |
+          python - <<'PY'
+          import json
+          from hashlib import sha256
+          from pathlib import Path
+          out=Path("build")
+          rows=[]
+          missing=[]
+          for design in ("paired", "asynchronous"):
+              folder=out/"original"/f"rank2-nuts-r3-{design}"
+              if not folder.is_dir():
+                  missing.append(design)
+                  continue
+              for record in (folder/"SHA256SUMS").read_text().splitlines():
+                  digest,name=record.split("  ")
+                  assert sha256((folder/name).read_bytes()).hexdigest()==digest
+              case=json.loads((folder/"case.json").read_text())
+              evidence=json.loads((folder/"evidence.json").read_text())
+              assert case["design"]==design and case["rank"]==2
+              assert evidence["attempts"]==1 and not evidence["release_authorized"]
+              assert not evidence["SBC_completed"] and not evidence["nominal_coverage_qualified"]
+              rows.append(case)
+          report={
+              "study":"B6_B7_RANK2_FOUR_CHAIN_NUTS_COMPUTATIONAL_R3_V1",
+              "planned_independent_datasets":2,
+              "attempts_with_source_artifact":len(rows),
+              "missing_artifact_designs":missing,
+              "completed_fit_count":sum(x["status"]=="ok" for x in rows),
+              "fitting_exception_count":sum(x["status"]!="ok" for x in rows),
+              "screen_passes":sum(
+                  x["reference_checks"]["all_identified_functionals_pass_exploratory_screen"]
+                  for x in rows if x["status"]=="ok"),
+              "screen_failures":sum(
+                  not x["reference_checks"]["all_identified_functionals_pass_exploratory_screen"]
+                  for x in rows if x["status"]=="ok"),
+              "sbc_completed":False,
+              "nominal_coverage_qualified":False,
+              "release_authorized":False,
+          }
+          (out/"rank2-nuts-r3-original-source-aggregate.json").write_text(json.dumps(report,indent=2,sort_keys=True)+"\n")
+          print("RANK2 FOUR-CHAIN NUTS SOURCE AUDIT:",json.dumps(report,sort_keys=True))
+          assert not missing and len(rows)==2, "one or more original evidence artifacts missing"
+          assert len({x["generation_seed"] for x in rows})==2
+          PY
+      - name: Retain original audit summary even if a fit failed
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rank2-nuts-r3-failure-inclusive-audit
+          path: build/rank2-nuts-r3-original-source-aggregate.json
+          retention-days: 90
+          if-no-files-found: warn
