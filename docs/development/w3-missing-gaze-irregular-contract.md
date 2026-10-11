@@ -38,7 +38,7 @@ regrid, zero-fill, smooth or exclude** trajectories.
 Use the already supported descriptive audit:
 
 ```python
-from eyetrajectoriespy.workflows import workflow_preflight
+from eyetrajectoriespy.workflows.experimental import workflow_preflight
 
 audit = workflow_preflight(
     gaze,
