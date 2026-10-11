@@ -68,6 +68,7 @@ nav:
           - Long-chain Gibbs versus independent NUTS: development/b6-b7-longchain-identified-covariance-geometry.md
           - Four-chain independent NUTS replication (R1): development/b6-b7-four-chain-nuts-r1-reference.md
           - Rank-two dense versus Woodbury mathematics (R2): development/b6-b7-rank2-marginal-mathematics.md
+          - Actual rank-two PyMC graph and gradient reference (R2): development/b6-b7-rank2-pymc-r2-research-protocol.md
           - B6 rank-one SBC pilot (stage 0): development/b6-rank1-prior-sbc-stage0.md
   - Guides:
       - Overview: guides/index.md
