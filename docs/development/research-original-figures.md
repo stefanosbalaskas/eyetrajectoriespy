@@ -81,6 +81,14 @@
 
 [AR(2) / MA(1) / nonstationary falsification](f5-independent-baseline-ar2-model-falsification.md) · [Source run #38000177988](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000177988)
 
+## W3 original known-truth functional regression validation
+
+![Source-ledger verified functional regression RMSE across 24 independent simulation blocks](../assets/research/w3-functional-regression-source-rmse-20261011.svg)
+
+[Original W3 source-audited results, exploratory target, and study limits](w3-functional-regression-known-truth-results.md) · [Scientific workflow #38173426113](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38173426113) (source artifact `11715355738`).
+
+*All 48 workflow fits completed across 24 generating seed blocks. The plotted values are original case-level recovery RMSE, not empirical eye-tracking recordings. Curve- and participant-level inference units have different simulated dependence structures; exact agreement with a numerical OLS oracle does not qualify statistical intervals.*
+
 ## Reproducible provenance
 
 These figures are version-controlled scientific assets in the research PRs, embedded **without regenerating simulated results using a different source state**. For source dataset counts, original workflow artifacts and SHA256 audit evidence, consult the [scientific dashboard](research-scientific-dashboard.md).

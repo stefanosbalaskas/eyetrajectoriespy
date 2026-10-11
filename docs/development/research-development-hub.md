@@ -21,6 +21,10 @@ This research library preserves **successful, inconclusive and negative** result
 
 See [F1–F6 method inventory](f1-f6-scientific-expansion.md), [experimental API contracts](research-method-api.md), and [B5–B10 development overview](bayesian-research-programme.md). **None of these pages promotes new stable root-level APIs.**
 
+## New workflow-level scientific evidence
+
+- [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.
+
 ## Evidence worth reading first
 
 - [F1 — 6,000 full sparse-PACE null/power fits](f1-high-precision-native-null-power.md): failure-inclusive scenario results and a limitation-oriented power assessment.

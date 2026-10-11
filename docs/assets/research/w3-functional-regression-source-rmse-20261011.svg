@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="400" viewBox="0 0 900 400" role="img" aria-label="Two simulated functional regression recovery RMSE series across 24 independent generating blocks, curve-level and participant-level, participant-level generally higher">
+<rect width="900" height="400" fill="#fff"/>
+<text x="72" y="33" fill="#122638" font-size="21" font-weight="700" font-family="sans-serif">Known-truth recovery across independent simulation blocks</text>
+<text x="72" y="52" fill="#52687d" font-size="12" font-family="sans-serif">W3 observed-grid functional regression · 31 time points · two dimensions</text>
+<line x1="74" y1="315.00" x2="848" y2="315.00" stroke="#e0e7ed" stroke-width="1"/><text x="63" y="319.00" text-anchor="end" fill="#60748a" font-size="11" font-family="sans-serif">0.00</text>
+<line x1="74" y1="269.36" x2="848" y2="269.36" stroke="#e0e7ed" stroke-width="1"/><text x="63" y="273.36" text-anchor="end" fill="#60748a" font-size="11" font-family="sans-serif">0.01</text>
+<line x1="74" y1="223.73" x2="848" y2="223.73" stroke="#e0e7ed" stroke-width="1"/><text x="63" y="227.73" text-anchor="end" fill="#60748a" font-size="11" font-family="sans-serif">0.02</text>
+<line x1="74" y1="178.09" x2="848" y2="178.09" stroke="#e0e7ed" stroke-width="1"/><text x="63" y="182.09" text-anchor="end" fill="#60748a" font-size="11" font-family="sans-serif">0.03</text>
+<line x1="74" y1="132.45" x2="848" y2="132.45" stroke="#e0e7ed" stroke-width="1"/><text x="63" y="136.45" text-anchor="end" fill="#60748a" font-size="11" font-family="sans-serif">0.04</text>
+<line x1="74" y1="86.82" x2="848" y2="86.82" stroke="#e0e7ed" stroke-width="1"/><text x="63" y="90.82" text-anchor="end" fill="#60748a" font-size="11" font-family="sans-serif">0.05</text>
+<text x="74.0" y="334" text-anchor="middle" fill="#60748a" font-size="11" font-family="sans-serif">0</text>
+<text x="208.6" y="334" text-anchor="middle" fill="#60748a" font-size="11" font-family="sans-serif">4</text>
+<text x="343.2" y="334" text-anchor="middle" fill="#60748a" font-size="11" font-family="sans-serif">8</text>
+<text x="477.8" y="334" text-anchor="middle" fill="#60748a" font-size="11" font-family="sans-serif">12</text>
+<text x="612.4" y="334" text-anchor="middle" fill="#60748a" font-size="11" font-family="sans-serif">16</text>
+<text x="747.0" y="334" text-anchor="middle" fill="#60748a" font-size="11" font-family="sans-serif">20</text>
+<line x1="74" y1="315" x2="848" y2="315" stroke="#576f82"/>
+<text x="461" y="356" text-anchor="middle" fill="#1d3247" font-size="12" font-family="sans-serif">Independent generating block (0–23)</text>
+<text transform="translate(19 192) rotate(-90)" text-anchor="middle" fill="#1d3247" font-size="12" font-family="sans-serif">Slope coefficient RMSE</text>
+<polyline points="74.0,271.70 107.7,272.33 141.3,273.45 175.0,271.93 208.6,272.00 242.3,273.42 275.9,273.98 309.6,274.09 343.2,277.39 376.9,280.45 410.5,271.16 444.2,271.06 477.8,275.60 511.5,271.84 545.1,283.81 578.8,270.22 612.4,272.66 646.1,270.91 679.7,283.71 713.4,275.16 747.0,280.71 780.7,267.39 814.3,279.24 848.0,275.61" stroke="#147a89" stroke-width="1.6" stroke-linejoin="round" stroke-opacity=".62" fill="none"/>
+<circle cx="74.0" cy="271.70" r="3.1" fill="#147a89"/>
+<circle cx="107.7" cy="272.33" r="3.1" fill="#147a89"/>
+<circle cx="141.3" cy="273.45" r="3.1" fill="#147a89"/>
+<circle cx="175.0" cy="271.93" r="3.1" fill="#147a89"/>
+<circle cx="208.6" cy="272.00" r="3.1" fill="#147a89"/>
+<circle cx="242.3" cy="273.42" r="3.1" fill="#147a89"/>
+<circle cx="275.9" cy="273.98" r="3.1" fill="#147a89"/>
+<circle cx="309.6" cy="274.09" r="3.1" fill="#147a89"/>
+<circle cx="343.2" cy="277.39" r="3.1" fill="#147a89"/>
+<circle cx="376.9" cy="280.45" r="3.1" fill="#147a89"/>
+<circle cx="410.5" cy="271.16" r="3.1" fill="#147a89"/>
+<circle cx="444.2" cy="271.06" r="3.1" fill="#147a89"/>
+<circle cx="477.8" cy="275.60" r="3.1" fill="#147a89"/>
+<circle cx="511.5" cy="271.84" r="3.1" fill="#147a89"/>
+<circle cx="545.1" cy="283.81" r="3.1" fill="#147a89"/>
+<circle cx="578.8" cy="270.22" r="3.1" fill="#147a89"/>
+<circle cx="612.4" cy="272.66" r="3.1" fill="#147a89"/>
+<circle cx="646.1" cy="270.91" r="3.1" fill="#147a89"/>
+<circle cx="679.7" cy="283.71" r="3.1" fill="#147a89"/>
+<circle cx="713.4" cy="275.16" r="3.1" fill="#147a89"/>
+<circle cx="747.0" cy="280.71" r="3.1" fill="#147a89"/>
+<circle cx="780.7" cy="267.39" r="3.1" fill="#147a89"/>
+<circle cx="814.3" cy="279.24" r="3.1" fill="#147a89"/>
+<circle cx="848.0" cy="275.61" r="3.1" fill="#147a89"/>
+<polyline points="74.0,146.38 107.7,200.45 141.3,218.56 175.0,246.38 208.6,166.63 242.3,219.43 275.9,166.41 309.6,201.55 343.2,218.29 376.9,253.36 410.5,177.76 444.2,191.49 477.8,248.54 511.5,229.44 545.1,215.97 578.8,107.18 612.4,175.38 646.1,216.74 679.7,161.80 713.4,164.54 747.0,113.83 780.7,115.72 814.3,240.05 848.0,199.90" stroke="#c75d35" stroke-width="1.6" stroke-linejoin="round" stroke-opacity=".62" fill="none"/>
+<circle cx="74.0" cy="146.38" r="3.1" fill="#c75d35"/>
+<circle cx="107.7" cy="200.45" r="3.1" fill="#c75d35"/>
+<circle cx="141.3" cy="218.56" r="3.1" fill="#c75d35"/>
+<circle cx="175.0" cy="246.38" r="3.1" fill="#c75d35"/>
+<circle cx="208.6" cy="166.63" r="3.1" fill="#c75d35"/>
+<circle cx="242.3" cy="219.43" r="3.1" fill="#c75d35"/>
+<circle cx="275.9" cy="166.41" r="3.1" fill="#c75d35"/>
+<circle cx="309.6" cy="201.55" r="3.1" fill="#c75d35"/>
+<circle cx="343.2" cy="218.29" r="3.1" fill="#c75d35"/>
+<circle cx="376.9" cy="253.36" r="3.1" fill="#c75d35"/>
+<circle cx="410.5" cy="177.76" r="3.1" fill="#c75d35"/>
+<circle cx="444.2" cy="191.49" r="3.1" fill="#c75d35"/>
+<circle cx="477.8" cy="248.54" r="3.1" fill="#c75d35"/>
+<circle cx="511.5" cy="229.44" r="3.1" fill="#c75d35"/>
+<circle cx="545.1" cy="215.97" r="3.1" fill="#c75d35"/>
+<circle cx="578.8" cy="107.18" r="3.1" fill="#c75d35"/>
+<circle cx="612.4" cy="175.38" r="3.1" fill="#c75d35"/>
+<circle cx="646.1" cy="216.74" r="3.1" fill="#c75d35"/>
+<circle cx="679.7" cy="161.80" r="3.1" fill="#c75d35"/>
+<circle cx="713.4" cy="164.54" r="3.1" fill="#c75d35"/>
+<circle cx="747.0" cy="113.83" r="3.1" fill="#c75d35"/>
+<circle cx="780.7" cy="115.72" r="3.1" fill="#c75d35"/>
+<circle cx="814.3" cy="240.05" r="3.1" fill="#c75d35"/>
+<circle cx="848.0" cy="199.90" r="3.1" fill="#c75d35"/>
+<circle cx="589" cy="84" r="4" fill="#147a89"/><text x="601" y="88" fill="#2c4253" font-size="12" font-family="sans-serif">Independent curves (n=72)</text>
+<circle cx="589" cy="104" r="4" fill="#c75d35"/><text x="601" y="108" fill="#2c4253" font-size="12" font-family="sans-serif">Participants (n=36; 3 trials each)</text>
+<text x="74" y="383" fill="#60748a" font-size="11" font-family="sans-serif">Zoomed y-axis 0–0.055. All observed RMSEs are below the exploratory target 0.12 (not shown).</text>
+</svg>
