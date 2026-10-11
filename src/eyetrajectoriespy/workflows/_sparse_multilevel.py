@@ -26,6 +26,7 @@ from ._core import (
     WorkflowStepRecord,
 )
 from ._sparse_shared import (
+    require_positive_integer,
     ObservationDiagnosticConfig,
     normalized_grid,
     require_empty_sparse_preprocessing,
@@ -76,9 +77,7 @@ class SparseMultilevelWorkflowConfig:
             raise ValueError("participant_column must be non-empty")
         for name in ("participant_components", "trial_components"):
             value = getattr(self, name)
-            if isinstance(value, bool) or int(value) < 1:
-                raise ValueError(f"{name} must be a positive integer")
-            object.__setattr__(self, name, int(value))
+            object.__setattr__(self, name, require_positive_integer(value, name=name))
         object.__setattr__(
             self,
             "evaluation_grid",
