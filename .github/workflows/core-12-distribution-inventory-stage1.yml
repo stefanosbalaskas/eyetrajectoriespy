@@ -1,0 +1,57 @@
+name: core-12-distribution-inventory-stage1
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_core_12_distribution_inventory.py"
+      - "tests/test_core_12_distribution_inventory.py"
+      - "validation/core_12/stable_1_1_0_root_exports.json"
+      - ".github/workflows/core-12-distribution-inventory-stage1.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-manifest-tests:
+    name: Inventory contracts Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_core_12_distribution_inventory.py tests/test_core_12_candidate_scope.py
+
+  wheel-inventory:
+    name: Build, enumerate and audit all wheel files, modules and root exports
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -U build packaging twine
+      - run: python -m build --wheel
+      - run: python -m twine check dist/*
+      - name: Source-vs-wheel complete inventory and unsupported namespace exclusion
+        run: |
+          python scripts/audit_core_12_distribution_inventory.py \
+            --wheel dist/eyetrajectoriespy-1.2.0rc2.dev0-py3-none-any.whl \
+            --out build/core12/full-installed-distribution-and-api-inventory.json
+      - name: Retain original module and API inventory for independent review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core12-stage1-full-wheel-inventory
+          path: build/core12/full-installed-distribution-and-api-inventory.json
+          retention-days: 90
+          if-no-files-found: warn
