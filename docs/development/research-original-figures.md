@@ -81,6 +81,15 @@
 
 [AR(2) / MA(1) / nonstationary falsification](f5-independent-baseline-ar2-model-falsification.md) · [Source run #38000177988](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000177988)
 
+## W3 same-dataset bootstrap multiplier and draw-budget sensitivity
+
+![Source-verified conditional critical values for matched W3 wild-bootstrap settings](../assets/research/w3-matched-bootstrap-critical-sensitivity-20261012.svg)
+
+[Scientific source findings and limitations](w3-same-dataset-bootstrap-sensitivity-results.md)
+· [Original source workflow #38178895466](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38178895466)
+(artifact `11716657453`). The **same 32 datasets** were evaluated under four
+correlated computational conditions, not as 128 independent replications.
+
 ## W3 nominal 90% simultaneous-band undercoverage (negative finding)
 
 ![Original-source-audit redrawn frequentist uncertainty results](../assets/research/w3-fixed-truth-interval-coverage-20261012.svg)
