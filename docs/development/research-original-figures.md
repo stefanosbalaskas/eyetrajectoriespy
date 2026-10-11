@@ -81,6 +81,17 @@
 
 [AR(2) / MA(1) / nonstationary falsification](f5-independent-baseline-ar2-model-falsification.md) · [Source run #38000177988](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000177988)
 
+## W3 bootstrap studentization and nested sample size (exploratory positive result)
+
+![Original-source-audited full-grid W3 slope truth inclusion by fixed and refitted HC1 studentization](../assets/research/w3-nested-n-restudentized-coverage-20261012.svg)
+
+[Complete source-audited numerical findings](w3-bootstrap-t-nested-unit-count-results.md)
+· [Original scientific workflow #38179669438](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38179669438)
+(artifact `11717258292`). The **24 generating blocks per design** have
+nested n=36,72,144 samples. Refitting HC1 within each wild pseudo-sample
+substantially increased observed slope-curve inclusion in some cells,
+but **90% coverage is not yet statistically qualified**.
+
 ## W3 same-dataset bootstrap multiplier and draw-budget sensitivity
 
 ![Source-verified conditional critical values for matched W3 wild-bootstrap settings](../assets/research/w3-matched-bootstrap-critical-sensitivity-20261012.svg)
