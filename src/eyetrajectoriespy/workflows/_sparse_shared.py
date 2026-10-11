@@ -76,6 +76,15 @@ class ObservationDiagnosticConfig:
         object.__setattr__(self, "low_support_threshold", threshold)
 
 
+def require_positive_integer(value: Any, *, name: str) -> int:
+    """Reject silent conversion of discrete scientific parameters."""
+    if isinstance(value, (bool, np.bool_)) or not isinstance(value, (int, np.integer)):
+        raise ValueError(f"{name} must be a positive integer, not an implicitly converted value")
+    if int(value) < 1:
+        raise ValueError(f"{name} must be a positive integer")
+    return int(value)
+
+
 def normalized_grid(
     values: tuple[float, ...] | list[float] | np.ndarray,
     *,
