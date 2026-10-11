@@ -1,0 +1,61 @@
+name: science-w3-independent-192-block-confirmation
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_192_block_independent_confirmation.py"
+      - "tests/test_w3_192_block_independent_confirmation.py"
+      - ".github/workflows/science-w3-independent-192-block-confirmation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-contracts:
+    name: W3 R3 independent replication oracle Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_192_block_independent_confirmation.py
+
+  full-independent-confirmation:
+    name: W3 R3 fresh 192 blocks per design with paired IID/joint stress
+    runs-on: ubuntu-24.04
+    timeout-minutes: 80
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: All 768 attempted cases; source-retaining audit regardless of scientific noncoverage
+        run: |
+          python scripts/run_w3_192_block_independent_confirmation.py \
+            --out build/w3-192-block-confirmation
+      - name: Preserve original failure-inclusive source, summary, plot and SHA256
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-r3-fresh-192-block-confirmation-evidence
+          path: build/w3-192-block-confirmation/
+          retention-days: 90
+          if-no-files-found: warn

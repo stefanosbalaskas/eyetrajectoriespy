@@ -81,6 +81,17 @@
 
 [AR(2) / MA(1) / nonstationary falsification](f5-independent-baseline-ar2-model-falsification.md) · [Source run #38000177988](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000177988)
 
+## W3 independently replicated 192-block simultaneous coverage
+
+![R3 192-block source-verifiable W3 full-grid truth inclusion with Wilson Monte Carlo intervals](../assets/research/w3-independent-192-block-confirmation-20261012.svg)
+
+[Original R3 numerical results and inferential limitations](w3-fresh-192-block-confirmation-results.md)
+· [Scientific workflow #38182344037](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38182344037),
+artifact `11718437875`. Every original case is retained, with
+verified source SHA256. Experimental bootstrap-t improves truth
+inclusion but has wider confidence bands; **nominal calibration
+remains unqualified**.
+
 ## W3 fresh heteroskedasticity × AR(1) stress (mixed scientific evidence)
 
 ![Source-derived 384-case W3 stress coverage summary](../assets/research/w3-fresh-heteroskedastic-ar1-coverage-20261012.svg)
