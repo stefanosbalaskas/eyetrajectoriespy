@@ -47,6 +47,7 @@ nav:
       - W3 fresh heteroskedastic/AR1 stress protocol (unqualified): development/w3-fresh-heteroskedastic-ar1-stress-protocol.md
       - W3 original heteroskedastic/AR1 results and figure: development/w3-fresh-heteroskedastic-ar1-stress-results.md
       - W3 fresh 192-block independent confirmation protocol: development/w3-fresh-192-block-confirmation-protocol.md
+      - W3 independent 192-block results and figure: development/w3-fresh-192-block-confirmation-results.md
       - Original source figures: development/research-original-figures.md
       - Reproduce from draft source: development/research-reproducibility.md
       - Methods and contracts:

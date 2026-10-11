@@ -21,6 +21,18 @@ This research library preserves **successful, inconclusive and negative** result
 
 See [F1–F6 method inventory](f1-f6-scientific-expansion.md), [experimental API contracts](research-method-api.md), and [B5–B10 development overview](bayesian-research-programme.md). **None of these pages promotes new stable root-level APIs.**
 
+## W3 independent R3 coverage confirmation (specific simulated settings)
+
+The [fresh 192-block W3 replication](w3-fresh-192-block-confirmation-results.md)
+found that the existing fixed-HC1 nominal 90% slope simultaneous band
+under-covers the true function in all four tested generating settings,
+while experimental refitted-HC1 bootstrap-t achieves approximately
+88.5–91.1% full-grid truth inclusion at n=36. This is strong,
+independently seeded evidence of a **specific finite-sample limitation
+and investigational alternative**, not general calibration. Wider
+bootstrap-t bands are reported explicitly. [Scientific blocker #289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289)
+remains OPEN.
+
 ## W3 realistic-error stress: research-stage uncertainty evidence
 
 The new [fresh-block W3 heteroskedasticity × AR(1) results](w3-fresh-heteroskedastic-ar1-stress-results.md)
