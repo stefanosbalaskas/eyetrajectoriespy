@@ -43,7 +43,7 @@ def test_failure_inclusive_multiplicity_and_design_units():
     assert incomplete["completed_datasets"]==1
     assert len(incomplete["missing_datasets"])==31
     assert not incomplete["fresh_independent_replication"]
-    assert not incomplete["no_method_winner_selected"] is False
+    assert incomplete["no_method_winner_selected"] is True
     with pytest.raises(ValueError,match="duplicated"):
         audit([result,result])
 
