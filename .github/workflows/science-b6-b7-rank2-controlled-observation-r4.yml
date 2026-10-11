@@ -1,0 +1,134 @@
+name: science-b6-b7-rank2-controlled-observation-r4
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_b6_b7_rank2_controlled_observation_r4.py"
+      - "tests/test_b6_b7_rank2_controlled_observation_r4.py"
+      - ".github/workflows/science-b6-b7-rank2-controlled-observation-r4.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  paired-contracts:
+    name: Common-truth nested-participant and paired-schedule contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian]"
+      - run: python -m pytest -q tests/test_b6_b7_rank2_controlled_observation_r4.py
+
+  actual-nuts:
+    name: Controlled rank-two NUTS ${{ matrix.design }} n=${{ matrix.n }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        design: [paired, asynchronous]
+        n: [4, 12]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      PYTENSOR_FLAGS: "cxx="
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e ".[dev,bayesian-pymc]"
+      - run: python -m pytest -q tests/test_b6_b7_rank2_controlled_observation_r4.py
+      - name: Actual four-chain matched-truth posterior, both convergence outcomes retained
+        run: |
+          python scripts/run_b6_b7_rank2_controlled_observation_r4.py \
+            --design ${{ matrix.design }} --participants ${{ matrix.n }} \
+            --draws 400 --tune 700 --cores 2 \
+            --out build/rank2-r4/${{ matrix.design }}-n${{ matrix.n }}
+      - name: Keep positive and negative original-source evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rank2-r4-${{ matrix.design }}-n${{ matrix.n }}
+          path: build/rank2-r4/${{ matrix.design }}-n${{ matrix.n }}/
+          retention-days: 90
+          if-no-files-found: warn
+
+  evidence-audit:
+    name: Audit every controlled cell and all fit failures
+    needs: actual-nuts
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: rank2-r4-*
+          path: build/original
+      - name: Retain missing cells and source checksums in the denominator
+        run: |
+          python - <<'PY'
+          from hashlib import sha256
+          import json
+          from pathlib import Path
+          root=Path("build/original")
+          rows=[];missing=[]
+          for design in ("paired", "asynchronous"):
+              for n in (4,12):
+                  name=f"rank2-r4-{design}-n{n}"
+                  folder=root/name
+                  if not folder.is_dir():
+                      missing.append(name);continue
+                  for entry in (folder/"SHA256SUMS").read_text().splitlines():
+                      digest,path=entry.split("  ")
+                      assert sha256((folder/path).read_bytes()).hexdigest()==digest
+                  case=json.loads((folder/"case.json").read_text())
+                  assert case["participants"]==n and case["design"]==design
+                  assert not case["SBC_completed"] and not case["release_authorized"]
+                  rows.append(case)
+          result={
+              "study":"B6_B7_RANK2_CONTROLLED_PAIRED_ASYNCHRONOUS_R4_V1",
+              "planned_cells":4,"artifacts":len(rows),"missing_cells":missing,
+              "fit_successes":sum(r["status"]=="ok" for r in rows),
+              "fit_exceptions":sum(r["status"]!="ok" for r in rows),
+              "screen_passes":sum(
+                  r["reference_checks"]["all_identified_functionals_pass_exploratory_screen"]
+                  for r in rows if r["status"]=="ok"),
+              "screen_failures":sum(
+                  not r["reference_checks"]["all_identified_functionals_pass_exploratory_screen"]
+                  for r in rows if r["status"]=="ok"),
+              "not_independent_replicate_datasets":True,
+              "posterior_calibration_qualified":False,"release_authorized":False,
+          }
+          Path("build/rank2-r4-audit.json").write_text(
+              json.dumps(result,indent=2,sort_keys=True)+"\n")
+          print("RANK2 CONTROLLED R4 SOURCE AUDIT:",json.dumps(result,sort_keys=True))
+          assert len(rows)==4 and not missing
+          assert all(r["design_contract"]["matched_design_verified"]
+                     for r in rows if r["status"]=="ok")
+          PY
+      - name: Upload source audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rank2-r4-failure-inclusive-audit
+          path: build/rank2-r4-audit.json
+          retention-days: 90
+          if-no-files-found: warn
