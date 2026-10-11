@@ -70,6 +70,8 @@ nav:
           - Rank-two dense versus Woodbury mathematics (R2): development/b6-b7-rank2-marginal-mathematics.md
           - Actual rank-two PyMC graph and gradient reference (R2): development/b6-b7-rank2-pymc-r2-research-protocol.md
           - B6 rank-one SBC pilot (stage 0): development/b6-rank1-prior-sbc-stage0.md
+          - B6 SBC same-dataset full-budget refit (R2): development/b6-rank1-sbc-r2-same-dataset-evidence.md
+          - Rank-two paired versus asynchronous NUTS pilot (R3): development/b6-b7-rank2-four-chain-nuts-r3-evidence.md
   - Guides:
       - Overview: guides/index.md
       - Data & representation:

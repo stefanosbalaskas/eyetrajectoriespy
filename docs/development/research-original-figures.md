@@ -43,6 +43,22 @@
 
 *This is an original plot of the four actual source-run numerical derivative comparisons. It is not a completed rank-two NUTS fit, inference validation, or an independent human eye-tracking study.*
 
+### B6 SBC R2: same-data computational-screen rescue, not new calibration data
+
+![Identical generated B6 replicate refitted with full sampling budget: source-grounded R-hat and ESS comparison](../assets/research/b6-rank1-sbc-r2-refit-diagnostics-20261011.svg)
+
+[Source B6 longer-budget refit and unchanged stage-zero failure](b6-rank1-sbc-r2-same-dataset-evidence.md) · [Original workflow #38095220518](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38095220518).
+
+*The same prior-generated replicate is used twice. Do not count the longer refit as another independent SBC dataset or interpret its 90% interval inclusion as repeated coverage.*
+
+### Rank-two NUTS R3: first real posterior computation on paired and asynchronous designs
+
+![Original rank-two NUTS computational diagnostics: paired pass and asynchronous mean-functionals failures](../assets/research/b6-b7-rank2-nuts-r3-diagnostics-20261011.svg)
+
+[Rank-two paired-versus-asynchronous pilot and numerical failure localization](b6-b7-rank2-four-chain-nuts-r3-evidence.md) · [Original scientific workflow #38096271285](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38096271285).
+
+*Both fits completed; all six population-mean functionals in the asynchronous dataset failed an exploratory screen, while its nine covariance functionals passed. One dataset per design cannot establish a general asynchronous-data effect or interval calibration.*
+
 ### Rank-one prior-SBC pilot: original four-dataset midpoint ranks
 
 ![Original B6 rank-one truth ranks and screening R-hat for four prior-generated datasets](../assets/research/b6-rank1-sbc-stage0-source-ranks-20261011.svg)
