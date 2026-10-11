@@ -37,6 +37,7 @@ from ._core import (
     WorkflowStepRecord,
 )
 from ._sparse_shared import (
+    require_positive_integer,
     ObservationDiagnosticConfig,
     ScoreUncertaintyConfig,
     normalized_grid,
@@ -122,9 +123,7 @@ class SparseFPCAWorkflowConfig:
     def __post_init__(self) -> None:
         if not str(self.dimension):
             raise ValueError("dimension must be non-empty")
-        if isinstance(self.n_components, bool) or int(self.n_components) < 1:
-            raise ValueError("n_components must be a positive integer")
-        object.__setattr__(self, "n_components", int(self.n_components))
+        object.__setattr__(self, "n_components", require_positive_integer(self.n_components, name="n_components"))
         object.__setattr__(
             self,
             "evaluation_grid",
