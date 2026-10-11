@@ -182,7 +182,9 @@ def wilson(k: int, n: int, z: float = 1.95996398454):
     denom = 1 + z*z/n
     mid = (phat + z*z/(2*n))/denom
     half = z*np.sqrt(phat*(1-phat)/n+z*z/(4*n*n))/denom
-    return [float(max(0, mid-half)), float(min(1, mid+half))]
+    # Clamp roundoff at the exact binomial boundary (k=0 or k=n).
+    return [float(max(0, min(phat, mid-half))),
+            float(min(1, max(phat, mid+half)))]
 
 
 def audit(rows: list[dict], *, blocks: int):
