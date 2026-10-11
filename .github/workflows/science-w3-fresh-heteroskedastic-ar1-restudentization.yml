@@ -1,0 +1,61 @@
+name: science-w3-fresh-heteroskedastic-ar1-restudentization
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_heteroskedastic_ar1_stress.py"
+      - "tests/test_w3_heteroskedastic_ar1_stress.py"
+      - ".github/workflows/science-w3-fresh-heteroskedastic-ar1-restudentization.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reference-contracts:
+    name: W3 stress reference-contract Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_heteroskedastic_ar1_stress.py
+
+  original-stress:
+    name: 24 blocks x 2 designs x nested n x 4 regimes, two bootstrap references
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Prespecified 384 original fits and failure-inclusive source audit
+        run: |
+          python scripts/run_w3_heteroskedastic_ar1_stress.py \
+            --out build/w3-heteroskedastic-ar1
+      - name: Preserve original successes, failures, case source and plot
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-fresh-heteroskedastic-ar1-original-evidence
+          path: build/w3-heteroskedastic-ar1/
+          retention-days: 90
+          if-no-files-found: warn
