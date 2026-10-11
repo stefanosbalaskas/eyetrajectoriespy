@@ -15,6 +15,13 @@ bytes or unqualified `eyetrajectoriespy.bayesian` and
 tools are rejected. Files such as `py.typed`, metadata, and any non-Python
 package data are captured as wheel file entries with per-entry digests.
 
+The published `v1.1.0` source-tag root `__all__` provides a separate
+**458-name immutable comparison baseline**. This verifies that the new core
+wheel has no additions or removals in the explicitly declared root export
+names; it does **not** verify signatures, semantics, downstream import behavior
+or scientific correctness. Any deliberate change must be independently
+reviewed and versioned before updating this baseline.
+
 The AST-based symbol catalog records direct public functions/classes/imported
 symbols on each packaged module. Python submodules remain technically
 importable even when absent from the public root. The report categorizes those

@@ -36,6 +36,9 @@ def _fixture(tmp_path, *, extra=None, omit=False):
     source.mkdir(parents=True)
     (source/"__init__.py").write_text('__all__=["fit"]\n')
     (source/"fpca.py").write_text("def fit(): return 1\n")
+    baseline=tmp_path/"validation/core_12/stable_1_1_0_root_exports.json"
+    baseline.parent.mkdir(parents=True)
+    baseline.write_text(json.dumps({"tag":"v1.1.0", "declared_exports":["fit"]}))
     (tmp_path/"pyproject.toml").write_text(
         '[project]\nname="eyetrajectoriespy"\nversion="1.2.0rc2.dev0"\n')
     entries={
@@ -60,6 +63,7 @@ def test_complete_inventory_preserves_hashes_and_explicitly_unqualified(tmp_path
     assert v["summary"]["python_modules"]==2
     assert v["all_source_python_modules_verified_against_wheel"]
     assert v["root_explicit_all_exports"]==["fit"]
+    assert v["root_export_names_match_stable_1_1_0"]
     assert not v["release_authorized"]
     assert not v["full_public_api_independently_approved"]
     assert len(v["all_archive_contents"])==3
@@ -89,4 +93,12 @@ def test_detects_source_wheel_byte_difference(tmp_path):
     w=_fixture(tmp_path)
     (tmp_path/"src"/PACKAGE/"fpca.py").write_text("def fit(): return 3\n")
     with pytest.raises(ValueError,match="bytes differ"):
+        inventory_wheel(w,tmp_path)
+
+
+def test_rejects_public_root_exports_drifting_from_published_stable_names(tmp_path):
+    w=_fixture(tmp_path)
+    p=tmp_path/"validation/core_12/stable_1_1_0_root_exports.json"
+    p.write_text(json.dumps({"tag":"v1.1.0","declared_exports":["other"]}))
+    with pytest.raises(ValueError, match="stable v1.1.0"):
         inventory_wheel(w,tmp_path)

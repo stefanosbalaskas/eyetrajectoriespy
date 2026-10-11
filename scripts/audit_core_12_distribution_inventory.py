@@ -142,6 +142,9 @@ def inventory_wheel(wheel: Path, source_root: Path = ROOT) -> dict:
     root_symbols = roots[0]["static_all_export_names"]
     if not root_symbols or len(root_symbols) != len(set(root_symbols)):
         raise ValueError("root public API must be nonempty and unique")
+    baseline = json.loads((source_root/"validation/core_12/stable_1_1_0_root_exports.json").read_text())
+    if baseline["tag"] != "v1.1.0" or baseline["declared_exports"] != root_symbols:
+        raise ValueError("public root __all__ differs from stable v1.1.0 names baseline")
     # Compare actual wheel bytes against source Python files: not merely filenames.
     by_path = {r["wheel_path"]: r for r in rows}
     mismatch = [p for p in source_members
@@ -159,6 +162,8 @@ def inventory_wheel(wheel: Path, source_root: Path = ROOT) -> dict:
         "all_python_module_symbol_inventories": rows,
         "root_explicit_all_exports": root_symbols,
         "root_all_sha256": _hash(("\n".join(root_symbols)+"\n").encode()),
+        "root_export_names_match_stable_1_1_0": True,
+        "stable_root_names_baseline_sha256": _hash((source_root/"validation/core_12/stable_1_1_0_root_exports.json").read_bytes()),
         "full_public_api_independently_approved": False,
         "modules_individually_scientifically_qualified": False,
         "literal_rc2_qualified": False, "release_authorized": False,
@@ -167,6 +172,7 @@ def inventory_wheel(wheel: Path, source_root: Path = ROOT) -> dict:
         "blocked_experimental_namespaces_absent": True,
         "summary": {
             "archive_entries": len(contents), "package_entries": len(package_paths),
+            "root_export_names_match_stable_1_1_0": True,
             "python_modules": len(rows), "root_explicit_exports": len(root_symbols),
             "submodules_needing_review": sum(x["support_classification"].endswith(
                 "review_required") for x in rows),

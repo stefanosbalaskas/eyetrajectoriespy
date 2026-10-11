@@ -6,6 +6,7 @@ on:
     paths:
       - "scripts/audit_core_12_distribution_inventory.py"
       - "tests/test_core_12_distribution_inventory.py"
+      - "validation/core_12/stable_1_1_0_root_exports.json"
       - ".github/workflows/core-12-distribution-inventory-stage1.yml"
   workflow_dispatch:
 
