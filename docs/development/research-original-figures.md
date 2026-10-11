@@ -81,6 +81,19 @@
 
 [AR(2) / MA(1) / nonstationary falsification](f5-independent-baseline-ar2-model-falsification.md) · [Source run #38000177988](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000177988)
 
+## W3 fresh heteroskedasticity × AR(1) stress (mixed scientific evidence)
+
+![Source-derived 384-case W3 stress coverage summary](../assets/research/w3-fresh-heteroskedastic-ar1-coverage-20261012.svg)
+
+[Full original-source results and limitations](w3-fresh-heteroskedastic-ar1-stress-results.md)
+· [Scientific workflow #38181728725](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38181728725)
+(artifact `11717528356`). There are **24 independent generating
+blocks per source design**, with nested 36/144 independent units and four
+related error regimes. In the most severe n=36 independent-curve joint
+heteroskedastic+AR(1) scenario, truth inclusion changed from **5/24
+under fixed HC1** to **20/24 under refitted-HC1 bootstrap-t**, accompanied
+by wider bands. **Nominal 90% inference remains unqualified.**
+
 ## W3 bootstrap studentization and nested sample size (exploratory positive result)
 
 ![Original-source-audited full-grid W3 slope truth inclusion by fixed and refitted HC1 studentization](../assets/research/w3-nested-n-restudentized-coverage-20261012.svg)
