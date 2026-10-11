@@ -4,6 +4,11 @@ import json
 import numpy as np
 import pytest
 
+# ArviZ belongs to the optional Bayesian research environment, not the stable
+# package's core test dependencies. Dedicated science jobs install it and run
+# this entire module; ordinary CI skips the module without import failures.
+pytest.importorskip("arviz")
+
 from scripts.run_b6_b7_rank2_likelihood_contract import generate_case
 from scripts.run_b6_b7_rank2_four_chain_nuts_r3 import (
     STUDY, DESIGNS, source_seed, invariant_functionals, write_case,
