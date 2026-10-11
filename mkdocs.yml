@@ -42,6 +42,7 @@ nav:
       - W3 original undercoverage results and plot: development/w3-fixed-truth-uncertainty-pilot-results.md
       - W3 same-dataset multiplier/budget study (unqualified): development/w3-same-dataset-bootstrap-sensitivity-protocol.md
       - W3 matched bootstrap results and figure: development/w3-same-dataset-bootstrap-sensitivity-results.md
+      - W3 nested unit-count and bootstrap-t pilot (unqualified): development/w3-bootstrap-t-nested-unit-count-protocol.md
       - Original source figures: development/research-original-figures.md
       - Reproduce from draft source: development/research-reproducibility.md
       - Methods and contracts:
