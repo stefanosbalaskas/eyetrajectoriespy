@@ -21,6 +21,16 @@ This research library preserves **successful, inconclusive and negative** result
 
 See [F1–F6 method inventory](f1-f6-scientific-expansion.md), [experimental API contracts](research-method-api.md), and [B5–B10 development overview](bayesian-research-programme.md). **None of these pages promotes new stable root-level APIs.**
 
+## W3 inferential root-cause investigation
+
+The [matched-data bootstrap multiplier and budget comparison](w3-same-dataset-bootstrap-sensitivity-results.md)
+reused the same original generating datasets rather than accumulating
+pseudo-replications. Increasing from 199 to 999 wild-bootstrap draws
+changed **zero** truth-inclusion decisions across the tested designs.
+This is useful sensitivity evidence, **not** a corrected-coverage claim.
+[Scientific blocker #289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289)
+remains OPEN.
+
 ## Newly observed W3 uncertainty limitation
 
 The [fixed-truth frequentist uncertainty pilot](w3-fixed-truth-uncertainty-pilot-results.md)
