@@ -21,6 +21,17 @@ This research library preserves **successful, inconclusive and negative** result
 
 See [F1–F6 method inventory](f1-f6-scientific-expansion.md), [experimental API contracts](research-method-api.md), and [B5–B10 development overview](bayesian-research-programme.md). **None of these pages promotes new stable root-level APIs.**
 
+## Bootstrap studentization investigated (unqualified)
+
+The [nested-unit-count W3 bootstrap-t study](w3-bootstrap-t-nested-unit-count-results.md)
+compares 24 fresh generating blocks per design, nested unit counts
+36/72/144 and the **same wild bootstrap pseudo-responses** under
+fixed versus refitted HC1 studentization. Observed full-grid inclusion
+increases substantially for independent curves with 36 units
+(10/24 to 20/24), but this pilot does **not** establish 90% calibration.
+The [W3 coverage blocker #289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289)
+remains OPEN. The research alternate was not promoted to package APIs.
+
 ## W3 inferential root-cause investigation
 
 The [matched-data bootstrap multiplier and budget comparison](w3-same-dataset-bootstrap-sensitivity-results.md)
