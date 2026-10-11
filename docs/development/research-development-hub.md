@@ -21,6 +21,15 @@ This research library preserves **successful, inconclusive and negative** result
 
 See [F1–F6 method inventory](f1-f6-scientific-expansion.md), [experimental API contracts](research-method-api.md), and [B5–B10 development overview](bayesian-research-programme.md). **None of these pages promotes new stable root-level APIs.**
 
+## Newly observed W3 uncertainty limitation
+
+The [fixed-truth frequentist uncertainty pilot](w3-fixed-truth-uncertainty-pilot-results.md)
+shows substantial **undercoverage** of nominal 90% simultaneous
+function-on-scalar bands despite independent agreement of HC1 and
+wild-bootstrap numerical calculations. [Scientific blocker #289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289)
+remains open. Do not confuse regression-coefficient recovery with
+uncertainty calibration or promote unsupported significance claims.
+
 ## New workflow-level scientific evidence
 
 - [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.
