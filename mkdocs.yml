@@ -43,6 +43,7 @@ nav:
       - W3 same-dataset multiplier/budget study (unqualified): development/w3-same-dataset-bootstrap-sensitivity-protocol.md
       - W3 matched bootstrap results and figure: development/w3-same-dataset-bootstrap-sensitivity-results.md
       - W3 nested unit-count and bootstrap-t pilot (unqualified): development/w3-bootstrap-t-nested-unit-count-protocol.md
+      - W3 nested-n bootstrap-t results and figure: development/w3-bootstrap-t-nested-unit-count-results.md
       - Original source figures: development/research-original-figures.md
       - Reproduce from draft source: development/research-reproducibility.md
       - Methods and contracts:
