@@ -1,10 +1,13 @@
 """Reject unexpected wheel content without claiming API qualification."""
 from pathlib import Path
 import json
+import sys
 from zipfile import ZipFile, ZIP_DEFLATED
 
 import pytest
 
+# The documentation gallery invokes pytest from a subprocess without this root.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.audit_core_12_distribution_inventory import (
     PACKAGE, _ast_inventory, _classify, _module_path,
     inventory_wheel,
