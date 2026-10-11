@@ -1,0 +1,142 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="670" viewBox="0 0 1060 670" role="img" aria-label="W3 fresh-block simulated simultaneous band truth inclusion for fixed HC1 and refitted HC1 bootstrap t across two designs, two sample sizes and four error regimes">
+<rect width="1060" height="670" fill="#ffffff"/>
+<text x="48" y="37" font-family="sans-serif" font-weight="700" font-size="23" fill="#1a3146">W3 nominal 90% bands under error-structure stress</text>
+<text x="48" y="57" font-family="sans-serif" font-size="13" fill="#536c7d">24 fresh generating blocks per design · paired fixed-HC1 vs refitted-HC1 on identical datasets</text>
+<text x="70" y="83" font-family="sans-serif" font-size="15" font-weight="600" fill="#1f3a50">Independent curves · n=36</text>
+<line x1="90" y1="263.00" x2="513" y2="263.00" stroke="#e7ebef" stroke-width="1"/>
+<text x="83" y="266.00" text-anchor="end" font-family="sans-serif" font-size="10" fill="#6a7c8b">0%</text>
+<line x1="90" y1="223.25" x2="513" y2="223.25" stroke="#e7ebef" stroke-width="1"/>
+<text x="83" y="226.25" text-anchor="end" font-family="sans-serif" font-size="10" fill="#6a7c8b">25%</text>
+<line x1="90" y1="183.50" x2="513" y2="183.50" stroke="#e7ebef" stroke-width="1"/>
+<text x="83" y="186.50" text-anchor="end" font-family="sans-serif" font-size="10" fill="#6a7c8b">50%</text>
+<line x1="90" y1="143.75" x2="513" y2="143.75" stroke="#e7ebef" stroke-width="1"/>
+<text x="83" y="146.75" text-anchor="end" font-family="sans-serif" font-size="10" fill="#6a7c8b">75%</text>
+<line x1="90" y1="104.00" x2="513" y2="104.00" stroke="#e7ebef" stroke-width="1"/>
+<text x="83" y="107.00" text-anchor="end" font-family="sans-serif" font-size="10" fill="#6a7c8b">100%</text>
+<line x1="90" y1="119.9" x2="513" y2="119.9" stroke="#273b4b" stroke-dasharray="6 4" stroke-width="1.5"/>
+<line x1="136" y1="190.13" x2="164" y2="137.13" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="136" cy="190.13" r="5" fill="#176d89"/>
+<circle cx="164" cy="137.13" r="5" fill="#c46c38"/>
+<text x="136" y="205.1" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">11</text>
+<text x="164" y="127.1" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">19</text>
+<text x="150" y="284" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">IID</text>
+<line x1="230" y1="203.38" x2="258" y2="150.38" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="230" cy="203.38" r="5" fill="#176d89"/>
+<circle cx="258" cy="150.38" r="5" fill="#c46c38"/>
+<text x="230" y="218.4" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">9</text>
+<text x="258" y="140.4" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">17</text>
+<text x="244" y="284" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">Hetero</text>
+<line x1="324" y1="183.50" x2="352" y2="130.50" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="324" cy="183.50" r="5" fill="#176d89"/>
+<circle cx="352" cy="130.50" r="5" fill="#c46c38"/>
+<text x="324" y="198.5" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">12</text>
+<text x="352" y="120.5" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">20</text>
+<text x="338" y="284" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">AR(1)</text>
+<line x1="418" y1="229.88" x2="446" y2="130.50" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="418" cy="229.88" r="5" fill="#176d89"/>
+<circle cx="446" cy="130.50" r="5" fill="#c46c38"/>
+<text x="418" y="244.9" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">5</text>
+<text x="446" y="120.5" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">20</text>
+<text x="432" y="284" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">Joint</text>
+<text x="575" y="83" font-family="sans-serif" font-size="15" font-weight="600" fill="#1f3a50">Independent participant means · n=36</text>
+<line x1="595" y1="263.00" x2="1018" y2="263.00" stroke="#e7ebef" stroke-width="1"/>
+<line x1="595" y1="223.25" x2="1018" y2="223.25" stroke="#e7ebef" stroke-width="1"/>
+<line x1="595" y1="183.50" x2="1018" y2="183.50" stroke="#e7ebef" stroke-width="1"/>
+<line x1="595" y1="143.75" x2="1018" y2="143.75" stroke="#e7ebef" stroke-width="1"/>
+<line x1="595" y1="104.00" x2="1018" y2="104.00" stroke="#e7ebef" stroke-width="1"/>
+<line x1="595" y1="119.9" x2="1018" y2="119.9" stroke="#273b4b" stroke-dasharray="6 4" stroke-width="1.5"/>
+<line x1="641" y1="123.88" x2="669" y2="110.63" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="641" cy="123.88" r="5" fill="#176d89"/>
+<circle cx="669" cy="110.63" r="5" fill="#c46c38"/>
+<text x="641" y="138.9" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">21</text>
+<text x="669" y="100.6" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">23</text>
+<text x="655" y="284" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">IID</text>
+<line x1="735" y1="137.13" x2="763" y2="117.25" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="735" cy="137.13" r="5" fill="#176d89"/>
+<circle cx="763" cy="117.25" r="5" fill="#c46c38"/>
+<text x="735" y="152.1" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">19</text>
+<text x="763" y="107.3" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">22</text>
+<text x="749" y="284" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">Hetero</text>
+<line x1="829" y1="117.25" x2="857" y2="110.63" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="829" cy="117.25" r="5" fill="#176d89"/>
+<circle cx="857" cy="110.63" r="5" fill="#c46c38"/>
+<text x="829" y="132.3" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">22</text>
+<text x="857" y="100.6" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">23</text>
+<text x="843" y="284" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">AR(1)</text>
+<line x1="923" y1="137.13" x2="951" y2="130.50" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="923" cy="137.13" r="5" fill="#176d89"/>
+<circle cx="951" cy="130.50" r="5" fill="#c46c38"/>
+<text x="923" y="152.1" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">19</text>
+<text x="951" y="120.5" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">20</text>
+<text x="937" y="284" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">Joint</text>
+<text x="70" y="358" font-family="sans-serif" font-size="15" font-weight="600" fill="#1f3a50">Independent curves · n=144</text>
+<line x1="90" y1="538.00" x2="513" y2="538.00" stroke="#e7ebef" stroke-width="1"/>
+<text x="83" y="541.00" text-anchor="end" font-family="sans-serif" font-size="10" fill="#6a7c8b">0%</text>
+<line x1="90" y1="498.25" x2="513" y2="498.25" stroke="#e7ebef" stroke-width="1"/>
+<text x="83" y="501.25" text-anchor="end" font-family="sans-serif" font-size="10" fill="#6a7c8b">25%</text>
+<line x1="90" y1="458.50" x2="513" y2="458.50" stroke="#e7ebef" stroke-width="1"/>
+<text x="83" y="461.50" text-anchor="end" font-family="sans-serif" font-size="10" fill="#6a7c8b">50%</text>
+<line x1="90" y1="418.75" x2="513" y2="418.75" stroke="#e7ebef" stroke-width="1"/>
+<text x="83" y="421.75" text-anchor="end" font-family="sans-serif" font-size="10" fill="#6a7c8b">75%</text>
+<line x1="90" y1="379.00" x2="513" y2="379.00" stroke="#e7ebef" stroke-width="1"/>
+<text x="83" y="382.00" text-anchor="end" font-family="sans-serif" font-size="10" fill="#6a7c8b">100%</text>
+<line x1="90" y1="394.9" x2="513" y2="394.9" stroke="#273b4b" stroke-dasharray="6 4" stroke-width="1.5"/>
+<line x1="136" y1="425.38" x2="164" y2="392.25" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="136" cy="425.38" r="5" fill="#176d89"/>
+<circle cx="164" cy="392.25" r="5" fill="#c46c38"/>
+<text x="136" y="440.4" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">17</text>
+<text x="164" y="382.3" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">22</text>
+<text x="150" y="559" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">IID</text>
+<line x1="230" y1="412.13" x2="258" y2="398.88" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="230" cy="412.13" r="5" fill="#176d89"/>
+<circle cx="258" cy="398.88" r="5" fill="#c46c38"/>
+<text x="230" y="427.1" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">19</text>
+<text x="258" y="388.9" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">21</text>
+<text x="244" y="559" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">Hetero</text>
+<line x1="324" y1="405.50" x2="352" y2="385.63" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="324" cy="405.50" r="5" fill="#176d89"/>
+<circle cx="352" cy="385.63" r="5" fill="#c46c38"/>
+<text x="324" y="420.5" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">20</text>
+<text x="352" y="375.6" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">23</text>
+<text x="338" y="559" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">AR(1)</text>
+<line x1="418" y1="412.13" x2="446" y2="398.88" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="418" cy="412.13" r="5" fill="#176d89"/>
+<circle cx="446" cy="398.88" r="5" fill="#c46c38"/>
+<text x="418" y="427.1" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">19</text>
+<text x="446" y="388.9" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">21</text>
+<text x="432" y="559" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">Joint</text>
+<text x="575" y="358" font-family="sans-serif" font-size="15" font-weight="600" fill="#1f3a50">Independent participant means · n=144</text>
+<line x1="595" y1="538.00" x2="1018" y2="538.00" stroke="#e7ebef" stroke-width="1"/>
+<line x1="595" y1="498.25" x2="1018" y2="498.25" stroke="#e7ebef" stroke-width="1"/>
+<line x1="595" y1="458.50" x2="1018" y2="458.50" stroke="#e7ebef" stroke-width="1"/>
+<line x1="595" y1="418.75" x2="1018" y2="418.75" stroke="#e7ebef" stroke-width="1"/>
+<line x1="595" y1="379.00" x2="1018" y2="379.00" stroke="#e7ebef" stroke-width="1"/>
+<line x1="595" y1="394.9" x2="1018" y2="394.9" stroke="#273b4b" stroke-dasharray="6 4" stroke-width="1.5"/>
+<line x1="641" y1="392.25" x2="669" y2="379.00" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="641" cy="392.25" r="5" fill="#176d89"/>
+<circle cx="669" cy="379.00" r="5" fill="#c46c38"/>
+<text x="641" y="407.3" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">22</text>
+<text x="669" y="369.0" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">24</text>
+<text x="655" y="559" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">IID</text>
+<line x1="735" y1="385.63" x2="763" y2="385.63" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="735" cy="385.63" r="5" fill="#176d89"/>
+<circle cx="763" cy="385.63" r="5" fill="#c46c38"/>
+<text x="735" y="400.6" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">23</text>
+<text x="763" y="375.6" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">23</text>
+<text x="749" y="559" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">Hetero</text>
+<line x1="829" y1="385.63" x2="857" y2="385.63" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="829" cy="385.63" r="5" fill="#176d89"/>
+<circle cx="857" cy="385.63" r="5" fill="#c46c38"/>
+<text x="829" y="400.6" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">23</text>
+<text x="857" y="375.6" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">23</text>
+<text x="843" y="559" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">AR(1)</text>
+<line x1="923" y1="392.25" x2="951" y2="385.63" stroke="#9aaab6" stroke-width="1.5"/>
+<circle cx="923" cy="392.25" r="5" fill="#176d89"/>
+<circle cx="951" cy="385.63" r="5" fill="#c46c38"/>
+<text x="923" y="407.3" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#176d89">22</text>
+<text x="951" y="375.6" text-anchor="middle" font-family="sans-serif" font-size="10.5" fill="#b56234">23</text>
+<text x="937" y="559" text-anchor="middle" font-family="sans-serif" font-size="11.5" fill="#365067">Joint</text>
+<circle cx="300" cy="626" r="6" fill="#176d89"/><text x="313" y="631" font-family="sans-serif" font-size="13" fill="#3c5265">Fixed HC1 (existing reference)</text>
+<circle cx="579" cy="626" r="6" fill="#c46c38"/><text x="592" y="631" font-family="sans-serif" font-size="13" fill="#3c5265">Refitted HC1 (experimental bootstrap-t)</text>
+<text x="49" y="653" font-family="sans-serif" font-size="11" fill="#667e8f">Counts shown out of 24 per design/regime/n. Correlated within generating block; source audit #11717528356 (all 384 fits retained).</text>
+</svg>
