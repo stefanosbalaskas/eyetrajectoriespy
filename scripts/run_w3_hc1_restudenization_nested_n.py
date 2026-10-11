@@ -19,10 +19,8 @@ import numpy as np
 import pandas as pd
 
 from eyetrajectoriespy import TrajectorySet
-from eyetrajectoriespy.function_on_scalar import (
-    bootstrap_function_on_scalar_coefficients,
-    function_on_scalar_simultaneous_bands,
-)
+from eyetrajectoriespy.function_on_scalar import function_on_scalar_simultaneous_bands
+from eyetrajectoriespy.types import FunctionOnScalarBootstrapResult
 from eyetrajectoriespy.workflows import (
     FunctionOnScalarWorkflowConfig, run_function_on_scalar_workflow,
 )
@@ -185,15 +183,26 @@ def evaluate(block: int, design: str, n: int):
         proj = np.linalg.inv(X.T @ X) @ X.T
         pseudo = fitted[None] + weights[:, :, None, None]*residual[None]
         computed = np.einsum("pn,bntd->bptd", proj, pseudo, optimize=True)
-        fixed_again = np.max(
-            np.abs((computed[:, 1]-fit.coefficients[1][None]) /
-                   fit.standard_errors[1][None]),
-            axis=(1,2),
+        # Compare identical pseudo-estimates, multipliers and HC1 baseline
+        # to the package's *actual* simultaneous-band implementation.
+        matched_bootstrap = FunctionOnScalarBootstrapResult(
+            reference=fit, bootstrap_coefficients=computed,
+            multipliers=weights, multiplier="rademacher",
+            random_state=None,
+            provenance={"study": STUDY, "matched_original_weights": True},
         )
-        if not np.allclose(t_fixed, fixed_again, atol=ORACLE_ATOL, rtol=0):
-            raise ValueError("fixed-denominator reference differs from workflow fit")
+        package_band = function_on_scalar_simultaneous_bands(
+            matched_bootstrap,
+            confidence_level=CONFIDENCE,
+            simultaneous_scope="coefficient",
+        )
+        if not np.isclose(
+            package_band.critical_values[1], crit_fixed,
+            atol=ORACLE_ATOL, rtol=0,
+        ):
+            raise ValueError("package simultaneous band differs from independent fixed-HC1 reference")
         if not np.allclose(ref_se, fit.standard_errors, atol=ORACLE_ATOL, rtol=0):
-            raise ValueError("fixed-denominator HC1 SE differs from library result")
+            raise ValueError("fixed-denominator HC1 SE differs from package regression")
         target_sup = float(np.max(
             np.abs((fit.coefficients[1]-truth[1])/fit.standard_errors[1])
         ))
