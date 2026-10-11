@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d" viewBox="0 0 1280 630" width="1280" height="630">
+<title id="t">Same B6 dataset, original and longer-budget computational diagnostics</title>
+<desc id="d">Same stage-zero replicate 1: worst rank Rhat decreased from 1.0158 to 1.00531249 against threshold 1.01; minimum bulk ESS increased from approximately 543 to 1260.4 against threshold 400. This is not a new SBC dataset.</desc>
+<rect width="1280" height="630" fill="#fff"/>
+<text x="60" y="62" fill="#172a42" font-size="28" font-weight="700" font-family="Arial,sans-serif">Same B6 dataset, original and longer-budget computational diagnostics</text>
+<text x="60" y="96" fill="#55687b" font-size="16" font-family="Arial,sans-serif">Two source-grounded fits; all values are from original retained scientific evidence</text>
+<text x="60" y="166" fill="#172a42" font-size="18" font-weight="700" font-family="Arial,sans-serif">Design or budget</text>
+<text x="360" y="166" fill="#172a42" font-size="18" font-weight="700" font-family="Arial,sans-serif">Worst rank R-hat</text>
+<text x="800" y="166" fill="#172a42" font-size="18" font-weight="700" font-family="Arial,sans-serif">Minimum bulk ESS</text>
+<text x="60" y="267" font-family="Arial,sans-serif" font-size="18" fill="#172a42">Original: 700/400</text>
+<line x1="360" x2="720" y1="250" y2="250" stroke="#C2CFDC" stroke-width="3"/>
+<rect x="360" y="231" width="237.00" height="38" rx="4" fill="#b85f3d"/>
+<text x="604.00" y="223" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#172a42">1.0158</text>
+<line x1="800" x2="1130" y1="250" y2="250" stroke="#C2CFDC" stroke-width="3"/>
+<rect x="800" y="231" width="119.46" height="38" rx="4" fill="#b85f3d"/>
+<text x="927.46" y="223" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#172a42">543</text>
+<text x="60" y="407" font-family="Arial,sans-serif" font-size="18" fill="#172a42">Longer: 1,200/800</text>
+<line x1="360" x2="720" y1="390" y2="390" stroke="#C2CFDC" stroke-width="3"/>
+<rect x="360" y="371" width="79.69" height="38" rx="4" fill="#16877b"/>
+<text x="446.69" y="363" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#172a42">1.0053</text>
+<line x1="800" x2="1130" y1="390" y2="390" stroke="#C2CFDC" stroke-width="3"/>
+<rect x="800" y="371" width="277.29" height="38" rx="4" fill="#16877b"/>
+<text x="1085.29" y="363" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#172a42">1,260</text>
+<line x1="510.00" y1="190" x2="510.00" y2="473" stroke="#856a3f" stroke-width="2" stroke-dasharray="5 5"/>
+<line x1="888.00" y1="190" x2="888.00" y2="473" stroke="#856a3f" stroke-width="2" stroke-dasharray="5 5"/>
+<line x1="60" y1="494" x2="1214" y2="494" stroke="#CED7E0"/>
+<text x="60" y="523" font-family="Arial,sans-serif" font-size="16" fill="#52677E">Dashed lines denote exploratory thresholds: worst R-hat ≤1.01 and minimum bulk ESS ≥400.</text>
+<text x="60" y="552" font-family="Arial,sans-serif" font-size="16" fill="#52677E">A completed posterior fit or passing mixing screen does NOT establish nominal credible-interval coverage.</text>
+<text x="60" y="589" font-family="Arial,sans-serif" font-size="15" fill="#52677E">Same generated B6 dataset · two sampling budgets · full-budget artifact #11686220901</text>
+</svg>
