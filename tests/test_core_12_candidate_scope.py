@@ -3,10 +3,12 @@ from copy import deepcopy
 from pathlib import Path
 import json
 import shutil
-import tomllib
+import sys
 
 import pytest
 
+# Docs gallery invokes pytest in a subprocess without the repository root on sys.path.
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.audit_core_12_candidate_scope import analyze_scope, ROOT
 
 
