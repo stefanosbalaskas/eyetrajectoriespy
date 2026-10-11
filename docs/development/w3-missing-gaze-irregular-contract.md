@@ -77,7 +77,7 @@ on finite common-grid data.
 This is a **functional usability and measurement-integrity
 improvement**, not a missing-data estimator, a MAR/MNAR identification
 claim, or interval calibration. The [independent W3 uncertainty
-programme](w3-fresh-192-block-confirmation-results.md) found a
+programme](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) found a
 specific limitation in the original fixed-HC1 simultaneous bands.
 Scientific blocker [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289)
 must remain OPEN regardless of success of these fail-closed tests.
