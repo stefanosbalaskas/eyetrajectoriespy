@@ -1,0 +1,39 @@
+name: development-workflow-parameter-integrity
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "src/eyetrajectoriespy/workflows/_sparse_shared.py"
+      - "src/eyetrajectoriespy/workflows/_sparse_fpca.py"
+      - "src/eyetrajectoriespy/workflows/_sparse_mfpca.py"
+      - "src/eyetrajectoriespy/workflows/_sparse_async.py"
+      - "src/eyetrajectoriespy/workflows/_sparse_multilevel.py"
+      - "src/eyetrajectoriespy/workflows/_recurrence.py"
+      - "tests/test_workflow_numeric_parameter_integrity.py"
+      - ".github/workflows/development-workflow-parameter-integrity.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  parameter-contracts:
+    name: W2-W4 numeric integrity Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: |
+          python -m pytest -q tests/test_workflow_numeric_parameter_integrity.py \
+            tests/test_workflow_contract_edges.py \
+            tests/test_workflow_product_w4.py \
+            tests/test_sparse_workflows.py
