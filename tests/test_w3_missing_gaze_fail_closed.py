@@ -7,8 +7,8 @@ from eyetrajectoriespy import IrregularTrajectorySet, TrajectorySet
 from eyetrajectoriespy.workflows import (
     FunctionOnScalarWorkflowConfig,
     run_function_on_scalar_workflow,
-    workflow_preflight,
 )
+from eyetrajectoriespy.workflows.experimental import workflow_preflight
 
 
 def _complete():
