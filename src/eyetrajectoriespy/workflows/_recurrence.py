@@ -19,7 +19,7 @@ from ._core import (
     WorkflowDecisionRecord,
     WorkflowStepRecord,
 )
-from ._sparse_shared import timed_step
+from ._sparse_shared import require_positive_integer, timed_step
 
 
 @dataclass(frozen=True)
@@ -73,24 +73,8 @@ class RecurrenceWorkflowConfig:
             raise ValueError(
                 "metric must be 'cityblock', 'euclidean', or 'chebyshev'"
             )
-        if isinstance(self.min_diagonal_length, bool) or int(
-            self.min_diagonal_length
-        ) < 1:
-            raise ValueError("min_diagonal_length must be a positive integer")
-        if isinstance(self.min_vertical_length, bool) or int(
-            self.min_vertical_length
-        ) < 1:
-            raise ValueError("min_vertical_length must be a positive integer")
-        object.__setattr__(
-            self,
-            "min_diagonal_length",
-            int(self.min_diagonal_length),
-        )
-        object.__setattr__(
-            self,
-            "min_vertical_length",
-            int(self.min_vertical_length),
-        )
+        object.__setattr__(self, "min_diagonal_length", require_positive_integer(self.min_diagonal_length, name="min_diagonal_length"))
+        object.__setattr__(self, "min_vertical_length", require_positive_integer(self.min_vertical_length, name="min_vertical_length"))
 
 
 @dataclass(frozen=True)
