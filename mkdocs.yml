@@ -35,6 +35,7 @@ nav:
   - Research development (unreleased):
       - Overview and qualification: development/research-development-hub.md
       - Evidence dashboard: development/research-scientific-dashboard.md
+      - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
       - Original source figures: development/research-original-figures.md
       - Reproduce from draft source: development/research-reproducibility.md
       - Methods and contracts:
