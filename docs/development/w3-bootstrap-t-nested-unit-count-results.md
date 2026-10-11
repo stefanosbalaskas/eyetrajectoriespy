@@ -17,7 +17,7 @@ package-band tests also passed on Python 3.11, 3.12 and 3.13.
 
 Original artifact **`11717258292`**,
 `w3-hc1-bootstrap-t-nested-n-original-evidence`, preserves all cases,
-source-run head `98f5a8d1d9b44782e1680bb3768137203c311d1`,
+workflow-recorded `GITHUB_SHA` `98f5a8d1d9b44782e1680bb3768137203c311d1` (a transient pull-request checkout reference),
 a full result ledger and the original SHA256SUMS. The artifact was
 downloaded and **all three evidence/source checksum entries passed
 independent verification**.
