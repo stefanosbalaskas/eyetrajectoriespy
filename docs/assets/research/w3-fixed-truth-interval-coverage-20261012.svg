@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="440" viewBox="0 0 900 440" role="img" aria-label="Observed full-grid 90% slope and family simultaneous confidence-band coverage under fixed-truth simulation, both below the nominal 90% reference">
+<rect width="900" height="440" fill="white"/>
+<text x="77" y="37" fill="#122638" font-family="sans-serif" font-size="21" font-weight="700">W3 uncertainty: simultaneous band truth inclusion</text>
+<text x="77" y="57" fill="#52677b" font-family="sans-serif" font-size="12">Original 64-dataset-per-design pilot · 199 Rademacher wild-bootstrap draws · Wilson 95% intervals</text>
+<line x1="82" y1="333.00" x2="854" y2="333.00" stroke="#e6eaee"/><text x="70" y="337.0" font-family="sans-serif" font-size="11" text-anchor="end" fill="#697785">0%</text>
+<line x1="82" y1="282.20" x2="854" y2="282.20" stroke="#e6eaee"/><text x="70" y="286.2" font-family="sans-serif" font-size="11" text-anchor="end" fill="#697785">20%</text>
+<line x1="82" y1="231.40" x2="854" y2="231.40" stroke="#e6eaee"/><text x="70" y="235.4" font-family="sans-serif" font-size="11" text-anchor="end" fill="#697785">40%</text>
+<line x1="82" y1="180.60" x2="854" y2="180.60" stroke="#e6eaee"/><text x="70" y="184.6" font-family="sans-serif" font-size="11" text-anchor="end" fill="#697785">60%</text>
+<line x1="82" y1="129.80" x2="854" y2="129.80" stroke="#e6eaee"/><text x="70" y="133.8" font-family="sans-serif" font-size="11" text-anchor="end" fill="#697785">80%</text>
+<line x1="82" y1="79.00" x2="854" y2="79.00" stroke="#e6eaee"/><text x="70" y="83.0" font-family="sans-serif" font-size="11" text-anchor="end" fill="#697785">100%</text>
+<line x1="82" y1="104.40" x2="854" y2="104.40" stroke="#25313e" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="839" y="97.4" font-family="sans-serif" font-size="12" text-anchor="end" fill="#25313e">Nominal 90%</text>
+<line x1="199" y1="201.38" x2="199" y2="143.23" stroke="#187a8d" stroke-width="2.2"/>
+<line x1="191" y1="201.38" x2="207" y2="201.38" stroke="#187a8d" stroke-width="2.2"/>
+<line x1="191" y1="143.23" x2="207" y2="143.23" stroke="#187a8d" stroke-width="2.2"/>
+<circle cx="199" cy="170.28" r="6" fill="#187a8d" stroke="white" stroke-width="1"/>
+<text x="199" y="157.3" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#187a8d" font-weight="700">64.1%</text>
+<line x1="275" y1="193.30" x2="275" y2="136.33" stroke="#d5743e" stroke-width="2.2"/>
+<line x1="267" y1="193.30" x2="283" y2="193.30" stroke="#d5743e" stroke-width="2.2"/>
+<line x1="267" y1="136.33" x2="283" y2="136.33" stroke="#d5743e" stroke-width="2.2"/>
+<circle cx="275" cy="162.34" r="6" fill="#d5743e" stroke="white" stroke-width="1"/>
+<text x="275" y="149.3" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#d5743e" font-weight="700">67.2%</text>
+<text x="237" y="357" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#263849">Curve-level · 72 curves</text>
+<line x1="587" y1="163.92" x2="587" y2="113.30" stroke="#187a8d" stroke-width="2.2"/>
+<line x1="579" y1="163.92" x2="595" y2="163.92" stroke="#187a8d" stroke-width="2.2"/>
+<line x1="579" y1="113.30" x2="595" y2="113.30" stroke="#187a8d" stroke-width="2.2"/>
+<circle cx="587" cy="134.56" r="6" fill="#187a8d" stroke="white" stroke-width="1"/>
+<text x="587" y="121.6" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#187a8d" font-weight="700">78.1%</text>
+<line x1="663" y1="176.75" x2="663" y2="122.93" stroke="#d5743e" stroke-width="2.2"/>
+<line x1="655" y1="176.75" x2="671" y2="176.75" stroke="#d5743e" stroke-width="2.2"/>
+<line x1="655" y1="122.93" x2="671" y2="122.93" stroke="#d5743e" stroke-width="2.2"/>
+<circle cx="663" cy="146.47" r="6" fill="#d5743e" stroke="white" stroke-width="1"/>
+<text x="663" y="133.5" font-family="sans-serif" font-size="11" text-anchor="middle" fill="#d5743e" font-weight="700">73.4%</text>
+<text x="625" y="357" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#263849">Participant · 36 units</text>
+<circle cx="230" cy="394" r="5" fill="#187a8d"/><text x="243" y="399" font-family="sans-serif" font-size="12" fill="#3b4a59">Slope-function simultaneous band</text>
+<circle cx="523" cy="394" r="5" fill="#d5743e"/><text x="536" y="399" font-family="sans-serif" font-size="12" fill="#3b4a59">Intercept-and-slope family band</text>
+<text x="82" y="424" font-family="sans-serif" font-size="10.5" fill="#697785">Source: SHA256-verified original artifact #11717256187, workflow #38178413641. Simulated data, not empirical gaze.</text>
+</svg>
