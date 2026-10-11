@@ -21,6 +21,15 @@ This research library preserves **successful, inconclusive and negative** result
 
 See [F1–F6 method inventory](f1-f6-scientific-expansion.md), [experimental API contracts](research-method-api.md), and [B5–B10 development overview](bayesian-research-programme.md). **None of these pages promotes new stable root-level APIs.**
 
+## W3 realistic-error stress: research-stage uncertainty evidence
+
+The new [fresh-block W3 heteroskedasticity × AR(1) results](w3-fresh-heteroskedastic-ar1-stress-results.md)
+include all **384** source fits under nested independent-unit counts and
+four intentionally related generating regimes. Experimental HC1
+restudentization often increases full-grid truth inclusion at small n
+but also yields wider bands. [Statistical blocker #289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289)
+remains OPEN: this is **not yet calibrated nominal inference**.
+
 ## Bootstrap studentization investigated (unqualified)
 
 The [nested-unit-count W3 bootstrap-t study](w3-bootstrap-t-nested-unit-count-results.md)
