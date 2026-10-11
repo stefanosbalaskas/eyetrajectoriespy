@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="t d" viewBox="0 0 1280 630" width="1280" height="630">
+<title id="t">Rank-two actual NUTS: paired and asynchronous computational diagnostics</title>
+<desc id="d">Paired dataset worst Rhat 1.00538756, minimum bulk ESS 454.35, zero of 15 functionals failing. Asynchronous worst Rhat 1.01397328, minimum bulk ESS 326.41, six of 15 mean functionals failing. Threshold Rhat 1.01 and bulk ESS 400. Both fits completed with zero divergences.</desc>
+<rect width="1280" height="630" fill="#fff"/>
+<text x="60" y="62" fill="#172a42" font-size="28" font-weight="700" font-family="Arial,sans-serif">Rank-two actual NUTS: paired and asynchronous computational diagnostics</text>
+<text x="60" y="96" fill="#55687b" font-size="16" font-family="Arial,sans-serif">Two source-grounded fits; all values are from original retained scientific evidence</text>
+<text x="60" y="166" fill="#172a42" font-size="18" font-weight="700" font-family="Arial,sans-serif">Design or budget</text>
+<text x="360" y="166" fill="#172a42" font-size="18" font-weight="700" font-family="Arial,sans-serif">Worst rank R-hat</text>
+<text x="800" y="166" fill="#172a42" font-size="18" font-weight="700" font-family="Arial,sans-serif">Minimum bulk ESS</text>
+<text x="60" y="267" font-family="Arial,sans-serif" font-size="18" fill="#172a42">Paired x/y</text>
+<line x1="360" x2="720" y1="250" y2="250" stroke="#C2CFDC" stroke-width="3"/>
+<rect x="360" y="231" width="80.81" height="38" rx="4" fill="#16877b"/>
+<text x="447.81" y="223" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#172a42">1.0054</text>
+<line x1="800" x2="1130" y1="250" y2="250" stroke="#C2CFDC" stroke-width="3"/>
+<rect x="800" y="231" width="99.96" height="38" rx="4" fill="#16877b"/>
+<text x="907.96" y="223" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#172a42">454</text>
+<text x="60" y="407" font-family="Arial,sans-serif" font-size="18" fill="#172a42">Asynchronous x/y</text>
+<line x1="360" x2="720" y1="390" y2="390" stroke="#C2CFDC" stroke-width="3"/>
+<rect x="360" y="371" width="209.60" height="38" rx="4" fill="#b85f3d"/>
+<text x="576.60" y="363" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#172a42">1.0140</text>
+<line x1="800" x2="1130" y1="390" y2="390" stroke="#C2CFDC" stroke-width="3"/>
+<rect x="800" y="371" width="71.81" height="38" rx="4" fill="#b85f3d"/>
+<text x="879.81" y="363" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#172a42">326</text>
+<line x1="510.00" y1="190" x2="510.00" y2="473" stroke="#856a3f" stroke-width="2" stroke-dasharray="5 5"/>
+<line x1="888.00" y1="190" x2="888.00" y2="473" stroke="#856a3f" stroke-width="2" stroke-dasharray="5 5"/>
+<line x1="60" y1="494" x2="1214" y2="494" stroke="#CED7E0"/>
+<text x="60" y="523" font-family="Arial,sans-serif" font-size="16" fill="#52677E">Dashed lines denote exploratory thresholds: worst R-hat ≤1.01 and minimum bulk ESS ≥400.</text>
+<text x="60" y="552" font-family="Arial,sans-serif" font-size="16" fill="#52677E">A completed posterior fit or passing mixing screen does NOT establish nominal credible-interval coverage.</text>
+<text x="60" y="589" font-family="Arial,sans-serif" font-size="15" fill="#52677E">One prior-generated dataset per design · originals #11686840512 and #11686377461</text>
+</svg>
