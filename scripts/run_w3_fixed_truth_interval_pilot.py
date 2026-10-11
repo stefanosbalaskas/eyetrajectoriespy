@@ -246,21 +246,21 @@ def plot_summary(summary, path):
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     names = ["curve", "participant"]
-    values = [summary["design"][x]["coverage"]["slope_simultaneous_coefficient_included"]["attempted_inclusive_rate"] for x in names]
+    values = [summary["design"][x]["coverage"]["slope_simultaneous_coefficient_included"]["completed_only_rate"] for x in names]
     fig, ax=plt.subplots(figsize=(7.2,4.2))
     for i,(name,value) in enumerate(zip(names,values)):
         interval = summary["design"][name]["coverage"]["slope_simultaneous_coefficient_included"]["wilson95_interval_completed_only"]
-        if interval is not None:
+        if interval is not None and value is not None:
             ax.errorbar(i,value,yerr=np.array([[value-interval[0]],[interval[1]-value]]),
                         fmt="o",capsize=5,markersize=7,label=None)
         else:
-            ax.plot(i,value,"x")
+            ax.plot(i,0.0,"x",label="No completed cases" if i == 0 else None)
     ax.axhline(CONFIDENCE,linestyle="--",color="black",label="Nominal 90% (reference)")
     ax.set_xticks(range(2),["Independent curves","Participant means (3 trials)"])
     ax.set_ylim(0,1.05)
-    ax.set_ylabel("Synchronous slope-curve inclusion over full observed grid")
+    ax.set_ylabel("Simultaneous slope-band truth inclusion over full observed grid")
     ax.set_title("Exploratory 90% simultaneous band coverage (simulation)")
-    ax.text(.5,.05,"Wilson 95% intervals; independent datasets per design",ha="center",transform=ax.transAxes,fontsize=9)
+    ax.text(.5,.05,"Wilson 95% intervals across completed fits; failed/missing cases reported separately",ha="center",transform=ax.transAxes,fontsize=8)
     ax.legend(loc="lower left")
     fig.tight_layout()
     path.parent.mkdir(parents=True,exist_ok=True)
