@@ -38,6 +38,7 @@ from ..types import (
     FunctionOnScalarResult,
     FunctionalMixedEffectsResult,
     GeneralizedFunctionOnScalarResult,
+    IrregularTrajectorySet,
     TrajectorySet,
 )
 from ._core import (
@@ -239,8 +240,23 @@ def run_function_on_scalar_workflow(
 ) -> FunctionOnScalarWorkflowResult:
     """Run explicit observed-grid function-on-scalar regression."""
 
+    if isinstance(trajectories, IrregularTrajectorySet):
+        raise TypeError(
+            "W3 function-on-scalar workflow requires finite trajectories on a "
+            "complete common grid; IrregularTrajectorySet must use a separately "
+            "qualified sparse/irregular workflow. No interpolation was performed."
+        )
     if not isinstance(trajectories, TrajectorySet):
         raise TypeError("trajectories must be a TrajectorySet")
+    missing_values = int(np.count_nonzero(~np.isfinite(trajectories.values)))
+    if missing_values:
+        raise ValueError(
+            f"W3 function-on-scalar workflow requires complete finite common-grid "
+            f"trajectories; found {missing_values} non-finite gaze value(s). "
+            "Review workflow_preflight support/missingness diagnostics and "
+            "choose an explicit, scientifically validated handling strategy. "
+            "No automatic imputation, interpolation or curve exclusion was performed."
+        )
     if not isinstance(design, pd.DataFrame):
         raise TypeError("design must be a pandas DataFrame")
     if not isinstance(config, FunctionOnScalarWorkflowConfig):
