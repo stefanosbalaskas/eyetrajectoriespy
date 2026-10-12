@@ -21,6 +21,18 @@ This research library preserves **successful, inconclusive and negative** result
 
 See [F1–F6 method inventory](f1-f6-scientific-expansion.md), [experimental API contracts](research-method-api.md), and [B5–B10 development overview](bayesian-research-programme.md). **None of these pages promotes new stable root-level APIs.**
 
+## Recording loss and selective analysis sensitivity (research only)
+
+The [W3 R4 source-audited missing-gaze study](w3-observation-loss-selection-results.md)
+has **96 independently generated blocks per source design**, with
+two matched recording-loss mechanisms and explicit complete-unit
+selection. Outcome-dependent loss, unlike random MCAR loss, shifted
+the focal slope-function estimate in the tested generating design.
+The complete-grid W3 workflow itself **refuses** masked and native
+irregular gaze; neither missing-data correction nor new validated
+inference was introduced. All 384 source evaluation cases and
+original checksum-verified evidence were preserved.
+
 ## New workflow-level scientific evidence
 
 - [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.

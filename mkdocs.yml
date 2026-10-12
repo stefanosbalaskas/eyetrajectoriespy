@@ -37,6 +37,8 @@ nav:
       - Evidence dashboard: development/research-scientific-dashboard.md
       - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
       - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
+      - W3 observation loss and complete-unit selection pilot: development/w3-observation-loss-selection-protocol.md
+      - W3 MCAR versus response-dependent missing-gaze results and figure: development/w3-observation-loss-selection-results.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
       - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
       - Original source figures: development/research-original-figures.md

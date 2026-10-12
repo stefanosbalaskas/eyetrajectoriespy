@@ -81,6 +81,19 @@
 
 [AR(2) / MA(1) / nonstationary falsification](f5-independent-baseline-ar2-model-falsification.md) · [Source run #38000177988](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000177988)
 
+## W3 recording-loss mechanism and explicit complete-case selection
+
+![W3 original-source-verified MCAR vs outcome-dependent recording-loss selection effects](../assets/research/w3-missing-gaze-complete-case-selection-20261012.svg)
+
+[Source-audited 96-block-per-design R4 results](w3-observation-loss-selection-results.md)
+· [Scientific workflow #38191587507](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38191587507)
+(verified original artifact `11721253302`). The same complete
+source observations and loss uniforms underpin paired random versus
+response-dependent recording-loss scenarios. An **explicit
+complete-unit selection** analysis changed the signed x-slope
+estimate under the latter mechanism, but no missing-data estimator
+has been qualified or promoted.
+
 ## W3 original known-truth functional regression validation
 
 ![Source-ledger verified functional regression RMSE across 24 independent simulation blocks](../assets/research/w3-functional-regression-source-rmse-20261011.svg)
