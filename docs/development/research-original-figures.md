@@ -129,6 +129,22 @@ This does **not** qualify simultaneous functional bands,
 general participant-level variance calibration or a
 production statistical API.
 
+## W3 R9 richer fixed mean bases: pointwise slope inference under known misspecification
+
+![W3 R9 original source-audited participant-cluster pointwise slope truth inclusion across fixed Legendre and cubic spline mean bases](../assets/research/w3-r9-basis-pointwise-coverage-20261012.svg)
+
+[Full original-source R9 results](w3-r9-prespecified-mean-basis-results.md)
+· [Original scientific run #38292511576](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38292511576),
+artifact `11767316830` (all four original SHA256 hashes verified).
+**64 independently seeded source blocks × eight paired scenarios =
+512 original source cases**, each evaluated with three
+prespecified mean bases. The localized slope bump caused severe
+undercoverage for degree five; a fixed 13-basis cubic spline
+improved projection bias and pointwise truth inclusion,
+but **latent-response-dependent recording loss still
+prevented reliable nominal pointwise inference**.
+No mean-model winner or simultaneous interval qualifies.
+
 ## W3 original known-truth functional regression validation
 
 ![Source-ledger verified functional regression RMSE across 24 independent simulation blocks](../assets/research/w3-functional-regression-source-rmse-20261011.svg)
