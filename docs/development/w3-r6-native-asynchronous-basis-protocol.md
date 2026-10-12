@@ -47,10 +47,10 @@ trials or real human eye-tracking recordings.
 For curve i observed at its **own** recorded times t_ij, the
 experimental regression is
 
-$
+$$
 Y_i(t_{ij}) = B(t_{ij})^\top\gamma_0 +
 x_i B(t_{ij})^\top\gamma_1 + e_i(t_{ij}),
-$
+$$
 
 where B is an explicit **degree-five Legendre polynomial basis**
 constructed once from `2t−1` and kept fixed for all generating
