@@ -112,6 +112,23 @@ participant-level random-effects inference or remove the simulated
 latent-MNAR midpoint shift. Full source and original SVG with 4/4
 verified SHA256 digests retained.
 
+## W3 R8 participant-cluster uncertainty and mean-basis failure
+
+![W3 R8 original-source-audit pointwise slope truth inclusion across naive, trial-cluster and participant-cluster intervals](../assets/research/w3-r8-pointwise-cluster-coverage-20261012.svg)
+
+[Complete R8 source-audited results and coverage limitations](w3-r8-participant-cluster-model-stress-results.md)
+· [Original science workflow #38240534823](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38240534823),
+original artifact `11742673021`. **512/512** paired
+scenario fits completed, zero source/reference failures,
+and 4/4 original SHA256 checksums passed. Participant
+clustering substantially improved *pointwise* 90% slope
+truth inclusion under the baseline smooth data-generating
+truth, but the **localized unmodelled slope bump exposed
+catastrophic noncoverage even with participant CR1**.
+This does **not** qualify simultaneous functional bands,
+general participant-level variance calibration or a
+production statistical API.
+
 ## W3 original known-truth functional regression validation
 
 ![Source-ledger verified functional regression RMSE across 24 independent simulation blocks](../assets/research/w3-functional-regression-source-rmse-20261011.svg)
