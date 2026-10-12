@@ -35,6 +35,21 @@ bands, or qualified participant-level hierarchical inference.
 All **288/288 original cases** and 4/4 original artifact
 SHA256 source checks are preserved.
 
+## W3 R7 repeated-trial asynchronous support (research only)
+
+The [original-source R7 participant trial study](w3-r7-repeated-trial-asynchronous-results.md)
+keeps genuinely asynchronous source timestamps, repeated-trial
+participant identities and prespecified basis fitting separate from
+public W3. Source study: **64 independent generating blocks of
+48 participants**, 3-or-unequal-1–3 trial schedules, paired MCAR
+and latent response-dependent recording loss; **256/256 original
+cases and independent QR source checks passed**. Participant
+balanced point estimates were modestly more accurate on average
+under unequal trial counts, but **no mixed-effects covariance,
+valid standard errors, missingness correction or hypothesis tests
+were established**. Original source SVG and artifact checksum ledger
+are preserved with negative findings.
+
 ## New workflow-level scientific evidence
 
 - [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.
