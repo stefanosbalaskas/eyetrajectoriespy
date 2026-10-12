@@ -1,0 +1,61 @@
+name: science-w3-r10-participant-pairs-bootstrap
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r10_participant_pairs_bootstrap.py"
+      - "tests/test_w3_r10_participant_pairs_bootstrap.py"
+      - ".github/workflows/science-w3-r10-participant-pairs-bootstrap.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  numerical-contracts:
+    name: W3 R10 whole-participant resampling contracts Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r10_participant_pairs_bootstrap.py
+
+  original-research-evidence:
+    name: R10 64 fresh participant blocks, two fixed bases and 199 original pairs draws
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Execute all 512 cases and 203776 participant-level bootstrap fits
+        run: |
+          python scripts/run_w3_r10_participant_pairs_bootstrap.py \
+            --out build/w3-r10-participant-pairs
+      - name: Preserve source outcomes, failure ledger, figure and SHA256
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-r10-original-participant-pairs-bootstrap
+          path: build/w3-r10-participant-pairs/
+          retention-days: 90
+          if-no-files-found: warn
