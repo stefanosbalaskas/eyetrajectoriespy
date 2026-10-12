@@ -65,6 +65,23 @@ even for participant clustering**, so neither an
 independent-unit correction nor green engineering CI
 establishes calibrated functional inference.
 
+## W3 R9: independent-source mean-basis qualification is not complete
+
+[Fresh original W3 R9 source evidence](w3-r9-prespecified-mean-basis-results.md)
+compares fixed-degree-five and degree-eleven Legendre
+mean models with a 13-term cubic spline in 64 new independent
+participant-generating blocks. All 512 source scenarios and
+1,536 predefined fits completed, with original figure,
+case ledger and 4/4 independently verified SHA256 entries.
+Richer spline fitting **substantially reduced known mean
+projection bias for the simulated localized slope**, but
+pointwise 90% inclusion was **only 75.0–78.1% under
+latent response-dependent loss** in bump scenarios,
+and baseline richer-basis coverage sometimes deteriorated.
+No automatic basis choice, participant-level resampling
+method, missingness correction or whole-function band
+was selected or scientifically qualified.
+
 ## New workflow-level scientific evidence
 
 - [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.
