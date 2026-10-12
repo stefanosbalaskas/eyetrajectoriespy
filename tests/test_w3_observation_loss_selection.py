@@ -2,6 +2,7 @@
 from pathlib import Path
 import sys
 
+import json
 import numpy as np
 import pytest
 
@@ -62,6 +63,7 @@ def test_actual_full_and_explicit_complete_unit_workflows_match_oracles(design,m
     assert row["oracle_cc_max_error"]<=2e-10
     assert row["n_complete_units"]+row["n_lost_units"]==UNITS[design]
     assert row["n_explicit_retained_curves"]==row["n_complete_units"]*TRIALS[design]
+    assert json.loads(json.dumps(row))["preflight_retained_all_curves"] is True
     assert row["missing_data_inference_qualified"] is False
     assert row["release_authorized"] is False
 
