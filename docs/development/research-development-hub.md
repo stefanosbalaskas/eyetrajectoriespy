@@ -102,6 +102,28 @@ response-dependent observation loss. No
 bootstrap, interval architecture or API
 promotion follows.
 
+## W3 R11 matched observation process: three separate inferential obstacles
+
+The [original source-audited R11 paired observation-process analysis](w3-r11-paired-observation-process-results.md)
+uses **96 fresh independent generating blocks** with
+48 independent participants and genuinely asynchronous
+1–3 trial recordings. The same original complete
+trajectories are compared under **complete, MCAR,
+observed-x MAR and latent-response-dependent MNAR**
+recording support; all **768/768 original source cases**
+and 4/4 source artifact SHA256 checks passed.
+Original pointwise nominal 90% true-slope inclusion
+with smooth complete data was **80/96** (degree five)
+and **77/96** (spline)—so sampling uncertainty is
+not qualified even without missing gaze. The
+localized truth severely exposed restricted
+basis projection, and latent MNAR selection
+shifted the spline slope by about **−0.0213**
+versus the *same block's complete source*
+under smooth truth. **No root statistical API,
+missingness correction, method winner or
+simultaneous bands** were qualified.
+
 ## New workflow-level scientific evidence
 
 - [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.
