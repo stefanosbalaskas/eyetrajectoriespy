@@ -81,6 +81,21 @@
 
 [AR(2) / MA(1) / nonstationary falsification](f5-independent-baseline-ar2-model-falsification.md) · [Source run #38000177988](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000177988)
 
+## W3 R6 genuinely asynchronous native timing and basis regression
+
+![Source-audited W3 asynchronous observed-time model full slope RMSE across recording-loss mechanisms](../assets/research/w3-r6-asynchronous-basis-mean-rmse-20261012.svg)
+
+[Full numerical results, independent source ledger and limitations](w3-r6-native-asynchronous-basis-results.md)
+· [Original scientific workflow #38220034003](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38220034003),
+artifact `11733915603`. **96 independent source blocks** gave 288
+paired mechanism cases. Genuinely jittered native time samples
+were retained, and the degree-five basis produced explicit
+**model predictions, not reconstructed gaze measurements**.
+Both observed-data weightings retained signed selection
+effects under the simulated latent-response-dependent loss.
+No new public irregular-W3 estimator or uncertainty method
+was qualified.
+
 ## W3 original known-truth functional regression validation
 
 ![Source-ledger verified functional regression RMSE across 24 independent simulation blocks](../assets/research/w3-functional-regression-source-rmse-20261011.svg)
