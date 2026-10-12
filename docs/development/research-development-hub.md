@@ -21,6 +21,19 @@ This research library preserves **successful, inconclusive and negative** result
 
 See [F1–F6 method inventory](f1-f6-scientific-expansion.md), [experimental API contracts](research-method-api.md), and [B5–B10 development overview](bayesian-research-programme.md). **None of these pages promotes new stable root-level APIs.**
 
+## W3 R5 native observed-time support and missingness boundaries
+
+The new [source-verified W3 R5 pilot](w3-r5-native-observation-support-results.md)
+compares 128 genuinely new independent generating blocks and three
+paired MCAR/MAR/MNAR recording-loss scenarios. Using genuinely
+observed timestamps rather than excluding all incomplete curves
+improved full-function slope recovery in the tested source, but
+could not recover missing responses or remove nonignorable
+selection effects within gaps. **No interpolation, missingness
+correction, simultaneous-band calibration or public irregular-W3
+API was qualified.** The original full case ledger and scientific
+Matplotlib plot retain 4/4 verified SHA256 checksums.
+
 ## New workflow-level scientific evidence
 
 - [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.
