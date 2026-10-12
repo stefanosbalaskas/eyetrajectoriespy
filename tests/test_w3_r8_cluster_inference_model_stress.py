@@ -63,7 +63,7 @@ def test_actual_sandwich_source_and_observation_cluster_membership(scheme,loss,t
 
 
 def test_participant_weights_total_one_independent_person_even_with_unequal_trials():
-    source=original_source(1,"unbalanced1to3","mcar")
+    source=original_source(1,"unbalanced1to3","mcar","baseline")
     X,Y,mean,w,units,trials=weighted_source_design(
         source[0],source[1],source[2],source[3],source[4]
     )
