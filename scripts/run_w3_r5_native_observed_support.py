@@ -156,7 +156,7 @@ def observed_support_fit(native: IrregularTrajectorySet, x, *, probability=None)
         if support[t_idx] < MIN_SUPPORT:
             continue
         idx = np.array(indices, dtype=int)
-        w = None if probability is None else 1 / (1 - probability[idx])
+        # No observations are missing outside the common gap window; the\n        # probability of observation there is exactly 1, even when a unit\n        # was selected for a mid-trial gap. Never weight complete time slices.\n        in_loss_window = MISSING_SLICE.start <= t_idx < MISSING_SLICE.stop\n        w = (1 / (1 - probability[idx])) if (probability is not None and in_loss_window) else None
         beta[:, t_idx, :] = ols_unitwise(X[idx], np.asarray(responses), weights=w)
     return beta, support
 
