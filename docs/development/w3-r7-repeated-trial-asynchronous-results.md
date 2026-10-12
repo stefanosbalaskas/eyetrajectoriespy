@@ -54,7 +54,7 @@ genuinely observed native samples.
 | Unequal 1–3 trials · MCAR | 0.02537 | 0.02746 | 0.02712 | **0.02634** |
 | Unequal 1–3 trials · Latent-response-dependent | 0.02537 | 0.02733 | 0.02707 | **0.02610** |
 
-![Original-source summary of W3 R7 asynchronous repeated-trial functional slope RMSE under unequal observation support](../assets/research/w3-r7-hierarchical-async-rmse-20261012.svg)
+![Original-source summary of W3 R7 asynchronous repeated-trial functional slope RMSE under unequal observation support](../assets/research/w3-r7-repeated-trial-asynchronous-rmse-20261012.svg)
 
 *Original source-derived figure, not measured human eye-tracking
 accuracy. The independent generating block, not participant trial
