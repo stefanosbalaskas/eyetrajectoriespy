@@ -84,8 +84,18 @@ only by the common scalar 1/3. Hence they yielded
 numerical invariant. With unequal trial support, the
 two objectives differ and the participant-balanced fit
 showed modestly lower *average* RMSE in both selected
-generating conditions. That does not establish an
-optimal empirical weighting rule.
+generating conditions. An independent secondary analysis
+of the same original 64 block-level case records gave
+the exploratory *participant-minus-trial* mean RMSE
+difference of **−0.00078** under MCAR (2,000+ block-bootstrap
+95% interval approximately **−0.00249 to +0.00091**)
+and **−0.00098** under latent-response-dependent
+loss (approximately **−0.00266 to +0.00073**).
+**Both Monte Carlo intervals include zero.** These
+post-source descriptive intervals must not be
+interpreted as a prespecified winner-selection test.
+That does not establish an optimal empirical
+weighting rule.
 
 Mean original trial count per dataset was **144** under
 balanced trial support and **95.97** under unequal
