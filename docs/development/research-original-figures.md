@@ -81,6 +81,20 @@
 
 [AR(2) / MA(1) / nonstationary falsification](f5-independent-baseline-ar2-model-falsification.md) · [Source run #38000177988](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000177988)
 
+## W3 R5 native recorded gaze: retain observed portions without filling gaps
+
+![Source-verified comparison of slope RMSE for deleting incomplete curves versus using actual native observed timestamps](../assets/research/w3-r5-observed-support-rmse-20261012.svg)
+
+[Full original-source R5 scientific results](w3-r5-native-observation-support-results.md)
+· [Scientific Actions run #38218938160](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38218938160),
+original artifact `11732683482`. **128 independent generating
+blocks** underpin three paired mechanisms (384 source cases,
+zero fitting/oracle failures). Time-local OLS improves mean full-curve
+recovery by retaining recorded data outside the gaps, but equals
+complete-case OLS within gaps and does **not** remove the observed
+latent-MNAR selection effect. The known-probability weighting
+comparison is **simulation oracle only** and omitted for MNAR.
+
 ## W3 original known-truth functional regression validation
 
 ![Source-ledger verified functional regression RMSE across 24 independent simulation blocks](../assets/research/w3-functional-regression-source-rmse-20261011.svg)
