@@ -246,7 +246,7 @@ def evaluate(block: int, design: str, mechanism: str):
                 cc_fit.coefficients[1,15,0]-full_fit.coefficients[1,15,0]
             ),
             "oracle_full_max_error":d0,"oracle_cc_max_error":d1,
-            "preflight_retained_all_curves":preflight.summary.iloc[0]["n_curves"]==full.n_curves,
+            "preflight_retained_all_curves":bool(preflight.summary.iloc[0]["n_curves"]==full.n_curves),
             "preflight_reported_missingness":loss_values>0,
             "no_interpolation_or_automatic_exclusion":True,
         })
