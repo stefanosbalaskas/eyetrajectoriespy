@@ -31,8 +31,17 @@ def test_same_independent_sources_across_truths_and_loss():
         np.testing.assert_array_equal(a[2],obj[2])
         np.testing.assert_array_equal(a[3],obj[3])
         np.testing.assert_array_equal(a[4],obj[4])
-        for time_a,time_b in zip(a[0].time,obj[0].time):
-            np.testing.assert_array_equal(time_a,time_b)
+    # Paired generating truths preserve precisely the same recorded windows.
+    for ta,tb in zip(a[0].time,b[0].time):
+        np.testing.assert_array_equal(ta,tb)
+    # Different recording-loss mechanisms are allowed to mask distinct times.
+    # Their genuinely shared source timepoints still have identical values.
+    for (ta,va),(tc,vc) in zip(
+        zip(a[0].time,a[0].values),zip(c[0].time,c[0].values)
+    ):
+        common,ia,ic=np.intersect1d(ta,tc,return_indices=True)
+        assert len(common)>=15
+        np.testing.assert_array_equal(va[ia],vc[ic])
     np.testing.assert_allclose(
         b[5][FOCAL]-a[5][FOCAL],localized_bump(TIME[FOCAL]),atol=1e-14
     )
