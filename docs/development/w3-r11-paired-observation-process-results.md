@@ -156,7 +156,7 @@ model-projection error.
 By contrast, under the smooth complete-source
 generator, the known conditional-mean projection
 error was effectively zero for **both** fixed
-models (less than (10^{-6}) in absolute average
+models (less than 1e-6 in absolute average
 magnitude). Yet observed pointwise
 true-slope inclusion was **only 80–83%**
 in the present source. This identifies a
