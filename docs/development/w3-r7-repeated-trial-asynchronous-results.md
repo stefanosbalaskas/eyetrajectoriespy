@@ -87,7 +87,7 @@ showed modestly lower *average* RMSE in both selected
 generating conditions. An independent secondary analysis
 of the same original 64 block-level case records gave
 the exploratory *participant-minus-trial* mean RMSE
-difference of **−0.00078** under MCAR (2,000+ block-bootstrap
+difference of **−0.00078** under MCAR (5,000 block-bootstrap
 95% interval approximately **−0.00249 to +0.00091**)
 and **−0.00098** under latent-response-dependent
 loss (approximately **−0.00266 to +0.00073**).
