@@ -96,6 +96,22 @@ effects under the simulated latent-response-dependent loss.
 No new public irregular-W3 estimator or uncertainty method
 was qualified.
 
+## W3 R7 repeated trials: independent participants with native asynchronous times
+
+![Source-verified W3 repeated-trial native asynchronous slope RMSE comparison for sample, trial, and participant balanced fits](../assets/research/w3-r7-repeated-trial-asynchronous-rmse-20261012.svg)
+
+[Full original R7 results and participant-level weighting limits](w3-r7-repeated-trial-asynchronous-results.md)
+· [Scientific workflow #38222095846](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38222095846),
+original source artifact `11734479698`. **64 independently
+seeded blocks of 48 participants** are evaluated under four
+paired trial-support and missingness conditions: **256/256**
+completed with zero fitting/numerical/source-integrity failures.
+Participant-balanced observed-time OLS showed somewhat lower
+mean RMSE under unequal trials, but **does not** qualify
+participant-level random-effects inference or remove the simulated
+latent-MNAR midpoint shift. Full source and original SVG with 4/4
+verified SHA256 digests retained.
+
 ## W3 original known-truth functional regression validation
 
 ![Source-ledger verified functional regression RMSE across 24 independent simulation blocks](../assets/research/w3-functional-regression-source-rmse-20261011.svg)

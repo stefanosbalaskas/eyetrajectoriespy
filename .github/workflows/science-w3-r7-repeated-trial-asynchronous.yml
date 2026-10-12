@@ -1,0 +1,61 @@
+name: science-w3-r7-repeated-trial-asynchronous
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r7_async_repeated_trials.py"
+      - "tests/test_w3_r7_async_repeated_trials.py"
+      - ".github/workflows/science-w3-r7-repeated-trial-asynchronous.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    name: W3 R7 participant-level native async source oracle Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r7_async_repeated_trials.py
+
+  original-science:
+    name: 64 independent participant blocks × 2 trial designs × 2 recording-loss scenarios
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Run all 256 planned native-source participant hierarchical fitting cases
+        run: |
+          python scripts/run_w3_r7_async_repeated_trials.py \
+            --out build/w3-r7-original
+      - name: Retain failure-inclusive source cases, scientific plot and SHA256
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-r7-original-hierarchical-async-evidence
+          path: build/w3-r7-original/
+          retention-days: 90
+          if-no-files-found: warn

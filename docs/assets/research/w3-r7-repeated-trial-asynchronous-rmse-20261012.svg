@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="465" viewBox="0 0 1100 465" role="img" aria-label="W3 R7 observed asynchronous repeated-trial functional slope RMSE by sample trial and participant weighting under balanced and unbalanced trials">
+<rect width="1100" height="465" fill="white"/>
+<text x="68" y="33" font-family="sans-serif" font-size="22" font-weight="700" fill="#1e3546">W3 R7 · Asynchronous repeated trials, participant is the independent unit</text>
+<text x="68" y="54" font-family="sans-serif" font-size="12" fill="#5b7282">64 independent source blocks × 48 participants · Prespecified fixed time-basis · Known-truth slope RMSE</text>
+<line x1="90" y1="322.00" x2="1040" y2="322.00" stroke="#e5eaf0"/>
+<text x="78" y="326.00" text-anchor="end" font-size="10.5" font-family="sans-serif" fill="#62788a">0.0230</text>
+<line x1="90" y1="263.25" x2="1040" y2="263.25" stroke="#e5eaf0"/>
+<text x="78" y="267.25" text-anchor="end" font-size="10.5" font-family="sans-serif" fill="#62788a">0.0245</text>
+<line x1="90" y1="204.50" x2="1040" y2="204.50" stroke="#e5eaf0"/>
+<text x="78" y="208.50" text-anchor="end" font-size="10.5" font-family="sans-serif" fill="#62788a">0.0260</text>
+<line x1="90" y1="145.75" x2="1040" y2="145.75" stroke="#e5eaf0"/>
+<text x="78" y="149.75" text-anchor="end" font-size="10.5" font-family="sans-serif" fill="#62788a">0.0275</text>
+<line x1="90" y1="87.00" x2="1040" y2="87.00" stroke="#e5eaf0"/>
+<text x="78" y="91.00" text-anchor="end" font-size="10.5" font-family="sans-serif" fill="#62788a">0.0290</text>
+<rect x="129" y="239.37" width="31" height="82.63" fill="#889faf" rx="2"/>
+<text x="144.5" y="232.37" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0251</text>
+<rect x="166" y="213.93" width="31" height="108.07" fill="#bf784d" rx="2"/>
+<text x="181.5" y="206.93" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0258</text>
+<rect x="203" y="222.33" width="31" height="99.67" fill="#9c84b7" rx="2"/>
+<text x="218.5" y="215.33" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0255</text>
+<rect x="240" y="222.33" width="31" height="99.67" fill="#158675" rx="2"/>
+<text x="255.5" y="215.33" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0255</text>
+<text x="201" y="344" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#334a5c">Balanced</text>
+<text x="201" y="360" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#334a5c">MCAR</text>
+<rect x="369" y="239.37" width="31" height="82.63" fill="#889faf" rx="2"/>
+<text x="384.5" y="232.37" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0251</text>
+<rect x="406" y="205.09" width="31" height="116.91" fill="#bf784d" rx="2"/>
+<text x="421.5" y="198.09" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0260</text>
+<rect x="443" y="215.06" width="31" height="106.94" fill="#9c84b7" rx="2"/>
+<text x="458.5" y="208.06" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0257</text>
+<rect x="480" y="215.06" width="31" height="106.94" fill="#158675" rx="2"/>
+<text x="495.5" y="208.06" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0257</text>
+<text x="441" y="344" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#334a5c">Balanced</text>
+<text x="441" y="360" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#334a5c">Latent MNAR</text>
+<rect x="609" y="229.31" width="31" height="92.69" fill="#889faf" rx="2"/>
+<text x="624.5" y="222.31" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0254</text>
+<rect x="646" y="147.49" width="31" height="174.51" fill="#bf784d" rx="2"/>
+<text x="661.5" y="140.49" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0275</text>
+<rect x="683" y="160.51" width="31" height="161.49" fill="#9c84b7" rx="2"/>
+<text x="698.5" y="153.51" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0271</text>
+<rect x="720" y="191.22" width="31" height="130.78" fill="#158675" rx="2"/>
+<text x="735.5" y="184.22" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0263</text>
+<text x="681" y="344" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#334a5c">1–3 trials</text>
+<text x="681" y="360" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#334a5c">MCAR</text>
+<rect x="849" y="229.31" width="31" height="92.69" fill="#889faf" rx="2"/>
+<text x="864.5" y="222.31" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0254</text>
+<rect x="886" y="152.60" width="31" height="169.40" fill="#bf784d" rx="2"/>
+<text x="901.5" y="145.60" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0273</text>
+<rect x="923" y="162.47" width="31" height="159.53" fill="#9c84b7" rx="2"/>
+<text x="938.5" y="155.47" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0271</text>
+<rect x="960" y="200.76" width="31" height="121.24" fill="#158675" rx="2"/>
+<text x="975.5" y="193.76" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#30485a">0.0261</text>
+<text x="921" y="344" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#334a5c">1–3 trials</text>
+<text x="921" y="360" font-family="sans-serif" font-size="12" text-anchor="middle" fill="#334a5c">Latent MNAR</text>
+<rect x="80" y="378" width="12" height="12" fill="#889faf" rx="2"/><text x="98" y="389" font-family="sans-serif" font-size="12" fill="#3d5262">Full-source reference</text>
+<rect x="580" y="378" width="12" height="12" fill="#bf784d" rx="2"/><text x="598" y="389" font-family="sans-serif" font-size="12" fill="#3d5262">Observed sample weighted</text>
+<rect x="80" y="400" width="12" height="12" fill="#9c84b7" rx="2"/><text x="98" y="411" font-family="sans-serif" font-size="12" fill="#3d5262">Observed trial balanced</text>
+<rect x="580" y="400" width="12" height="12" fill="#158675" rx="2"/><text x="598" y="411" font-family="sans-serif" font-size="12" fill="#3d5262">Observed participant balanced</text>
+<text x="68" y="454" font-family="sans-serif" font-size="10.5" fill="#657b8c">Source: original GitHub scientific artifact #11734479698 · 256/256 completed · 4/4 SHA256 source checks verified · Simulated data.</text>
+</svg>
