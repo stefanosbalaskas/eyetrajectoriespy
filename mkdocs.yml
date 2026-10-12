@@ -38,6 +38,7 @@ nav:
       - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
       - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
       - W3 R5 native observed-time support (unqualified): development/w3-r5-native-observation-support-protocol.md
+      - W3 R5 observed-time numerical findings and figure: development/w3-r5-native-observation-support-results.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
       - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
       - Original source figures: development/research-original-figures.md
