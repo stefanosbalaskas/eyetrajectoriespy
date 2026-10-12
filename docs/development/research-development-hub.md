@@ -82,6 +82,26 @@ No automatic basis choice, participant-level resampling
 method, missingness correction or whole-function band
 was selected or scientifically qualified.
 
+## W3 R10: original-source participant bootstrap uncertainty
+
+The [fully source-audited R10 whole-participant bootstrap study](w3-r10-whole-participant-bootstrap-results.md)
+uses **64 new independent generating blocks, 48
+independent participants per dataset, genuinely
+asynchronous repeated trials** and eight paired
+source regimes. Each original model/source case
+used exactly 199 genuine whole-participant
+resampling refits, **203,776 refits across two
+prespecified fixed means**. All 512 original
+cases completed, zero fitting failures, all four
+original source SHA256 checks verified. Neither
+participant-pairs percentile nor basic bootstrap
+established generally nominal **90% pointwise**
+true-slope coverage; neither repaired a
+misspecified degree-five mean or hidden
+response-dependent observation loss. No
+bootstrap, interval architecture or API
+promotion follows.
+
 ## New workflow-level scientific evidence
 
 - [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.

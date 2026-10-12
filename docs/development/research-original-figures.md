@@ -145,6 +145,24 @@ but **latent-response-dependent recording loss still
 prevented reliable nominal pointwise inference**.
 No mean-model winner or simultaneous interval qualifies.
 
+## W3 R10 whole-participant bootstrap: source-level uncertainty stress
+
+![W3 R10 original-source-audited pointwise true slope inclusion for participant CR1, whole-participant percentile and basic bootstrap](../assets/research/w3-r10-participant-bootstrap-pointwise-20261012.svg)
+
+[Full original W3 R10 research results](w3-r10-whole-participant-bootstrap-results.md)
+· [Original scientific workflow #38308085262](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38308085262),
+original artifact `11774040581`. **64 fresh independent
+generating blocks × eight paired scenarios**, with
+two fixed mean bases and **203,776 completed whole-participant
+pairs bootstrap refits**, produced **512/512 original
+science cases and zero fitting failures**. All 4/4
+original SHA256 artifact hashes were independently
+verified. Percentile and basic participant
+resampling did **not** consistently improve
+pointwise 90% truth inclusion relative to CR1;
+neither mean projection bias nor selective
+latent-response dropout was remedied.
+
 ## W3 original known-truth functional regression validation
 
 ![Source-ledger verified functional regression RMSE across 24 independent simulation blocks](../assets/research/w3-functional-regression-source-rmse-20261011.svg)
