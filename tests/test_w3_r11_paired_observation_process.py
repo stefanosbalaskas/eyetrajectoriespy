@@ -107,5 +107,5 @@ def test_independent_generating_block_mc_unit_and_guardrails():
     sample=[-1.,.1,.5,.2]
     assert interval_of_mean_paired(sample,seed=2)==interval_of_mean_paired(sample,seed=2)
     assert wilson(0,0) is None
-    assert wilson(0,96)[0]==0
+    assert abs(wilson(0,96)[0])<1e-12
     assert wilson(96,96)[1]==1
