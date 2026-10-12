@@ -1,0 +1,61 @@
+name: science-w3-r5-native-observed-support
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r5_native_observed_support.py"
+      - "tests/test_w3_r5_native_observed_support.py"
+      - ".github/workflows/science-w3-r5-native-observed-support.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-oracle-contracts:
+    name: Native support W3 source integrity Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r5_native_observed_support.py
+
+  original-scientific-ledger:
+    name: 128 independent generating blocks and 3 paired observation mechanisms
+    runs-on: ubuntu-24.04
+    timeout-minutes: 80
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Original 384 case observed-support scientific audit
+        run: |
+          python scripts/run_w3_r5_native_observed_support.py \
+            --out build/w3-native-observed-support-r5
+      - name: Preserve all evidence even when scientific fit fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-r5-native-observed-support-original-evidence
+          path: build/w3-native-observed-support-r5/
+          retention-days: 90
+          if-no-files-found: warn
