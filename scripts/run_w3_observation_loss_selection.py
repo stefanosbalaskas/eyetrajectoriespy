@@ -317,6 +317,37 @@ def audit(rows):
     }
 
 
+
+def original_figure(report, path):
+    """Show original matched selection errors, not any fitted missing-data correction."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    labels, full, selected, ci_selected=[], [], [], []
+    for d in DESIGNS:
+        for m in MECHANISMS:
+            z=report["groups"][d][m]["measures"]
+            labels.append(f"{d}: {'MCAR' if m=='mcar' else 'outcome-dependent'}")
+            full.append(z["full_slope_mid_error"]["mean"])
+            selected.append(z["complete_case_slope_mid_error"]["mean"])
+            ci_selected.append(z["complete_case_slope_mid_error"]["paired_block_bootstrap95"])
+    fig,ax=plt.subplots(figsize=(10.4,4.5))
+    x=np.arange(len(labels))
+    ax.scatter(x-.12,full,s=42,label="All original complete units")
+    ax.scatter(x+.12,selected,s=42,label="Explicit complete-unit subset")
+    for i,interval in enumerate(ci_selected):
+        if interval is not None:
+            ax.vlines(i+.12,interval[0],interval[1],linewidth=2,alpha=.8)
+    ax.axhline(0,linestyle="--",color="black",label="Zero signed bias")
+    ax.set_xticks(x,labels)
+    ax.set_ylabel("Mean signed slope error at masked midpoint (x coordinate)")
+    ax.set_title("Simulated missing-gaze selection: fixed known truth")
+    ax.legend(fontsize=9)
+    fig.tight_layout()
+    fig.savefig(path,format="svg",metadata={"Date":None})
+    plt.close(fig)
+
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--out",type=Path,required=True)
@@ -328,7 +359,8 @@ def main():
     for name,obj in (("case-ledger.json",rows),("evidence.json",result)):
         (args.out/name).write_text(json.dumps(obj,indent=2,sort_keys=True)+"\n")
     (args.out/"source-commit.txt").write_text(os.getenv("GITHUB_SHA","unverified-local")+"\n")
-    names=("case-ledger.json","evidence.json","source-commit.txt")
+    original_figure(result,args.out/"source-selection-errors.svg")
+    names=("case-ledger.json","evidence.json","source-selection-errors.svg","source-commit.txt")
     (args.out/"SHA256SUMS").write_text("".join(
         sha256((args.out/f).read_bytes()).hexdigest()+f"  {f}\n"
         for f in names
