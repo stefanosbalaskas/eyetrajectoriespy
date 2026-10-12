@@ -42,6 +42,7 @@ nav:
       - W3 R7 repeated-trial native async protocol (unqualified): development/w3-r7-repeated-trial-asynchronous-protocol.md
       - W3 R7 repeated-trial source results and figure: development/w3-r7-repeated-trial-asynchronous-results.md
       - W3 R8 participant cluster and mean-basis stress protocol: development/w3-r8-participant-cluster-model-stress-protocol.md
+      - W3 R8 original pointwise cluster-uncertainty results: development/w3-r8-participant-cluster-model-stress-results.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
       - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
       - Original source figures: development/research-original-figures.md
