@@ -1,0 +1,61 @@
+name: science-w3-observation-loss-complete-case-selection
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_observation_loss_selection.py"
+      - "tests/test_w3_observation_loss_selection.py"
+      - ".github/workflows/science-w3-observation-loss-complete-case-selection.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  observed-data-contracts:
+    name: W3 observation loss/source integrity Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_observation_loss_selection.py
+
+  scientific-study:
+    name: W3 96 independent blocks per design paired MCAR versus outcome-dependent loss
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: All 384 source audit cases including simulated nonignorable loss
+        run: |
+          python scripts/run_w3_observation_loss_selection.py \
+            --out build/w3-observation-loss-selection
+      - name: Retain original source ledger, errors, figure and SHA256 including failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-mcar-latent-loss-original-case-ledger
+          path: build/w3-observation-loss-selection/
+          retention-days: 90
+          if-no-files-found: warn
