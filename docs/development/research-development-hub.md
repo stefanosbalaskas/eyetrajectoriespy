@@ -21,6 +21,20 @@ This research library preserves **successful, inconclusive and negative** result
 
 See [F1–F6 method inventory](f1-f6-scientific-expansion.md), [experimental API contracts](research-method-api.md), and [B5–B10 development overview](bayesian-research-programme.md). **None of these pages promotes new stable root-level APIs.**
 
+## W3 genuinely asynchronous source data: research-only basis model
+
+The [source-verified R6 asynchronous time-basis study](w3-r6-native-asynchronous-basis-results.md)
+uses **96 fresh independent generating blocks**, curve-specific
+jittered observed timestamps, and three paired recording-loss
+mechanisms. Explicit degree-five basis regression produced
+finite estimated slope functions using actual recorded source
+measurements without interpolation. Curve-balanced fitting gave
+slightly smaller source-generating RMSE than sample-weighting;
+**neither removed latent-MNAR selection**, validated confidence
+bands, or qualified participant-level hierarchical inference.
+All **288/288 original cases** and 4/4 original artifact
+SHA256 source checks are preserved.
+
 ## New workflow-level scientific evidence
 
 - [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.
