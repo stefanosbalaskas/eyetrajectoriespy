@@ -50,6 +50,21 @@ valid standard errors, missingness correction or hypothesis tests
 were established**. Original source SVG and artifact checksum ledger
 are preserved with negative findings.
 
+## W3 R8 participant-cluster uncertainty and model misspecification
+
+The [original-source-audited W3 R8 simulation](w3-r8-participant-cluster-model-stress-results.md)
+uses **64 fresh generating blocks of 48 independent participants**
+with eight paired time-support, dropout and generating-mean
+scenarios. All **512 original cases** and four verified
+source hashes are retained. Naive gaze-point HC1 and
+trial-level CR1 badly under-covered the *pointwise*
+slope truth, while participant-level CR1 performed better
+under the smooth baseline. **A localized feature omitted
+from the degree-five mean model caused severe undercoverage
+even for participant clustering**, so neither an
+independent-unit correction nor green engineering CI
+establishes calibrated functional inference.
+
 ## New workflow-level scientific evidence
 
 - [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.

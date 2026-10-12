@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1020" height="610" viewBox="0 0 1020 610" role="img" aria-label="W3 R8 observed 90 percent pointwise true-slope interval coverage for observation-HC1, trial-cluster CR1 and participant-cluster CR1 under smooth and localized bump generating truths">
+<rect width="1020" height="610" fill="white"/>
+<text x="40" y="32" font-family="sans-serif" font-size="22" font-weight="700" fill="#1d3549">W3 R8 · The independent inference unit changes coverage</text>
+<text x="40" y="54" font-family="sans-serif" font-size="12" fill="#526a7e">64 independent generating blocks per scenario · pointwise condition-slope truth inclusion only</text>
+<line x1="175" y1="94" x2="175" y2="507" stroke="#e8ecf0" stroke-width="1" />
+<text x="175" y="528" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#64798c">0%</text>
+<line x1="356" y1="94" x2="356" y2="507" stroke="#e8ecf0" stroke-width="1" />
+<text x="356" y="528" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#64798c">25%</text>
+<line x1="537" y1="94" x2="537" y2="507" stroke="#e8ecf0" stroke-width="1" />
+<text x="537" y="528" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#64798c">50%</text>
+<line x1="718" y1="94" x2="718" y2="507" stroke="#e8ecf0" stroke-width="1" />
+<text x="718" y="528" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#64798c">75%</text>
+<line x1="826.6" y1="94" x2="826.6" y2="507" stroke="#334654" stroke-width="1.7" stroke-dasharray="6 4"/>
+<text x="826.6" y="528" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#64798c">90%</text>
+<line x1="899" y1="94" x2="899" y2="507" stroke="#e8ecf0" stroke-width="1" />
+<text x="899" y="528" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#64798c">100%</text>
+<text x="167" y="118" text-anchor="end" font-family="sans-serif" font-size="12" fill="#2d455a">Balanced · MCAR · baseline</text>
+<circle cx="367.3" cy="102" r="6" fill="#c17047" stroke="white" stroke-width="1.5"/>
+<circle cx="627.5" cy="112" r="6" fill="#8983b4" stroke="white" stroke-width="1.5"/>
+<circle cx="797.2" cy="122" r="6" fill="#148376" stroke="white" stroke-width="1.5"/>
+<text x="167" y="169" text-anchor="end" font-family="sans-serif" font-size="12" fill="#2d455a">Balanced · MCAR · bump</text>
+<circle cx="175.0" cy="153" r="6" fill="#c17047" stroke="white" stroke-width="1.5"/>
+<circle cx="197.6" cy="163" r="6" fill="#8983b4" stroke="white" stroke-width="1.5"/>
+<circle cx="231.6" cy="173" r="6" fill="#148376" stroke="white" stroke-width="1.5"/>
+<text x="167" y="220" text-anchor="end" font-family="sans-serif" font-size="12" fill="#2d455a">Balanced · MNAR · baseline</text>
+<circle cx="457.8" cy="204" r="6" fill="#c17047" stroke="white" stroke-width="1.5"/>
+<circle cx="718.0" cy="214" r="6" fill="#8983b4" stroke="white" stroke-width="1.5"/>
+<circle cx="785.9" cy="224" r="6" fill="#148376" stroke="white" stroke-width="1.5"/>
+<text x="167" y="271" text-anchor="end" font-family="sans-serif" font-size="12" fill="#2d455a">Balanced · MNAR · bump</text>
+<circle cx="175.0" cy="255" r="6" fill="#c17047" stroke="white" stroke-width="1.5"/>
+<circle cx="186.3" cy="265" r="6" fill="#8983b4" stroke="white" stroke-width="1.5"/>
+<circle cx="197.6" cy="275" r="6" fill="#148376" stroke="white" stroke-width="1.5"/>
+<text x="167" y="322" text-anchor="end" font-family="sans-serif" font-size="12" fill="#2d455a">Unequal · MCAR · baseline</text>
+<circle cx="412.6" cy="306" r="6" fill="#c17047" stroke="white" stroke-width="1.5"/>
+<circle cx="751.9" cy="316" r="6" fill="#8983b4" stroke="white" stroke-width="1.5"/>
+<circle cx="797.2" cy="326" r="6" fill="#148376" stroke="white" stroke-width="1.5"/>
+<text x="167" y="373" text-anchor="end" font-family="sans-serif" font-size="12" fill="#2d455a">Unequal · MCAR · bump</text>
+<circle cx="175.0" cy="357" r="6" fill="#c17047" stroke="white" stroke-width="1.5"/>
+<circle cx="220.3" cy="367" r="6" fill="#8983b4" stroke="white" stroke-width="1.5"/>
+<circle cx="276.8" cy="377" r="6" fill="#148376" stroke="white" stroke-width="1.5"/>
+<text x="167" y="424" text-anchor="end" font-family="sans-serif" font-size="12" fill="#2d455a">Unequal · MNAR · baseline</text>
+<circle cx="537.0" cy="408" r="6" fill="#c17047" stroke="white" stroke-width="1.5"/>
+<circle cx="774.6" cy="418" r="6" fill="#8983b4" stroke="white" stroke-width="1.5"/>
+<circle cx="797.2" cy="428" r="6" fill="#148376" stroke="white" stroke-width="1.5"/>
+<text x="167" y="475" text-anchor="end" font-family="sans-serif" font-size="12" fill="#2d455a">Unequal · MNAR · bump</text>
+<circle cx="175.0" cy="459" r="6" fill="#c17047" stroke="white" stroke-width="1.5"/>
+<circle cx="186.3" cy="469" r="6" fill="#8983b4" stroke="white" stroke-width="1.5"/>
+<circle cx="197.6" cy="479" r="6" fill="#148376" stroke="white" stroke-width="1.5"/>
+<text x="900" y="84" text-anchor="end" font-family="sans-serif" font-size="11.5" fill="#334654">Nominal 90%</text>
+<circle cx="100" cy="557" r="6" fill="#c17047"/><text x="114" y="561" font-family="sans-serif" font-size="12" fill="#354e60">Naive gaze-point HC1</text>
+<circle cx="395" cy="557" r="6" fill="#8983b4"/><text x="409" y="561" font-family="sans-serif" font-size="12" fill="#354e60">Trial-cluster CR1</text>
+<circle cx="690" cy="557" r="6" fill="#148376"/><text x="704" y="561" font-family="sans-serif" font-size="12" fill="#354e60">Participant-cluster CR1</text>
+<text x="40" y="592" font-family="sans-serif" font-size="10.5" fill="#63798a">Source: original scientific run #38240534823, artifact #11742673021 (512/512 cases; four SHA256 checks verified). Simulated data, not a calibration certificate.</text>
+</svg>
