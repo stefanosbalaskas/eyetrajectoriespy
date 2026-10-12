@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="650" viewBox="0 0 1050 650" role="img" aria-label="W3 R9 original source scientific comparison of degree five and eleven Legendre and fixed cubic spline participant-cluster 90 percent pointwise slope truth inclusion">
+<rect width="1050" height="650" fill="white"/>
+<text x="38" y="34" font-family="sans-serif" font-size="22" font-weight="700" fill="#21394d">W3 R9 · Prespecified mean bases: pointwise coverage</text>
+<text x="38" y="56" font-family="sans-serif" font-size="12" fill="#60798a">64 independent source blocks per scenario · 48 participants per dataset · original source-audited 512-case ledger</text>
+<line x1="190" y1="95" x2="190" y2="548" stroke="#e5ebef" stroke-width="1" />
+<text x="190" y="565" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#677d8a">0%</text>
+<line x1="371.25" y1="95" x2="371.25" y2="548" stroke="#e5ebef" stroke-width="1" />
+<text x="371.25" y="565" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#677d8a">25%</text>
+<line x1="552.5" y1="95" x2="552.5" y2="548" stroke="#e5ebef" stroke-width="1" />
+<text x="552.5" y="565" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#677d8a">50%</text>
+<line x1="733.75" y1="95" x2="733.75" y2="548" stroke="#e5ebef" stroke-width="1" />
+<text x="733.75" y="565" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#677d8a">75%</text>
+<line x1="842.5" y1="95" x2="842.5" y2="548" stroke="#30495c" stroke-width="2" stroke-dasharray="5 4"/>
+<text x="842.5" y="565" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#677d8a">90%</text>
+<line x1="915" y1="95" x2="915" y2="548" stroke="#e5ebef" stroke-width="1" />
+<text x="915" y="565" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#677d8a">100%</text>
+<text x="181" y="124" text-anchor="end" font-family="sans-serif" font-size="12" fill="#384f5f">Bal · MCAR · smooth</text>
+<circle cx="824.38" cy="110" r="6.6" fill="#b35d49" stroke="white" stroke-width="1.5"/>
+<circle cx="835.70" cy="120" r="6.6" fill="#8a7ba7" stroke="white" stroke-width="1.5"/>
+<circle cx="835.70" cy="130" r="6.6" fill="#13877e" stroke="white" stroke-width="1.5"/>
+<text x="181" y="180" text-anchor="end" font-family="sans-serif" font-size="12" fill="#384f5f">Bal · MCAR · bump</text>
+<circle cx="235.31" cy="166" r="6.6" fill="#b35d49" stroke="white" stroke-width="1.5"/>
+<circle cx="688.44" cy="176" r="6.6" fill="#8a7ba7" stroke="white" stroke-width="1.5"/>
+<circle cx="869.69" cy="186" r="6.6" fill="#13877e" stroke="white" stroke-width="1.5"/>
+<text x="181" y="236" text-anchor="end" font-family="sans-serif" font-size="12" fill="#384f5f">Bal · MNAR · smooth</text>
+<circle cx="858.36" cy="222" r="6.6" fill="#b35d49" stroke="white" stroke-width="1.5"/>
+<circle cx="790.39" cy="232" r="6.6" fill="#8a7ba7" stroke="white" stroke-width="1.5"/>
+<circle cx="756.41" cy="242" r="6.6" fill="#13877e" stroke="white" stroke-width="1.5"/>
+<text x="181" y="292" text-anchor="end" font-family="sans-serif" font-size="12" fill="#384f5f">Bal · MNAR · bump</text>
+<circle cx="190.00" cy="278" r="6.6" fill="#b35d49" stroke="white" stroke-width="1.5"/>
+<circle cx="450.55" cy="288" r="6.6" fill="#8a7ba7" stroke="white" stroke-width="1.5"/>
+<circle cx="733.75" cy="298" r="6.6" fill="#13877e" stroke="white" stroke-width="1.5"/>
+<text x="181" y="348" text-anchor="end" font-family="sans-serif" font-size="12" fill="#384f5f">Unequal · MCAR · smooth</text>
+<circle cx="858.36" cy="334" r="6.6" fill="#b35d49" stroke="white" stroke-width="1.5"/>
+<circle cx="824.38" cy="344" r="6.6" fill="#8a7ba7" stroke="white" stroke-width="1.5"/>
+<circle cx="847.03" cy="354" r="6.6" fill="#13877e" stroke="white" stroke-width="1.5"/>
+<text x="181" y="404" text-anchor="end" font-family="sans-serif" font-size="12" fill="#384f5f">Unequal · MCAR · bump</text>
+<circle cx="257.97" cy="390" r="6.6" fill="#b35d49" stroke="white" stroke-width="1.5"/>
+<circle cx="711.09" cy="400" r="6.6" fill="#8a7ba7" stroke="white" stroke-width="1.5"/>
+<circle cx="858.36" cy="410" r="6.6" fill="#13877e" stroke="white" stroke-width="1.5"/>
+<text x="181" y="460" text-anchor="end" font-family="sans-serif" font-size="12" fill="#384f5f">Unequal · MNAR · smooth</text>
+<circle cx="847.03" cy="446" r="6.6" fill="#b35d49" stroke="white" stroke-width="1.5"/>
+<circle cx="790.39" cy="456" r="6.6" fill="#8a7ba7" stroke="white" stroke-width="1.5"/>
+<circle cx="790.39" cy="466" r="6.6" fill="#13877e" stroke="white" stroke-width="1.5"/>
+<text x="181" y="516" text-anchor="end" font-family="sans-serif" font-size="12" fill="#384f5f">Unequal · MNAR · bump</text>
+<circle cx="190.00" cy="502" r="6.6" fill="#b35d49" stroke="white" stroke-width="1.5"/>
+<circle cx="495.86" cy="512" r="6.6" fill="#8a7ba7" stroke="white" stroke-width="1.5"/>
+<circle cx="756.41" cy="522" r="6.6" fill="#13877e" stroke="white" stroke-width="1.5"/>
+<circle cx="85" cy="599" r="6.5" fill="#b35d49"/><text x="100" y="603" font-family="sans-serif" font-size="12" fill="#3c5262">Legendre degree 5</text>
+<circle cx="405" cy="599" r="6.5" fill="#8a7ba7"/><text x="420" y="603" font-family="sans-serif" font-size="12" fill="#3c5262">Legendre degree 11</text>
+<circle cx="725" cy="599" r="6.5" fill="#13877e"/><text x="740" y="603" font-family="sans-serif" font-size="12" fill="#3c5262">Cubic spline (13 bases)</text>
+<text x="38" y="635" font-family="sans-serif" font-size="10.5" fill="#677c8b">Source: original GitHub scientific artifact #11767316830 · 512/512 cases, all 4 SHA256 checks verified · simulated data, not simultaneous calibration.</text>
+</svg>

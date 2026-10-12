@@ -1,0 +1,61 @@
+name: science-w3-r9-prespecified-mean-basis
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r9_mean_basis_selection_stress.py"
+      - "tests/test_w3_r9_mean_basis_selection_stress.py"
+      - ".github/workflows/science-w3-r9-prespecified-mean-basis.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-reference-contracts:
+    name: W3 R9 native participant mean-basis reference Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r9_mean_basis_selection_stress.py
+
+  original-basis-qualification-source:
+    name: 64 fresh participant blocks with three fixed bases and mean misspecification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 85
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: 512 source scenarios, 1536 prespecified regression fits
+        run: |
+          python scripts/run_w3_r9_mean_basis_selection_stress.py \
+            --out build/w3-r9-original-basis
+      - name: Retain original full failure-inclusive ledger, figure, SHA256
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-r9-original-prespecified-basis-evidence
+          path: build/w3-r9-original-basis/
+          retention-days: 90
+          if-no-files-found: warn
