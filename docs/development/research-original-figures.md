@@ -163,6 +163,28 @@ pointwise 90% truth inclusion relative to CR1;
 neither mean projection bias nor selective
 latent-response dropout was remedied.
 
+## W3 R11 original complete-source vs matched MCAR/MAR/MNAR loss
+
+![W3 R11 source-verified complete and selective observation regime pointwise 90 percent slope coverage by fixed mean basis](../assets/research/w3-r11-observation-process-coverage-20261013.svg)
+
+[Full original matched-source W3 R11 findings](w3-r11-paired-observation-process-results.md)
+· [Original 768-case scientific workflow #38310729733](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38310729733),
+scientific artifact `11775040218` with **4/4 independently
+verified source SHA256 checksums**. **96 genuinely fresh
+independent participant-generating blocks** and two
+paired true slope functions, with the same underlying
+complete native gaze evaluated under full, MCAR,
+observed-x MAR and latent-response-dependent MNAR
+recording masks. Even with **complete source data**
+the smooth-mean participant-CR1 pointwise interval
+included truth only 80–83% of blocks. Fixed
+degree-five truth projection drastically failed
+under the narrow slope bump, and latent MNAR
+lowered cubic-spline inclusion from 80.2% to
+63.5% for smooth truth. This is **not** a calibrated
+simultaneous functional interval nor missing
+data reconstruction.
+
 ## W3 original known-truth functional regression validation
 
 ![Source-ledger verified functional regression RMSE across 24 independent simulation blocks](../assets/research/w3-functional-regression-source-rmse-20261011.svg)
