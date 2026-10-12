@@ -37,7 +37,7 @@ def test_fresh_block_pairing_and_scenario_source_truth():
     # Noise/participant effects and loss uniforms are reused across mean-truth regimes.
     for xa,xb in zip(a[1],b[1]):
         assert len(xa)==len(xb)
-    assert not np.array_equal(np.vstack(a[0].values),np.vstack(b[0].values))
+    assert not np.array_equal(a[0].values[0],b[0].values[0])
 
 
 @pytest.mark.parametrize("scheme",SCHEMES)
