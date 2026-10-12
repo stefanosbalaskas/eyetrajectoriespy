@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="468" viewBox="0 0 960 468" role="img" aria-label="W3 R6 genuinely jittered asynchronous source functional slope recovery under MCAR MAR and MNAR for equal-curve and equal-sample weights">
+<rect width="960" height="468" fill="white"/>
+<text x="70" y="32" font-family="sans-serif" font-weight="700" font-size="20" fill="#193446">W3 R6 · Genuinely asynchronous native-time regression</text>
+<text x="70" y="54" font-family="sans-serif" font-size="12" fill="#5b7282">96 independent generating blocks, n=96 curves, fixed degree-5 time-basis, paired recording loss</text>
+<line x1="85" y1="342.0" x2="901" y2="342.0" stroke="#e6edf1"/>
+<text x="73" y="346.0" text-anchor="end" font-size="11" font-family="sans-serif" fill="#687e8e">0.000</text>
+<line x1="85" y1="286.4" x2="901" y2="286.4" stroke="#e6edf1"/>
+<text x="73" y="290.4" text-anchor="end" font-size="11" font-family="sans-serif" fill="#687e8e">0.004</text>
+<line x1="85" y1="230.9" x2="901" y2="230.9" stroke="#e6edf1"/>
+<text x="73" y="234.9" text-anchor="end" font-size="11" font-family="sans-serif" fill="#687e8e">0.008</text>
+<line x1="85" y1="175.3" x2="901" y2="175.3" stroke="#e6edf1"/>
+<text x="73" y="179.3" text-anchor="end" font-size="11" font-family="sans-serif" fill="#687e8e">0.012</text>
+<line x1="85" y1="119.8" x2="901" y2="119.8" stroke="#e6edf1"/>
+<text x="73" y="123.8" text-anchor="end" font-size="11" font-family="sans-serif" fill="#687e8e">0.016</text>
+<line x1="85" y1="92.0" x2="901" y2="92.0" stroke="#e6edf1"/>
+<text x="73" y="96.0" text-anchor="end" font-size="11" font-family="sans-serif" fill="#687e8e">0.018</text>
+<rect x="161" y="160.77" width="30" height="181.23" fill="#8099ae" rx="2"/>
+<text x="176" y="153.77" font-size="11" text-anchor="middle" font-family="sans-serif" fill="#314455">0.0130</text>
+<rect x="199" y="150.81" width="30" height="191.19" fill="#188277" rx="2"/>
+<text x="214" y="143.81" font-size="11" text-anchor="middle" font-family="sans-serif" fill="#314455">0.0138</text>
+<rect x="237" y="147.60" width="30" height="194.40" fill="#b36943" rx="2"/>
+<text x="252" y="140.60" font-size="11" text-anchor="middle" font-family="sans-serif" fill="#314455">0.0140</text>
+<text x="217" y="367" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#34495a">MCAR</text>
+<rect x="431" y="160.77" width="30" height="181.23" fill="#8099ae" rx="2"/>
+<text x="446" y="153.77" font-size="11" text-anchor="middle" font-family="sans-serif" fill="#314455">0.0130</text>
+<rect x="469" y="149.76" width="30" height="192.24" fill="#188277" rx="2"/>
+<text x="484" y="142.76" font-size="11" text-anchor="middle" font-family="sans-serif" fill="#314455">0.0138</text>
+<rect x="507" y="147.96" width="30" height="194.04" fill="#b36943" rx="2"/>
+<text x="522" y="140.96" font-size="11" text-anchor="middle" font-family="sans-serif" fill="#314455">0.0140</text>
+<text x="487" y="367" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#34495a">MAR on observed x</text>
+<rect x="701" y="160.77" width="30" height="181.23" fill="#8099ae" rx="2"/>
+<text x="716" y="153.77" font-size="11" text-anchor="middle" font-family="sans-serif" fill="#314455">0.0130</text>
+<rect x="739" y="149.48" width="30" height="192.52" fill="#188277" rx="2"/>
+<text x="754" y="142.48" font-size="11" text-anchor="middle" font-family="sans-serif" fill="#314455">0.0139</text>
+<rect x="777" y="146.07" width="30" height="195.93" fill="#b36943" rx="2"/>
+<text x="792" y="139.07" font-size="11" text-anchor="middle" font-family="sans-serif" fill="#314455">0.0141</text>
+<text x="757" y="367" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#34495a">Latent MNAR</text>
+<rect x="92" y="401" width="12" height="12" rx="2" fill="#8099ae"/>
+<text x="109" y="412" font-family="sans-serif" font-size="12" fill="#3c5061">Full async source</text>
+<rect x="382" y="401" width="12" height="12" rx="2" fill="#188277"/>
+<text x="399" y="412" font-family="sans-serif" font-size="12" fill="#3c5061">Observed curve-balanced</text>
+<rect x="672" y="401" width="12" height="12" rx="2" fill="#b36943"/>
+<text x="689" y="412" font-family="sans-serif" font-size="12" fill="#3c5061">Observed sample-weighted</text>
+<text x="70" y="448" font-family="sans-serif" font-size="10.5" fill="#687d8e">Original artifact #11733915603 · 288 cases; all 4 SHA256 source checks verified. Model predictions, not reconstructed gaze.</text>
+</svg>
