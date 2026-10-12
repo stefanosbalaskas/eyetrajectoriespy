@@ -1,0 +1,61 @@
+name: science-w3-r11-paired-observation-process
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r11_paired_observation_process.py"
+      - "tests/test_w3_r11_paired_observation_process.py"
+      - ".github/workflows/science-w3-r11-paired-observation-process.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-contracts:
+    name: W3 R11 genuinely native matched observation process Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r11_paired_observation_process.py
+
+  original-scientific-source:
+    name: 96 fresh participant blocks × two generating truths × four paired observation regimes
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Original 768-case matched complete MCAR MAR MNAR scientific audit
+        run: |
+          python scripts/run_w3_r11_paired_observation_process.py \
+            --out build/w3-r11-original
+      - name: Retain all source failures, matched case ledger, SVG and hashes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-r11-original-paired-observation-process
+          path: build/w3-r11-original/
+          retention-days: 90
+          if-no-files-found: warn
