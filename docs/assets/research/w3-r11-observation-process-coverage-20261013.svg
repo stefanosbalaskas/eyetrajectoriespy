@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="625" viewBox="0 0 1050 625" role="img" aria-label="W3 R11 complete-source and matched MCAR MAR MNAR 90 percent pointwise known-truth coverage for fixed degree-five Legendre and cubic-spline functional mean models">
+<rect width="1050" height="625" fill="white"/>
+<text x="40" y="34" font-family="sans-serif" font-size="22" font-weight="700" fill="#1d3749">W3 R11 · Same source trajectories, different observation loss</text>
+<text x="40" y="56" font-family="sans-serif" font-size="12" fill="#586e81">96 independent generating blocks per scenario · 48 people each · nominal 90% POINTWISE slope inclusion</text>
+<line x1="240.0" y1="91" x2="240.0" y2="522" stroke="#e7ebef" stroke-width="1" />
+<text x="240.0" y="546" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5c7184">0%</text>
+<line x1="406.3" y1="91" x2="406.3" y2="522" stroke="#e7ebef" stroke-width="1" />
+<text x="406.3" y="546" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5c7184">25%</text>
+<line x1="572.5" y1="91" x2="572.5" y2="522" stroke="#e7ebef" stroke-width="1" />
+<text x="572.5" y="546" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5c7184">50%</text>
+<line x1="738.8" y1="91" x2="738.8" y2="522" stroke="#e7ebef" stroke-width="1" />
+<text x="738.8" y="546" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5c7184">75%</text>
+<line x1="838.5" y1="91" x2="838.5" y2="522" stroke="#263f53" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="838.5" y="546" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5c7184">90%</text>
+<line x1="905.0" y1="91" x2="905.0" y2="522" stroke="#e7ebef" stroke-width="1" />
+<text x="905.0" y="546" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5c7184">100%</text>
+<text x="228" y="118" text-anchor="end" font-family="sans-serif" font-size="12" fill="#354b5d">Smooth · complete</text>
+<line x1="794.17" y1="105" x2="773.39" y2="121" stroke="#bacbd0" stroke-width="1.4"/>
+<circle cx="794.17" cy="105" r="6.5" fill="#ab6a4c" stroke="white" stroke-width="1.5"/>
+<text x="802.17" y="98" font-family="sans-serif" font-size="10" fill="#41596a">80/96</text>
+<circle cx="773.39" cy="121" r="6.5" fill="#12877b" stroke="white" stroke-width="1.5"/>
+<text x="781.39" y="114" font-family="sans-serif" font-size="10" fill="#41596a">77/96</text>
+<text x="228" y="171" text-anchor="end" font-family="sans-serif" font-size="12" fill="#354b5d">Smooth · MCAR</text>
+<line x1="780.31" y1="158" x2="808.02" y2="174" stroke="#bacbd0" stroke-width="1.4"/>
+<circle cx="780.31" cy="158" r="6.5" fill="#ab6a4c" stroke="white" stroke-width="1.5"/>
+<text x="788.31" y="151" font-family="sans-serif" font-size="10" fill="#41596a">78/96</text>
+<circle cx="808.02" cy="174" r="6.5" fill="#12877b" stroke="white" stroke-width="1.5"/>
+<text x="816.02" y="167" font-family="sans-serif" font-size="10" fill="#41596a">82/96</text>
+<text x="228" y="224" text-anchor="end" font-family="sans-serif" font-size="12" fill="#354b5d">Smooth · observed-x MAR</text>
+<line x1="787.24" y1="211" x2="801.09" y2="227" stroke="#bacbd0" stroke-width="1.4"/>
+<circle cx="787.24" cy="211" r="6.5" fill="#ab6a4c" stroke="white" stroke-width="1.5"/>
+<text x="795.24" y="204" font-family="sans-serif" font-size="10" fill="#41596a">79/96</text>
+<circle cx="801.09" cy="227" r="6.5" fill="#12877b" stroke="white" stroke-width="1.5"/>
+<text x="809.09" y="220" font-family="sans-serif" font-size="10" fill="#41596a">81/96</text>
+<text x="228" y="277" text-anchor="end" font-family="sans-serif" font-size="12" fill="#354b5d">Smooth · latent MNAR</text>
+<line x1="766.46" y1="264" x2="662.55" y2="280" stroke="#bacbd0" stroke-width="1.4"/>
+<circle cx="766.46" cy="264" r="6.5" fill="#ab6a4c" stroke="white" stroke-width="1.5"/>
+<text x="774.46" y="257" font-family="sans-serif" font-size="10" fill="#41596a">76/96</text>
+<circle cx="662.55" cy="280" r="6.5" fill="#12877b" stroke="white" stroke-width="1.5"/>
+<text x="670.55" y="273" font-family="sans-serif" font-size="10" fill="#41596a">61/96</text>
+<line x1="36" y1="302" x2="1010" y2="302" stroke="#bac6cf" stroke-width="1.5"/>
+<text x="228" y="330" text-anchor="end" font-family="sans-serif" font-size="12" fill="#354b5d">Local bump · complete</text>
+<line x1="274.64" y1="317" x2="787.24" y2="333" stroke="#bacbd0" stroke-width="1.4"/>
+<circle cx="274.64" cy="317" r="6.5" fill="#ab6a4c" stroke="white" stroke-width="1.5"/>
+<text x="282.64" y="310" font-family="sans-serif" font-size="10" fill="#41596a">5/96</text>
+<circle cx="787.24" cy="333" r="6.5" fill="#12877b" stroke="white" stroke-width="1.5"/>
+<text x="795.24" y="326" font-family="sans-serif" font-size="10" fill="#41596a">79/96</text>
+<text x="228" y="383" text-anchor="end" font-family="sans-serif" font-size="12" fill="#354b5d">Local bump · MCAR</text>
+<line x1="274.64" y1="370" x2="801.09" y2="386" stroke="#bacbd0" stroke-width="1.4"/>
+<circle cx="274.64" cy="370" r="6.5" fill="#ab6a4c" stroke="white" stroke-width="1.5"/>
+<text x="282.64" y="363" font-family="sans-serif" font-size="10" fill="#41596a">5/96</text>
+<circle cx="801.09" cy="386" r="6.5" fill="#12877b" stroke="white" stroke-width="1.5"/>
+<text x="809.09" y="379" font-family="sans-serif" font-size="10" fill="#41596a">81/96</text>
+<text x="228" y="436" text-anchor="end" font-family="sans-serif" font-size="12" fill="#354b5d">Local bump · observed-x MAR</text>
+<line x1="274.64" y1="423" x2="801.09" y2="439" stroke="#bacbd0" stroke-width="1.4"/>
+<circle cx="274.64" cy="423" r="6.5" fill="#ab6a4c" stroke="white" stroke-width="1.5"/>
+<text x="282.64" y="416" font-family="sans-serif" font-size="10" fill="#41596a">5/96</text>
+<circle cx="801.09" cy="439" r="6.5" fill="#12877b" stroke="white" stroke-width="1.5"/>
+<text x="809.09" y="432" font-family="sans-serif" font-size="10" fill="#41596a">81/96</text>
+<text x="228" y="489" text-anchor="end" font-family="sans-serif" font-size="12" fill="#354b5d">Local bump · latent MNAR</text>
+<line x1="253.85" y1="476" x2="662.55" y2="492" stroke="#bacbd0" stroke-width="1.4"/>
+<circle cx="253.85" cy="476" r="6.5" fill="#ab6a4c" stroke="white" stroke-width="1.5"/>
+<text x="261.85" y="469" font-family="sans-serif" font-size="10" fill="#41596a">2/96</text>
+<circle cx="662.55" cy="492" r="6.5" fill="#12877b" stroke="white" stroke-width="1.5"/>
+<text x="670.55" y="485" font-family="sans-serif" font-size="10" fill="#41596a">61/96</text>
+<circle cx="235" cy="578" r="7" fill="#ab6a4c"/><text x="249" y="582" font-family="sans-serif" font-size="12" fill="#385064">Fixed degree-five Legendre</text>
+<circle cx="526" cy="578" r="7" fill="#12877b"/><text x="540" y="582" font-family="sans-serif" font-size="12" fill="#385064">Fixed 13-term cubic spline</text>
+<text x="40" y="612" font-family="sans-serif" font-size="10.5" fill="#697f8c">Original scientific run #38310729733 · verified source artifact #11775040218 · 768/768 cases · four original SHA256 files matched</text>
+</svg>
