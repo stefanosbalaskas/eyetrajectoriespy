@@ -198,7 +198,7 @@ def cluster_bootstrap(gram,cross,contrast,estimate,seed,draws=BOOTSTRAP_DRAWS):
     q=np.einsum("bg,gij->bij",copies,gram)
     b=copies@cross
     try:
-        fits=np.linalg.solve(q,b)
+        # Treat each resample RHS as a (p,1) vector, not a shared\n        # (draws,p) matrix under NumPy's batched solve rules.\n        fits=np.linalg.solve(q,b[...,None])[...,0]
     except np.linalg.LinAlgError as exc:
         raise ValueError("one or more participant bootstrap refits rank deficient") from exc
     estimates=fits@contrast
