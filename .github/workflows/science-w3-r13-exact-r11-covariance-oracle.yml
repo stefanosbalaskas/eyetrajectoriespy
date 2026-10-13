@@ -1,0 +1,61 @@
+name: science-w3-r13-exact-r11-covariance-oracle
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r13_exact_r11_conditional_oracle.py"
+      - "tests/test_w3_r13_exact_r11_conditional_oracle.py"
+      - ".github/workflows/science-w3-r13-exact-r11-covariance-oracle.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reference-contracts:
+    name: W3 R13 exact original R11 source and analytic Gaussian variance Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r13_exact_r11_conditional_oracle.py
+
+  original-matched-science:
+    name: R13 original R11 96 blocks plus 96 fresh exact-DGP Gaussian oracle blocks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Audit original 384 fitted model-source cases, 192 independent generating blocks
+        run: |
+          python scripts/run_w3_r13_exact_r11_conditional_oracle.py \
+            --out build/w3-r13-original
+      - name: Retain failure-inclusive source, conditional oracle, plot and original hashes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-r13-original-exact-r11-conditional-oracle-evidence
+          path: build/w3-r13-original/
+          retention-days: 90
+          if-no-files-found: warn

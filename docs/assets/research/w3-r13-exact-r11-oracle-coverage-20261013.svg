@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="526" viewBox="0 0 1160 526" role="img" aria-label="W3 R13 historical original and independent 96-block source pointwise true slope interval coverage with participant CR1 and known Gaussian variance">
+<rect width="1160" height="526" fill="#ffffff"/>
+<text x="35" y="34" font-family="sans-serif" font-size="22" font-weight="700" fill="#1d3b50">W3 R13 · Original R11 reproduced and variance oracle tested</text>
+<text x="35" y="56" font-family="sans-serif" font-size="12" fill="#536f83">Independent 96-block cohorts, 48 participants per block · complete source · same generating assumptions</text>
+<line x1="310.0" y1="105" x2="310.0" y2="413" stroke="#e7edf0" stroke-width="1" />
+<text x="310.0" y="436" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#607a89">0%</text>
+<line x1="500.0" y1="105" x2="500.0" y2="413" stroke="#e7edf0" stroke-width="1" />
+<text x="500.0" y="436" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#607a89">25%</text>
+<line x1="690.0" y1="105" x2="690.0" y2="413" stroke="#e7edf0" stroke-width="1" />
+<text x="690.0" y="436" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#607a89">50%</text>
+<line x1="880.0" y1="105" x2="880.0" y2="413" stroke="#e7edf0" stroke-width="1" />
+<text x="880.0" y="436" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#607a89">75%</text>
+<line x1="994.0" y1="105" x2="994.0" y2="413" stroke="#294252" stroke-width="2" stroke-dasharray="5 4"/>
+<text x="994.0" y="436" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#607a89">90%</text>
+<line x1="1070.0" y1="105" x2="1070.0" y2="413" stroke="#e7edf0" stroke-width="1" />
+<text x="1070.0" y="436" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#607a89">100%</text>
+<text x="292" y="150" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f5062">Historical R11 · Legendre-5</text>
+<line x1="943.3" y1="133" x2="982.9" y2="157" stroke="#b7c7cf" stroke-width="1.5"/>
+<circle cx="943.3" cy="133" r="8" fill="#ac6b50" stroke="white" stroke-width="1.5"/>
+<text x="958.3" y="137" font-size="12" font-family="sans-serif" fill="#3e576b">80/96</text>
+<circle cx="982.9" cy="157" r="8" fill="#168677" stroke="white" stroke-width="1.5"/>
+<text x="997.9" y="161" font-size="12" font-family="sans-serif" fill="#3e576b">85/96</text>
+<text x="292" y="225" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f5062">Historical R11 · Cubic spline</text>
+<line x1="919.6" y1="208" x2="951.3" y2="232" stroke="#b7c7cf" stroke-width="1.5"/>
+<circle cx="919.6" cy="208" r="8" fill="#ac6b50" stroke="white" stroke-width="1.5"/>
+<text x="934.6" y="212" font-size="12" font-family="sans-serif" fill="#3e576b">77/96</text>
+<circle cx="951.3" cy="232" r="8" fill="#168677" stroke="white" stroke-width="1.5"/>
+<text x="966.3" y="236" font-size="12" font-family="sans-serif" fill="#3e576b">81/96</text>
+<text x="292" y="300" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f5062">Fresh R11-DGP · Legendre-5</text>
+<line x1="951.3" y1="283" x2="982.9" y2="307" stroke="#b7c7cf" stroke-width="1.5"/>
+<circle cx="951.3" cy="283" r="8" fill="#ac6b50" stroke="white" stroke-width="1.5"/>
+<text x="966.3" y="287" font-size="12" font-family="sans-serif" fill="#3e576b">81/96</text>
+<circle cx="982.9" cy="307" r="8" fill="#168677" stroke="white" stroke-width="1.5"/>
+<text x="997.9" y="311" font-size="12" font-family="sans-serif" fill="#3e576b">85/96</text>
+<text x="292" y="375" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f5062">Fresh R11-DGP · Cubic spline</text>
+<line x1="959.2" y1="358" x2="990.8" y2="382" stroke="#b7c7cf" stroke-width="1.5"/>
+<circle cx="959.2" cy="358" r="8" fill="#ac6b50" stroke="white" stroke-width="1.5"/>
+<text x="974.2" y="362" font-size="12" font-family="sans-serif" fill="#3e576b">82/96</text>
+<circle cx="990.8" cy="382" r="8" fill="#168677" stroke="white" stroke-width="1.5"/>
+<text x="1005.8" y="386" font-size="12" font-family="sans-serif" fill="#3e576b">86/96</text>
+<circle cx="260" cy="473" r="7" fill="#ac6b50"/><text x="277" y="477" font-family="sans-serif" font-size="12" fill="#395468">Original R11 participant CR1 / t(47)</text>
+<circle cx="675" cy="473" r="7" fill="#168677"/><text x="692" y="477" font-family="sans-serif" font-size="12" fill="#395468">Known conditional Gaussian oracle / normal</text>
+<text x="35" y="514" font-family="sans-serif" font-size="11" fill="#607b8b">Original science artifact #11795900074 · 384/384 completed, 4/4 SHA256 checks · pointwise known truth, not simultaneous intervals</text>
+</svg>

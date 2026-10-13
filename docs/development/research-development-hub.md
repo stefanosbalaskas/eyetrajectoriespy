@@ -147,6 +147,32 @@ must be examined directly before broad
 claims. No interval, participant random-effects
 estimator or API was promoted.
 
+## W3 R13: exact complete R11 source reproduced under known covariance
+
+The [source-verified R13 original and fresh R11-DGP scientific study](w3-r13-exact-r11-conditional-variance-results.md)
+reproduced historical original complete-source
+CR1 counts **80/96 and 77/96** with exact
+underlying participant/trial/time/gaze source
+arrays and source numeric contracts.
+An **independent 96-block fresh replication**
+of the **same** R11 source assumptions gave
+CR1 counts **81/96 and 82/96** for fixed
+Legendre-5 and cubic spline means.
+The simulation-known Gaussian conditional
+variance oracle yielded **85/96, 81/96,
+85/96, 86/96** across the two cohorts/bases,
+while the estimated participant CR1 standard
+error was **2.8–3.3% smaller on average**.
+All **384/384** original source cases,
+three Python versions, and 4/4 original
+SHA256 evidence hashes passed.
+The historical-vs-fresh comparison is
+an important independent reproduction of
+R11's specific generating behavior,
+not an inferential method winner.
+No public estimator, simultaneous
+bands or release was qualified.
+
 ## New workflow-level scientific evidence
 
 - [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.
