@@ -207,6 +207,28 @@ studies is not proof of a systematic sample-size
 or covariance-method effect. No simultaneous
 functional interval or public estimator is qualified.
 
+## W3 R13: historical R11 complete-source reproduction and Gaussian variance oracle
+
+![R13 source-verified pointwise original R11 versus fresh R11 generating model variance oracle comparison](../assets/research/w3-r13-exact-r11-oracle-coverage-20261013.svg)
+
+[Full W3 R13 exact-source and independent-oracle findings](w3-r13-exact-r11-conditional-variance-results.md)
+· [Original scientific run #38362354708](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38362354708),
+original artifact `11795900074` (**4/4 original
+SHA256 checks independently verified**). Historical
+R11 exact same generating arrays and source records
+reproduced pointwise 90% participant CR1 truth
+inclusion of **80/96** (Legendre-5) and
+**77/96** (spline). Fresh independent cohort
+under the **exact same generating assumptions**
+gave **81/96** and **82/96**. The analytically
+known simulation Gaussian variance raised observed
+inclusion to **85/96 and 81/96** in historical
+and **85/96 and 86/96** in fresh cohorts;
+mean CR1 estimated standard errors were about
+**3% below the source-known standard error**.
+This is *not* a validated empirical covariance
+estimator or a simultaneous functional band.
+
 ## W3 original known-truth functional regression validation
 
 ![Source-ledger verified functional regression RMSE across 24 independent simulation blocks](../assets/research/w3-functional-regression-source-rmse-20261011.svg)
