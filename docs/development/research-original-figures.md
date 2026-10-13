@@ -185,6 +185,28 @@ lowered cubic-spline inclusion from 80.2% to
 simultaneous functional interval nor missing
 data reconstruction.
 
+## W3 R12: fully observed native participant trials, known Gaussian variance
+
+![W3 R12 original-source-audited finite participant-cluster variance and oracle coverage](../assets/research/w3-r12-complete-source-cluster-oracle-coverage-20261013.svg)
+
+[Complete R12 original source results](w3-r12-complete-cluster-variance-oracle-results.md)
+· [Original scientific run #38349342996](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38349342996),
+artifact `11790091707` (all **4/4 SHA256 source checks independently verified**).
+**96 freshly generated independent source blocks**, paired
+predictor-spread regimes and nested 24, 48, 96 genuinely
+independent participant sample sizes; **576/576 original
+source cases**, three Python-version independent
+numerical/covariance contracts passed. With complete
+native recordings and a well-approximated Gaussian
+mean, participant CR1/t **pointwise** 90% inclusion
+was **89.6–91.7%**, including at n=48 where the
+independent R11 study had lower complete-source
+inclusion. Known Gaussian variance oracle was
+**89.6–93.8%**. The observed difference across
+studies is not proof of a systematic sample-size
+or covariance-method effect. No simultaneous
+functional interval or public estimator is qualified.
+
 ## W3 original known-truth functional regression validation
 
 ![Source-ledger verified functional regression RMSE across 24 independent simulation blocks](../assets/research/w3-functional-regression-source-rmse-20261011.svg)
