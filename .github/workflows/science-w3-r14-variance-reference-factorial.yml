@@ -1,0 +1,60 @@
+name: science-w3-r14-variance-reference-factorial
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r14_variance_reference_factorial.py"
+      - "tests/test_w3_r14_variance_reference_factorial.py"
+      - ".github/workflows/science-w3-r14-variance-reference-factorial.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  numerical-contracts:
+    name: W3 R14 crossed critical and source identity Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r14_variance_reference_factorial.py
+
+  original-source-science:
+    name: R14 original 384 source case R13 identity and crossed variance reference
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Recompute original source and evaluate crossed pointwise intervals
+        run: |
+          python scripts/run_w3_r14_variance_reference_factorial.py --out build/w3-r14-original
+      - name: Preserve original source, failed cases and provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-r14-original-variance-critical-factorial-evidence
+          path: build/w3-r14-original/
+          retention-days: 90
+          if-no-files-found: warn
