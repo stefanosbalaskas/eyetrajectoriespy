@@ -1,9 +1,13 @@
 """Cross-language CR2 numerical contract against R clubSandwich."""
 import subprocess
+import shutil
+import pytest
 import numpy as np
 from scripts.w3_r16_cr2_reference import cr2_wls_identity
 
 def test_against_r_clubsandwich_unweighted():
+    if shutil.which('Rscript') is None:
+        pytest.skip('Rscript not installed; cross-language contract runs in dedicated R CI')
     n=24
     rows=np.arange(n*3)
     x=np.repeat(np.linspace(-.8,.8,n),3)
