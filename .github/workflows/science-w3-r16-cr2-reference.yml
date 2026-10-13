@@ -1,0 +1,25 @@
+name: science-w3-r16-cr2-reference
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/w3_r16_cr2_reference.py"
+      - "tests/test_w3_r16_cr2_reference.py"
+      - ".github/workflows/science-w3-r16-cr2-reference.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  numerical-reference:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r16_cr2_reference.py
