@@ -173,6 +173,26 @@ not an inferential method winner.
 No public estimator, simultaneous
 bands or release was qualified.
 
+## W3 R14: crossed source variance and reference critical value
+
+The [source-verified R14 factorial study](w3-r14-variance-reference-factorial-results.md)
+recomputed the original R13 **384/384** model/source cases
+without missing or failed fits. Its downloaded scientific artifact
+passed **6/6 independently checked SHA256 digests**.
+Across the 96 independent generating blocks per cohort and mean
+basis, holding the variance source constant while changing
+normal versus t(47) critical values changed pointwise truth
+inclusion by **0–1 cases per 96**. Holding critical values fixed
+while replacing estimated CR1 variance with **simulation-known
+conditional Gaussian variance** changed inclusion by **4–6
+cases per 96**, depending on cohort and mean basis.
+The covariance oracle cannot be applied to real gaze data
+without unknown generating parameters; these source-specific
+differences do **not** qualify any empirical uncertainty
+estimator or whole-function confidence band. Original
+scientific plot, full case ledger and paired comparisons
+remain archived; all research and release blockers stay open.
+
 ## New workflow-level scientific evidence
 
 - [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.
