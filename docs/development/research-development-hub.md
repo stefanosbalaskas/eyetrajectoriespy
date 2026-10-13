@@ -124,6 +124,29 @@ under smooth truth. **No root statistical API,
 missingness correction, method winner or
 simultaneous bands** were qualified.
 
+## W3 R12: complete-source uncertainty oracle rules out simple generalizations
+
+The [source-audited R12 variance and jackknife study](w3-r12-complete-cluster-variance-oracle-results.md)
+uses **96 NEW independent generating blocks**,
+complete irregularly timed 1–3-trial participant
+recordings, nested independent participant
+sizes 24/48/96 and two prespecified predictor
+spreads. **576/576** science cases completed with
+zero fitting/source exceptions, all cross-Python
+numerical contracts passed, and all 4/4 original
+source SHA256 checksums verified. The known
+Gaussian covariance oracle is **simulation-only**.
+Participant CR1/t pointwise 90% true-slope
+inclusion was **89.6–91.7%**; leave-one-person
+jackknife was **89.6–92.7%**, so there is
+no general method winner. Unlike R11's
+independent full-source study, severe complete
+source undercoverage did **not** reproduce
+here: model and source-sampling differences
+must be examined directly before broad
+claims. No interval, participant random-effects
+estimator or API was promoted.
+
 ## New workflow-level scientific evidence
 
 - [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.

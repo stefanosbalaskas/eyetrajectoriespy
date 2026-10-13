@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="595" viewBox="0 0 1060 595" role="img" aria-label="W3 R12 original source Gaussian variance oracle versus participant clustered CR1 and delete-person jackknife true midpoint slope coverage">
+<rect width="1060" height="595" fill="white"/>
+<text x="42" y="31" font-size="22" font-weight="700" font-family="sans-serif" fill="#1d3949">W3 R12 · Complete source: participant-level uncertainty</text>
+<text x="42" y="53" font-size="12" font-family="sans-serif" fill="#577184">96 independent generating blocks · correctly represented smooth mean · no missing recordings</text>
+<line x1="215.0" y1="98" x2="215.0" y2="466" stroke="#e6eaf0" stroke-width="1" />
+<text x="215.0" y="486" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#677d8b">0%</text>
+<line x1="388.8" y1="98" x2="388.8" y2="466" stroke="#e6eaf0" stroke-width="1" />
+<text x="388.8" y="486" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#677d8b">25%</text>
+<line x1="562.5" y1="98" x2="562.5" y2="466" stroke="#e6eaf0" stroke-width="1" />
+<text x="562.5" y="486" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#677d8b">50%</text>
+<line x1="736.3" y1="98" x2="736.3" y2="466" stroke="#e6eaf0" stroke-width="1" />
+<text x="736.3" y="486" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#677d8b">75%</text>
+<line x1="840.5" y1="98" x2="840.5" y2="466" stroke="#263e4d" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="840.5" y="486" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#677d8b">90%</text>
+<line x1="910.0" y1="98" x2="910.0" y2="466" stroke="#e6eaf0" stroke-width="1" />
+<text x="910.0" y="486" text-anchor="middle" font-size="11" font-family="sans-serif" fill="#677d8b">100%</text>
+<text x="196" y="128" text-anchor="end" font-size="12" font-family="sans-serif" fill="#354e60">24 participants · Broad</text>
+<circle cx="837.60" cy="108.00" r="6" fill="#a66b48" stroke="white" stroke-width="1.2"/>
+<circle cx="837.60" cy="118.00" r="6" fill="#7e90a3" stroke="white" stroke-width="1.2"/>
+<circle cx="837.60" cy="128.00" r="6" fill="#188b7d" stroke="white" stroke-width="1.2"/>
+<circle cx="837.60" cy="138.00" r="6" fill="#8b78bd" stroke="white" stroke-width="1.2"/>
+<text x="196" y="189" text-anchor="end" font-size="12" font-family="sans-serif" fill="#354e60">48 participants · Broad</text>
+<circle cx="852.08" cy="169.00" r="6" fill="#a66b48" stroke="white" stroke-width="1.2"/>
+<circle cx="852.08" cy="179.00" r="6" fill="#7e90a3" stroke="white" stroke-width="1.2"/>
+<circle cx="852.08" cy="189.00" r="6" fill="#188b7d" stroke="white" stroke-width="1.2"/>
+<circle cx="866.56" cy="199.00" r="6" fill="#8b78bd" stroke="white" stroke-width="1.2"/>
+<text x="196" y="250" text-anchor="end" font-size="12" font-family="sans-serif" fill="#354e60">96 participants · Broad</text>
+<circle cx="852.08" cy="230.00" r="6" fill="#a66b48" stroke="white" stroke-width="1.2"/>
+<circle cx="844.84" cy="240.00" r="6" fill="#7e90a3" stroke="white" stroke-width="1.2"/>
+<circle cx="852.08" cy="250.00" r="6" fill="#188b7d" stroke="white" stroke-width="1.2"/>
+<circle cx="859.32" cy="260.00" r="6" fill="#8b78bd" stroke="white" stroke-width="1.2"/>
+<text x="196" y="311" text-anchor="end" font-size="12" font-family="sans-serif" fill="#354e60">24 participants · Narrow</text>
+<circle cx="844.84" cy="291.00" r="6" fill="#a66b48" stroke="white" stroke-width="1.2"/>
+<circle cx="815.89" cy="301.00" r="6" fill="#7e90a3" stroke="white" stroke-width="1.2"/>
+<circle cx="844.84" cy="311.00" r="6" fill="#188b7d" stroke="white" stroke-width="1.2"/>
+<circle cx="866.56" cy="321.00" r="6" fill="#8b78bd" stroke="white" stroke-width="1.2"/>
+<text x="196" y="372" text-anchor="end" font-size="12" font-family="sans-serif" fill="#354e60">48 participants · Narrow</text>
+<circle cx="852.08" cy="352.00" r="6" fill="#a66b48" stroke="white" stroke-width="1.2"/>
+<circle cx="844.84" cy="362.00" r="6" fill="#7e90a3" stroke="white" stroke-width="1.2"/>
+<circle cx="859.32" cy="372.00" r="6" fill="#188b7d" stroke="white" stroke-width="1.2"/>
+<circle cx="866.56" cy="382.00" r="6" fill="#8b78bd" stroke="white" stroke-width="1.2"/>
+<text x="196" y="433" text-anchor="end" font-size="12" font-family="sans-serif" fill="#354e60">96 participants · Narrow</text>
+<circle cx="852.08" cy="413.00" r="6" fill="#a66b48" stroke="white" stroke-width="1.2"/>
+<circle cx="844.84" cy="423.00" r="6" fill="#7e90a3" stroke="white" stroke-width="1.2"/>
+<circle cx="852.08" cy="433.00" r="6" fill="#188b7d" stroke="white" stroke-width="1.2"/>
+<circle cx="844.84" cy="443.00" r="6" fill="#8b78bd" stroke="white" stroke-width="1.2"/>
+<circle cx="75" cy="521" r="6" fill="#a66b48"/><text x="90" y="525" font-size="12" font-family="sans-serif" fill="#374e5e">CR1 · t</text>
+<circle cx="600" cy="521" r="6" fill="#7e90a3"/><text x="615" y="525" font-size="12" font-family="sans-serif" fill="#374e5e">CR1 · normal</text>
+<circle cx="75" cy="546" r="6" fill="#188b7d"/><text x="90" y="550" font-size="12" font-family="sans-serif" fill="#374e5e">Delete-person jackknife · t</text>
+<circle cx="600" cy="546" r="6" fill="#8b78bd"/><text x="615" y="550" font-size="12" font-family="sans-serif" fill="#374e5e">True Gaussian oracle</text>
+<text x="42" y="584" font-size="10.5" font-family="sans-serif" fill="#667c88">Original scientific artifact #11790091707 · 576/576 source cases · 4/4 source SHA256 checks verified · pointwise, not simultaneous</text>
+</svg>
