@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="905" viewBox="0 0 1200 905" role="img" aria-label="W3 R15 original 96-block pointwise nominal 90 percent slope coverage with participant cluster CR1, whole-person jackknife, and known Gaussian covariance oracle across 24 48 96 people and two predictor leverage supports">
+<rect width="1200" height="905" fill="#ffffff"/>
+<text x="40" y="39" font-size="24" font-weight="700" font-family="sans-serif" fill="#203d4d">W3 R15 · High leverage exposes finite-cluster uncertainty</text>
+<text x="40" y="64" font-size="13" font-family="sans-serif" fill="#60798a">96 fresh independent source blocks per condition · complete asynchronous participant trials · 90% pointwise true-slope inclusion</text>
+<line x1="285.00" y1="115" x2="285.00" y2="780" stroke="#e5eaf0" stroke-width="1" />
+<text x="285.00" y="803" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#657d8e">0%</text>
+<line x1="492.50" y1="115" x2="492.50" y2="780" stroke="#e5eaf0" stroke-width="1" />
+<text x="492.50" y="803" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#657d8e">25%</text>
+<line x1="700.00" y1="115" x2="700.00" y2="780" stroke="#e5eaf0" stroke-width="1" />
+<text x="700.00" y="803" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#657d8e">50%</text>
+<line x1="907.50" y1="115" x2="907.50" y2="780" stroke="#e5eaf0" stroke-width="1" />
+<text x="907.50" y="803" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#657d8e">75%</text>
+<line x1="1032.00" y1="115" x2="1032.00" y2="780" stroke="#253f55" stroke-width="2" stroke-dasharray="7 4"/>
+<text x="1032.00" y="803" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#657d8e">90%</text>
+<line x1="1115.00" y1="115" x2="1115.00" y2="780" stroke="#e5eaf0" stroke-width="1" />
+<text x="1115.00" y="803" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#657d8e">100%</text>
+<text x="269" y="146" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f4f62">24 · ordinary · Legendre</text>
+<line x1="968.02" y1="141" x2="1011.25" y2="141" stroke="#c3cdd3" stroke-width="2"/>
+<circle cx="968.02" cy="128" r="6.6" fill="#b87957" stroke="white" stroke-width="1.3"/>
+<circle cx="976.67" cy="141" r="6.6" fill="#187e82" stroke="white" stroke-width="1.3"/>
+<circle cx="1011.25" cy="154" r="6.6" fill="#7f74ab" stroke="white" stroke-width="1.3"/>
+<text x="269" y="200" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f4f62">24 · ordinary · spline</text>
+<line x1="968.02" y1="195" x2="993.96" y2="195" stroke="#c3cdd3" stroke-width="2"/>
+<circle cx="968.02" cy="182" r="6.6" fill="#b87957" stroke="white" stroke-width="1.3"/>
+<circle cx="976.67" cy="195" r="6.6" fill="#187e82" stroke="white" stroke-width="1.3"/>
+<circle cx="993.96" cy="208" r="6.6" fill="#7f74ab" stroke="white" stroke-width="1.3"/>
+<text x="269" y="254" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f4f62">24 · extreme · Legendre</text>
+<line x1="898.85" y1="249" x2="1054.48" y2="249" stroke="#c3cdd3" stroke-width="2"/>
+<circle cx="898.85" cy="236" r="6.6" fill="#b87957" stroke="white" stroke-width="1.3"/>
+<circle cx="993.96" cy="249" r="6.6" fill="#187e82" stroke="white" stroke-width="1.3"/>
+<circle cx="1054.48" cy="262" r="6.6" fill="#7f74ab" stroke="white" stroke-width="1.3"/>
+<text x="269" y="308" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f4f62">24 · extreme · spline</text>
+<line x1="872.92" y1="303" x2="1045.83" y2="303" stroke="#c3cdd3" stroke-width="2"/>
+<circle cx="872.92" cy="290" r="6.6" fill="#b87957" stroke="white" stroke-width="1.3"/>
+<circle cx="993.96" cy="303" r="6.6" fill="#187e82" stroke="white" stroke-width="1.3"/>
+<circle cx="1045.83" cy="316" r="6.6" fill="#7f74ab" stroke="white" stroke-width="1.3"/>
+<line x1="32" y1="333" x2="1168" y2="333" stroke="#b8c6ce" stroke-width="1.7"/>
+<text x="269" y="362" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f4f62">48 · ordinary · Legendre</text>
+<line x1="959.38" y1="357" x2="968.02" y2="357" stroke="#c3cdd3" stroke-width="2"/>
+<circle cx="959.38" cy="344" r="6.6" fill="#b87957" stroke="white" stroke-width="1.3"/>
+<circle cx="968.02" cy="357" r="6.6" fill="#187e82" stroke="white" stroke-width="1.3"/>
+<circle cx="959.38" cy="370" r="6.6" fill="#7f74ab" stroke="white" stroke-width="1.3"/>
+<text x="269" y="416" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f4f62">48 · ordinary · spline</text>
+<line x1="950.73" y1="411" x2="976.67" y2="411" stroke="#c3cdd3" stroke-width="2"/>
+<circle cx="950.73" cy="398" r="6.6" fill="#b87957" stroke="white" stroke-width="1.3"/>
+<circle cx="976.67" cy="411" r="6.6" fill="#187e82" stroke="white" stroke-width="1.3"/>
+<circle cx="976.67" cy="424" r="6.6" fill="#7f74ab" stroke="white" stroke-width="1.3"/>
+<text x="269" y="470" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f4f62">48 · extreme · Legendre</text>
+<line x1="916.15" y1="465" x2="1054.48" y2="465" stroke="#c3cdd3" stroke-width="2"/>
+<circle cx="916.15" cy="452" r="6.6" fill="#b87957" stroke="white" stroke-width="1.3"/>
+<circle cx="985.31" cy="465" r="6.6" fill="#187e82" stroke="white" stroke-width="1.3"/>
+<circle cx="1054.48" cy="478" r="6.6" fill="#7f74ab" stroke="white" stroke-width="1.3"/>
+<text x="269" y="524" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f4f62">48 · extreme · spline</text>
+<line x1="916.15" y1="519" x2="1054.48" y2="519" stroke="#c3cdd3" stroke-width="2"/>
+<circle cx="916.15" cy="506" r="6.6" fill="#b87957" stroke="white" stroke-width="1.3"/>
+<circle cx="985.31" cy="519" r="6.6" fill="#187e82" stroke="white" stroke-width="1.3"/>
+<circle cx="1054.48" cy="532" r="6.6" fill="#7f74ab" stroke="white" stroke-width="1.3"/>
+<line x1="32" y1="549" x2="1168" y2="549" stroke="#b8c6ce" stroke-width="1.7"/>
+<text x="269" y="578" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f4f62">96 · ordinary · Legendre</text>
+<line x1="993.96" y1="573" x2="993.96" y2="573" stroke="#c3cdd3" stroke-width="2"/>
+<circle cx="993.96" cy="560" r="6.6" fill="#b87957" stroke="white" stroke-width="1.3"/>
+<circle cx="993.96" cy="573" r="6.6" fill="#187e82" stroke="white" stroke-width="1.3"/>
+<circle cx="993.96" cy="586" r="6.6" fill="#7f74ab" stroke="white" stroke-width="1.3"/>
+<text x="269" y="632" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f4f62">96 · ordinary · spline</text>
+<line x1="993.96" y1="627" x2="1002.60" y2="627" stroke="#c3cdd3" stroke-width="2"/>
+<circle cx="1002.60" cy="614" r="6.6" fill="#b87957" stroke="white" stroke-width="1.3"/>
+<circle cx="1002.60" cy="627" r="6.6" fill="#187e82" stroke="white" stroke-width="1.3"/>
+<circle cx="993.96" cy="640" r="6.6" fill="#7f74ab" stroke="white" stroke-width="1.3"/>
+<text x="269" y="686" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f4f62">96 · extreme · Legendre</text>
+<line x1="1011.25" y1="681" x2="1063.13" y2="681" stroke="#c3cdd3" stroke-width="2"/>
+<circle cx="1011.25" cy="668" r="6.6" fill="#b87957" stroke="white" stroke-width="1.3"/>
+<circle cx="1037.19" cy="681" r="6.6" fill="#187e82" stroke="white" stroke-width="1.3"/>
+<circle cx="1063.13" cy="694" r="6.6" fill="#7f74ab" stroke="white" stroke-width="1.3"/>
+<text x="269" y="740" text-anchor="end" font-size="13" font-family="sans-serif" fill="#2f4f62">96 · extreme · spline</text>
+<line x1="1037.19" y1="735" x2="1071.77" y2="735" stroke="#c3cdd3" stroke-width="2"/>
+<circle cx="1037.19" cy="722" r="6.6" fill="#b87957" stroke="white" stroke-width="1.3"/>
+<circle cx="1045.83" cy="735" r="6.6" fill="#187e82" stroke="white" stroke-width="1.3"/>
+<circle cx="1071.77" cy="748" r="6.6" fill="#7f74ab" stroke="white" stroke-width="1.3"/>
+<circle cx="60" cy="839" r="7" fill="#b87957"/><text x="76" y="843" font-size="12" font-family="sans-serif" fill="#405b6d">Participant CR1 / t</text>
+<circle cx="422" cy="839" r="7" fill="#187e82"/><text x="438" y="843" font-size="12" font-family="sans-serif" fill="#405b6d">Delete-person jackknife / t</text>
+<circle cx="784" cy="839" r="7" fill="#7f74ab"/><text x="800" y="843" font-size="12" font-family="sans-serif" fill="#405b6d">Known Gaussian oracle / t</text>
+<text x="40" y="885" font-size="11" font-family="sans-serif" fill="#6e8591">Original source run #38451363921 · artifact #11840950822 · 1,152/1,152 scientific cases · 4/4 SHA256 checks independently verified</text>
+</svg>
