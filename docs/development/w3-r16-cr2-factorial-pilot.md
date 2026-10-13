@@ -1,0 +1,7 @@
+# R16 — controlled CR2 identity-target factorial pilot
+
+Research draft. An exploratory **paired 24-block subset** of the already-generated R16 source is used (not 24 fresh independent replications of R16). Across n=24 participants, four leverage × covariance cells and two fixed bases, the 192 model/source records compare CR1, centered leave-person jackknife CV3J, working-identity CR2, and simulation-known Gaussian covariance on identical observations.
+
+All methods retain the fixed midpoint-slope truth and the same t(23) reference only for an **unqualified descriptive contrast**. CR2 coefficient-specific Satterthwaite degrees of freedom have **not** been implemented. The identity after WLS whitening is not the true within-person correlated covariance in any of the four data generators. Consequently a favorable 90% interval inclusion rate would **not** certify CR2. An independent dense observation-space CR2 numerical reconstruction is checked for every completed pilot record. Missing or failed records are retained; results are descriptive rather than a selection gate.
+
+The full source run generates a ledger, summary, source SHA and checksums. No public method, release tag, main merge or PyPI publication is authorized. Scientific issues #289 and #296 remain open. Next is a true correlated-working-target CR2 and independently verified coefficient-specific reference df, followed by new independent source replication.
