@@ -13,6 +13,8 @@ jobs:
   r-clubsandwich-independent-reference:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
+    env:
+      EYE_CR2_REQUIRE_R_REFERENCE: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
