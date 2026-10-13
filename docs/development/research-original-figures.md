@@ -229,6 +229,31 @@ mean CR1 estimated standard errors were about
 This is *not* a validated empirical covariance
 estimator or a simultaneous functional band.
 
+## W3 R15: genuinely fresh participant leverage and whole-person jackknife
+
+![W3 R15 original-audited participant CR1, delete-person jackknife and known Gaussian variance pointwise coverage across 24 48 and 96 independent participant sample sizes](../assets/research/w3-r15-fresh-leverage-coverage-20261013.svg)
+
+[Full R15 source-verified 1,152-case report](w3-r15-fresh-leverage-cluster-jackknife-results.md)
+· [Original scientific workflow #38451363921](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38451363921),
+artifact `11840950822`. **96 NEW independent
+generating blocks**, nested 24/48/96 independent
+participant sizes, a prespecified two-person
+extreme covariate stress and two fixed
+Legendre/spline means. Original **1,152/1,152**
+science cases, Python 3.11–3.13 numerical contracts
+and **4/4 independently verified original
+SHA256 checks** passed. In extreme covariate
+support at n=24, participant CR1/t only
+included true pointwise slope in **71/96**
+(Legendre) and **68/96** (spline), versus
+**82/96** for the leave-person jackknife,
+with source-known Gaussian oracle at
+**89/96** and **88/96**.
+The participant jackknife improved this
+stress result but did not establish broad
+nominal 90% calibration or simultaneous
+functional inference.
+
 ## W3 original known-truth functional regression validation
 
 ![Source-ledger verified functional regression RMSE across 24 independent simulation blocks](../assets/research/w3-functional-regression-source-rmse-20261011.svg)
