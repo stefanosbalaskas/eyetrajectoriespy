@@ -30,6 +30,11 @@ def test_four_cell_numerical_and_oracle_contract(model,support):
     d=fit(source(0,24,support),model)
     assert d["qr_delta"]<4e-7 and d["score_delta"]<4e-7
     assert d["cr1_se"]>0 and d["oracle_se"]>0 and d["jack_se"]>0
+    assert abs(d["contrast_leverage_sum"]-1)<1e-10
+    assert 1<=d["contrast_effective_clusters"]<=24+1e-8
+    assert 0<d["contrast_max_partial_leverage"]<1
+    assert d["contrast_top_two_partial_leverage"]>=d["contrast_max_partial_leverage"]
+    assert np.isfinite(d["contrast_max_standardized_influence"])
     r=evaluate(0,24,support,model)
     assert r["status"]=="ok",r["exception"]
     assert not r["release_authorized"]
@@ -55,3 +60,12 @@ def test_ledger_denominators_and_failure_inclusion():
     assert report["completed_cases"]==1 and report["failed_cases"]==1
     assert len(report["missing_cases"])==2302
     assert report["no_method_winner"] and not report["release_authorized"]
+
+
+@pytest.mark.parametrize("model",MODELS)
+def test_focal_contrast_diagnostics_respond_to_extreme_x(model):
+    for covariance in ("independent","dependent"):
+        base=fit(source(0,24,"ordinary_"+covariance),model)
+        extreme=fit(source(0,24,"extreme_"+covariance),model)
+        assert extreme["contrast_max_partial_leverage"]>base["contrast_max_partial_leverage"]
+        assert extreme["contrast_effective_clusters"]<base["contrast_effective_clusters"]
