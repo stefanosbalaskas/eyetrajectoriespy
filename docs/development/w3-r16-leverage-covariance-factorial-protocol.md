@@ -25,6 +25,15 @@ Compare paired CR1/oracle standard-error ratios, observed known-truth inclusion,
 
 The implementation also records participant information-block leverage, independent weighted-QR agreement, independent grouped-score agreement, participant count, complete timestamps, failures, 95% Wilson intervals, paired-block Monte Carlo intervals, source original plot, commit provenance and SHA256 evidence.
 
+
+## Focal-contrast diagnostic tranche (subsequent R16 commit)
+
+The research implementation now records each participant's nonnegative share of the focal midpoint-slope WLS design information, proportional to `cᵀQ⁻¹QᵢQ⁻¹c`, normalized to sum exactly one across participants. It also records the largest participant share, sum of the two largest shares, the inverse-Herfindahl effective number of information-contributing clusters `1/Σshareᵢ²`, and the maximum absolute participant-score contribution divided by the full CR1 standard error. These are **contrast-specific descriptive diagnostics**, not automatically valid Satterthwaite degrees of freedom or a calibrated inference method. A test checks normalization, finite values, and a prespecified extreme-predictor contrast for a fixed source block. Scientific results for these measures require a new original source run on their exact commit.
+
+## Separately required CR2 validation
+
+A full bias-reduced linearization cluster covariance comparison is still **not implemented**. Before claiming a CR2 numerical comparator, use whitened WLS, specify the working within-person covariance target `Φ`, construct cluster adjustment matrices satisfying the relevant bias-reduction identity for residuals, verify positive definiteness and numerical stability, reproduce an independent implementation (preferably R `clubSandwich`) on frozen small examples, then validate coefficient-specific reference degrees of freedom. Under arbitrary correlated native trials, simple HC2 diagonal leverage scaling is **not** CR2. No results or coverage claims may be attributed to CR2 yet.
+
 ## Governance
 
 This first R16 tranche isolates source covariance dependence; CR2, focal contrast leverage and final inference are separate required validation steps. Keep [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289), [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) open. No public estimator, public API change, protected-main merge, release tag or PyPI publication. Development stays `1.2.0rc2.dev0`, with `production_release_ready=false`.
