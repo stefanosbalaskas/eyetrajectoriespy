@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="520" viewBox="0 0 1060 520" role="img" aria-label="Original W3 R13 96-block pointwise 90 percent true midpoint slope coverage comparing R11 participant CR1 and simulation-known Gaussian oracle in historical and independently regenerated source cohorts">
+<rect width="1060" height="520" fill="#ffffff"/>
+<text x="36" y="35" font-family="sans-serif" font-size="22" font-weight="700" fill="#193c50">W3 R13 · R11 source reproduced, conditional variance tested</text>
+<text x="36" y="58" font-family="sans-serif" font-size="12" fill="#647c8e">Two independent 96-block cohorts · 48 genuinely independent participants per block · no missing original trials</text>
+<line x1="170.00" y1="100" x2="170.00" y2="401" stroke="#e9edf2" stroke-width="1" />
+<text x="170.00" y="427" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#667e8b">0%</text>
+<line x1="353.75" y1="100" x2="353.75" y2="401" stroke="#e9edf2" stroke-width="1" />
+<text x="353.75" y="427" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#667e8b">25%</text>
+<line x1="537.50" y1="100" x2="537.50" y2="401" stroke="#e9edf2" stroke-width="1" />
+<text x="537.50" y="427" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#667e8b">50%</text>
+<line x1="721.25" y1="100" x2="721.25" y2="401" stroke="#e9edf2" stroke-width="1" />
+<text x="721.25" y="427" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#667e8b">75%</text>
+<line x1="831.50" y1="100" x2="831.50" y2="401" stroke="#253f51" stroke-width="2" stroke-dasharray="6 4"/>
+<text x="831.50" y="427" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#667e8b">90%</text>
+<line x1="905.00" y1="100" x2="905.00" y2="401" stroke="#e9edf2" stroke-width="1" />
+<text x="905.00" y="427" text-anchor="middle" font-size="12" font-family="sans-serif" fill="#667e8b">100%</text>
+<text x="157" y="143" text-anchor="end" font-family="sans-serif" font-size="12" fill="#324e61">Historical R11 / Legendre-5</text>
+<circle cx="782.50" cy="125" r="8" fill="#ac6b50" stroke="#fff" stroke-width="1.5"/>
+<text x="796.50" y="129" font-size="12" font-family="sans-serif" fill="#3a5261">80/96</text>
+<circle cx="820.78" cy="149" r="8" fill="#14877b" stroke="#fff" stroke-width="1.5"/>
+<text x="834.78" y="153" font-size="12" font-family="sans-serif" fill="#3a5261">85/96</text>
+<line x1="782.5" y1="125" x2="820.78125" y2="149" stroke="#aabcc3" stroke-width="1.5"/>
+<text x="157" y="217" text-anchor="end" font-family="sans-serif" font-size="12" fill="#324e61">Historical R11 / Cubic spline</text>
+<circle cx="759.53" cy="199" r="8" fill="#ac6b50" stroke="#fff" stroke-width="1.5"/>
+<text x="773.53" y="203" font-size="12" font-family="sans-serif" fill="#3a5261">77/96</text>
+<circle cx="790.16" cy="223" r="8" fill="#14877b" stroke="#fff" stroke-width="1.5"/>
+<text x="804.16" y="227" font-size="12" font-family="sans-serif" fill="#3a5261">81/96</text>
+<line x1="759.53125" y1="199" x2="790.15625" y2="223" stroke="#aabcc3" stroke-width="1.5"/>
+<text x="157" y="291" text-anchor="end" font-family="sans-serif" font-size="12" fill="#324e61">Fresh R11-DGP / Legendre-5</text>
+<circle cx="790.16" cy="273" r="8" fill="#ac6b50" stroke="#fff" stroke-width="1.5"/>
+<text x="804.16" y="277" font-size="12" font-family="sans-serif" fill="#3a5261">81/96</text>
+<circle cx="820.78" cy="297" r="8" fill="#14877b" stroke="#fff" stroke-width="1.5"/>
+<text x="834.78" y="301" font-size="12" font-family="sans-serif" fill="#3a5261">85/96</text>
+<line x1="790.15625" y1="273" x2="820.78125" y2="297" stroke="#aabcc3" stroke-width="1.5"/>
+<text x="157" y="365" text-anchor="end" font-family="sans-serif" font-size="12" fill="#324e61">Fresh R11-DGP / Cubic spline</text>
+<circle cx="797.81" cy="347" r="8" fill="#ac6b50" stroke="#fff" stroke-width="1.5"/>
+<text x="811.81" y="351" font-size="12" font-family="sans-serif" fill="#3a5261">82/96</text>
+<circle cx="828.44" cy="371" r="8" fill="#14877b" stroke="#fff" stroke-width="1.5"/>
+<text x="842.44" y="375" font-size="12" font-family="sans-serif" fill="#3a5261">86/96</text>
+<line x1="797.8125" y1="347" x2="828.4375" y2="371" stroke="#aabcc3" stroke-width="1.5"/>
+<circle cx="165" cy="469" r="7" fill="#ac6b50"/><text x="179" y="473" font-family="sans-serif" font-size="12" fill="#385361">Original participant CR1 / t(47)</text>
+<circle cx="520" cy="469" r="7" fill="#14877b"/><text x="534" y="473" font-family="sans-serif" font-size="12" fill="#385361">Known Gaussian oracle / normal</text>
+<text x="36" y="508" font-family="sans-serif" font-size="10.5" fill="#647b8b">Science run #38362354708 · original artifact #11795900074 · 384/384 cases, 4/4 SHA256 entries verified · pointwise only</text>
+</svg>
