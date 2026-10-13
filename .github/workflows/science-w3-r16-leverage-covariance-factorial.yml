@@ -4,8 +4,8 @@ on:
   pull_request:
     types: [opened, synchronize]
     paths:
-      - "scripts/run_w3_r15_fresh_cluster_leverage.py"
-      - "tests/test_w3_r15_fresh_cluster_leverage.py"
+      - "scripts/run_w3_r16_leverage_covariance_factorial.py"
+      - "tests/test_w3_r16_leverage_covariance_factorial.py"
       - ".github/workflows/science-w3-r16-leverage-covariance-factorial.yml"
   workflow_dispatch:
 
@@ -31,7 +31,7 @@ jobs:
           python-version: ${{ matrix.python }}
           cache: pip
       - run: python -m pip install -e ".[dev]"
-      - run: python -m pytest -q tests/test_w3_r15_fresh_cluster_leverage.py
+      - run: python -m pytest -q tests/test_w3_r16_leverage_covariance_factorial.py
 
   original-scientific-audit:
     name: R16 96 generating blocks × 2x2 factorial × participant size × two means
@@ -49,13 +49,13 @@ jobs:
       - run: python -m pip install -e ".[dev]"
       - name: Original failure-inclusive 2304 source/model case evaluation
         run: |
-          python scripts/run_w3_r15_fresh_cluster_leverage.py \
-            --out build/w3-r15-original
+          python scripts/run_w3_r16_leverage_covariance_factorial.py \
+            --out build/w3-r16-original
       - name: Retain complete source evidence, provenance SVG and checksums
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: w3-r15-original-factorial-leverage-covariance
-          path: build/w3-r15-original/
+          name: w3-r16-original-factorial-leverage-covariance
+          path: build/w3-r16-original/
           retention-days: 90
           if-no-files-found: warn
