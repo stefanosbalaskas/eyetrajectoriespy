@@ -50,6 +50,7 @@ nav:
       - W3 R11 original matched observation-process protocol: development/w3-r11-paired-observation-process-protocol.md
       - W3 R11 verified source findings and figure: development/w3-r11-paired-observation-process-results.md
       - W3 R12 complete-source Gaussian variance oracle protocol: development/w3-r12-complete-cluster-variance-oracle-protocol.md
+      - W3 R12 source-verified cluster and variance-oracle findings: development/w3-r12-complete-cluster-variance-oracle-results.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
       - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
       - Original source figures: development/research-original-figures.md
