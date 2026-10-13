@@ -351,24 +351,23 @@ def plot(report,path):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    fig,axes=plt.subplots(1,2,figsize=(11,5),sharey=True)
-    for axis,s in zip(axes,SUPPORT):
+    fig,axes=plt.subplots(2,2,figsize=(13,9),sharex=True,sharey=True)
+    for axis,support in zip(axes.flat,SUPPORT):
         for method in ("cr1_t","cluster_jackknife_t","oracle_t"):
             for model in MODELS:
-                vals=[report["groups"][str(n)][s][model]["methods"][method][
+                vals=[report["groups"][str(n)][support][model]["methods"][method][
                     "pointwise_inclusion_rate"] for n in SIZES]
                 axis.plot(SIZES,vals,marker="o",label=f"{model} / {method}")
         axis.axhline(NOMINAL,color="black",linestyle="--")
-        axis.set_title(s.replace("_"," "))
+        axis.set_title(support.replace("_"," "))
         axis.set_xlabel("Independent participants")
         axis.set_ylim(0,1)
-        axis.set_ylabel("90% pointwise known-truth inclusion")
+        axis.set_ylabel("Known-truth 90% pointwise inclusion")
         axis.legend(fontsize=6)
-    fig.suptitle("W3 R16: new source finite participants × original predictor leverage")
+    fig.suptitle("W3 R16: predictor leverage x participant covariance")
     fig.tight_layout()
     fig.savefig(path,format="svg",metadata={"Date":None})
     plt.close(fig)
-
 
 def main():
     p=argparse.ArgumentParser()
