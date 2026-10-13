@@ -9,3 +9,9 @@ An independently computed numerical comparator builds the entire participant obs
 This tranche has no R16 outcome-generating run, Satterthwaite degrees of freedom, generalized working covariance, or package API promotion. A further matched study must independently compare the implementation with the R `clubSandwich` CR2 estimator and appropriately compute coefficient-specific small-sample reference degrees of freedom. In particular, substituting t(n−1) without validating degrees of freedom is not a qualified CR2 inferential method.
 
 R16 research remains draft; version 1.2 unreleased; scientific blockers #289 and #296 remain open; `production_release_ready=false`.
+
+## Cross-language validation tranche
+
+An additional, prespecified deterministic unweighted clustered linear-model fixture is implemented in both Python and R, using exactly the same analytic covariates and sinusoidal residual perturbation. Python computes the CR2 focal contrast using the research implementation; a new independent GitHub Actions job calls R `clubSandwich::vcovCR(..., type="CR2", target=rep(1,N), inverse_var=TRUE)` and compares the resulting contrast standard error. This genuinely external implementation comparison is a **numerical** check under the identity working target, not proof of correct small-sample reference degrees of freedom or calibration for correlated asynchronous trajectories. Cross-language CI completion must be checked separately before claiming this comparison passed.
+
+Also added analytic single-record cluster HC2 equivalence and full-rank coefficient-reparameterization invariance tests. Neither changes any production method or selected source simulation outcome.
