@@ -11,6 +11,8 @@ from hashlib import sha256
 import json
 import os
 from pathlib import Path
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 import numpy as np
 from scipy.stats import t as student_t
 from scripts.run_w3_r16_leverage_covariance_factorial import (
