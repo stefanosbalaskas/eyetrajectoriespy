@@ -95,8 +95,8 @@ def source(block,n,support):
             "independent_unit":"participant","all_recordings_complete":True,
             "interpolation_performed":False,"simulation":True
         })
-    return src,gaze,np.asarray(x)[np.asarray(persons)],np.asarray(persons),
-           np.asarray(trials),tuple(means)
+    return (src,gaze,np.asarray(x)[np.asarray(persons)],np.asarray(persons),
+            np.asarray(trials),tuple(means))
 
 
 def fit(source_case,model):
