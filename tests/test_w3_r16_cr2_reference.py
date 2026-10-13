@@ -37,3 +37,37 @@ def test_reject_nonpositive_weights():
     X=np.arange(12,dtype=float).reshape(6,2)
     with pytest.raises(ValueError,match="positive"):
         cr2_wls_identity(X,np.ones(6),np.zeros(6),np.repeat(range(3),2),np.array([1.,0.]))
+
+def test_single_observation_clusters_reduce_to_hc2_exactly():
+    rng=np.random.default_rng(1127)
+    n=30
+    x=np.linspace(-.8,.8,n)
+    X=np.column_stack([np.ones(n),x])
+    w=np.linspace(.65,1.45,n)
+    y=0.4 + 0.8*x + rng.normal(0,.3,n)
+    direction=np.array([0.,1.])
+    result=cr2_wls_identity(X,y,w,np.arange(n),direction)
+    Z=X*np.sqrt(w)[:,None]
+    yw=y*np.sqrt(w)
+    G=Z.T@Z
+    b=np.linalg.solve(G,Z.T@yw)
+    e=yw-Z@b
+    h=np.einsum("ij,jk,ik->i",Z,np.linalg.inv(G),Z)
+    assert np.all((h>=0)&(h<1))
+    u=(Z* (e/np.sqrt(1-h))[:,None])
+    independently=np.sqrt(direction@np.linalg.solve(G,u.T@u)@np.linalg.solve(G,direction))
+    np.testing.assert_allclose(result["cr2_se"],independently,atol=1e-11,rtol=1e-10)
+
+def test_invariance_under_reparameterization():
+    rng=np.random.default_rng(212)
+    n=32
+    groups=np.repeat(np.arange(n),3)
+    X=np.column_stack([np.ones(n*3),rng.normal(size=n*3),rng.normal(size=n*3)])
+    y=X@np.array([.1,.3,-.2])+rng.normal(size=n*3)
+    w=rng.uniform(.5,2.,size=n*3)
+    c=np.array([0.,1.,0.])
+    transform=np.array([[1.,.2,0.], [0.,1.4,.3], [0.,0.,.75]])
+    a=cr2_wls_identity(X,y,w,groups,c)
+    # Design reparameterized as X T; contrast must transform as T^T c.
+    v=cr2_wls_identity(X@transform,y,w,groups,transform.T@c)
+    np.testing.assert_allclose(a["cr2_se"],v["cr2_se"],atol=1e-10,rtol=1e-9)
