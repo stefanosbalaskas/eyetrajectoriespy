@@ -193,6 +193,31 @@ estimator or whole-function confidence band. Original
 scientific plot, full case ledger and paired comparisons
 remain archived; all research and release blockers stay open.
 
+## W3 R15: fresh high-leverage finite-cluster stress identifies a source-specific vulnerability
+
+[Original new-source R15 uncertainty evidence](w3-r15-fresh-leverage-cluster-jackknife-results.md)
+tests **96 NEW independently generated blocks**,
+nested 24/48/96 participants, genuinely
+asynchronous original complete trials,
+two fixed adequately represented means
+and a predeclared **two extreme observed
+predictor participants**. All **1,152/1,152**
+original source/model cases, Python 3.11–3.13
+numerical contracts and 4/4 source checksum
+checks passed. The extreme-x source
+raised mean maximum block leverage for
+Legendre at n=24 from **0.187 to 0.470**,
+and participant CR1/oracle standard-error
+ratio declined from **0.924 to 0.731**.
+Original pointwise CR1/t truth inclusion
+under extreme-x n=24 was **71/96**
+(Legendre) and **68/96** (spline),
+vs **82/96** for delete-whole-person
+jackknife/t in both. The jackknife is
+**not** a general 90% coverage solution
+and no public uncertainty estimator or
+simultaneous-band API was qualified.
+
 ## New workflow-level scientific evidence
 
 - [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.
