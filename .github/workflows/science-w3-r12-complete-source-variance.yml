@@ -1,0 +1,61 @@
+name: science-w3-r12-complete-source-variance
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r12_complete_cluster_variance_oracle.py"
+      - "tests/test_w3_r12_complete_cluster_variance_oracle.py"
+      - ".github/workflows/science-w3-r12-complete-source-variance.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  numerical-source-contracts:
+    name: W3 R12 exact Gaussian known covariance and jackknife Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r12_complete_cluster_variance_oracle.py
+
+  original-complete-source-science:
+    name: W3 R12 96 fresh blocks 24 48 96 people and true conditional variance
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Original 576 complete-source cases with no missingness or mean-model stress
+        run: |
+          python scripts/run_w3_r12_complete_cluster_variance_oracle.py \
+            --out build/w3-r12-original
+      - name: Retain all source outcomes, numerical failures, plot and hashes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-r12-original-complete-variance-oracle-evidence
+          path: build/w3-r12-original/
+          retention-days: 90
+          if-no-files-found: warn
