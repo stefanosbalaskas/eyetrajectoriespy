@@ -182,7 +182,19 @@ def fit(source_case,model):
     eigen=np.asarray([np.linalg.eigvalsh(ch.T@Qi@ch).max() for Qi in Q])
     if eigen.min()<-1e-8 or eigen.max()>1+1e-7:
         raise ValueError("invalid original participant block leverage")
+    # Focal-contrast *design* information contributions: sum exactly one.
+    contrast_direction=np.linalg.solve(totalQ,contrast)
+    contrast_contrib=np.einsum("p,npq,q->n",contrast_direction,Q,contrast_direction)
+    contrast_contrib=contrast_contrib/np.sum(contrast_contrib)
+    effective_clusters=float(1/np.sum(contrast_contrib**2))
+    cluster_influence=group_score@contrast_direction
+    standardized_influence=np.abs(cluster_influence)/np.sqrt(cr1_var)
     return {"point":point,"project":projection,
+            "contrast_max_partial_leverage":float(np.max(contrast_contrib)),
+            "contrast_top_two_partial_leverage":float(np.sum(np.sort(contrast_contrib)[-2:])),
+            "contrast_effective_clusters":effective_clusters,
+            "contrast_max_standardized_influence":float(np.max(standardized_influence)),
+            "contrast_leverage_sum":float(np.sum(contrast_contrib)),
             "cr1_se":float(np.sqrt(cr1_var)),
             "jack_se":float(np.sqrt(jack_var)),
             "oracle_se":float(np.sqrt(oracle_var)),
@@ -239,6 +251,11 @@ def evaluate(block,n,support,model):
                     "point_error":d["point"]-d["known_mid_slope"],
                     "known_mean_projection_error":d["project"]-d["known_mid_slope"],
                     "max_block_leverage":d["max_block_leverage"],
+                    "contrast_max_partial_leverage":d["contrast_max_partial_leverage"],
+                    "contrast_top_two_partial_leverage":d["contrast_top_two_partial_leverage"],
+                    "contrast_effective_clusters":d["contrast_effective_clusters"],
+                    "contrast_max_standardized_influence":d["contrast_max_standardized_influence"],
+                    "contrast_leverage_sum":d["contrast_leverage_sum"],
                     "first_two_mean_block_leverage":d["first_two_mean_block_leverage"],
                     "mean_block_leverage":d["mean_block_leverage"],
                     "jackknife_se_to_oracle":d["jack_se"]/d["oracle_se"],
@@ -317,6 +334,10 @@ def audit(rows):
                         r["public_dense_W3_rejects_async"] and
                         r["source_qr_delta"]<=NUMERICAL_TOL and
                         r["source_grouped_score_delta"]<=NUMERICAL_TOL for r in c),
+                    "mean_contrast_max_partial_leverage":float(np.mean([r["contrast_max_partial_leverage"] for r in c])) if c else None,
+                    "mean_contrast_top_two_partial_leverage":float(np.mean([r["contrast_top_two_partial_leverage"] for r in c])) if c else None,
+                    "mean_contrast_effective_clusters":float(np.mean([r["contrast_effective_clusters"] for r in c])) if c else None,
+                    "mean_contrast_max_standardized_influence":float(np.mean([r["contrast_max_standardized_influence"] for r in c])) if c else None,
                     "mean_max_cluster_leverage":float(np.mean(
                         [r["max_block_leverage"] for r in c])) if c else None,
                     "mean_first_two_leverage":float(np.mean(
