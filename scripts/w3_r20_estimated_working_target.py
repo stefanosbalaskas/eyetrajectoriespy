@@ -121,7 +121,7 @@ def estimate_feasible_working_target(X,y,weight,cluster,time,trial,x,*,slope):
     theta=recovered/scale
     # Sensor coefficient is strictly positive for robust CR2 SPD reference.
     # Report floor use rather than silently claiming four identified components.
-    sensor_floor=max(float(np.mean(weight))*1e-10,1e-14)
+    sensor_floor=max(1e-8,2e-10/float(np.min(weight)))
     floor_applied=theta[-1]<sensor_floor
     theta[-1]=max(float(theta[-1]),sensor_floor)
     blocks=[]
