@@ -1,0 +1,11 @@
+# W3 R17 — newly seeded CR2/Satterthwaite feasibility pilot
+
+Research-only, stacked on the blockwise preflight PR #315. **New master seed 202610141717**, different from the original R16 seed 202610131616, and 8 newly generated independent source blocks; source blocks are *paired* across 2×2 leverage × covariance mechanisms, Legendre-5 and cubic-spline-13 fixed mean bases, and two predeclared working-target modes (the simulation-known within-person covariance and a diagonal misspecification retaining marginal variances).
+
+There are 8 independent generating blocks, **not 128 independent datasets**, with n=24 participants and 128 planned model-target evaluations. Genuinely asynchronous native trial times, original observation values and participant independence are retained. R16's separately validated WLS estimator and known-source Gaussian oracle are used as point and covariance checks. CR2/Satterthwaite is computed by the new blockwise matrix implementation, previously checked against the dense oracle. No interpolation or artificial observation repair is permitted.
+
+The *descriptive* pointwise 90% contrasts are CR1+t(G−1), CR2+t(G−1), CR2+t(Satterthwaite), centered whole-participant CV3J+t(G−1), and the simulation-known Gaussian covariance+t(G−1). Known target covariance is **oracle specification** unavailable in empirical use. A diagonal working target is intentionally misspecified. The Satterthwaite df is computed conditionally on the specified target and does not account for target estimation. No simultaneous bands are tested.
+
+Every source-model-target case enters a failure-inclusive ledger, independent source SHA and SHA256SUMS artifact; missing cases are not scored successful. This short 8-block pilot is a feasibility preflight with potentially very wide Monte Carlo uncertainty, **not scientific confirmation that any method achieves nominal pointwise coverage**. A full prespecified independent replication with materially more generating blocks and multiple participant counts is required before method selection or a 1.2 publication gate.
+
+Blocker issues #289 and #296 remain open. No experimental method is exposed through the public API or merged into protected main; no release/tag/PyPI authorization.
