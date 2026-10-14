@@ -9,6 +9,11 @@ Numerical tests require (a) agreement with the separately tested identity CR2 wh
 This is **not** yet independent external `clubSandwich` validation for a correlated working target. Neither a fitted/random-effects target estimator nor coefficient-specific reference df has been implemented, and no coverage result or public production estimator is claimed. Dense per-cluster matrices are a numerical research reference, not a memory-scalable native asynchronous gaze method. Research PR stacked only; version 1.2 unreleased, no tag, main merge or PyPI publication.
 
 
-## R16 independent Satterthwaite validation correction (PR #314)
+## R16 external validation corrections (PR #314)
 
-The originally implemented non-symmetric factor also satisfied `AᵢDᵢAᵢᵀ=Φᵢ`, but is **not** generally numerically equivalent to R clubSandwich's canonical symmetric positive-definite CR2 adjustment when `Φᵢ` contains off-diagonal covariance. A broader independent test found agreement under two identity-target designs but discrepancies under all three correlated-target designs in the uncorrected code. The research-only implementation now uses the SPD factor above, with explicit symmetry regression tests, retains the original independent fixtures and numerical tolerances, and reruns the independent R comparison. No finite-sample calibration claim is made before all external tests pass. The historical failing run is retained.
+The first expanded R comparison failed on three correlated-target fixtures while two identity-target fixtures agreed. Two distinct methodological differences were identified:
+
+1. The originally implemented Python factor satisfied `Aᵢ Dᵢ Aᵢᵀ = Φᵢ` but was nonsymmetric for a correlated `Φᵢ`. The implementation now uses the canonical symmetric positive-definite CR2 factor, and symmetry is regression-tested.
+2. The original R comparison supplied `inverse_var=TRUE` with unweighted `lm()` and a **non-identity** within-person target. This setting activates R's inverse-variance-specific shortcut, although the fitted weights do not equal the inverse specified target covariance. The independent comparison has been changed to `inverse_var=FALSE`, so the R adjustment uses the full residual covariance under the declared target. The original shortcut is appropriate for an actual inverse-variance fit, not this unweighted correlated-target fixture.
+
+The individual contribution of these differences to the prior numerical discrepancy is not established until a fresh exact-head external validation completes. All frozen data designs, coefficient contrasts and numeric tolerances are unchanged, and the historical failed run remains available. No pointwise or simultaneous calibration has been established.
