@@ -28,32 +28,35 @@ TARGETS=("correct","diagonal_misspecified")
 NOMINAL=.90
 
 
-def fresh_source(block,support):
-    if not isinstance(block,int) or not 0<=block<BLOCKS or support not in r16.SUPPORT:
+def fresh_source(block,support,*,n=N,master_seed=R17_SEED,n_blocks=BLOCKS,max_n=None):
+    if not isinstance(block,int) or not 0<=block<n_blocks or support not in r16.SUPPORT:
         raise ValueError("outside prespecified R17 independent source")
-    rng=np.random.default_rng(R17_SEED+23741*block)
+    if n not in r16.SIZES or (max_n is not None and max_n<n):
+        raise ValueError("outside prespecified R17 independent source")
+    rng=np.random.default_rng(master_seed+23741*block)
+    total_n=max_n if max_n is not None else n
     maxtrials=3
     nt=len(r16.TIME)
     nd=len(r16.DIMS)
-    xp=rng.uniform(-.95,.95,size=N)
-    trials_per=1+np.floor(3*rng.uniform(size=N)).astype(int)
-    jitter=np.clip(rng.normal(0,.006,size=(N,maxtrials,nt)),-.01,.01)
+    xp=rng.uniform(-.95,.95,size=total_n)
+    trials_per=1+np.floor(3*rng.uniform(size=total_n)).astype(int)
+    jitter=np.clip(rng.normal(0,.006,size=(total_n,maxtrials,nt)),-.01,.01)
     jitter[:,:,0]=0.
     jitter[:,:,-1]=0.
     times_all=r16.TIME[None,None,:]+jitter
     if not np.all(np.diff(times_all,axis=2)>0):
         raise ValueError("R17 source times not strictly increasing")
-    intercept=rng.normal(size=(N,1,1,nd))
-    slope=rng.normal(size=(N,1,1,nd))
-    trial_noise=rng.normal(size=(N,maxtrials,1,nd))
-    sensor=rng.normal(size=(N,maxtrials,nt,nd))
+    intercept=rng.normal(size=(total_n,1,1,nd))
+    slope=rng.normal(size=(total_n,1,1,nd))
+    trial_noise=rng.normal(size=(total_n,maxtrials,1,nd))
+    sensor=rng.normal(size=(total_n,maxtrials,nt,nd))
     cov_mode=support.split("_")[-1]
-    x=xp.copy()
+    x=xp[:n].copy()
     if support.startswith("extreme_"):
         x[0]=3.
         x[1]=-2.5
     ts=[];ys=[];ms=[];persons=[];trialnums=[]
-    for i in range(N):
+    for i in range(n):
         for j in range(int(trials_per[i])):
             t=times_all[i,j].copy()
             base=r16.truth_coefficients(t)
@@ -74,7 +77,7 @@ def fresh_source(block,support):
         metadata=meta,provenance={"research_study":STUDY,"block":block,
               "support":support,"independent_unit":"participant",
               "all_recordings_complete":True,"interpolation_performed":False,
-              "simulation":True,"fresh_master_seed":R17_SEED})
+              "simulation":True,"fresh_master_seed":master_seed})
     raw={"block":block,"x":xp,"n_trials":trials_per,"time":times_all,
          "participant_intercept":intercept,"participant_slope":slope,
          "trial_noise":trial_noise,"sensor_noise":sensor,
@@ -85,7 +88,7 @@ def fresh_source(block,support):
 def prepare(source_case,model):
     raw,gaze,x,person,trial,_=source_case
     groups=np.unique(person)
-    counts=np.bincount(person,minlength=N)
+    counts=np.bincount(person,minlength=len(groups))
     XX=[];YY=[];WW=[];ID=[]
     true_target=[]
     for who in groups:
@@ -117,13 +120,13 @@ def prepare(source_case,model):
             np.concatenate(ID),true_target)
 
 
-def evaluate(block,support,model,target):
-    row={"study":STUDY,"block":block,"n_participants":N,
+def evaluate(block,support,model,target,*,n=N,master_seed=R17_SEED,n_blocks=BLOCKS,max_n=None):
+    row={"study":STUDY,"block":block,"n_participants":n,
          "support":support,"model":model,"target":target,"status":"failed",
          "error":None,"pointwise_inference_qualified":False,
          "simultaneous_bands_qualified":False,"release_authorized":False}
     try:
-        data=fresh_source(block,support)
+        data=fresh_source(block,support,n=n,master_seed=master_seed,n_blocks=n_blocks,max_n=max_n)
         ref=r16.fit(data,model)
         X,y,w,person,Phi=prepare(data,model)
         c=np.r_[np.zeros(r16.basis(np.array([.5]),model).shape[1]),
@@ -140,13 +143,13 @@ def evaluate(block,support,model,target):
             raise ValueError("blockwise CR2 mathematical contract failed")
         truth=float(r16.truth_coefficients(r16.TIME)[1,r16.FOCAL,0])
         df=adjusted["satterthwaite_df"]
-        if not 0<df<=N+1e-5:
+        if not 0<df<=n+1e-5:
             raise ValueError("invalid Satterthwaite reference df")
-        m={"cr1_tGminus1":(ref["cr1_se"],N-1),
-           "cr2_tGminus1":(adjusted["cr2_se"],N-1),
+        m={"cr1_tGminus1":(ref["cr1_se"],n-1),
+           "cr2_tGminus1":(adjusted["cr2_se"],n-1),
            "cr2_satterthwaite":(adjusted["cr2_se"],df),
-           "cv3j_tGminus1":(ref["jack_se"],N-1),
-           "oracle_tGminus1":(ref["oracle_se"],N-1)}
+           "cv3j_tGminus1":(ref["jack_se"],n-1),
+           "oracle_tGminus1":(ref["oracle_se"],n-1)}
         covered={key:bool(abs(ref["point"]-truth)<=student_t.ppf(.95,nu)*se)
                  for key,(se,nu) in m.items()}
         row.update({"status":"ok","point":float(ref["point"]),"truth":truth,
