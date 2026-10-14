@@ -69,10 +69,11 @@ def test_external_satterthwaite_df_and_critical_value(unequal,extreme,rho):
     contrasts <- rbind(c(0,1,0,.5), c(0,0,1,0))
     out <- linear_contrast(fit,vcov=V,contrasts=contrasts,
                            level=.90,test="Satterthwaite")
+    stopifnot(nrow(out)==2L, all(c("df","SE","Est") %in% names(out)))
     for (i in seq_len(nrow(out))) {
-      df <- as.numeric(out[["d.f."]][i])
+      df <- as.numeric(out[["df"]][i])
       se <- as.numeric(out[["SE"]][i])
-      est <- as.numeric(out[["Estimate"]][i])
+      est <- as.numeric(out[["Est"]][i])
       critical <- qt(.95,df)
       cat(sprintf("R16REF %.16g %.16g %.16g %.16g\\n",df,se,critical,est))
     }
