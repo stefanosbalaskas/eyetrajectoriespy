@@ -1,0 +1,13 @@
+# R20 — independently seeded small pilot for feasible covariance estimation
+
+Research-only pilot stacked on [R20 working-target implementation PR #321](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/321). All original R16–R19 oracle studies remain unchanged. The new **8 independent generating blocks** use a distinct master seed `202610150821`, nested n=24/48 participants, four support × covariance modes, two fixed functional mean bases, and **two predeclared estimated working covariance families**. There are **256 paired source/model/target cases but only eight independent generating blocks**. Each case must be retained in the original failure-inclusive ledger.
+
+## Separating target estimation from inferential calibration
+
+For each source/model fit, estimate working covariance components from observable values, times, predictor and trial labels, and regression residuals only. Do not pass primitive simulation innovations, source truth or source variance components to the estimator. Fit both *shared* and *predictor-scaled* random-slope nuisance families without selecting a winner from the known generating mechanism. The scientific ledger can separately annotate which covariance family matches the simulated generator and the true variance components for **diagnostic reporting only**, alongside NNLS rank/condition, boundary interventions, component estimates and failure counts.
+
+Use the previously R-validated reference blockwise CR2 covariance and conditional coefficient-specific Satterthwaite df, but **explicitly do not count uncertainty from covariance estimation**. Evaluate 90% pointwise known-truth inclusion under CR1+t(G−1), estimated CR2+t(G−1), estimated CR2+conditional Satterthwaite t, participant-delete CV3J+t(G−1), and the simulation-only known Gaussian covariance+t(G−1). Require numerical WLS point and CR2 adjustment identities against the original source. Include the source SHA and SHA256 manifest in CI artifacts.
+
+## Limits
+
+The eight-block simulation serves as a stress/feasibility screen, **not nominal coverage qualification**. A model-based working covariance family that mimics the generating source may be unidentifiable or produce boundary component estimates at high leverage. Failures are evidence, not discarded runs. If the estimator fails, its source cell must stay failed; predeclared pilot cases and numerical thresholds must not be silently adjusted for green CI. Conditional Satterthwaite t with fitted nuisance covariance remains approximate. Scientific issues #289 and #296 remain open. No public API, protected main merge, version 1.2 release tag, simultaneous functional-band qualification or PyPI publication.
