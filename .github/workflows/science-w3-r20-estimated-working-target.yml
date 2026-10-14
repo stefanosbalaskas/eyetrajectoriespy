@@ -1,0 +1,31 @@
+name: science-w3-r20-estimated-working-target
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/w3_r20_estimated_working_target.py"
+      - "tests/test_w3_r20_estimated_working_target.py"
+      - ".github/workflows/science-w3-r20-estimated-working-target.yml"
+      - "docs/development/w3-r20-estimated-working-target-protocol.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  observable-covariance-contract:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r20_estimated_working_target.py
