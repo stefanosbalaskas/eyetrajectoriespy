@@ -39,7 +39,9 @@ def wilson_interval(success,total,alpha=.05):
     d=1+z*z/total
     center=(p+z*z/(2*total))/d
     half=z*np.sqrt(p*(1-p)/total+z*z/(4*total*total))/d
-    return [float(max(0,center-half)),float(min(1,center+half))]
+    lower=0.0 if success==0 else float(max(0.0,center-half))
+    upper=1.0 if success==total else float(min(1.0,center+half))
+    return [lower,upper]
 
 
 def paired_bootstrap_delta(rows,first,second,seed):
