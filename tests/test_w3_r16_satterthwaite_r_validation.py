@@ -52,9 +52,9 @@ def test_external_satterthwaite_df_and_critical_value(unequal,extreme,rho):
     rcode="""
     suppressPackageStartupMessages(library(clubSandwich))
     n <- 12
-    unequal <- %s
-    extreme <- %s
-    rho <- %.17g
+    unequal <- __UNEQUAL__
+    extreme <- __EXTREME__
+    rho <- __RHO__
     sizes <- if (unequal) 2L + ((seq_len(n)-1L) %% 3L) else rep(3L,n)
     grp <- rep(seq_len(n),times=sizes)
     xp <- seq(-.8,.8,length.out=n)
@@ -76,7 +76,10 @@ def test_external_satterthwaite_df_and_critical_value(unequal,extreme,rho):
       critical <- qt(.95,df)
       cat(sprintf("R16REF %.16g %.16g %.16g %.16g\\n",df,se,critical,est))
     }
-    """ % ("TRUE" if unequal else "FALSE","TRUE" if extreme else "FALSE",rho)
+    """
+    rcode=(rcode.replace("__UNEQUAL__", "TRUE" if unequal else "FALSE")
+               .replace("__EXTREME__", "TRUE" if extreme else "FALSE")
+               .replace("__RHO__", format(rho, ".17g")) )
     run=subprocess.run(["Rscript","-e",rcode],capture_output=True,
                         text=True,check=True)
     records=[line.split()[1:] for line in run.stdout.splitlines()
