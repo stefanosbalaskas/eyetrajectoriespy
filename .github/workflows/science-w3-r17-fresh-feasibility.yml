@@ -1,0 +1,46 @@
+name: science-w3-r17-fresh-feasibility
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r17_fresh_feasibility.py"
+      - "tests/test_w3_r17_fresh_feasibility.py"
+      - ".github/workflows/science-w3-r17-fresh-feasibility.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  numerical-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r17_fresh_feasibility.py
+  original-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r17_fresh_feasibility.py --out build/w3-r17-fresh-feasibility
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r17-independent-seed-feasibility
+          path: build/w3-r17-fresh-feasibility/
+          if-no-files-found: warn
+          retention-days: 90
