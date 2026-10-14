@@ -36,8 +36,8 @@ def cr2_satterthwaite_reference(X, weights, cluster, contrast, target_blocks):
         Pi=phi[np.ix_(idx,idx)]
         Di=D[np.ix_(idx,idx)]
         root=_symmetric_power(Pi,.5)
-        inv=_symmetric_power(Pi,-.5)
-        A=root@_symmetric_power(inv@Di@inv,-.5)@inv
+        # Use identical canonical SPD factor as covariance CR2 estimator.
+        A=root@_symmetric_power(root@Di@root,-.5)@root
         v=np.zeros(len(Z));v[idx]=A.T@(Z[idx]@beta_direction)
         q.append(R@v)
     B=np.stack(q,axis=1)

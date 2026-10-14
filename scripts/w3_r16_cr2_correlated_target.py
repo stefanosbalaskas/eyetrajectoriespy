@@ -2,8 +2,8 @@
 
 For whitened weighted design Z, H=Z(Z'Z)^-1 Z'; working covariance
 Phi=blockdiag(Phi_i). E_i=[(I-H)Phi(I-H)']_ii. A_i E_i A_i'=Phi_i
-with A_i=Phi_i^(1/2)(Phi_i^(-1/2) E_i Phi_i^(-1/2))^(-1/2)
-Phi_i^(-1/2). Corrects expected cluster score covariance under
+with symmetric SPD A_i=Phi_i^(1/2)(Phi_i^(1/2) E_i Phi_i^(1/2))^(-1/2)
+Phi_i^(1/2). Corrects expected cluster score covariance under
 specified working target. No degrees-of-freedom or coverage qualification.
 """
 import numpy as np
@@ -36,7 +36,7 @@ def cr2_correlated_wls(X,y,weights,cluster,contrast,target_blocks):
             raise ValueError("incorrect working covariance block")
         _symmetric_power(phi,.5)
     # Completely independent dense residual-covariance assembly across blocks.
-    adjustments=[]; numer=[]; max_error=0.
+    adjustments=[]; numer=[]; max_error=0.; max_asymmetry=0.
     for i,(Zi,phi) in enumerate(zip(U,P)):
         D=np.zeros_like(phi)
         for j,(Zj,phij) in enumerate(zip(U,P)):
@@ -44,10 +44,11 @@ def cr2_correlated_wls(X,y,weights,cluster,contrast,target_blocks):
             if i==j:Bij=Bij+np.eye(len(Zi))
             D+=Bij@phij@Bij.T
         root=_symmetric_power(phi,.5)
-        invroot=_symmetric_power(phi,-.5)
-        middle=invroot@D@invroot
-        A=root@_symmetric_power(middle,-.5)@invroot
+        # Unique symmetric positive-definite CR2 factor, consistent with
+        # R clubSandwich's Cholesky-based adjustment construction.
+        A=root@_symmetric_power(root@D@root,-.5)@root
         max_error=max(max_error,float(np.max(np.abs(A@D@A.T-phi))))
+        max_asymmetry=max(max_asymmetry,float(np.max(np.abs(A-A.T))))
         ei=e[cluster==groups[i]]
         adjusted=Zi.T@(A@ei)
         adjustments.append(adjusted)
@@ -55,7 +56,9 @@ def cr2_correlated_wls(X,y,weights,cluster,contrast,target_blocks):
     var=float(sum(numer))
     if var<=0 or not np.isfinite(var):raise ValueError("nonpositive CR2 variance")
     return dict(point=float(contrast@beta),cr2_se=float(np.sqrt(var)),
-                covariance_adjustment_error=max_error,clusters=len(groups),
+                covariance_adjustment_error=max_error,
+                covariance_adjustment_asymmetry=max_asymmetry,
+                clusters=len(groups),
                 working_target="specified_block_covariance_after_wls_whitening",
                 reference_degrees_freedom_qualified=False,
                 source_covariance_estimated=False,

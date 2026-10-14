@@ -31,7 +31,7 @@ def test_correlated_working_target_against_r_clubsandwich():
     fit <- lm(y ~ x*t)
     phi <- lapply(seq_len(n), function(z) (1-.4)*diag(3)+.4*matrix(1,3,3))
     vc <- vcovCR(fit, cluster=rep(seq_len(n),each=3), type="CR2",
-                 target=phi, inverse_var=TRUE)
+                 target=phi, inverse_var=FALSE)
     h <- c(0,1,0,.5)
     cat(sprintf("%.16g",sqrt(drop(t(h) %*% vc %*% h))))
     """
