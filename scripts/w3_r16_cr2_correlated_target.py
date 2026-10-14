@@ -44,9 +44,9 @@ def cr2_correlated_wls(X,y,weights,cluster,contrast,target_blocks):
             if i==j:Bij=Bij+np.eye(len(Zi))
             D+=Bij@phij@Bij.T
         root=_symmetric_power(phi,.5)
-        invroot=_symmetric_power(phi,-.5)
-        middle=invroot@D@invroot
-        A=root@_symmetric_power(middle,-.5)@invroot
+        # Unique symmetric positive-definite CR2 factor, consistent with
+        # R clubSandwich's Cholesky-based adjustment construction.
+        A=root@_symmetric_power(root@D@root,-.5)@root
         max_error=max(max_error,float(np.max(np.abs(A@D@A.T-phi))))
         ei=e[cluster==groups[i]]
         adjusted=Zi.T@(A@ei)
