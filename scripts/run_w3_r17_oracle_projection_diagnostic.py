@@ -130,6 +130,23 @@ def main():
     rows=[diagnose(b,n,s,m) for b in range(original.BLOCKS)
           for n in original.SIZES for s in r16.SUPPORT for m in r16.MODELS]
     summary=summarize(rows)
+    contract_path=Path(__file__).resolve().parents[1]/"docs/development/w3-r17-original-oracle-coverage-contract.json"
+    contract=json.loads(contract_path.read_text(encoding="utf-8"))
+    reference=contract["oracle_truth_tGminus1_counts"]
+    if contract["source_master_seed"]!=original.MASTER_SEED or contract["independent_blocks"]!=original.BLOCKS:
+        raise ValueError("original source seed/block contract disagrees with R17")
+    mismatches=[]
+    if set(reference)!=set(summary["groups"]):
+        mismatches.append({"type":"cell_set","expected":len(reference),"observed":len(summary["groups"])})
+    for group,expected in reference.items():
+        actual=summary["groups"].get(group,{}).get("oracle_truth_t",{}).get("count")
+        completed=summary["groups"].get(group,{}).get("completed")
+        if actual!=expected or completed!=original.BLOCKS:
+            mismatches.append({"group":group,"original_oracle_inclusion":expected,
+                               "diagnostic_oracle_inclusion":actual,"completed_blocks":completed})
+    summary["original_96block_source_truth_oracle_contract_matches"]=not mismatches
+    summary["original_oracle_reference_commit"]=contract["source_commit"]
+    summary["original_source_truth_oracle_discrepancies"]=mismatches
     for name,obj in (("case-ledger.json",rows),("summary.json",summary)):
         (args.out/name).write_text(json.dumps(obj,sort_keys=True,indent=2)+"\n",encoding="utf-8")
     (args.out/"source-commit.txt").write_text(os.environ.get("GITHUB_SHA","unverified-local")+"\n")
@@ -139,8 +156,10 @@ def main():
     print("R17 ORACLE PROJECTION AUDIT:",json.dumps(headline,sort_keys=True))
     for name,statistics in summary["groups"].items():
         print("R17 ORACLE PROJECTION GROUP:",json.dumps({"name":name,**statistics},sort_keys=True))
-    if summary["missing_source_model_diagnostics"] or summary["failed_source_model_diagnostics"]:
-        raise SystemExit("R17 diagnostic failures retained; not qualified")
+    if (summary["missing_source_model_diagnostics"] or
+        summary["failed_source_model_diagnostics"] or
+        not summary["original_96block_source_truth_oracle_contract_matches"]):
+        raise SystemExit("R17 diagnostic failure or original-oracle discrepancy retained; not qualified")
 
 
 if __name__=="__main__":
