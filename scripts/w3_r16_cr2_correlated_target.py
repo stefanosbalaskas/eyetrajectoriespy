@@ -2,8 +2,8 @@
 
 For whitened weighted design Z, H=Z(Z'Z)^-1 Z'; working covariance
 Phi=blockdiag(Phi_i). E_i=[(I-H)Phi(I-H)']_ii. A_i E_i A_i'=Phi_i
-with A_i=Phi_i^(1/2)(Phi_i^(-1/2) E_i Phi_i^(-1/2))^(-1/2)
-Phi_i^(-1/2). Corrects expected cluster score covariance under
+with symmetric SPD A_i=Phi_i^(1/2)(Phi_i^(1/2) E_i Phi_i^(1/2))^(-1/2)
+Phi_i^(1/2). Corrects expected cluster score covariance under
 specified working target. No degrees-of-freedom or coverage qualification.
 """
 import numpy as np
