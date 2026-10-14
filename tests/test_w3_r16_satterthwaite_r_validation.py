@@ -65,7 +65,7 @@ def test_external_satterthwaite_df_and_critical_value(unequal,extreme,rho):
     y <- .2+.7*x-.12*time+.17*x*time+.05*sin(1.3*idx)
     fit <- lm(y ~ x*time)
     target <- lapply(sizes,function(m) (1-rho)*diag(m)+rho*matrix(1,m,m))
-    V <- vcovCR(fit, cluster=grp, type="CR2", target=target, inverse_var=TRUE)
+    V <- vcovCR(fit, cluster=grp, type="CR2", target=target, inverse_var=FALSE)
     contrasts <- rbind(c(0,1,0,.5), c(0,0,1,0))
     out <- linear_contrast(fit,vcov=V,contrasts=contrasts,
                            level=.90,test="Satterthwaite")
