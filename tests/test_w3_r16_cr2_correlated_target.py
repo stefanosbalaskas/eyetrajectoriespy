@@ -22,6 +22,7 @@ def test_identity_target_matches_externally_validated_identity_cr2():
     b=cr2_wls_identity(X,y,w,g,c)
     np.testing.assert_allclose(a["cr2_se"],b["cr2_se"],rtol=2e-8,atol=2e-10)
     assert a["covariance_adjustment_error"]<1e-8
+    assert a["covariance_adjustment_asymmetry"]<1e-10
     assert not a["reference_degrees_freedom_qualified"]
 
 def test_correlated_target_reproduces_cluster_covariance_identity():
@@ -31,6 +32,7 @@ def test_correlated_target_reproduces_cluster_covariance_identity():
     a=cr2_correlated_wls(X,y,w,g,c,phi)
     assert a["cr2_se"]>0
     assert a["covariance_adjustment_error"]<1e-8
+    assert a["covariance_adjustment_asymmetry"]<1e-10
     assert a["clusters"]==8
 
 def test_arbitrary_positive_weighting_and_targets():
