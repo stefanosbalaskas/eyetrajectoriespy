@@ -1,0 +1,29 @@
+name: science-w3-r16-cr2-correlated-r-reference
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/w3_r16_cr2_correlated_target.py"
+      - "tests/test_w3_r16_cr2_correlated_r_reference.py"
+      - ".github/workflows/science-w3-r16-cr2-correlated-r-reference.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cross-language:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      EYE_CR2_REQUIRE_R_REFERENCE: "1"
+      OPENBLAS_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+      - run: Rscript -e 'install.packages("clubSandwich", repos="https://cloud.r-project.org")'
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r16_cr2_correlated_r_reference.py
