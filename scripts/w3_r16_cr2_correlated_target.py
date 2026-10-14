@@ -36,7 +36,7 @@ def cr2_correlated_wls(X,y,weights,cluster,contrast,target_blocks):
             raise ValueError("incorrect working covariance block")
         _symmetric_power(phi,.5)
     # Completely independent dense residual-covariance assembly across blocks.
-    adjustments=[]; numer=[]; max_error=0.
+    adjustments=[]; numer=[]; max_error=0.; max_asymmetry=0.
     for i,(Zi,phi) in enumerate(zip(U,P)):
         D=np.zeros_like(phi)
         for j,(Zj,phij) in enumerate(zip(U,P)):
@@ -48,6 +48,7 @@ def cr2_correlated_wls(X,y,weights,cluster,contrast,target_blocks):
         # R clubSandwich's Cholesky-based adjustment construction.
         A=root@_symmetric_power(root@D@root,-.5)@root
         max_error=max(max_error,float(np.max(np.abs(A@D@A.T-phi))))
+        max_asymmetry=max(max_asymmetry,float(np.max(np.abs(A-A.T))))
         ei=e[cluster==groups[i]]
         adjusted=Zi.T@(A@ei)
         adjustments.append(adjusted)
@@ -55,7 +56,9 @@ def cr2_correlated_wls(X,y,weights,cluster,contrast,target_blocks):
     var=float(sum(numer))
     if var<=0 or not np.isfinite(var):raise ValueError("nonpositive CR2 variance")
     return dict(point=float(contrast@beta),cr2_se=float(np.sqrt(var)),
-                covariance_adjustment_error=max_error,clusters=len(groups),
+                covariance_adjustment_error=max_error,
+                covariance_adjustment_asymmetry=max_asymmetry,
+                clusters=len(groups),
                 working_target="specified_block_covariance_after_wls_whitening",
                 reference_degrees_freedom_qualified=False,
                 source_covariance_estimated=False,
