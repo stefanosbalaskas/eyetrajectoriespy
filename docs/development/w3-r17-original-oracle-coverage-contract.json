@@ -1,0 +1,33 @@
+{
+  "study": "W3_R17_NEW96_INDEPENDENT_SOURCE_POINTWISE_CALIBRATION",
+  "source_commit": "376148eac71cf80ddc30bee364f0e8eee17c7578",
+  "source_workflow_run": 38609764263,
+  "source_master_seed": 202610142424,
+  "independent_blocks": 96,
+  "oracle_truth_tGminus1_counts": {
+    "n24/ordinary_independent/legendre5": 86,
+    "n24/ordinary_independent/cubic_spline13": 85,
+    "n24/ordinary_dependent/legendre5": 89,
+    "n24/ordinary_dependent/cubic_spline13": 88,
+    "n24/extreme_independent/legendre5": 87,
+    "n24/extreme_independent/cubic_spline13": 87,
+    "n24/extreme_dependent/legendre5": 88,
+    "n24/extreme_dependent/cubic_spline13": 87,
+    "n48/ordinary_independent/legendre5": 87,
+    "n48/ordinary_independent/cubic_spline13": 87,
+    "n48/ordinary_dependent/legendre5": 85,
+    "n48/ordinary_dependent/cubic_spline13": 86,
+    "n48/extreme_independent/legendre5": 89,
+    "n48/extreme_independent/cubic_spline13": 89,
+    "n48/extreme_dependent/legendre5": 86,
+    "n48/extreme_dependent/cubic_spline13": 87,
+    "n96/ordinary_independent/legendre5": 83,
+    "n96/ordinary_independent/cubic_spline13": 84,
+    "n96/ordinary_dependent/legendre5": 81,
+    "n96/ordinary_dependent/cubic_spline13": 83,
+    "n96/extreme_independent/legendre5": 89,
+    "n96/extreme_independent/cubic_spline13": 89,
+    "n96/extreme_dependent/legendre5": 86,
+    "n96/extreme_dependent/cubic_spline13": 84
+  }
+}
