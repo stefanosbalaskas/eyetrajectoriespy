@@ -1,4 +1,4 @@
-# W3 CR2 and estimated-covariance research: source-evidence index (R16–R36)
+# W3 CR2 and estimated-covariance research: source-evidence index (R16–R37)
 
 **Status: research development only.** The eyetrajectoriespy 1.2 covariance inference work has not been promoted into the supported public API, and neither the proposed pointwise intervals nor simultaneous 90% functional bands are statistically qualified. This index preserves **numerical verification**, **source-level finite-sample evidence**, **identified failures**, and **subsequent explanations** as distinct levels of evidence.
 
@@ -28,6 +28,7 @@ All stages here use original source code and scientific workflows in draft resea
 | R34 | [Observed REML nuisance curvature and conditional CR2-width sensitivity](w3-r34-nuisance-information-results.md), four new Gaussian source blocks and 16 paired source models | All 16 conditional CR2 derivative calculations succeeded, but regular Hessian-based uncertainty approximation refused 10/16 near-boundary nuisance fits; no valid coefficient CI adjustment |
 | R35 | [Exact-zero Gaussian REML slope-variance profiles](w3-r35-exact-zero-profile-results.md), four new independent blocks, eight original sources and 56 constrained likelihood grid fits | Exactly-zero slope variance minimized the evaluated finite grid in 2/4 extreme source blocks; no chi-square boundary inference or functional CI qualification |
 | R36 | [Independent calibration/held-out exact-zero profile grid](w3-r36-split-null-profile-results.md), 16 new primitive source blocks, 48 source/state cases and 336 constrained fits | Held-out null-versus-positive rejection 0/8 vs 0/8 under ordinary leverage, 2/8 vs 2/8 under extreme leverage; no demonstrated discrimination or valid type-I calibration |
+| R37 | [Continuous nonnegative Gaussian REML at exact zero](w3-r37-continuous-boundary-reml-results.md), 4 new independent source blocks, 16 paired source cases, 64 continuous starts and 112 fixed-grid fits | Analytic slope-variance score validated at zero, but two supposedly successful 10× starts found markedly worse likelihood basins; no global optimizer certificate or inferential test |
 
 ## What is currently supported scientifically
 
