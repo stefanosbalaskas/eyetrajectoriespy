@@ -1,0 +1,48 @@
+name: science-w3-r38-dualseed-profile-geometry
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r38_dualseed_profile_geometry.py"
+      - "tests/test_w3_r38_dualseed_profile_geometry.py"
+      - ".github/workflows/science-w3-r38-dualseed-profile-geometry.yml"
+      - "docs/development/w3-r38-dualseed-profile-protocol.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  score-boundary-and-KKT-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r38_dualseed_profile_geometry.py
+  original-R37-block2-dual-nuisance-profile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r38_dualseed_profile_geometry.py --out build/w3-r38-original-profile-audit
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r38-original-block2-two-basin-geometry-ledger
+          path: build/w3-r38-original-profile-audit/
+          retention-days: 90
+          if-no-files-found: warn
