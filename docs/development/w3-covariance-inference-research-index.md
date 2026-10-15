@@ -1,4 +1,4 @@
-# W3 CR2 and estimated-covariance research: source-evidence index (R16–R30)
+# W3 CR2 and estimated-covariance research: source-evidence index (R16–R31)
 
 **Status: research development only.** The eyetrajectoriespy 1.2 covariance inference work has not been promoted into the supported public API, and neither the proposed pointwise intervals nor simultaneous 90% functional bands are statistically qualified. This index preserves **numerical verification**, **source-level finite-sample evidence**, **identified failures**, and **subsequent explanations** as distinct levels of evidence.
 
@@ -22,6 +22,7 @@ All stages here use original source code and scientific workflows in draft resea
 | R28 | [Hypothetical predictor spread sensitivity](w3-r28-predictor-information-results.md), exact negative-control invariance and 32 design information calculations | Counterfactual Gaussian information only, not recruitment or empirical design advice |
 | R29 | [Independent-source predictor-spread Gaussian recovery](w3-r29-counterfactual-predictor-recovery-results.md), 12 independent blocks and 192 paired primitive-noise-reconstructed outcomes | Predictor-dependent slope variance recovery improves on average with wider x spread, but limited source blocks, hypothetical predictor ranges and no CI qualification |
 | R30 | [Standardized-t5 random-slope robustness](w3-r30-heavy-tail-slope-results.md), independent 12-block Gaussian/t5 paired source recovery and original null interaction | No detected change in average predictor-spread benefit under this one non-Gaussian primitive stress; not general robustness or inferential validity |
+| R31 | [Native observation-loss covariance component recovery](w3-r31-observation-process-results.md), 12 fresh independent blocks, 192 paired native-source MCAR/time-MAR/trial-loss comparisons | All numerical fits complete in new seed but slope recovery remains weak and observation-loss effects are heterogeneous; no confidence-interval coverage |
 
 ## What is currently supported scientifically
 
