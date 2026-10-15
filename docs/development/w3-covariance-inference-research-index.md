@@ -1,4 +1,4 @@
-# W3 CR2 and estimated-covariance research: source-evidence index (R16–R28)
+# W3 CR2 and estimated-covariance research: source-evidence index (R16–R29)
 
 **Status: research development only.** The eyetrajectoriespy 1.2 covariance inference work has not been promoted into the supported public API, and neither the proposed pointwise intervals nor simultaneous 90% functional bands are statistically qualified. This index preserves **numerical verification**, **source-level finite-sample evidence**, **identified failures**, and **subsequent explanations** as distinct levels of evidence.
 
@@ -20,6 +20,7 @@ All stages here use original source code and scientific workflows in draft resea
 | R26 | [Independent 16-block REML/NNLS replication](w3-r26-independent-estimator-recovery-results.md), 384 paired cases, block bootstrap | REML trial/sensor improvement supported under the matched Gaussian source, slope/intercept not established |
 | R27 | [Gaussian REML variance-component Fisher information](w3-r27-reml-information-results.md), eight fixed native designs, 1,024 conditional Gaussian draws | Random-slope log variance has weak local expected information despite positive information rank |
 | R28 | [Hypothetical predictor spread sensitivity](w3-r28-predictor-information-results.md), exact negative-control invariance and 32 design information calculations | Counterfactual Gaussian information only, not recruitment or empirical design advice |
+| R29 | [Independent-source predictor-spread Gaussian recovery](w3-r29-counterfactual-predictor-recovery-results.md), 12 independent blocks and 192 paired primitive-noise-reconstructed outcomes | Predictor-dependent slope variance recovery improves on average with wider x spread, but limited source blocks, hypothetical predictor ranges and no CI qualification |
 
 ## What is currently supported scientifically
 
