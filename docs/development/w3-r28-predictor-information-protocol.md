@@ -1,0 +1,17 @@
+# R28 — hypothetical predictor spread and random-slope variance information
+
+**Research-only design sensitivity, not new empirical data or a recommended intervention.** R27 [draft PR #329](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/329) found local Gaussian log random-slope variance standard errors about **4.50–4.65 at n24** and **1.90–2.20 at n96** in matching-family source designs, much worse than trial/sensor precision. The original Gaussian expected restricted Fisher information is full rank, so the problem is **practical component information**, not algebraic rank.
+
+## Frozen original designs and explicitly hypothetical contrasts
+
+Reuse exact original R26 generating blocks **0 and 15**, native observation times and participant/trial structure, and original R27 ordinary predictor-independent and predictor-dependent covariance mechanisms at n24 and n96, each with the correctly matched source Gaussian working covariance form. This yields 8 underlying fixed designs, originally only **two independent generating blocks**. For each original design, hypothetically multiply the *between-participant predictor* by **0.5, 1.0, 2.0 and 4.0**, for 32 information calculations. No new responses, innovations, participants, generating blocks or sampling events are created. This is a counterfactual design perturbation, not an observed treatment effect.
+
+The fixed-effect columns involving the predictor are scaled consistently. For predictor-dependent random-slope source covariance, the participant random-slope kernel is also scaled consistently with the hypothetical new predictor; generating variance coefficient theta remains fixed. For predictor-independent random slopes, scaling x is strictly an invertible change of the fitted fixed-effect coefficient parameterization; `P`, `V` and hence the Gaussian variance-component Fisher information must be unchanged. That invariance is a predeclared **negative control**. Require the original 1.0× baseline to reproduce the previously verified R27 Fisher slope result exactly.
+
+For every cell, report local asymptotic log random-slope variance SE `sqrt((I_log^-1)[slope,slope])`, component information eigenconditioning and comparison with 1.0× original predictor span. This is at the **simulation-known Gaussian covariance**, not a fitted REML estimator or model chosen by inspecting results. No coefficient coverage, interval width, finite-source Monte Carlo confidence or method qualification is tested.
+
+## Limits
+
+Changing predictor spread in a predictor-dependent random-slope covariance model changes the signal-to-noise structure. An improvement under such a hypothetical rescaling does **not** establish feasible recruitment, the causal effect of predictor manipulation, reliable slope variance estimation from bounded finite samples, or the correct covariance model for physiological gaze recordings. Wider predictor span can also change leverage, extrapolation and the interpretation of the slope parameter. Independent prospective source experiments and empirical design constraints would be needed before recommending a participant recruitment policy.
+
+Original R20 failures, R22 numerical refusals, R23 component boundaries, R26 recovery and R27 information findings remain unmodified. No estimated-target CR2/Satterthwaite inference, simultaneous bands, public API promotion, protected main merge, release tag or PyPI upload; issues #289/#296 remain open.
