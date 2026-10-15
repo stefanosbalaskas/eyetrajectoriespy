@@ -1,4 +1,4 @@
-# W3 CR2 and estimated-covariance research: source-evidence index (R16–R34)
+# W3 CR2 and estimated-covariance research: source-evidence index (R16–R35)
 
 **Status: research development only.** The eyetrajectoriespy 1.2 covariance inference work has not been promoted into the supported public API, and neither the proposed pointwise intervals nor simultaneous 90% functional bands are statistically qualified. This index preserves **numerical verification**, **source-level finite-sample evidence**, **identified failures**, and **subsequent explanations** as distinct levels of evidence.
 
@@ -26,6 +26,7 @@ All stages here use original source code and scientific workflows in draft resea
 | R32 | [Known-target versus fitted REML pointwise CR2 pilot](w3-r32-reml-plugin-cr2-results.md), 16 fresh independent Gaussian blocks and 128 paired source cases | All computations accepted and source-specific inclusion decisions matched, but the small nominal 90% pilot does **not** qualify fitted-covariance Satterthwaite inference or simultaneous bands |
 | R33 | [Extreme predictor leverage and incorrect covariance working-family CR2](w3-r33-leverage-misspecified-cr2-results.md), 24 fresh independent Gaussian blocks, 384 paired model/source evaluations, zero numerical refusals | Conditional Satterthwaite df, interval half-width and four original inclusion decisions changed under extreme leverage, particularly with wrong covariance; this is diagnostic, not nominal calibration |
 | R34 | [Observed REML nuisance curvature and conditional CR2-width sensitivity](w3-r34-nuisance-information-results.md), four new Gaussian source blocks and 16 paired source models | All 16 conditional CR2 derivative calculations succeeded, but regular Hessian-based uncertainty approximation refused 10/16 near-boundary nuisance fits; no valid coefficient CI adjustment |
+| R35 | [Exact-zero Gaussian REML slope-variance profiles](w3-r35-exact-zero-profile-results.md), four new independent blocks, eight original sources and 56 constrained likelihood grid fits | Exactly-zero slope variance minimized the evaluated finite grid in 2/4 extreme source blocks; no chi-square boundary inference or functional CI qualification |
 
 ## What is currently supported scientifically
 
