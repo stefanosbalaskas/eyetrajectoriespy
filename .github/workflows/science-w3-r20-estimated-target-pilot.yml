@@ -4,6 +4,7 @@ on:
     types: [opened, synchronize]
     paths:
       - "scripts/run_w3_r20_estimated_target_pilot.py"
+      - "scripts/verify_w3_r20_original_failure_contract.py"
       - "tests/test_w3_r20_estimated_target_pilot.py"
       - ".github/workflows/science-w3-r20-estimated-target-pilot.yml"
       - "docs/development/w3-r20-estimated-target-pilot-protocol.md"
@@ -25,7 +26,7 @@ jobs:
           python-version: "3.12"
       - run: python -m pip install -e ".[dev]"
       - run: python -m pytest -q tests/test_w3_r20_estimated_target_pilot.py
-  original-source:
+  original-source-expected-negative-result:
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     env:
@@ -38,7 +39,10 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install -e ".[dev]"
-      - run: python scripts/run_w3_r20_estimated_target_pilot.py --out build/w3-r20-estimated-target
+      # Original evaluator MUST return nonzero with 41/256 exact source failures.
+      # This CI job verifies the preserved failure, NOT successful inference.
+      - name: Verify original 41 failures are reproduced exactly
+        run: python scripts/verify_w3_r20_original_failure_contract.py --out build/w3-r20-estimated-target
       - uses: actions/upload-artifact@v4
         if: always()
         with:

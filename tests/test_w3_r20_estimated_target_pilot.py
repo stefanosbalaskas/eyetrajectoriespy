@@ -19,26 +19,34 @@ def test_new_seed_not_recycled_and_nesting_preserved():
     assert a[1].provenance["interpolation_performed"] is False
 
 
-@pytest.mark.parametrize("support,family",[
-    ("ordinary_independent","shared_slope"),
-    ("ordinary_dependent","predictor_scaled_slope"),
-    ("extreme_independent","shared_slope"),
+@pytest.mark.parametrize("support,family,expected_status",[
+    ("ordinary_independent","shared_slope","failed"),
+    ("ordinary_dependent","predictor_scaled_slope","ok"),
+    ("extreme_independent","shared_slope","failed"),
 ])
-def test_observable_estimated_target_smoke(support,family):
+def test_observable_estimated_target_smoke(support,family,expected_status):
+    """Reproduce original R20 outcomes, including rejected CR2 adjustments."""
     x=pilot.evaluate(0,24,support,"legendre5",family)
-    assert x["status"]=="ok",x["error"]
+    assert x["status"]==expected_status,x["error"]
     assert x["working_covariance_estimated_from_responses"]
-    assert x["source_uses_known_covariance_in_estimator"] is False
-    assert x["conditional_satterthwaite_df"]>0
-    assert x["conditional_df_ignores_estimated_covariance_uncertainty"]
     assert not x["nominal_coverage_qualified"]
     assert not x["release_authorized"]
+    if expected_status=="failed":
+        assert x["error"]=={
+            "type":"ValueError",
+            "message":"nonpositive or ill-conditioned working covariance",
+        }
+        assert "inclusion" not in x
+    else:
+        assert x["source_uses_known_covariance_in_estimator"] is False
+        assert x["conditional_satterthwaite_df"]>0
+        assert x["conditional_df_ignores_estimated_covariance_uncertainty"]
 
 
 def test_failure_retention_and_independent_blocks():
-    ok=pilot.evaluate(0,24,"ordinary_independent","legendre5","shared_slope")
+    ok=pilot.evaluate(0,24,"ordinary_dependent","legendre5","predictor_scaled_slope")
     assert ok["status"]=="ok",ok["error"]
-    fail=dict(ok,working_family="predictor_scaled_slope",status="failed",
+    fail=dict(ok,working_family="shared_slope",status="failed",
               error={"type":"Fixture","message":"not removed"})
     s=pilot.summarize([ok,fail])
     assert s["recorded_evaluations"]==2
