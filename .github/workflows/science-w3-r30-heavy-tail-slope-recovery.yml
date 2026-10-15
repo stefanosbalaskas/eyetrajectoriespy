@@ -1,0 +1,48 @@
+name: science-w3-r30-heavy-tail-slope-recovery
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r30_heavy_tail_slope_recovery.py"
+      - "tests/test_w3_r30_heavy_tail_slope_recovery.py"
+      - ".github/workflows/science-w3-r30-heavy-tail-slope-recovery.yml"
+      - "docs/development/w3-r30-heavy-tail-slope-protocol.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  gaussian-primitive-and-t5-source-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r30_heavy_tail_slope_recovery.py
+  original-192case-heavy-tail-robustness:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r30_heavy_tail_slope_recovery.py --out build/w3-r30-heavy-tail
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r30-original-192case-heavy-tail-slope-recovery
+          path: build/w3-r30-heavy-tail/
+          retention-days: 90
+          if-no-files-found: warn
