@@ -21,6 +21,12 @@ Thus **34/80 distinct fixed-slope profile points** exhibited disagreement betwee
 
 Importantly, these are not estimates of an effect of true-positive slopes on optimizer reliability: all results reuse one realized Gaussian primitive block, with source states paired on those primitives. They are hard **within-source numerical counterexamples** to equating convergence success with a unique, fully optimized profiled likelihood.
 
+## Original-source profile disagreement plot
+
+![R38 original-source nuisance profile NLL disagreements](../assets/w3-r38-dualseed-profile-nll-gaps.svg)
+
+The figure plots the absolute NLL difference between the two independently initialized nuisance fits at each fixed slope ratio for the **two positive-source conditions** in the original block 2. Both true-zero source controls had **0/20** material disagreements and are omitted from the overlaid positive-source curves for legibility. The horizontal axis uses `log(1+ratio)` spacing to expose the region near the zero boundary; the numerical differences are on the **untransformed** NLL scale. The graphic is derived from the original SHA-verified case ledger, not synthetic illustrative values.
+
 ## Exact-zero and projected first-order scores
 
 All 16 original R37 continuous candidates were reconstructed and checked using the independently coded analytic Gaussian score and a projected box-KKT residual (at exact zero a nonnegative slope derivative can satisfy the correct lower-bound KKT condition). **Eight of the 16 reconstructed R37 starts exceeded the predeclared numerical tolerance 1e−4**. For the two particularly poor 10-times starts, the projected-KKT residual was **0.000914** (ordinary positive) and **0.000418** (extreme positive), despite solver success. Other selected and near-selected candidates also exceeded the same stringent threshold, so this is a *diagnostic tolerance*, not a binary certified solver-failure theorem.
