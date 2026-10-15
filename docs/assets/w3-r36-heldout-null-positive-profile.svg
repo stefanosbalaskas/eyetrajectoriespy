@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="474" viewBox="0 0 980 474" role="img" aria-label="R36 held-out null versus positive finite-grid profile statistics. Ordinary support yields no rejections in either generator; extreme support yields two false-positive and two true-positive rejections from eight heldout blocks.">
+<rect width="980" height="474" fill="#ffffff"/>
+<text x="45" y="37" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#172532">R36 · Held-out exact-zero profile-grid statistics</text>
+<text x="45" y="60" font-family="Arial, sans-serif" font-size="12" fill="#51606b">16 independently generated blocks; evaluation uses blocks 8–15 (paired true-zero and positive Gaussian slopes)</text>
+<circle cx="62" cy="83" r="5.5" fill="#197caa"/><text x="76" y="87" font-family="Arial,sans-serif" font-size="12" fill="#283843">True-zero source</text>
+<path d="M 244 77 L 250 83 L 244 89 L 238 83 Z" fill="#b66f32"/><text x="259" y="87" font-family="Arial,sans-serif" font-size="12" fill="#283843">Positive-variance source</text>
+<line x1="435" y1="83" x2="464" y2="83" stroke="#af3443" stroke-width="2" stroke-dasharray="6 5"/><text x="472" y="87" font-family="Arial,sans-serif" font-size="12" fill="#283843">Frozen null-calibration cutoff</text><text x="66" y="118" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#172532">Ordinary predictor support</text>
+ <rect x="111" y="133" width="360" height="248" fill="#fbfcfd" stroke="#c8d0d7" stroke-width="1"/><line x1="111" y1="381.00" x2="471" y2="381.00" stroke="#e5e9ee"/>
+ <text x="101" y="385.00" font-family="Arial,sans-serif" font-size="11" text-anchor="end" fill="#5c6874">0</text><line x1="111" y1="322.55" x2="471" y2="322.55" stroke="#e5e9ee"/>
+ <text x="101" y="326.55" font-family="Arial,sans-serif" font-size="11" text-anchor="end" fill="#5c6874">0.1</text><line x1="111" y1="250.29" x2="471" y2="250.29" stroke="#e5e9ee"/>
+ <text x="101" y="254.29" font-family="Arial,sans-serif" font-size="11" text-anchor="end" fill="#5c6874">0.5</text><line x1="111" y1="196.15" x2="471" y2="196.15" stroke="#e5e9ee"/>
+ <text x="101" y="200.15" font-family="Arial,sans-serif" font-size="11" text-anchor="end" fill="#5c6874">1</text><line x1="111" y1="154.61" x2="471" y2="154.61" stroke="#e5e9ee"/>
+ <text x="101" y="158.61" font-family="Arial,sans-serif" font-size="11" text-anchor="end" fill="#5c6874">1.5</text><line x1="111" y1="148.03" x2="471" y2="148.03" stroke="#af3443" stroke-width="2" stroke-dasharray="6 5"/>
+ <text x="467" y="142.03" font-family="Arial,sans-serif" text-anchor="end" font-size="10" fill="#912838">Cutoff 1.588</text><text x="133.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">8</text>
+ <circle cx="128.50" cy="381.00" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 138.5 323.0721248019932 L 144 328.5721248019932 L 138.5 334.0721248019932 L 133 328.5721248019932 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="178.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">9</text>
+ <circle cx="173.50" cy="343.31" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 183.5 298.1536367298946 L 189 303.6536367298946 L 183.5 309.1536367298946 L 178 303.6536367298946 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="223.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">10</text>
+ <circle cx="218.50" cy="257.67" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 228.5 189.66292468939358 L 234 195.16292468939358 L 228.5 200.66292468939358 L 223 195.16292468939358 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="268.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">11</text>
+ <circle cx="263.50" cy="381.00" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 273.5 375.5 L 279 381 L 273.5 386.5 L 268 381 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="313.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">12</text>
+ <circle cx="308.50" cy="380.74" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 318.5 312.78029280113697 L 324 318.28029280113697 L 318.5 323.78029280113697 L 313 318.28029280113697 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="358.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">13</text>
+ <circle cx="353.50" cy="381.00" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 363.5 375.5 L 369 381 L 363.5 386.5 L 358 381 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="403.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">14</text>
+ <circle cx="398.50" cy="381.00" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 408.5 375.5 L 414 381 L 408.5 386.5 L 403 381 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="448.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">15</text>
+ <circle cx="443.50" cy="381.00" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 453.5 375.5 L 459 381 L 453.5 386.5 L 448 381 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="291" y="422" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#425362">Original generating block</text><text x="514" y="118" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#172532">Extreme predictor leverage</text>
+ <rect x="559" y="133" width="360" height="248" fill="#fbfcfd" stroke="#c8d0d7" stroke-width="1"/><line x1="559" y1="381.00" x2="919" y2="381.00" stroke="#e5e9ee"/>
+ <text x="549" y="385.00" font-family="Arial,sans-serif" font-size="11" text-anchor="end" fill="#5c6874">0</text><line x1="559" y1="349.75" x2="919" y2="349.75" stroke="#e5e9ee"/>
+ <text x="549" y="353.75" font-family="Arial,sans-serif" font-size="11" text-anchor="end" fill="#5c6874">0.1</text><line x1="559" y1="311.13" x2="919" y2="311.13" stroke="#e5e9ee"/>
+ <text x="549" y="315.13" font-family="Arial,sans-serif" font-size="11" text-anchor="end" fill="#5c6874">0.5</text><line x1="559" y1="282.19" x2="919" y2="282.19" stroke="#e5e9ee"/>
+ <text x="549" y="286.19" font-family="Arial,sans-serif" font-size="11" text-anchor="end" fill="#5c6874">1</text><line x1="559" y1="241.27" x2="919" y2="241.27" stroke="#e5e9ee"/>
+ <text x="549" y="245.27" font-family="Arial,sans-serif" font-size="11" text-anchor="end" fill="#5c6874">2</text><line x1="559" y1="183.39" x2="919" y2="183.39" stroke="#e5e9ee"/>
+ <text x="549" y="187.39" font-family="Arial,sans-serif" font-size="11" text-anchor="end" fill="#5c6874">4</text><line x1="559" y1="138.98" x2="919" y2="138.98" stroke="#e5e9ee"/>
+ <text x="549" y="142.98" font-family="Arial,sans-serif" font-size="11" text-anchor="end" fill="#5c6874">6</text><line x1="559" y1="317.31" x2="919" y2="317.31" stroke="#af3443" stroke-width="2" stroke-dasharray="6 5"/>
+ <text x="915" y="311.31" font-family="Arial,sans-serif" text-anchor="end" font-size="10" fill="#912838">Cutoff 0.416</text><text x="581.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">8</text>
+ <circle cx="576.50" cy="381.00" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 586.5 375.5 L 592 381 L 586.5 386.5 L 581 381 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="626.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">9</text>
+ <circle cx="621.50" cy="381.00" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 631.5 375.5 L 637 381 L 631.5 386.5 L 626 381 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="671.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">10</text>
+ <circle cx="666.50" cy="293.13" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 676.5 283.1114074519161 L 682 288.6114074519161 L 676.5 294.1114074519161 L 671 288.6114074519161 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="716.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">11</text>
+ <circle cx="711.50" cy="381.00" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 721.5 375.5 L 727 381 L 721.5 386.5 L 716 381 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="761.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">12</text>
+ <circle cx="756.50" cy="293.64" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 766.5 368.43764803779254 L 772 373.93764803779254 L 766.5 379.43764803779254 L 761 373.93764803779254 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="806.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">13</text>
+ <circle cx="801.50" cy="381.00" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 811.5 136.53376191710248 L 817 142.03376191710248 L 811.5 147.53376191710248 L 806 142.03376191710248 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="851.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">14</text>
+ <circle cx="846.50" cy="381.00" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 856.5 375.5 L 862 381 L 856.5 386.5 L 851 381 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="896.50" y="402" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#51606b">15</text>
+ <circle cx="891.50" cy="381.00" r="4.5" fill="#197caa" stroke="#ffffff" stroke-width=".8"/>
+ <path d="M 901.5 325.50643444576696 L 907 331.00643444576696 L 901.5 336.50643444576696 L 896 331.00643444576696 Z" fill="#b66f32" stroke="#fff" stroke-width=".8"/><text x="739" y="422" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#425362">Original generating block</text><text transform="translate(29 265) rotate(-90)" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#425362">Finite-grid profile statistic T (sqrt-scaled axis)</text>
+<text x="45" y="448" font-family="Arial,sans-serif" font-size="12" fill="#394a56">Ordinary: null 0/8, positive 0/8  ·  Extreme: null 2/8, positive 2/8 strict-tail rejections</text>
+<text x="45" y="465" font-family="Arial,sans-serif" font-size="10" fill="#657380">Research-only descriptive plot. Thresholds learned from separate blocks 0–7. No nominal type-I error, power or functional-CI qualification.</text>
+</svg>
