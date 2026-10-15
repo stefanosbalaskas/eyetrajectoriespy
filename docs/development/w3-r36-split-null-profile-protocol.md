@@ -1,0 +1,33 @@
+# R36 — held-out empirical null reference for an exact-zero finite-grid Gaussian REML profile statistic
+
+**Research-only independent-simulation feasibility, not validated type-I error, a classical boundary likelihood-ratio test, or a functional coefficient confidence interval.** R35 [draft PR #337](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/337) established an exactly zero random-slope variance restricted Gaussian likelihood profile, verified its free-component analytic gradient against R25 and finite differences, and found a finite-grid zero minimum for two of four extreme-leverage Gaussian samples even when the source variance was actually positive. This makes simply applying a regular interior Hessian or naïve chi-square cutoff inappropriate.
+
+## Frozen independent source split and true null generator
+
+New source seed **202610163636**; **16 genuinely independent primitive Gaussian generating blocks**, each with 24 participants, original irregular native time/trial structure and predictor-dependent slope covariance, crossed with original ordinary and extreme leverage (x0=3, x1=−2.5) source support. **Blocks 0–7 are exclusively null-calibration; blocks 8–15 exclusively held-out evaluation**, with no selection or source-set overlap.
+
+For every block/support pair, construct the **true null with random-slope variance identically zero** by setting original primitive participant-slope innovations to exact zero and rebuilding actual gaze outcomes, while preserving all originally generated participant intercept, repeated-trial, sensor Gaussian innovations and native participant/trial/time/predictor labels. For held-out blocks only, construct the paired **positive-slope generator** from the exact same original Gaussian primitives, with source slope variance `SIGMA_RANDOM_SLOPE²`. Analytic numerical tests verify positive-minus-null observed trajectories equal precisely the original participant random-slope contribution. No source oracle effects or true covariance are supplied to the observed-only REML nuisance model.
+
+This produces **48 source/state evaluations** (16×2 null plus 8×2 held-out positive) and **336 fixed-slope constrained optimization tasks** at the R35 frozen seven nonnegative slope variance scales `0,1e−6,1e−4,.01,.1,1,10` times each source's observed residual variance reference. Because null/positive and ordinary/extreme reuse primitive blocks, there are only **16 independent generating source blocks**, not 48 independent experiments. No device-observed empirical eye-tracking data are introduced.
+
+## Exactly defined finite-grid profile test statistic and held-out threshold
+
+For every original source case, fit the R25 observed-only Gaussian REML nuisance estimator; at all seven prespecified random-slope component scales, optimize other three components using the independently cross-validated R35 exact-zero restricted likelihood and analytic free-component scores. Define
+
+`T_grid = max(0, 2[negloglik(theta_slope=0) − min_{seven fixed values} negloglik(theta_slope)])`.
+
+**T_grid is an intentionally discrete seven-point profiling procedure, NOT the likelihood-ratio statistic from a globally optimized continuous nonnegative variance model.** The best grid point is not a global maximum likelihood estimate. It can have an exact-zero atom.
+
+Within EACH original predictor-support condition separately, use only its **eight independent null-calibration block statistics** to form the frozen empirical upper-90% quantile via the `higher` discrete order-statistic convention. With eight calibrators, this equals the calibration **maximum**; held-out test rejection uses **strictly greater than** threshold, never equality. If any calibration null source fails generation, REML or any of its seven constrained profile optimizations, then **REFUSE** that condition's threshold rather than selectively dropping failed calibration cases or substituting a parametric reference.
+
+On the **eight genuinely independent held-out blocks per support**, score both genuine null and positive-slope states using the same frozen threshold. Report separate held-out numerical acceptance, strict-tail false rejections under zero truth, strict-tail rejections under positive variance, unconditional joint acceptance-and-rejection, exact-zero grid minima, and 95% Wilson intervals. Held-out null/positive share primitive source blocks and are not independent of one another. Do not pool ordinary/extreme conditions as independent experiments either.
+
+An empirical 90% calibration quantile from only eight null blocks has **extremely coarse resolution**. It does not guarantee a 10% finite-sample false positive rate, establish an exact conditional test, estimate prospective power accurately or identify a valid mixture reference. The quantile and rejection rule are fixed before the held-out source is analyzed, but Monte Carlo sampling uncertainty remains severe. Report results even if zero false rejections or weak positive-source sensitivity occur.
+
+## Limits and decision gate
+
+This R36 research stage measures preliminary **source-specific behavior of an exactly specified finite-grid profile procedure** under true zero versus positive Gaussian participant random-slope variance with matched covariance and only one native n24 design. It is not a conventional continuous-parameter profile likelihood ratio, chi-square/chi-bar-square hypothesis test, inferred variance confidence interval or a proof of random-effect identification. Any empirical non-Gaussian error, source-dependent missingness, covariance misspecification, participant dropout, and realistic eye-tracker artifacts require separate validation.
+
+It does **not propagate estimated covariance uncertainty into functional coefficient CR2 confidence intervals**, does not provide a nuisance-adjusted Satterthwaite df, calculate nominal functional pointwise coverage, or qualify simultaneous function-wide bands. A later method would require much larger independent calibration and evaluation source blocks, theoretically justified reference procedures or a constrained parametric bootstrap, rigorous failure inclusion and source-near-boundary identifiability checks.
+
+Keep scientific blockers [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) and [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) OPEN. Preserve original R20 **41/256 failures**, R22 **32 numerical refusals**, R33 **four inclusion disagreements**, R34 **10 nuisance-information refusals** and R35 exact-zero source results unchanged. All stages on isolated draft PRs; do not modify protected main, stable API, version 1.2 release tags or PyPI.
