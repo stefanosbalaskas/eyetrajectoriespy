@@ -73,8 +73,8 @@ def test_continuous_multistart_and_grid_numerical_contract():
     if row["continuous_reference_status"]=="computed":
         assert row["best_multistart_slope_ratio"]>=0
         assert row["best_multistart_slope_ratio"]<=r37.MAX_RATIO
-        assert row["no_evidence_continuous_worse_than_grid"] or (
-            row["starts_disagree_substantially"] or True)
+        if not row["no_evidence_continuous_worse_than_grid"]:
+            assert row["two_times_grid_to_continuous_nll_gain"] < -2e-4
     summary=r37.summarize([row])
     assert summary["recorded_source_cases"]==1
     assert summary["missing_source_cases"]==15
