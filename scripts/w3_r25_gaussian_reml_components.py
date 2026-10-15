@@ -138,8 +138,7 @@ def estimate_reml_components(X,y,weight,cluster,time,trial,x,*,slope,
     blocks=[]
     for _,_,Ks in prepared:
         V=sum(float(estimates[k])*K for k,K in enumerate(Ks))
-        if not np.linalg.cholesky((V+V.T)*.5).shape:
-            raise ValueError("unreachable SPD check")
+        np.linalg.cholesky((V+V.T)*.5)
         blocks.append((V+V.T)*.5)
     return {
         "status":"ok" if fitted.success and np.isfinite(fitted.fun) else "nonconverged",
