@@ -33,7 +33,7 @@ EXPECTED=len(ORIGINAL_BLOCKS)*len(ORIGINAL_N)*len(ORIGINAL_SUPPORT)
 THETA=np.asarray([r26.TRUE_COMPONENTS[k] for k in COMPONENTS],float)
 
 
-def information_for_original_design(block,n,support):
+def information_for_original_design(block,n,support,predictor_multiplier=1.0):
     """Independent blockwise Fisher information, avoiding dense N×N matrices.
 
     Expected REML information for variance components:
@@ -48,6 +48,13 @@ def information_for_original_design(block,n,support):
         n_blocks=r26.BLOCKS,max_n=max(r26.SIZES))
     X,y,w,ids,t,tr,x=observed_weighted_rows(
         (None,case[1],case[2],case[3],case[4],None),r26.BASIS)
+    if not np.isfinite(predictor_multiplier) or predictor_multiplier<=0:
+        raise ValueError("hypothetical predictor multiplier must be finite and positive")
+    if predictor_multiplier!=1.0:
+        X=X.copy()
+        p=X.shape[1]//2
+        X[:,p:]*=float(predictor_multiplier)
+        x=x*float(predictor_multiplier)
     Z=X*np.sqrt(w)[:,None]
     design=[]
     G=np.zeros((X.shape[1],X.shape[1]))
@@ -109,7 +116,8 @@ def information_for_original_design(block,n,support):
         "information_eigen_condition":condition,
         "information_correlation":corr,
         "observed_source_gls_beta":observed_source_beta,
-        "original_source_design_only":True,
+        "original_source_design_only":bool(predictor_multiplier==1.0),
+        "hypothetical_predictor_multiplier":float(predictor_multiplier),
     }
 
 
