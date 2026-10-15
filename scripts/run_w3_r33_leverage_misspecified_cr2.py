@@ -51,7 +51,8 @@ def wilson(k, n):
     den = 1 + z*z/n
     center = (p + z*z/(2*n))/den
     half = z*np.sqrt(p*(1-p)/n + z*z/(4*n*n))/den
-    return [float(max(0,center-half)), float(min(1,center+half))]
+    return [0.0 if k==0 else float(max(0,center-half)),
+            1.0 if k==n else float(min(1,center+half))]
 
 
 def source_working_family(support):
