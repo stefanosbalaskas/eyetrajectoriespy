@@ -1,0 +1,48 @@
+name: science-w3-r27-reml-information-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r27_reml_information_audit.py"
+      - "tests/test_w3_r27_reml_information_audit.py"
+      - ".github/workflows/science-w3-r27-reml-information-audit.yml"
+      - "docs/development/w3-r27-reml-information-protocol.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  gaussian-score-information-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r27_reml_information_audit.py
+  original-frozen-source-fisher-score:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r27_reml_information_audit.py --out build/w3-r27-reml-fisher-info
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r27-original-reml-fisher-information
+          path: build/w3-r27-reml-fisher-info/
+          retention-days: 90
+          if-no-files-found: warn
