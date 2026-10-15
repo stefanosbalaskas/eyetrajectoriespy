@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="480" viewBox="0 0 1040 480" role="img" aria-labelledby="title desc">
+<title id="title">R39 nuisance parameterization: numerical solution agreement</title>
+<desc id="desc">Of sixty fixed-slope nuisance fits per method, raw log variances had fifty-four near-best and six suboptimal converged fits; centered log had fifty-eight near-best and two nonconvergences; raw linear had sixty near-best; centered linear fifty-eight near-best and two nonconvergences. Same original data source reused; numerical comparison, not statistical replication.</desc>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#1f303b}.heading{font-size:24px;font-weight:700}.sub{font-size:15px;fill:#566775}.label{font-size:16px}.counts{font-size:17px;font-weight:700}.small{font-size:13px;fill:#55616b}</style>
+<rect x="0" y="0" width="1040" height="480" fill="#fff"/>
+<text x="55" y="50" class="heading">R39 — same likelihood, different optimization outcomes</text>
+<text x="55" y="76" class="sub">Convergence and objective agreement, 60 prespecified fits per formulation</text>
+<text x="250" y="144" text-anchor="end" class="label">Log variance · raw</text>
+ <rect x="265" y="120" width="522" height="34" fill="#31755c" rx="3"/>
+ <rect x="787" y="120" width="58" height="34" fill="#bb8048"/>
+ 
+ <text x="865" y="144" class="counts">54/60</text>
+<text x="250" y="217" text-anchor="end" class="label">Log variance · centered</text>
+ <rect x="265" y="193" width="560.6666666666666" height="34" fill="#31755c" rx="3"/>
+ 
+ <rect x="825.6666666666666" y="193" width="19.333333333333332" height="34" fill="#a55357"/>
+ <text x="865" y="217" class="counts">58/60</text>
+<text x="250" y="290" text-anchor="end" class="label">Linear ratio · raw</text>
+ <rect x="265" y="266" width="580" height="34" fill="#31755c" rx="3"/>
+ 
+ 
+ <text x="865" y="290" class="counts">60/60</text>
+<text x="250" y="363" text-anchor="end" class="label">Linear ratio · centered</text>
+ <rect x="265" y="339" width="560.6666666666666" height="34" fill="#31755c" rx="3"/>
+ 
+ <rect x="825.6666666666666" y="339" width="19.333333333333332" height="34" fill="#a55357"/>
+ <text x="865" y="363" class="counts">58/60</text>
+<rect x="95" y="421" width="16" height="16" fill="#31755c"/><text x="119" y="434" class="small">Converged and near-best observed NLL</text>
+<rect x="418" y="421" width="16" height="16" fill="#bb8048"/><text x="442" y="434" class="small">Converged but worse NLL</text>
+<rect x="694" y="421" width="16" height="16" fill="#a55357"/><text x="718" y="434" class="small">Explicit nonconvergence</text>
+<text x="95" y="464" class="small">One reused R37 source block; four paired source conditions, not independent replications.</text>
+</svg>
