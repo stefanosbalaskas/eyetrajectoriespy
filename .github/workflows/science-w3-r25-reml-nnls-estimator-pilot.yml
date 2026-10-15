@@ -1,0 +1,49 @@
+name: science-w3-r25-reml-nnls-estimator-pilot
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/w3_r25_gaussian_reml_components.py"
+      - "scripts/run_w3_r25_reml_nnls_pilot.py"
+      - "tests/test_w3_r25_reml_nnls_pilot.py"
+      - ".github/workflows/science-w3-r25-reml-nnls-estimator-pilot.yml"
+      - "docs/development/w3-r25-reml-nnls-estimator-protocol.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  analytic-score-and-observation-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r25_reml_nnls_pilot.py
+  fresh-paired-estimator-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r25_reml_nnls_pilot.py --out build/w3-r25-estimators
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r25-original-paired-estimator-64cases
+          path: build/w3-r25-estimators/
+          retention-days: 90
+          if-no-files-found: warn
