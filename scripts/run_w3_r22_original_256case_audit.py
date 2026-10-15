@@ -103,7 +103,7 @@ def summarize(rows,old):
       "new_refused_original_successes":sum(
          old_by[key(x)]["status"]=="ok" for x in new_bad),
       "new_refused_original_failures":sum(
-         old_by[key(x)]!="ok" if False else old_by[key(x)]["status"]!="ok" for x in new_bad),
+         old_by[key(x)]["status"]!="ok" for x in new_bad),
       "new_refusal_types":dict(Counter(x["new_error"]["message"].split(":",1)[0]
                   if x["new_error"] else "unclassified" for x in new_bad)),
       "numerical_SE_df_disagreement_count":len(drift),
