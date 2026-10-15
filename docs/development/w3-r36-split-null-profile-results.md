@@ -29,6 +29,10 @@ Per source-support condition, the eight **independent** calibration-null statist
 
 All 8/8 held-out null and 8/8 held-out positive cases per support completed their seven constrained profile points. No failed case was omitted from an accepted-only denominator. The **joint numerical-success-and-rejection** rates equal those reported above only because numerical success was complete in this seed, not as a general policy.
 
+![R36 held-out true-zero and positive-slope Gaussian profile-grid statistic, shown against the independently learned null threshold for ordinary and extreme predictor support](../assets/w3-r36-heldout-null-positive-profile.svg)
+
+*Original study figure. The y-axis uses a square-root scale; the red dashed line is the frozen source-specific calibration cutoff, not a chi-square reference.*
+
 ### Held-out original generating blocks, paired null and positive statistic
 
 Each cell below gives `T_grid(null), T_grid(positive)`. Extreme and ordinary leverage designs share primitive source block identities and **must not be treated as independent experiments**.
