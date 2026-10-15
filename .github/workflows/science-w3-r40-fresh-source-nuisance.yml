@@ -1,0 +1,48 @@
+name: science-w3-r40-fresh-source-nuisance
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r40_fresh_source_nuisance.py"
+      - "tests/test_w3_r40_fresh_source_nuisance.py"
+      - ".github/workflows/science-w3-r40-fresh-source-nuisance.yml"
+      - "docs/development/w3-r40-fresh-source-nuisance-protocol.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-coupling-score-and-numerical-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r40_fresh_source_nuisance.py
+  original-8-independent-blocks-384fit-numerical-study:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r40_fresh_source_nuisance.py --out build/w3-r40-original-source-optimizer
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r40-fresh-source-log-vs-linear-original-ledger
+          path: build/w3-r40-original-source-optimizer/
+          if-no-files-found: warn
+          retention-days: 90

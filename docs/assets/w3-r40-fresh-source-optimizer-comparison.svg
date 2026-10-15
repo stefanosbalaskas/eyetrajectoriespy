@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560" role="img" aria-labelledby="title desc">
+<title id="title">R40 original fresh-source nuisance optimization results</title>
+<desc id="desc">On eight new generating blocks, 134 of 192 raw log variance fits converged near the best observed likelihood and 58 converged at a worse likelihood. All 192 linear variance-ratio fits converged near best. Projected physical KKT residual exceeded .001 on 70 log and 18 linear fits. All 384 fits completed, and the strict numerical qualification gate failed.</desc>
+<rect width="1000" height="560" fill="white"/>
+<g fill="#182b35" font-family="Arial, Helvetica, sans-serif">
+<text x="54" y="54" font-size="26" font-weight="700">R40 — eight fresh primitive source blocks</text>
+<text x="54" y="84" font-size="16" fill="#576670">Each method: 192 prespecified fixed-slope nuisance optimizations; no source failures</text>
+<text x="54" y="146" font-size="20" font-weight="700">A. Converged likelihood agreement</text>
+<text x="240" y="188" text-anchor="end" font-size="16">Log variance</text>
+<text x="240" y="262" text-anchor="end" font-size="16">Linear variance ratio</text>
+<rect x="260" y="164" width="402" height="43" rx="3" fill="#27735c"/>
+<rect x="662" y="164" width="174" height="43" fill="#b16d49"/>
+<rect x="260" y="238" width="576" height="43" rx="3" fill="#27735c"/>
+<text x="853" y="192" font-size="16" font-weight="700">134 / 192</text>
+<text x="853" y="266" font-size="16" font-weight="700">192 / 192</text>
+<rect x="260" y="310" width="18" height="18" fill="#27735c"/>
+<text x="287" y="325" font-size="14">Near-best observed negative restricted likelihood (within 0.001)</text>
+<rect x="260" y="340" width="18" height="18" fill="#b16d49"/>
+<text x="287" y="355" font-size="14">Converged, materially inferior NLL</text>
+<text x="54" y="419" font-size="20" font-weight="700">B. Converged fits with physical projected-KKT residual &gt; 0.001</text>
+<text x="238" y="459" text-anchor="end" font-size="15">Log variance</text>
+<text x="238" y="503" text-anchor="end" font-size="15">Linear variance ratio</text>
+<rect x="260" y="441" width="210" height="26" rx="3" fill="#a25d60"/>
+<rect x="260" y="485" width="54" height="26" rx="3" fill="#a25d60"/>
+<text x="482" y="459" font-size="15" font-weight="700">70 / 192</text>
+<text x="326" y="503" font-size="15" font-weight="700">18 / 192</text>
+<text x="54" y="544" font-size="13" fill="#56636b">Numerical diagnostics only. The strict KKT gate failed, so no certified optimizer or inferential claim follows.</text>
+</g>
+</svg>
