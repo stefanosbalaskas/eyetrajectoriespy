@@ -12,7 +12,7 @@ from scripts import run_w3_r46_propensity_bootstrap as r46
 def test_new_primitive_denominator_and_full_bootstrap_failure_slots():
     assert r46.SOURCE_SEED != r45.MASTER_SEED
     assert r46.BLOCKS==32
-    assert r46.N_PARTICIPANTS==36
+    assert r46.N_PARTICIPANTS==24
     assert r46.N_SOURCE_VARIANTS==128
     assert r46.N_SOURCE_REGIMES==384
     assert r46.N_INTERVALS==1152
@@ -114,7 +114,7 @@ def test_participant_bootstrap_resamples_whole_original_unit():
         original,0,"ordinary_dependent",r46.REGIMES[0])
     ids=np.array(sorted({p["participant"] for p in panel}))
     resampled=r46.bootstrap_once(panel,ids,r46.BOOTSTRAP_SEED)
-    assert len({p["participant"] for p in resampled})==36
+    assert len({p["participant"] for p in resampled})==24
     # Resampling entire participants changes the trial count if trial counts
     # differ by unit; never impose equal numbers of native trial records.
     selected=np.random.default_rng(r46.BOOTSTRAP_SEED).choice(
