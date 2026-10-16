@@ -1,0 +1,49 @@
+name: science-w3-r52-Gaussian-CR2-joint-law
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r52_gaussian_cr2_joint_law.py"
+      - "tests/test_w3_r52_gaussian_cr2_joint_law.py"
+      - "docs/development/w3-r52-gaussian-cr2-joint-law-protocol.md"
+      - ".github/workflows/science-w3-r52-Gaussian-CR2-joint-law.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  analytic-Gaussian-numerator-score-and-CR2-algebra-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r52_gaussian_cr2_joint_law.py
+
+  original-four-primitive-blocks-CR2-finite-Gaussian-reference:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r52_gaussian_cr2_joint_law.py --out build/w3-r52-original-fixed-Gaussian-joint-law/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r52-original-Gaussian-joint-pivot-reference-evidence
+          path: build/w3-r52-original-fixed-Gaussian-joint-law/
+          if-no-files-found: warn
+          retention-days: 90
