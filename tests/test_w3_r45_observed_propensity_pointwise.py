@@ -31,8 +31,11 @@ def test_primitive_independence_nested_prefix_and_real_zero_slope():
     z=r45.gaussian_source(0,24,"ordinary_dependent","zero_slope")
     second=r45.gaussian_source(1,24,"ordinary_dependent","positive_slope")
     past=r44.gaussian_source(0,24,"ordinary_dependent","positive_slope")
+    # Both source calls preserve the same original MAX_N=48 primitives.
+    # Compare only the nested n=24 prefix; do not assert raw storage
+    # length is 24 when the generator allocates the 48-person panel.
     np.testing.assert_array_equal(
-        a[0]["participant_intercept"],
+        a[0]["participant_intercept"][:24],
         b[0]["participant_intercept"][:24],
     )
     assert z[0] is None
