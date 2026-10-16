@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="614" viewBox="0 0 1050 614" role="img" aria-labelledby="t d">
+<title id="t">R48 independent Gaussian pointwise CR2 conditional truth inclusion</title>
+<desc id="d">128 independent Gaussian generating blocks, n24 and true positive predictor-scaled random-slope covariance. Ordinary support oracle and fitted conditional Satterthwaite CR2 both 118/128 truth included. Extreme support oracle 120/128 and plug-in estimated REML working covariance 112/128, all eight discordances oracle yes plug-in no. Conventional t with participant G minus one under extreme leverage oracle 101/128, fitted 99/128. Horizontal 95% Wilson Monte Carlo intervals, reference nominal 90%. These conditional CR2 methods do not account for nuisance covariance fitting uncertainty.</desc>
+<rect width="1050" height="614" fill="white"/>
+<text x="52" y="48" fill="#1b3140" font-family="Arial,sans-serif" font-size="25" font-weight="700">R48 — known vs fitted covariance CR2 pointwise audit</text>
+<text x="52" y="79" fill="#5b6e79" font-family="Arial,sans-serif" font-size="15">95% Wilson Monte Carlo intervals · 128 independent Gaussian blocks per leverage stratum</text>
+<text x="418" y="122" fill="#263f4c" font-family="Arial,sans-serif" font-size="15" font-weight="600">Generating-truth inclusion</text>
+<line x1="420" y1="142" x2="420" y2="510" stroke="#e1e6e9" stroke-width="1" stroke-dasharray="none"/><text x="420" y="535" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#536975">65%</text>
+<line x1="486.1764705882352" y1="142" x2="486.1764705882352" y2="510" stroke="#e1e6e9" stroke-width="1" stroke-dasharray="none"/><text x="486.1764705882352" y="535" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#536975">70%</text>
+<line x1="552.3529411764706" y1="142" x2="552.3529411764706" y2="510" stroke="#e1e6e9" stroke-width="1" stroke-dasharray="none"/><text x="552.3529411764706" y="535" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#536975">75%</text>
+<line x1="618.5294117647059" y1="142" x2="618.5294117647059" y2="510" stroke="#e1e6e9" stroke-width="1" stroke-dasharray="none"/><text x="618.5294117647059" y="535" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#536975">80%</text>
+<line x1="684.7058823529412" y1="142" x2="684.7058823529412" y2="510" stroke="#e1e6e9" stroke-width="1" stroke-dasharray="none"/><text x="684.7058823529412" y="535" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#536975">85%</text>
+<line x1="750.8823529411766" y1="142" x2="750.8823529411766" y2="510" stroke="#465d6b" stroke-width="2" stroke-dasharray="6 5"/><text x="750.8823529411766" y="535" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#536975">90%</text>
+<line x1="817.0588235294117" y1="142" x2="817.0588235294117" y2="510" stroke="#e1e6e9" stroke-width="1" stroke-dasharray="none"/><text x="817.0588235294117" y="535" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#536975">95%</text>
+<text x="401" y="179" fill="#213540" text-anchor="end" font-family="Arial,sans-serif" font-size="16">Ordinary · Oracle Sat</text>
+<line x1="700.7908255524833" y1="174" x2="826.3402389031116" y2="174" stroke="#437f69" stroke-width="5" stroke-linecap="round"/>
+<line x1="700.7908255524833" y1="167" x2="700.7908255524833" y2="181" stroke="#437f69" stroke-width="2"/>
+<line x1="826.3402389031116" y1="167" x2="826.3402389031116" y2="181" stroke="#437f69" stroke-width="2"/>
+<circle cx="779.8345588235295" cy="174" r="7" fill="#437f69"/>
+<text x="889" y="179" fill="#213540" font-family="Arial,sans-serif" font-size="16">118/128</text>
+<text x="401" y="236" fill="#213540" text-anchor="end" font-family="Arial,sans-serif" font-size="16">Ordinary · Fitted Sat</text>
+<line x1="700.7908255524833" y1="231" x2="826.3402389031116" y2="231" stroke="#92729a" stroke-width="5" stroke-linecap="round"/>
+<line x1="700.7908255524833" y1="224" x2="700.7908255524833" y2="238" stroke="#92729a" stroke-width="2"/>
+<line x1="826.3402389031116" y1="224" x2="826.3402389031116" y2="238" stroke="#92729a" stroke-width="2"/>
+<circle cx="779.8345588235295" cy="231" r="7" fill="#92729a"/>
+<text x="889" y="236" fill="#213540" font-family="Arial,sans-serif" font-size="16">118/128</text>
+<text x="401" y="293" fill="#213540" text-anchor="end" font-family="Arial,sans-serif" font-size="16">Extreme · Oracle Sat</text>
+<line x1="726.4130589120106" y1="288" x2="840.873186580066" y2="288" stroke="#437f69" stroke-width="5" stroke-linecap="round"/>
+<line x1="726.4130589120106" y1="281" x2="726.4130589120106" y2="295" stroke="#437f69" stroke-width="2"/>
+<line x1="840.873186580066" y1="281" x2="840.873186580066" y2="295" stroke="#437f69" stroke-width="2"/>
+<circle cx="800.5147058823529" cy="288" r="7" fill="#437f69"/>
+<text x="889" y="293" fill="#213540" font-family="Arial,sans-serif" font-size="16">120/128</text>
+<text x="401" y="350" fill="#213540" text-anchor="end" font-family="Arial,sans-serif" font-size="16">Extreme · Fitted Sat</text>
+<line x1="627.2299356827012" y1="345" x2="779.4355856634486" y2="345" stroke="#92729a" stroke-width="5" stroke-linecap="round"/>
+<line x1="627.2299356827012" y1="338" x2="627.2299356827012" y2="352" stroke="#92729a" stroke-width="2"/>
+<line x1="779.4355856634486" y1="338" x2="779.4355856634486" y2="352" stroke="#92729a" stroke-width="2"/>
+<circle cx="717.7941176470588" cy="345" r="7" fill="#92729a"/>
+<text x="889" y="350" fill="#213540" font-family="Arial,sans-serif" font-size="16">112/128</text>
+<text x="401" y="407" fill="#213540" text-anchor="end" font-family="Arial,sans-serif" font-size="16">Extreme · Oracle t(G−1)</text>
+<line x1="500.0646414609154" y1="402" x2="685.7473841845847" y2="402" stroke="#ae794a" stroke-width="5" stroke-linecap="round"/>
+<line x1="500.0646414609154" y1="395" x2="500.0646414609154" y2="409" stroke="#ae794a" stroke-width="2"/>
+<line x1="685.7473841845847" y1="395" x2="685.7473841845847" y2="409" stroke="#ae794a" stroke-width="2"/>
+<circle cx="604.0533088235294" cy="402" r="7" fill="#ae794a"/>
+<text x="889" y="407" fill="#213540" font-family="Arial,sans-serif" font-size="16">101/128</text>
+<text x="401" y="464" fill="#213540" text-anchor="end" font-family="Arial,sans-serif" font-size="16">Extreme · Fitted t(G−1)</text>
+<line x1="477.670427149931" y1="459" x2="667.9864174590875" y2="459" stroke="#b05e65" stroke-width="5" stroke-linecap="round"/>
+<line x1="477.670427149931" y1="452" x2="477.670427149931" y2="466" stroke="#b05e65" stroke-width="2"/>
+<line x1="667.9864174590875" y1="452" x2="667.9864174590875" y2="466" stroke="#b05e65" stroke-width="2"/>
+<circle cx="583.3731617647059" cy="459" r="7" fill="#b05e65"/>
+<text x="889" y="464" fill="#213540" font-family="Arial,sans-serif" font-size="16">99/128</text>
+<text x="757.8823529411766" y="137" fill="#465d6b" font-family="Arial,sans-serif" font-size="12">Nominal 90%</text>
+<text x="52" y="570" fill="#596e7a" font-family="Arial,sans-serif" font-size="13">Oracle and plug-in are paired within each primitive block, not independent methods/samples.</text>
+<text x="52" y="591" fill="#596e7a" font-family="Arial,sans-serif" font-size="13">Conditional-on-target Satterthwaite and t(G−1) do not qualify covariance-estimation-aware inference.</text>
+</svg>
