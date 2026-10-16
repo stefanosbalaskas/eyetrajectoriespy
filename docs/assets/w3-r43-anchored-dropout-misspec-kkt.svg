@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1030" height="580" viewBox="0 0 1030 580" role="img" aria-labelledby="t d">
+<title id="t">R43 numerical KKT compliance under anchored point dropout and working covariance misspecification</title>
+<desc id="d">Original Gaussian sources: four new independent blocks, n24 and n48 nested, 256 profile cells. Baseline raw linear variance optimizer passes KKT on 59 of 64 matched complete cases, 60 of 64 matched dropout cases, 60 of 64 misspecified complete cases, and 60 of 64 misspecified dropout cases. Stricter restart passes 64 of 64 in every group. Missingness is independently generated anchored interior point loss and not response-dependent MAR or MNAR. Numerical-only results.</desc>
+<rect width="1030" height="580" fill="#fff"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#21313b}.h{font-size:25px;font-weight:700}.sub{font-size:15px;fill:#566672}.lab{font-size:15px}.count{font-size:16px;font-weight:700}.fine{font-size:13px;fill:#566672}</style>
+<text x="55" y="55" class="h">R43 — KKT compliance across stress conditions</text>
+<text x="55" y="82" class="sub">Eight nested source-size groups across four independent primitive blocks; 256 paired optimizer starts</text>
+<rect x="320" y="103" width="15" height="15" fill="#ab6d48"/>
+<text x="341" y="116" class="fine">Original raw linear nuisance optimizer</text>
+<rect x="598" y="103" width="15" height="15" fill="#357960"/>
+<text x="619" y="116" class="fine">Stricter L-BFGS-B restart</text>
+<text x="298" y="177" class="lab" text-anchor="end">Matched · complete</text>
+ <rect x="321" y="155" width="472" height="29" fill="#e7e9e8" rx="3"/>
+ <rect x="321" y="155" width="435.125" height="29" fill="#ab6d48" rx="3"/>
+ <text x="814" y="176" class="count">59/64</text>
+ <rect x="321" y="189" width="472" height="29" fill="#357960" rx="3"/>
+ <text x="814" y="210" class="count">64/64</text>
+<text x="298" y="253" class="lab" text-anchor="end">Matched · anchored dropout</text>
+ <rect x="321" y="231" width="472" height="29" fill="#e7e9e8" rx="3"/>
+ <rect x="321" y="231" width="442.5" height="29" fill="#ab6d48" rx="3"/>
+ <text x="814" y="252" class="count">60/64</text>
+ <rect x="321" y="265" width="472" height="29" fill="#357960" rx="3"/>
+ <text x="814" y="286" class="count">64/64</text>
+<text x="298" y="329" class="lab" text-anchor="end">Misspecified · complete</text>
+ <rect x="321" y="307" width="472" height="29" fill="#e7e9e8" rx="3"/>
+ <rect x="321" y="307" width="442.5" height="29" fill="#ab6d48" rx="3"/>
+ <text x="814" y="328" class="count">60/64</text>
+ <rect x="321" y="341" width="472" height="29" fill="#357960" rx="3"/>
+ <text x="814" y="362" class="count">64/64</text>
+<text x="298" y="405" class="lab" text-anchor="end">Misspecified · anchored dropout</text>
+ <rect x="321" y="383" width="472" height="29" fill="#e7e9e8" rx="3"/>
+ <rect x="321" y="383" width="442.5" height="29" fill="#ab6d48" rx="3"/>
+ <text x="814" y="404" class="count">60/64</text>
+ <rect x="321" y="417" width="472" height="29" fill="#357960" rx="3"/>
+ <text x="814" y="438" class="count">64/64</text>
+<text x="55" y="513" class="fine">Physical projected first-order residual ≤0.001; same Gaussian restricted likelihood and nuisance ratio bounds.</text>
+<text x="55" y="537" class="fine">Single predeclared near-bound initializer; paired sources. No global optimality or statistical coverage qualification.</text>
+<text x="55" y="559" class="fine">“Dropout” denotes anchored, response-independent native point removal; not MAR/MNAR gaze loss.</text>
+</svg>
