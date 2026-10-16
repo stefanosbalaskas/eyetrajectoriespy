@@ -456,8 +456,27 @@ def summary(rows):
     }
 
 
+def _json_plain(value):
+    """Convert numeric numpy array/scalar evidence to JSON without data loss.
+
+    This is serialization ONLY; it does not change the original Gaussian
+    source, fitted REML solution, derivative, CR2 pivot or refusal policy.
+    allow_nan=False remains mandatory to refuse invalid numerical output.
+    """
+    if isinstance(value,np.ndarray):
+        return [_json_plain(x) for x in value.tolist()]
+    if isinstance(value,np.generic):
+        return _json_plain(value.item())
+    if isinstance(value,dict):
+        return {k:_json_plain(v) for k,v in value.items()}
+    if isinstance(value,(tuple,list)):
+        return [_json_plain(x) for x in value]
+    return value
+
+
 def _write(path,x):
-    path.write_text(json.dumps(x,sort_keys=True,indent=2,allow_nan=False)+"\n")
+    path.write_text(json.dumps(
+        _json_plain(x),sort_keys=True,indent=2,allow_nan=False)+"\n")
 
 
 def main():
