@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1130" height="706" viewBox="0 0 1130 706" role="img" aria-labelledby="title desc">
+<title id="title">W3 R54 active-face nuisance-derivative rescue under moving observed Gaussian REML box</title>
+<desc id="desc">Matched R53 Gaussian source replay, four independent primitive blocks and ordinary/extreme leverage paired within. R53 only accepted 4/8 smooth-interior derivatives. R54 accepts 8/8 local constrained-face derivatives. Participant-slope lower active blocks: ordinary 0,1,2 and extreme 0. Sixteen of 16 finite-difference directional comparisons accepted; all 32 plus/minus full REML refits keep same active face. Overall median nuisance derivative relative error 0.00009892 and median studentized pivot derivative absolute error 0.0000053035. Not a true zero-variance boundary and not calibrated confidence intervals.</desc>
+<rect width="1130" height="706" fill="#ffffff"/>
+<text x="41" y="56" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#253c48">R54 · Constrained covariance influence at the positive box face</text>
+<text x="41" y="89" font-family="Arial,sans-serif" font-size="16" fill="#627580">Same R53 Gaussian innovations · 4 independent primitive blocks · n = 24 participants</text>
+<text x="41" y="153" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#263e4a">Matched original fitted variance-component faces</text>
+<text x="319.5" y="190" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#334b56">Block 0</text>
+<text x="502.5" y="190" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#334b56">Block 1</text>
+<text x="685.5" y="190" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#334b56">Block 2</text>
+<text x="868.5" y="190" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#334b56">Block 3</text>
+<text x="40" y="245" font-family="Arial,sans-serif" font-size="16" fill="#3b5360">Ordinary leverage</text>
+<text x="40" y="342" font-family="Arial,sans-serif" font-size="16" fill="#3b5360">Extreme leverage</text>
+<rect x="245" y="208" width="149" height="61" rx="8" fill="#f2e8d9" stroke="#c5a47a"/><text x="319.5" y="244" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#785431">Lower active</text>
+<rect x="245" y="304" width="149" height="61" rx="8" fill="#f2e8d9" stroke="#c5a47a"/><text x="319.5" y="340" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#785431">Lower active</text>
+<rect x="428" y="208" width="149" height="61" rx="8" fill="#f2e8d9" stroke="#c5a47a"/><text x="502.5" y="244" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#785431">Lower active</text>
+<rect x="428" y="304" width="149" height="61" rx="8" fill="#e1efe9" stroke="#9bbdb1"/><text x="502.5" y="340" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#255e4f">Interior</text>
+<rect x="611" y="208" width="149" height="61" rx="8" fill="#f2e8d9" stroke="#c5a47a"/><text x="685.5" y="244" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#785431">Lower active</text>
+<rect x="611" y="304" width="149" height="61" rx="8" fill="#e1efe9" stroke="#9bbdb1"/><text x="685.5" y="340" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#255e4f">Interior</text>
+<rect x="794" y="208" width="149" height="61" rx="8" fill="#e1efe9" stroke="#9bbdb1"/><text x="868.5" y="244" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#255e4f">Interior</text>
+<rect x="794" y="304" width="149" height="61" rx="8" fill="#e1efe9" stroke="#9bbdb1"/><text x="868.5" y="340" text-anchor="middle" font-family="Arial,sans-serif" font-size="16" fill="#255e4f">Interior</text>
+<line x1="40" y1="404" x2="1091" y2="404" stroke="#dae1e5"/>
+<text x="42" y="449" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#29434f">R53: 4/8 eligible smooth-interior cases</text>
+<text x="42" y="488" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#236553">R54: 8/8 eligible local interior/active-face cases</text>
+<text x="42" y="529" font-family="Arial,sans-serif" font-size="16" fill="#485f6b">16/16 fixed-seed directional tests matched the active face · 32/32 attempted ± REML refits accepted</text>
+<text x="42" y="563" font-family="Arial,sans-serif" font-size="16" fill="#485f6b">Median relative nuisance derivative discrepancy: 0.0000989</text>
+<text x="42" y="596" font-family="Arial,sans-serif" font-size="16" fill="#485f6b">Median absolute studentized pivot derivative discrepancy: 0.00000530</text>
+<line x1="40" y1="626" x2="1091" y2="626" stroke="#dae1e5"/>
+<text x="42" y="657" font-family="Arial,sans-serif" font-size="14" fill="#617783">An active constrained physical variance moves with the observed-data fitted reference scale.</text>
+<text x="42" y="679" font-family="Arial,sans-serif" font-size="14" fill="#617783">Local positive-box differentiability only; zero-variance boundaries and 90% pointwise/simultaneous inference remain unqualified.</text>
+</svg>
