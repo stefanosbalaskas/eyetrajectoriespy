@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520" role="img" aria-labelledby="t d">
+<title id="t">R41 targeted physical projected KKT refinement</title>
+<desc id="d">Original R40 raw linear: 15 of 33 selected and control starts satisfy the 0.001 physical-KKT tolerance, worst residual 0.010029. Stricter L-BFGS-B: 33 of 33, worst 0.000199. Independent SLSQP: 33 of 33, worst 0.000571. All 18 original exceptional fits passed both restarts. These are outcome-selected reused data, not new independent samples.</desc>
+<rect width="1000" height="520" fill="#fff"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#1c303c}.heading{font-size:24px;font-weight:700}.sub{font-size:15px;fill:#5d6b77}.row{font-size:17px}.number{font-size:18px;font-weight:700}.foot{font-size:13px;fill:#5d6b77}</style>
+<text x="55" y="52" class="heading">R41 — physical-gradient refinement of original R40 cases</text>
+<text x="55" y="80" class="sub">33 targeted original starts: 18 prior KKT exceptions + 15 paired controls</text>
+<text x="55" y="124" font-size="19" font-weight="700">KKT compliant fits (threshold ≤0.001; all 33 starts retained)</text>
+<text x="263" y="173" class="row" text-anchor="end">Original R40 linear</text>
+<text x="263" y="247" class="row" text-anchor="end">Tighter L-BFGS-B</text>
+<text x="263" y="321" class="row" text-anchor="end">Independent SLSQP</text>
+<rect x="280" y="145" width="255" height="44" rx="3" fill="#ad6b4b"/>
+<rect x="535" y="145" width="306" height="44" fill="#e8e8e7"/>
+<rect x="280" y="219" width="561" height="44" rx="3" fill="#27745d"/>
+<rect x="280" y="293" width="561" height="44" rx="3" fill="#27745d"/>
+<text x="859" y="175" class="number">15/33</text>
+<text x="859" y="249" class="number">33/33</text>
+<text x="859" y="323" class="number">33/33</text>
+<rect x="100" y="385" width="16" height="16" fill="#27745d"/><text x="126" y="399" class="foot">KKT passed</text>
+<rect x="253" y="385" width="16" height="16" fill="#ad6b4b"/><text x="279" y="399" class="foot">KKT exceeded threshold</text>
+<rect x="525" y="385" width="16" height="16" fill="#e8e8e7"/><text x="552" y="399" class="foot">Original threshold exceedances carried forward</text>
+<text x="56" y="455" class="foot">Maximum projected-KKT magnitude: baseline 0.010029; tighter L-BFGS-B 0.000199; independent SLSQP 0.000571.</text>
+<text x="56" y="481" class="foot">No new primitive Gaussian blocks; outcome-selected numerical diagnostic only. No inference or release qualification.</text>
+</svg>
