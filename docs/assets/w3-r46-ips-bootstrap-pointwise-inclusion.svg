@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1030" height="575" viewBox="0 0 1030 575" role="img" aria-labelledby="ttl des">
+<title id="ttl">R46 exploratory pointwise truth inclusion under MAR model misspecification and weak overlap</title>
+<desc id="des">Three regimes with 128 paired source variants per regime across 32 independent Gaussian blocks. Matched MAR truth-included counts: naive CR1 112, fixed-weight propensity IPW CR1 109, full refit propensity participant bootstrap 121. Nonlinear misspecified MAR: 111, 109, 116. Weak overlap: 100, 96, 113. All 30336 prespecified bootstrap replications completed; counts do not establish nominal 90 percent coverage.</desc>
+<rect width="1030" height="575" fill="#fff"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#1b2d39}.headline{font-size:24px;font-weight:700}.subtitle{font-size:14px;fill:#61707a}.lab{font-size:16px;font-weight:600}.num{font-size:14px;font-weight:700}.note{font-size:13px;fill:#5d6b75}</style>
+<text x="50" y="49" class="headline">R46 — exploratory pointwise truth inclusion</text>
+<text x="50" y="79" class="subtitle">Nominal 90% interval counts; 128 paired source variants per regime, but only 32 independent primitive blocks</text>
+<rect x="220" y="105" width="15" height="15" fill="#7a8991"/><text x="243" y="118" font-size="14">Naïve CR1</text>
+<rect x="353" y="105" width="15" height="15" fill="#a57e5b"/><text x="376" y="118" font-size="14">Fixed-IPW CR1</text>
+<rect x="515" y="105" width="15" height="15" fill="#347b66"/><text x="538" y="118" font-size="14">Propensity-refit percentile bootstrap</text>
+<text x="195" y="193" text-anchor="end" class="lab">Matched MAR</text>
+<rect x="220" y="160" width="503.13" height="20" rx="2" fill="#7a8991"/><text x="732.13" y="176" class="num">112/128</text>
+<rect x="220" y="186" width="489.65" height="20" rx="2" fill="#a57e5b"/><text x="718.65" y="202" class="num">109/128</text>
+<rect x="220" y="212" width="543.55" height="20" rx="2" fill="#347b66"/><text x="772.55" y="228" class="num">121/128</text>
+<text x="195" y="305" text-anchor="end" class="lab">Nonlinear propensity</text>
+<rect x="220" y="272" width="498.63" height="20" rx="2" fill="#7a8991"/><text x="727.63" y="288" class="num">111/128</text>
+<rect x="220" y="298" width="489.65" height="20" rx="2" fill="#a57e5b"/><text x="718.65" y="314" class="num">109/128</text>
+<rect x="220" y="324" width="521.09" height="20" rx="2" fill="#347b66"/><text x="750.09" y="340" class="num">116/128</text>
+<text x="195" y="417" text-anchor="end" class="lab">Weak overlap</text>
+<rect x="220" y="384" width="449.22" height="20" rx="2" fill="#7a8991"/><text x="678.22" y="400" class="num">100/128</text>
+<rect x="220" y="410" width="431.25" height="20" rx="2" fill="#a57e5b"/><text x="660.25" y="426" class="num">96/128</text>
+<rect x="220" y="436" width="507.62" height="20" rx="2" fill="#347b66"/><text x="736.62" y="452" class="num">113/128</text>
+<text x="50" y="518" class="note">All 79 frozen whole-participant refits per source/regime completed; none were dropped or replaced.</text>
+<text x="50" y="544" class="note">Observed truth-inclusion frequencies are exploratory; this study does not qualify CR2 or simultaneous 90% bands.</text>
+</svg>
