@@ -53,6 +53,7 @@ def test_frozen_likelihood_reconstruction_and_start_selection():
         validate_fit(base,"falsified likelihood")
     base=_valid()
     base["numerical_starts"][1]["negative_loglik"]=101.
+    base["selected_NLL"]=101.
     with pytest.raises(ValueError,match="selected fit NLL"):
         validate_fit(base,"selected likelihood outside observed minimum")
 
