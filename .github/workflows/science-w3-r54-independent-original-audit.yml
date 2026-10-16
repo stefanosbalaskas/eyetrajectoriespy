@@ -1,0 +1,74 @@
+name: science-w3-r54-independent-original-active-face-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r54_original_active_face_independent.py"
+      - "tests/test_w3_r54_independent_active_face_audit.py"
+      - "docs/development/w3-r54-independent-evidence-audit.md"
+      - ".github/workflows/science-w3-r54-independent-original-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  signed-KKT-moving-bound-immutable-source-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r54_independent_active_face_audit.py
+
+  immutable-R53-and-R54-original-case-replay-audit:
+    needs: signed-KKT-moving-bound-immutable-source-contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r53-original-REML-CR2-local-influence-evidence
+          run-id: 38973010225
+          path: build/immutable-r53-original/
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r54-original-R53-source-replay-active-face-evidence
+          run-id: 38974627708
+          path: build/immutable-r54-original/
+          github-token: ${{ github.token }}
+      - name: Validate exact original R53 scientific checkout
+        run: grep -Fx '11689d8562b061ebd5ac98103f5be26fd94b228f' build/immutable-r53-original/source-commit.txt
+      - name: Validate exact original R54 scientific checkout
+        run: grep -Fx 'd8c933164fd2ef7f0092a94dccc76db69ea6fc44' build/immutable-r54-original/source-commit.txt
+      - name: Independently verify original R53/R54 numeric fits and moving active bounds
+        run: python scripts/audit_w3_r54_original_active_face_independent.py --r53 build/immutable-r53-original/ --r54 build/immutable-r54-original/ --out build/independent-original-R54-audit.json
+      - name: Display independently derived audit report
+        run: cat build/independent-original-R54-audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r54-independent-immutable-R53-R54-source-replay-audit
+          path: build/independent-original-R54-audit.json
+          if-no-files-found: warn
+          retention-days: 90
