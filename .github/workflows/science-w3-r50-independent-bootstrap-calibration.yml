@@ -1,0 +1,89 @@
+name: science-w3-r50-independent-bootstrap-calibration
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r50_independent_bootstrap_calibration.py"
+      - "tests/test_w3_r50_independent_bootstrap_calibration.py"
+      - "docs/development/w3-r50-independent-bootstrap-calibration-protocol.md"
+      - ".github/workflows/science-w3-r50-independent-bootstrap-calibration.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-source-numerical-and-three-shard-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r50_independent_bootstrap_calibration.py
+
+  original-independent-Gaussian-shards:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - start: 0
+            stop: 8
+          - start: 8
+            stop: 16
+          - start: 16
+            stop: 24
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r50_independent_bootstrap_calibration.py --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/w3-r50-original-shard/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r50-original-shard-${{ matrix.start }}
+          path: build/w3-r50-original-shard/
+          if-no-files-found: warn
+          retention-days: 90
+
+  checksum-verified-complete-original-source-aggregate:
+    needs:
+      - original-source-numerical-and-three-shard-contract
+      - original-independent-Gaussian-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r50-original-shard-*
+          path: build/w3-r50-original-parts/
+          merge-multiple: false
+      - run: python scripts/run_w3_r50_independent_bootstrap_calibration.py --merge-parts build/w3-r50-original-parts/ --out build/w3-r50-original-complete-ledger/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r50-original-checksummed-independent-source-evidence
+          path: build/w3-r50-original-complete-ledger/
+          if-no-files-found: warn
+          retention-days: 90
