@@ -9,6 +9,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 jobs:
   independent-static-evidence-contracts:
     runs-on: ubuntu-24.04
@@ -23,3 +24,32 @@ jobs:
           python-version: ${{ matrix.python }}
       - run: python -m pip install -e ".[dev]"
       - run: python -m pytest -q tests/test_w3_r50_independent_evidence_audit.py
+
+  original-aggregate-readonly-verification:
+    needs: independent-static-evidence-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r50-original-checksummed-independent-source-evidence
+          path: build/r50-original/
+          run-id: 38941603543
+          github-token: ${{ github.token }}
+      - name: Preserve exact original scientific checkout identity
+        run: grep -Fx '5fc96baa07b191593ea3d5db47dc057f2b1aeafe' build/r50-original/source-commit.txt
+      - name: Independently audit full original R50 cases, numeric acceptance and reporting
+        run: python scripts/audit_w3_r50_original_evidence_independent.py --original-artifact-dir build/r50-original/ > build/r50-independent-audit.json
+      - name: Display separate independent-source report
+        run: cat build/r50-independent-audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r50-independent-readonly-original-artifact-audit
+          path: build/r50-independent-audit.json
+          if-no-files-found: warn
+          retention-days: 90
