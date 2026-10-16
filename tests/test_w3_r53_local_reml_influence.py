@@ -125,3 +125,19 @@ def test_all_planned_denominators_and_perturbation_refusals_preserved():
     assert not report["release_authorized"]
     with pytest.raises(ValueError,match="duplicate"):
         r53.summary([fake,fake])
+
+
+def test_json_evidence_retains_numpy_derivative_vectors_without_nan(tmp_path):
+    import json
+    record={
+        "partial_theta_gradient":np.array([1.,-2.,.0001]),
+        "nested":{"matrix":np.eye(2),"scalar":np.float64(.25)},
+    }
+    destination=tmp_path/"evidence.json"
+    r53._write(destination,record)
+    recovered=json.loads(destination.read_text())
+    assert recovered["partial_theta_gradient"]==[1.,-2.,.0001]
+    assert recovered["nested"]["matrix"]==[[1.,0.],[0.,1.]]
+    assert recovered["nested"]["scalar"]==.25
+    with pytest.raises(ValueError):
+        r53._write(destination,{"invalid":np.array([np.nan])})
