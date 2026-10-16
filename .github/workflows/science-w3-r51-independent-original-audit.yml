@@ -1,0 +1,66 @@
+name: science-w3-r51-independent-original-evidence-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r51_original_mechanism_independent.py"
+      - "tests/test_w3_r51_original_mechanism_independent_audit.py"
+      - ".github/workflows/science-w3-r51-independent-original-audit.yml"
+      - "docs/development/w3-r51-independent-evidence-audit.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-static-numerical-and-tamper-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r51_original_mechanism_independent_audit.py
+
+  immutable-original-Gaussian-source-readonly-audit:
+    needs: independent-static-numerical-and-tamper-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r51-complete-original-independent-mechanism-evidence
+          path: build/r51-original-immutable/
+          run-id: 38952364476
+          github-token: ${{ github.token }}
+      - name: Verify original source checkout, not later research-branch tip
+        run: grep -Fx '03a38611a2eeb585a1139863d1f3010fffb918ea' build/r51-original-immutable/source-commit.txt
+      - name: Independently reconstruct all original Gaussian, optimizer and CI records
+        run: python scripts/audit_w3_r51_original_mechanism_independent.py --original-artifact-dir build/r51-original-immutable/ --out build/r51-independently-recomputed-evidence.json
+      - name: Preserve new read-only audit report
+        run: cat build/r51-independently-recomputed-evidence.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r51-independent-original-artifact-physical-KKT-and-bootstrap-audit
+          path: build/r51-independently-recomputed-evidence.json
+          if-no-files-found: warn
+          retention-days: 90
