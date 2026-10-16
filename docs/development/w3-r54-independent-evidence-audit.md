@@ -1,0 +1,21 @@
+# W3 R54 — independent immutable R53/R54 original-source active-face audit
+
+**Read-only verification, not another Gaussian source-generation experiment.** This auditor does not import the R53/R54 estimators, rerun their scientific Gaussian source simulations or alter observed/fitted CR2 inference.
+
+## Original evidence sources
+
+[Original R53 workflow #38973010225](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38973010225) and [original R54 workflow #38974627708](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38974627708) are retained as immutable original sources, distinct from any later branch-tip documentation commits. The independent job explicitly downloads both via their original GitHub Actions run IDs, validates each `cases.json`, `summary.json` and `source-commit.txt` SHA256 manifest, and checks the original PR-merge source checkouts **`11689d8562b061ebd5ac98103f5be26fd94b228f`** and **`d8c933164fd2ef7f0092a94dccc76db69ea6fc44`**.
+
+The comparison must reproduce **all eight matched (block, support) source identities**. Each original covariance component from the replayed R54 fit must agree numerically with its R53 predecessor within **1e-6 relative** tolerance (not a claim of bitwise identical optimizer output). The original accepted optimizer starting candidate may change between repeated fits with nearly identical likelihoods: the audit records those changes rather than misrepresenting them as different independent Gaussian data.
+
+## Independently reconstructed evidence
+
+The separate auditor `scripts/audit_w3_r54_original_active_face_independent.py` checks the retained two fixed original optimizer starts and strict first-order projected **KKT≤0.001** and selected observed-best Gaussian REML likelihood gap **≤0.001**, with objective reconstruction **≤1e-6**, independently of the numerical runner. It refuses missing, altered, duplicated or mismatched source artifacts; false optimizer success; accepted fit without eligible KKT/NLL start; any missing source/refit record; changed positive active-face signatures; improper classification of the **four original R53 smooth-interior mathematical refusals**; and weak signed active-gradient margins.
+
+It checks that every original lower positive slope face corresponds to the original fixed ratio bound `exp(-13.8)` and that plus/minus repeated full Gaussian REML fits retain that face. From the raw plus/minus nuisance components and recorded response step, it independently reconstructs all **16 original four-component physical nuisance-direction derivatives** and relative norm differences and verifies the reported studentized pivot derivative arithmetic. Crucially, for original active-slope cases it independently compares the observed physical component change with `exp(-13.8)×(reference_plus-reference_minus)/(2×step)`, confirming the response-dependent moving positive bound, not a constant active physical variance.
+
+The job reproduces the original source-specific and leverage-stratum medians using the full **eight source cases, 16 directions, 32 repeated plus/minus refits and 80 two-start optimizer-outcome slots**. These outcomes are mechanistic numerical verification of the already completed R54 source, not a new independent R54 inferential study. The original 90% pointwise and simultaneous functional band qualification remain unresolved; an active positive ratio-bound derivative is **not** a distributional result at true zero participant variance.
+
+## Scientific and production restrictions
+
+Original R53 smooth-interior refusals remain part of the record; R54 correctly derives a different constrained active-face differential. This audit does not prove the same face remains selected over large Gaussian source perturbations, derive a full nonlinear fitted-covariance sampling law, establish a global Gaussian REML optimum, calibrate random-slope boundary-null Type-I error/power, correct MAR/MNAR observation loss or qualify missing participants. Keep [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) and [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) **OPEN**. This remains draft research only: no protected-main merge, public inference API, release tag or PyPI.
