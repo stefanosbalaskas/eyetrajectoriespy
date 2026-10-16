@@ -1,0 +1,48 @@
+name: science-w3-r44-response-dependent-selection
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r44_response_selection.py"
+      - "tests/test_w3_r44_response_selection.py"
+      - "docs/development/w3-r44-response-selection-protocol.md"
+      - ".github/workflows/science-w3-r44-response-selection.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-missingness-selection-and-cohort-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r44_response_selection.py
+  original-four-blocks-512-stage-missingness-and-selection-study:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r44_response_selection.py --out build/w3-r44-original-response-selection
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r44-original-response-selection-full-cohort-ledger
+          path: build/w3-r44-original-response-selection/
+          if-no-files-found: warn
+          retention-days: 90
