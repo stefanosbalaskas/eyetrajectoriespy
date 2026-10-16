@@ -1,0 +1,48 @@
+name: science-w3-r46-independent-propensity-bootstrap
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r46_propensity_bootstrap.py"
+      - "tests/test_w3_r46_propensity_bootstrap.py"
+      - "docs/development/w3-r46-propensity-bootstrap-protocol.md"
+      - ".github/workflows/science-w3-r46-propensity-bootstrap.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  observed-only-propensity-and-whole-participant-bootstrap-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r46_propensity_bootstrap.py
+  original-32-independent-blocks-30336-bootstrap-attempts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r46_propensity_bootstrap.py --out build/w3-r46-original-propensity-bootstrap
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r46-original-new-source-bootstrap-refit-ledger
+          path: build/w3-r46-original-propensity-bootstrap/
+          if-no-files-found: warn
+          retention-days: 90
