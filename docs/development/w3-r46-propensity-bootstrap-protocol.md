@@ -8,9 +8,13 @@
 
 R46 examines uncertainty from estimating the MAR propensity, with new primitive source draws and transparent alternative propensity mechanisms. An observed MAR schedule is assumed to include original participant/trial identities, scheduled timestamps, predictors, and retention indicators even for the missing gaze measurements. The missing gaze values are `NaN`; the fitted propensity cannot access them.
 
+## Pre-execution source-contract correction (preserved negative CI evidence)
+
+The first original R46 run (GitHub Actions #38882504591) **failed the source-generator contract before any valid source could be analyzed**: the requested n=36 was not among the inherited Gaussian generator's permitted participant sizes (24, 48, 96). This was a protocol/implementation mistake, not an unfavorable statistical outcome that can be reclassified. To preserve the original generator and avoid silent expansion of its accepted sizes, the attempted n=36 design was **amended prospectively to n=24** before a successful original-source execution. The master seed, independent primitive block count (32), support/state pairing, three retention regimes, 79 bootstrap replicates, propensity specification, all numeric thresholds, and full failure denominator remain unchanged. The initial failed workflow remains in GitHub history and is not used for statistical results. The amended n24 study is a new successful-source checkpoint, and any outputs must explicitly identify the amendment.
+
 ## Frozen source and observation design
 
-New primitive Gaussian master seed **202610164646**, dropout master seed **202610164647**, participant-bootstrap master seed **202610164648**, separate from all earlier studies. Generate **32 independent primitive blocks**, **n=36 participants per block**, each with native irregular trials; within each block pair ordinary/extreme predictor support and generating exact-zero/positive participant random-slope states, where the zero state removes the slope innovation from the reconstructed genuine Gaussian response. These are **128 paired source variants, not 128 independent primitive blocks**.
+New primitive Gaussian master seed **202610164646**, dropout master seed **202610164647**, participant-bootstrap master seed **202610164648**, separate from all earlier studies. Generate **32 independent primitive blocks**, **n=24 participants per block**, each with native irregular trials; within each block pair ordinary/extreme predictor support and generating exact-zero/positive participant random-slope states, where the zero state removes the slope innovation from the reconstructed genuine Gaussian response. These are **128 paired source variants, not 128 independent primitive blocks**.
 
 For each variant, evaluate three purely **observed-design MAR** point-retention mechanisms:
 
