@@ -7,6 +7,7 @@ import pytest
 
 from scripts.audit_w3_r50_original_evidence_independent import (
     BLOCKS, SUPPORT, METHODS, N_BOOT, _q_linear, _wilson, audit_original,
+    _verify_physical_starts,
 )
 
 
@@ -45,8 +46,8 @@ def _mock_artifact(tmp_path):
         }
     for block in range(BLOCKS):
         for support in SUPPORT:
-            starts=[{"label":"start1","status":"not_attempted"},
-                    {"label":"start2","status":"not_attempted"}]
+            starts=[{"label":"interior","status":"not_attempted"},
+                    {"label":"spread","status":"not_attempted"}]
             cases.append({
                 "block":block,"support":support,
                 "source_status":"failed",
@@ -118,4 +119,45 @@ def test_independent_bootstrap_quantile_rule_and_invalid_order(tmp_path):
     _write_json(root/"cases.json",cases)
     _refresh_hashes(root)
     with pytest.raises(ValueError,match="invalid original 63-refit"):
+        audit_original(root)
+
+
+def test_independent_physical_KKT_and_NLL_gate_rejects_false_acceptance():
+    candidate = {
+        "label": "interior", "status": "ok", "optimizer_success": True,
+        "negative_loglik": 10., "physical_projected_KKT": .02,
+        "objective_reconstruction_error": 0.,
+        "ratios": [.1,.2,.3,1.],
+    }
+    other = {"label":"spread","status":"not_attempted"}
+    with pytest.raises(ValueError,match="KKT/NLL"):
+        _verify_physical_starts([candidate,other],"accepted","tampered-original")
+    with pytest.raises(ValueError,match="KKT/NLL"):
+        _verify_physical_starts([candidate,other],"ok","tampered-bootstrap")
+    candidate["physical_projected_KKT"]=.0001
+    assert _verify_physical_starts(
+        [candidate,other],"accepted","valid-local",
+        selected={"selected_NLL":10.,"physical_projected_KKT":.0001},
+    )==1
+    with pytest.raises(ValueError,match="selected"):
+        _verify_physical_starts(
+            [candidate,other],"accepted","tampered-selection",
+            selected={"selected_NLL":9.,"physical_projected_KKT":.0001},
+        )
+
+
+def test_independent_audit_rejects_falsely_successful_original_or_bootstrap(tmp_path):
+    root=_mock_artifact(tmp_path)
+    cases=json.loads((root/"cases.json").read_text())
+    cases[0]["original_correct_nuisance"]["status"]="accepted"
+    _write_json(root/"cases.json",cases)
+    _refresh_hashes(root)
+    with pytest.raises(ValueError,match="KKT/NLL"):
+        audit_original(root)
+    cases[0]["original_correct_nuisance"]["status"]="not_attempted"
+    cases[0]["bootstrap_refit_attempts"][0]["status"]="ok"
+    cases[0]["bootstrap_refit_attempts"][0]["signed_studentized_pivot"]=.25
+    _write_json(root/"cases.json",cases)
+    _refresh_hashes(root)
+    with pytest.raises(ValueError,match="KKT/NLL"):
         audit_original(root)
