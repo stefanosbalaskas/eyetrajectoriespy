@@ -1,0 +1,49 @@
+name: science-w3-r54-moving-bound-active-face-influence
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r54_boundary_active_set_influence.py"
+      - "tests/test_w3_r54_boundary_active_set_influence.py"
+      - "docs/development/w3-r54-boundary-active-set-influence-protocol.md"
+      - ".github/workflows/science-w3-r54-moving-bound-active-face.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  signed-active-set-moving-bound-analytic-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r54_boundary_active_set_influence.py
+
+  original-R53-source-replay-active-face-numerical-comparison:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r54_boundary_active_set_influence.py --out build/w3-r54-active-face-source-replay/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r54-original-R53-source-replay-active-face-evidence
+          path: build/w3-r54-active-face-source-replay/
+          if-no-files-found: warn
+          retention-days: 90
