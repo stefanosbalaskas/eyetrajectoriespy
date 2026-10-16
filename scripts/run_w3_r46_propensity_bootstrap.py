@@ -1,6 +1,6 @@
 """R46: prospective participant-bootstrap propensity-uncertainty pilot.
 
-Thirty-two NEW independently seeded Gaussian primitive source blocks (n36),
+Thirty-two NEW independently seeded Gaussian primitive source blocks (n24),
 paired ordinary/extreme supports and true-zero/positive Gaussian slope
 states. Three observed-design MAR retention regimes: matched logistic, omitted
 interaction/nonlinear propensity, and low-overlap/positivity stress.
@@ -35,7 +35,7 @@ SOURCE_SEED=202610164646
 MASK_SEED=202610164647
 BOOTSTRAP_SEED=202610164648
 BLOCKS=32
-N_PARTICIPANTS=36
+N_PARTICIPANTS=24
 SUPPORT=("ordinary_dependent","extreme_dependent")
 STATES=("zero_slope","positive_slope")
 REGIMES=(
