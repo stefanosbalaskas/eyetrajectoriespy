@@ -71,6 +71,8 @@ nav:
       - W3 R48 — independent oracle vs fitted-covariance CR2 pointwise audit (research only): development/w3-r48-independent-fitted-cr2-results.md
       - W3 R49 — Gaussian covariance nuisance-refit bootstrap-t original feasibility (unqualified): development/w3-r49-nuisance-refit-bootstrap-t-results.md
       - W3 R50 — independent Gaussian bootstrap-t and covariance misspecification study protocol (research only): development/w3-r50-independent-bootstrap-calibration-protocol.md
+      - W3 R50 — independent Gaussian nuisance-refit bootstrap original results (unqualified): development/w3-r50-independent-bootstrap-calibration-results.md
+      - W3 R50 — original evidence independent SHA256, KKT and reporting audit: development/w3-r50-independent-evidence-audit.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
       - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
       - Original source figures: development/research-original-figures.md

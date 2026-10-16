@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" width="1200" height="720" role="img" aria-labelledby="t desc">
+<title id="t">R50 original independent Gaussian pointwise truth inclusion and mean interval half-width</title>
+<desc id="desc">Twenty-four independently generated Gaussian blocks, paired ordinary and extreme predictor leverage. For ordinary leverage, generating oracle 22/24 width .07187, fitted covariance 22/24 width .07284, nuisance-refit bootstrap-t first31 21/24 width .06878, all63 21/24 width .07241, wrong covariance 22/24 width .07123. For extreme leverage, oracle 24/24 width .09726, fitted 21/24 width .09363, refit 31 19/24 width .06806, refit63 21/24 width .07038, wrong family 21/24 width .06466. Independent original evidence SHA256 verified and postprocessing audit passed; none establishes calibrated nominal 90 percent coverage.</desc>
+<rect width="1200" height="720" fill="#fff"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#243743}.head{font-size:26px;font-weight:700}.sub{font-size:16px;fill:#61717b}.group{font-size:19px;font-weight:700}.label{font-size:14px}.count{font-size:15px;font-weight:700}.foot{font-size:14px;fill:#576a76}</style>
+<text x="32" y="48" class="head">R50 · Independent Gaussian uncertainty audit</text>
+<text x="32" y="79" class="sub">90%-nominal pointwise intervals · 24 independent primitive blocks per leverage stratum</text>
+<text x="485" y="115" class="group">Generating truth included</text>
+<text x="832" y="115" class="group">Mean interval half-width</text>
+<text x="485" y="136" class="sub">Bars show count out of 24</text>
+<text x="832" y="136" class="sub">Bars scaled 0–0.12</text>
+<text x="32" y="150" class="group">Ordinary predictor leverage</text>
+<text x="32" y="393" class="group">Extreme predictor leverage</text>
+<text x="32" y="180" class="label">Generating covariance oracle</text>
+<rect x="485" y="164" width="235" height="21" rx="3" fill="#e9eeee"/>
+<rect x="485" y="164" width="215.4" height="21" rx="3" fill="#477f70"/>
+<text x="731" y="180" class="count">22/24</text>
+<rect x="832" y="164" width="222" height="21" rx="3" fill="#e9eeee"/>
+<rect x="832" y="164" width="133.0" height="21" rx="3" fill="#477f70"/>
+<text x="1068" y="180" class="count">0.072</text>
+<text x="32" y="223" class="label">Fitted covariance, conditional CR2</text>
+<rect x="485" y="207" width="235" height="21" rx="3" fill="#e9eeee"/>
+<rect x="485" y="207" width="215.4" height="21" rx="3" fill="#607c9a"/>
+<text x="731" y="223" class="count">22/24</text>
+<rect x="832" y="207" width="222" height="21" rx="3" fill="#e9eeee"/>
+<rect x="832" y="207" width="134.7" height="21" rx="3" fill="#607c9a"/>
+<text x="1068" y="223" class="count">0.073</text>
+<text x="32" y="266" class="label">Nuisance-refit bootstrap-t, 31 draws</text>
+<rect x="485" y="250" width="235" height="21" rx="3" fill="#e9eeee"/>
+<rect x="485" y="250" width="205.6" height="21" rx="3" fill="#a77e56"/>
+<text x="731" y="266" class="count">21/24</text>
+<rect x="832" y="250" width="222" height="21" rx="3" fill="#e9eeee"/>
+<rect x="832" y="250" width="127.2" height="21" rx="3" fill="#a77e56"/>
+<text x="1068" y="266" class="count">0.069</text>
+<text x="32" y="309" class="label">Nuisance-refit bootstrap-t, 63 draws</text>
+<rect x="485" y="293" width="235" height="21" rx="3" fill="#e9eeee"/>
+<rect x="485" y="293" width="205.6" height="21" rx="3" fill="#9a5a78"/>
+<text x="731" y="309" class="count">21/24</text>
+<rect x="832" y="293" width="222" height="21" rx="3" fill="#e9eeee"/>
+<rect x="832" y="293" width="134.0" height="21" rx="3" fill="#9a5a78"/>
+<text x="1068" y="309" class="count">0.072</text>
+<text x="32" y="352" class="label">Wrong covariance family, conditional CR2</text>
+<rect x="485" y="336" width="235" height="21" rx="3" fill="#e9eeee"/>
+<rect x="485" y="336" width="215.4" height="21" rx="3" fill="#7a798a"/>
+<text x="731" y="352" class="count">22/24</text>
+<rect x="832" y="336" width="222" height="21" rx="3" fill="#e9eeee"/>
+<rect x="832" y="336" width="131.8" height="21" rx="3" fill="#7a798a"/>
+<text x="1068" y="352" class="count">0.071</text>
+<text x="32" y="423" class="label">Generating covariance oracle</text>
+<rect x="485" y="407" width="235" height="21" rx="3" fill="#e9eeee"/>
+<rect x="485" y="407" width="235.0" height="21" rx="3" fill="#477f70"/>
+<text x="731" y="423" class="count">24/24</text>
+<rect x="832" y="407" width="222" height="21" rx="3" fill="#e9eeee"/>
+<rect x="832" y="407" width="179.9" height="21" rx="3" fill="#477f70"/>
+<text x="1068" y="423" class="count">0.097</text>
+<text x="32" y="466" class="label">Fitted covariance, conditional CR2</text>
+<rect x="485" y="450" width="235" height="21" rx="3" fill="#e9eeee"/>
+<rect x="485" y="450" width="205.6" height="21" rx="3" fill="#607c9a"/>
+<text x="731" y="466" class="count">21/24</text>
+<rect x="832" y="450" width="222" height="21" rx="3" fill="#e9eeee"/>
+<rect x="832" y="450" width="173.2" height="21" rx="3" fill="#607c9a"/>
+<text x="1068" y="466" class="count">0.094</text>
+<text x="32" y="509" class="label">Nuisance-refit bootstrap-t, 31 draws</text>
+<rect x="485" y="493" width="235" height="21" rx="3" fill="#e9eeee"/>
+<rect x="485" y="493" width="186.0" height="21" rx="3" fill="#a77e56"/>
+<text x="731" y="509" class="count">19/24</text>
+<rect x="832" y="493" width="222" height="21" rx="3" fill="#e9eeee"/>
+<rect x="832" y="493" width="125.9" height="21" rx="3" fill="#a77e56"/>
+<text x="1068" y="509" class="count">0.068</text>
+<text x="32" y="552" class="label">Nuisance-refit bootstrap-t, 63 draws</text>
+<rect x="485" y="536" width="235" height="21" rx="3" fill="#e9eeee"/>
+<rect x="485" y="536" width="205.6" height="21" rx="3" fill="#9a5a78"/>
+<text x="731" y="552" class="count">21/24</text>
+<rect x="832" y="536" width="222" height="21" rx="3" fill="#e9eeee"/>
+<rect x="832" y="536" width="130.2" height="21" rx="3" fill="#9a5a78"/>
+<text x="1068" y="552" class="count">0.070</text>
+<text x="32" y="595" class="label">Wrong covariance family, conditional CR2</text>
+<rect x="485" y="579" width="235" height="21" rx="3" fill="#e9eeee"/>
+<rect x="485" y="579" width="205.6" height="21" rx="3" fill="#7a798a"/>
+<text x="731" y="595" class="count">21/24</text>
+<rect x="832" y="579" width="222" height="21" rx="3" fill="#e9eeee"/>
+<rect x="832" y="579" width="119.6" height="21" rx="3" fill="#7a798a"/>
+<text x="1068" y="595" class="count">0.065</text>
+<line x1="32" y1="624" x2="1155" y2="624" stroke="#d9e0e3"/>
+<text x="32" y="655" class="foot">Nuisance-refit bootstrap quantiles: first 31 vs all 63 Gaussian draws with full re-estimation on every draw.</text>
+<text x="32" y="678" class="foot">Ordinary/extreme designs are paired; 48 source cases are not 48 independent source blocks.</text>
+<text x="32" y="701" class="foot">All source, refit, SHA256 and independent KKT/reporting checks passed. Statistical 90% calibration remains unqualified.</text>
+</svg>
