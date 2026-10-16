@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="635" viewBox="0 0 1040 635" role="img" aria-labelledby="title desc">
+<title id="title">R47 independent-source empirical 90% pointwise truth inclusion and Wilson Monte Carlo limits</title>
+<desc id="desc">256 independent Gaussian source blocks, n24, ordinary predictor support and positive generating participant random slope. Observed truth inclusion counts: complete naive 222, matched MAR naive 223, matched fixed IPW CR1 225, matched propensity-refit bootstrap 219; weak overlap naive 203, weak fixed IPW 202, weak bootstrap 217, all out of 256. Horizontal 95 percent Wilson Monte Carlo intervals, vertical reference at nominal 90 percent. The matched and weak bootstrap Wilson intervals exclude nominal 90; all weak intervals exclude 90. The study does not validate covariance-estimation-aware CR2 or simultaneous bands.</desc>
+<rect width="1040" height="635" fill="#fff"/>
+<text x="50" y="47" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#1d303d">R47 — independent-source pointwise calibration audit</text>
+<text x="50" y="79" font-family="Arial,sans-serif" font-size="15" fill="#576a76">Truth-inclusion fraction and 95% Wilson Monte Carlo interval · 256 independent primitive blocks</text>
+<text x="405" y="125" font-family="Arial,sans-serif" font-size="15" font-weight="600" fill="#324854">Independent-source truth inclusion</text>
+<line x1="405" y1="145" x2="405" y2="540" stroke="#e4e8e9" stroke-dasharray="0" stroke-width="1"/><text x="405" y="563" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#596975">70%</text><line x1="493.0000000000001" y1="145" x2="493.0000000000001" y2="540" stroke="#e4e8e9" stroke-dasharray="0" stroke-width="1"/><text x="493.0000000000001" y="563" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#596975">75%</text><line x1="581.0000000000002" y1="145" x2="581.0000000000002" y2="540" stroke="#e4e8e9" stroke-dasharray="0" stroke-width="1"/><text x="581.0000000000002" y="563" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#596975">80%</text><line x1="669" y1="145" x2="669" y2="540" stroke="#e4e8e9" stroke-dasharray="0" stroke-width="1"/><text x="669" y="563" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#596975">85%</text><line x1="757.0000000000001" y1="145" x2="757.0000000000001" y2="540" stroke="#476073" stroke-dasharray="6 5" stroke-width="2"/><text x="757.0000000000001" y="563" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#596975">90%</text><line x1="845" y1="145" x2="845" y2="540" stroke="#e4e8e9" stroke-dasharray="0" stroke-width="1"/><text x="845" y="563" font-family="Arial,sans-serif" font-size="13" text-anchor="middle" fill="#596975">95%</text>
+<text x="385" y="173" font-family="Arial,sans-serif" font-size="15" text-anchor="end" fill="#253742">Complete · naïve CR1</text>
+ <line x1="616.4457950462602" y1="168" x2="762.9460705233009" y2="168" stroke="#3f826c" stroke-width="5" stroke-linecap="round"/>
+ <line x1="616.4457950462602" y1="161" x2="616.4457950462602" y2="175" stroke="#3f826c" stroke-width="2"/>
+ <line x1="762.9460705233009" y1="161" x2="762.9460705233009" y2="175" stroke="#3f826c" stroke-width="2"/>
+ <circle cx="699.25" cy="168" r="7" fill="#3f826c"/>
+ <text x="879" y="173" font-family="Arial,sans-serif" font-size="15" fill="#253742">222/256</text>
+<text x="385" y="225" font-family="Arial,sans-serif" font-size="15" text-anchor="end" fill="#253742">Matched MAR · naïve CR1</text>
+ <line x1="624.1127602126751" y1="220" x2="768.8258273310306" y2="220" stroke="#3f826c" stroke-width="5" stroke-linecap="round"/>
+ <line x1="624.1127602126751" y1="213" x2="624.1127602126751" y2="227" stroke="#3f826c" stroke-width="2"/>
+ <line x1="768.8258273310306" y1="213" x2="768.8258273310306" y2="227" stroke="#3f826c" stroke-width="2"/>
+ <circle cx="706.125" cy="220" r="7" fill="#3f826c"/>
+ <text x="879" y="225" font-family="Arial,sans-serif" font-size="15" fill="#253742">223/256</text>
+<text x="385" y="277" font-family="Arial,sans-serif" font-size="15" text-anchor="end" fill="#253742">Matched MAR · fixed-IPW CR1</text>
+ <line x1="639.509931878523" y1="272" x2="780.522099613471" y2="272" stroke="#3f826c" stroke-width="5" stroke-linecap="round"/>
+ <line x1="639.509931878523" y1="265" x2="639.509931878523" y2="279" stroke="#3f826c" stroke-width="2"/>
+ <line x1="780.522099613471" y1="265" x2="780.522099613471" y2="279" stroke="#3f826c" stroke-width="2"/>
+ <circle cx="719.875" cy="272" r="7" fill="#3f826c"/>
+ <text x="879" y="277" font-family="Arial,sans-serif" font-size="15" fill="#253742">225/256</text>
+<text x="385" y="329" font-family="Arial,sans-serif" font-size="15" text-anchor="end" fill="#253742">Matched MAR · refit bootstrap</text>
+ <line x1="593.5624894175749" y1="324" x2="745.1892102295535" y2="324" stroke="#9c6379" stroke-width="5" stroke-linecap="round"/>
+ <line x1="593.5624894175749" y1="317" x2="593.5624894175749" y2="331" stroke="#9c6379" stroke-width="2"/>
+ <line x1="745.1892102295535" y1="317" x2="745.1892102295535" y2="331" stroke="#9c6379" stroke-width="2"/>
+ <circle cx="678.625" cy="324" r="7" fill="#9c6379"/>
+ <text x="879" y="329" font-family="Arial,sans-serif" font-size="15" fill="#253742">219/256</text>
+<text x="385" y="381" font-family="Arial,sans-serif" font-size="15" text-anchor="end" fill="#253742">Weak overlap · naïve CR1</text>
+ <line x1="473.96095608341403" y1="376" x2="648.0431919774061" y2="376" stroke="#ae7f4c" stroke-width="5" stroke-linecap="round"/>
+ <line x1="473.96095608341403" y1="369" x2="473.96095608341403" y2="383" stroke="#ae7f4c" stroke-width="2"/>
+ <line x1="648.0431919774061" y1="369" x2="648.0431919774061" y2="383" stroke="#ae7f4c" stroke-width="2"/>
+ <circle cx="568.6250000000001" cy="376" r="7" fill="#ae7f4c"/>
+ <text x="879" y="381" font-family="Arial,sans-serif" font-size="15" fill="#253742">203/256</text>
+<text x="385" y="433" font-family="Arial,sans-serif" font-size="15" text-anchor="end" fill="#253742">Weak overlap · fixed-IPW CR1</text>
+ <line x1="466.60033045825617" y1="428" x2="641.8570956284198" y2="428" stroke="#ae7f4c" stroke-width="5" stroke-linecap="round"/>
+ <line x1="466.60033045825617" y1="421" x2="466.60033045825617" y2="435" stroke="#ae7f4c" stroke-width="2"/>
+ <line x1="641.8570956284198" y1="421" x2="641.8570956284198" y2="435" stroke="#ae7f4c" stroke-width="2"/>
+ <circle cx="561.7500000000001" cy="428" r="7" fill="#ae7f4c"/>
+ <text x="879" y="433" font-family="Arial,sans-serif" font-size="15" fill="#253742">202/256</text>
+<text x="385" y="485" font-family="Arial,sans-serif" font-size="15" text-anchor="end" fill="#253742">Weak overlap · refit bootstrap</text>
+ <line x1="578.3984931043574" y1="480" x2="733.2597625944826" y2="480" stroke="#9c6379" stroke-width="5" stroke-linecap="round"/>
+ <line x1="578.3984931043574" y1="473" x2="578.3984931043574" y2="487" stroke="#9c6379" stroke-width="2"/>
+ <line x1="733.2597625944826" y1="473" x2="733.2597625944826" y2="487" stroke="#9c6379" stroke-width="2"/>
+ <circle cx="664.875" cy="480" r="7" fill="#9c6379"/>
+ <text x="879" y="485" font-family="Arial,sans-serif" font-size="15" fill="#253742">217/256</text>
+<text x="765.0000000000001" y="138" font-family="Arial,sans-serif" font-size="12" font-weight="600" fill="#476073">Nominal 90%</text>
+<text x="52" y="600" font-family="Arial,sans-serif" font-size="13" fill="#586978">Wilson bars characterize simulation uncertainty, not functional gaze-confidence intervals.</text>
+<text x="52" y="621" font-family="Arial,sans-serif" font-size="13" fill="#586978">Both MAR regimes share source primitives; no fitted-working-covariance CR2 or simultaneous-band claim.</text>
+</svg>
