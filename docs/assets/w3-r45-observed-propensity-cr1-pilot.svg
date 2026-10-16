@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="670" viewBox="0 0 1080 670" role="img" aria-labelledby="title desc">
+<title id="title">R45 pointwise finite-source estimation and inclusion pilot</title>
+<desc id="desc">Mean absolute error against fixed generating focal slope: complete unadjusted .021394, MAR unadjusted .021642, MAR fitted propensity IPW .022289, MAR known design propensity benchmark .022258, MNAR unadjusted .021674, participant selection unadjusted .034147. Across 96 paired source variants, empirical truth inclusion in exploratory CR1 pointwise 90% intervals was 79, 81, 82, 82, 78, 82 respectively. Independent Gaussian primitive blocks only 12, so none is a validated frequentist nominal coverage rate.</desc>
+<rect width="1080" height="670" fill="white"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#20333e}.h{font-size:25px;font-weight:700}.sub{font-size:15px;fill:#5c6b73}.lab{font-size:16px}.num{font-size:17px;font-weight:700}.fine{font-size:13px;fill:#52636e}</style>
+<text x="52" y="51" class="h">R45 — observed propensity weighting, exploratory CR1 intervals</text>
+<text x="52" y="81" class="sub">Twelve new primitive Gaussian blocks; nested n24/n48 and paired source conditions</text>
+<text x="307" y="120" font-size="15" font-weight="700">Mean absolute error against generating truth</text>
+<text x="919" y="120" font-size="15" font-weight="700">CI hits¹</text>
+<text x="284" y="174" class="lab" text-anchor="end">Complete · unadjusted</text>
+ <rect x="307" y="151" width="480" height="34" rx="3" fill="#e9ecec"/>
+ <rect x="307" y="151" width="256.73" height="34" rx="3" fill="#6e8a90"/>
+ <text x="806" y="175" class="num">0.02139</text>
+ <text x="930" y="175" class="num">79/96</text>
+<text x="284" y="239" class="lab" text-anchor="end">MAR · unadjusted</text>
+ <rect x="307" y="216" width="480" height="34" rx="3" fill="#e9ecec"/>
+ <rect x="307" y="216" width="259.70" height="34" rx="3" fill="#6e8a90"/>
+ <text x="806" y="240" class="num">0.02164</text>
+ <text x="930" y="240" class="num">81/96</text>
+<text x="284" y="304" class="lab" text-anchor="end">MAR · estimated IPW</text>
+ <rect x="307" y="281" width="480" height="34" rx="3" fill="#e9ecec"/>
+ <rect x="307" y="281" width="267.46" height="34" rx="3" fill="#947c9c"/>
+ <text x="806" y="305" class="num">0.02229</text>
+ <text x="930" y="305" class="num">82/96</text>
+<text x="284" y="369" class="lab" text-anchor="end">MAR · design-IPW benchmark</text>
+ <rect x="307" y="346" width="480" height="34" rx="3" fill="#e9ecec"/>
+ <rect x="307" y="346" width="267.10" height="34" rx="3" fill="#7c8aa1"/>
+ <text x="806" y="370" class="num">0.02226</text>
+ <text x="930" y="370" class="num">82/96</text>
+<text x="284" y="434" class="lab" text-anchor="end">MNAR · unadjusted</text>
+ <rect x="307" y="411" width="480" height="34" rx="3" fill="#e9ecec"/>
+ <rect x="307" y="411" width="260.09" height="34" rx="3" fill="#6e8a90"/>
+ <text x="806" y="435" class="num">0.02167</text>
+ <text x="930" y="435" class="num">78/96</text>
+<text x="284" y="499" class="lab" text-anchor="end">Participant selection · unadjusted</text>
+ <rect x="307" y="476" width="480" height="34" rx="3" fill="#e9ecec"/>
+ <rect x="307" y="476" width="409.77" height="34" rx="3" fill="#b4766c"/>
+ <text x="806" y="500" class="num">0.03415</text>
+ <text x="930" y="500" class="num">82/96</text>
+<text x="52" y="582" class="fine">¹ Number of 90% CR1 intervals containing truth out of 96 paired source variants; NOT verified nominal coverage.</text>
+<text x="52" y="607" class="fine">Only MAR uses fitted logistic propensity IPW; design-IPW is a simulation-only known-propensity benchmark.</text>
+<text x="52" y="632" class="fine">MNAR and latent whole-participant selection remain unadjusted: no identified outcome-based propensity.</text>
+</svg>
