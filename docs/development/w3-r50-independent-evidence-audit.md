@@ -30,6 +30,16 @@ exactly 48 block/support IDs (24 independent blocks),
 five method arms and interval slots per original
 source case, all 63 bootstrap-refit attempt slots
 and both solver-start records per nuisance fit.
+Additionally, the read-only checker independently verifies each recorded
+original or bootstrap nuisance fit's two fixed optimizer-start identities,
+four positive physical variance ratios, objective reconstruction tolerance,
+physical projected **KKT ≤ 0.001** and selected **NLL within 0.001** of the
+lowest recorded two-start candidate. A recorded accepted fit with no
+numerically eligible optimizer start is a reporting-audit failure, even
+when the original scientific runner marked its interval as successful.
+These numerical checks do **not** prove global REML optimality or
+statistical coverage.
+
 It independently reconstructs 90% inclusion decisions,
 the 31-versus-63 *absolute studentized-pivot quantile*
 using an independently coded linear percentile rule,
