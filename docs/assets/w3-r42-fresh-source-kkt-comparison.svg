@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1030" height="550" viewBox="0 0 1030 550" role="img" aria-labelledby="t d">
+<title id="t">R42 eight fresh Gaussian block numerical optimizer comparison</title>
+<desc id="d">A frozen complete 192-start Gaussian nuisance optimization design using eight new independent generating blocks. Original linear baseline: 189 of 192 near-best likelihood and 175 of 192 passing KKT at 0.001. Stricter L-BFGS-B: 192 of 192 on both. Independent SLSQP: 192 of 192 near-best and 190 of 192 passing KKT. Three baseline inferior-likelihood cases and two SLSQP KKT exceptions retained.</desc>
+<rect width="1030" height="550" fill="#fff"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#1f303c}.h{font-size:24px;font-weight:700}.sub{font-size:15px;fill:#536573}.name{font-size:17px}.num{font-size:18px;font-weight:700}.foot{font-size:13px;fill:#536573}</style>
+<text x="58" y="51" class="h">R42 — fresh-source complete-start optimizer validation</text>
+<text x="58" y="78" class="sub">Eight new independent primitive Gaussian blocks; 192 starting cases; all 576 stages recorded</text>
+<text x="58" y="129" font-size="18" font-weight="700">A. Near-best observed restricted NLL (≤0.001 gap)</text>
+<text x="276" y="177" class="name" text-anchor="end">Original raw linear</text>
+<text x="276" y="227" class="name" text-anchor="end">Stricter L-BFGS-B</text>
+<text x="276" y="277" class="name" text-anchor="end">Independent SLSQP</text>
+<rect x="296" y="151" width="520" height="31" fill="#e7ebe9" rx="3"/>
+<rect x="296" y="151" width="511.88" height="31" fill="#387d65" rx="3"/>
+<rect x="296" y="201" width="520" height="31" fill="#387d65" rx="3"/>
+<rect x="296" y="251" width="520" height="31" fill="#387d65" rx="3"/>
+<text x="838" y="175" class="num">189/192</text>
+<text x="838" y="225" class="num">192/192</text>
+<text x="838" y="275" class="num">192/192</text>
+<text x="58" y="342" font-size="18" font-weight="700">B. Physical projected KKT residual ≤0.001</text>
+<text x="276" y="387" class="name" text-anchor="end">Original raw linear</text>
+<text x="276" y="434" class="name" text-anchor="end">Stricter L-BFGS-B</text>
+<text x="276" y="481" class="name" text-anchor="end">Independent SLSQP</text>
+<rect x="296" y="362" width="520" height="29" fill="#e7ebe9" rx="3"/>
+<rect x="296" y="362" width="473.96" height="29" fill="#8e6574" rx="3"/>
+<rect x="296" y="409" width="520" height="29" fill="#387d65" rx="3"/>
+<rect x="296" y="456" width="520" height="29" fill="#8e6574" rx="3"/>
+<rect x="296" y="456" width="514.58" height="29" fill="#8e6574" rx="3"/>
+<text x="838" y="386" class="num">175/192</text>
+<text x="838" y="433" class="num">192/192</text>
+<text x="838" y="480" class="num">190/192</text>
+<text x="58" y="528" class="foot">Frozen preliminary numerical gate: stricter L-BFGS-B passed; baseline and SLSQP failed. This is not inferential validation.</text>
+</svg>
