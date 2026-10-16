@@ -1,0 +1,48 @@
+name: science-w3-r49-nuisance-refit-bootstrap-t
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r49_nuisance_refit_bootstrap_t.py"
+      - "tests/test_w3_r49_nuisance_refit_bootstrap_t.py"
+      - "docs/development/w3-r49-nuisance-refit-bootstrap-t-protocol.md"
+      - ".github/workflows/science-w3-r49-nuisance-refit-bootstrap-t.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  four-nuisance-physical-KKT-and-Gaussian-refit-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r49_nuisance_refit_bootstrap_t.py
+  original-independent-eight-blocks-nuisance-refit-bootstrap-study:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r49_nuisance_refit_bootstrap_t.py --out build/w3-r49-original-nuisance-bootstrap
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r49-original-nuisance-refit-bootstrap-failure-ledger
+          path: build/w3-r49-original-nuisance-bootstrap/
+          if-no-files-found: warn
+          retention-days: 90
