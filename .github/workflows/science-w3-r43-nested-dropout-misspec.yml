@@ -1,0 +1,48 @@
+name: science-w3-r43-nested-dropout-working-misspec
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r43_missingness_covariance_stress.py"
+      - "tests/test_w3_r43_missingness_covariance_stress.py"
+      - "docs/development/w3-r43-nested-dropout-misspec-protocol.md"
+      - ".github/workflows/science-w3-r43-nested-dropout-misspec.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-nesting-observation-loss-and-misspec-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r43_missingness_covariance_stress.py
+  original-four-independent-blocks-512-numerical-stages:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r43_missingness_covariance_stress.py --out build/w3-r43-fresh-dropout-misspec
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r43-fresh-independent-nested-dropout-misspec-numerical-ledger
+          path: build/w3-r43-fresh-dropout-misspec/
+          if-no-files-found: warn
+          retention-days: 90
