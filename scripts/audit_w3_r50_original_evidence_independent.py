@@ -62,6 +62,67 @@ def _wilson(count, total):
     return (max(0.0, centre-radius), min(1.0, centre+radius))
 
 
+KKT_LIMIT = .001
+NLL_GAP_LIMIT = .001
+RECONSTRUCTION_LIMIT = 1e-6
+
+
+def _verify_physical_starts(starts, status, label, selected=None):
+    """Independently verify R50's recorded two-start physical REML gate."""
+    if len(starts) != 2 or tuple(x.get("label") for x in starts) != ("interior", "spread"):
+        raise ValueError(f"R50 invalid physical optimizer-start identities: {label}")
+    finite = []
+    for start in starts:
+        if start.get("status") not in ("ok", "nonconverged", "failed", "not_attempted"):
+            raise ValueError(f"R50 unrecognized optimizer status: {label}")
+        nll = start.get("negative_loglik")
+        if nll is None:
+            if start["status"] == "ok":
+                raise ValueError(f"R50 successful optimizer missing NLL: {label}")
+            continue
+        if not math.isfinite(float(nll)):
+            raise ValueError(f"R50 nonfinite NLL: {label}")
+        finite.append(start)
+        if start["status"] == "ok":
+            if start.get("optimizer_success") is not True:
+                raise ValueError(f"R50 inconsistent optimizer success flag: {label}")
+            recon = float(start["objective_reconstruction_error"])
+            if not math.isfinite(recon) or recon > RECONSTRUCTION_LIMIT + 1e-10:
+                raise ValueError(f"R50 failed likelihood reconstruction: {label}")
+            ratios = start.get("ratios") or []
+            if len(ratios) != 4 or any(
+                not math.isfinite(float(x)) or float(x) <= 0 for x in ratios
+            ):
+                raise ValueError(f"R50 nonphysical nuisance variance ratios: {label}")
+    eligible = []
+    if finite:
+        best = min(float(x["negative_loglik"]) for x in finite)
+        for x in finite:
+            kkt = x.get("physical_projected_KKT")
+            if kkt is None:
+                continue
+            kkt = float(kkt)
+            if not math.isfinite(kkt) or kkt < 0:
+                raise ValueError(f"R50 invalid physical KKT record: {label}")
+            if (x["status"] == "ok" and kkt <= KKT_LIMIT + 1e-10
+                    and float(x["negative_loglik"]) - best <= NLL_GAP_LIMIT + 1e-10):
+                eligible.append(x)
+    if status in ("accepted", "ok"):
+        if not eligible:
+            raise ValueError(f"R50 accepted nuisance violates KKT/NLL: {label}")
+        if selected is not None:
+            selected_nll = float(selected["selected_NLL"])
+            selected_kkt = float(selected["physical_projected_KKT"])
+            _assert_close(selected_nll, min(float(x["negative_loglik"]) for x in eligible), label+"/selected-NLL")
+            if not any(
+                math.isclose(float(x["negative_loglik"]), selected_nll, rel_tol=TOL, abs_tol=TOL)
+                and math.isclose(float(x["physical_projected_KKT"]), selected_kkt, rel_tol=TOL, abs_tol=TOL)
+                for x in eligible
+            ):
+                raise ValueError(f"R50 selected nuisance does not match accepted start: {label}")
+    return len(eligible)
+
+
 def _sha256_files(directory):
     manifest = (directory / "SHA256SUMS").read_text().splitlines()
     parsed = {}
@@ -123,13 +184,18 @@ def audit_original(directory):
             raise ValueError("bootstrap pivot replication order was reordered")
         nuisance = (row["original_correct_nuisance"],
                     row["original_wrong_nuisance"])
-        for data in nuisance:
-            if len(data["numerical_starts"]) != N_STARTS:
-                raise ValueError("missing original nuisance solver start")
+        for family, data in zip(("correct", "misspecified"), nuisance):
+            _verify_physical_starts(
+                data["numerical_starts"], data.get("status", "not_attempted"),
+                f"{block}:{support}:original-{family}",
+                selected=data if data.get("status") == "accepted" else None,
+            )
             optimizer_start_slots += N_STARTS
         for b in boot:
-            if len(b["numerical_starts"]) != N_STARTS:
-                raise ValueError("missing original bootstrap solver start")
+            _verify_physical_starts(
+                b["numerical_starts"], b["status"],
+                f"{block}:{support}:bootstrap-{b['replicate']}",
+            )
             optimizer_start_slots += N_STARTS
             if b["status"] not in ("ok", "refused", "not_attempted"):
                 raise ValueError("unregistered bootstrap status")
