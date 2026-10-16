@@ -36,9 +36,12 @@ def test_new_primitive_independence_and_paired_leverage():
     assert not np.array_equal(
         a[0]["participant_intercept"],
         prior[0]["participant_intercept"])
-    assert a[2][0]!=extreme[2][0]
-    assert extreme[2][0]==pytest.approx(3.)
-    assert extreme[2][1]==pytest.approx(-2.5)
+    # Predictor entries are repeated by native trials, so use the original
+    # participant ID rather than assuming the second array row is person 1.
+    assert a[2][np.flatnonzero(a[3]==0)[0]] != extreme[2][
+        np.flatnonzero(extreme[3]==0)[0]]
+    assert extreme[2][np.flatnonzero(extreme[3]==0)[0]]==pytest.approx(3.)
+    assert extreme[2][np.flatnonzero(extreme[3]==1)[0]]==pytest.approx(-2.5)
     with pytest.raises(ValueError,match="outside"):
         r48.original_source(128,r48.SUPPORT[0])
 
