@@ -32,7 +32,7 @@ def test_source_independence_and_actual_exact_zero_slope():
     a=r46.independent_source(0,"ordinary_dependent","positive_slope")
     zero=r46.independent_source(0,"ordinary_dependent","zero_slope")
     second=r46.independent_source(1,"ordinary_dependent","positive_slope")
-    previous=r45.gaussian_source(0,36,"ordinary_dependent","positive_slope")
+    previous=r45.gaussian_source(0,24,"ordinary_dependent","positive_slope")
     assert zero[0] is None
     np.testing.assert_array_equal(a[2],zero[2])
     np.testing.assert_array_equal(a[3],zero[3])
@@ -41,8 +41,8 @@ def test_source_independence_and_actual_exact_zero_slope():
         second[0]["participant_intercept"],
     )
     assert not np.array_equal(
-        a[0]["participant_intercept"],
-        previous[0]["participant_intercept"],
+        a[0]["participant_intercept"][:24],
+        previous[0]["participant_intercept"][:24],
     )
     for j in range(min(4,len(a[1].time))):
         t=a[1].time[j];who=int(a[3][j]);x=float(a[2][j])
@@ -115,7 +115,13 @@ def test_participant_bootstrap_resamples_whole_original_unit():
     ids=np.array(sorted({p["participant"] for p in panel}))
     resampled=r46.bootstrap_once(panel,ids,r46.BOOTSTRAP_SEED)
     assert len({p["participant"] for p in resampled})==36
-    assert len(resampled)==len(panel)
+    # Resampling entire participants changes the trial count if trial counts
+    # differ by unit; never impose equal numbers of native trial records.
+    selected=np.random.default_rng(r46.BOOTSTRAP_SEED).choice(
+        ids,size=len(ids),replace=True)
+    for new_who,original_who in enumerate(selected):
+        assert sum(p["participant"]==new_who for p in resampled)==sum(
+            p["participant"]==int(original_who) for p in panel)
     assert all(np.isnan(p["observed_gaze_NaN_if_missing"][
         ~p["observed_indicator"]]).all() for p in resampled)
     theta,_=r46.fit_propensity(resampled)
