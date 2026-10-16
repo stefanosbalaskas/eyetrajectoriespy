@@ -57,7 +57,7 @@ nav:
       - W3 R14 source-verified factorial findings: development/w3-r14-variance-reference-factorial-results.md
       - W3 R15 new-source participant leverage and jackknife protocol: development/w3-r15-fresh-leverage-cluster-jackknife-protocol.md
       - W3 R15 original source-verified cluster-leverage results: development/w3-r15-fresh-leverage-cluster-jackknife-results.md
-      - W3 R16–R48 covariance inference research audit (unqualified): development/w3-covariance-inference-research-index.md
+      - W3 R16–R49 covariance inference research audit (unqualified): development/w3-covariance-inference-research-index.md
       - W3 R38 — dual-seed nuisance profile geometry (research only): development/w3-r38-dualseed-profile-results.md
       - W3 R39 — nuisance coordinate and objective offset original-source results (research only): development/w3-r39-nuisance-coordinate-results.md
       - W3 R40 — fresh-source Gaussian nuisance optimizer original results (unqualified): development/w3-r40-fresh-source-nuisance-results.md
@@ -69,6 +69,7 @@ nav:
       - W3 R46 — propensity-refit participant bootstrap exploratory pointwise results (unqualified): development/w3-r46-propensity-bootstrap-results.md
       - W3 R47 — 256 independent sources pointwise Monte Carlo calibration (research only): development/w3-r47-independent-pointwise-results.md
       - W3 R48 — independent oracle vs fitted-covariance CR2 pointwise audit (research only): development/w3-r48-independent-fitted-cr2-results.md
+      - W3 R49 — Gaussian covariance nuisance-refit bootstrap-t original feasibility (unqualified): development/w3-r49-nuisance-refit-bootstrap-t-results.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
       - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
       - Original source figures: development/research-original-figures.md
