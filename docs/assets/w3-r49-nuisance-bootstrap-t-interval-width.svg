@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="648" viewBox="0 0 1060 648" role="img" aria-labelledby="title desc">
+<title id="title">R49 original Gaussian nuisance-refit bootstrap-t pointwise interval width comparison</title>
+<desc id="desc">Eight independently generated primitive Gaussian blocks paired ordinary and extreme predictor supports. Mean half width under ordinary: oracle conditional Satterthwaite CR2 0.06778, fitted conditional CR2 0.06869, nuisance-refit parametric studentized bootstrap 0.07231, all 6 of 8 generating-truth inclusions. Under extreme: oracle 0.11403, fitted conditional 0.12840, bootstrap-t 0.08385; all 7 of 8 generating-truth inclusions. All 496 nuisance covariance bootstrap refits and 1024 optimizer-start records accepted strict KKT, but n8 and 31 replicates per source do not qualify nominal 90% coverage.</desc>
+<rect width="1060" height="648" fill="#fff"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#20333f}.head{font-size:25px;font-weight:700}.sub{font-size:15px;fill:#5d6f79}.group{font-size:18px;font-weight:700}.label{font-size:15px}.value{font-size:16px;font-weight:700}.fine{font-size:13px;fill:#5c6e79}</style>
+<text x="55" y="49" class="head">R49 — refitting REML changes pointwise interval width</text>
+<text x="55" y="79" class="sub">Original source: 8 independent Gaussian blocks × 2 paired leverage conditions; all bootstrap refits completed</text>
+<text x="330" y="123" font-size="15" font-weight="700">Mean pointwise 90%-nominal half-width</text>
+<text x="963" y="123" font-size="15" font-weight="700">Hits¹</text>
+<text x="60" y="140" class="group">Ordinary leverage</text><text x="310" y="175" text-anchor="end" class="label">Oracle conditional CR2</text>
+  <rect x="330" y="156" width="540" height="27" fill="#edf1f1" rx="3"/>
+  <rect x="330" y="156" width="244.0" height="27" fill="#538775" rx="3"/>
+  <text x="884" y="175" class="value">0.06778</text>
+  <text x="988" y="175" class="value">6/8</text>
+<text x="310" y="221" text-anchor="end" class="label">Fitted conditional CR2</text>
+  <rect x="330" y="202" width="540" height="27" fill="#edf1f1" rx="3"/>
+  <rect x="330" y="202" width="247.3" height="27" fill="#7285a2" rx="3"/>
+  <text x="884" y="221" class="value">0.06869</text>
+  <text x="988" y="221" class="value">6/8</text>
+<text x="310" y="267" text-anchor="end" class="label">Fitted nuisance-refit bootstrap-t</text>
+  <rect x="330" y="248" width="540" height="27" fill="#edf1f1" rx="3"/>
+  <rect x="330" y="248" width="260.3" height="27" fill="#9a6683" rx="3"/>
+  <text x="884" y="267" class="value">0.07231</text>
+  <text x="988" y="267" class="value">6/8</text>
+<text x="60" y="330" class="group">Extreme leverage</text><text x="310" y="365" text-anchor="end" class="label">Oracle conditional CR2</text>
+  <rect x="330" y="346" width="540" height="27" fill="#edf1f1" rx="3"/>
+  <rect x="330" y="346" width="410.5" height="27" fill="#538775" rx="3"/>
+  <text x="884" y="365" class="value">0.11403</text>
+  <text x="988" y="365" class="value">7/8</text>
+<text x="310" y="411" text-anchor="end" class="label">Fitted conditional CR2</text>
+  <rect x="330" y="392" width="540" height="27" fill="#edf1f1" rx="3"/>
+  <rect x="330" y="392" width="462.3" height="27" fill="#7285a2" rx="3"/>
+  <text x="884" y="411" class="value">0.12840</text>
+  <text x="988" y="411" class="value">7/8</text>
+<text x="310" y="457" text-anchor="end" class="label">Fitted nuisance-refit bootstrap-t</text>
+  <rect x="330" y="438" width="540" height="27" fill="#edf1f1" rx="3"/>
+  <rect x="330" y="438" width="301.9" height="27" fill="#9a6683" rx="3"/>
+  <text x="884" y="457" class="value">0.08385</text>
+  <text x="988" y="457" class="value">7/8</text>
+<text x="55" y="575" class="fine">¹ Original generating truth contained; denominator is 8 independent primitive blocks per leverage stratum.</text>
+<text x="55" y="600" class="fine">The bootstrap-t critical was the 90th percentile of |studentized pivot| across 31 fully refitted Gaussian draws.</text>
+<text x="55" y="625" class="fine">Numerical success ≠ calibrated nominal 90% pointwise or simultaneous functional inference.</text>
+</svg>
