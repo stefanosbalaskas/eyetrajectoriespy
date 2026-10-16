@@ -1,0 +1,48 @@
+name: science-w3-r48-independent-fitted-cr2
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r48_independent_fitted_cr2.py"
+      - "tests/test_w3_r48_independent_fitted_cr2.py"
+      - "docs/development/w3-r48-independent-fitted-cr2-protocol.md"
+      - ".github/workflows/science-w3-r48-independent-fitted-cr2.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  oracle-independence-REML-and-CR2-refusal-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r48_independent_fitted_cr2.py
+  original-128-independent-Gaussian-blocks-oracle-vs-fitted-CR2:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r48_independent_fitted_cr2.py --out build/w3-r48-original-independent-cr2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r48-original-independent-fitted-cr2-evidence
+          path: build/w3-r48-original-independent-cr2/
+          if-no-files-found: warn
+          retention-days: 90
