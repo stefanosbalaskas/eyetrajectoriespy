@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="570" viewBox="0 0 1050 570" role="img" aria-labelledby="t d">
+<title id="t">R44 original-source observed versus complete-cohort focal regression slope differences</title>
+<desc id="d">Four new Gaussian primitive source blocks, nested 24/48 participants and 32 paired support/state/size cases. Mean absolute retained-minus-full-cohort empirical focal slope difference: complete 0, predictor/time-dependent point loss 0.004679, response-dependent point loss 0.003930, latent-outcome whole-participant selection 0.013689. Participant selection retained on average 52.4 percent of participants, whereas point loss retained 68.0 percent and 63.1 percent of native observations respectively. Descriptive, not inferential, and not comparable denominators for participants versus points.</desc>
+<rect width="1050" height="570" fill="#fff"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#1e303b}.h{font-size:24px;font-weight:700}.sub{font-size:15px;fill:#556776}.lab{font-size:15px}.num{font-size:16px;font-weight:700}.ret{font-size:16px}.footer{font-size:13px;fill:#536574}</style>
+<text x="54" y="48" class="h">R44 — retention and realized focal-slope differences</text>
+<text x="54" y="77" class="sub">Four independent Gaussian primitive blocks; 32 paired source variants; full-cohort realized slope as reference</text>
+<text x="312" y="118" font-size="15" font-weight="700">Mean absolute slope shift</text>
+<text x="846" y="118" font-size="15" font-weight="700">Retained¹</text>
+<text x="292" y="165" text-anchor="end" class="lab">Complete</text>
+ <rect x="312" y="145" width="350" height="26" fill="#edf0f0" rx="3"/>
+ 
+ <text x="680" y="166" class="num">0.00000</text>
+ <text x="850" y="166" class="ret">100.0%</text>
+<text x="292" y="248" text-anchor="end" class="lab">Predictor/time point loss</text>
+ <rect x="312" y="228" width="350" height="26" fill="#edf0f0" rx="3"/>
+ <rect x="312" y="228" width="109.18" height="26" rx="3" fill="#47856d"/>
+ <text x="680" y="249" class="num">0.00468</text>
+ <text x="850" y="249" class="ret">68.0%</text>
+<text x="292" y="331" text-anchor="end" class="lab">Outcome-dependent point loss</text>
+ <rect x="312" y="311" width="350" height="26" fill="#edf0f0" rx="3"/>
+ <rect x="312" y="311" width="91.70" height="26" rx="3" fill="#47856d"/>
+ <text x="680" y="332" class="num">0.00393</text>
+ <text x="850" y="332" class="ret">63.1%</text>
+<text x="292" y="414" text-anchor="end" class="lab">Whole-participant selection</text>
+ <rect x="312" y="394" width="350" height="26" fill="#edf0f0" rx="3"/>
+ <rect x="312" y="394" width="319.40" height="26" rx="3" fill="#9a657e"/>
+ <text x="680" y="415" class="num">0.01369</text>
+ <text x="850" y="415" class="ret">52.4%</text>
+<text x="56" y="500" class="footer">¹ Point-loss rows: percent of native gaze points; whole-participant selection row: percent of participants.</text>
+<text x="56" y="522" class="footer">Original Gaussian full cohort retained for every source, including excluded complete participants.</text>
+<text x="56" y="544" class="footer">Descriptive finite-source contrasts only; no selection adjustment, hypothesis test, or CR2 interval coverage claim.</text>
+</svg>
