@@ -75,6 +75,7 @@ nav:
       - W3 R50 — original evidence independent SHA256, KKT and reporting audit: development/w3-r50-independent-evidence-audit.md
       - W3 R51 — paired fitted-oracle Gaussian bootstrap studentization mechanism protocol (research only): development/w3-r51-bootstrap-narrowing-mechanism-protocol.md
       - W3 R51 — paired Gaussian bootstrap-t narrowing mechanisms original results (research only): development/w3-r51-bootstrap-narrowing-mechanism-results.md
+      - W3 R51 — independent original-artifact physical KKT and bootstrap critical audit: development/w3-r51-independent-evidence-audit.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
       - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
       - Original source figures: development/research-original-figures.md
