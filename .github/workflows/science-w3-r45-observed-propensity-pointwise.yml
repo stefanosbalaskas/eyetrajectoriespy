@@ -1,0 +1,48 @@
+name: science-w3-r45-observed-propensity-pointwise
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r45_observed_propensity_pointwise.py"
+      - "tests/test_w3_r45_observed_propensity_pointwise.py"
+      - "docs/development/w3-r45-observed-propensity-pointwise-protocol.md"
+      - ".github/workflows/science-w3-r45-observed-propensity-pointwise.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  observable-propensity-and-missingness-identification-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r45_observed_propensity_pointwise.py
+  original-independent-12block-576-pointwise-CR1-study:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r45_observed_propensity_pointwise.py --out build/w3-r45-original-observed-propensity
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r45-original-independent-observed-propensity-pointwise-ledger
+          path: build/w3-r45-original-observed-propensity/
+          if-no-files-found: warn
+          retention-days: 90
