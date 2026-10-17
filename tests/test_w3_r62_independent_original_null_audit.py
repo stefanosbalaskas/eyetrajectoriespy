@@ -67,7 +67,7 @@ def test_sha256_byte_tampering_and_duplicate_case_fail_closed(tmp_path):
     with pytest.raises(ValueError,match="SHA256 mismatch"):
         audit_original(folder)
     cases=json.loads(path.read_text())
-    cases[1]["block"]=cases[0]["block"]
+    cases[2]["block"]=cases[0]["block"]
     path.write_bytes((json.dumps(cases,sort_keys=True,indent=2)+"\n").encode())
     _refresh(folder)
     with pytest.raises(ValueError,match="32 independent primitive blocks"):
