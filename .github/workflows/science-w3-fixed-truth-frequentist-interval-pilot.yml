@@ -1,0 +1,61 @@
+name: science-w3-fixed-truth-frequentist-interval-pilot
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_fixed_truth_interval_pilot.py"
+      - "tests/test_w3_fixed_truth_interval_pilot.py"
+      - ".github/workflows/science-w3-fixed-truth-frequentist-interval-pilot.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  independent-oracle-contracts:
+    name: W3 HC1 and bootstrap numerical contracts Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_fixed_truth_interval_pilot.py
+
+  fixed-truth-frequentist-study:
+    name: W3 64 independent blocks, 128 fitted datasets, nominal 90% intervals
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Independent simulation; original 199-wild-draw bootstrap, failure-inclusive evidence
+        run: |
+          python scripts/run_w3_fixed_truth_interval_pilot.py \
+            --blocks 64 --out build/w3-interval-pilot
+      - name: Preserve original success and noncoverage evidence regardless of study outcome
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: w3-fixed-truth-90pct-coverage-original-evidence
+          path: build/w3-interval-pilot/
+          retention-days: 90
+          if-no-files-found: warn

@@ -39,6 +39,8 @@ nav:
       - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
       - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
+      - W3 independent interval-calibration pilot (unqualified): development/w3-fixed-truth-uncertainty-pilot-protocol.md
+      - W3 original undercoverage results and plot: development/w3-fixed-truth-uncertainty-pilot-results.md
       - Original source figures: development/research-original-figures.md
       - Reproduce from draft source: development/research-reproducibility.md
       - Methods and contracts:

@@ -81,6 +81,17 @@
 
 [AR(2) / MA(1) / nonstationary falsification](f5-independent-baseline-ar2-model-falsification.md) · [Source run #38000177988](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38000177988)
 
+## W3 nominal 90% simultaneous-band undercoverage (negative finding)
+
+![Original-source-audit redrawn frequentist uncertainty results](../assets/research/w3-fixed-truth-interval-coverage-20261012.svg)
+
+The [W3 fixed-truth uncertainty study](w3-fixed-truth-uncertainty-pilot-results.md)
+retains **all 128 fits** and the verified original artifact
+[`11717256187`](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/38178413641).
+The slope-function simultaneous 90% bands covered the truth in **41/64**
+independent-curve datasets and **50/64** participant-level datasets.
+These results **do not** establish calibrated inference.
+
 ## W3 original known-truth functional regression validation
 
 ![Source-ledger verified functional regression RMSE across 24 independent simulation blocks](../assets/research/w3-functional-regression-source-rmse-20261011.svg)
