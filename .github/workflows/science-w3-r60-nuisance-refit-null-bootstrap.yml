@@ -1,0 +1,87 @@
+name: science-w3-r60-Gaussian-H0-nuisance-refit-bootstrap-feasibility
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r60_nuisance_refit_null_bootstrap.py"
+      - "tests/test_w3_r60_nuisance_refit_null_bootstrap.py"
+      - "docs/development/w3-r60-Gaussian-H0-refit-bootstrap-protocol.md"
+      - ".github/workflows/science-w3-r60-nuisance-refit-null-bootstrap.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  Gaussian-H0-covariance-numerical-and-source-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r60_nuisance_refit_null_bootstrap.py
+
+  independent-new-Gaussian-null-bootstrap-shards:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 1}
+          - {start: 1, stop: 2}
+          - {start: 2, stop: 3}
+          - {start: 3, stop: 4}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m scripts.run_w3_r60_nuisance_refit_null_bootstrap --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R60-original-part/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r60-original-H0-bootstrap-source-${{ matrix.start }}
+          path: build/R60-original-part/
+          retention-days: 90
+          if-no-files-found: warn
+
+  original-full-source-SHA256-and-refusal-inclusive-bootstrap-aggregate:
+    needs:
+      - Gaussian-H0-covariance-numerical-and-source-contracts
+      - independent-new-Gaussian-null-bootstrap-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r60-original-H0-bootstrap-source-*
+          path: build/R60-original-parts/
+          merge-multiple: false
+      - run: python -m scripts.run_w3_r60_nuisance_refit_null_bootstrap --merge-parts build/R60-original-parts/ --out build/R60-original-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r60-original-complete-H0-Gaussian-nuisance-refit-feasibility
+          path: build/R60-original-complete/
+          if-no-files-found: warn
+          retention-days: 90
