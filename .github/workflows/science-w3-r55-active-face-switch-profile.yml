@@ -1,0 +1,87 @@
+name: science-w3-r55-original-active-face-switch-profile
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r55_active_face_switch_profile.py"
+      - "tests/test_w3_r55_active_face_switch_profile.py"
+      - "docs/development/w3-r55-active-face-switch-profile-protocol.md"
+      - ".github/workflows/science-w3-r55-active-face-switch-profile.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  frozen-source-signed-grid-and-original-SHA-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r55_active_face_switch_profile.py
+
+  original-R53-Gaussian-source-refit-grid-shards:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - start: 0
+            stop: 2
+          - start: 2
+            stop: 4
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python scripts/run_w3_r55_active_face_switch_profile.py --out build/r55-original-shard/ --start ${{ matrix.start }} --stop ${{ matrix.stop }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r55-original-replayed-primitive-blocks-${{ matrix.start }}
+          path: build/r55-original-shard/
+          if-no-files-found: warn
+          retention-days: 90
+
+  exact-checkout-sha256-complete-original-switch-aggregate:
+    needs:
+      - frozen-source-signed-grid-and-original-SHA-contract
+      - original-R53-Gaussian-source-refit-grid-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r55-original-replayed-primitive-blocks-*
+          path: build/r55-original-parts/
+          merge-multiple: false
+      - run: python scripts/run_w3_r55_active_face_switch_profile.py --merge-parts build/r55-original-parts/ --out build/r55-original-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r55-complete-original-active-face-switch-evidence
+          path: build/r55-original-complete/
+          if-no-files-found: warn
+          retention-days: 90
