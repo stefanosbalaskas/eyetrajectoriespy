@@ -1,0 +1,74 @@
+name: science-w3-r55-independent-original-switch-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r55_original_face_switch_independent.py"
+      - "tests/test_w3_r55_independent_original_switch_audit.py"
+      - "docs/development/w3-r55-independent-evidence-audit.md"
+      - ".github/workflows/science-w3-r55-independent-original-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-identity-refusal-bracket-and-CR2-tamper-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r55_independent_original_switch_audit.py
+
+  read-only-immutable-original-R53-R55-matched-Gaussian-source-audit:
+    needs: original-identity-refusal-bracket-and-CR2-tamper-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r53-original-REML-CR2-local-influence-evidence
+          run-id: 38973010225
+          path: build/R53-original-immutable/
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r55-complete-original-active-face-switch-evidence
+          run-id: 39017622414
+          path: build/R55-original-immutable/
+          github-token: ${{ github.token }}
+      - name: Validate original R53 Gaussian source PR merge checkout
+        run: grep -Fx '11689d8562b061ebd5ac98103f5be26fd94b228f' build/R53-original-immutable/source-commit.txt
+      - name: Validate original R55 Gaussian signed-switch study PR merge checkout
+        run: grep -Fx '1e0ccce56dd2a70d08fcf1b7fba6ed55627a38f5' build/R55-original-immutable/source-commit.txt
+      - name: Independently audit all 128 strict REML fits and grid transition observations
+        run: python -m scripts.audit_w3_r55_original_face_switch_independent --r53-original build/R53-original-immutable/ --r55-original build/R55-original-immutable/ --out build/w3-r55-independent-original-face-switch-audit.json
+      - name: Display independently computed original-source results
+        run: cat build/w3-r55-independent-original-face-switch-audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r55-immutable-original-R53-R55-source-switch-independent-audit
+          path: build/w3-r55-independent-original-face-switch-audit.json
+          if-no-files-found: warn
+          retention-days: 90
