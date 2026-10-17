@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="706" viewBox="0 0 1120 706" role="img" aria-labelledby="title desc">
+<title id="title">R57 structural zero versus nonnegative random-slope Gaussian REML nested likelihood feasibility</title>
+<desc id="desc">Eight independent primitive Gaussian blocks with ordinary and extreme leverage paired and true-zero and positive source slope paired. Exact structural zero null and nonnegative alternative: all 32 original source comparisons and 64 model fits numerically accepted. Alternative fit selected true zero slope variance in 6/8 ordinary true zero, 2/8 ordinary true positive, 2/8 extreme true zero, and 3/8 extreme true positive cases. Descriptive median nonnegative twice negative log likelihood gap: 0, 0.289, 0.587, 1.022 respectively. These are not calibrated likelihood ratio tests, rejection rates, p-values, Type I error or power.</desc>
+<rect width="1120" height="706" fill="#fff"/>
+<text x="43" y="54" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#253c49">R57 · A genuine zero-variance nested likelihood</text>
+<text x="43" y="88" font-family="Arial,sans-serif" font-size="16" fill="#647c89">New independent Gaussian primitive blocks: 8 · 32 paired source variants · 64 successful numerical fits</text>
+<line x1="43" y1="131" x2="1075" y2="131" stroke="#d8e2e6"/>
+<text x="44" y="181" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#344f59">Generating condition</text>
+<text x="329" y="181" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#344f59">Alternative selected exact zero</text>
+<text x="770" y="181" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#344f59">Median nested deviance</text>
+<text x="44" y="236" font-family="Arial,sans-serif" font-size="17" fill="#324956">Ordinary · true zero</text>
+<rect x="330" y="210" width="336" height="35" rx="5" fill="#ebf0f2"/>
+<rect x="330" y="210" width="252" height="35" rx="5" fill="#4b807b"/>
+<text x="677" y="235" font-family="Arial,sans-serif" font-size="17" fill="#324956">6/8</text>
+<rect x="771" y="210" width="230" height="35" rx="5" fill="#ebf0f2"/>
+
+<text x="1011" y="235" font-family="Arial,sans-serif" font-size="17" fill="#324956">0.000</text><text x="44" y="329" font-family="Arial,sans-serif" font-size="17" fill="#324956">Ordinary · true positive</text>
+<rect x="330" y="303" width="336" height="35" rx="5" fill="#ebf0f2"/>
+<rect x="330" y="303" width="84" height="35" rx="5" fill="#9272a0"/>
+<text x="677" y="328" font-family="Arial,sans-serif" font-size="17" fill="#324956">2/8</text>
+<rect x="771" y="303" width="230" height="35" rx="5" fill="#ebf0f2"/>
+<rect x="771" y="303" width="60.45349665243768" height="35" rx="5" fill="#9272a0"/>
+<text x="1011" y="328" font-family="Arial,sans-serif" font-size="17" fill="#324956">0.289</text><text x="44" y="422" font-family="Arial,sans-serif" font-size="17" fill="#324956">Extreme · true zero</text>
+<rect x="330" y="396" width="336" height="35" rx="5" fill="#ebf0f2"/>
+<rect x="330" y="396" width="84" height="35" rx="5" fill="#4b807b"/>
+<text x="677" y="421" font-family="Arial,sans-serif" font-size="17" fill="#324956">2/8</text>
+<rect x="771" y="396" width="230" height="35" rx="5" fill="#ebf0f2"/>
+<rect x="771" y="396" width="122.72476101955114" height="35" rx="5" fill="#4b807b"/>
+<text x="1011" y="421" font-family="Arial,sans-serif" font-size="17" fill="#324956">0.587</text><text x="44" y="515" font-family="Arial,sans-serif" font-size="17" fill="#324956">Extreme · true positive</text>
+<rect x="330" y="489" width="336" height="35" rx="5" fill="#ebf0f2"/>
+<rect x="330" y="489" width="126" height="35" rx="5" fill="#9272a0"/>
+<text x="677" y="514" font-family="Arial,sans-serif" font-size="17" fill="#324956">3/8</text>
+<rect x="771" y="489" width="230" height="35" rx="5" fill="#ebf0f2"/>
+<rect x="771" y="489" width="213.62515509207776" height="35" rx="5" fill="#9272a0"/>
+<text x="1011" y="514" font-family="Arial,sans-serif" font-size="17" fill="#324956">1.022</text>
+<line x1="43" y1="602" x2="1075" y2="602" stroke="#d8e2e6"/>
+<text x="43" y="637" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#344f59">H0: random-slope variance = 0 exactly. H1: random-slope variance ≥ 0.</text>
+<text x="43" y="667" font-family="Arial,sans-serif" font-size="14" fill="#657d88">No asymptotic reference distribution, p-values, Type-I/power calibration or valid 90% functional confidence intervals.</text>
+</svg>
