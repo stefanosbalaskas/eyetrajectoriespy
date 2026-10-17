@@ -102,6 +102,7 @@ nav:
       - W3 R60-A — immutable original 248-draw Gaussian H0 bootstrap evidence audit (research only): development/w3-r60-independent-original-bootstrap-audit.md
       - W3 R61 — Gaussian fitted-H0 raw native source, Cholesky covariance and whitened draw fidelity (research only): development/w3-r61-Gaussian-H0-draw-covariance-fidelity-protocol.md
       - W3 R61-A — independent original raw native Gaussian H0 covariance and whitening audit (research only): development/w3-r61-independent-original-native-Gaussian-audit.md
+      - W3 R62 — independent new Gaussian source blocks with 63-draw nuisance-refitted H0 bootstrap pilot (research only): development/w3-r62-independent-Gaussian-null-refit-size-pilot.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
       - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
       - Original source figures: development/research-original-figures.md
