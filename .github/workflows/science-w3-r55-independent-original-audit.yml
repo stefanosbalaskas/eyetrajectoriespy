@@ -62,7 +62,7 @@ jobs:
       - name: Validate original R55 Gaussian signed-switch study PR merge checkout
         run: grep -Fx '1e0ccce56dd2a70d08fcf1b7fba6ed55627a38f5' build/R55-original-immutable/source-commit.txt
       - name: Independently audit all 128 strict REML fits and grid transition observations
-        run: python scripts/audit_w3_r55_original_face_switch_independent.py --r53-original build/R53-original-immutable/ --r55-original build/R55-original-immutable/ --out build/w3-r55-independent-original-face-switch-audit.json
+        run: python -m scripts.audit_w3_r55_original_face_switch_independent --r53-original build/R53-original-immutable/ --r55-original build/R55-original-immutable/ --out build/w3-r55-independent-original-face-switch-audit.json
       - name: Display independently computed original-source results
         run: cat build/w3-r55-independent-original-face-switch-audit.json
       - uses: actions/upload-artifact@v4
