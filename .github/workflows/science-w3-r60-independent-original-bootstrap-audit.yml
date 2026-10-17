@@ -1,0 +1,68 @@
+name: science-w3-r60-independent-original-nuisance-refit-bootstrap-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r60_original_bootstrap_independent.py"
+      - "tests/test_w3_r60_independent_original_bootstrap_audit.py"
+      - "docs/development/w3-r60-independent-original-bootstrap-audit.md"
+      - ".github/workflows/science-w3-r60-independent-original-bootstrap-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-archive-numeric-tamper-and-rank-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r60_independent_original_bootstrap_audit.py
+
+  independent-read-only-original-8-sources-248-draws-audit:
+    needs: original-archive-numeric-tamper-and-rank-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Identify previously COMPLETE original immutable evidence
+        run: echo 'Original R60 science run 39067797968, immutable archive artifact 12113727697'
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r60-original-complete-H0-Gaussian-nuisance-refit-feasibility
+          run-id: 39067797968
+          path: build/R60-immutable-original/
+          github-token: ${{ github.token }}
+      - name: Verify source is exactly original PR merge checkout
+        run: grep -Fx '9424d2507a9ba38132bec1feee9af4c40263f52a' build/R60-immutable-original/source-commit.txt
+      - name: Recompute 8 original sources 248 bootstrap nuisance refits and all original numeric slots
+        run: python -m scripts.audit_w3_r60_original_bootstrap_independent --original build/R60-immutable-original/ --out build/R60-independent-original-archive-audit.json
+      - name: Print independent evidence
+        run: cat build/R60-independent-original-archive-audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r60-independent-original-nuisance-refit-bootstrap-evidence
+          path: build/R60-independent-original-archive-audit.json
+          if-no-files-found: warn
+          retention-days: 90
