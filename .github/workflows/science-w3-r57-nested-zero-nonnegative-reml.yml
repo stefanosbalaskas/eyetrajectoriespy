@@ -1,0 +1,91 @@
+name: science-w3-r57-structural-zero-nested-Gaussian-REML
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r57_nested_zero_nonnegative_reml.py"
+      - "tests/test_w3_r57_nested_zero_nonnegative_reml.py"
+      - "docs/development/w3-r57-nested-zero-nonnegative-reml-protocol.md"
+      - ".github/workflows/science-w3-r57-nested-zero-nonnegative-reml.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  nested-Gaussian-REML-zero-boundary-score-and-source-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r57_nested_zero_nonnegative_reml.py
+
+  independently-seeded-original-Gaussian-nested-likelihood-shards:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - start: 0
+            stop: 2
+          - start: 2
+            stop: 4
+          - start: 4
+            stop: 6
+          - start: 6
+            stop: 8
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m scripts.run_w3_r57_nested_zero_nonnegative_reml --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R57-original-shard/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r57-original-Gaussian-nested-source-${{ matrix.start }}
+          path: build/R57-original-shard/
+          if-no-files-found: warn
+          retention-days: 90
+
+  complete-source-SHA256-and-nested-numerical-refusal-aggregate:
+    needs:
+      - nested-Gaussian-REML-zero-boundary-score-and-source-contract
+      - independently-seeded-original-Gaussian-nested-likelihood-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r57-original-Gaussian-nested-source-*
+          path: build/R57-original-parts/
+          merge-multiple: false
+      - run: python -m scripts.run_w3_r57_nested_zero_nonnegative_reml --merge-parts build/R57-original-parts/ --out build/R57-original-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r57-complete-original-zero-nonnegative-nested-REML-evidence
+          path: build/R57-original-complete/
+          if-no-files-found: warn
+          retention-days: 90
