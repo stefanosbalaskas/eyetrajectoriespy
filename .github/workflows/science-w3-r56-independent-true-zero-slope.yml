@@ -1,0 +1,91 @@
+name: science-w3-r56-independent-true-zero-Gaussian-slope
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r56_true_zero_slope_diagnostic.py"
+      - "tests/test_w3_r56_true_zero_slope_diagnostic.py"
+      - "docs/development/w3-r56-true-zero-slope-protocol.md"
+      - ".github/workflows/science-w3-r56-independent-true-zero-slope.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independently-paired-structural-zero-source-and-denominator-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r56_true_zero_slope_diagnostic.py
+
+  original-new-independent-Gaussian-primitive-source-shards:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - start: 0
+            stop: 4
+          - start: 4
+            stop: 8
+          - start: 8
+            stop: 12
+          - start: 12
+            stop: 16
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m scripts.run_w3_r56_true_zero_slope_diagnostic --out build/original-r56-shard/ --start ${{ matrix.start }} --stop ${{ matrix.stop }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r56-original-new-Gaussian-source-shard-${{ matrix.start }}
+          path: build/original-r56-shard/
+          if-no-files-found: warn
+          retention-days: 90
+
+  exact-source-checkout-full-independent-Gaussian-case-aggregation:
+    needs:
+      - independently-paired-structural-zero-source-and-denominator-contract
+      - original-new-independent-Gaussian-primitive-source-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r56-original-new-Gaussian-source-shard-*
+          path: build/original-r56-shards/
+          merge-multiple: false
+      - run: python -m scripts.run_w3_r56_true_zero_slope_diagnostic --merge-parts build/original-r56-shards/ --out build/original-r56-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r56-original-complete-true-zero-positive-Gaussian-evidence
+          path: build/original-r56-complete/
+          if-no-files-found: warn
+          retention-days: 90
