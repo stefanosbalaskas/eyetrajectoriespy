@@ -91,6 +91,7 @@ nav:
       - W3 R56 — independent immutable original true-zero/positive Gaussian REML and CR2 evidence audit: development/w3-r56-independent-original-audit.md
       - W3 R57 — exact-zero nested Gaussian REML and nonnegative boundary numerical protocol (research only): development/w3-r57-nested-zero-nonnegative-reml-protocol.md
       - W3 R57 — original nested structural zero/nonnegative Gaussian REML likelihood findings and figure (research only): development/w3-r57-nested-zero-nonnegative-reml-results.md
+      - W3 R57 — independent immutable original nested Gaussian zero-variance likelihood and KKT evidence audit: development/w3-r57-independent-original-nested-evidence-audit.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
       - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
       - Original source figures: development/research-original-figures.md
