@@ -45,6 +45,12 @@ jobs:
         with:
           python-version: "3.12"
       - run: python -m pip install -e ".[dev]"
+      # The first independent audit run started before the R59 aggregation
+      # published its artifact and failed with "Artifact not found". Keep
+      # that failure in GitHub; this exact-head rerun reads the now-immutable
+      # original artifact, never regenerates or rewrites its data.
+      - name: Identify original immutable R59 scientific run
+        run: echo 'Original R59 run 39065162776; complete evidence artifact 12112524426'
       - uses: actions/download-artifact@v4
         with:
           name: w3-r59-complete-original-128-block-null-evidence
