@@ -1,0 +1,87 @@
+name: science-w3-r61-Gaussian-H0-Cholesky-weighted-native-fidelity
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r61_H0_Gaussian_covariance_fidelity.py"
+      - "tests/test_w3_r61_H0_Gaussian_covariance_fidelity.py"
+      - "docs/development/w3-r61-Gaussian-H0-draw-covariance-fidelity-protocol.md"
+      - ".github/workflows/science-w3-r61-Gaussian-H0-covariance-fidelity.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  original-synthetic-native-witness-and-Gaussian-covariance-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r61_H0_Gaussian_covariance_fidelity.py
+
+  independent-original-Gaussian-H0-whitened-draw-shards:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 1}
+          - {start: 1, stop: 2}
+          - {start: 2, stop: 3}
+          - {start: 3, stop: 4}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m scripts.run_w3_r61_H0_Gaussian_covariance_fidelity --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R61-original-part/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r61-original-native-Gaussian-H0-witness-${{ matrix.start }}
+          path: build/R61-original-part/
+          retention-days: 90
+          if-no-files-found: warn
+
+  complete-original-Gaussian-native-and-Cholesky-source-SHA256-evidence:
+    needs:
+      - original-synthetic-native-witness-and-Gaussian-covariance-contracts
+      - independent-original-Gaussian-H0-whitened-draw-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 80
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r61-original-native-Gaussian-H0-witness-*
+          path: build/R61-original-parts/
+          merge-multiple: false
+      - run: python -m scripts.run_w3_r61_H0_Gaussian_covariance_fidelity --merge-parts build/R61-original-parts/ --out build/R61-original-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r61-complete-raw-native-Gaussian-H0-covariance-fidelity
+          path: build/R61-original-complete/
+          if-no-files-found: warn
+          retention-days: 90
