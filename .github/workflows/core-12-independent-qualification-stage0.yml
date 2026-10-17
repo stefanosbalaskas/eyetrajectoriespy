@@ -1,0 +1,93 @@
+name: core-12-independent-qualification-stage0
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "validation/core_12/core_rc_scope_policy.json"
+      - "scripts/audit_core_12_candidate_scope.py"
+      - "tests/test_core_12_candidate_scope.py"
+      - ".github/workflows/core-12-independent-qualification-stage0.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  core-scope-and-policy:
+    name: Core candidate public-surface and fail-closed isolation Python ${{ matrix.python }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_core_12_candidate_scope.py
+      - run: python scripts/audit_core_12_candidate_scope.py --out build/core12/scope.json
+      - name: Retain original policy and CI-environment evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-12-stage0-scope-py${{ matrix.python }}
+          path: build/core12/scope.json
+          retention-days: 90
+          if-no-files-found: warn
+
+  installed-wheel-isolation:
+    name: Core-only 1.2 development wheel outside source checkout
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -U build twine packaging
+      - run: python -m build
+      - run: python -m twine check dist/*
+      - name: Install exact local development wheel into isolated venv
+        shell: bash
+        run: |
+          python -m venv .core12-wheel-venv
+          .core12-wheel-venv/bin/python -m pip install --upgrade pip
+          .core12-wheel-venv/bin/python -m pip install dist/*.whl
+      - name: Execute imported installed wheel smoke outside checkout
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP"
+          "$GITHUB_WORKSPACE/.core12-wheel-venv/bin/python" "$GITHUB_WORKSPACE/scripts/release_smoke_test.py" --expected-version 1.2.0rc2.dev0
+          "$GITHUB_WORKSPACE/.core12-wheel-venv/bin/python" - <<'PY'
+          import json,os
+          from pathlib import Path
+          import eyetrajectoriespy as et
+          path=Path(et.__file__).resolve()
+          repo=Path(os.environ["GITHUB_WORKSPACE"]).resolve()
+          assert et.__version__=="1.2.0rc2.dev0"
+          assert not path.is_relative_to(repo/"src"),"source tree imported instead of wheel"
+          for name in ("fit_fpca","fit_mfpca","TrajectorySet"):
+              assert hasattr(et,name)
+          for name in ("detect_ordered_functional_changepoint",
+                       "fit_bayesian_sparse_fpca","test_sparse_functional_groups"):
+              assert not hasattr(et,name)
+          record={"installed_distribution":et.__version__,
+                  "import_path":str(path),"executed_outside_checkout":True,
+                  "literally_qualified_rc2":False,"publication_authorized":False}
+          out=repo/"build/core12/installed-wheel-source-check.json"
+          out.parent.mkdir(parents=True,exist_ok=True)
+          out.write_text(json.dumps(record,sort_keys=True,indent=2)+"\n")
+          print("CORE INSTALLED DEVELOPMENT WHEEL CHECK:",json.dumps(record))
+          PY
+      - name: Retain installed distribution audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-12-stage0-installed-wheel-audit
+          path: build/core12/installed-wheel-source-check.json
+          retention-days: 90
+          if-no-files-found: warn

@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "scope": "core-only-scientific-release-qualification-stage0",
+  "protected_main_basis": "4f3b3f29245d2ae1806d24ed18498daf06138151",
+  "current_source_version": "1.2.0rc2.dev0",
+  "published_stable_version": "1.1.0",
+  "target_candidate": "1.2.0rc2",
+  "target_candidate_not_yet_created": true,
+  "release_authorized": false,
+  "literal_candidate_qualified": false,
+  "core_supported_example_exports": [
+    "TrajectorySet",
+    "fit_fpca",
+    "fit_mfpca",
+    "fit_functional_mixed_effects_regression",
+    "reconstruct_fpca",
+    "fpca_score_frame"
+  ],
+  "experimental_namespaces_excluded_from_qualification": [
+    "bayesian",
+    "research"
+  ],
+  "experimental_public_root_symbols_forbidden": [
+    "detect_ordered_functional_changepoint",
+    "fit_bayesian_sparse_fpca",
+    "fit_bayesian_planar_factor",
+    "test_sparse_functional_groups"
+  ],
+  "scientific_blockers": [
+    225,
+    226,
+    255,
+    256
+  ],
+  "scientific_limitations": [
+    "Unreleased Bayesian FPCA / NUTS and Gibbs not part of a qualified core API",
+    "F5 dependence-sensitive change-point p-values not qualified",
+    "F1 group-inference power and type-I-error qualification incomplete",
+    "F2/F3/F4/F6 interoperability and geometric extensions require separate reviews"
+  ],
+  "publication_requires_new_exact_version_evidence": true,
+  "no_pypi_or_github_release_from_this_branch": true
+}

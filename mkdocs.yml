@@ -41,6 +41,7 @@ nav:
       - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
       - Original source figures: development/research-original-figures.md
       - Reproduce from draft source: development/research-reproducibility.md
+      - Core 1.2 independent release scoping (unqualified): development/core-12-independent-qualification-stage0.md
       - Methods and contracts:
           - F1–F6 overview: development/f1-f6-scientific-expansion.md
           - Experimental API contracts: development/research-method-api.md
