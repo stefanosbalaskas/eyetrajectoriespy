@@ -1,0 +1,66 @@
+name: science-w3-r57-independent-original-nested-zero-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r57_original_nested_zero_independent.py"
+      - "tests/test_w3_r57_independent_original_nested_audit.py"
+      - "docs/development/w3-r57-independent-original-nested-evidence-audit.md"
+      - ".github/workflows/science-w3-r57-independent-original-nested-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-null-alternative-KKT-and-immutable-source-tamper-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r57_independent_original_nested_audit.py
+
+  read-only-original-R57-immutable-artifact-and-32-nested-Gaussian-likelihood-audit:
+    needs: independent-null-alternative-KKT-and-immutable-source-tamper-contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r57-complete-original-zero-nonnegative-nested-REML-evidence
+          run-id: 39023712112
+          path: build/R57-original-immutable/
+          github-token: ${{ github.token }}
+      - name: Validate exact original Gaussian nested likelihood PR merge checkout
+        run: grep -Fx 'd120e5f48978dc7a86e6e400ac402dc42d2a3a59' build/R57-original-immutable/source-commit.txt
+      - name: Independently verify all original Gaussian source hashes, KKT and nested likelihood gaps
+        run: python -m scripts.audit_w3_r57_original_nested_zero_independent --original build/R57-original-immutable/ --out build/R57-independent-original-nested-audit.json
+      - name: Display exact-original independently derived evidence
+        run: cat build/R57-independent-original-nested-audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r57-independent-immutable-original-nested-REML-evidence-audit
+          path: build/R57-independent-original-nested-audit.json
+          if-no-files-found: warn
+          retention-days: 90
