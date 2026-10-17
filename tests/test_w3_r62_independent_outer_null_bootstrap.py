@@ -94,7 +94,7 @@ def test_original_exact_shards_fail_closed_on_sha256_and_source_collision(tmp_pa
         raw=json.dumps(
             [case for case in cases if start<=case["block"]<stop],
             sort_keys=True,indent=2)+"\n"
-        (target/"cases.json").write_text(raw)
+        (target/"cases.json").write_bytes(raw.encode("utf-8"))
         (target/"manifest.json").write_text(json.dumps({
             "study":r62.STUDY,"start":start,"stop":stop,
             "new_source_seed":r62.MASTER_SEED,
