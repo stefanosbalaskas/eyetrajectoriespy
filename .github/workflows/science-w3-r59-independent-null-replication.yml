@@ -1,0 +1,91 @@
+name: science-w3-r59-independent-128-block-true-null-replication
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r59_independent_null_replication.py"
+      - "tests/test_w3_r59_independent_null_replication.py"
+      - "docs/development/w3-r59-independent-null-replication-protocol.md"
+      - ".github/workflows/science-w3-r59-independent-null-replication.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  new-null-source-and-refusal-contract-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r59_independent_null_replication.py
+
+  original-128-independent-block-null-shards:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 16}
+          - {start: 16, stop: 32}
+          - {start: 32, stop: 48}
+          - {start: 48, stop: 64}
+          - {start: 64, stop: 80}
+          - {start: 80, stop: 96}
+          - {start: 96, stop: 112}
+          - {start: 112, stop: 128}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m scripts.run_w3_r59_independent_null_replication --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R59-original-shard/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r59-original-null-source-${{ matrix.start }}
+          path: build/R59-original-shard/
+          if-no-files-found: warn
+          retention-days: 90
+
+  full-original-256-source-SHA256-and-Wilson-aggregate:
+    needs:
+      - new-null-source-and-refusal-contract-tests
+      - original-128-independent-block-null-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r59-original-null-source-*
+          path: build/R59-original-parts/
+          merge-multiple: false
+      - run: python -m scripts.run_w3_r59_independent_null_replication --merge-parts build/R59-original-parts/ --out build/R59-original-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r59-complete-original-128-block-null-evidence
+          path: build/R59-original-complete/
+          if-no-files-found: warn
+          retention-days: 90
