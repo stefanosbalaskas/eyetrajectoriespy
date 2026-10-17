@@ -1,0 +1,15 @@
+# W3 R59-A — independent immutable-original 128-block Gaussian true-null evidence audit
+
+**Research-only read-only evidence audit**, not a variance-component hypothesis-test qualification, power study, or validation of fitted CR2 90% confidence intervals.
+
+## Exact original study and independent audit boundary
+
+Source study: original R59 [scientific workflow #39065162776](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39065162776), with original PR-merge checkout `90eaac1b7b4e1e5f98ef4fa5d4f63e3ff78689cd`; **128 genuinely NEW independent Gaussian primitive blocks** (seed 202610175959), n=24 participants each, paired ordinary/extreme predictor support; **256 original source case records, 512 H0/H1 nested model slots and 1,536 original numerical optimizer starts**. Original scientific execution and evidence archive must finish successfully before the independent audit can be certified.
+
+The independent auditor imports **none** of the R59 source generator, R57/R58 original simulator, or R35/R37 fitted Gaussian REML objective. It reads the frozen original GitHub Actions result, verifies `cases.json`, `summary.json`, `source-commit.txt` and all three SHA256 manifest lines, and requires exact original PR-merge checkout. It independently checks all source keys and generating-slope-truth metadata, retains every original H0/H1 two/four-start record and all numerical refusals, reconstructs physical-variance-coordinate one-sided projected KKT, optimizer success and objective reconstruction, best-observed source NLL and selected candidate, and the signed/accepted nested deviance. For eligible source cases it calculates the candidate classical half-point-mass/half-chi-square(1) exceedance at frozen nominal 5% `T>2.70554345409542`, Wilson 95% source-block uncertainty per leverage, all-original-source refusal sensitivity bounds and ordinary-only/extreme-only/both/neither paired exceedances.
+
+Explicit audit limitations: source archive does not save raw native Gaussian `y` or complete primitive innovations, therefore the read-only evidence audit cannot independently regenerate data or check Gaussian source coupling from first principles. No finite-design null reference is derived or proved. Neither a positive-source test power calculation nor fitted-nuisance CR2 pointwise or simultaneous 90% inference is provided. The 128 matched ordinary/extreme cases per support are paired at the primitive block level, not 256 independent Monte Carlo draws.
+
+The new three-Python-version source/tamper/KKT tests and a separate immutable-original-artifact job must complete before numerical evidence audit success is asserted. Distinguish **CI engineering success**, **independent archival consistency**, **empirical null exceedance** and **valid inferential size**. If numerical refusal occurs, retain it in all original denominators and do not report conditional Wilson intervals as an unconditional null-test error rate.
+
+Keep scientific issues #289 and #296 open. No protected `main` merge, stable API promotion, version 1.2 release or PyPI publication.
