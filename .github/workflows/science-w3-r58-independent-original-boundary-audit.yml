@@ -1,0 +1,66 @@
+name: science-w3-r58-independent-original-boundary-evidence-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r58_original_boundary_independent.py"
+      - "tests/test_w3_r58_independent_original_boundary_audit.py"
+      - "docs/development/w3-r58-independent-original-boundary-audit.md"
+      - ".github/workflows/science-w3-r58-independent-original-boundary-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-archive-tamper-score-and-Wilson-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r58_independent_original_boundary_audit.py
+
+  independently-audit-immutable-96-case-original-source:
+    needs: independent-archive-tamper-score-and-Wilson-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r58-complete-original-boundary-null-reference-evidence
+          run-id: 39027935413
+          path: build/R58-original-immutable/
+          github-token: ${{ github.token }}
+      - name: Pin EXACT original independent Gaussian scientific PR-merge checkout
+        run: grep -Fx 'c1d4c0f5f7805d1f2dd746e6208f0087c68395d6' build/R58-original-immutable/source-commit.txt
+      - name: Independently audit original source hashes, 576 numerical starts, threshold and uncertainty
+        run: python -m scripts.audit_w3_r58_original_boundary_independent --original build/R58-original-immutable/ --out build/R58-independent-original-boundary-audit.json
+      - name: Print reconstructed source evidence
+        run: cat build/R58-independent-original-boundary-audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r58-independent-original-boundary-null-audit
+          path: build/R58-independent-original-boundary-audit.json
+          if-no-files-found: warn
+          retention-days: 90
