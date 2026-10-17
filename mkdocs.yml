@@ -93,6 +93,8 @@ nav:
       - W3 R57 — original nested structural zero/nonnegative Gaussian REML likelihood findings and figure (research only): development/w3-r57-nested-zero-nonnegative-reml-results.md
       - W3 R57 — independent immutable original nested Gaussian zero-variance likelihood and KKT evidence audit: development/w3-r57-independent-original-nested-evidence-audit.md
       - W3 R58 — prospectively frozen independent Gaussian boundary-null reference and Wilson Monte Carlo stress protocol (research only): development/w3-r58-boundary-null-reference-protocol.md
+      - W3 R58 — original independent Gaussian zero-variance reference results (research only): development/w3-r58-boundary-null-reference-original-results.md
+      - W3 R58-A — immutable original evidence independent numerical audit (research only): development/w3-r58-independent-original-boundary-audit.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
       - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
       - Original source figures: development/research-original-figures.md
