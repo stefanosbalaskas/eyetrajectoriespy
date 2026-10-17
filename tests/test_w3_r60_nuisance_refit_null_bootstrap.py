@@ -96,7 +96,7 @@ def test_manifest_exact_original_four_shards_and_tampering(tmp_path,monkeypatch)
         payload=json.dumps(
             [r for r in rows if start<=r["block"]<stop],
             sort_keys=True,indent=2)+"\n"
-        (folder/"cases.json").write_text(payload)
+        (folder/"cases.json").write_bytes(payload.encode("utf-8"))
         (folder/"manifest.json").write_text(json.dumps(
             {"study":r60.STUDY,"start":start,"stop":stop,
              "new_source_seed":r60.MASTER_SEED,
