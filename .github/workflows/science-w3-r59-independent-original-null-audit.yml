@@ -1,0 +1,66 @@
+name: science-w3-r59-independent-original-null-evidence-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r59_original_null_independent.py"
+      - "tests/test_w3_r59_independent_original_null_audit.py"
+      - "docs/development/w3-r59-independent-original-null-audit.md"
+      - ".github/workflows/science-w3-r59-independent-original-null-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  immutable-Gaussian-null-source-KKT-and-Wilson-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r59_independent_original_null_audit.py
+
+  independently-audit-immutable-original-256-null-cases:
+    needs: immutable-Gaussian-null-source-KKT-and-Wilson-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r59-complete-original-128-block-null-evidence
+          run-id: 39065162776
+          path: build/R59-original-immutable/
+          github-token: ${{ github.token }}
+      - name: Require exact ORIGINAL R59 Gaussian PR-merge source checkout
+        run: grep -Fx '90eaac1b7b4e1e5f98ef4fa5d4f63e3ff78689cd' build/R59-original-immutable/source-commit.txt
+      - name: Independently audit all frozen original optimizer scores and null exceedances
+        run: python -m scripts.audit_w3_r59_original_null_independent --original build/R59-original-immutable/ --out build/R59-independent-original-null-audit.json
+      - name: Show independently reconstructed summary
+        run: cat build/R59-independent-original-null-audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r59-independent-original-null-evidence-audit
+          path: build/R59-independent-original-null-audit.json
+          if-no-files-found: warn
+          retention-days: 90
