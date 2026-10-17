@@ -84,6 +84,7 @@ nav:
       - W3 R54 — original matched R53 source constrained moving-bound derivative results and figure: development/w3-r54-boundary-active-set-influence-results.md
       - W3 R54 — independent immutable R53/R54 active-bound and Gaussian refit evidence audit: development/w3-r54-independent-evidence-audit.md
       - W3 R55 — Gaussian active-face switching stress profile frozen protocol (research only): development/w3-r55-active-face-switch-profile-protocol.md
+      - W3 R55 — original active-face switching stress outcomes, full evidence and figure (research only): development/w3-r55-active-face-switch-profile-results.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
       - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
       - Original source figures: development/research-original-figures.md
