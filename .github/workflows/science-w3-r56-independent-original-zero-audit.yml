@@ -1,0 +1,66 @@
+name: science-w3-r56-independent-original-zero-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r56_original_zero_positive_independent.py"
+      - "tests/test_w3_r56_independent_original_zero_audit.py"
+      - "docs/development/w3-r56-independent-original-audit.md"
+      - ".github/workflows/science-w3-r56-independent-original-zero-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  source-identity-original-numerical-acceptance-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r56_independent_original_zero_audit.py
+
+  full-immutable-original-R56-source-evidence-audit:
+    needs: source-identity-original-numerical-acceptance-contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r56-original-complete-true-zero-positive-Gaussian-evidence
+          run-id: 39019566388
+          path: build/R56-original-source/
+          github-token: ${{ github.token }}
+      - name: Verify original Gaussian R56 scientific merge checkout
+        run: grep -Fx 'ce84ab53bfcbb09000c57b6f232f59a1f86996aa' build/R56-original-source/source-commit.txt
+      - name: Independently audit original numerical REML fit and descriptive CR2 results
+        run: python -m scripts.audit_w3_r56_original_zero_positive_independent --original build/R56-original-source/ --out build/w3-r56-independent-original-source-audit.json
+      - name: Show independently reconstructed original evidence
+        run: cat build/w3-r56-independent-original-source-audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r56-independent-immutable-original-zero-vs-positive-evidence-audit
+          path: build/w3-r56-independent-original-source-audit.json
+          if-no-files-found: warn
+          retention-days: 90
