@@ -67,6 +67,7 @@ nav:
       - W3 R66 fresh 128-block prospective matched positive-slope detection protocol (research only): development/w3-r66-fresh-matched-detection-protocol.md
       - W3 R66-A independent original prospective paired 128-block numerical audit (research only): development/w3-r66-independent-original-prospective-audit.md
       - W3 R66 original plus independent 128-block matched Gaussian source evidence and refusals (research only): development/w3-r66-completed-original-matched-detection-evidence.md
+      - W3 R67 read-only original R66 numerical bootstrap refusal provenance diagnostic (research only): development/w3-r67-original-r66-refusal-audit.md
       - W3 R64-A independent numerical audit of original Gaussian positive-slope detection results (research only): development/w3-r64-independent-positive-slope-audit.md
       - W3 R63-A independent numerical audit of original 128-block Gaussian null data (research only): development/w3-r63-independent-original-null-audit.md
       - W3 R38 — dual-seed nuisance profile geometry (research only): development/w3-r38-dualseed-profile-results.md
