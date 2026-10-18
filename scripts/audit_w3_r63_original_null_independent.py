@@ -205,7 +205,7 @@ def audit_original(folder, *, expected_original_checkout=None):
         "recorded_optimizer_start_slots":98304,
         "bootstrap_refits_both_H0_and_H1_with_new_nuisance":True,
         "bootstrap_conditioned_on_source_fitted_H0_and_original_design":True,
-        "candidate_add_one_bootstrap_rank_grid_denominator":256,
+        "candidate_add_one_bootstrap_rank_grid_denominator":64,
         "no_prior_source_used_for_critical_tuning":True,
         "no_validated_type_I_reference":True,
         "no_pointwise_or_simultaneous_90pct_CR2_inference":True,
