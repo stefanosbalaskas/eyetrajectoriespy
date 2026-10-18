@@ -46,7 +46,7 @@ jobs:
       - name: Pin original R64 PR merge checksum identity
         run: grep -Fx ebe731c3db6a491f1d6b494d91d05143ecc9ee35 build/R65-original-R64-readonly/source-commit.txt
       - name: Require independent source numerical audit before estimating matched exploratory contrasts
-        run: python scripts/run_w3_r65_original_r64_block_paired_uncertainty.py --original build/R65-original-R64-readonly/ --out build/R65-original-block-paired/evidence.json
+        run: python -m scripts.run_w3_r65_original_r64_block_paired_uncertainty --original build/R65-original-R64-readonly/ --out build/R65-original-block-paired/evidence.json
       - name: Display independently verified source-block matched uncertainty results
         run: cat build/R65-original-block-paired/evidence.json
       - uses: actions/upload-artifact@v4
