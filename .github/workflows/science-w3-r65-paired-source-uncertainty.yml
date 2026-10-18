@@ -1,0 +1,58 @@
+name: science-w3-r65-original-R64-primitive-block-paired-uncertainty
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r65_original_r64_block_paired_uncertainty.py"
+      - "tests/test_w3_r65_original_r64_block_paired_uncertainty.py"
+      - ".github/workflows/science-w3-r65-paired-source-uncertainty.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-block-identity-refusal-and-paired-resampling-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r65_original_r64_block_paired_uncertainty.py
+
+  independently-audit-then-analyze-immutable-original-R64:
+    runs-on: ubuntu-24.04
+    needs: original-block-identity-refusal-and-paired-resampling-contracts
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download original completed R64 source evidence without rerunning the generating experiment
+        uses: actions/download-artifact@v4
+        with:
+          name: w3-r64-complete-original-matched-positive-slope-evidence
+          run-id: 39121431222
+          github-token: ${{ github.token }}
+          repository: stefanosbalaskas/eyetrajectoriespy
+          path: build/R65-original-R64-readonly/
+      - name: Pin original R64 PR merge checksum identity
+        run: grep -Fx ebe731c3db6a491f1d6b494d91d05143ecc9ee35 build/R65-original-R64-readonly/source-commit.txt
+      - name: Require independent source numerical audit before estimating matched exploratory contrasts
+        run: python scripts/run_w3_r65_original_r64_block_paired_uncertainty.py --original build/R65-original-R64-readonly/ --out build/R65-original-block-paired/evidence.json
+      - name: Display independently verified source-block matched uncertainty results
+        run: cat build/R65-original-block-paired/evidence.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r65-original-R64-matched-primitive-block-uncertainty
+          path: build/R65-original-block-paired/
+          if-no-files-found: warn
+          retention-days: 90
