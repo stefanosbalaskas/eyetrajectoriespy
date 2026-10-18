@@ -1,0 +1,74 @@
+name: science-w3-r66-independent-prospective-original-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r66_original_positive_slope_independent.py"
+      - "tests/test_w3_r66_independent_original_paired_audit.py"
+      - ".github/workflows/science-w3-r66-independent-original-audit.yml"
+      - "docs/development/w3-r66-independent-original-prospective-audit.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-original-source-intact-block-and-refusal-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r66_independent_original_paired_audit.py
+  independent-immutable-R66-original-prospective-evidence-reconstruction:
+    # REQUIRED: original R66 32/32 shards and immutable complete SHA256
+    # aggregate succeeded on workflow 39162296955. Never substitute
+    # a rerun or fresh simulated source archive.
+    if: github.event_name == 'pull_request'
+    needs: independent-original-source-intact-block-and-refusal-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Download ORIGINAL 128 independent Gaussian source archive only
+        uses: actions/download-artifact@v4
+        with:
+          name: w3-r66-original-128-block-paired-detection-evidence
+          repository: stefanosbalaskas/eyetrajectoriespy
+          run-id: 39162296955
+          github-token: ${{ github.token }}
+          path: build/R66-original-immutable-readonly/
+      - name: Verify exact ORIGINAL R66 scientific pull-request merge checkout
+        run: grep -Fx 6e462b2b59609327f15c76b838c1743c20f20f9a build/R66-original-immutable-readonly/source-commit.txt
+      - name: Independently recheck SHA256, 768 Gaussian sources, 48384 draws, KKT, and predeclared 20000-block contrast
+        run: python -m scripts.audit_w3_r66_original_positive_slope_independent --original build/R66-original-immutable-readonly/ --expected-original-checkout 6e462b2b59609327f15c76b838c1743c20f20f9a --out build/R66-independent-original-prospective-audit/evidence.json
+      - name: Display auditable frozen R66 independent original numerical evidence
+        run: cat build/R66-independent-original-prospective-audit/evidence.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r66-independent-original-prospective-128block-audit
+          path: build/R66-independent-original-prospective-audit/
+          if-no-files-found: warn
+          retention-days: 90
+# This second job is REQUIRED on the exact-head pull_request workflow.
+# Genuine original 128-block immutable evidence is downloaded from original
+# workflow 39162296955, artifact 12153256485; original source held frozen.
