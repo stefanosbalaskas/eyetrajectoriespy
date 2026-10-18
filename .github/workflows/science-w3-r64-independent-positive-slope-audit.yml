@@ -1,0 +1,38 @@
+name: science-w3-r64-independent-original-positive-slope-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r64_original_positive_slope_independent.py"
+      - "tests/test_w3_r64_independent_original_positive_slope_audit.py"
+      - ".github/workflows/science-w3-r64-independent-positive-slope-audit.yml"
+      - "docs/development/w3-r64-independent-positive-slope-audit.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-source-level-variance-tamper-and-refusal-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r64_independent_original_positive_slope_audit.py
+# Only the independent fixture contract checks are enabled while original
+# R64 source shards are running. Once the original 8-shard source aggregate
+# has passed, add a REQUIRED original-archive audit job with the exact source
+# workflow run, artifact ID and scientific PR-merge SHA pinned. The same
+# original source archive must never be regenerated or overwritten to make
+# its audit pass.
