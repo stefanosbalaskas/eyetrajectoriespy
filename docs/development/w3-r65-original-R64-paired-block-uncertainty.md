@@ -24,6 +24,29 @@ R65 performs a focused descriptive post-hoc analysis: quantify the **paired with
 
 The independently verified original archive's zero-versus-full discordance is ordinary **1 full-only / 0 zero-only**, hence a **+1/32 = +3.125 percentage-point** within-block candidate rejection change, and extreme **7 full-only / 1 zero-only**, hence a **+6/32 = +18.75 percentage-point** change. Their matched difference is **+5/32 = +15.625 percentage points**. This comparison is descriptive; original archived source pairs, not separate Bernoulli denominators, determine the uncertainty. Confidence range outputs are **not asserted until the required exact-original analysis workflow completes**.
 
+## Executed original-archive paired uncertainty results — SUCCESS
+
+[R65 exact-original workflow #39153147291](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39153147291) finished **4/4 dedicated jobs successfully**, including the independent original R64 numerical-provenance re-audit and all Python 3.11/3.12/3.13 contracts. The [independent R65 evidence artifact #12146085997](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39153147291/artifacts/12146085997) contains the 32 original source-block contrast vectors, fixed-denominator refusal bounds, 20,000 seed-frozen whole-block bootstrap percentile intervals, original checkout SHA, and R64 numerical-audit checks. It reverified **3/3 original SHA256 members**, **24,576 original nested H0/H1 model positions, 73,728 original starts** and original maximum selected KKT **0.0006914718118027805**, with **0 missing or refused** primitive blocks. R65 generated no new source data.
+
+### Within-block change in candidate rejection fraction
+
+| Support | Source-matched slope change | Later-only rejection blocks | Earlier-only rejection blocks | Change | Post-hoc 95% paired-block bootstrap percentile range |
+|---|---|---:|---:|---:|---:|
+| Ordinary | zero → half | 0 | 0 | **0.00 percentage points** | 0 to 0 pp |
+| Ordinary | half → full | 1 | 0 | **+3.125 pp** | 0 to +9.375 pp |
+| Ordinary | zero → full | 1 | 0 | **+3.125 pp** | 0 to +9.375 pp |
+| Extreme | zero → half | 3 | 1 | **+6.250 pp** | −6.250 to +18.750 pp |
+| Extreme | half → full | 5 | 1 | **+12.500 pp** | 0 to +28.125 pp |
+| Extreme | zero → full | 7 | 1 | **+18.750 pp** | +3.125 to +34.375 pp |
+
+For the **same 32 primitive block IDs**, extreme minus ordinary improvement from zero to full slope is **+5/32 = +15.625 percentage points**, with exploratory paired-block percentile interval **−3.125 to +34.375 percentage points**. This interval **crosses zero**: neither an inferentially established leverage sensitivity difference nor method superiority follows.
+
+The positive lower exploratory percentile endpoint under extreme zero→full represents this specific observed, post-hoc bootstrap resampling distribution; it does **not** qualify the original 5% nominal test, establish statistical power, or substitute for a prospectively selected confirmatory comparison. Only 32 independent original source blocks under a narrow Gaussian law were available. Original conditional H0 pseudodraws were **not** treated as new Monte Carlo units, and the same 32 block IDs were resampled together across all within- and between-leverage comparisons.
+
+### Engineering provenance
+
+The first [R65 workflow #39153015252](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39153015252) passed all three Python-version contracts but failed its original-data job *before numerical analysis*, due to invoking a Python script without the repository root on the module import path (`ModuleNotFoundError: No module named 'scripts'`). Only the workflow invocation changed to `python -m scripts.run_w3_r65_original_r64_block_paired_uncertainty`; this preserves the original R64 archive, its pinned checkout, the R65 statistical computation and fixed resampling seed. The original failure remains recorded and the fresh exact-head workflow passed.
+
 ## Release and science boundaries
 
 R65's numerical outputs are wholly derived from existing R64 data, **not independent new external replication evidence**. No source is discarded for numerical failure, and R64/R63 original scientific archives and thresholds remain frozen. The 5% null and positive alternatives are based on a narrow specified Gaussian mechanism; the candidate test is **not qualified to control 5% Type I error or to have calibrated statistical power**. Fitted-working-covariance CR2 90% pointwise intervals and simultaneous function-wide confidence bands, non-Gaussian robustness, original latent-source audit and MAR/MNAR observation mechanisms remain unqualified. Research issues #289 and #296 stay open. Protected main, stable 1.1.0, release 1.2, API, tags and PyPI stay untouched.
