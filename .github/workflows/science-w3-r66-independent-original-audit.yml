@@ -1,0 +1,39 @@
+name: science-w3-r66-independent-prospective-original-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r66_original_positive_slope_independent.py"
+      - "tests/test_w3_r66_independent_original_paired_audit.py"
+      - ".github/workflows/science-w3-r66-independent-original-audit.yml"
+      - "docs/development/w3-r66-independent-original-prospective-audit.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-original-source-intact-block-and-refusal-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r66_independent_original_paired_audit.py
+# An ACTUAL source archive job is intentionally not enabled yet:
+# R66 original source shards remain in progress. Only after the ORIGINAL R66
+# 32-shard source aggregation publishes its immutable artifact should this
+# separate draft audit PR add the REQUIRED archive-verification job, pinning
+# the ORIGINAL workflow ID, immutable artifact ID and PR-merge checkout SHA.
+# 3/3 green fixture tests MUST NOT be reported as independent original R66
+# numerical provenance or scientific inference qualification.
