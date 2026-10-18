@@ -182,3 +182,22 @@ def test_independent_matched_20000_block_percentiles_reconstructed_and_tampered(
         "prospective_95pct_primitive_block_bootstrap_percentile"][0]+=.05
     with pytest.raises(ValueError,match="prespecified-20000-intact-block-percentile"):
         _recheck_prospective_paired_contrasts(stored,data)
+
+
+def test_independent_full_48384_conditional_draw_seed_ledger_has_no_collisions():
+    # Verifies the frozen R66 integer-seed formula without importing the
+    # original simulator. In particular adjacent 63-draw streams must not
+    # overlap across original primitive blocks, leverage or slope levels.
+    from scripts.audit_w3_r66_original_positive_slope_independent import DRAW_SEED
+    known=set()
+    for block in range(BLOCKS):
+        for si,support in enumerate(SUPPORT):
+            for li,level in enumerate(LEVELS):
+                seeds=[DRAW_SEED + 100003*block + 739*si + 1009*li + j
+                       for j in range(B)]
+                assert len(set(seeds))==63
+                assert not any(seed in known for seed in seeds), (
+                    block,support,level)
+                known.update(seeds)
+    assert len(known)==SOURCE_DRAWS==48384
+    assert min(known)==DRAW_SEED
