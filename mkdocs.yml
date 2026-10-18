@@ -59,6 +59,7 @@ nav:
       - W3 R15 original source-verified cluster-leverage results: development/w3-r15-fresh-leverage-cluster-jackknife-results.md
       - W3 R16–R57 covariance inference research audit (unqualified): development/w3-covariance-inference-research-index.md
       - W3 R62-A independent original Gaussian null evidence audit (research only): development/w3-r62-independent-original-null-audit.md
+      - W3 R63 new independent Gaussian null replication protocol (research only): development/w3-r63-independent-null-replication-protocol.md
       - W3 R38 — dual-seed nuisance profile geometry (research only): development/w3-r38-dualseed-profile-results.md
       - W3 R39 — nuisance coordinate and objective offset original-source results (research only): development/w3-r39-nuisance-coordinate-results.md
       - W3 R40 — fresh-source Gaussian nuisance optimizer original results (unqualified): development/w3-r40-fresh-source-nuisance-results.md
