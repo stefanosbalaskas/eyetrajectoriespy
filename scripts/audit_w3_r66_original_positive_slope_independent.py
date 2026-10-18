@@ -403,10 +403,12 @@ def audit_original(folder, *, expected_original_checkout=None):
             max_kkt=max(max_kkt,nested["kkt"])
             if d["status"]!=nested["status"]:
                 raise ValueError("R66 inner/outer Gaussian pseudo-fit status mismatch")
+            seeded=DRAW_SEED + 100003*block + 739*SUPPORT.index(support) + 1009*LEVELS.index(level) + j
+            if d["seed"] is not None and d["seed"] != seeded:
+                raise ValueError("R66 conditional H0 Gaussian attempted draw seed identity mismatch")
             if nested["status"]=="accepted":
-                seeded=DRAW_SEED + 100003*block + 739*SUPPORT.index(support) + 1009*LEVELS.index(level) + j
-                if d["seed"]!=seeded:
-                    raise ValueError("R66 conditional H0 Gaussian draw seed identity mismatch")
+                if d["seed"] is None:
+                    raise ValueError("R66 accepted Gaussian pseudodraw lacks its frozen RNG seed")
                 accepted.append(nested["gap"])
             elif nested["status"]=="not_attempted" and d["seed"] is not None:
                 raise ValueError("R66 not attempted pseudodraw reported an RNG seed")
