@@ -248,7 +248,7 @@ def shard(out,start,stop):
     out.mkdir(parents=True,exist_ok=True)
     rows=[evaluate(b,s,l) for b in range(start,stop)
           for s in SUPPORT for l in LEVELS]
-    raw=json.dumps(rows,sort_keys=True,allow_nan=False,indent=2)+"\n"
+    raw=json.dumps(rows,sort_keys=True,allow_nan=False,indent=2,\n                   default=r58.r57.r53._json_plain)+"\n"
     (out/"cases.json").write_bytes(raw.encode("utf-8"))
     (out/"manifest.json").write_bytes((json.dumps({
         "study":STUDY,"start":start,"stop":stop,
