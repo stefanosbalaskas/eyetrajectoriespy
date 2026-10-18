@@ -1,6 +1,6 @@
 # W3 R66-A — independent immutable original 128-block prospective matched-detection audit
 
-**Separate research-only, read-only independent verification; at creation, the ORIGINAL R66 simulation is still running. The auditor's contract tests are not evidence that the original archive has been audited.**
+**Separate research-only, read-only independent verification COMPLETED: 4/4 passed on actual immutable original R66 archive (three Python regression contracts plus one original-source reconstruction).** Original-source numerical integrity and paired contrasts were independently checked. No general scientific calibration or release authorization.
 
 ## Original experiment targeted
 
@@ -30,6 +30,23 @@ The first completed original [R66 source shard in workflow #39162296955](https:/
 **Stage A, enabled immediately:** deterministic independent integrity, original numerical-start/denominator, checksum-tampering, fake-power/refusal, frozen seed/rank and 20,000-resample matched-contrast fixture contracts run under Python 3.11, 3.12 and 3.13 on the new stacked draft PR. No original R66 archive is read at this stage.
 
 **Stage B, required only after original 32-shard science and aggregate success:** retrieve the **original immutable** GitHub artifact by its known workflow/artifact identifiers, require the archived exact original PR-merge checkout SHA, run the independent numerical audit and record separate R66-A evidence JSON. Do not silently substitute newly generated data for failed source shards, and retain original failing workflow history. **Do not claim independent R66 original-source verification until Stage B actually passes.**
+
+## Completed actual original-archive numerical audit
+
+The **original R66** [workflow #39162296955](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39162296955) passed all **36/36 dedicated science jobs** and 25/25 general exact-head CI. All 32 NEW generating-block shards succeeded. Original immutable full [archive artifact #12153256485](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39162296955/artifacts/12153256485) has PR-merge checkout `6e462b2b59609327f15c76b838c1743c20f20f9a`.
+
+The separate [R66-A immutable original-source audit workflow #39176110530](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39176110530) passed **4/4**, including mandatory actual archived numerical reconstruction, not merely fixture tests. Independent [auditor archive #12153768854](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39176110530/artifacts/12153768854) confirms **3/3 original SHA256 members**, original source checkout, 128 independent primitive generating blocks, 768 case identities, 48,384 Gaussian draw slots, 98,304 nested fits, **294,912 optimizer starts**, original fitted nuisance and KKT evidence and **max selected projected KKT = 0.0007526265884408093 < 0.001**.
+
+Independent auditor-reconstructed candidate rejection numbers:
+
+| Leverage support | Zero | Half | Full |
+|---|---:|---:|---:|
+| Ordinary | **8/128** | **9/128** | **14/128** |
+| Extreme | **7/128** | **11/127** | **27/127** |
+
+All 768 original source H0/H1 fits were accepted, but **two of the 48,384 nuisance-refitted conditional H0 draw slots refused** in distinct extreme/half and extreme/full cases. Thus **126/128 six-cell primitive blocks** remain fully complete. The prospectively selected extreme-minus-ordinary zero→full difference among those complete blocks is **+14/126 = +11.111 percentage points**; conservative fixed-denominator missing-block bounds **+10/128 = +7.8125 pp** to **+18/128 = +14.0625 pp**. **The original frozen 20,000-resample matched-block percentile confidence interval remains NULL and was independently verified as withheld.** Those positive descriptive refusal bounds are not a confidence interval and do not prove any leverage superiority claim.
+
+The earlier audit-fixture failure is preserved in original [workflow #39165489543](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39165489543) (inherited wrong 192-case assertion). The regression was corrected to 768 before actual archival audit; later strict seed-integrity tests passed. All changes were isolated to audit branch, with no modification of original Gaussian simulation or refitting rules. The full [R66 original and independent outcome discussion](w3-r66-completed-original-matched-detection-evidence.md) retains the exact refusal-inclusive numerical boundary.
 
 ## Scientific use and release boundary
 
