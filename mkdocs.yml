@@ -62,6 +62,7 @@ nav:
       - W3 R63 new independent Gaussian null replication protocol (research only): development/w3-r63-independent-null-replication-protocol.md
       - W3 R63 completed original 128-block Gaussian fitted-H0 null evidence (research only): development/w3-r63-original-128block-null-results.md
       - W3 R64 matched known positive-slope Gaussian detection sensitivity pilot (research only): development/w3-r64-matched-positive-slope-detection-protocol.md
+      - W3 R64-A independent numerical audit of original Gaussian positive-slope detection results (research only): development/w3-r64-independent-positive-slope-audit.md
       - W3 R63-A independent numerical audit of original 128-block Gaussian null data (research only): development/w3-r63-independent-original-null-audit.md
       - W3 R38 — dual-seed nuisance profile geometry (research only): development/w3-r38-dualseed-profile-results.md
       - W3 R39 — nuisance coordinate and objective offset original-source results (research only): development/w3-r39-nuisance-coordinate-results.md
