@@ -21,6 +21,10 @@ Original predeclared expected workload: 32 shards of four independent generating
 
 Original **native Gaussian latent response innovations and source residuals are not archived**. Passing this audit can certify the stored numerical likelihood, conditional p-value, matched-block bootstrap and SHA256 evidence, **not independently prove that the original source generator drew from its advertised law**.
 
+## Original scientific checkout pre-verification
+
+The first completed original [R66 source shard in workflow #39162296955](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39162296955) checked out GitHub Actions PR merge commit `6e462b2b59609327f15c76b838c1743c20f20f9a`. That exact source SHA is now pinned in the **separate audit workflow** with original run ID `39162296955` and expected final artifact name `w3-r66-original-128-block-paired-detection-evidence`. **The 32-shard original aggregate is not yet available at this checkpoint.** The original-data job therefore contains an explicit `if: github.event_name == 'workflow_dispatch'` gate and **does not run on PR CI** until this audit branch is deliberately updated after original source aggregation succeeds. Tests passing while this original-data job is skipped cannot be called an independent numerical audit of the original source.
+
 ## Two-stage CI with a hard original-archive boundary
 
 **Stage A, enabled immediately:** deterministic independent integrity, original numerical-start/denominator, checksum-tampering, fake-power/refusal, frozen seed/rank and 20,000-resample matched-contrast fixture contracts run under Python 3.11, 3.12 and 3.13 on the new stacked draft PR. No original R66 archive is read at this stage.
