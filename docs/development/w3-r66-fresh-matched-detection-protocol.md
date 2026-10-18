@@ -21,16 +21,14 @@ R66 prospectively freezes the SAME source model and matched zero/half/full contr
 - **128 independent primitive Gaussian generating blocks**, each with **24 participants** and native irregular repeated trials; each primitive is observed in six paired conditions (ordinary/extreme predictor leverage × zero/half/full random-slope standard-deviation multiplier).
 - Exact original random-slope SD **0.045** with frozen multipliers **0, 0.5, 1**: structural variance **0**, **0.00050625**, **0.002025**. Within primitive block and leverage condition, the original intercept, sensor noise, trial innovations, design/timestamps and Gaussian slope draw are identical across the three levels; **only the slope-innovation amplitude is modified**. The two leverage supports remain paired within primitive block.
 - Preserve the original R57/R63 exact-zero (H_0) versus nonnegative (H_1) Gaussian REML, its fixed two H0 / four H1 starting solutions, physical projected KKT ≤ **0.001**, likelihood/objective restrictions, and the same Gaussian fitted-H0 covariance nuisance-refitting bootstrap. Every conditional H0 pseudodraw fully refits both nested nuisance covariance models.
-- Per original case, freeze **63** independent fitted-H0 Gaussian pseudoresponses and the add-one conditional p-value (p=(1+#{T^{*}geq T_{obs}})/64), only if the original and all 63 bootstrap nested fits are accepted; nominal 5% rejection means (pleq 3/64=0.046875). The unchanged classical mixture cutoff (T>2.70554345409542) is retained descriptively. No source filtering, redraw, threshold tuning or post-data method selection.
+- Per original case, freeze **63** independent fitted-H0 Gaussian pseudoresponses and the add-one conditional p-value `p = (1 + number of bootstrap LR statistics >= observed LR statistic) / 64`, only if the original and all 63 bootstrap nested fits are accepted; nominal 5% rejection means `p <= 3/64 = 0.046875`. The unchanged classical mixture cutoff (T>2.70554345409542) is retained descriptively. No source filtering, redraw, threshold tuning or post-data method selection.
 
 ## Prospective primary matched estimand
 
 For each truly independent source block (b) and leverage (s), define the observed binary **candidate-test** decision (I_{b,s,l}) at slope level (l), after complete 63-draw computation. The primary planned comparative diagnostic is:
 
-[
-D_b = igl(I_{b,mathrm{extreme},mathrm{full}}-I_{b,mathrm{extreme},mathrm{zero}}igr)
--igl(I_{b,mathrm{ordinary},mathrm{full}}-I_{b,mathrm{ordinary},mathrm{zero}}igr).
-]
+
+`D_b = [I_extreme(full) - I_extreme(zero)] - [I_ordinary(full) - I_ordinary(zero)]`
 
 Its primitive-block mean can range from −2 to +2. The ordinary/full-minus-zero and extreme/full-minus-zero changes and the zero→half / half→full changes are secondary descriptive contrasts. The method compares **candidate rejection behavior under the stipulated Gaussian source**, not power of an independently qualified 5%-size test, and does not establish a causal benefit from manipulating observational leverage.
 
