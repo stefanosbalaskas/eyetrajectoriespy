@@ -1,12 +1,12 @@
 # W3 R63-A — independent original 128-block fitted-H0 null-bootstrap audit
 
-**Draft research-only, read-only original-evidence verification. The original R63 source archive is not yet complete at protocol creation.** Do not describe R63-A contract tests as independent certification of the original data. This audit must operate on the separately completed original R63 artifact, never source data generated or changed on this branch.
+**Read-only original-evidence verification in progress on a separate research branch.** The R63 original archive is now complete (36/36 original workflow jobs successful). Its immutable source archive and exact original scientific merge checkout have been pinned below. Source computation and independent numerical auditing are separate gates. This audit must operate on the separately completed original R63 artifact, never source data generated or changed on this branch.
 
 ## Frozen target
 
 [Original R63 draft PR #376](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/376) studies **128 new genuinely independent Gaussian structural-zero primitive blocks** with 24 participants per block, paired ordinary/extreme leverage. There are **256 paired cases**, not 256 independent Monte Carlo replications per stratum, **63 fitted-null Gaussian pseudoresponse draws per case** (16,128 draw slots), **32,768 nested H0/H1 model-fit positions** and **98,304 optimization-start records**. The source seed is `202610186363`; the separate bootstrap seed is `202610186364`. The add-one conditional candidate 5% decision uses p=(1+#(T_boot≥T_original))/64, requiring all 63 numerical fits accepted. The unchanged classical candidate mixture cutoff is T>2.70554345409542.
 
-All original cases, draw indices, missing fits and numerical refusals belong in the fixed denominator. The original source experiment consists of 32 shards of four independent primitive blocks each. The exact source checkout SHA and immutable full artifact ID **cannot be frozen until the original R63 workflow completes**; this audit must separately pin the real original PR merge checkout SHA in its required original-data job before claiming original verification.
+All original cases, draw indices, missing fits and numerical refusals belong in the fixed denominator. The original source experiment consists of 32 shards of four independent primitive blocks each. The immutable original [source artifact #12131066138](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39110613315/artifacts/12131066138), original workflow #39110613315 and actual PR-merge checkout `3574b507971f237fe20326acb76f323082007dd5` are now pinned in the required independent original-data workflow. The independent audit outcome is reported separately.
 
 ## Independent archive audit
 
@@ -23,7 +23,7 @@ The new `scripts/audit_w3_r63_original_null_independent.py` imports only the Pyt
 
 **Stage A:** The independent auditor and SHA256/cutoff/Wilson/tamper/regression contracts run on Python 3.11, 3.12 and 3.13 on its own stacked draft PR, without original R63 data. Three green contracts alone are *not* validation of source evidence.
 
-**Stage B (required before any source-audit claim):** Once the original R63 source workflow uploads its final complete aggregated artifact, record the exact original scientific PR-merge checkout; update this separate audit workflow to download its pinned artifact ID and require that exact checkout, run the independent audit and preserve uploaded independent JSON evidence. Preserve prior CI attempts and any failures. Leave the original R63 source runner and immutable original experiment untouched.
+**Stage B now enabled as a required PR job:** download completed original R63 archive from [workflow #39110613315](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39110613315), require exact original checkout `3574b507971f237fe20326acb76f323082007dd5`, recompute all original R63 numerical evidence and release flags via the entirely separate standard-library-only auditor, and upload the new original-evidence reconstruction JSON. Merely passing Stage A does **not** qualify original-source integrity. Preserve immutable original data and any failed audit runs.
 
 ## Scientific limits
 
