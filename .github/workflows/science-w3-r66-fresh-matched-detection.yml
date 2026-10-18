@@ -1,0 +1,120 @@
+name: science-w3-r66-independent-128block-matched-slope-detection
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r66_fresh_matched_slope_detection.py"
+      - "tests/test_w3_r66_fresh_matched_slope_detection.py"
+      - "docs/development/w3-r66-fresh-matched-detection-protocol.md"
+      - ".github/workflows/science-w3-r66-fresh-matched-detection.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-matched-design-numerical-and-refusal-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r66_fresh_matched_slope_detection.py
+
+  original-new-independent-matched-Gaussian-shards:
+    needs: independent-matched-design-numerical-and-refusal-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 4}
+          - {start: 4, stop: 8}
+          - {start: 8, stop: 12}
+          - {start: 12, stop: 16}
+          - {start: 16, stop: 20}
+          - {start: 20, stop: 24}
+          - {start: 24, stop: 28}
+          - {start: 28, stop: 32}
+          - {start: 32, stop: 36}
+          - {start: 36, stop: 40}
+          - {start: 40, stop: 44}
+          - {start: 44, stop: 48}
+          - {start: 48, stop: 52}
+          - {start: 52, stop: 56}
+          - {start: 56, stop: 60}
+          - {start: 60, stop: 64}
+          - {start: 64, stop: 68}
+          - {start: 68, stop: 72}
+          - {start: 72, stop: 76}
+          - {start: 76, stop: 80}
+          - {start: 80, stop: 84}
+          - {start: 84, stop: 88}
+          - {start: 88, stop: 92}
+          - {start: 92, stop: 96}
+          - {start: 96, stop: 100}
+          - {start: 100, stop: 104}
+          - {start: 104, stop: 108}
+          - {start: 108, stop: 112}
+          - {start: 112, stop: 116}
+          - {start: 116, stop: 120}
+          - {start: 120, stop: 124}
+          - {start: 124, stop: 128}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m scripts.run_w3_r66_fresh_matched_slope_detection --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R66-original-shard/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r66-original-fresh-matched-source-${{ matrix.start }}
+          path: build/R66-original-shard/
+          if-no-files-found: warn
+          retention-days: 90
+
+  complete-original-128-independent-source-SHA256-aggregate:
+    needs:
+      - independent-matched-design-numerical-and-refusal-contracts
+      - original-new-independent-matched-Gaussian-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r66-original-fresh-matched-source-*
+          path: build/R66-original-parts/
+          merge-multiple: false
+      - run: python -m scripts.run_w3_r66_fresh_matched_slope_detection --merge-parts build/R66-original-parts/ --out build/R66-original-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r66-original-128-block-paired-detection-evidence
+          path: build/R66-original-complete/
+          if-no-files-found: warn
+          retention-days: 90
