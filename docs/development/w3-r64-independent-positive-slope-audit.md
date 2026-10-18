@@ -1,6 +1,6 @@
 # W3 R64-A — independent original zero/half/full structural random-slope evidence audit
 
-**Read-only research audit; no R64 original archive is yet complete.** Green fixture tests do not establish independent numerical verification of the original experiment.
+**Read-only original-archive research audit in progress.** The original R64 source archive is now complete, and the independently built auditor is required to validate it on a separate workflow. Previously green fixture tests alone did not establish original-source integrity.
 
 ## Frozen source and inference contract
 
@@ -27,7 +27,7 @@ New `scripts/audit_w3_r64_original_positive_slope_independent.py` does **not imp
 
 **Stage A — initial:** Python 3.11/3.12/3.13 independent auditor integrity, true-variance, full refusal, Wilson and checksum tamper/seed-grid regression tests are run in a new stacked research draft PR. Green Stage A CI does not certify original R64.
 
-**Stage B — mandatory after original source finish:** Once [R64 original science](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/378) completes all eight shards, record its immutable workflow run/artifact ID and exact PR-merge SHA. Update the **separate audit branch only**, add a required CI job retrieving the *original* finished source archive, require exact archived checkout, run this auditor and publish its independent JSON. Retain original source and failed audit workflows unaltered.
+**Stage B now required in CI:** download immutable original R64 [workflow #39121431222](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39121431222), [original archive #12136512850](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39121431222/artifacts/12136512850), pin scientific PR-merge checkout `ebe731c3db6a491f1d6b494d91d05143ecc9ee35`, reconstruct complete original original numerical evidence with the independent standard-library-only auditor and preserve a separate audit JSON artifact. The source study itself is frozen; this job must pass before original R64 may be labeled independently audited.
 
 ## Interpretation
 
