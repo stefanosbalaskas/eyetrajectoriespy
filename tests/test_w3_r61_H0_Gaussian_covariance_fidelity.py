@@ -65,7 +65,7 @@ def test_exact_SHA256_and_same_checkout_fails_on_tampering(tmp_path,monkeypatch)
         folder.mkdir(parents=True)
         raw=json.dumps([v for v in rows if start<=v["block"]<stop],
                        sort_keys=True,indent=2)+"\n"
-        (folder/"cases.json").write_text(raw)
+        (folder/"cases.json").write_bytes(raw.encode("utf-8"))
         (folder/"manifest.json").write_text(json.dumps({
             "study":r61.STUDY,"start":start,"stop":stop,
             "source_seed":r61.SOURCE_SEED,

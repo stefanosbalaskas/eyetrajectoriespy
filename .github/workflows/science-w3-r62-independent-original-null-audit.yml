@@ -1,0 +1,55 @@
+name: science-w3-r62-independent-immutable-original-null-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r62_original_null_independent.py"
+      - "tests/test_w3_r62_independent_original_null_audit.py"
+      - ".github/workflows/science-w3-r62-independent-original-null-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-source-contracts:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r62_independent_original_null_audit.py tests/test_w3_r60_nuisance_refit_null_bootstrap.py tests/test_w3_r61_H0_Gaussian_covariance_fidelity.py tests/test_w3_r62_independent_outer_null_bootstrap.py
+
+  audit-original-frozen-archive:
+    # Original R62 aggregate artifact #12115536911 is now published. The
+    # first PR workflow skipped this job by design; retain that historical
+    # run and independently validate the original archive on every PR head.
+    runs-on: ubuntu-24.04
+    needs: independent-source-contracts
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r62-original-32-independent-block-null-refit-results
+          run-id: 39069680983
+          github-token: ${{ github.token }}
+          repository: stefanosbalaskas/eyetrajectoriespy
+          path: build/R62-original-readonly/
+      - name: Require immutable original R62 PR-merge checkout
+        run: grep -Fx 'a3a4f78898f737b42b741c8fe4d7493ecb38872a' build/R62-original-readonly/source-commit.txt
+      - run: python scripts/audit_w3_r62_original_null_independent.py --original build/R62-original-readonly/ --out build/R62-independent-audit/evidence.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r62-independent-original-reconstruction
+          path: build/R62-independent-audit/
+          if-no-files-found: warn
+          retention-days: 90
