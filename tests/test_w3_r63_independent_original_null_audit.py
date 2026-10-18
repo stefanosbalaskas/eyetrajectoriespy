@@ -109,3 +109,18 @@ def test_original_PR_merge_checkout_must_be_pinned_when_archive_available(tmp_pa
     assert audit_original(folder, expected_original_checkout="a"*40)["original_source_checkout"]=="a"*40
     with pytest.raises(ValueError,match="checkout differs"):
         audit_original(folder, expected_original_checkout="b"*40)
+
+def test_256_source_cases_do_not_change_64_point_bootstrap_p_grid(tmp_path):
+    folder=_archive(tmp_path)
+    report=audit_original(folder)
+    assert report["paired_source_cases"] == 256
+    assert report["original_bootstrap_draw_slots"] == 256 * 63
+    summary=json.loads((folder/"summary.json").read_text())
+    assert summary["candidate_add_one_bootstrap_rank_grid_denominator"] == 64
+    summary["candidate_add_one_bootstrap_rank_grid_denominator"]=256
+    (folder/"summary.json").write_bytes(
+        (json.dumps(summary,sort_keys=True,indent=2)+"\n").encode("utf-8")
+    )
+    _refresh(folder)
+    with pytest.raises(ValueError,match="frozen original summary mismatch"):
+        audit_original(folder)
