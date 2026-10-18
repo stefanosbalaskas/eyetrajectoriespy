@@ -1,6 +1,6 @@
 """R66 research: source-matched true-zero vs positive random-slope detection pilot.
 
-Frozen known structural slopes 0, 1/2 and 1 times original Gaussian
+Prospectively frozen new 128-block structural slopes 0, 1/2 and 1 times original Gaussian
 participant-slope SD 0.045, with paired leverage and *common source*
 innovations for each primitive independent block. R63's original
 H0/H1 REML and null-Gaussian nuisance-refitted bootstrap are UNCHANGED.
@@ -379,7 +379,7 @@ def shard(out,start,stop):
 def aggregate(out,parts):
     files=list(parts.glob("*/manifest.json"))
     if len(files)!=len(SHARDS):
-        raise ValueError("R66 all eight original source-shard artifacts required")
+        raise ValueError("R66 all 32 original source-shard artifacts required")
     checkout=os.environ.get("GITHUB_SHA","unverified-local")
     rows=[]; seen=set()
     for path in files:
