@@ -1,0 +1,37 @@
+name: science-w3-r63-independent-original-null-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r63_original_null_independent.py"
+      - "tests/test_w3_r63_independent_original_null_audit.py"
+      - "docs/development/w3-r63-independent-original-null-audit.md"
+      - ".github/workflows/science-w3-r63-independent-original-null-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-archive-tamper-refusal-and-rank-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r63_independent_original_null_audit.py
+# No original-archive job has been enabled here: R63 original source shards are
+# still running. Once immutable complete original aggregate is available,
+# add a second REQUIRED job to download its fixed artifact ID and verify the
+# exact original PR-merge checkout before running the independent auditor.
+# Green contract tests alone must never be represented as original verification.
