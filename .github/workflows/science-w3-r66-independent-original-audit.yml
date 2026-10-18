@@ -31,10 +31,10 @@ jobs:
       - run: python -m pip install -e ".[dev]"
       - run: python -m pytest -q tests/test_w3_r66_independent_original_paired_audit.py
   independent-immutable-R66-original-prospective-evidence-reconstruction:
-    # GATED: Original R66 32-shard aggregate not yet available. Change this
-    # job's if-condition on a new exact-head audit-only commit after original
-    # evidence artifact is final, then require this job to pass.
-    if: github.event_name == 'workflow_dispatch'
+    # REQUIRED: original R66 32/32 shards and immutable complete SHA256
+    # aggregate succeeded on workflow 39162296955. Never substitute
+    # a rerun or fresh simulated source archive.
+    if: github.event_name == 'pull_request'
     needs: independent-original-source-intact-block-and-refusal-contracts
     runs-on: ubuntu-24.04
     timeout-minutes: 120
@@ -69,7 +69,6 @@ jobs:
           path: build/R66-independent-original-prospective-audit/
           if-no-files-found: warn
           retention-days: 90
-# This second job is deliberately gated and SKIPPED on the PR. Contract CI
-# alone is not original evidence qualification. Activate by removing the
-# gate ONLY after original R66 workflow 39162296955 successfully uploads its
-# full aggregate (32 shards), then preserve the passed exact-source audit JSON.
+# This second job is REQUIRED on the exact-head pull_request workflow.
+# Genuine original 128-block immutable evidence is downloaded from original
+# workflow 39162296955, artifact 12153256485; original source held frozen.
