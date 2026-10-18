@@ -104,7 +104,7 @@ def test_invalid_structural_slope_and_forged_power_claims_fail_closed(tmp_path):
 def test_separate_768_source_and_64_conditional_rank_gate(tmp_path):
     root=_archive(tmp_path)
     original=audit_original(root)
-    assert original["paired_source_cases"]==192
+    assert original["paired_source_cases"]==768
     summary=json.loads((root/"summary.json").read_bytes())
     assert summary["conditional_candidate_p_grid_denominator"]==64
     summary["conditional_candidate_p_grid_denominator"]=768
