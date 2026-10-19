@@ -10,11 +10,9 @@ The exact **32 NEW independent primitive Gaussian generating blocks** supplied 4
 
 The **original unmodified W3 wild-HC1** and **unchanged original R72 pooled common-covariance HC2 Gaussian** are negative-controls, and the simulation-known heterogeneous Gaussian slope reference is explicitly unavailable for real-data estimation. New experimental slope-weighted methods use original regression slope design weights and unit-level residuals:
 
-[
-widehat V_{mathrm{weighted,HC2}}=sum_i a_i^2rac{r_i r_i^{	op}}{1-h_i},
-qquad
-widehat V_{mathrm{weighted,HC3}}=sum_i a_i^2rac{r_i r_i^{	op}}{(1-h_i)^2}.
-]
+
+- Weighted HC2: `V_slope,HC2 = Σ_i a_i² (r_i r_iᵀ)/(1−h_i)`.
+- Weighted HC3: `V_slope,HC3 = Σ_i a_i² (r_i r_iᵀ)/(1−h_i)²`.
 
 The 999 multivariate Gaussian maximum-statistic references are computed from these **rank-deficient rectangular factors**, with covariance-inferred standardization separately for each method, not from the generating covariance. Neither method is yet a statistically qualified confidence-band procedure.
 
