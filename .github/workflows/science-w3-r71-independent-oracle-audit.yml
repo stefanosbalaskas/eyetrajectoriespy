@@ -1,0 +1,69 @@
+name: science-w3-r71-independent-original-Gaussian-band-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r71_independent_known_gaussian_archive.py"
+      - "tests/test_w3_r71_independent_known_gaussian_archive.py"
+      - "docs/development/w3-r71-independent-known-law-audit.md"
+      - ".github/workflows/science-w3-r71-independent-oracle-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-original-reference-65534-Gaussian-and-999wild-draw-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - name: Independently verify Gaussian latent law, raw max quantiles, source truth pivots and falsified archive checksums
+        run: python -m pytest -q tests/test_w3_r71_independent_known_gaussian_archive.py
+
+  mandatory-original-32block-Gaussian-and-W3-wild-maxima-audit:
+    needs: independent-original-reference-65534-Gaussian-and-999wild-draw-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Fetch exactly the immutable original R71 new-Gaussian-source scientific aggregate
+        uses: actions/download-artifact@v4
+        with:
+          repository: stefanosbalaskas/eyetrajectoriespy
+          run-id: 39227237532
+          name: w3-r71-immutable-known-Gaussian-65534reference-and-original-W3-wild-evidence
+          github-token: ${{ github.token }}
+          path: build/R71-A-original-readonly/
+      - name: Require exact frozen original R71 PR merge science checkout
+        run: grep -Fx 1102b57fe9605e46303921989842ee3f7a0e1f84 build/R71-A-original-readonly/source-commit.txt
+      - name: Re-simulate the independent known-law Gaussian max distribution and re-quantile all source wild maxima and truth classifications
+        run: python -m scripts.audit_w3_r71_independent_known_gaussian_archive --original build/R71-A-original-readonly/ --expected-checkout 1102b57fe9605e46303921989842ee3f7a0e1f84 --out build/R71-A-independent-original-numerical-evidence/evidence.json
+      - name: Display failure-inclusive 32-block true-Gaussian vs W3 wild undercoverage decomposition
+        run: cat build/R71-A-independent-original-numerical-evidence/evidence.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r71a-independent-original-32block-Gaussian-law-vs-wild-undercoverage
+          path: build/R71-A-independent-original-numerical-evidence/
+          if-no-files-found: warn
+          retention-days: 90
