@@ -1,0 +1,92 @@
+name: science-w3-r68-fresh-numerical-feasibility
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r68_new_source_numerical_feasibility.py"
+      - "tests/test_w3_r68_new_source_numerical_feasibility.py"
+      - "docs/development/w3-r68-independent-numerical-feasibility-protocol.md"
+      - ".github/workflows/science-w3-r68-new-source-feasibility.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  numerical-source-and-failure-inclusion-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r68_new_source_numerical_feasibility.py
+
+  fresh-Gaussian-independent-original-block-shards:
+    needs: numerical-source-and-failure-inclusion-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 4}
+          - {start: 4, stop: 8}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Fit unchanged original H0/H1 REML to NEW prespecified Gaussian source and four H0 pseudodraws per case
+        run: python -m scripts.run_w3_r68_new_source_numerical_feasibility --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R68-original-new-source-shard/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r68-original-fresh-8block-source-${{ matrix.start }}
+          path: build/R68-original-new-source-shard/
+          if-no-files-found: warn
+          retention-days: 90
+
+  immutable-eight-source-failure-inclusive-aggregate:
+    needs:
+      - numerical-source-and-failure-inclusion-contracts
+      - fresh-Gaussian-independent-original-block-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r68-original-fresh-8block-source-*
+          path: build/R68-original-new-source-shards/
+          merge-multiple: false
+      - name: SHA256 re-check both exact source checkout shards and aggregate 48 cases and 192 Gaussian fit positions
+        run: python -m scripts.run_w3_r68_new_source_numerical_feasibility --merge-parts build/R68-original-new-source-shards/ --out build/R68-original-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r68-complete-original-8block-numerical-feasibility-evidence
+          path: build/R68-original-complete/
+          if-no-files-found: warn
+          retention-days: 90
