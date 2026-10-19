@@ -46,6 +46,7 @@ nav:
       - W3 R70-A independent original 999-draw wild maxima and HC3/HC1 source-coverage audit (research only): development/w3-r70-independent-original-maxima-audit.md
       - W3 R71 prospective NEW independent Gaussian known-law reference vs original 90% wild confidence bands (research only): development/w3-r71-prospective-known-law-oracle-protocol.md
       - W3 R71-A independent original true-Gaussian 65534-max and W3-wild 127872-max source audit (research only): development/w3-r71-independent-known-law-audit.md
+      - W3 R72 prospective data-estimated HC2-Gaussian covariance simultaneous slope-band experiment (research only): development/w3-r72-prospective-estimated-gaussian-band-protocol.md
       - Original source figures: development/research-original-figures.md
       - Reproduce from draft source: development/research-reproducibility.md
       - Methods and contracts:
