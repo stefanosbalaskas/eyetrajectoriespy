@@ -1,0 +1,92 @@
+name: science-w3-r72-new-estimated-Gaussian-covariance-slope-bands
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r72_new_estimated_gaussian_covariance_bands.py"
+      - "tests/test_w3_r72_new_estimated_gaussian_covariance_bands.py"
+      - ".github/workflows/science-w3-r72-estimated-gaussian-bands.yml"
+      - "docs/development/w3-r72-prospective-estimated-gaussian-band-protocol.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  frozen-source-HC2-covariance-and-refusal-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r72_new_estimated_gaussian_covariance_bands.py
+
+  original-new-source-estimated-covariance-Gaussian-shards:
+    needs: frozen-source-HC2-covariance-and-refusal-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 8}
+          - {start: 8, stop: 16}
+          - {start: 16, stop: 24}
+          - {start: 24, stop: 32}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m scripts.run_w3_r72_new_estimated_gaussian_covariance_bands --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R72-original-shard/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r72-original-estimated-gaussian-source-${{ matrix.start }}
+          path: build/R72-original-shard/
+          if-no-files-found: warn
+          retention-days: 90
+
+  original-all-source-immutable-SHA256-aggregate:
+    needs:
+      - frozen-source-HC2-covariance-and-refusal-contracts
+      - original-new-source-estimated-covariance-Gaussian-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r72-original-estimated-gaussian-source-*
+          path: build/R72-original-parts/
+          merge-multiple: false
+      - run: python -m scripts.run_w3_r72_new_estimated_gaussian_covariance_bands --merge-parts build/R72-original-parts/ --out build/R72-original-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r72-original-32-block-estimated-Gaussian-band-evidence
+          path: build/R72-original-complete/
+          if-no-files-found: warn
+          retention-days: 90
