@@ -102,7 +102,7 @@ def test_original_archive_hash_and_source_checkout_tamper_fail_closed(tmp_path):
 def test_forged_source_identity_or_denominator_is_rejected_after_rehash(tmp_path):
     root=_archive(tmp_path)
     rows=json.loads((root/"cases.json").read_text())
-    rows[2]["block"]=rows[0]["block"]  # same design and support as row 0
+    rows[4]["block"]=rows[0]["block"]  # same design/support as row 0
     (root/"cases.json").write_bytes((json.dumps(rows,sort_keys=True)+"\n").encode())
     _rehash(root)
     with pytest.raises(ValueError,match="missing/duplicated"):
