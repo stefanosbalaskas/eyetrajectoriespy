@@ -1,0 +1,99 @@
+name: science-w3-r70-new-source-leverage-HC3-band-factorial
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r70_new_leverage_hc3_band_sensitivity.py"
+      - "tests/test_w3_r70_new_leverage_hc3_band_sensitivity.py"
+      - "docs/development/w3-r70-prospective-leverage-studentization-protocol.md"
+      - ".github/workflows/science-w3-r70-leverage-HC3-band.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  new-source-HC1-HC3-studentization-and-999draw-reference-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - name: Validate exact HC1 oracle, new-source matched leverage, HC3 algebra, original 999-draw wild and refusal checks
+        run: python -m pytest -q tests/test_w3_r70_new_leverage_hc3_band_sensitivity.py
+
+  fresh-32-primitive-block-original-999draw-shards:
+    needs: new-source-HC1-HC3-studentization-and-999draw-reference-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 4}
+          - {start: 4, stop: 8}
+          - {start: 8, stop: 12}
+          - {start: 12, stop: 16}
+          - {start: 16, stop: 20}
+          - {start: 20, stop: 24}
+          - {start: 24, stop: 28}
+          - {start: 28, stop: 32}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Generate new block/trial matched Gaussian sources and four crossed HC1/HC3 maximum-statistic arrays
+        run: python -m scripts.run_w3_r70_new_leverage_hc3_band_sensitivity --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R70-original-shard/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r70-fresh-leverage-HC3-source-blocks-${{ matrix.start }}
+          path: build/R70-original-shard/
+          if-no-files-found: warn
+          retention-days: 90
+
+  immutable-new-original-32block-coverage-and-wild-maxima-aggregate:
+    needs:
+      - new-source-HC1-HC3-studentization-and-999draw-reference-contracts
+      - fresh-32-primitive-block-original-999draw-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r70-fresh-leverage-HC3-source-blocks-*
+          path: build/R70-original-all-shards/
+          merge-multiple: false
+      - name: Verify eight immutable SHA256 source shards and 32 matched primitive generating blocks
+        run: python -m scripts.run_w3_r70_new_leverage_hc3_band_sensitivity --merge-parts build/R70-original-all-shards/ --out build/R70-original-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r70-original-complete-32block-leverage-HC3-999maxima-evidence
+          path: build/R70-original-complete/
+          if-no-files-found: warn
+          retention-days: 90
