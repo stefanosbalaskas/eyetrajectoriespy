@@ -1,0 +1,61 @@
+name: science-w3-r72-independent-original-HC2-Gaussian-band-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r72_original_estimated_gaussian_independent.py"
+      - "tests/test_w3_r72_independent_original_estimated_gaussian_audit.py"
+      - ".github/workflows/science-w3-r72-independent-original-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  numerical-source-and-hash-fixture-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r72_independent_original_estimated_gaussian_audit.py
+
+  independently-rebuild-actual-original-32-block-archive:
+    needs: numerical-source-and-hash-fixture-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r72-original-32-block-estimated-Gaussian-band-evidence
+          run-id: 39237754051
+          github-token: ${{ github.token }}
+          repository: stefanosbalaskas/eyetrajectoriespy
+          path: build/R72-original-immutable/
+      - run: python -m scripts.audit_w3_r72_original_estimated_gaussian_independent --original build/R72-original-immutable/ --out build/R72-independent-audit/evidence.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r72-independent-original-HC2-reconstruction-evidence
+          path: build/R72-independent-audit/
+          if-no-files-found: warn
+          retention-days: 90
