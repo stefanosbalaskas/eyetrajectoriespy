@@ -17,10 +17,10 @@
 
 For each native source, work only with the **independent-unit mean response vectors** over all 62 observed time×dimension cells. From ordinary least-squares residuals r_i and unit leverages h_i, estimate common unit covariance using the prespecified HC2 residual correction:
 
-\[
+$
 \widehat C_{\mathrm{HC2}} = \frac{1}{n}\sum_{i=1}^{n}
 \frac{r_i r_i^\top}{1-h_i}.
-\]
+$
 
 The conditional OLS slope variance estimate is g_11 × C_hat, with g_11 the slope diagonal of the inverse design Gram matrix. Under this *special common-covariance Gaussian model*, this corrected residual second moment is conditionally unbiased. It is not a general cluster-robust CR2 estimator or a consistent small-n guarantee under misspecification.
 
