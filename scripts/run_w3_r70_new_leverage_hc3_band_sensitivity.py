@@ -97,7 +97,7 @@ def numerical_reference(X:np.ndarray,Y:np.ndarray):
     inv=np.linalg.inv(X.T@X)
     projector=inv@X.T
     beta=np.einsum("pn,ntd->ptd",projector,Y,optimize=True)
-    resid=Y-X@beta
+    resid=Y-np.einsum("np,ptd->ntd",X,beta,optimize=True)
     hat=np.einsum("np,pn->n",X,projector,optimize=True)
     if (np.min(hat)<=0 or np.max(hat)>=MAX_HAT_CUTOFF
         or not np.isfinite(hat).all()):
