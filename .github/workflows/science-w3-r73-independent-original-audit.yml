@@ -1,0 +1,69 @@
+name: science-w3-r73-independent-original-heteroskedastic-HC2
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r73_independent_original_heteroskedastic.py"
+      - "tests/test_w3_r73_independent_original_heteroskedastic_audit.py"
+      - "docs/development/w3-r73-independent-source-heteroskedastic-audit.md"
+      - ".github/workflows/science-w3-r73-independent-original-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-new-heteroskedastic-Gaussian-source-and-wild-HC2-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - name: Independent source-level Gaussian X/Y, true unequal covariance, HC2 and wild 999 reference tests
+        run: python -m pytest -q tests/test_w3_r73_independent_original_heteroskedastic_audit.py
+
+  mandatory-original-R73-256-heteroskedastic-source-audit:
+    needs: independent-new-heteroskedastic-Gaussian-source-and-wild-HC2-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Retrieve original immutable prospectively sourced 256-unit heteroskedastic Gaussian experiment
+        uses: actions/download-artifact@v4
+        with:
+          repository: stefanosbalaskas/eyetrajectoriespy
+          run-id: 39310870157
+          name: w3-r73-original-32block-heteroskedastic-HC2-Gaussian-evidence
+          github-token: ${{ github.token }}
+          path: build/R73-A-original-source-readonly/
+      - name: Pin the unchanged original R73 scientific PR merge checkout
+        run: grep -Fx 9d09b04ba49d6be34d16339c92eef457f71fcf31 build/R73-A-original-source-readonly/source-commit.txt
+      - name: Independently recreate full original source X/Y and both 999-draw wild and HC2 Gaussian maxima for every case
+        run: python -m scripts.audit_w3_r73_independent_original_heteroskedastic --original build/R73-A-original-source-readonly/ --expected-checkout 9d09b04ba49d6be34d16339c92eef457f71fcf31 --out build/R73-A-independent-original-source/evidence.json
+      - name: Record complete adverse-source truth inclusion and failure-inclusive denominators
+        run: cat build/R73-A-independent-original-source/evidence.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r73a-independent-original-256source-heteroskedastic-numerical-evidence
+          path: build/R73-A-independent-original-source/
+          if-no-files-found: warn
+          retention-days: 90
