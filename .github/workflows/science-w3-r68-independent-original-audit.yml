@@ -1,0 +1,39 @@
+name: science-w3-r68-independent-original-numerical-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r68_independent_original_feasibility.py"
+      - "tests/test_w3_r68_independent_original_feasibility_audit.py"
+      - ".github/workflows/science-w3-r68-independent-original-audit.yml"
+      - "docs/development/w3-r68-independent-original-audit-protocol.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-source-SHA256-fit-start-and-refusal-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r68_independent_original_feasibility_audit.py
+# Actual original new Gaussian source archive audit is NOT enabled before
+# independent R68 source shards and full SHA256 aggregate succeed.
+# The real job must download the exact original R68 artifact from original
+# workflow 39213314751, pin its actual scientific PR merge commit, execute
+# python -m scripts.audit_w3_r68_independent_original_feasibility,
+# and persist the separate original-source audit artifact. Do not claim
+# scientific validation from 3 synthetic fixture jobs alone.
