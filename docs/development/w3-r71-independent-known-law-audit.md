@@ -19,6 +19,27 @@ Original empirical 90% simultaneous slope-band truth inclusion on the complete 3
 
 Known Gaussian original reference criticals: curves **3.1316628143877114**, participant means **2.484611913363955**. Mean observed HC1-to-exact true SE ratios: curves ordinary **0.9878**, extreme **0.8770**; participants ordinary **0.9655**, extreme **0.7859**. Mean wild-critical/known-law-critical ratios: curves ordinary **0.9443**, extreme **0.8981**; participants ordinary **0.9465**, extreme **0.9072**. Two sources in ordinary curves and participants had a known-vs-wild discordance in the opposite direction (one wild-only each); original paired comparison retains them.
 
+## Executed original-data independent source-law audit — PASS
+
+[Independent R71-A original archive workflow #39228335663](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39228335663) completed **4/4 scientific jobs successfully**: the three Python 3.11–3.13 original-Gaussian/max-statistic/tamper numerical contract jobs and the **mandatory actual unchanged original R71 source-data reconstruction job**. Independently stored [audit evidence #12175521811](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39228335663/artifacts/12175521811) verifies **four of four SHA256 archive members**, the precise original source PR-merge checkout `1102b57fe9605e46303921989842ee3f7a0e1f84`, all **32 independent primitive Gaussian block IDs × both designs × both leverage supports**, 128/128 complete source cases, and zero numerical refusals.
+
+The independently implemented checker successfully regenerated from the frozen RNG and independent Gaussian covariance formulae **all 65,534 original standardized known-Gaussian-law maximum-statistic draws**, independently rederived the two higher empirical 90% criticals (**curves 3.1316628143877114; participants 2.484611913363955**), and independently sorted/recomputed all **127,872 original archived W3 Rademacher slope maximum statistics and source-specific 90% wild criticals**. It also re-evaluated the 31×2 source slope error and true-versus-HC1 standard error grids, all 256 source truth inclusion classifications (128 known law and 128 wild), complete/failure-inclusive source denominators, Wilson 95% independent-source Monte Carlo intervals, original mean critical and HC1-vs-exact-SE scale ratios and all within-source method discordances.
+
+**Independently source-verified original observed full-grid 90% slope truth inclusion (32 new primitive generating blocks per cell):**
+
+| Design / leverage | Current W3 wild-HC1 | Simulated exact-known-Gaussian law | Known-only source cases | Wild-only |
+|---|---:|---:|---:|---:|
+| 72 curves ordinary | **22/32** | **28/32** | 7 | 1 |
+| 72 curves extreme | **2/32** | **26/32** | 24 | 0 |
+| 36 participants × three trials ordinary | **25/32** | **27/32** | 3 | 1 |
+| 36 participants × three trials extreme | **13/32** | **27/32** | 14 | 0 |
+
+The extreme-leverage numerical decomposition is independent of a post-hoc correction: under the original observed datasets, mean **HC1/exact-known slope SE** was **0.8770** for curves and **0.7859** for participant means; the corresponding mean **wild critical/known-Gaussian critical** was **0.8981** and **0.9072**. These values support both observed-SE scaling and the wild multiplier reference as important *diagnostic* contributors to overly narrow estimated-data functional bands. They **do not algebraically identify which contributor is causal** without a separate prospectively crossed source experiment, nor does a product of averages equal average total width ratio across grid cells.
+
+The exact original source-specific `(X'X)^{-1}` factor still cannot be independently reproduced without original predictor matrices, and the independent audit does not recover unarchived Gaussian source innovations. Internal true-SE covariance-shape consistency and original source numerical tests provide narrower verification. The independently re-simulated known-law reference is **an oracle for this artificial Gaussian DGP**. It is not a general fitted-covariance confidence-band method and no one should claim calibrated 90% real-data coverage from 32 generating source blocks per cell.
+
+**Scientific blocker #289 remains OPEN, as does observation-loss blocker #296; release HOLD.**
+
 ## Independently implemented original numerical reconstruction
 
 The separate auditor `scripts/audit_w3_r71_independent_known_gaussian_archive.py` **imports none** of R71's original source generator, package W3 OLS, wild-bootstrap implementation or original aggregation. Required genuine-original-source workflow must independently:
