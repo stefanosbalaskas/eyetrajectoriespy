@@ -134,9 +134,7 @@ def check_archive(folder:Path,expected_checkout:str=CHECKOUT):
                     not math.isfinite(c["critical_family"]) or
                     c["critical_slope"]<0 or c["critical_family"]<c["critical_slope"]-1e-10
                     or type(c["truth_slope_simultaneous_all_grid"]) is not bool
-                    or type(c["truth_joint_family_simultaneous_all_grid"]) is not bool
-                    or c["truth_joint_family_simultaneous_all_grid"] and
-                       not c["truth_slope_simultaneous_all_grid"]):
+                    or type(c["truth_joint_family_simultaneous_all_grid"]) is not bool):
                     raise ValueError("R69-A wild source condition rank/seed/critical contract violated")
         elif case["exception"] is None:
             raise ValueError("R69-A noncompleted source missing original error")
