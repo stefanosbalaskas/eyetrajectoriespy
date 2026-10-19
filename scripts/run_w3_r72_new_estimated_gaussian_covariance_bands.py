@@ -20,7 +20,10 @@ import numpy as np
 import pandas as pd
 
 from eyetrajectoriespy import TrajectorySet
-from eyetrajectoriespy.function_on_scalar import bootstrap_function_on_scalar_coefficients
+from eyetrajectoriespy.function_on_scalar import (
+    bootstrap_function_on_scalar_coefficients,
+    function_on_scalar_simultaneous_bands,
+)
 from eyetrajectoriespy.workflows import FunctionOnScalarWorkflowConfig, run_function_on_scalar_workflow
 from scripts.run_w3_fixed_truth_interval_pilot import independent_hc1_oracle, wilson
 from scripts.run_w3_known_truth_workflow_validation import TIME, DIMS, truth_coefficients
@@ -174,6 +177,12 @@ def case(block,design,support):
             (wb.bootstrap_coefficients[:,1]-fit.coefficients[None,1])/
             hc1[None,1]),axis=(1,2))
         cwild=float(np.quantile(raw_wild,CONFIDENCE,method=QUANTILE))
+        package_wild=function_on_scalar_simultaneous_bands(
+            wb,confidence_level=CONFIDENCE,simultaneous_scope="coefficient"
+        )
+        package_err=abs(cwild-float(package_wild.critical_values[1]))
+        if package_err>ORACLE_TOL:
+            raise ValueError("R72 original package wild maximum reference mismatch")
         est=hc2_gaussian_covariance_maxima(
             X,Y,beta,seed=gaussian_seed(block,design,support))
         true_se=r71.true_slope_standard_errors(X,design)
@@ -197,8 +206,7 @@ def case(block,design,support):
             "HC2_covariance_trace":est["covariance_trace"],
             "HC2_covariance_effective_rank_upper":est["covariance_effective_rank_upper"],
             "package_HC1_OLS_max_error":max(coeff_err,se_err),
-            "package_wild_max_reference_error":abs(
-                cwild-float(np.quantile(raw_wild,CONFIDENCE,method=QUANTILE))),
+            "package_wild_max_reference_error":package_err,
             "estimated_HC2_Gaussian_999_maxima":est["maxima"].tolist(),
             "original_wild_999_maxima":raw_wild.tolist(),
             "original_artificial_X":X.tolist(),
