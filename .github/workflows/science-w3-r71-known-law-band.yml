@@ -1,0 +1,95 @@
+name: science-w3-r71-fresh-known-Gaussian-law-band-reference
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r71_new_known_gaussian_band_oracle.py"
+      - "tests/test_w3_r71_new_known_gaussian_band_oracle.py"
+      - "docs/development/w3-r71-prospective-known-law-oracle-protocol.md"
+      - ".github/workflows/science-w3-r71-known-law-band.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fixed-Gaussian-covariance-and-original-W3-wild-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - name: Exact conditional covariance, independent true Gaussian slope SE, full W3 HC1/wild 999 reference
+        run: python -m pytest -q tests/test_w3_r71_new_known_gaussian_band_oracle.py
+
+  fresh-32primitive-Gaussian-known-law-and-original-wild-source-shards:
+    needs: fixed-Gaussian-covariance-and-original-W3-wild-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 8}
+          - {start: 8, stop: 16}
+          - {start: 16, stop: 24}
+          - {start: 24, stop: 32}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Generate new conditional Gaussian sources and original 999 W3 wild maxima with known-law reference
+        run: python -m scripts.run_w3_r71_new_known_gaussian_band_oracle --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R71-original-source/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r71-original-new-Gaussian-source-shard-${{ matrix.start }}
+          path: build/R71-original-source/
+          if-no-files-found: warn
+          retention-days: 90
+
+  original-immutable-new-32block-Gaussian-oracle-and-W3-wild-aggregate:
+    needs:
+      - fixed-Gaussian-covariance-and-original-W3-wild-contracts
+      - fresh-32primitive-Gaussian-known-law-and-original-wild-source-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r71-original-new-Gaussian-source-shard-*
+          path: build/R71-original-all-shards/
+          merge-multiple: false
+      - name: SHA256 check all original shards, archive known-law 65534 maximum draws and original W3 wild 127872 maxima
+        run: python -m scripts.run_w3_r71_new_known_gaussian_band_oracle --merge-parts build/R71-original-all-shards/ --out build/R71-original-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r71-immutable-known-Gaussian-65534reference-and-original-W3-wild-evidence
+          path: build/R71-original-complete/
+          if-no-files-found: warn
+          retention-days: 90
