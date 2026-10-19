@@ -51,6 +51,7 @@ nav:
       - W3 R73 prospective new-source predictor-heteroskedastic HC2 Gaussian stress and true unequal-variance oracle (research only): development/w3-r73-prospective-predictor-heteroskedasticity.md
       - W3 R73-A independent original X/Y, heterogeneous true variance and full wild/HC2 maxima reconstruction (research only): development/w3-r73-independent-source-heteroskedastic-audit.md
       - W3 R74 prospective NEW weighted-slope HC2/HC3 Gaussian band stress, four size/design configurations (research only): development/w3-r74-prospective-weighted-slope-HC2-HC3-protocol.md
+      - W3 R74-A independent original Gaussian X/Y and all weighted-slope HC2/HC3 maximum statistics (research only): development/w3-r74-independent-original-weighted-slope-audit.md
       - Original source figures: development/research-original-figures.md
       - Reproduce from draft source: development/research-reproducibility.md
       - Methods and contracts:
