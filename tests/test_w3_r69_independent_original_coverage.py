@@ -149,8 +149,17 @@ def test_family_wider_band_may_include_truth_when_slope_only_does_not(tmp_path):
     path=_folder(tmp_path/"legitimate_family_only",rows)
     verified=audit.check_archive(path)
     assert verified["actual_original_source_level_evidence_independently_reconstructed"]
-    assert verified["independent_source_coverage"]["curve"]["normal/999"][
-        "joint_family_inclusions"
-    ]>verified["independent_source_coverage"]["curve"]["normal/999"][
-        "numerator"
-    ] or verified["original_source_archive_SHA256_verified"]==3
+    source_cells=[
+        x["conditions"]["normal/999"]
+        for x in rows if x["design"]=="curve"
+    ]
+    counts=verified["independent_source_coverage"]["curve"]["normal/999"]
+    assert counts["joint_family_inclusions"]==sum(
+        x["truth_joint_family_simultaneous_all_grid"] for x in source_cells
+    )
+    assert counts["numerator"]==sum(
+        x["truth_slope_simultaneous_all_grid"] for x in source_cells
+    )
+    assert any(x["truth_joint_family_simultaneous_all_grid"] and
+               not x["truth_slope_simultaneous_all_grid"]
+               for x in source_cells)
