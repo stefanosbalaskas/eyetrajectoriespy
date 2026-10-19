@@ -1,0 +1,94 @@
+name: science-w3-r69-fresh-fixed-truth-bootstrap-mechanism
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r69_fresh_simultaneous_bootstrap_sensitivity.py"
+      - "tests/test_w3_r69_fresh_simultaneous_bootstrap_sensitivity.py"
+      - "docs/development/w3-r69-wild-bootstrap-budget-fresh-source-protocol.md"
+      - ".github/workflows/science-w3-r69-fresh-band-mechanism.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  new-source-units-studentization-and-prefix-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r69_fresh_simultaneous_bootstrap_sensitivity.py
+
+  new-16block-original-fixed-truth-Gaussian-source-shards:
+    needs: new-source-units-studentization-and-prefix-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 4}
+          - {start: 4, stop: 8}
+          - {start: 8, stop: 12}
+          - {start: 12, stop: 16}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Fixed-truth independent new-source paired 199/999 wild multiplier diagnostic
+        run: python -m scripts.run_w3_r69_fresh_simultaneous_bootstrap_sensitivity --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R69-original-part/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r69-original-fresh-fixedtruth-part-${{ matrix.start }}
+          path: build/R69-original-part/
+          if-no-files-found: warn
+          retention-days: 90
+
+  immutable-original-new-fixedtruth-16block-aggregate:
+    needs:
+      - new-source-units-studentization-and-prefix-contracts
+      - new-16block-original-fixed-truth-Gaussian-source-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r69-original-fresh-fixedtruth-part-*
+          path: build/R69-original-shards/
+          merge-multiple: false
+      - name: Verify all new generating units, SHA256 source shards and full paired coverage denominator
+        run: python -m scripts.run_w3_r69_fresh_simultaneous_bootstrap_sensitivity --merge-parts build/R69-original-shards/ --out build/R69-original-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r69-immutable-new-source-simultaneous-band-mechanism-evidence
+          path: build/R69-original-complete/
+          if-no-files-found: warn
+          retention-days: 90
