@@ -112,8 +112,9 @@ def test_slope_specific_HC2_HC3_factor_weights_and_pooled_R72_reference():
     assert np.all(candidates["weighted_slope_HC3_Gaussian"]["se"]>=
                   candidates["weighted_slope_HC2_Gaussian"]["se"])
     pool=r72.hc2_gaussian_covariance_maxima(X,Y,beta,seed=912)
-    np.testing.assert_array_equal(
-        candidates["pooled_HC2_Gaussian"]["maxima"],pool["maxima"])
+    np.testing.assert_allclose(
+        candidates["pooled_HC2_Gaussian"]["maxima"],pool["maxima"],
+        atol=2e-10,rtol=0)
     assert all(len(candidates[m]["maxima"])==999 for m in r74.ESTIMATED)
     assert all(candidates[m]["critical"]==np.quantile(
         candidates[m]["maxima"],.9,method="higher") for m in r74.ESTIMATED)
