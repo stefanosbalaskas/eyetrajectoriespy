@@ -1,0 +1,49 @@
+# W3 R70-A — independent immutable original 999-draw maxima and simultaneous-band source audit
+
+**Research-only, source-failure-inclusive numerical verification. This page is not a public method or an inferential calibration certificate.** Addresses [90% simultaneous-band undercoverage blocker #289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289), independently of gaze dropout blocker #296.
+
+## Original prospective R70 science evidence
+
+The frozen [R70 protocol](w3-r70-prospective-leverage-studentization-protocol.md) was committed before new scientific outcomes on separate draft [PR #388](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/388). Original [source workflow #39220071710](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39220071710) passed **12/12 dedicated science jobs**: three Python 3.11–3.13 independent OLS/HC1/package bootstrap/higher-quantile and matched-leverage integrity contracts, **eight NEW four-block generating-source shards**, and complete SHA256 aggregate. The complete original [artifact #12171362382](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39220071710/artifacts/12171362382) is pinned to original GitHub Actions PR-merge scientific checkout **`7d186a014d4118fbb7c614bf290e565243855be1`**.
+
+New prospective source seed **202610197070**, Rademacher multiplier seed **202610197071**. **32 new independent Gaussian primitive generating blocks** supply each two independent-unit designs (72 curves, 36 participant means from three repeated trials) × two within-unit paired predictor supports (ordinary and two extreme points ±4). Total **128 matched source cases, all completed with zero numerical errors**, but **32** independently generated primitive block indices per design/support, not 128 independent blocks for any single cell. Original response innovations are held fixed within the paired supports. Original 999 independent-unit-level Rademacher multiplier vectors per case total **127,872 generated vectors**, reused across the four 2×2 crossed analytic cells, not 511,488 independent resamples. Each original case archives all **999 slope and family raw wild maximum statistics** per crossed residual-adjustment/studentization cell, a stronger replication contract than R69.
+
+## Complete original exploratory 90% slope-band truth-inclusion evidence
+
+Each denominator counts 32 independently generated primitive blocks **within that design/support**, even though contrasts are paired within block. The four conditions are **raw residual/HC1 SE** (unchanged original public W3), **HC3-residual-adjusted wild/HC1**, **raw residual/HC3 SE**, and **HC3-residual-adjusted wild/HC3**. The off-diagonal two are **factor-isolation diagnostics**, not recommended interval construction.
+
+| Source design and predictor leverage | Raw/HC1 baseline | HC3 wild residual / HC1 SE | Raw wild residual / HC3 SE | HC3 residual / HC3 SE |
+|---|---:|---:|---:|---:|
+| 72 independent curves, ordinary | **23/32 = 71.875%** | **24/32 = 75.000%** | **23/32 = 71.875%** | **24/32 = 75.000%** |
+| 72 independent curves, extreme | **7/32 = 21.875%** | **12/32 = 37.500%** | **9/32 = 28.125%** | **10/32 = 31.250%** |
+| 36 participants × 3 trials, ordinary | **17/32 = 53.125%** | **25/32 = 78.125%** | **17/32 = 53.125%** | **25/32 = 78.125%** |
+| 36 participants × 3 trials, extreme | **14/32 = 43.750%** | **22/32 = 68.750%** | **14/32 = 43.750%** | **17/32 = 53.125%** |
+
+The source-paired extreme support increased average maximum unit hat leverage from ~**0.05681 to 0.32160** in independent curves, and ~**0.11960 to 0.42621** in participant means. The ratio of the median HC3/HC1 slope/intercept SEs averaged ~**1.0204/1.0418** for ordinary/extreme curves and **1.0429/1.1374** for ordinary/extreme participants; it is not a multiplier or reference correction guarantee.
+
+**Prospective descriptive full-HC3-minus-original-HC1 paired slope inclusion changes:** ordinary curves +**1/32 = 3.125 pp** (HC3-only 1, HC1-only 0); extreme curves +**3/32 = 9.375 pp** (3/0); ordinary participants +**8/32 = 25.0 pp** (8/0); extreme participants +**3/32 = 9.375 pp** (3/0). No completed pair shows original-HC1-only inclusion; these are exploratory source-level counts, **not a statistically proven superiority result**. Extreme leverage is associated with substantially worse original band truth inclusion in this artificial source design.
+
+**Unexpected but useful separation:** both residual scaling and SE studentization affect source-level results. HC3 wild residuals with HC1 reference can include the truth more often than full HC3 under extreme leverage (curves **12/32 vs 10/32**; participants **22/32 vs 17/32**). Consequently, it would be scientifically unsound to declare that the apparently largest post-hoc observed truth fraction is the best calibrated or generally optimal procedure. The 2×2 design was intended to diagnose these interactions, **not** select an estimator by in-sample coverage.
+
+The original minimum coverage here (**7/32**) is much worse than nominal 90%. **None of the four methods reaches 90% in any source-support/design cell.** Earlier R69 results had one or two extra truth inclusions using normal rather than Rademacher multipliers, but changing wild draw count 199→999 barely mattered; R70 preserves a 999-draw Rademacher reference and investigates a different failure mechanism.
+
+## Independent R70-A audit methodology and original-data gate
+
+`scripts/audit_w3_r70_independent_original_wild_maxima.py` deliberately **does not import** R70's source generator, the package's W3 OLS function, its wild-bootstrap computation, or R70's source aggregator. It reads the **unchanged original R70 aggregate artifact**, first verifies exact GitHub Actions PR-merge source checkout and **all 3 SHA256 archive members**, original block/design/support identities, 32 independent units per cell, unit sizes and original frozen seed values. For **every completed source case**, it independently:
+
+- recomputes the *higher* empirical 90th percentile of the original full **999 raw studentized slope maximum-statistic draws** and **999 raw joint-family maximum-statistic draws** for all four crossed cells, rather than simply trusting archived critical values;
+- checks each draw's joint-family maximum is at least the slope maximum computed under the same reference SE, while **not** falsely requiring wider joint-family truth inclusion to imply narrower slope-only truth inclusion;
+- independently reclassifies truth inclusion by comparing the original archived observed truth maximum-pivot with its rederived critical, with all missing/numerically refused sources retained;
+- reconstructs original completed/refused denominators, Wilson 95% binomial Monte Carlo uncertainty, all source-level truth and joint-family inclusion numerators, mean source criticals, maximum observed source leverage/SE ratios, and all four 32-block paired HC3-vs-baseline classifications and refusal-inclusive bounds.
+
+There are **128 source cases × 4 crossed cells × 999 draws × 2 maximum-stat scopes = 1,022,976 archived numerical maxima** whose values and quantiles the independent audit can check (given complete sources), and **1,024 original 90%-quantile critical values**. These are *conditional bootstrap draws*, **not** independent generating sources.
+
+An independent numerical audit passing does not certify the full Gaussian DGP, unarchived original response innovations, or raw 999 coefficient trajectory arrays; the original numerical model/package 999-draw oracles are tested separately in R70's three-version CI. The independent audit checks actual archived maxima/coverage more deeply than R69-A, which could rederive only source-level summary algebra.
+
+**Audit workflow initially pending, even if cross-version fixtures pass. Do not claim actual archive independently verified until its mandatory original-source job finishes successfully.**
+
+## Statistical and release boundary
+
+R70 is an exploratory high-leverage finite-sample mechanism study. **Severe observed undercoverage is the result**, even where HC3 yields modestly increased truth inclusion. With 32 independent generating blocks per design/support, these results neither select a robust simultaneous-band procedure, nor support advertising nominal-90% calibration, nor identify true MNAR response-dependent gaze observation. Larger independent fixed-truth replications and separate adverse heteroskedastic/missing-observation scenarios are needed before any inferential promotion.
+
+Blocker #289 remains OPEN, #296 remains OPEN, published stable v1.1.0 is unchanged, and development v1.2, protected main, API, tags and PyPI release remain **HOLD**.
