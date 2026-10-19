@@ -48,6 +48,7 @@ nav:
       - W3 R71-A independent original true-Gaussian 65534-max and W3-wild 127872-max source audit (research only): development/w3-r71-independent-known-law-audit.md
       - W3 R72 prospective data-estimated HC2-Gaussian covariance simultaneous slope-band experiment (research only): development/w3-r72-prospective-estimated-gaussian-band-protocol.md
       - W3 R72-A independent reconstruction of original X/Y, HC2 covariance and wild maxima (research only): development/w3-r72-independent-original-HC2-audit.md
+      - W3 R73 prospective new-source predictor-heteroskedastic HC2 Gaussian stress and true unequal-variance oracle (research only): development/w3-r73-prospective-predictor-heteroskedasticity.md
       - Original source figures: development/research-original-figures.md
       - Reproduce from draft source: development/research-reproducibility.md
       - Methods and contracts:

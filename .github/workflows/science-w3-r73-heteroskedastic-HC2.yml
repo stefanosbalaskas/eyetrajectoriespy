@@ -1,0 +1,95 @@
+name: science-w3-r73-new-heteroskedastic-HC2-Gaussian-stress
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r73_new_predictor_heteroskedastic_gaussian_bands.py"
+      - "tests/test_w3_r73_new_heteroskedastic_hc2_stress.py"
+      - "docs/development/w3-r73-prospective-predictor-heteroskedasticity.md"
+      - ".github/workflows/science-w3-r73-heteroskedastic-HC2.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  known-heteroskedastic-law-and-unchanged-HC2-W3-numerical-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - name: Verify new Gaussian innovation pairing, true heterogeneous slope law and original W3/HC2 references
+        run: python -m pytest -q tests/test_w3_r73_new_heteroskedastic_hc2_stress.py
+
+  four-fresh-Gaussian-heteroskedastic-original-source-shards:
+    needs: known-heteroskedastic-law-and-unchanged-HC2-W3-numerical-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 8}
+          - {start: 8, stop: 16}
+          - {start: 16, stop: 24}
+          - {start: 24, stop: 32}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: New Gaussian blocks under paired constant and predictor-dependent heteroskedastic laws
+        run: python -m scripts.run_w3_r73_new_predictor_heteroskedastic_gaussian_bands --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R73-source/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r73-original-heteroskedastic-source-${{ matrix.start }}
+          path: build/R73-source/
+          if-no-files-found: warn
+          retention-days: 90
+
+  original-SHA256-32block-heteroskedastic-aggregate:
+    needs:
+      - known-heteroskedastic-law-and-unchanged-HC2-W3-numerical-contracts
+      - four-fresh-Gaussian-heteroskedastic-original-source-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r73-original-heteroskedastic-source-*
+          path: build/R73-all-source-shards/
+          merge-multiple: false
+      - name: Preserve 256 source outcomes and refusal-inclusive 32-block source denominators
+        run: python -m scripts.run_w3_r73_new_predictor_heteroskedastic_gaussian_bands --merge-parts build/R73-all-source-shards/ --out build/R73-original-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r73-original-32block-heteroskedastic-HC2-Gaussian-evidence
+          path: build/R73-original-complete/
+          if-no-files-found: warn
+          retention-days: 90
