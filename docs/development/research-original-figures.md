@@ -89,6 +89,20 @@
 
 *All 48 workflow fits completed across 24 generating seed blocks. The plotted values are original case-level recovery RMSE, not empirical eye-tracking recordings. Curve- and participant-level inference units have different simulated dependence structures; exact agreement with a numerical OLS oracle does not qualify statistical intervals.*
 
+## W3 simultaneous-band falsification and leverage support (R71–R76)
+
+![Independent R71, R73 and R75 Gaussian source undercoverage comparisons on the same nominal 90% scale](../assets/research/w3-r71-r75-simultaneous-coverage-falsification.svg)
+
+The first new figure compares original separate source experiments (32 independent generating blocks per plotted condition) with a generating-law Gaussian benchmark. It is **not** a pooled estimator comparison or human-gaze result. [Read the article](../articles/when-w3-simultaneous-bands-undercover.md).
+
+![R76 estimated HC3 simultaneous coverage and known Gaussian reference versus independent influential unit count](../assets/research/w3-r76-extreme-anchor-simultaneous-inclusion.svg)
+
+![R76 analytic true slope-variance concentration and the lower tail of marginal HC3/true SE ratios](../assets/research/w3-r76-effective-information-and-hc3-lower-tails.svg)
+
+The R76 plots reproduce source-audited **2, 4, 8 and 16 separately independent ±4 predictor anchor** conditions using 32 independently generated blocks per design and anchor count. Source cases and 999-draw conditional bootstrap maxima are not independent replication counts. [R76 article](../articles/how-independent-leverage-support-affects-coverage.md) · [Full figure/count/source ledger](w3-r70-r76-evidence-plot-gallery.md) · [Original evidence and independent R76-A replay](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/403).
+
+***All plotted confidence-band methods remain unqualified for general nominal coverage and W3 inference blocker #289 is open.***
+
 ## Reproducible provenance
 
 These figures are version-controlled scientific assets in the research PRs, embedded **without regenerating simulated results using a different source state**. For source dataset counts, original workflow artifacts and SHA256 audit evidence, consult the [scientific dashboard](research-scientific-dashboard.md).

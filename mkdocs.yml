@@ -27,6 +27,8 @@ nav:
           - Reproducible workflow bundles: articles/reproducible-workflow-bundles.md
           - Bayesian feasibility boundary: articles/bayesian-feasibility-boundary.md
           - Authentic-data E1-E4 usability: articles/real-gaze-usability.md
+          - When simultaneous confidence bands under-cover: articles/when-w3-simultaneous-bands-undercover.md
+          - R76 leverage support and band coverage: articles/how-independent-leverage-support-affects-coverage.md
       - Experimental E1-E4 result figures: methods/experimental-e1-e4-gallery.md
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md
@@ -35,6 +37,7 @@ nav:
   - Research development (unreleased):
       - Overview and qualification: development/research-development-hub.md
       - Evidence dashboard: development/research-scientific-dashboard.md
+      - W3 R70–R76 articles and figures: development/w3-r70-r76-evidence-plot-gallery.md
       - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
       - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md

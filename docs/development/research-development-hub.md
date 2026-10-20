@@ -21,6 +21,14 @@ This research library preserves **successful, inconclusive and negative** result
 
 See [F1–F6 method inventory](f1-f6-scientific-expansion.md), [experimental API contracts](research-method-api.md), and [B5–B10 development overview](bayesian-research-programme.md). **None of these pages promotes new stable root-level APIs.**
 
+## New W3 research articles and original evidence plots (20 October 2026)
+
+**Numerical verification is not interval calibration.** R71–R75 independent source audits expose substantial undercoverage of nominal-90% full-grid functional slope bands under high leverage and heteroskedasticity. R76 and R76-A independently reconstructed **512/512 complete source cases and 1,534,464 maximum-statistic values**; increasing independent extreme predictor support coincided with improved estimated-HC3 whole-band truth inclusion in the tested Gaussian setting, but does not yield a qualified 90% procedure.
+
+[**Why W3 simultaneous bands under-cover**](../articles/when-w3-simultaneous-bands-undercover.md) · [**R76 leverage support and lower-tail SE evidence**](../articles/how-independent-leverage-support-affects-coverage.md) · [**Original W3 figure and source-audit gallery**](w3-r70-r76-evidence-plot-gallery.md)
+
+**Research blockers [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) and [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) remain open.** Their research implementations are separate draft PRs; publishing these articles and static SVGs to the website does not merge an estimator or release version 1.2.
+
 ## New workflow-level scientific evidence
 
 - [W3 independent known-truth functional regression benchmark](w3-functional-regression-known-truth-results.md): 24 generating blocks, 48 workflow fits, independent OLS-oracle agreement within numerical precision, transparent participant-versus-trial accounting, and original source-derived recovery SVG. This is an implementation/recovery validation under simulated designs, **not** inferential calibration or authentic data.

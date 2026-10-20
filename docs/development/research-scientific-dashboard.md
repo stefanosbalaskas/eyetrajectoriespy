@@ -3,6 +3,8 @@
 !!! danger "Evidence is not inferential qualification"
     **Stable PyPI: 1.1.0. Development research: unpublished.** Source simulations and CI provide reproducible experimental *evidence*, not proof that reported p-values, credible intervals or predictive intervals are valid across real eye-tracking designs. Research implementation code stays in **draft branches**, not in stable 1.1.0 or the public-main default.
 
+**Additional W3 inference checkpoint — 20 October 2026:** R71–R76 Gaussian simultaneous-band experiments establish source-verified failure cases under high leverage and predictor-dependent variance. R76 original science passed 12/12 jobs; R76-A replayed all **512/512 original sources**, zero refusals and **1,534,464 archived maximum-statistic values** under a separate 4/4 independent audit. Increasing independent influential-unit support improved observed HC3 inclusion in some tested configurations but did **not** qualify general nominal-90% inference. [Read the W3 source/plot ledger](w3-r70-r76-evidence-plot-gallery.md) · [R76 scientific article](../articles/how-independent-leverage-support-affects-coverage.md) · [W3 blocker #289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289).
+
 **Evidence checkpoint:** October 10, 2026. Counts below refer to actual source-run attempts, not distinct human participants. When two methods share a test dataset, the *test dataset* is the independent simulation unit.
 
 | Research gate | Original source run | Actual method fits | Critical evidence | Qualification |
