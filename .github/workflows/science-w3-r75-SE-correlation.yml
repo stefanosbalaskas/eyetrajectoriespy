@@ -1,0 +1,95 @@
+name: science-w3-r75-fresh-SE-correlation-factorial
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r75_new_se_correlation_factorial.py"
+      - "tests/test_w3_r75_new_se_correlation_factorial.py"
+      - "docs/development/w3-r75-prospective-se-correlation-factorial.md"
+      - ".github/workflows/science-w3-r75-SE-correlation.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  true-vs-estimated-HC3-SE-and-correlation-numerical-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - name: Freeze independent Gaussian sources, original OLS/HC1 and exact 2x2 maximum-reference studentization
+        run: python -m pytest -q tests/test_w3_r75_new_se_correlation_factorial.py
+
+  four-new-independent-Gaussian-block-source-shards:
+    needs: true-vs-estimated-HC3-SE-and-correlation-numerical-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 8}
+          - {start: 8, stop: 16}
+          - {start: 16, stop: 24}
+          - {start: 24, stop: 32}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: New full Gaussian source 2x2 known-vs-estimated marginal SE and correlation reference
+        run: python -m scripts.run_w3_r75_new_se_correlation_factorial --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R75-original-source/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r75-new-SE-correlation-source-${{ matrix.start }}
+          path: build/R75-original-source/
+          if-no-files-found: warn
+          retention-days: 90
+
+  immutable-original-32block-SE-correlation-factorial:
+    needs:
+      - true-vs-estimated-HC3-SE-and-correlation-numerical-contracts
+      - four-new-independent-Gaussian-block-source-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r75-new-SE-correlation-source-*
+          path: build/R75-original-all-shards/
+          merge-multiple: false
+      - name: Verify four SHA256 source shards, 256 failure-inclusive generating cases and 65534 original true-law reference maxima
+        run: python -m scripts.run_w3_r75_new_se_correlation_factorial --merge-parts build/R75-original-all-shards/ --out build/R75-immutable-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r75-immutable-new-32block-SE-correlation-factorial-evidence
+          path: build/R75-immutable-complete/
+          if-no-files-found: warn
+          retention-days: 90
