@@ -29,6 +29,7 @@ nav:
           - Authentic-data E1-E4 usability: articles/real-gaze-usability.md
           - When simultaneous confidence bands under-cover: articles/when-w3-simultaneous-bands-undercover.md
           - R76 leverage support and band coverage: articles/how-independent-leverage-support-affects-coverage.md
+          - R77 covariance regularization and simultaneous-band inclusion: articles/covariance-regularization-and-w3-coverage.md
       - Experimental E1-E4 result figures: methods/experimental-e1-e4-gallery.md
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md
