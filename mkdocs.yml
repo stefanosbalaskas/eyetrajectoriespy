@@ -31,6 +31,8 @@ nav:
           - R76 leverage support and band coverage: articles/how-independent-leverage-support-affects-coverage.md
           - R77 covariance regularization and simultaneous-band inclusion: articles/covariance-regularization-and-w3-coverage.md
           - R78 temporal-covariance robustness study: articles/w3-temporal-covariance-robustness-r78.md
+          - R79 nonseparable cross-coordinate covariance study: articles/w3-nonseparable-coordinate-covariance-r79.md
+          - Understanding nonseparable two-dimensional gaze covariance: articles/understanding-nonseparable-gaze-covariance.md
           - How to interpret functional confidence-band source audits: articles/interpreting-w3-coverage-and-source-audits.md
       - Experimental E1-E4 result figures: methods/experimental-e1-e4-gallery.md
       - Tutorial gallery: tutorials/index.md
