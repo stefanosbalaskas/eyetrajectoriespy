@@ -41,7 +41,7 @@ For R78 two-anchor predictor-dependent heteroskedasticity, the mean across 32 so
 |---|---|
 | Prespecified R78 original experiment | [Draft research PR #408](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/408); study design fixed before new source outcomes |
 | Original R78 workflow | [Workflow #39477000929](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477000929): **12/12 scientific jobs passed** |
-| Original SHA256 archive | [Artifact #12290295000](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477000929/artifacts/12290295000); scientific checkout \`f438b9680d81f5e5e3e893b1ff7a0bc93383a619\` |
+| Original SHA256 archive | [Artifact #12290295000](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477000929/artifacts/12290295000); scientific checkout `f438b9680d81f5e5e3e893b1ff7a0bc93383a619` |
 | Independent source reconstruction | [R78-A draft PR #409](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/409), separately implemented |
 | Independent original archive audit | [Workflow #39477446946](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477446946): **4/4 audit jobs passed** |
 | Independently verified numerical report | [Artifact #12290570185](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477446946/artifacts/12290570185) |
