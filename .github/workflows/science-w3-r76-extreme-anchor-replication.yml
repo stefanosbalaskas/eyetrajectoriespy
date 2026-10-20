@@ -1,0 +1,99 @@
+name: science-w3-r76-extreme-anchor-replication
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r76_new_extreme_anchor_replication.py"
+      - "tests/test_w3_r76_new_extreme_anchor_replication.py"
+      - "docs/development/w3-r76-prospective-extreme-anchor-replication.md"
+      - ".github/workflows/science-w3-r76-extreme-anchor-replication.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  new-source-true-HC3-SE-and-correlation-numerical-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - name: Numerically verify actual fresh Gaussian source, SE/correlation factorial and W3 wild 999 reference
+        run: python -m pytest -q tests/test_w3_r76_new_extreme_anchor_replication.py
+
+  eight-new-independent-source-reference-shards:
+    needs: new-source-true-HC3-SE-and-correlation-numerical-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 4}
+          - {start: 4, stop: 8}
+          - {start: 8, stop: 12}
+          - {start: 12, stop: 16}
+          - {start: 16, stop: 20}
+          - {start: 20, stop: 24}
+          - {start: 24, stop: 28}
+          - {start: 28, stop: 32}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Generate new paired Gaussian independent blocks and original W3 wild/true-correl/HC3-correl raw maxima
+        run: python -m scripts.run_w3_r76_new_extreme_anchor_replication --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R76-source/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r76-original-extreme-anchor-source-${{ matrix.start }}
+          path: build/R76-source/
+          if-no-files-found: warn
+          retention-days: 90
+
+  complete-original-512source-immutable-Gaussian-factorial-aggregate:
+    needs:
+      - new-source-true-HC3-SE-and-correlation-numerical-contracts
+      - eight-new-independent-source-reference-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r76-original-extreme-anchor-source-*
+          path: build/R76-all-source-shards/
+          merge-multiple: false
+      - name: Verify complete eight-shard 32 independent primitive blocks and original source SHA256
+        run: python -m scripts.run_w3_r76_new_extreme_anchor_replication --merge-parts build/R76-all-source-shards/ --out build/R76-original-immutable/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r76-original-new-32block-extreme-anchor-replication-evidence
+          path: build/R76-original-immutable/
+          if-no-files-found: warn
+          retention-days: 90
