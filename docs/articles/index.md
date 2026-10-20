@@ -47,6 +47,12 @@ These short, research-oriented articles connect the software's scientific contra
 
   [Read the R76 article and plots](how-independent-leverage-support-affects-coverage.md)
 
+- **7. Can functional covariance regularization reduce simultaneous-band undercoverage?**
+
+  Learn how two prospectively frozen, entirely data-estimated HC3 covariance shrinkages changed source-level whole-function truth inclusion in R77. Includes an independent original-source numerical audit, adverse/constant-variance comparisons and two original scientific plots; no nominal-90% calibration claim.
+
+  [Read the R77 scientific article](covariance-regularization-and-w3-coverage.md)
+
 </div>
 
 For the complete function catalogue see the [API reference](../reference/api.md), [capability inventory](../reference/capability-inventory.md) and [workflow atlas](../methods/workflow-atlas.md).
