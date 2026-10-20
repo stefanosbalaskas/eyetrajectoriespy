@@ -53,6 +53,18 @@ These short, research-oriented articles connect the software's scientific contra
 
   [Read the R77 scientific article](covariance-regularization-and-w3-coverage.md)
 
+- **8. Do regularized functional confidence bands survive time-varying AR(1) errors?**
+
+  Read the original and independently source-audited R78 Gaussian temporal covariance stress study, with unchanged HC3 inference candidates, full adverse and constant-variance results, and three new scientific SVG figures.
+
+  [Read the R78 temporal covariance study](w3-temporal-covariance-robustness-r78.md)
+
+- **9. How to read independently audited functional confidence-band experiments**
+
+  A practical methodological companion on source independence, 31×2 whole-function truth inclusion, maximum-statistic reference draws, and the difference between numerical reproducibility and statistical calibration.
+
+  [Read the source-audit interpretation guide](interpreting-w3-coverage-and-source-audits.md)
+
 </div>
 
 For the complete function catalogue see the [API reference](../reference/api.md), [capability inventory](../reference/capability-inventory.md) and [workflow atlas](../methods/workflow-atlas.md).

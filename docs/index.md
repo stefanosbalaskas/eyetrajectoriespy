@@ -67,6 +67,14 @@ An independent R77-A audit reproduced **256 new Gaussian datasets** and **1,278,
 
 [Read the R77 article and see both plots](articles/covariance-regularization-and-w3-coverage.md)
 
+### New: R78 temporal covariance robustness and independent numerical audit
+
+![R78 original new-source whole-function truth inclusion under time-varying Gaussian AR(1) errors](assets/research/w3-r78-ar1-whole-band-coverage.svg)
+
+The research programme has advanced to **R78/R78-A**, independently reconstructing **256 fully observed Gaussian source datasets and 1,278,720 maximum-statistic values**. The fixed positive-definite HC3 regularizations were challenged against a **time-scaled AR(1)** noise process without retuning. Their observed gains under high leverage persisted only partially; **no generally calibrated nominal-90% simultaneous inference is established**.
+
+[Scientific study and original plots](articles/w3-temporal-covariance-robustness-r78.md) · [How to interpret independent source audits](articles/interpreting-w3-coverage-and-source-audits.md) · [Full R77–R78 figure ledger](development/w3-r77-r78-temporal-covariance-figure-ledger.md)
+
 ## See the methods
 
 All plotted examples below use **deterministic synthetic data** and are regenerated from package code during the documentation build. They illustrate outputs and diagnostics, not human-subject findings.

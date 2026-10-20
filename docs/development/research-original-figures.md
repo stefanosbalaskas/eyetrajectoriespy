@@ -111,6 +111,16 @@ The R76 plots reproduce source-audited **2, 4, 8 and 16 separately independent �
 
 The two additional scientific SVGs depict **original new-source R77 computations independently reconstructed in R77-A**: 256/256 accepted synthetic Gaussian source cases, 1,278,720 original 999-draw maximum-statistic values, zero refusals, and a true unit of independence of 32 generating blocks per condition. Strengths λ=.25/.50 and a seven-time-point smoothing target were frozen before these results. These figures **do not** establish general nominal-90% calibration or product qualification. [Read the R77 research article](../articles/covariance-regularization-and-w3-coverage.md) · [R77 science](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39403101425) · [R77-A independent audit](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39403655264).
 
+## R78 — independently audited temporal covariance robustness
+
+![R78 original source whole-band truth inclusion under temporal Gaussian AR(1) covariance](../assets/research/w3-r78-ar1-whole-band-coverage.svg)
+
+![R77 to R78 separate-source, unpaired Gaussian temporal covariance robustness comparison](../assets/research/w3-r77-r78-unpaired-temporal-covariance-stress.svg)
+
+![R78 source-specific marginal SE lower-tail and maximum critical diagnostics](../assets/research/w3-r78-ar1-lower-tail-and-critical-diagnostics.svg)
+
+These new scientific figures retain source-level **n=32 independently generated primitive blocks per condition** and separate the Gaussian time-independent R77 source experiment from the **new Gaussian time-scaled AR(1) R78** stress. R78 original [12/12 science](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477000929) and R78-A independent [4/4 source-audit jobs](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477446946) verify **256/256 original source cases, 0 refusals and 1,278,720 original reference maxima**. The generating covariance remains **simulation-known only**, no candidate is generally nominal-90%-calibrated, and gaze loss/non-Gaussian errors remain untested here. [Read R78 article](../articles/w3-temporal-covariance-robustness-r78.md) · [Exact numeric plot ledger](w3-r77-r78-temporal-covariance-figure-ledger.md).
+
 ## Reproducible provenance
 
 These figures are version-controlled scientific assets in the research PRs, embedded **without regenerating simulated results using a different source state**. For source dataset counts, original workflow artifacts and SHA256 audit evidence, consult the [scientific dashboard](research-scientific-dashboard.md).
