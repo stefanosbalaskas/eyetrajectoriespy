@@ -21,6 +21,12 @@ This research library preserves **successful, inconclusive and negative** result
 
 See [F1–F6 method inventory](f1-f6-scientific-expansion.md), [experimental API contracts](research-method-api.md), and [B5–B10 development overview](bayesian-research-programme.md). **None of these pages promotes new stable root-level APIs.**
 
+## R79: independently audited nonseparable coordinate covariance stress (20 October 2026)
+
+Original R79 changed the Gaussian generating law's cross-coordinate correlation to **q(t)=.15+.65t** while keeping trial temporal AR1 rho .72, within-trial time-varying scale, and the two fixed HC3 regularization candidates unchanged. [The original experiment](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39483619384) passed **12/12 scientific jobs**; the mandatory [R79-A independent source replay](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39483939543) passed **4/4**, independently verifying **256/256 source cases, zero refusals and all 1,278,720 raw reference maxima**. Under adverse two-anchor heteroskedasticity, λ=.50 attained **24/32 full-grid curve inclusions** and **20/32 repeated-participant inclusions**, still well below nominal 90%.
+
+[Read the R79 methods/results article](../articles/w3-nonseparable-coordinate-covariance-r79.md) · [Understand nonseparability](../articles/understanding-nonseparable-gaze-covariance.md) · [Open all three original figures](w3-r79-nonseparable-covariance-evidence-ledger.md). Inference #289 and missingness #296 remain open, version 1.2 unreleased.
+
 ## R78: independent temporal covariance falsification and three original plots (20 October 2026)
 
 R78 prospectively held both previously tested HC3 covariance-shrinkage strengths fixed and replaced within-trial independent Gaussian innovations with **time-varying Gaussian AR(1)** (rho .72). The original experiment passed **12/12** science jobs and the separately implemented R78-A passed **4/4 actual-source audit jobs**, independently reproducing **256 original source cases, zero refusals and 1,278,720 maximum-statistic values**. In the two-anchor predictor-heteroskedastic setting, full-grid inclusion under frozen λ=.50 was **22/32 independent curves** and **19/32 repeated-participant datasets**. This is **not** generally nominal-90%-calibrated inference, and it says nothing about MNAR gaze loss.
