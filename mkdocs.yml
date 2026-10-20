@@ -53,6 +53,7 @@ nav:
       - W3 R74 prospective NEW weighted-slope HC2/HC3 Gaussian band stress, four size/design configurations (research only): development/w3-r74-prospective-weighted-slope-HC2-HC3-protocol.md
       - W3 R74-A independent original Gaussian X/Y and all weighted-slope HC2/HC3 maximum statistics (research only): development/w3-r74-independent-original-weighted-slope-audit.md
       - W3 R75 prospective fresh-source true/HC3 slope SE × true/estimated functional correlation diagnostic (research only): development/w3-r75-prospective-SE-correlation-factorial.md
+      - W3 R75-A independent original Gaussian source X/Y and true/HC3 SE-correlation factorial audit (research only): development/w3-r75-independent-original-SE-correlation-audit.md
       - Original source figures: development/research-original-figures.md
       - Reproduce from draft source: development/research-reproducibility.md
       - Methods and contracts:
