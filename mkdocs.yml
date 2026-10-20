@@ -60,6 +60,7 @@ nav:
       - W3 R77-A independent original Gaussian source and regularized covariance numerical audit (research only): development/w3-r77-independent-original-covariance-shrinkage-audit.md
       - W3 R78 prospective temporally correlated Gaussian covariance falsification (research only): development/w3-r78-prospective-temporal-covariance-falsification.md
       - W3 R78-A independent actual Gaussian AR1 source and covariance audit (research only): development/w3-r78-independent-temporal-covariance-audit.md
+      - W3 R79 prospective nonseparable cross-coordinate Gaussian covariance falsification (research only): development/w3-r79-prospective-nonseparable-cross-coordinate-falsification.md
       - Original source figures: development/research-original-figures.md
       - Reproduce from draft source: development/research-reproducibility.md
       - Methods and contracts:
