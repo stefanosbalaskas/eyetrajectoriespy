@@ -14,21 +14,21 @@ description: R76 source-audited Gaussian anchor replication, information concent
 
 The preceding [W3 undercoverage analysis](when-w3-simultaneous-bands-undercover.md) showed a striking combination: slope-weighted HC3 standard errors could be close to the **true marginal SE on average** yet the corresponding estimated simultaneous bands could under-cover severely. With only two extreme predictor observations and predictor-dependent noise, a small number of units may account for nearly all of the slope-estimation variance.
 
-For an intercept-plus-slope regression, let \(a_i\) denote independent unit \(i\)'s exact design weight for the estimated slope and \(s_i\) its synthetic noise multiplier. The generating-law share of slope variance attributed to unit \(i\) is
+For an intercept-plus-slope regression, let $a_i$ denote independent unit $i$'s exact design weight for the estimated slope and $s_i$ its synthetic noise multiplier. The generating-law share of slope variance attributed to unit $i$ is
 
-\[
+$
 w_i=\frac{a_i^2s_i^2}{\sum_j a_j^2s_j^2},
 \qquad
 N_{\mathrm{eff,var}}=\frac{1}{\sum_i w_i^2}.
-\]
+$
 
-This concentration index counts **effective slope-variance contributors**, not an effective sample size for every kind of inference. It is available in R76 only because the Gaussian data generator explicitly specifies the \(s_i\). A small value means the true slope variance is dominated by very few independent units. The R76 experiment examines what happens when more *independent* observations are placed at the influential predictor extremes.
+This concentration index counts **effective slope-variance contributors**, not an effective sample size for every kind of inference. It is available in R76 only because the Gaussian data generator explicitly specifies the $s_i$. A small value means the true slope variance is dominated by very few independent units. The R76 experiment examines what happens when more *independent* observations are placed at the influential predictor extremes.
 
 ## Frozen source experiment
 
 The source design was specified **before** any R76 outcomes were evaluated in [research PR #402](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/402). It contains **32 new primitive Gaussian generating blocks** in each of two independently generated designs: 72 independent curves; and 36 independent participants, each observed in three complete trials.
 
-Within each source block, the experiment varies the number of independent predictor extremes x = −4 or +4: **2, 4, 8 and 16**, split evenly between the two signs. Other predictor values are drawn from Uniform(−0.95, 0.95). The designs include constant Gaussian noise and unequal Gaussian noise scaled by \(s_i=1+0.75|x_i|\). The underlying Gaussian innovations are paired across the anchor-count and variance conditions. The experiment therefore generates **512 source cases** (=32 blocks ×2 designs ×4 anchor counts ×2 variance regimes), **not 512 independent replicates of any single cell**.
+Within each source block, the experiment varies the number of independent predictor extremes x = −4 or +4: **2, 4, 8 and 16**, split evenly between the two signs. Other predictor values are drawn from Uniform(−0.95, 0.95). The designs include constant Gaussian noise and unequal Gaussian noise scaled by $s_i=1+0.75|x_i|$. The underlying Gaussian innovations are paired across the anchor-count and variance conditions. The experiment therefore generates **512 source cases** (=32 blocks ×2 designs ×4 anchor counts ×2 variance regimes), **not 512 independent replicates of any single cell**.
 
 The original W3 wild-HC1, slope-weighted HC3 residual covariance, Gaussian reference construction and fixed 31×2 truth grid were held constant. Each source produced 999 W3 wild maxima, 999 simulation-known Gaussian correlation maxima and 999 HC3-estimated Gaussian correlation maxima, with the empirical *higher* 90th-percentile rule. Original [science run #39397281090](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39397281090) completed **12/12 scientific jobs** and **512/512 datasets** with zero refused sources. The read-only independently implemented [R76-A audit run #39397981410](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39397981410) passed **4/4 jobs**, separately reproducing all 512 original X/Y arrays, every source-level diagnostic and **1,534,464 original maximum-statistic values**.
 
@@ -68,7 +68,7 @@ An additional subtlety matters: high-noise anchor observations contribute an **i
 
 It supports an **information-concentration diagnosis** in the specified finite-sample Gaussian mechanisms. With sparse extreme support, even a correctly implemented slope-weighted HC3 procedure may suffer substantial realized SE underestimation at some time/coordinate locations, and the estimated joint reference may compound the problem.
 
-However, changing anchor count also changes the leverage distribution, the design matrix, true slope precision, and allocation of true slope variance. R76 does **not** isolate a pure causal effect of \(N_{\mathrm{eff,var}}\) or establish a universal sample-size threshold. The simulation-known Gaussian reference is an explanatory benchmark, not a feasible estimator for sensor data.
+However, changing anchor count also changes the leverage distribution, the design matrix, true slope precision, and allocation of true slope variance. R76 does **not** isolate a pure causal effect of $N_{\mathrm{eff,var}}$ or establish a universal sample-size threshold. The simulation-known Gaussian reference is an explanatory benchmark, not a feasible estimator for sensor data.
 
 For publication, the defensible wording is: **in these independently audited simulations, increasing independent extreme-predictor support coincided with substantial improvements in estimated simultaneous-band inclusion, especially for independent curves.** It is not defensible to claim that 16 extreme observations guarantee validity, that HC3 is generally 90%-calibrated, or that this addresses MNAR gaze loss.
 
