@@ -21,6 +21,10 @@ This research library preserves **successful, inconclusive and negative** result
 
 See [F1–F6 method inventory](f1-f6-scientific-expansion.md), [experimental API contracts](research-method-api.md), and [B5–B10 development overview](bayesian-research-programme.md). **None of these pages promotes new stable root-level APIs.**
 
+## R77: independent source-audited covariance regularization stress (20 October 2026)
+
+[R77's prospective HC3 covariance shrinkage research](../articles/covariance-regularization-and-w3-coverage.md) retained 256 fully observed new Gaussian source cases (32 independent primitive generating blocks per condition), with **12/12 original scientific jobs passed** and **4/4 independent original-source audit jobs passed**, reproducing all **1,278,720 conditional maximum-statistic values**. Two fixed λ=.25/.50 candidates improved observed slope truth inclusion under extreme leverage and heteroskedasticity but **did not establish calibrated nominal-90% inference**. The original W3 issue #289 and response-dependent loss issue #296 stay open. [View the two original R77 scientific figures](research-original-figures.md).
+
 ## New W3 research articles and original evidence plots (20 October 2026)
 
 **Numerical verification is not interval calibration.** R71–R75 independent source audits expose substantial undercoverage of nominal-90% full-grid functional slope bands under high leverage and heteroskedasticity. R76 and R76-A independently reconstructed **512/512 complete source cases and 1,534,464 maximum-statistic values**; increasing independent extreme predictor support coincided with improved estimated-HC3 whole-band truth inclusion in the tested Gaussian setting, but does not yield a qualified 90% procedure.
