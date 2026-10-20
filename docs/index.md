@@ -83,6 +83,14 @@ R79 and its separate R79-A audit reproduced **256 new source Gaussian trajectori
 
 [Read the R79 research article](articles/w3-nonseparable-coordinate-covariance-r79.md) · [View the source and figure gallery](development/w3-r79-nonseparable-covariance-evidence-ledger.md) · [Understanding two-dimensional dependence](articles/understanding-nonseparable-gaze-covariance.md)
 
+### New R80: independent-unit heavy tails challenge functional confidence bands
+
+![R80 independent-unit Student-t5 source full 31-by-2 slope truth-inclusion counts](assets/research/w3-r80-student-t5-whole-band-coverage.svg)
+
+The programme has advanced to **R80**, with **256/256 new Student-t5 source cases** and **1,278,720 original conditional maximum-statistic values** independently replayed. In the difficult two-anchor heteroskedastic design, frozen λ=.50 regularization included the entire slope in **23/32 independent curves and 24/32 repeated-participant source datasets**. The source-known *Student-t5 mixture*, not a Gaussian oracle, is simulation-only. These gains do **not** qualify general nominal-90% inference; version 1.2 remains on hold.
+
+[Read the R80 research article](articles/w3-student-t5-heavy-tail-inference-r80.md) · [Why unit-level Student-t tails matter](articles/independent-unit-student-t-functional-uncertainty.md) · [Original R80 figure and source ledger](development/w3-r80-student-t5-evidence-ledger.md)
+
 ## See the methods
 
 All plotted examples below use **deterministic synthetic data** and are regenerated from package code during the documentation build. They illustrate outputs and diagnostics, not human-subject findings.
