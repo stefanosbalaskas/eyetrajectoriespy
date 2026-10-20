@@ -16,11 +16,11 @@ The preceding [W3 undercoverage analysis](when-w3-simultaneous-bands-undercover.
 
 For an intercept-plus-slope regression, let $a_i$ denote independent unit $i$'s exact design weight for the estimated slope and $s_i$ its synthetic noise multiplier. The generating-law share of slope variance attributed to unit $i$ is
 
-$
+$$
 w_i=\frac{a_i^2s_i^2}{\sum_j a_j^2s_j^2},
 \qquad
 N_{\mathrm{eff,var}}=\frac{1}{\sum_i w_i^2}.
-$
+$$
 
 This concentration index counts **effective slope-variance contributors**, not an effective sample size for every kind of inference. It is available in R76 only because the Gaussian data generator explicitly specifies the $s_i$. A small value means the true slope variance is dominated by very few independent units. The R76 experiment examines what happens when more *independent* observations are placed at the influential predictor extremes.
 
