@@ -208,7 +208,7 @@ def test_complete_grid_refusal_provenance_and_no_coverage_qualification():
     assert report["independent_unit_student_df"]==5
     np.testing.assert_allclose(report["true_time_SD_endpoints"],[.028,.052])
     assert sum(report[name] for name in (
-        "original_wild_999_multiplier_positions","known_Gaussian_maxima",
+        "original_wild_999_multiplier_positions","known_Student_t5_mixture_maxima",
         "HC3_Gaussian_maxima","REG025_Gaussian_maxima",
         "REG050_Gaussian_maxima"))==256*999*5
     assert report["no_90pct_simultaneous_band_calibration"]
