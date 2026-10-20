@@ -1,0 +1,69 @@
+name: science-w3-r76-independent-original-extreme-anchor-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r76_independent_original_extreme_anchor.py"
+      - "tests/test_w3_r76_independent_original_extreme_anchor.py"
+      - "docs/development/w3-r76-independent-original-extreme-anchor-audit.md"
+      - ".github/workflows/science-w3-r76-independent-extreme-anchor-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independently-replay-Gaussian-source-and-true-HC3-correlation-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - name: Independent original X/Y, HC3 residual covariance, true/estimated Gaussian max and refusal/tamper contracts
+        run: python -m pytest -q tests/test_w3_r76_independent_original_extreme_anchor.py
+
+  independently-audit-genuine-immutable-original-R76-512sources:
+    needs: independently-replay-Gaussian-source-and-true-HC3-correlation-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Download unchanged original R76 source archive, not fixture data
+        uses: actions/download-artifact@v4
+        with:
+          repository: stefanosbalaskas/eyetrajectoriespy
+          run-id: 39397281090
+          name: w3-r76-original-new-32block-extreme-anchor-replication-evidence
+          github-token: ${{ github.token }}
+          path: build/R76-A-original-source-readonly/
+      - name: Require frozen exact R76 original scientific source checkout
+        run: grep -Fx 47bea211279aec9bf547c5239a20976058a7a4a3 build/R76-A-original-source-readonly/source-commit.txt
+      - name: Independently replay 512 primitive Gaussian source X/Y and full 999 original wild and two Gaussian-reference maxima
+        run: python -m scripts.audit_w3_r76_independent_original_extreme_anchor --original build/R76-A-original-source-readonly/ --expected-checkout 47bea211279aec9bf547c5239a20976058a7a4a3 --out build/R76-A-independent-original-evidence/evidence.json
+      - name: Display independent 32-block source and 2x2 coverage decomposition with calibration withheld
+        run: cat build/R76-A-independent-original-evidence/evidence.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r76a-independent-original-512source-SE-correlation-factorial
+          path: build/R76-A-independent-original-evidence/
+          if-no-files-found: warn
+          retention-days: 90
