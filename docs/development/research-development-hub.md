@@ -21,6 +21,12 @@ This research library preserves **successful, inconclusive and negative** result
 
 See [F1–F6 method inventory](f1-f6-scientific-expansion.md), [experimental API contracts](research-method-api.md), and [B5–B10 development overview](bayesian-research-programme.md). **None of these pages promotes new stable root-level APIs.**
 
+## R78: independent temporal covariance falsification and three original plots (20 October 2026)
+
+R78 prospectively held both previously tested HC3 covariance-shrinkage strengths fixed and replaced within-trial independent Gaussian innovations with **time-varying Gaussian AR(1)** (rho .72). The original experiment passed **12/12** science jobs and the separately implemented R78-A passed **4/4 actual-source audit jobs**, independently reproducing **256 original source cases, zero refusals and 1,278,720 maximum-statistic values**. In the two-anchor predictor-heteroskedastic setting, full-grid inclusion under frozen λ=.50 was **22/32 independent curves** and **19/32 repeated-participant datasets**. This is **not** generally nominal-90%-calibrated inference, and it says nothing about MNAR gaze loss.
+
+[Read R78 original study](../articles/w3-temporal-covariance-robustness-r78.md) · [Read independent source-audit interpretation guide](../articles/interpreting-w3-coverage-and-source-audits.md) · [View the original vector figure ledger](w3-r77-r78-temporal-covariance-figure-ledger.md). Blockers #289/#296 remain open; no inference code or stable package release change.
+
 ## R77: independent source-audited covariance regularization stress (20 October 2026)
 
 [R77's prospective HC3 covariance shrinkage research](../articles/covariance-regularization-and-w3-coverage.md) retained 256 fully observed new Gaussian source cases (32 independent primitive generating blocks per condition), with **12/12 original scientific jobs passed** and **4/4 independent original-source audit jobs passed**, reproducing all **1,278,720 conditional maximum-statistic values**. Two fixed λ=.25/.50 candidates improved observed slope truth inclusion under extreme leverage and heteroskedasticity but **did not establish calibrated nominal-90% inference**. The original W3 issue #289 and response-dependent loss issue #296 stay open. [View the two original R77 scientific figures](research-original-figures.md).
