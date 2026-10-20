@@ -121,6 +121,16 @@ The two additional scientific SVGs depict **original new-source R77 computations
 
 These new scientific figures retain source-level **n=32 independently generated primitive blocks per condition** and separate the Gaussian time-independent R77 source experiment from the **new Gaussian time-scaled AR(1) R78** stress. R78 original [12/12 science](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477000929) and R78-A independent [4/4 source-audit jobs](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477446946) verify **256/256 original source cases, 0 refusals and 1,278,720 original reference maxima**. The generating covariance remains **simulation-known only**, no candidate is generally nominal-90%-calibrated, and gaze loss/non-Gaussian errors remain untested here. [Read R78 article](../articles/w3-temporal-covariance-robustness-r78.md) · [Exact numeric plot ledger](w3-r77-r78-temporal-covariance-figure-ledger.md).
 
+## R79: nonseparable cross-coordinate Gaussian covariance
+
+![R79 nonseparable true Gaussian trial covariance law with time-varying cross-coordinate correlation](../assets/research/w3-r79-generating-nonseparable-covariance-law.svg)
+
+![R79 independently verified complete 31-by-2 slope truth inclusion counts](../assets/research/w3-r79-nonseparable-full-band-coverage.svg)
+
+![R79 independently verified marginal SE lower-tail and maximum critical diagnostic](../assets/research/w3-r79-hc3-se-tail-and-critical.svg)
+
+All three original scientific figures are grounded in the [R79 12/12 original source workflow](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39483619384) and the separate [R79-A 4/4 mandatory independent source audit](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39483939543): **256/256 source cases, zero refusals, 1,278,720 original maximum statistics**, and 32 independently generated primitive blocks per design/support/variance condition. Candidate λ=.25/.50 values remain frozen, not selected from observed source inclusion. Fully synthetic Gaussian data, no MNAR or general coverage qualification. [Scientific article](../articles/w3-nonseparable-coordinate-covariance-r79.md) · [Detailed count/source ledger](w3-r79-nonseparable-covariance-evidence-ledger.md).
+
 ## Reproducible provenance
 
 These figures are version-controlled scientific assets in the research PRs, embedded **without regenerating simulated results using a different source state**. For source dataset counts, original workflow artifacts and SHA256 audit evidence, consult the [scientific dashboard](research-scientific-dashboard.md).
