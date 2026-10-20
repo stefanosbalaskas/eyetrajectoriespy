@@ -103,6 +103,14 @@ The R76 plots reproduce source-audited **2, 4, 8 and 16 separately independent �
 
 ***All plotted confidence-band methods remain unqualified for general nominal coverage and W3 inference blocker #289 is open.***
 
+## R77 — prospectively frozen estimated functional covariance regularization
+
+![R77 independently audited 90% whole-grid truth-inclusion counts for original HC3 and fixed positive-definite shrinkage, with simulation-known Gaussian reference](../assets/research/w3-r77-audited-regularization-coverage.svg)
+
+![R77 independently audited estimated marginal-SE lower-tail ratios and simultaneous Gaussian maximum critical values](../assets/research/w3-r77-audited-se-lower-tail-and-criticals.svg)
+
+The two additional scientific SVGs depict **original new-source R77 computations independently reconstructed in R77-A**: 256/256 accepted synthetic Gaussian source cases, 1,278,720 original 999-draw maximum-statistic values, zero refusals, and a true unit of independence of 32 generating blocks per condition. Strengths λ=.25/.50 and a seven-time-point smoothing target were frozen before these results. These figures **do not** establish general nominal-90% calibration or product qualification. [Read the R77 research article](../articles/covariance-regularization-and-w3-coverage.md) · [R77 science](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39403101425) · [R77-A independent audit](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39403655264).
+
 ## Reproducible provenance
 
 These figures are version-controlled scientific assets in the research PRs, embedded **without regenerating simulated results using a different source state**. For source dataset counts, original workflow artifacts and SHA256 audit evidence, consult the [scientific dashboard](research-scientific-dashboard.md).
