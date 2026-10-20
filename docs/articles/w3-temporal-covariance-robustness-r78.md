@@ -104,7 +104,7 @@ In this experiment, regularization changed **both** the lower tail of marginal S
 
 ## Independent numerical audit and what it establishes
 
-The original [R78 science workflow #39477000929](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477000929) completed **12/12 dedicated scientific jobs**, with **256/256 accepted source cases and zero refusals**. Original immutable evidence is retained in [artifact #12290295000](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477000929/artifacts/12290295000), at scientific source checkout \`f438b9680d81f5e5e3e893b1ff7a0bc93383a619\`.
+The original [R78 science workflow #39477000929](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477000929) completed **12/12 dedicated scientific jobs**, with **256/256 accepted source cases and zero refusals**. Original immutable evidence is retained in [artifact #12290295000](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477000929/artifacts/12290295000), at scientific source checkout `f438b9680d81f5e5e3e893b1ff7a0bc93383a619`.
 
 A separately implemented [R78-A read-only original-archive audit #39477446946](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477446946) passed **4/4 dedicated jobs** and independently reproduced the **256 original X/Y source datasets, 1,278,720 original maximum-statistic values**, all five source-specific quantile reference arrays, known AR(1) Gaussian variance, source-level truth classifications and SHA256 checks. The independent audit evidence is [artifact #12290570185](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39477446946/artifacts/12290570185).
 
