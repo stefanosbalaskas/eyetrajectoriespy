@@ -51,6 +51,14 @@ $$
 </div>
 </div>
 
+## New: what verified W3 simulation results tell us about inference
+
+![Audited W3 R76 whole-band coverage as independent extreme predictor support increases](assets/research/w3-r76-extreme-anchor-simultaneous-inclusion.svg)
+
+The independent R76/R76-A audit reconstructed **512 synthetic source cases** and **1,534,464 numerical maximum-statistic values**. In this Gaussian stress experiment, independently replicating influential predictor observations changed the observed inclusion of the true functional slope. These exploratory results **do not** establish nominal-90% simultaneous confidence-band calibration or qualify a new API.
+
+[Scientific article: why functional bands under-cover](articles/when-w3-simultaneous-bands-undercover.md) · [R76 leverage article and figures](articles/how-independent-leverage-support-affects-coverage.md) · [Source-audit gallery](development/w3-r70-r76-evidence-plot-gallery.md)
+
 ## See the methods
 
 All plotted examples below use **deterministic synthetic data** and are regenerated from package code during the documentation build. They illustrate outputs and diagnostics, not human-subject findings.
