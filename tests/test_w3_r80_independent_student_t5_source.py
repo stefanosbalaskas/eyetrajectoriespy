@@ -59,7 +59,7 @@ def _rehash(path):
 
 
 def test_exact_new_seeds_and_32_independent_source_units():
-    assert a.CHECKOUT=="d92aab4f782bc90798da72f877789e8227d95bb7"
+    assert a.CHECKOUT=="c3c590788a8d126c73e59d7e0e799d6f39f0d655"
     assert a.SOURCE_SEED==202610208080
     assert a.GAUSSIAN_SEED==202610208081
     assert a.WILD_SEED==202610208082
