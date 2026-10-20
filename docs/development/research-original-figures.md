@@ -141,6 +141,16 @@ All three original scientific figures are grounded in the [R79 12/12 original so
 
 The new R80 original SVGs preserve **32 independent primitive Gaussian-conditional Student-t5 source blocks per cell**, 256/256 attempted and accepted factorial cases, and **1,278,720 original conditional maximum values** verified by separately coded source replay. [R80 original workflow #39487449656](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39487449656) **12/12 science PASS**; [independent R80-A actual archive #39487811433](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39487811433) **4/4 audit PASS**. The source-known Student-t5 mixture benchmark is available only in simulation, not a Gaussian observed-data estimator. **No general 90% calibration, no authentic gaze recordings, no MNAR claim**. [Read R80 article](../articles/w3-student-t5-heavy-tail-inference-r80.md) · [Figure provenance](w3-r80-student-t5-evidence-ledger.md).
 
+## R81: asymmetrically contaminated Student-t5 independent units
+
+![R81 complete 31×2 known-slope truth inclusion across five fixed references](../assets/research/w3-r81-skew-contaminated-whole-band-inclusion.svg)
+
+![R81 true centered Bernoulli unit-contamination time profile and added variance fraction](../assets/research/w3-r81-analytic-skew-contamination-law.svg)
+
+![R81 estimated/true lower-tail HC3 slope SE ratios and estimated Gaussian simultaneous maximum criticals](../assets/research/w3-r81-skew-se-tail-and-criticals.svg)
+
+The original [R81 scientific run #39490888383](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39490888383) passed **12/12** original science jobs; separately coded [R81-A original archive audit #39491187099](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39491187099) passed **4/4**. Each of the **256/256 original new Student-t5 + centered skew Bernoulli X/Y source cases, zero refusals and all 1,278,720 conditional reference maxima** were independently replayed. Source n=32 **independent primitive generating blocks per fixed condition**. Frozen λ=.25/.50 methods are not nominal-90%-qualified; true Bernoulli contamination parameters are simulator-only, no field recordings or MNAR. [Full scientific article](../articles/w3-skew-unit-contamination-r81.md) · [Numerical figure/source ledger](w3-r81-skewed-unit-evidence-ledger.md).
+
 ## Reproducible provenance
 
 These figures are version-controlled scientific assets in the research PRs, embedded **without regenerating simulated results using a different source state**. For source dataset counts, original workflow artifacts and SHA256 audit evidence, consult the [scientific dashboard](research-scientific-dashboard.md).
