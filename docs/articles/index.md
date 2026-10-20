@@ -65,6 +65,18 @@ These short, research-oriented articles connect the software's scientific contra
 
   [Read the source-audit interpretation guide](interpreting-w3-coverage-and-source-audits.md)
 
+- **10. Do functional confidence bands survive nonseparable gaze-coordinate covariance?**
+
+  Read the original and independently audited R79 simulation, including time-varying cross-coordinate correlation, adverse/constant-variance cases, data-estimated fixed HC3 references and three original vector figures.
+
+  [Read the R79 scientific research article](w3-nonseparable-coordinate-covariance-r79.md)
+
+- **11. Why two-dimensional gaze covariance matters for functional inference**
+
+  A concise methods companion explaining nonseparability, whole-grid maximum-statistic inference, independent source denominators and the limits of numerical audits.
+
+  [Read the cross-coordinate covariance methods guide](understanding-nonseparable-gaze-covariance.md)
+
 </div>
 
 For the complete function catalogue see the [API reference](../reference/api.md), [capability inventory](../reference/capability-inventory.md) and [workflow atlas](../methods/workflow-atlas.md).
