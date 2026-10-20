@@ -16,9 +16,9 @@ A functional coefficient $\beta_1(t,d)$ describes the association between a scal
 
 Let $\hat\beta_1(t,d)$ be a fitted slope, $\widehat{\mathrm{SE}}_1(t,d)$ its standard error and $c_{.90}$ the estimated 90th percentile of a maximum-statistic reference. The simultaneous band has the schematic form
 
-$
+$$
 \hat\beta_1(t,d) \;\pm\; c_{.90}\,\widehat{\mathrm{SE}}_1(t,d).
-$
+$$
 
 Truth inclusion is one binary event **per independent generated dataset**: all 62 grid cells must contain their known slope. As a result, correctly reproducing OLS coefficients, HC1/HC3 standard errors or bootstrap quantiles to numerical precision cannot, by itself, establish that this event occurs with 90% frequency.
 
