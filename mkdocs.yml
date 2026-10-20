@@ -41,6 +41,7 @@ nav:
       - Overview and qualification: development/research-development-hub.md
       - Evidence dashboard: development/research-scientific-dashboard.md
       - W3 R70–R76 articles and figures: development/w3-r70-r76-evidence-plot-gallery.md
+      - W3 R77–R78 covariance figure and evidence ledger: development/w3-r77-r78-temporal-covariance-figure-ledger.md
       - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
       - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
