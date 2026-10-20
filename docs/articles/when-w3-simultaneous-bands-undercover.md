@@ -12,13 +12,13 @@ description: Independent Gaussian simulations of W3 whole-function slope-band un
 
 ## What is being tested?
 
-A functional coefficient \(\beta_1(t,d)\) describes the association between a scalar predictor and a continuous response at time \(t\) and gaze coordinate \(d\). The W3 study asks whether a reported **90% simultaneous slope band** contains the entire generating function on a fixed **31-time-point × 2-coordinate grid**, rather than merely containing individual coefficients at some grid points.
+A functional coefficient $\beta_1(t,d)$ describes the association between a scalar predictor and a continuous response at time $t$ and gaze coordinate $d$. The W3 study asks whether a reported **90% simultaneous slope band** contains the entire generating function on a fixed **31-time-point × 2-coordinate grid**, rather than merely containing individual coefficients at some grid points.
 
-Let \(\hat\beta_1(t,d)\) be a fitted slope, \(\widehat{\mathrm{SE}}_1(t,d)\) its standard error and \(c_{.90}\) the estimated 90th percentile of a maximum-statistic reference. The simultaneous band has the schematic form
+Let $\hat\beta_1(t,d)$ be a fitted slope, $\widehat{\mathrm{SE}}_1(t,d)$ its standard error and $c_{.90}$ the estimated 90th percentile of a maximum-statistic reference. The simultaneous band has the schematic form
 
-\[
+$
 \hat\beta_1(t,d) \;\pm\; c_{.90}\,\widehat{\mathrm{SE}}_1(t,d).
-\]
+$
 
 Truth inclusion is one binary event **per independent generated dataset**: all 62 grid cells must contain their known slope. As a result, correctly reproducing OLS coefficients, HC1/HC3 standard errors or bootstrap quantiles to numerical precision cannot, by itself, establish that this event occurs with 90% frequency.
 
