@@ -91,6 +91,14 @@ The programme has advanced to **R80**, with **256/256 new Student-t5 source case
 
 [Read the R80 research article](articles/w3-student-t5-heavy-tail-inference-r80.md) · [Why unit-level Student-t tails matter](articles/independent-unit-student-t-functional-uncertainty.md) · [Original R80 figure and source ledger](development/w3-r80-student-t5-evidence-ledger.md)
 
+### R81: rare asymmetric unit contamination challenges simultaneous confidence bands
+
+![R81 new original Student-t5 and skew-contaminated Gaussian-conditional source whole-functional-slope inclusion](assets/research/w3-r81-skew-contaminated-whole-band-inclusion.svg)
+
+R81 tested **new independent-unit Student-t5 trajectories with centered asymmetric rare unit shocks**. Original and separately implemented audit jobs reproduced all **256/256 source cases and 1,278,720 reference maxima**. In the adverse two-anchor heteroskedastic setting, frozen λ=.50 includes the whole generating slope in **24/32 curves and 24/32 repeated participants**, still not validated nominal 90% inference. The true skewed reference exists only in the simulator. The stable API and version 1.2 release hold are unchanged.
+
+[Read the R81 research article](articles/w3-skew-unit-contamination-r81.md) · [Methods companion](articles/independent-unit-skew-contamination-and-simultaneous-inference.md) · [Original figure/source ledger](development/w3-r81-skewed-unit-evidence-ledger.md)
+
 ## See the methods
 
 All plotted examples below use **deterministic synthetic data** and are regenerated from package code during the documentation build. They illustrate outputs and diagnostics, not human-subject findings.

@@ -89,6 +89,18 @@ These short, research-oriented articles connect the software's scientific contra
 
   [Read the Student-t source uncertainty guide](independent-unit-student-t-functional-uncertainty.md)
 
+- **14. When functional confidence bands encounter skewed contaminated heavy-tailed units**
+
+  Read R81's separately audited original Student-t5 plus centered rare unit-contamination stress study: 32 independent source blocks/cell, all 256 X/Y source cases and 1,278,720 conditional maxima, full-slope inclusion, true simulation-only skew mixture reference and three original vector figures.
+
+  [Read the R81 scientific research article](w3-skew-unit-contamination-r81.md)
+
+- **15. How rare asymmetric unit shocks affect simultaneous functional inference**
+
+  A methods companion explaining persistent Bernoulli unit shocks, their true additional covariance, the correct Student-t5 plus skew reference, independent source denominators and interpretation limits.
+
+  [Read the asymmetric-unit source methods companion](independent-unit-skew-contamination-and-simultaneous-inference.md)
+
 </div>
 
 For the complete function catalogue see the [API reference](../reference/api.md), [capability inventory](../reference/capability-inventory.md) and [workflow atlas](../methods/workflow-atlas.md).
