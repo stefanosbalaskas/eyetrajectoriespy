@@ -89,7 +89,7 @@ def test_paired_source_innovations_and_analytic_true_law(config):
         a=(np.linalg.inv(X.T@X)@X.T)[1]
         np.testing.assert_allclose(
             study.exact_heterogeneous_slope_se(X,s,design),
-            np.sqrt(np.sum((a*s)**2)*study.generating_unit_variance(design)),
+            np.sqrt(np.sum((a*s)**2)*study.source_unit_variance(design)),
             atol=1e-14,rtol=0)
     np.testing.assert_allclose(y[0],y[1],atol=5e-14,rtol=0)
 
