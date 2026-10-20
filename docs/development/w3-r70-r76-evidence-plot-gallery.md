@@ -27,7 +27,7 @@ All figure bars use **truth-inclusion counts out of 32**, not bootstrap draws or
 
 [Read the scientific article: how independent leverage support affects coverage](../articles/how-independent-leverage-support-affects-coverage.md).
 
-The independent predictor extremes x=±4 are 2, 4, 8 and 16 **separately simulated independent units**, evenly balanced by sign; other predictors lie in Uniform(−0.95,0.95). The adverse covariance regime scales unit SD by \(1+0.75|x_i|\). This is **32 independent generating source blocks for every design/support/variance condition**; the 512 complete cases across all conditions share paired source blocks.
+The independent predictor extremes x=±4 are 2, 4, 8 and 16 **separately simulated independent units**, evenly balanced by sign; other predictors lie in Uniform(−0.95,0.95). The adverse covariance regime scales unit SD by $1+0.75|x_i|$. This is **32 independent generating source blocks for every design/support/variance condition**; the 512 complete cases across all conditions share paired source blocks.
 
 | x=±4 independent anchors | Curves: estimated HC3 SE + HC3 corr | Curves: known Gaussian | Participants: estimated HC3 SE + HC3 corr | Participants: known Gaussian |
 |---:|---:|---:|---:|---:|
@@ -40,9 +40,9 @@ The independent predictor extremes x=±4 are 2, 4, 8 and 16 **separately simulat
 
 ![R76 slope-variance information concentration and HC3 SE lower-tail summaries](../assets/research/w3-r76-effective-information-and-hc3-lower-tails.svg)
 
-The first panel plots the generating-law variance concentration index \(N_{\mathrm{eff,var}}=1/\sum_i w_i^2\), where \(w_i\propto a_i^2s_i^2\). The second plots the **mean across 32 source datasets** of each dataset's **10th percentile across 62 slope coordinates** of \(\widehat{\mathrm{SE}}_{HC3}/\mathrm{SE}_{true}\). Both require simulation-known variance or SE, and neither is a validated plug-in diagnostic for real gaze data.
+The first panel plots the generating-law variance concentration index $N_{\mathrm{eff,var}}=1/\sum_i w_i^2$, where $w_i\propto a_i^2s_i^2$. The second plots the **mean across 32 source datasets** of each dataset's **10th percentile across 62 slope coordinates** of $\widehat{\mathrm{SE}}_{HC3}/\mathrm{SE}_{true}$. Both require simulation-known variance or SE, and neither is a validated plug-in diagnostic for real gaze data.
 
-| Independent anchors | Curves \(N_{eff,var}\) | Participants \(N_{eff,var}\) | Curves HC3/true SE lower-tail | Participants HC3/true SE lower-tail |
+| Independent anchors | Curves $N_{eff,var}$ | Participants $N_{eff,var}$ | Curves HC3/true SE lower-tail | Participants HC3/true SE lower-tail |
 |---:|---:|---:|---:|---:|
 | 2 | 2.398 | 2.192 | 0.431 | 0.507 |
 | 4 | 4.376 | 4.174 | 0.553 | 0.679 |
