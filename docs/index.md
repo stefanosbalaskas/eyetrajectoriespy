@@ -75,6 +75,14 @@ The research programme has advanced to **R78/R78-A**, independently reconstructi
 
 [Scientific study and original plots](articles/w3-temporal-covariance-robustness-r78.md) · [How to interpret independent source audits](articles/interpreting-w3-coverage-and-source-audits.md) · [Full R77–R78 figure ledger](development/w3-r77-r78-temporal-covariance-figure-ledger.md)
 
+### New R79 research: nonseparable two-coordinate covariance stress
+
+![R79 original complete-grid inclusion under time-varying cross-coordinate Gaussian error correlation](assets/research/w3-r79-nonseparable-full-band-coverage.svg)
+
+R79 and its separate R79-A audit reproduced **256 new source Gaussian trajectories and 1,278,720 raw maximum-statistic values** under a deliberately nonseparable spatial-temporal covariance law. Two frozen HC3 regularizations retained model-conditional improvements under severe predictor leverage, yet neither demonstrates generally valid nominal-90% simultaneous inference. **No experimental estimator has been promoted to the public package.**
+
+[Read the R79 research article](articles/w3-nonseparable-coordinate-covariance-r79.md) · [View the source and figure gallery](development/w3-r79-nonseparable-covariance-evidence-ledger.md) · [Understanding two-dimensional dependence](articles/understanding-nonseparable-gaze-covariance.md)
+
 ## See the methods
 
 All plotted examples below use **deterministic synthetic data** and are regenerated from package code during the documentation build. They illustrate outputs and diagnostics, not human-subject findings.
