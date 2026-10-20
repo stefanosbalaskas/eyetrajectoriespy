@@ -59,6 +59,14 @@ The independent R76/R76-A audit reconstructed **512 synthetic source cases** and
 
 [Scientific article: why functional bands under-cover](articles/when-w3-simultaneous-bands-undercover.md) · [R76 leverage article and figures](articles/how-independent-leverage-support-affects-coverage.md) · [Source-audit gallery](development/w3-r70-r76-evidence-plot-gallery.md)
 
+### New R77 research: can regularization repair fragile functional covariance estimates?
+
+![Independently audited R77 source-level nominal-90% slope-band truth inclusion counts](assets/research/w3-r77-audited-regularization-coverage.svg)
+
+An independent R77-A audit reproduced **256 new Gaussian datasets** and **1,278,720 maximum-statistic values**. Two prospectively fixed residual-covariance regularizations improved truth inclusion under concentrated high-leverage information, but **neither is qualified as a calibrated 90% confidence-band method**. Public 1.2 remains unreleased.
+
+[Read the R77 article and see both plots](articles/covariance-regularization-and-w3-coverage.md)
+
 ## See the methods
 
 All plotted examples below use **deterministic synthetic data** and are regenerated from package code during the documentation build. They illustrate outputs and diagnostics, not human-subject findings.
