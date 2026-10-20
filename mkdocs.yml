@@ -64,6 +64,7 @@ nav:
       - W3 R79-A independent actual Gaussian nonseparable source numerical audit (research only): development/w3-r79-independent-nonseparable-covariance-audit.md
       - W3 R80 prospective heavy-tailed independent-unit Student-t5 reference (research only): development/w3-r80-prospective-unit-student-t5-falsification.md
       - W3 R80-A independent actual Student-t5 unit-mixture source numerical audit (research only): development/w3-r80-independent-unit-student-t5-audit.md
+      - W3 R81 prospective independent-unit Student-t5 plus centered asymmetric contamination (research only): development/w3-r81-prospective-student-t5-skew-contamination.md
       - Original source figures: development/research-original-figures.md
       - Reproduce from draft source: development/research-reproducibility.md
       - Methods and contracts:
