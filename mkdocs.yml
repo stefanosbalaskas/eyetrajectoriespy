@@ -59,6 +59,7 @@ nav:
       - W3 R77 prospective HC3 covariance regularization falsification (research only): development/w3-r77-prospective-covariance-regularization.md
       - W3 R77-A independent original Gaussian source and regularized covariance numerical audit (research only): development/w3-r77-independent-original-covariance-shrinkage-audit.md
       - W3 R78 prospective temporally correlated Gaussian covariance falsification (research only): development/w3-r78-prospective-temporal-covariance-falsification.md
+      - W3 R78-A independent actual Gaussian AR1 source and covariance audit (research only): development/w3-r78-independent-temporal-covariance-audit.md
       - Original source figures: development/research-original-figures.md
       - Reproduce from draft source: development/research-reproducibility.md
       - Methods and contracts:
