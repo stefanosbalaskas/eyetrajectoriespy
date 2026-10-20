@@ -131,6 +131,16 @@ These new scientific figures retain source-level **n=32 independently generated 
 
 All three original scientific figures are grounded in the [R79 12/12 original source workflow](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39483619384) and the separate [R79-A 4/4 mandatory independent source audit](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39483939543): **256/256 source cases, zero refusals, 1,278,720 original maximum statistics**, and 32 independently generated primitive blocks per design/support/variance condition. Candidate λ=.25/.50 values remain frozen, not selected from observed source inclusion. Fully synthetic Gaussian data, no MNAR or general coverage qualification. [Scientific article](../articles/w3-nonseparable-coordinate-covariance-r79.md) · [Detailed count/source ledger](w3-r79-nonseparable-covariance-evidence-ledger.md).
 
+## R80: independent-unit Student-t5 heavy-tail Gaussian scale mixture
+
+![Original independent-unit Student-t5 whole-slope true function inclusion under frozen HC3 Gaussian and covariance-regularization references](../assets/research/w3-r80-student-t5-whole-band-coverage.svg)
+
+![R79 Gaussian and R80 heavy-tailed Student-t5 separate new primitive source comparison, not source-paired](../assets/research/w3-r79-r80-separate-source-heavy-tail-comparison.svg)
+
+![R80 source mean HC3 estimated marginal SE lower-tail ratios and estimated Gaussian maximum criticals](../assets/research/w3-r80-student-t5-se-tail-and-criticals.svg)
+
+The new R80 original SVGs preserve **32 independent primitive Gaussian-conditional Student-t5 source blocks per cell**, 256/256 attempted and accepted factorial cases, and **1,278,720 original conditional maximum values** verified by separately coded source replay. [R80 original workflow #39487449656](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39487449656) **12/12 science PASS**; [independent R80-A actual archive #39487811433](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39487811433) **4/4 audit PASS**. The source-known Student-t5 mixture benchmark is available only in simulation, not a Gaussian observed-data estimator. **No general 90% calibration, no authentic gaze recordings, no MNAR claim**. [Read R80 article](../articles/w3-student-t5-heavy-tail-inference-r80.md) · [Figure provenance](w3-r80-student-t5-evidence-ledger.md).
+
 ## Reproducible provenance
 
 These figures are version-controlled scientific assets in the research PRs, embedded **without regenerating simulated results using a different source state**. For source dataset counts, original workflow artifacts and SHA256 audit evidence, consult the [scientific dashboard](research-scientific-dashboard.md).

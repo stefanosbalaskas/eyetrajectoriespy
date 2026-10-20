@@ -77,6 +77,18 @@ These short, research-oriented articles connect the software's scientific contra
 
   [Read the cross-coordinate covariance methods guide](understanding-nonseparable-gaze-covariance.md)
 
+- **12. Do functional confidence bands survive heavy-tailed independent-unit errors?**
+
+  Read the independently audited R80 Student-t5 source experiment, where fixed λ=.25/.50 HC3 covariance candidates face genuinely heavy-tailed unit-level shocks and a correct source-known *non-Gaussian* mixture reference. Includes three original numerical SVGs, complete source counts and strict inference limitations.
+
+  [Read the R80 scientific article](w3-student-t5-heavy-tail-inference-r80.md)
+
+- **13. Why Student-t errors change functional maximum-statistic inference**
+
+  A concise methods companion explaining shared participant-level radial shocks, exact conditional Student-t mixtures, true independent simulation denominators and numerical-reproduction limits.
+
+  [Read the Student-t source uncertainty guide](independent-unit-student-t-functional-uncertainty.md)
+
 </div>
 
 For the complete function catalogue see the [API reference](../reference/api.md), [capability inventory](../reference/capability-inventory.md) and [workflow atlas](../methods/workflow-atlas.md).

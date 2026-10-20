@@ -32,6 +32,8 @@ nav:
           - R77 covariance regularization and simultaneous-band inclusion: articles/covariance-regularization-and-w3-coverage.md
           - R78 temporal-covariance robustness study: articles/w3-temporal-covariance-robustness-r78.md
           - R79 nonseparable cross-coordinate covariance study: articles/w3-nonseparable-coordinate-covariance-r79.md
+          - R80 Student-t5 heavy-tail functional inference study: articles/w3-student-t5-heavy-tail-inference-r80.md
+          - Why independent-unit Student-t tails change functional uncertainty: articles/independent-unit-student-t-functional-uncertainty.md
           - Understanding nonseparable two-dimensional gaze covariance: articles/understanding-nonseparable-gaze-covariance.md
           - How to interpret functional confidence-band source audits: articles/interpreting-w3-coverage-and-source-audits.md
       - Experimental E1-E4 result figures: methods/experimental-e1-e4-gallery.md
@@ -45,6 +47,7 @@ nav:
       - W3 R70–R76 articles and figures: development/w3-r70-r76-evidence-plot-gallery.md
       - W3 R77–R78 covariance figure and evidence ledger: development/w3-r77-r78-temporal-covariance-figure-ledger.md
       - W3 R79 nonseparable covariance source and figure ledger: development/w3-r79-nonseparable-covariance-evidence-ledger.md
+      - W3 R80 Student-t5 original source and figure evidence ledger: development/w3-r80-student-t5-evidence-ledger.md
       - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
       - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
