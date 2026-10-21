@@ -1,0 +1,69 @@
+name: science-w3-r85-independent-validation-bias-audit
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r85_validation_bias.py"
+      - "tests/test_w3_r85_independent_validation_bias.py"
+      - "docs/development/w3-r85-independent-validation-bias-audit.md"
+      - ".github/workflows/science-w3-r85-independent-validation-bias-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independently-replay-selective-validation-propensity-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - name: Independent original X/Y, original MAR/MNAR masks, three biased recovery laws, visible-only pilot and distinct Newton selection root
+        run: python -m pytest -q tests/test_w3_r85_independent_validation_bias.py
+
+  independently-audit-immutable-R85-256sources-2560selection:
+    needs: independently-replay-selective-validation-propensity-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Download actual immutable original R85 selective external-ascertainment 2560-record archive
+        uses: actions/download-artifact@v4
+        with:
+          repository: stefanosbalaskas/eyetrajectoriespy
+          run-id: 39629520741
+          name: w3-r85-original-256source-2560selection-strategy-evidence
+          github-token: ${{ github.token }}
+          path: build/R85-A-original-source-readonly/
+      - name: Require frozen exact R85 original scientific source checkout
+        run: grep -Fx 39ed0ed74d5eb23dfee316a8b5dcd73d498a4a9e build/R85-A-original-source-readonly/source-commit.txt
+      - name: Independently replay 256 original X/Y source conditions, 512 original MAR/MNAR masks and 2560 recovery-strategy delta results
+        run: python -m scripts.audit_w3_r85_validation_bias --original build/R85-A-original-source-readonly/ --expected-checkout 39ed0ed74d5eb23dfee316a8b5dcd73d498a4a9e --out build/R85-A-independent-original-evidence/evidence.json
+      - name: Display independent original selective validation bias source diagnostics with confidence calibration withheld
+        run: cat build/R85-A-independent-original-evidence/evidence.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r85a-independent-256source-2560validation-selection-audit
+          path: build/R85-A-independent-original-evidence/
+          if-no-files-found: warn
+          retention-days: 90
