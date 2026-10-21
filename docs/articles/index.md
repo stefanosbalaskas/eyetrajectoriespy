@@ -101,6 +101,18 @@ These short, research-oriented articles connect the software's scientific contra
 
   [Read the asymmetric-unit source methods companion](independent-unit-skew-contamination-and-simultaneous-inference.md)
 
+- **16. When missing gaze makes functional regression unestimable**
+
+  R82's independently audited observation-process study compares complete trajectories, MCAR, MAR and response-dependent MNAR loss using 256 original source conditions, four paired masks each, explicit signed-anchor grid refusal and three original figures—**not missingness-aware confidence bands**.
+
+  [Read the R82 scientific research article](w3-response-dependent-gaze-loss-r82.md)
+
+- **17. Missing gaze, independent-unit support, and pointwise feasibility**
+
+  Methods explanation of MCAR/MAR/MNAR, recorded and hidden selection covariates, participant-level observed-trial aggregation, refused grid positions and why available-case OLS is not an MNAR correction.
+
+  [Read the observation-process methods guide](independent-gaze-loss-and-pointwise-feasibility.md)
+
 </div>
 
 For the complete function catalogue see the [API reference](../reference/api.md), [capability inventory](../reference/capability-inventory.md) and [workflow atlas](../methods/workflow-atlas.md).

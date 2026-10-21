@@ -34,6 +34,8 @@ nav:
           - R79 nonseparable cross-coordinate covariance study: articles/w3-nonseparable-coordinate-covariance-r79.md
           - R80 Student-t5 heavy-tail functional inference study: articles/w3-student-t5-heavy-tail-inference-r80.md
           - R81 Student-t5 plus skewed-unit contamination study: articles/w3-skew-unit-contamination-r81.md
+          - R82 complete/MCAR/MAR/MNAR observation-process study: articles/w3-response-dependent-gaze-loss-r82.md
+          - Missing gaze and independent-unit pointwise feasibility: articles/independent-gaze-loss-and-pointwise-feasibility.md
           - Independent-unit asymmetric contamination and simultaneous inference: articles/independent-unit-skew-contamination-and-simultaneous-inference.md
           - Why independent-unit Student-t tails change functional uncertainty: articles/independent-unit-student-t-functional-uncertainty.md
           - Understanding nonseparable two-dimensional gaze covariance: articles/understanding-nonseparable-gaze-covariance.md
@@ -51,6 +53,7 @@ nav:
       - W3 R79 nonseparable covariance source and figure ledger: development/w3-r79-nonseparable-covariance-evidence-ledger.md
       - W3 R80 Student-t5 original source and figure evidence ledger: development/w3-r80-student-t5-evidence-ledger.md
       - W3 R81 skewed unit-contamination original evidence and plot ledger: development/w3-r81-skewed-unit-evidence-ledger.md
+      - W3 R82 MCAR/MAR/MNAR observation-process source and figure ledger: development/w3-r82-observation-process-evidence-ledger.md
       - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
       - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
