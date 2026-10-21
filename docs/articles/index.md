@@ -149,6 +149,18 @@ These short, research-oriented articles connect the software's scientific contra
 
   [Read the secondary validation methods guide](secondary-validation-selection-and-mnar.md)
 
+- **24. Auditing the validator: randomized recovery of failures in outcome-selective gaze ascertainment**
+
+  The independently source-audited R86 research study tests whether a genuinely independent third-stage audit of secondary validation failures supplies information about the validator's own outcome-dependent selection. Includes 256 new synthetic X/Y sources, 512 original masks, 4,608 audited cases, three original figures, and strict limits on empirical missing-gaze identification.
+
+  [Read the R86 scientific article](w3-random-audit-secondary-missingness-r86.md)
+
+- **25. Why an independent audit of validation failures changes the information available**
+
+  Methods companion contrasting naïve union propensity, randomized-audit-estimated recovery and a simulator-only true selection oracle, emphasizing that the audit requires newly measured outcomes rather than imputation.
+
+  [Read the R86 methods companion](random-audit-of-validation-failures.md)
+
 </div>
 
 For the complete function catalogue see the [API reference](../reference/api.md), [capability inventory](../reference/capability-inventory.md) and [workflow atlas](../methods/workflow-atlas.md).
