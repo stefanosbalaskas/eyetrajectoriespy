@@ -137,6 +137,18 @@ These short, research-oriented articles connect the software's scientific contra
 
   [Read the external-gaze validation methods companion](external-gaze-validation-identifiability.md)
 
+- **22. When external validation is also selective: a falsification test for MNAR correction**
+
+  R85's 256 new synthetic X/Y source conditions, 512 paired MAR/MNAR masks, and 2,560 alternative recovery-weighted analyses show how secondary selection can distort first-stage missingness estimates. All numbers independently reconstructed; three original plots; no public MNAR estimator or confidence bands.
+
+  [Read the R85 scientific research article](w3-biased-validation-mnar-r85.md)
+
+- **23. The validation sample has its own missingness mechanism**
+
+  A concise methods companion contrasting random external ascertainment, recorded-predictor-dependent recovery and latent-outcome-dependent recovery with an explicitly simulator-only oracle.
+
+  [Read the secondary validation methods guide](secondary-validation-selection-and-mnar.md)
+
 </div>
 
 For the complete function catalogue see the [API reference](../reference/api.md), [capability inventory](../reference/capability-inventory.md) and [workflow atlas](../methods/workflow-atlas.md).
