@@ -371,8 +371,10 @@ def completion_probability(X,Y,pilot,law):
     if law=="recorded":return recorded.copy()
     # Same recorded selection plus an outcome-specific discriminator.
     base=np.log(recorded/(1.-recorded))
-    mu=pilot[None,None,:,:,0]+X[:,1,None,None,None]*pilot[None,None,:,:,1]
-    residual=np.tanh((Y-mu)/.08)
+    generating_beta=truth_coefficients()
+    generating_mu=(generating_beta[0][None]
+                   +X[:,1,None,None]*generating_beta[1][None])
+    residual=np.tanh((Y-generating_mu[:,None])/.08)
     return 1./(1.+np.exp(-np.clip(base+1.35*residual,-35.,35.)))
 
 def return_uniform(block,config,support,variance,shape):
