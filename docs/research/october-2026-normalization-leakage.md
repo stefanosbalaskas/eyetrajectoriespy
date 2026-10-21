@@ -46,3 +46,7 @@ fig.tight_layout()
 ~~~
 
 The certificate supports four declared regimes: population training statistics, prespecified prior baseline, online past-only normalization, and retrospectively fitted whole-recording normalization. It is not an independent audit of hidden vendor preprocessing, smoothing, imputation, subject identity correctness, or calibration quality. Those require independent tests and external evidence before release.
+
+## Publication and scientific qualification boundary
+
+This source-repository research method is **not** an installed public PyPI 1.2 API or an independent certificate of preprocessing validity. The illustrative figure is synthetic. Declared training/first-use source observations and future participant information must be validated against real preprocessing provenance before any prospective leakage-free claim. The [research-to-release issue](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/433) tracks independent empirical qualification. This article does not resolve the separate W3 Bayesian simultaneous-band calibration blockers and does not authorize an `eyetrajectoriespy 1.2` release.

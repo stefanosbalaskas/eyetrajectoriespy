@@ -195,3 +195,9 @@ mkdocs build --strict
 ## Citation and license
 
 See [`CITATION.cff`](CITATION.cff) for citation metadata. MIT © 2026 Stefanos Balaskas.
+
+## October 2026: retrospective versus prospective normalization
+
+The [illustrated normalization-leakage methods article](docs/research/october-2026-normalization-leakage.md) explains research-only source-observation availability certificates and includes a **synthetic** preprocessing timeline. These diagnostics are not a released 1.2 API and do not establish empirical or W3 Bayesian calibration; see [qualification issue #433](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/433).
+
+![Illustrative normalization provenance timeline](docs/assets/october-2026-time-leakage.svg)
