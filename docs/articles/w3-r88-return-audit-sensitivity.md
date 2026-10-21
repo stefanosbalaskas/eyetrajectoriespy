@@ -31,12 +31,12 @@ The 1,024 records are **repeated analyses of source blocks**, not 1,024 independ
 
 The assumed completion model is
 
-\[
+$
 \operatorname{logit}\Pr(R=1\mid A=1,X,t,Y)
 =\operatorname{logit}p_0(X,t)+\gamma\tanh\!\left(\frac{Y-\hat\mu_{\mathrm{pilot}}(X,t)}{0.08}\right).
-\]
+$
 
-Here \(A\) denotes randomized audit assignment, \(R\) actual audit return, \(p_0\) a stipulated recorded-input baseline, and \(\hat\mu_{\mathrm{pilot}}\) a prediction fitted from outcomes visible before follow-up. Trial information is also incorporated into \(p_0\).
+Here $A$ denotes randomized audit assignment, $R$ actual audit return, $p_0$ a stipulated recorded-input baseline, and $\hat\mu_{\mathrm{pilot}}$ a prediction fitted from outcomes visible before follow-up. Trial information is also incorporated into $p_0$.
 
 **The baseline is calibrated from the simulator's specified law, not estimated or established in field data.** The true generating γ=1.35 is included among the four scenarios, but its value is known only because this is a simulation. Its apparent success cannot be construed as identification of γ from actually returned outcomes.
 
