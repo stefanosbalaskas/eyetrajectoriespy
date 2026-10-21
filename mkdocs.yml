@@ -36,6 +36,8 @@ nav:
           - R81 Student-t5 plus skewed-unit contamination study: articles/w3-skew-unit-contamination-r81.md
           - R82 complete/MCAR/MAR/MNAR observation-process study: articles/w3-response-dependent-gaze-loss-r82.md
           - R83 MNAR assumed selection and five-delta source sensitivity: articles/w3-mnar-selection-sensitivity-r83.md
+          - R84 externally recovered missing gaze and selection parameter identification: articles/w3-external-validation-mnar-identification-r84.md
+          - External gaze validation and the limits of MNAR identification: articles/external-gaze-validation-identifiability.md
           - Why missing-gaze sensitivity does not identify MNAR: articles/independent-gaze-MNAR-sensitivity-and-selection.md
           - Missing gaze and independent-unit pointwise feasibility: articles/independent-gaze-loss-and-pointwise-feasibility.md
           - Independent-unit asymmetric contamination and simultaneous inference: articles/independent-unit-skew-contamination-and-simultaneous-inference.md
