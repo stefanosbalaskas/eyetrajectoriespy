@@ -319,7 +319,7 @@ def shard(out,start,stop):
 def aggregate(out,parts):
     rows=[]
     for a,b in SHARDS:
-        p=parts/f"part-{a:02d}-{b:02d}"
+        p=parts/f"w3-r82-original-observation-shard-{a}"
         raw=(p/"cases.json").read_bytes()
         manifest=json.loads((p/"manifest.json").read_text())
         if (manifest["study"]!=STUDY or manifest["start"]!=a or manifest["stop"]!=b
