@@ -131,6 +131,14 @@ R85 independently replayed **256 synthetic complete source conditions, 512 paire
 
 [Read the R85 scientific article](articles/w3-biased-validation-mnar-r85.md) · [Selection-model companion](articles/secondary-validation-selection-and-mnar.md) · [Original immutable numerical and figure evidence](development/w3-r85-selection-validation-evidence-ledger.md)
 
+### R86: independently auditing failures of a secondary validation process
+
+![R86 third-stage randomized audit of secondary validation failures and the original MAR/MNAR fitted selection coefficients](assets/research/w3-r86-randomized-audit-first-stage-delta.svg)
+
+R86 independently replayed **256 new complete synthetic source conditions, 512 first-stage MAR/MNAR masks and 4,608 third-stage audit/estimation records**. Under original MAR true delta=0, naïve weighting of an outcome-selective secondary validator gave fitted delta near **+.66** without an audit. A 25% randomized audit of failures allowed fitting a restricted secondary selection model and brought the first-stage mean close to zero in the simulated adverse sources. This requires **genuinely new randomly ascertained missing responses**; no real eye-tracker remeasurement capability, general MNAR identification or calibrated 90% confidence band is established. Version 1.2 remains unreleased.
+
+[Read the R86 scientific article](articles/w3-random-audit-secondary-missingness-r86.md) · [Methods companion](articles/random-audit-of-validation-failures.md) · [Independent original source and figure ledger](development/w3-r86-third-stage-audit-evidence-ledger.md)
+
 ## See the methods
 
 All plotted examples below use **deterministic synthetic data** and are regenerated from package code during the documentation build. They illustrate outputs and diagnostics, not human-subject findings.
