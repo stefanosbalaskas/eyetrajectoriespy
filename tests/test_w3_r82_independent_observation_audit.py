@@ -64,5 +64,5 @@ def test_audit_rejects_false_original_sha256_and_checkout(tmp_path):
     (p/"SHA256SUMS").write_text(checks)
     with pytest.raises(ValueError,match="checkout"):
         a.audit(p,expected_checkout="f"*40)
-    with pytest.raises(ValueError,match="denominator"):
+    with pytest.raises(ValueError,match="source checkout"):
         a.audit(p)
