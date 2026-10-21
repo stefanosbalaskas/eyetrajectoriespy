@@ -55,9 +55,9 @@ jobs:
           github-token: ${{ github.token }}
           path: build/R84-A-original-source-readonly/
       - name: Require frozen exact R84 original scientific source checkout
-        run: grep -Fx 07eec1a3ea3e536df16bbce0761df744707f2d8e build/R84-A-original-source-readonly/source-commit.txt
+        run: grep -Fx 6170c5b5941f55a5083cf57dc11293a229d2f9e1 build/R84-A-original-source-readonly/source-commit.txt
       - name: Independently replay exact original 256 X/Y source conditions, 512 paired MAR/MNAR masks and 1536 recovery-assisted model-dependent delta estimates
-        run: python -m scripts.audit_w3_r84_independent_recovery --original build/R84-A-original-source-readonly/ --expected-checkout 07eec1a3ea3e536df16bbce0761df744707f2d8e --out build/R84-A-independent-original-evidence/evidence.json
+        run: python -m scripts.audit_w3_r84_independent_recovery --original build/R84-A-original-source-readonly/ --expected-checkout 6170c5b5941f55a5083cf57dc11293a229d2f9e1 --out build/R84-A-independent-original-evidence/evidence.json
       - name: Display independent 32-block source and independent recovery-propensity score diagnostics with calibration withheld
         run: cat build/R84-A-independent-original-evidence/evidence.json
       - uses: actions/upload-artifact@v4
