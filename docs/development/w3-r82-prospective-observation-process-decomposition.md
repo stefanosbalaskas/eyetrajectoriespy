@@ -1,0 +1,28 @@
+# W3 R82 prospective observation-process decomposition: complete vs MCAR/MAR/MNAR
+
+**Frozen on 21 October 2026 before R82 simulation outputs. Unreleased research, NOT a new inference estimator.**
+
+## Why this experiment differs from R79–R81
+The public function-on-scalar regression requires complete, finite common-grid trajectories and explicitly refuses NaNs; it neither automatically imputes missing samples nor supplies missingness-robust simultaneous inference. R82 studies the *observation process and naive available-case pointwise reconstruction* with source-known original data. We **do not** feed fabricated complete data to the public confidence-band workflow, change estimator covariance tuning, or calculate nominal 90% coverage.
+
+## Frozen generating data
+- 32 **NEW independent primitive source blocks**, source RNG seed **202610208280**, observation uniforms RNG seed **202610208281**, with disjoint source IDs versus R79–R81. 2 independent-unit designs: **72 curves** or **36 participants each observed on 3 trials**; 2 predictor supports with 2 or 16 true x=±4 influential independent units; 2 independent-unit error variance laws constant vs s_i=1+.75|x_i|. Thus **256 independently identifiable generated source-condition datasets**, with n=32 independent generating primitive blocks per fixed cell; each source is evaluated under four observation processes, giving **1,024 mechanism evaluations**, **not 1,024 independent experiments**.
+- The complete source uses the frozen R81 mathematical generating family: 31 times × 2 gaze coordinates; time-correlated Gaussian trial errors with AR1 rho=.72, marginal innovation SD=.04(.70+.60t), time-varying cross-coordinate correlation q(t)=.15+.65t; independent-unit shared t5 radial R=sqrt(3/chi-square_5); independent p=.08 centered asymmetric unit shock with amplitude .16, signed profile (.75+.25t)[1,-.65]; and repeated-participant correlated Gaussian latent term rho=.45. All complete data remain synthetic.
+- A fresh uniform U per curve×time×coordinate is shared **across each source's MCAR/MAR/MNAR masks** (paired observation-process comparisons). True source Y does not change with the masking law. Define standard logistic L(z)=1/(1+exp(-z)). Fix every probability before outcomes:
+  - COMPLETE: missing probability 0.
+  - MCAR: p_missing=.12.
+  - MAR: p_missing=L(-2.2+1.0×|x_i|/4+0.7t+0.2×trial_index), depending **only on recorded predictor, time and trial**, never Y.
+  - MNAR: p_missing=L(logit(p_MAR)+1.1×tanh((Y_i,j,t,d−true_mean_i,t,d)/.08)), explicitly depends on the **true outcome residual**, including at subsequently missing samples. This is an *oracle simulator loss mechanism*, not inferable from real observed data.
+- Strict coordinate-wise sample masks; never silently fill missing entries. The public native function-on-scalar fit is expected to raise on each noncomplete source. No MNAR correction, IPW, MAR model, multiple imputation, or full-band inference is introduced.
+
+## Prespecified diagnostic readouts and comparison
+Define an intentionally naive **pointwise available-case OLS** diagnostic, separately at every time×coordinate, with common independent-unit predictor X. For participant data, first average *only currently observed trials* within participant/time/dimension and allow a participant into that grid point if at least one of its 3 trials is observed. This does not create pseudo-replicated independent trial units. Require >=8 independent units, full rank 2, and at least one surviving **negative AND positive x=±4 anchor** at each grid point; otherwise mark that grid point **not estimable**, never impute or calculate a truth-inclusion band. For complete source, use full unit means.
+
+Archive all 1,024 mechanism-case identities, new source/observation seeds, immutable rounded X/Y/mask checksums, observed fraction, whole-curve and whole-unit retention, minimum pointwise independent-unit count, number of grid points without both anchor signs, pointwise slope function and differences from original complete-source slope and generating slope (only for estimable points), source-specific loss by predictor strata and design, honest refused-grid denominators. Primary comparison is the within-source (paired observation-process mask) **MNAR versus MAR** difference in absolute slope error/mean source retention under two extreme x anchors and predictor heteroskedasticity, but **unconditional source-level averages remain descriptive**; 32 blocks per cell make uncertainty substantial. Report MCAR and COMPLETE comparators and all 16-anchor/constant variance cells, not only convenient outcomes.
+
+## Scientific and software gates
+Three Python 3.11–3.13 source/mask determinism/native NaN refusal/selection/denominator contracts; eight disjoint four-block source shards with SHA256 original archive merge; then separately coded **R82-A original-source read-only replay** must reconstruct all 256 source-condition X/Y, 1,024 masks, every pointwise diagnostic and complete-case refusal. A distinct documentation-only research article and original plots may be published **only after independent real archive replay**. The source known true Y for masked observations remains simulation-only. R82 is **not** evidence of nominal-90% coverage under any MNAR adjustment.
+
+**Stop conditions:** Any false assertion of support, unexpected native acceptance of NaNs, design rank defects or asymmetric source-code drift is reported and excluded from unsupported inference, not repaired covertly. Source failures retained.
+
+**Release boundary:** #289 and #296 open; stable 1.1.0, main inference code, public API, v1.2 PyPI and release tags unchanged; **v1.2 RELEASE HOLD**.
