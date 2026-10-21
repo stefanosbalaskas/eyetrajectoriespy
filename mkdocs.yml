@@ -57,6 +57,7 @@ nav:
       - W3 R81 skewed unit-contamination original evidence and plot ledger: development/w3-r81-skewed-unit-evidence-ledger.md
       - W3 R82 MCAR/MAR/MNAR observation-process source and figure ledger: development/w3-r82-observation-process-evidence-ledger.md
       - W3 R83 MNAR five-delta source and independent figure evidence ledger: development/w3-r83-mnar-sensitivity-evidence-ledger.md
+      - W3 R84 prospective random external outcome validation and MNAR identification feasibility (research only): development/w3-r84-prospective-external-validation-mnar-identification.md
       - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
       - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
