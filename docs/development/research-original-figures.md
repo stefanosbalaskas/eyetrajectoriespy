@@ -151,6 +151,16 @@ The new R80 original SVGs preserve **32 independent primitive Gaussian-condition
 
 The original [R81 scientific run #39490888383](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39490888383) passed **12/12** original science jobs; separately coded [R81-A original archive audit #39491187099](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39491187099) passed **4/4**. Each of the **256/256 original new Student-t5 + centered skew Bernoulli X/Y source cases, zero refusals and all 1,278,720 conditional reference maxima** were independently replayed. Source n=32 **independent primitive generating blocks per fixed condition**. Frozen λ=.25/.50 methods are not nominal-90%-qualified; true Bernoulli contamination parameters are simulator-only, no field recordings or MNAR. [Full scientific article](../articles/w3-skew-unit-contamination-r81.md) · [Numerical figure/source ledger](w3-r81-skewed-unit-evidence-ledger.md).
 
+## R82: complete/MCAR/MAR/MNAR observation-process falsification
+
+![R82 source-based observed sample fractions and mean 31×2 grid refusal](../assets/research/w3-r82-missingness-retention-and-grid-refusal.svg)
+
+![R82 analytic recorded-input MAR and hidden outcome MNAR loss probabilities](../assets/research/w3-r82-analytic-mcar-mar-mnar-loss-laws.svg)
+
+![R82 source-wise available-case versus matched-complete slope differences, on estimable grid positions only](../assets/research/w3-r82-available-case-slope-deviation.svg)
+
+The original [R82 science workflow #39571308151](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39571308151) passed **12/12 dedicated source jobs**, and [independent original-archive replay #39572315409](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39572315409) passed **4/4**. Complete 256 original X/Y source conditions and all 1,024 paired MCAR/MAR/MNAR masks and grid diagnostics independently regenerated; **32 new independent source blocks per design/support/variance cell**. Under primary two-anchor heteroskedastic curve MNAR, **83.1% observed samples and 33.56/62 refused grid positions** coexist. This is *not* an MNAR correction or confidence band; public native missingness rejection is preserved, #289/#296 OPEN, version 1.2 HOLD. [Full article](../articles/w3-response-dependent-gaze-loss-r82.md) · [Evidence/figure ledger](w3-r82-observation-process-evidence-ledger.md).
+
 ## Reproducible provenance
 
 These figures are version-controlled scientific assets in the research PRs, embedded **without regenerating simulated results using a different source state**. For source dataset counts, original workflow artifacts and SHA256 audit evidence, consult the [scientific dashboard](research-scientific-dashboard.md).
