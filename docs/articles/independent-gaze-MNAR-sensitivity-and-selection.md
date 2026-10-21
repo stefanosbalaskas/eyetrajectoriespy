@@ -20,7 +20,7 @@ For observed data, the missing response is **not available** to fit the dependen
 
 ## 2. What R83 actually varies
 
-Five precommitted hypothetical outcome-selection coefficients are \(\delta=-1.10,-0.55,0,0.55,1.10\). At a fixed observed time and coordinate, the pilot fitted mean is constructed only from the responses that remain observed. Each visible trial is then weighted by the inverse of an assumed observation probability whose logit includes recorded predictor, time, trial and a \(\delta\)-scaled function of the **visible outcome residual**.
+Five precommitted hypothetical outcome-selection coefficients are $\delta=-1.10,-0.55,0,0.55,1.10$. At a fixed observed time and coordinate, the pilot fitted mean is constructed only from the responses that remain observed. Each visible trial is then weighted by the inverse of an assumed observation probability whose logit includes recorded predictor, time, trial and a $\delta$-scaled function of the **visible outcome residual**.
 
 Thus the pilot plus weighting is **computable from the observed subset**, but the chosen δ is an *externally supplied sensitivity assumption*, not an estimate with empirically identified validity. The true generating selection coefficient +1.1 and generating conditional mean are separately available only to the simulator for an oracle-reference calculation.
 
