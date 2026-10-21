@@ -1,0 +1,63 @@
+name: science-w3-r88-independent-original-gamma-replay
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r88_original_return_sensitivity_independent.py"
+      - "tests/test_w3_r88_independent_original_return_audit.py"
+      - ".github/workflows/science-w3-r88-independent-original-audit.yml"
+      - "docs/development/w3-r88-independent-original-evidence.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  independent-numerical-and-integrity-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r88_independent_original_return_audit.py
+
+  mandatory-readonly-original-32-block-replay:
+    needs: independent-numerical-and-integrity-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy scipy
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r88-original-32-block-gamma-sensitivity-evidence
+          run-id: 39672709750
+          github-token: ${{ github.token }}
+          repository: stefanosbalaskas/eyetrajectoriespy
+          path: build/R88-original-readonly/
+      - run: python -m scripts.audit_w3_r88_original_return_sensitivity_independent --original build/R88-original-readonly/ --out build/R88-independent-audit/evidence.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r88-A-original-replayed-gamma-sensitivity-evidence
+          path: build/R88-independent-audit/
+          if-no-files-found: warn
+          retention-days: 90
