@@ -47,8 +47,7 @@ def test_repeated_trial_and_curve_primitive_generator():
                             ("repeated_trial_participants",36,3)):
         x,y,mu=r89.generate(0,config)
         xx,yy,mm=r89.generate(0,config)
-        assert x.shape==(n,) and y.shape==(n,trials,31,2)
-        and mu.shape==(n,1,31,2)
+        assert x.shape==(n,) and y.shape==(n,trials,31,2) and mu.shape==(n,1,31,2)
         np.testing.assert_array_equal(x,xx)
         np.testing.assert_array_equal(y,yy)
         np.testing.assert_array_equal(mu,mm)
