@@ -1,5 +1,7 @@
 # Participant-disjoint does not mean deployment-valid preprocessing
 
+![Rendered synthetic plot](../assets/october-2026-plot.svg)
+
 **Experimental longitudinal transformation provenance, 21 October 2026.**
 
 ![Illustration of future-information leakage](../assets/october-2026-time-leakage.svg)
