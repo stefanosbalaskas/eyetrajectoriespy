@@ -34,6 +34,8 @@ nav:
           - R79 nonseparable cross-coordinate covariance study: articles/w3-nonseparable-coordinate-covariance-r79.md
           - R80 Student-t5 heavy-tail functional inference study: articles/w3-student-t5-heavy-tail-inference-r80.md
           - R81 Student-t5 plus skewed-unit contamination study: articles/w3-skew-unit-contamination-r81.md
+          - R82 complete/MCAR/MAR/MNAR observation-process study: articles/w3-response-dependent-gaze-loss-r82.md
+          - Missing gaze and independent-unit pointwise feasibility: articles/independent-gaze-loss-and-pointwise-feasibility.md
           - Independent-unit asymmetric contamination and simultaneous inference: articles/independent-unit-skew-contamination-and-simultaneous-inference.md
           - Why independent-unit Student-t tails change functional uncertainty: articles/independent-unit-student-t-functional-uncertainty.md
           - Understanding nonseparable two-dimensional gaze covariance: articles/understanding-nonseparable-gaze-covariance.md
