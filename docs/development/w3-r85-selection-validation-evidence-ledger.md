@@ -12,7 +12,7 @@
 | Prospectively frozen R85 source PR | [Draft PR #430](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/430) |
 | Original dedicated scientific workflow | [#39629520741](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39629520741), **12/12 source jobs PASSED** |
 | Original immutable SHA256 archive | [Artifact #12359490292](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39629520741/artifacts/12359490292) |
-| Exact original science PR-merge checkout | \`39ed0ed74d5eb23dfee316a8b5dcd73d498a4a9e\` |
+| Exact original science PR-merge checkout | `39ed0ed74d5eb23dfee316a8b5dcd73d498a4a9e` |
 | Independently coded actual original audit | [Draft PR #431](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/431) |
 | Actual original immutable archive replay | [#39630863879](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39630863879), **4/4 independent jobs PASSED** |
 | Independent source/strategy reconstruction artifact | [#12359206531](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39630863879/artifacts/12359206531) |
