@@ -15,7 +15,7 @@ import numpy as np
 STUDY="W3_R83_NEW_MNAR_SENSITIVITY_IDENTIFIABILITY"
 SOURCE_SEED=202610218380
 OBS_SEED=202610218381
-CHECKOUT="FROZEN_ORIGINAL_R83_SOURCE_CHECKOUT"
+CHECKOUT="4aaf792457c789b3fafd218e3dd94ae46af47e86"
 T=np.linspace(0.,1.,31)
 CONFIGS=("curve_standard","participant_standard")
 SUPPORT=("two_anchors","sixteen_anchors")
