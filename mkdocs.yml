@@ -39,6 +39,8 @@ nav:
           - R83 MNAR assumed selection and five-delta source sensitivity: articles/w3-mnar-selection-sensitivity-r83.md
           - R84 externally recovered missing gaze and selection parameter identification: articles/w3-external-validation-mnar-identification-r84.md
           - R85 when external validation is also selective: articles/w3-biased-validation-mnar-r85.md
+          - R86 independent randomized audit of secondary validation failures: articles/w3-random-audit-secondary-missingness-r86.md
+          - Why auditing recovery failures supplies additional identification information: articles/random-audit-of-validation-failures.md
           - Secondary validation selection and missing-gaze mechanism: articles/secondary-validation-selection-and-mnar.md
           - External gaze validation and the limits of MNAR identification: articles/external-gaze-validation-identifiability.md
           - Why missing-gaze sensitivity does not identify MNAR: articles/independent-gaze-MNAR-sensitivity-and-selection.md
