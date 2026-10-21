@@ -161,6 +161,16 @@ The original [R81 scientific run #39490888383](https://github.com/stefanosbalask
 
 The original [R82 science workflow #39571308151](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39571308151) passed **12/12 dedicated source jobs**, and [independent original-archive replay #39572315409](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39572315409) passed **4/4**. Complete 256 original X/Y source conditions and all 1,024 paired MCAR/MAR/MNAR masks and grid diagnostics independently regenerated; **32 new independent source blocks per design/support/variance cell**. Under primary two-anchor heteroskedastic curve MNAR, **83.1% observed samples and 33.56/62 refused grid positions** coexist. This is *not* an MNAR correction or confidence band; public native missingness rejection is preserved, #289/#296 OPEN, version 1.2 HOLD. [Full article](../articles/w3-response-dependent-gaze-loss-r82.md) · [Evidence/figure ledger](w3-r82-observation-process-evidence-ledger.md).
 
+## R83: nonidentified MNAR assumption weighting and simulator-only oracle
+
+![Five-delta observed-only assumed selection weights change pointwise slope estimates from the same mask](../assets/research/w3-r83-assumed-delta-slope-sensitivity.svg)
+
+![MNAR source observed sample fraction and independent signed-anchor grid refusal, unchanged across five assumptions](../assets/research/w3-r83-unchanged-mask-support-refusal.svg)
+
+![Inverse assumed-observation-probability maxima and effective participant-cluster count under five nonidentified delta choices](../assets/research/w3-r83-selection-weight-sensitivity.svg)
+
+Original [R83 source #39575847765](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39575847765) **12/12 science PASS**; independently coded [R83-A true original replay #39576738539](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39576738539) **4/4 PASS**. Independently verified 256/256 original source X/Y, 1,024 actual paired masks, all 3,328 source-specific descriptive pointwise delta/oracle records and original SHA256 identities, **32 new independent primitive blocks per fixed cell**. This is *not* identified MNAR, an observed-data oracle, or nominal-90% inference. [Full study](../articles/w3-mnar-selection-sensitivity-r83.md) · [Figure ledger](w3-r83-mnar-sensitivity-evidence-ledger.md).
+
 ## Reproducible provenance
 
 These figures are version-controlled scientific assets in the research PRs, embedded **without regenerating simulated results using a different source state**. For source dataset counts, original workflow artifacts and SHA256 audit evidence, consult the [scientific dashboard](research-scientific-dashboard.md).
