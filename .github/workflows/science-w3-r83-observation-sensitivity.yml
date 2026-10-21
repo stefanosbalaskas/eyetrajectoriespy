@@ -1,0 +1,99 @@
+name: science-w3-r83-observation-sensitivity
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r83_observation_sensitivity.py"
+      - "tests/test_w3_r83_observation_sensitivity.py"
+      - "docs/development/w3-r83-prospective-MNAR-sensitivity-identifiability.md"
+      - ".github/workflows/science-w3-r83-observation-sensitivity.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  frozen-observed-only-MNAR-assumption-sweep-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - name: Validate frozen new synthetic complete/MCAR/MAR/MNAR source laws, native NaN refusal and honest pointwise rank/anchor gates
+        run: python -m pytest -q tests/test_w3_r83_observation_sensitivity.py
+
+  eight-new-MNAR-sensitivity-source-shards:
+    needs: frozen-observed-only-MNAR-assumption-sweep-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 4}
+          - {start: 4, stop: 8}
+          - {start: 8, stop: 12}
+          - {start: 12, stop: 16}
+          - {start: 16, stop: 20}
+          - {start: 20, stop: 24}
+          - {start: 24, stop: 28}
+          - {start: 28, stop: 32}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - name: Generate 256 new independent true source cases evaluated under complete/MCAR/MAR/MNAR masks with no inference claims
+        run: python -m scripts.run_w3_r83_observation_sensitivity --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R83-source/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r83-original-sensitivity-shard-${{ matrix.start }}
+          path: build/R83-source/
+          if-no-files-found: warn
+          retention-days: 90
+
+  immutable-256source-3328sensitivity-aggregate:
+    needs:
+      - frozen-observed-only-MNAR-assumption-sweep-contracts
+      - eight-new-MNAR-sensitivity-source-shards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r83-original-sensitivity-shard-*
+          path: build/R83-all-source-shards/
+          merge-multiple: false
+      - name: Verify 256 sources, 1024 masks and 3328 pointwise sensitivity/oracle diagnostics with SHA256
+        run: python -m scripts.run_w3_r83_observation_sensitivity --merge-parts build/R83-all-source-shards/ --out build/R83-original-immutable/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r83-original-256source-3328sensitivity-evidence
+          path: build/R83-original-immutable/
+          if-no-files-found: warn
+          retention-days: 90
