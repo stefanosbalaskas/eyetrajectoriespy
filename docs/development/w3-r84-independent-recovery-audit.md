@@ -1,6 +1,6 @@
 # W3 R84-A — independent actual recovered-outcome source evidence audit
 
-**Research-only original source numerical replay.** Separately coded original X/Y, selection masks, nested recovery, visible-only pilot, and scalar logistic selection-score root, with direct SHA256 verification against genuine R84 [original scientific workflow #39581392688](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39581392688) and pinned source checkout `07eec1a3ea3e536df16bbce0761df744707f2d8e`.
+**Research-only original source numerical replay.** Separately coded original X/Y, selection masks, nested recovery, visible-only pilot, and scalar logistic selection-score root, with direct SHA256 verification against genuine R84 [original scientific workflow #39581392688](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39581392688) and pinned source checkout `6170c5b5941f55a5083cf57dc11293a229d2f9e1`.
 
 - 32 new independent primitive generating blocks per original fixed design/support/variance cell; 256 complete X/Y synthetic conditions.
 - Each X/Y condition has MAR and MNAR originally missing masks, with simulator-known true δ=0 and +1.1, respectively; 512 original masks.
