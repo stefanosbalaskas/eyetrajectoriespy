@@ -113,6 +113,18 @@ These short, research-oriented articles connect the software's scientific contra
 
   [Read the observation-process methods guide](independent-gaze-loss-and-pointwise-feasibility.md)
 
+- **18. Can outcome-dependent gaze loss be corrected without identifying the observation model?**
+
+  Read R83's independently reconstructed five-delta source sensitivity, contrasting visible-only hypothetical selection weights with an explicitly simulator-only MNAR oracle. Includes 256 true sources, 1,024 paired observation masks, 3,328 diagnostic records, three original plots and strict nonidentifiability boundaries.
+
+  [Read the R83 research article](w3-mnar-selection-sensitivity-r83.md)
+
+- **19. Sensitivity analysis is not identification of missing gaze**
+
+  A methods companion on MNAR assumption grids, visible-only pilot propensity weighting, signed independent-unit support and why even a source-known oracle does not establish valid 90% bands.
+
+  [Read the R83 methods companion](independent-gaze-MNAR-sensitivity-and-selection.md)
+
 </div>
 
 For the complete function catalogue see the [API reference](../reference/api.md), [capability inventory](../reference/capability-inventory.md) and [workflow atlas](../methods/workflow-atlas.md).

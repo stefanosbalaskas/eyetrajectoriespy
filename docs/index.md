@@ -107,6 +107,14 @@ R82 independently verified **256 new complete source conditions and 1,024 paired
 
 [Read R82 science and plots](articles/w3-response-dependent-gaze-loss-r82.md) · [Observation-process explanation](articles/independent-gaze-loss-and-pointwise-feasibility.md) · [Complete source evidence](development/w3-r82-observation-process-evidence-ledger.md)
 
+### R83: missing-gaze selection is a sensitivity assumption, not an identified correction
+
+![R83 five-delta same-mask assumption sensitivity of pointwise functional slopes](assets/research/w3-r83-assumed-delta-slope-sensitivity.svg)
+
+The new R83 programme independently reconstructed **256 fresh synthetic X/Y source conditions, 1,024 paired complete/MCAR/MAR/MNAR masks and 3,328 pointwise sensitivity/oracle records**. Under two signed influential predictor units with heteroskedasticity, the original MNAR mask gives mean endpoint δ=-1.1 versus +1.1 **pointwise slope differences .00453 for curves and .00841 for participant units**, evaluated only at jointly estimable positions. These are **assumed selection models, not statistically identified MNAR correction or 90% confidence intervals**. Stable function-on-scalar regression still refuses missing gaze and v1.2 remains on hold.
+
+[Read R83 scientific article](articles/w3-mnar-selection-sensitivity-r83.md) · [Methods companion](articles/independent-gaze-MNAR-sensitivity-and-selection.md) · [Original source and figure provenance](development/w3-r83-mnar-sensitivity-evidence-ledger.md)
+
 ## See the methods
 
 All plotted examples below use **deterministic synthetic data** and are regenerated from package code during the documentation build. They illustrate outputs and diagnostics, not human-subject findings.
