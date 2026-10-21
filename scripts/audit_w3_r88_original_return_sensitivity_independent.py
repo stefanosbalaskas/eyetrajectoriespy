@@ -49,13 +49,13 @@ def observation_seed(block, config, support, variance):
 
 def close(a,b,what,tol=1e-9):
     if a is None or b is None:
-        if a is not b:raise ValueError("R87-A original mismatch "+what)
+        if a is not b:raise ValueError("R88-A original mismatch "+what)
         return
     x=np.asarray(a,float);y=np.asarray(b,float)
     if x.shape!=y.shape or not np.all(np.isfinite(x)) or not np.all(np.isfinite(y)):
         raise ValueError("R87-A invalid finite field "+what)
     if not np.allclose(x,y,atol=tol,rtol=1e-8):
-        raise ValueError("R87-A original numerical mismatch "+what)
+        raise ValueError("R88-A original numerical mismatch "+what)
 
 
 def truth():
