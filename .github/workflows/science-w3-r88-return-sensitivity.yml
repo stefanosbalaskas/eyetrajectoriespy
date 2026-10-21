@@ -1,0 +1,97 @@
+name: science-w3-r88-return-sensitivity-new-source
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r88_return_sensitivity.py"
+      - "tests/test_w3_r88_return_sensitivity.py"
+      - ".github/workflows/science-w3-r88-return-sensitivity.yml"
+      - "docs/development/w3-r88-return-selection-sensitivity-protocol.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  source-and-sensitivity-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r88_return_sensitivity.py
+
+  original-new-source-shards:
+    runs-on: ubuntu-24.04
+    needs: source-and-sensitivity-contracts
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 4}
+          - {start: 4, stop: 8}
+          - {start: 8, stop: 12}
+          - {start: 12, stop: 16}
+          - {start: 16, stop: 20}
+          - {start: 20, stop: 24}
+          - {start: 24, stop: 28}
+          - {start: 28, stop: 32}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m scripts.run_w3_r88_return_sensitivity --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R88-shard/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r88-original-source-${{ matrix.start }}
+          path: build/R88-shard/
+          if-no-files-found: warn
+          retention-days: 90
+
+  immutable-original-32-block-aggregate:
+    runs-on: ubuntu-24.04
+    needs:
+      - source-and-sensitivity-contracts
+      - original-new-source-shards
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r88-original-source-*
+          path: build/R88-shards/
+          merge-multiple: false
+      - run: python -m scripts.run_w3_r88_return_sensitivity --merge-parts build/R88-shards/ --out build/R88-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r88-original-32-block-gamma-sensitivity-evidence
+          path: build/R88-complete/
+          if-no-files-found: warn
+          retention-days: 90
