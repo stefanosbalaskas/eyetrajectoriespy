@@ -123,6 +123,14 @@ R84 froze **256 new original synthetic source conditions, 512 paired MAR/MNAR mi
 
 [Read the R84 scientific article](articles/w3-external-validation-mnar-identification-r84.md) · [External-validation methods](articles/external-gaze-validation-identifiability.md) · [Full independent source audit](development/w3-r84-validation-identification-evidence-ledger.md)
 
+### R85: external gaze validation can itself be selective
+
+![R85 primary original MNAR source fitted selection coefficient under five secondary recovery weighting assumptions](assets/research/w3-r85-selective-validation-mnar-delta.svg)
+
+R85 independently replayed **256 synthetic complete source conditions, 512 paired first-stage MAR/MNAR masks and 2,560 secondary ascertainment strategies**. When outcome-selective validation is treated as random, the adverse original MNAR δ=1.1 source produces mean δ **1.671 for independent curves**, versus **1.028 under a simulator-only true recovery-propensity oracle**. More importantly, the **original MAR δ=0** control can falsely appear outcome-dependent under the naïve recovery model. This is *not* an identified field-data MNAR correction or calibrated confidence band, and version 1.2 remains on HOLD.
+
+[Read the R85 scientific article](articles/w3-biased-validation-mnar-r85.md) · [Selection-model companion](articles/secondary-validation-selection-and-mnar.md) · [Original immutable numerical and figure evidence](development/w3-r85-selection-validation-evidence-ledger.md)
+
 ## See the methods
 
 All plotted examples below use **deterministic synthetic data** and are regenerated from package code during the documentation build. They illustrate outputs and diagnostics, not human-subject findings.
