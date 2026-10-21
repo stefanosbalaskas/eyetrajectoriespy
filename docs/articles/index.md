@@ -125,6 +125,18 @@ These short, research-oriented articles connect the software's scientific contra
 
   [Read the R83 methods companion](independent-gaze-MNAR-sensitivity-and-selection.md)
 
+- **20. Can independently recovered missing gaze identify an outcome-dependent selection parameter?**
+
+  R84's independent 256-source, 512-mask and 1,536-recovery diagnostic tests additional randomly ascertained otherwise missing outcomes, an observed-only conditional-mean pilot, and MAR/MNAR selection controls, with three original plots and no interval-calibration claim.
+
+  [Read the R84 scientific research article](w3-external-validation-mnar-identification-r84.md)
+
+- **21. External observation validation changes what MNAR models can learn**
+
+  Companion explaining why new genuine outcome data, hypothetical sensitivity coefficients and generated imputation are different—and why a synthetic recovered-outcome identification exercise is not ordinary field-data MNAR correction.
+
+  [Read the external-gaze validation methods companion](external-gaze-validation-identifiability.md)
+
 </div>
 
 For the complete function catalogue see the [API reference](../reference/api.md), [capability inventory](../reference/capability-inventory.md) and [workflow atlas](../methods/workflow-atlas.md).
