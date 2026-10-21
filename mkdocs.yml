@@ -65,6 +65,7 @@ nav:
       - W3 R84 independent random recovery source and identification evidence: development/w3-r84-validation-identification-evidence-ledger.md
       - W3 R85 selective secondary validation and source evidence: development/w3-r85-selection-validation-evidence-ledger.md
       - W3 R86 prospective independently randomized third-stage audit of selective validation failures (research only): development/w3-r86-prospective-random-audit-secondary-validation.md
+      - W3 R86-A independent full original 4608-row randomized failure-audit source replay (research only): development/w3-r86-independent-original-audit.md
       - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
       - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
