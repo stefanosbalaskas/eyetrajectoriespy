@@ -115,6 +115,14 @@ The new R83 programme independently reconstructed **256 fresh synthetic X/Y sour
 
 [Read R83 scientific article](articles/w3-mnar-selection-sensitivity-r83.md) · [Methods companion](articles/independent-gaze-MNAR-sensitivity-and-selection.md) · [Original source and figure provenance](development/w3-r83-mnar-sensitivity-evidence-ledger.md)
 
+### R84: what additional information could help identify outcome-dependent gaze loss?
+
+![R84 independently validated missing-response ascertainment reveals new information for a fixed scalar selection model](assets/research/w3-r84-external-recovery-estimated-selection-delta.svg)
+
+R84 froze **256 new original synthetic source conditions, 512 paired MAR/MNAR missingness masks and 1,536 nested recovery evaluations**, then independently replayed the actual original immutable archive. With **0% independently recovered missing Y**, the selection coefficient is deliberately **not fitted**. Randomly recovering 25% or 50% of otherwise missing synthetic values permits estimating one **parametric scalar δ under frozen model and recovery assumptions**. It does **not** identify general real-gaze MNAR, justify imputation of lost values, or validate any simultaneous confidence band. Both W3 #289/#296 and version 1.2 release HOLD remain.
+
+[Read the R84 scientific article](articles/w3-external-validation-mnar-identification-r84.md) · [External-validation methods](articles/external-gaze-validation-identifiability.md) · [Full independent source audit](development/w3-r84-validation-identification-evidence-ledger.md)
+
 ## See the methods
 
 All plotted examples below use **deterministic synthetic data** and are regenerated from package code during the documentation build. They illustrate outputs and diagnostics, not human-subject findings.

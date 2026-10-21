@@ -36,6 +36,8 @@ nav:
           - R81 Student-t5 plus skewed-unit contamination study: articles/w3-skew-unit-contamination-r81.md
           - R82 complete/MCAR/MAR/MNAR observation-process study: articles/w3-response-dependent-gaze-loss-r82.md
           - R83 MNAR assumed selection and five-delta source sensitivity: articles/w3-mnar-selection-sensitivity-r83.md
+          - R84 externally recovered missing gaze and selection parameter identification: articles/w3-external-validation-mnar-identification-r84.md
+          - External gaze validation and the limits of MNAR identification: articles/external-gaze-validation-identifiability.md
           - Why missing-gaze sensitivity does not identify MNAR: articles/independent-gaze-MNAR-sensitivity-and-selection.md
           - Missing gaze and independent-unit pointwise feasibility: articles/independent-gaze-loss-and-pointwise-feasibility.md
           - Independent-unit asymmetric contamination and simultaneous inference: articles/independent-unit-skew-contamination-and-simultaneous-inference.md
@@ -57,6 +59,7 @@ nav:
       - W3 R81 skewed unit-contamination original evidence and plot ledger: development/w3-r81-skewed-unit-evidence-ledger.md
       - W3 R82 MCAR/MAR/MNAR observation-process source and figure ledger: development/w3-r82-observation-process-evidence-ledger.md
       - W3 R83 MNAR five-delta source and independent figure evidence ledger: development/w3-r83-mnar-sensitivity-evidence-ledger.md
+      - W3 R84 independent random recovery source and identification evidence: development/w3-r84-validation-identification-evidence-ledger.md
       - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
       - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
