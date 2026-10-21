@@ -1,0 +1,96 @@
+name: science-w3-r87-independent-audit-return-failure
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r87_audit_return_nonresponse.py"
+      - "tests/test_w3_r87_audit_return_nonresponse.py"
+      - ".github/workflows/science-w3-r87-audit-return-failure.yml"
+      - "docs/development/w3-r87-prospective-audit-return-falsification.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  frozen-failure-missingness-and-score-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r87_audit_return_nonresponse.py
+
+  prospective-original-Gaussian-audit-nonresponse-shards:
+    runs-on: ubuntu-24.04
+    needs: frozen-failure-missingness-and-score-contracts
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 4}
+          - {start: 4, stop: 8}
+          - {start: 8, stop: 12}
+          - {start: 12, stop: 16}
+          - {start: 16, stop: 20}
+          - {start: 20, stop: 24}
+          - {start: 24, stop: 28}
+          - {start: 28, stop: 32}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m scripts.run_w3_r87_audit_return_nonresponse --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R87-original-shard/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r87-original-audit-return-source-${{ matrix.start }}
+          path: build/R87-original-shard/
+          if-no-files-found: warn
+          retention-days: 90
+
+  immutable-complete-32-block-original-ledger:
+    runs-on: ubuntu-24.04
+    needs:
+      - frozen-failure-missingness-and-score-contracts
+      - prospective-original-Gaussian-audit-nonresponse-shards
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r87-original-audit-return-source-*
+          path: build/R87-original-shards/
+          merge-multiple: false
+      - run: python -m scripts.run_w3_r87_audit_return_nonresponse --merge-parts build/R87-original-shards/ --out build/R87-original-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r87-original-32-block-audit-return-evidence
+          path: build/R87-original-complete/
+          if-no-files-found: warn
+          retention-days: 90
