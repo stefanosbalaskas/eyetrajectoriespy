@@ -171,6 +171,16 @@ The original [R82 science workflow #39571308151](https://github.com/stefanosbala
 
 Original [R83 source #39575847765](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39575847765) **12/12 science PASS**; independently coded [R83-A true original replay #39576738539](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39576738539) **4/4 PASS**. Independently verified 256/256 original source X/Y, 1,024 actual paired masks, all 3,328 source-specific descriptive pointwise delta/oracle records and original SHA256 identities, **32 new independent primitive blocks per fixed cell**. This is *not* identified MNAR, an observed-data oracle, or nominal-90% inference. [Full study](../articles/w3-mnar-selection-sensitivity-r83.md) · [Figure ledger](w3-r83-mnar-sensitivity-evidence-ledger.md).
 
+## R84: independent synthetic external ascertainment of otherwise missing outcomes
+
+![R84 original MAR and MNAR control fitted selection coefficients versus generator truth under external recovery](../assets/research/w3-r84-external-recovery-estimated-selection-delta.svg)
+
+![R84 25 versus 50 percent recovery mean absolute selection coefficient error in all eight source conditions](../assets/research/w3-r84-validation-fraction-model-error.svg)
+
+![R84 independently recovered otherwise missing sample counts by unit design and MAR/MNAR source mechanism](../assets/research/w3-r84-external-gaze-recovery-counts.svg)
+
+Original [R84 science #39581392688](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39581392688) **12/12 dedicated jobs PASS**, separately implemented [R84-A original real archive #39582618020](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39582618020) **4/4 PASS**; independently reconstructed **256/256 complete original source conditions, 512 genuine MAR/MNAR masks, all 1,536 nested external recovery records**, 32 new independent primitive blocks per fixed cell. The fitted δ is **NULL at 0% recovery**; newly ascertained outcomes permit only *conditional model-dependent scalar δ estimation*, not identification of arbitrary MNAR or general confidence bands. Stable public API unchanged, #289/#296 OPEN, v1.2/PyPI HOLD. [R84 article](../articles/w3-external-validation-mnar-identification-r84.md) · [Source and figure ledger](w3-r84-validation-identification-evidence-ledger.md).
+
 ## Reproducible provenance
 
 These figures are version-controlled scientific assets in the research PRs, embedded **without regenerating simulated results using a different source state**. For source dataset counts, original workflow artifacts and SHA256 audit evidence, consult the [scientific dashboard](research-scientific-dashboard.md).
