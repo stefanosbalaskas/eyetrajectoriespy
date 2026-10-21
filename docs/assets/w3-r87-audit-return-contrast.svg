@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" role="img" aria-labelledby="title desc">
+<title id="title">R87 original outcome-selective audit return coefficients</title>
+<desc id="desc">Four cells. Recorded-input versus simulator oracle estimates. MAR curves 0.2356 versus -0.0102, participants 0.2889 versus 0.0296, true zero. MNAR curves 1.174 versus 0.9915, participants 1.1716 versus 0.9817, true 1.1. All point estimates, no uncertainty intervals.</desc>
+<rect width="960" height="520" fill="#fff"/><text x="55" y="42" font-family="sans-serif" font-size="24" font-weight="bold" fill="#172c40">Selective audit return changes fitted selection coefficients</text><text x="55" y="68" font-family="sans-serif" font-size="14" fill="#586978">25% randomized audit · 32 source blocks per cell · original R87 data, independently replayed</text>
+<rect x="80" y="110" width="800" height="320" fill="#fafbfc" stroke="#d4dae0"/>
+<g stroke="#e0e6ea" stroke-width="1"><line x1="80" y1="430" x2="880" y2="430"/><line x1="80" y1="330" x2="880" y2="330"/><line x1="80" y1="230" x2="880" y2="230"/><line x1="80" y1="130" x2="880" y2="130"/></g>
+<g font-family="sans-serif" font-size="13" fill="#455666" text-anchor="end"><text x="70" y="435">0.0</text><text x="70" y="335">0.4</text><text x="70" y="235">0.8</text><text x="70" y="135">1.2</text></g>
+<g stroke="#687b8c" stroke-width="1.5" stroke-dasharray="6 5"><line x1="95" y1="430" x2="455" y2="430"/><line x1="505" y1="155" x2="865" y2="155"/></g>
+<g fill="#23659a"><rect x="150" y="371.1" width="50" height="58.9"/><rect x="330" y="357.8" width="50" height="72.2"/><rect x="560" y="136.5" width="50" height="293.5"/><rect x="740" y="137.1" width="50" height="292.9"/></g>
+<g fill="#d18b37"><rect x="210" y="430" width="50" height="2.55"/><rect x="390" y="422.6" width="50" height="7.4"/><rect x="620" y="182.1" width="50" height="247.9"/><rect x="800" y="184.6" width="50" height="245.4"/></g>
+<g font-family="sans-serif" font-size="13" fill="#183045" text-anchor="middle"><text x="205" y="456">MAR curves</text><text x="385" y="456">MAR participants</text><text x="615" y="456">MNAR curves</text><text x="795" y="456">MNAR participants</text></g>
+<g font-family="sans-serif" font-size="13" fill="#20384a"><rect x="95" y="486" width="16" height="12" fill="#23659a"/><text x="118" y="497">Recorded-input weighting</text><rect x="330" y="486" width="16" height="12" fill="#d18b37"/><text x="354" y="497">Simulation oracle</text><line x1="530" y1="492" x2="565" y2="492" stroke="#687b8c" stroke-dasharray="6 5"/><text x="575" y="497">Generating δ (MAR=0; MNAR=1.1)</text></g>
+</svg>
