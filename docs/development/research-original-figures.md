@@ -191,6 +191,16 @@ Original [R84 science #39581392688](https://github.com/stefanosbalaskas/eyetraje
 
 Original [R85 science #39629520741](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39629520741) **12/12 dedicated PASS**; independent [R85-A true original replay #39630863879](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39630863879) **4/4 PASS**. Independently reconstructed **256 original X/Y source conditions, 512 first-stage MAR/MNAR masks and 2,560 recovered-data estimator strategies** with 32 independent new primitive blocks per fixed cell. The naïve second-stage selection analysis is *not* an observed-data MNAR correction; exact latent propensity oracle is unavailable outside simulation. No public inference release or confidence bands. [R85 article](../articles/w3-biased-validation-mnar-r85.md) · [Figures and numerical provenance](w3-r85-selection-validation-evidence-ledger.md).
 
+## R86: independently randomized audit of secondary validation failures
+
+![R86 source mean first-stage MAR and MNAR coefficients with no audit and synthetic 25 and 50 percent randomized audit](../assets/research/w3-r86-randomized-audit-first-stage-delta.svg)
+
+![R86 source mean fitted second-stage gamma after newly randomized audit of otherwise unrecovered missing outcomes](../assets/research/w3-r86-secondary-gamma-from-random-audit.svg)
+
+![R86 full eight-cell original MNAR mean absolute delta error without and with randomized failure audits](../assets/research/w3-r86-all-cell-delta-errors.svg)
+
+Original [R86 source #39639148930](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39639148930) **12/12 jobs PASS**, independent [R86-A genuine original replay #39640120223](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39640120223) **4/4 PASS**. Source-independent evidence covers **256 new complete X/Y source conditions, 512 paired MAR/MNAR masks, 4,608 third-stage audit/estimation records**, with **32 new primitive independent source blocks per fixed cell**. Random audit supplies genuinely new otherwise missing synthetic responses, not field recovery technology; source oracle unavailable to actual recordings, no confidence bands. [R86 article](../articles/w3-random-audit-secondary-missingness-r86.md) · [full evidence](w3-r86-third-stage-audit-evidence-ledger.md).
+
 ## Reproducible provenance
 
 These figures are version-controlled scientific assets in the research PRs, embedded **without regenerating simulated results using a different source state**. For source dataset counts, original workflow artifacts and SHA256 audit evidence, consult the [scientific dashboard](research-scientific-dashboard.md).
