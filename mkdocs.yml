@@ -6,7 +6,7 @@ repo_name: stefanosbalaskas/eyetrajectoriespy
 edit_uri: edit/main/docs/
 
 nav:
-  - October 2026 research validation: articles/october-2026-normalization-leakage.md
+  - October 2026 research validation: research/october-2026-normalization-leakage.md
   - Home: index.md
   - Start here:
       - Quick start: quickstart.md
