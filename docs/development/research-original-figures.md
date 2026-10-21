@@ -181,6 +181,16 @@ Original [R83 source #39575847765](https://github.com/stefanosbalaskas/eyetrajec
 
 Original [R84 science #39581392688](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39581392688) **12/12 dedicated jobs PASS**, separately implemented [R84-A original real archive #39582618020](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39582618020) **4/4 PASS**; independently reconstructed **256/256 complete original source conditions, 512 genuine MAR/MNAR masks, all 1,536 nested external recovery records**, 32 new independent primitive blocks per fixed cell. The fitted δ is **NULL at 0% recovery**; newly ascertained outcomes permit only *conditional model-dependent scalar δ estimation*, not identification of arbitrary MNAR or general confidence bands. Stable public API unchanged, #289/#296 OPEN, v1.2/PyPI HOLD. [R84 article](../articles/w3-external-validation-mnar-identification-r84.md) · [Source and figure ledger](w3-r84-validation-identification-evidence-ledger.md).
 
+## R85: biased validation of otherwise missing gaze values
+
+![R85 fitted original MNAR coefficient changes under five secondary recovery strategies](../assets/research/w3-r85-selective-validation-mnar-delta.svg)
+
+![R85 eight source cells with latent selective external recovery, naïve versus simulator-only correct weights](../assets/research/w3-r85-eight-cell-oracle-versus-naive-errors.svg)
+
+![R85 original MAR source falsely appears MNAR when secondary outcome-selective recovery is treated as random](../assets/research/w3-r85-mar-false-positive-validation-bias.svg)
+
+Original [R85 science #39629520741](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39629520741) **12/12 dedicated PASS**; independent [R85-A true original replay #39630863879](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39630863879) **4/4 PASS**. Independently reconstructed **256 original X/Y source conditions, 512 first-stage MAR/MNAR masks and 2,560 recovered-data estimator strategies** with 32 independent new primitive blocks per fixed cell. The naïve second-stage selection analysis is *not* an observed-data MNAR correction; exact latent propensity oracle is unavailable outside simulation. No public inference release or confidence bands. [R85 article](../articles/w3-biased-validation-mnar-r85.md) · [Figures and numerical provenance](w3-r85-selection-validation-evidence-ledger.md).
+
 ## Reproducible provenance
 
 These figures are version-controlled scientific assets in the research PRs, embedded **without regenerating simulated results using a different source state**. For source dataset counts, original workflow artifacts and SHA256 audit evidence, consult the [scientific dashboard](research-scientific-dashboard.md).
