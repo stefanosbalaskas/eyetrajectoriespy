@@ -22,10 +22,10 @@ The [R83 source protocol](https://github.com/stefanosbalaskas/eyetrajectoriespy/
 
 There are **256 complete synthetic source-condition datasets**, each receiving four paired observation masks: COMPLETE, MCAR, MAR and MNAR. The generating source retains a common 31-time × 2-coordinate slope truth; nonseparable time/coordinate Gaussian innovations; a shared Student-t5 independent-unit radial multiplier; and a centered, rare asymmetric unit shock. MCAR has missing probability .12; MAR depends on recorded predictor magnitude, time and trial; MNAR adds simulator-known outcome dependence to the MAR selection logit:
 
-\[
+$$
 \eta_{\mathrm{MNAR}}=\eta_{\mathrm{MAR}}+
 1.1\tanh[(Y-\mu_{\mathrm{true}})/0.08].
-\]
+$$
 
 The source-known coefficient +1.1 and true conditional generating mean are available **only to the simulator**. The four masks are paired within each source, not four new independent generating sources. In total: **1,024 original mask evaluations**, with **32 independent generating blocks per fixed cell**.
 
@@ -33,7 +33,7 @@ The source-known coefficient +1.1 and true conditional generating mean are avail
 
 The principal question uses the **same actual observed mask** but varies a hypothetical selection parameter. At each time and coordinate, an initial unweighted pilot intercept and slope are estimated from **visible trial-level responses only**. For each retained sample, R83 forms a candidate observation probability
 
-\[
+$$
 \pi_{\delta}(Y_{\mathrm{obs}},x,t,j)=1-
 \operatorname{logit}^{-1}\!
 \left[
@@ -42,15 +42,15 @@ The principal question uses the **same actual observed mask** but varies a hypot
 \frac{Y_{\mathrm{obs}}-\widehat{\mu}_{\mathrm{visible}}}{0.08}
 \right)
 \right].
-\]
+$$
 
 Five values were frozen prospectively:
 
-\[
+$$
 \delta\in\{-1.10,\ -0.55,\ 0,\ 0.55,\ 1.10\}.
-\]
+$$
 
-The resulting **pointwise weighted least-squares diagnostic** uses inverse assumed observation probability \(1/\pi_\delta\) for visible trials. Three trials from the same participant remain **one independent participant cluster**; no variance estimator, standard error or confidence band is computed. Individual grid positions are refused if there are fewer than eight distinct independent units, not both signed x=±4 anchors, a rank-deficient design, or assumed observation probability below .02.
+The resulting **pointwise weighted least-squares diagnostic** uses inverse assumed observation probability $1/\pi_\delta$ for visible trials. Three trials from the same participant remain **one independent participant cluster**; no variance estimator, standard error or confidence band is computed. Individual grid positions are refused if there are fewer than eight distinct independent units, not both signed x=±4 anchors, a rank-deficient design, or assumed observation probability below .02.
 
 An additional MCAR known-probability diagnostic and unmasked complete-source OLS serve as comparisons. A fifth MNAR source-reference case uses the simulator-known true mean and true selection coefficient +1.1 to calculate the **true-source oracle propensity**. This is deliberately labeled infeasible in observed gaze data. Even that oracle need not minimize finite-source absolute estimation error or produce valid confidence bands.
 
