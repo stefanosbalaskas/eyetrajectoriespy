@@ -10,7 +10,7 @@ def test_frozen_independent_original_source_identity():
     assert audit.OBS_SEED==202610218481
     assert audit.RECOVERY_SEED==202610218482
     assert audit.RECORD_COUNT==1536
-    assert audit.CHECKOUT=="07eec1a3ea3e536df16bbce0761df744707f2d8e"
+    assert audit.CHECKOUT=="6170c5b5941f55a5083cf57dc11293a229d2f9e1"
 
 
 @pytest.mark.parametrize("config",audit.CONFIGS)
