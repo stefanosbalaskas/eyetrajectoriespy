@@ -60,6 +60,7 @@ nav:
       - W3 R82 MCAR/MAR/MNAR observation-process source and figure ledger: development/w3-r82-observation-process-evidence-ledger.md
       - W3 R83 MNAR five-delta source and independent figure evidence ledger: development/w3-r83-mnar-sensitivity-evidence-ledger.md
       - W3 R84 independent random recovery source and identification evidence: development/w3-r84-validation-identification-evidence-ledger.md
+      - W3 R85 prospective nonrandom recovery-validation selection-bias experiment (research only): development/w3-r85-prospective-validation-ascertainment-bias.md
       - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
       - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
