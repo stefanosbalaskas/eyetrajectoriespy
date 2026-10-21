@@ -15,7 +15,7 @@ import numpy as np
 STUDY="W3_R85_VALIDATION_ASCERTAINMENT_BIAS"
 SOURCE_SEED=202610218580
 OBS_SEED=202610218581
-CHECKOUT="ORIGINAL_R85_SCIENCE_CHECKOUT_TO_PIN"
+CHECKOUT="39ed0ed74d5eb23dfee316a8b5dcd73d498a4a9e"
 T=np.linspace(0.,1.,31)
 CONFIGS=("curve_standard","participant_standard")
 SUPPORT=("two_anchors","sixteen_anchors")
