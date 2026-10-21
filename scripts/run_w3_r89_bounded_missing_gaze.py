@@ -81,7 +81,7 @@ def first_stage_missing(x,Y,mu,uniforms,mechanism):
     trial = np.arange(Y.shape[1])[None,:,None,None]
     offset = -1.5 + .3*np.abs(x[:,None,None,None]) + .3*T[None,None,:,None] + .10*trial
     if mechanism == "MNAR":
-        offset += 1.2*np.tanh((Y-mu)/.35)
+        offset = offset + 1.2*np.tanh((Y-mu)/.35)
     p = sigmoid(offset)
     return uniforms < np.broadcast_to(p,Y.shape)
 
