@@ -219,7 +219,7 @@ def audit(original:Path,expected_checkout=CHECKOUT):
     if checkout!=expected_checkout or len(checkout)!=40:
         raise ValueError("R82-A exact original science checkout mismatch")
     obj=json.loads((original/"evidence.json").read_text())
-    if obj["source_checkout"]!=checkout:
+    if obj.get("source_checkout")!=checkout:
         raise ValueError("R82-A source checkout manifest mismatch")
     rows=obj["source_evaluations"]
     report=obj["aggregate"]
