@@ -6,7 +6,7 @@
 
 A valid interpretation separates at least four quantities: (i) the first-stage probability that a gaze observation is missing; (ii) secondary validation success among originally missing outcomes; (iii) the known randomized assignment probability q among outcomes still unmeasured; and (iv) *actual* return completion after assignment. Observing (iii) does not make (iv) known, because assigned outcomes can remain unavailable.
 
-Write the conditional audit-return probability as \(r(Y,X,t)\). R88 examines a family \(r_\gamma(Y,X,t)\) with an assumed γ and a stipulated recorded-predictor/time baseline. The weighting of observed recovered outcomes uses the prespecified assignment fraction times the assumed return probability. **It does not replace unreturned Y, fit the return γ from unobserved Y, or create individual gaze trajectories.**
+Write the conditional audit-return probability as $r(Y,X,t)$. R88 examines a family $r_\gamma(Y,X,t)$ with an assumed γ and a stipulated recorded-predictor/time baseline. The weighting of observed recovered outcomes uses the prespecified assignment fraction times the assumed return probability. **It does not replace unreturned Y, fit the return γ from unobserved Y, or create individual gaze trajectories.**
 
 ## Why these coefficients are not identified bounds
 
