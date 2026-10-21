@@ -69,5 +69,5 @@ def test_tamper_and_mandatory_actual_original(tmp_path):
         independent.logit_probability(X,Y,np.zeros((31,2,2)),7.)
     with pytest.raises(ValueError,match="invalid source stream"):
         independent.stream_seed(0,"curve_standard","unknown")
-    with pytest.raises(ValueError,match="original mismatch"):
+    with pytest.raises(ValueError,match="original numerical mismatch"):
         independent.close(.1,.4,"intentionally tampered number")
