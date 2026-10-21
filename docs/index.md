@@ -99,6 +99,14 @@ R81 tested **new independent-unit Student-t5 trajectories with centered asymmetr
 
 [Read the R81 research article](articles/w3-skew-unit-contamination-r81.md) · [Methods companion](articles/independent-unit-skew-contamination-and-simultaneous-inference.md) · [Original figure/source ledger](development/w3-r81-skewed-unit-evidence-ledger.md)
 
+### New R82: observation-dependent gaze loss and the limits of functional estimability
+
+![Independently audited R82 sample retention and functional grid refusal under MCAR, MAR and MNAR](assets/research/w3-r82-missingness-retention-and-grid-refusal.svg)
+
+R82 independently verified **256 new complete source conditions and 1,024 paired complete/MCAR/MAR/MNAR observation masks**. With only two influential curve-level predictor units, **83.1% of gaze samples remain under MNAR**, yet an average **33.56 out of 62 slope-grid positions fail the preregistered independent-unit support gate**. The stable package correctly refuses incomplete inputs; naive pointwise available-case slopes are *research-only diagnostics*, not calibrated MNAR-adjusted confidence bands. Inference issues #289/#296 and version 1.2 release HOLD remain.
+
+[Read R82 science and plots](articles/w3-response-dependent-gaze-loss-r82.md) · [Observation-process explanation](articles/independent-gaze-loss-and-pointwise-feasibility.md) · [Complete source evidence](development/w3-r82-observation-process-evidence-ledger.md)
+
 ## See the methods
 
 All plotted examples below use **deterministic synthetic data** and are regenerated from package code during the documentation build. They illustrate outputs and diagnostics, not human-subject findings.
