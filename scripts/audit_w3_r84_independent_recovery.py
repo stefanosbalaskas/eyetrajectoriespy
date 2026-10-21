@@ -15,7 +15,7 @@ import numpy as np
 STUDY="W3_R84_EXTERNAL_OUTCOME_VALIDATION_FOR_MNAR"
 SOURCE_SEED=202610218480
 OBS_SEED=202610218481
-CHECKOUT="PIN_ORIGINAL_EXACT_CHECKOUT"
+CHECKOUT="07eec1a3ea3e536df16bbce0761df744707f2d8e"
 T=np.linspace(0.,1.,31)
 CONFIGS=("curve_standard","participant_standard")
 SUPPORT=("two_anchors","sixteen_anchors")
