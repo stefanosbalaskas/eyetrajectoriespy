@@ -1,6 +1,6 @@
 # Actually recovering randomized gaze outcomes: unbiased estimation is not low-variance estimation
 
-*W3 R91 · Prospective synthetic source experiment · 22 October 2026 · Independent replication required before publication*
+*W3 R91 · Prospective synthetic source experiment · 22 October 2026 · Independently reproduced original science*
 
 ## From audit invitations to completed measurements
 
@@ -52,7 +52,7 @@ The conditional oracle design variance is $(1-g)/(gN^2)$ times the sum of square
 
 ## What the original simulation actually found
 
-All 12 dedicated jobs in the original [R91 scientific run #39766521032](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39766521032) passed, including the eight new-source shards and complete archive. The independent [R91-A audit](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/451) must replay the actual frozen original archive before these descriptive original source results are treated as independently verified.
+All 12 dedicated jobs in the original [R91 scientific run #39766521032](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39766521032) passed, including the eight new-source shards and complete archive. The separately coded [R91-A audit](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39767059171) passed **4/4 independent jobs**, including mandatory replay of all 6,144 original frozen source-method records from the immutable archive, independently verifying the reported descriptive computations.
 
 Selected original-source RMSEs, with **32 independent blocks per fixed native-source design** and 16 within-source randomized recovery repetitions, were:
 
