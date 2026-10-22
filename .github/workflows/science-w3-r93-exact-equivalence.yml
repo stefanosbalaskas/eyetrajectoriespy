@@ -1,0 +1,44 @@
+name: science-w3-r93-exact-observational-equivalence
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/prove_w3_r93_observed_equivalence.py"
+      - "tests/test_w3_r93_observed_equivalence.py"
+      - ".github/workflows/science-w3-r93-exact-equivalence.yml"
+      - "docs/development/w3-r93-exact-observed-equivalence-protocol.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-rational-identity-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r93_observed_equivalence.py
+  exact-source-proof-archive:
+    runs-on: ubuntu-24.04
+    needs: exact-rational-identity-tests
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m scripts.prove_w3_r93_observed_equivalence --out build/R93-exact/
+      - run: python -c "from pathlib import Path; from hashlib import sha256; p=Path('build/R93-exact'); line=(p/'SHA256SUMS').read_text().strip(); digest,sep,name=line.partition('  '); assert sep and digest==sha256((p/name).read_bytes()).hexdigest()"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w3-r93-immutable-exact-rational-27-worlds
+          path: build/R93-exact/
+          retention-days: 90
+          if-no-files-found: error
