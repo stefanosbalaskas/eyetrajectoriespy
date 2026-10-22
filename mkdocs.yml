@@ -42,6 +42,8 @@ nav:
           - R86 independent randomized audit of secondary validation failures: articles/w3-random-audit-secondary-missingness-r86.md
           - R87 when randomized audits have selective outcome return: articles/w3-selective-audit-return-r87.md
           - R88 independently audited sensitivity to selective audit returns: articles/w3-r88-return-audit-sensitivity.md
+          - R89 sharp bounded missing-gaze identification limits: articles/w3-r89-sharp-observed-only-bounds.md
+          - R89 methods for observed-only finite-population bounds: articles/w3-r89-sharp-bound-methods.md
           - R88 methods and identifiability limits: articles/reading-assumed-audit-return-sensitivity.md
           - Why auditing recovery failures supplies additional identification information: articles/random-audit-of-validation-failures.md
           - Secondary validation selection and missing-gaze mechanism: articles/secondary-validation-selection-and-mnar.md
@@ -71,6 +73,7 @@ nav:
       - W3 R85 selective secondary validation and source evidence: development/w3-r85-selection-validation-evidence-ledger.md
       - W3 R86 randomized third-stage audit of secondary failures source and figures: development/w3-r86-third-stage-audit-evidence-ledger.md
       - W3 R88 independently audited return-sensitivity evidence and figures: development/w3-r88-original-independent-evidence-ledger.md
+      - W3 R89 independently audited original sharp-bound evidence: development/w3-r89-original-independent-evidence-ledger.md
       - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
       - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
