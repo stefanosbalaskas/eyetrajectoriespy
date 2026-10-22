@@ -1,0 +1,21 @@
+# R91-A — independent original-source audit for truly completed random retrieval
+
+**Immutable-source numerical verification protocol, research-only.** The separate R91-A implementation imports neither the original R91 source generator nor original Horvitz–Thompson estimator nor the public eyetrajectoriespy package.
+
+Original R91 [draft PR #450](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/450), prospective independent-source [workflow #39766521032](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39766521032). Original branch head frozen at `bd3c7b25323264432406c499035761129bb8a044`, actual original archived source checkout from GitHub PR merge context `eb65592307e1c7bc70d5cd31794bae46996bc656`. The source archive will have complete original `cases.json`, `summary.json`, `source-commit.txt` and `SHA256SUMS`. Do not represent source/archive jobs as complete until their exact run is successful and the downloaded evidence exists.
+
+## Required audit contracts
+
+1. Independent generation of all 64 frozen complete X/Y conditions (32 independent primitive blocks in each native design), 128 paired first-stage MAR/MNAR masks and outcome-selective secondary return masks, by separately arranged equations and identical frozen seeds.
+2. A genuinely independent, completed Bernoulli retrieval step on the *still-unobserved* records, nested at $g=.10$, .25 and .50, with 16 fixed-source conditional assignment repetitions. Regenerate complete observed-only response arrays with NaN at every unreturned originally missing target record. Compare every original mask/seed/X/Y digest.
+3. Recalculate all **6,144** original-source method rows, with exact source-unit keys and no duplicate/omission. For every row verify the observed-only finite-population HT point estimate, observed-only unbiased design-variance estimate, naive measured-only estimator, sharp identified interval, simulator-only full-source truth and oracle conditional design variance. Those last two diagnostics must never leak into the HT fit.
+4. Independently aggregate all fixed native-unit design × first-stage mechanism × guarantee-fraction cell statistics. Verify source-level estimand, 32 independent-block denominators, 16 conditional replicates, all unfavorable errors, and original SHA256 archive member digests. Reject truncated, mismatched or mixed-checkout artifacts.
+5. Fail-closed *analytic* expectation and variance identity tests with exhaustive enumeration of two independent Bernoulli outcomes, not only 16-draw numerical sampling. Require success on Python 3.11–3.13, then the mandatory original actual-artifact replay. An ordinary 3-version test pass alone cannot qualify original source numbers.
+
+## Scientific identification boundary
+
+Randomized **completed measurement** with known positive inclusion probability can support unbiased *design expectation* of an HT estimate for the realized finite-population mean of the bounded transformed initially missing gaze target. It is not proof of exact identification from a single incomplete sample; no nominal confidence band or specific CI is implemented. The HT estimator is not guaranteed to lie in [0,1]. Previously selectively recovered observations enter as measured census values; the remaining outcomes are represented by truly independent known-probability randomized *completed* recovery.
+
+If the user cannot actually recover randomly selected historical gaze values, or audit completions remain outcome selective, this design property does not apply. It cannot identify real-data MNAR selection/return parameters, recover missing sensor time series, identify functional regression slopes or repair the open 90% simultaneous-band undercoverage.
+
+Keep original R91 and independent R91-A as draft and unmerged research code. Publication of source-derived figures or website claims requires a successful mandatory original 6,144-row independent audit followed by a separate documentation-only PR, strict exact-head CI and protected-main Pages deployment. Scientific blockers [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) and [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) remain OPEN. Stable public 1.1.0 unchanged; v1.2 GitHub Release/PyPI HOLD.

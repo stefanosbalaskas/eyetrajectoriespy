@@ -1,0 +1,63 @@
+name: science-w3-r91-independent-original-recovery
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r91_original_completed_recovery_independent.py"
+      - "tests/test_w3_r91_independent_original_audit.py"
+      - ".github/workflows/science-w3-r91-independent-original.yml"
+      - "docs/development/w3-r91-independent-original-audit.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  independent-design-identity-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r91_independent_original_audit.py
+
+  mandatory-real-original-6144-record-numerical-replay:
+    needs: independent-design-identity-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r91-immutable-original-completed-random-recovery
+          run-id: 39766521032
+          github-token: ${{ github.token }}
+          repository: stefanosbalaskas/eyetrajectoriespy
+          path: build/R91-original-readonly/
+      - run: python -m scripts.audit_w3_r91_original_completed_recovery_independent --original build/R91-original-readonly/ --out build/R91-A-independent/verification.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r91-A-independent-actual-6144-source-replay
+          path: build/R91-A-independent/
+          if-no-files-found: warn
+          retention-days: 90
