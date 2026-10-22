@@ -46,6 +46,8 @@ nav:
           - R90 audit assignment saturation versus selective return: articles/w3-r90-audit-saturation-selective-return.md
           - R91 guaranteed completed random recovery and HT bias–variance trade-off: articles/w3-r91-guaranteed-recovery-design-ht.md
           - R92 selective nonreturn and fragile nominal weighting: articles/w3-r92-near-complete-return-fragility.md
+          - R93 near-complete audit exact nonidentification: articles/w3-r93-exact-observed-law-nonidentification.md
+          - R93 sharp binary identified-set proof: articles/w3-r93-exact-observability-methods.md
           - R92 audit-completion conditional-bias methods: articles/w3-r92-selective-return-methods.md
           - R91 design-based random recovery methods and limitations: articles/w3-r91-guaranteed-recovery-methods.md
           - R90 finite-population audit saturation methods: articles/w3-r90-audit-saturation-methods.md
@@ -83,6 +85,7 @@ nav:
       - W3 R90 original and independent audit saturation evidence: development/w3-r90-original-independent-evidence-ledger.md
       - W3 R91 original and independent completed-recovery evidence: development/w3-r91-independent-recovery-evidence-ledger.md
       - W3 R92 original and independent selective-return evidence: development/w3-r92-original-independent-evidence-ledger.md
+      - W3 R93 exact original and independent likelihood evidence: development/w3-r93-original-independent-equivalence-ledger.md
       - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
       - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
       - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md

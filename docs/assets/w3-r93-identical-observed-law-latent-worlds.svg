@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="620" viewBox="0 0 1160 620" role="img" aria-labelledby="title desc"><title id="title">Three latent models with identical observable joint law but different outcome means</title><desc id="desc">At known audit invitation probability 50 percent and actual response 99 percent, low, uniform, and high latent binary outcome means are 0.495, 0.500, 0.505. All have identical observable event probabilities: no invitation 0.50, response Z0 0.2475, response Z1 0.2475 and invited nonresponse 0.005.</desc><rect width="1160" height="620" fill="white"/><text x="43" y="47" font-family="Arial,sans-serif" font-size="25" font-weight="bold" fill="#173d55">Different missing-outcome means; the same observations</text><text x="43" y="74" font-family="Arial,sans-serif" font-size="15" fill="#567286">99% conditional actual return · randomized invitations g = 50%</text>
+<text x="46" y="170" font-family="Arial,sans-serif" font-size="17" font-weight="bold" fill="#24495f">Lower mean</text><text x="46" y="193" font-family="Arial,sans-serif" font-size="12" fill="#607d8f">c₀=.98020, c₁=1.00000</text>
+<rect x="287.00" y="145" width="396.00" height="56" fill="#b6c9d5" stroke="white" stroke-width="1"/>
+<rect x="683.00" y="145" width="196.02" height="56" fill="#246c97" stroke="white" stroke-width="1"/>
+<rect x="879.02" y="145" width="196.02" height="56" fill="#c58442" stroke="white" stroke-width="1"/>
+<rect x="1075.04" y="145" width="3.96" height="56" fill="#a04355" stroke="white" stroke-width="1"/>
+<text x="1084" y="180" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="#31576e">p=.495</text>
+<text x="46" y="285" font-family="Arial,sans-serif" font-size="17" font-weight="bold" fill="#24495f">Uniform return</text><text x="46" y="308" font-family="Arial,sans-serif" font-size="12" fill="#607d8f">c₀=.99000, c₁=.99000</text>
+<rect x="287.00" y="260" width="396.00" height="56" fill="#b6c9d5" stroke="white" stroke-width="1"/>
+<rect x="683.00" y="260" width="196.02" height="56" fill="#246c97" stroke="white" stroke-width="1"/>
+<rect x="879.02" y="260" width="196.02" height="56" fill="#c58442" stroke="white" stroke-width="1"/>
+<rect x="1075.04" y="260" width="3.96" height="56" fill="#a04355" stroke="white" stroke-width="1"/>
+<text x="1084" y="295" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="#31576e">p=.500</text>
+<text x="46" y="400" font-family="Arial,sans-serif" font-size="17" font-weight="bold" fill="#24495f">Higher mean</text><text x="46" y="423" font-family="Arial,sans-serif" font-size="12" fill="#607d8f">c₀=1.00000, c₁=.98020</text>
+<rect x="287.00" y="375" width="396.00" height="56" fill="#b6c9d5" stroke="white" stroke-width="1"/>
+<rect x="683.00" y="375" width="196.02" height="56" fill="#246c97" stroke="white" stroke-width="1"/>
+<rect x="879.02" y="375" width="196.02" height="56" fill="#c58442" stroke="white" stroke-width="1"/>
+<rect x="1075.04" y="375" width="3.96" height="56" fill="#a04355" stroke="white" stroke-width="1"/>
+<text x="1084" y="410" font-family="Arial,sans-serif" font-size="20" font-weight="bold" fill="#31576e">p=.505</text>
+<rect x="62" y="517" width="20" height="15" fill="#b6c9d5"/><text x="90" y="530" font-family="Arial,sans-serif" font-size="13" fill="#37596e">Not invited (50.00%)</text>
+<rect x="277" y="517" width="20" height="15" fill="#246c97"/><text x="305" y="530" font-family="Arial,sans-serif" font-size="13" fill="#37596e">Observed Z=0 (24.75%)</text>
+<rect x="547" y="517" width="20" height="15" fill="#c58442"/><text x="575" y="530" font-family="Arial,sans-serif" font-size="13" fill="#37596e">Observed Z=1 (24.75%)</text>
+<rect x="817" y="517" width="20" height="15" fill="#a04355"/><text x="845" y="530" font-family="Arial,sans-serif" font-size="13" fill="#37596e">Assigned, no Z (0.5%)</text>
+<text x="43" y="591" font-family="Arial,sans-serif" font-size="12" fill="#668092">All observable bars are exactly identical by rational arithmetic. The unreturned outcome mixture is unobserved, not fitted.</text></svg>
