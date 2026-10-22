@@ -43,7 +43,7 @@ This identity requires only valid measured outcomes, an observable target/measur
 
 ## Original observed-only results
 
-The frozen original [science run #39746751227](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39746751227) completed **12/12 dedicated jobs**, including all eight independent-source shards and the 1,280-record SHA256 archive. A separately implemented [R90-A audit](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/448) must pass its own real-archive replay before these original source values can be described as independently verified.
+The frozen original [science run #39746751227](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39746751227) completed **12/12 dedicated jobs**, including all eight independent-source shards and the 1,280-record SHA256 archive. The separately implemented [R90-A independent audit](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/39747852468) has now passed **4/4 dedicated jobs**, including the mandatory real-original full 1,280-record archive replay. These frozen synthetic computations are independently reproduced, without establishing field-data identification.
 
 At 100% audit assignment, the original source means are:
 
