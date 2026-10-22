@@ -1,0 +1,43 @@
+name: science-w3-r94-external-completion-floors
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/prove_w3_r94_external_completion_floors.py"
+      - "tests/test_w3_r94_external_completion_floors.py"
+      - ".github/workflows/science-w3-r94-external-completion-floors.yml"
+      - "docs/development/w3-r94-external-completion-floor-protocol.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-sharp-set-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m unittest discover -s tests -p 'test_w3_r94_external_completion_floors.py'
+  exact-evidence-archive:
+    runs-on: ubuntu-24.04
+    needs: exact-sharp-set-tests
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m scripts.prove_w3_r94_external_completion_floors --out build/R94-exact/
+      - run: python -c "from pathlib import Path; from hashlib import sha256; p=Path('build/R94-exact'); h,s,f=(p/'SHA256SUMS').read_text().strip().partition('  '); assert s and h==sha256((p/f).read_bytes()).hexdigest()"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w3-r94-exact-floors-54-record-original-archive
+          path: build/R94-exact/
+          retention-days: 90
+          if-no-files-found: error
