@@ -1,0 +1,43 @@
+name: science-w3-r95-monotone-return
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/prove_w3_r95_monotone_return_direction.py"
+      - "tests/test_w3_r95_monotone_return_direction.py"
+      - ".github/workflows/science-w3-r95-monotone-return.yml"
+      - "docs/development/w3-r95-monotone-direction-original-protocol.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-direction-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m unittest discover -s tests -p 'test_w3_r95_monotone_return_direction.py'
+  exact-immutable-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    needs: exact-direction-tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m scripts.prove_w3_r95_monotone_return_direction --out build/R95-exact/
+      - run: python -c "from pathlib import Path; from hashlib import sha256; d=Path('build/R95-exact'); h,s,n=(d/'SHA256SUMS').read_text().strip().partition('  '); assert s and h==sha256((d/n).read_bytes()).hexdigest()"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: w3-r95-immutable-original-54-exact-directions
+          path: build/R95-exact/
+          retention-days: 90
+          if-no-files-found: error
