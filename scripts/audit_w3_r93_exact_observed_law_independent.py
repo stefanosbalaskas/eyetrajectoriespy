@@ -30,7 +30,7 @@ def frac(x):
     if not a.lstrip("-").isdigit() or not b.isdigit() or int(b)==0:
         raise ValueError("R93-A bad rational numerator/denominator")
     value=Fraction(int(a),int(b))
-    if str(value)!=x:
+    if f"{value.numerator}/{value.denominator}"!=x:
         raise ValueError("R93-A noncanonical exact fraction")
     return value
 
