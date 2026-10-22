@@ -46,7 +46,7 @@ The original [science run #39696542346](https://github.com/stefanosbalaskas/eyet
 
 There are **32 independent generating blocks per fixed cell**. The 512 archived rows reflect repeated paired analysis combinations, not 512 independent datasets.
 
-<text>Mean sharp bounded-*mean* interval widths for outcome-selective audit returns:</text>
+Mean sharp bounded-*mean* interval widths for outcome-selective audit returns:
 
 | First-stage mechanism | Independent units | 25% assignment | 50% assignment |
 |---|---|---:|---:|
