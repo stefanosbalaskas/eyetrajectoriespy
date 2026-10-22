@@ -1,0 +1,51 @@
+name: science-w3-r95-independent-original
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r95_independent_direction_archive.py"
+      - "tests/test_w3_r95_independent_direction_archive.py"
+      - ".github/workflows/science-w3-r95-independent-original.yml"
+      - "docs/development/w3-r95-independent-audit-protocol.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-source-algebra-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m unittest discover -s tests -p 'test_w3_r95_independent_direction_archive.py'
+  mandatory-frozen-original-54-case-replay:
+    runs-on: ubuntu-24.04
+    needs: independent-source-algebra-tests
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r95-immutable-original-54-exact-directions
+          run-id: 39872191344
+          github-token: ${{ github.token }}
+          repository: stefanosbalaskas/eyetrajectoriespy
+          path: build/R95-original-readonly/
+      - run: python -m scripts.audit_w3_r95_independent_direction_archive --original build/R95-original-readonly/ --out build/R95-independent/report.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r95-A-independent-actual-original-54-case-replay
+          path: build/R95-independent/
+          retention-days: 90
+          if-no-files-found: warn
