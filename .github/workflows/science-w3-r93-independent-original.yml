@@ -1,0 +1,52 @@
+name: science-w3-r93-independent-observed-law
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r93_exact_observed_law_independent.py"
+      - "tests/test_w3_r93_independent_observed_law.py"
+      - ".github/workflows/science-w3-r93-independent-original.yml"
+      - "docs/development/w3-r93-independent-exact-evidence.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-exact-algebra-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r93_independent_observed_law.py
+  mandatory-immutable-original-27-world-replay:
+    runs-on: ubuntu-24.04
+    needs: independent-exact-algebra-contracts
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r93-immutable-exact-rational-27-worlds
+          run-id: 39854975837
+          github-token: ${{ github.token }}
+          repository: stefanosbalaskas/eyetrajectoriespy
+          path: build/R93-original-readonly/
+      - run: python -m scripts.audit_w3_r93_exact_observed_law_independent --original build/R93-original-readonly/ --out build/R93-independent/exact-replay.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r93-A-independent-exact-27-world-observed-law-replay
+          path: build/R93-independent/
+          retention-days: 90
+          if-no-files-found: warn
