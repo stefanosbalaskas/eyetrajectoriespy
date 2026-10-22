@@ -7,7 +7,7 @@ from scripts import run_w3_r89_bounded_missing_gaze as s
 
 def test_source_and_mask_independent_implementation():
     assert a.EXPECTED_ROWS==512
-    assert a.ORIGINAL_CHECKOUT=="fe9dc0447f651979db5b62ca4311e00827c601b0"
+    assert a.ORIGINAL_CHECKOUT=="656df21a042e0e823147e37002580aeba41ac17d"
     assert a.SOURCE_SEEDS==s.SEEDS
     for c in a.CONFIGS:
         X,Y,mu=a.source(0,c)
