@@ -236,7 +236,7 @@ def audit(original):
     if (summary["study"]!=ORIGINAL_STUDY
         or summary["new_independent_source_conditions"]!=64
         or summary["paired_first_stage_masks"]!=128
-        or summary["repeated_method_rows_not_independent"]!=EXPECTED_ROWS
+        or summary["repeated_method_records_not_independent"]!=EXPECTED_ROWS
         or summary["blocks_per_fixed_cell"]!=BLOCKS
         or summary["bounded_transform"]!="clip((Y+1)/2,0,1)"
         or summary["no_statistical_coverage_claim"] is not True
