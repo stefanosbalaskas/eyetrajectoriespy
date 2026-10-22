@@ -1,0 +1,61 @@
+name: science-w3-r90-independent-original-saturation
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/audit_w3_r90_original_saturation_independent.py"
+      - "tests/test_w3_r90_independent_original_saturation.py"
+      - ".github/workflows/science-w3-r90-independent-audit.yml"
+      - "docs/development/w3-r90-independent-original-evidence.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  independent-source-and-bound-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r90_independent_original_saturation.py
+  mandatory-independent-original-1280-replay:
+    needs: independent-source-and-bound-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install numpy
+      - uses: actions/download-artifact@v4
+        with:
+          name: w3-r90-immutable-original-audit-saturation-1280-records
+          run-id: 39746751227
+          github-token: ${{ github.token }}
+          repository: stefanosbalaskas/eyetrajectoriespy
+          path: build/R90-original-readonly/
+      - run: python -m scripts.audit_w3_r90_original_saturation_independent --original build/R90-original-readonly/ --out build/R90-independent/evidence.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r90-A-independent-all-1280-source-saturation-replay
+          path: build/R90-independent/
+          if-no-files-found: warn
+          retention-days: 90
