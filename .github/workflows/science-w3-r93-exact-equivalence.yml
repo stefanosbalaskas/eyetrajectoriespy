@@ -23,7 +23,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
-      - run: python -m pip install pytest
+      - run: python -m pip install -e ".[dev]"
       - run: python -m pytest -q tests/test_w3_r93_observed_equivalence.py
   exact-source-proof-archive:
     runs-on: ubuntu-24.04
