@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1160" height="720" viewBox="0 0 1160 720" role="img" aria-labelledby="title desc"><title id="title">R90 audit assignment saturation and selective return</title><desc id="desc">Original 32-block average sharp finite-population mean bounds under five nested randomized audit fractions and complete versus outcome-selective returns, across four synthetic designs. Not confidence intervals.</desc><rect width="1160" height="720" fill="white"/><text x="45" y="41" font-family="Arial,sans-serif" font-weight="bold" font-size="24" fill="#193a50">Assignment saturation does not imply observed completeness</text><text x="45" y="67" font-family="Arial,sans-serif" font-size="14" fill="#4e7187">Original R90 source-level mean bound widths · 32 independent blocks per cell</text>
+<rect x="46" y="105" width="537" height="248" rx="10" fill="#f8fafc" stroke="#d7e3eb"/><text x="61" y="134" font-family="Arial,sans-serif" font-size="16" font-weight="bold" fill="#244a65">MAR | curves</text>
+<line x1="104" y1="323.00" x2="534" y2="323.00" stroke="#e1e9ed"/><text x="94" y="327.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.0</text>
+<line x1="104" y1="282.00" x2="534" y2="282.00" stroke="#e1e9ed"/><text x="94" y="286.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.2</text>
+<line x1="104" y1="241.00" x2="534" y2="241.00" stroke="#e1e9ed"/><text x="94" y="245.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.4</text>
+<line x1="104" y1="200.00" x2="534" y2="200.00" stroke="#e1e9ed"/><text x="94" y="204.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.6</text>
+<line x1="104" y1="159.00" x2="534" y2="159.00" stroke="#e1e9ed"/><text x="94" y="163.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.8</text>
+<text x="104.00" y="343" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">0%</text>
+<text x="211.50" y="343" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">25%</text>
+<text x="319.00" y="343" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">50%</text>
+<text x="426.50" y="343" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">75%</text>
+<text x="534.00" y="343" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">100%</text>
+<polyline points="104.00,173.65 211.50,210.53 319.00,248.12 426.50,285.89 534.00,323.00" fill="none" stroke="#21769e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="104.00" cy="173.65" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="211.50" cy="210.53" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="319.00" cy="248.12" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="426.50" cy="285.89" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="534.00" cy="323.00" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<polyline points="104.00,173.65 211.50,199.66 319.00,226.17 426.50,252.57 534.00,278.66" fill="none" stroke="#c27a34" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="104.00" cy="173.65" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="211.50" cy="199.66" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="319.00" cy="226.17" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="426.50" cy="252.57" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="534.00" cy="278.66" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<text x="526.00" y="266.66" text-anchor="end" font-size="13" font-family="Arial,sans-serif" font-weight="bold" fill="#c27a34">0.216 floor</text>
+<rect x="609" y="105" width="537" height="248" rx="10" fill="#f8fafc" stroke="#d7e3eb"/><text x="624" y="134" font-family="Arial,sans-serif" font-size="16" font-weight="bold" fill="#244a65">MAR | participants</text>
+<line x1="667" y1="323.00" x2="1097" y2="323.00" stroke="#e1e9ed"/><text x="657" y="327.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.0</text>
+<line x1="667" y1="282.00" x2="1097" y2="282.00" stroke="#e1e9ed"/><text x="657" y="286.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.2</text>
+<line x1="667" y1="241.00" x2="1097" y2="241.00" stroke="#e1e9ed"/><text x="657" y="245.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.4</text>
+<line x1="667" y1="200.00" x2="1097" y2="200.00" stroke="#e1e9ed"/><text x="657" y="204.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.6</text>
+<line x1="667" y1="159.00" x2="1097" y2="159.00" stroke="#e1e9ed"/><text x="657" y="163.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.8</text>
+<text x="667.00" y="343" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">0%</text>
+<text x="774.50" y="343" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">25%</text>
+<text x="882.00" y="343" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">50%</text>
+<text x="989.50" y="343" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">75%</text>
+<text x="1097.00" y="343" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">100%</text>
+<polyline points="667.00,174.85 774.50,211.65 882.00,248.09 989.50,285.57 1097.00,323.00" fill="none" stroke="#21769e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="667.00" cy="174.85" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="774.50" cy="211.65" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="882.00" cy="248.09" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="989.50" cy="285.57" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="1097.00" cy="323.00" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<polyline points="667.00,174.85 774.50,201.10 882.00,227.14 989.50,253.66 1097.00,280.05" fill="none" stroke="#c27a34" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="667.00" cy="174.85" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="774.50" cy="201.10" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="882.00" cy="227.14" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="989.50" cy="253.66" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="1097.00" cy="280.05" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<text x="1089.00" y="268.05" text-anchor="end" font-size="13" font-family="Arial,sans-serif" font-weight="bold" fill="#c27a34">0.210 floor</text>
+<rect x="46" y="378" width="537" height="248" rx="10" fill="#f8fafc" stroke="#d7e3eb"/><text x="61" y="407" font-family="Arial,sans-serif" font-size="16" font-weight="bold" fill="#244a65">MNAR | curves</text>
+<line x1="104" y1="596.00" x2="534" y2="596.00" stroke="#e1e9ed"/><text x="94" y="600.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.0</text>
+<line x1="104" y1="555.00" x2="534" y2="555.00" stroke="#e1e9ed"/><text x="94" y="559.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.2</text>
+<line x1="104" y1="514.00" x2="534" y2="514.00" stroke="#e1e9ed"/><text x="94" y="518.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.4</text>
+<line x1="104" y1="473.00" x2="534" y2="473.00" stroke="#e1e9ed"/><text x="94" y="477.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.6</text>
+<line x1="104" y1="432.00" x2="534" y2="432.00" stroke="#e1e9ed"/><text x="94" y="436.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.8</text>
+<text x="104.00" y="616" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">0%</text>
+<text x="211.50" y="616" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">25%</text>
+<text x="319.00" y="616" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">50%</text>
+<text x="426.50" y="616" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">75%</text>
+<text x="534.00" y="616" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">100%</text>
+<polyline points="104.00,449.64 211.50,485.98 319.00,522.67 426.50,559.79 534.00,596.00" fill="none" stroke="#21769e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="104.00" cy="449.64" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="211.50" cy="485.98" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="319.00" cy="522.67" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="426.50" cy="559.79" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="534.00" cy="596.00" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<polyline points="104.00,449.64 211.50,474.57 319.00,499.84 426.50,524.95 534.00,549.72" fill="none" stroke="#c27a34" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="104.00" cy="449.64" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="211.50" cy="474.57" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="319.00" cy="499.84" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="426.50" cy="524.95" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="534.00" cy="549.72" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<text x="526.00" y="537.72" text-anchor="end" font-size="13" font-family="Arial,sans-serif" font-weight="bold" fill="#c27a34">0.226 floor</text>
+<rect x="609" y="378" width="537" height="248" rx="10" fill="#f8fafc" stroke="#d7e3eb"/><text x="624" y="407" font-family="Arial,sans-serif" font-size="16" font-weight="bold" fill="#244a65">MNAR | participants</text>
+<line x1="667" y1="596.00" x2="1097" y2="596.00" stroke="#e1e9ed"/><text x="657" y="600.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.0</text>
+<line x1="667" y1="555.00" x2="1097" y2="555.00" stroke="#e1e9ed"/><text x="657" y="559.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.2</text>
+<line x1="667" y1="514.00" x2="1097" y2="514.00" stroke="#e1e9ed"/><text x="657" y="518.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.4</text>
+<line x1="667" y1="473.00" x2="1097" y2="473.00" stroke="#e1e9ed"/><text x="657" y="477.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.6</text>
+<line x1="667" y1="432.00" x2="1097" y2="432.00" stroke="#e1e9ed"/><text x="657" y="436.00" text-anchor="end" font-family="Arial,sans-serif" font-size="12" fill="#567386">0.8</text>
+<text x="667.00" y="616" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">0%</text>
+<text x="774.50" y="616" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">25%</text>
+<text x="882.00" y="616" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">50%</text>
+<text x="989.50" y="616" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">75%</text>
+<text x="1097.00" y="616" text-anchor="middle" font-size="12" font-family="Arial,sans-serif" fill="#4b6d81">100%</text>
+<polyline points="667.00,452.61 774.50,488.64 882.00,523.72 989.50,559.93 1097.00,596.00" fill="none" stroke="#21769e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="667.00" cy="452.61" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="774.50" cy="488.64" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="882.00" cy="523.72" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="989.50" cy="559.93" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<circle cx="1097.00" cy="596.00" r="4.3" fill="#21769e" stroke="white" stroke-width="1.2"/>
+<polyline points="667.00,452.61 774.50,477.17 882.00,501.18 989.50,525.90 1097.00,550.26" fill="none" stroke="#c27a34" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="667.00" cy="452.61" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="774.50" cy="477.17" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="882.00" cy="501.18" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="989.50" cy="525.90" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<circle cx="1097.00" cy="550.26" r="4.3" fill="#c27a34" stroke="white" stroke-width="1.2"/>
+<text x="1089.00" y="538.26" text-anchor="end" font-size="13" font-family="Arial,sans-serif" font-weight="bold" fill="#c27a34">0.223 floor</text>
+<line x1="265" y1="670" x2="296" y2="670" stroke="#21769e" stroke-width="4"/><text x="310" y="675" font-family="Arial,sans-serif" font-size="14" fill="#355970">All assigned outcomes return</text><line x1="625" y1="670" x2="656" y2="670" stroke="#c27a34" stroke-width="4"/><text x="670" y="675" font-family="Arial,sans-serif" font-size="14" fill="#355970">Outcome-selective return</text><text x="45" y="708" font-family="Arial,sans-serif" font-size="12" fill="#657e90">X: percent assigned an audit · Y: sharp interval width, not nominal confidence uncertainty.</text></svg>
