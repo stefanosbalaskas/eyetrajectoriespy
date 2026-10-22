@@ -1,0 +1,95 @@
+name: science-w3-r91-completed-random-recovery
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - "scripts/run_w3_r91_guaranteed_random_recovery.py"
+      - "tests/test_w3_r91_guaranteed_random_recovery.py"
+      - ".github/workflows/science-w3-r91-random-recovery.yml"
+      - "docs/development/w3-r91-random-recovery-protocol.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  observed-only-design-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11","3.12","3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m pytest -q tests/test_w3_r91_guaranteed_random_recovery.py
+
+  frozen-fresh-source-shards:
+    needs: observed-only-design-contracts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {start: 0, stop: 4}
+          - {start: 4, stop: 8}
+          - {start: 8, stop: 12}
+          - {start: 12, stop: 16}
+          - {start: 16, stop: 20}
+          - {start: 20, stop: 24}
+          - {start: 24, stop: 28}
+          - {start: 28, stop: 32}
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - run: python -m scripts.run_w3_r91_guaranteed_random_recovery --start ${{ matrix.start }} --stop ${{ matrix.stop }} --out build/R91-shard/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r91-original-shard-${{ matrix.start }}
+          path: build/R91-shard/
+          if-no-files-found: warn
+          retention-days: 90
+
+  original-sha256-6144-record-ledger:
+    needs: [observed-only-design-contracts, frozen-fresh-source-shards]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: w3-r91-original-shard-*
+          path: build/R91-parts/
+          merge-multiple: false
+      - run: python -m scripts.run_w3_r91_guaranteed_random_recovery --merge-parts build/R91-parts/ --out build/R91-complete/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: w3-r91-immutable-original-completed-random-recovery
+          path: build/R91-complete/
+          if-no-files-found: warn
+          retention-days: 90
