@@ -1,0 +1,55 @@
+---
+title: Start here
+description: Choose a stable eyetrajectoriespy analysis route and find installation, data schemas and worked examples.
+---
+
+# Start here
+
+**From continuous gaze data to a defensible functional analysis.** The published `eyetrajectoriespy==1.1.0` package supports continuous and sparse functional analysis; the ten-workflow orchestration discussed in the research pages is a **1.2 development-source candidate**, not a feature of stable 1.1.0.
+
+<div class="grid cards" markdown>
+
+- :material-download: **Install stable 1.1.0**
+
+  `pip install eyetrajectoriespy==1.1.0`
+
+  [Quick start](../quickstart.md) · [Stable API](../reference/api.md)
+
+- :material-file-table-box-multiple: **Understand your data**
+
+  Choose common-grid, paired sparse, asynchronous coordinate-specific or repeated-trial representation **before** model fitting.
+
+  [Input schemas](../guides/input-schemas.md) · [Representation guide](../concepts/representations.md)
+
+- :material-chart-bell-curve-cumulative: **Choose a scientific method**
+
+  FPCA/MFPCA, functional regression, repeated effects, generalized responses or recurrence.
+
+  [Decision map](../concepts/decision-map.md) · [Methods](../methods/index.md)
+
+- :material-image-multiple: **Learn through examples**
+
+  Inspect deterministic synthetic illustrations and the assumptions behind every plot.
+
+  [Visual gallery](../methods/visual-gallery.md) · [Tutorials](../tutorials/index.md)
+
+</div>
+
+## Three questions before any fit
+
+1. **Observation unit** — independent curve, participant, trial or repeated participant cluster?
+2. **Time representation** — aligned common grid or irregular/asynchronous native samples?
+3. **Uncertainty target** — descriptive variation, prediction, pointwise effect or simultaneous functional inference? Not all targets are qualified.
+
+The [scientific contracts](../concepts/contracts.md) document when an analysis refuses to proceed. The [research evidence library](../research/index.md) documents important experimental failures rather than hiding them.
+
+## What is actually available?
+
+| Surface | Today | Where to read |
+| --- | --- | --- |
+| Stable package | Published **1.1.0**, Python 3.11–3.13 | [Stable release](../releases/1.1.0.md) |
+| Sparse/irregular 1.1 methods | Stable qualified module-scoped methods | [1.1 API](../reference/one-dot-one-module-api.md) |
+| Ten transparent `run_*_workflow()` routes | **Unpublished 1.2 candidate source** | [Workflow guide](../workflows/workflow-orchestration.md) |
+| R76–R95 W3 inference studies | Separate research and evidence, not production estimators | [Research studies](../research/studies.md) |
+
+**Do not infer that a research figure corresponds to a released estimator or calibrated confidence interval.**
