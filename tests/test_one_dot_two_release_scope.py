@@ -120,3 +120,33 @@ def test_source_audit_historical_evidence_cannot_be_fabricated():
     data["scope"]["last_completed_evidence"]["exact_head_workflows_successful"]=28
     with pytest.raises(RuntimeError,match="evidence"):
         policy.validate_scope(**data)
+
+
+def test_experimental_E1_to_E4_module_is_explicitly_in_wheel_but_not_stable():
+    data=_inputs()
+    module=data["scope"]["bundled_unqualified_experimental_module"]
+    assert module["bundled_in_dev_wheel"] is True
+    assert module["supported_in_proposed_ten_workflow_api"] is False
+    assert module["public_contract_frozen"] is False
+    assert module["eligible_for_literal_1_2_release_without_separate_e5_review"] is False
+    assert len(module["named_experimental_helpers"])==12
+    assert set(module["named_experimental_helpers"]).isdisjoint(
+        set(data["audit"]["workflow_entry_points"]))
+    assert policy.validate_scope(**data)["release_authorized"] is False
+
+
+def test_unqualified_experimental_module_cannot_be_omitted_or_promoted():
+    data=_inputs()
+    del data["scope"]["bundled_unqualified_experimental_module"]
+    with pytest.raises(RuntimeError,match="ignores bundled"):
+        policy.validate_scope(**data)
+    data=_inputs()
+    data["scope"]["bundled_unqualified_experimental_module"][
+        "eligible_for_literal_1_2_release_without_separate_e5_review"]=True
+    with pytest.raises(RuntimeError,match="promoted"):
+        policy.validate_scope(**data)
+    data=_inputs()
+    data["scope"]["bundled_unqualified_experimental_module"][
+        "named_experimental_helpers"].remove("run_preprocessing_plan")
+    with pytest.raises(RuntimeError,match="helper surface"):
+        policy.validate_scope(**data)
