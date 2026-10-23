@@ -40,7 +40,7 @@ def fully_armed():
 def test_current_1_2_release_stays_completely_disarmed():
     policy=load("verify_release_publication_gate")
     readiness=current()
-    assert readiness["current_development_version"]=="1.2.0rc2.dev0"
+    assert readiness["current_development_version"]=="1.2.0rc2"
     assert readiness["production_release_ready"] is False
     assert readiness["github_release_ready"] is False
     assert readiness["testpypi_publication_ready"] is False
@@ -147,9 +147,10 @@ def test_required_checks_reject_skipped_neutral_and_incomplete(monkeypatch):
     assert governance._passed_checks(repo,commit,"fake")=={good}
 
 
-def test_frozen_candidate_cannot_reuse_rc1_evidence():
+def test_literal_candidate_needs_new_exact_version_evidence_but_no_publication():
     version=load("verify_release_version")
-    assert version.verify_version_contract()=="1.2.0rc2.dev0"
-    assert set(version.qualified_evidence_contract().values())=={"1.2.0rc1"}
-    with pytest.raises(RuntimeError,match="development versions"):
-        version.verify_version_contract(production=True)
+    assert version.verify_version_contract()=="1.2.0rc2"
+    assert set(version.qualified_evidence_contract().values())=={"1.2.0rc2"}
+    assert version.verify_version_contract(production=True)=="1.2.0rc2"
+    assert current()["production_release_ready"] is False
+    assert current()["github_release_ready"] is False
