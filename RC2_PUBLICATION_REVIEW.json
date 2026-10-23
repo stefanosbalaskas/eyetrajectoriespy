@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "record_kind": "release_authorization_review_pending",
+  "candidate_version": "1.2.0rc2",
+  "published_stable_version": "1.1.0",
+  "exact_candidate_merge_commit": "9891feee6e5daa638a9de5cada295482a5fa4884",
+  "source_qualification_pr": 471,
+  "source_pr_exact_head_qualified": true,
+  "source_pr_successful_workflows": 33,
+  "protected_main_qualification_complete": true,
+  "protected_main_expected_workflow_runs": 30,
+  "protected_main_successful_workflow_runs": 30,
+  "protected_main_failed_workflow_runs": 0,
+  "protected_main_evidence_url": "https://github.com/stefanosbalaskas/eyetrajectoriespy/actions",
+  "protected_main_workflows_all_successful": true,
+  "independent_human_release_review_recorded": false,
+  "narrow_scope_approved_for_release": false,
+  "github_release_authorized": false,
+  "production_pypi_authorized": false,
+  "testpypi_authorized": false,
+  "tag_creation_authorized": false,
+  "manual_workflow_dispatch_performed": false,
+  "release_workflow": ".github/workflows/release.yml",
+  "release_target": "production",
+  "pypi_environment_review_required": true,
+  "source_version_wheel_sdist_qualified": true,
+  "rc2_performance_provenance": {
+    "workflow_run": 39945467014,
+    "artifact_id": 12497727453,
+    "original_source_commit": "46d2dd74c5ab71d0bb5bd24c356d221f4915b903",
+    "artifact_member_sha256": "8da44ff291614aac2b9e01ae8819bcda67f98e0c33cb7b43dfdfb3b9adbcd3d5"
+  },
+  "ten_workflow_qualification_passed": true,
+  "experimental_E1_E4_helpers_retained_as_unqualified": true,
+  "scientific_issues_open": [
+    289,
+    296
+  ],
+  "excluded_claims": [
+    "universal_nominal_90_pct_simultaneous_coverage",
+    "identified_MNAR_gaze_loss_correction"
+  ],
+  "publication_gates": [
+    "Finish all exact-main checks on 9891feee6e5daa638a9de5cada295482a5fa4884 with no failures",
+    "Obtain explicit approval for narrow ten-route scope and bundled E1-E4 experimental boundaries",
+    "Obtain separate production-release PR review, with exact version and archived artifact/provenance linked",
+    "Arm production_release_ready and github_release_ready together in a separately tested governance change; leave TestPyPI disabled unless separately configured",
+    "Requalify the authorization commit on protected main and verify all required exact-main check runs",
+    "Run release.yml workflow_dispatch target=production on exact protected main through GitHub UI with required pypi environment reviewer",
+    "Verify new prerelease tag and GitHub Release, PyPI 1.2.0rc2 artifacts, SHA256 and clean installed smoke"
+  ]
+}
