@@ -1,0 +1,127 @@
+name: one-dot-two-draft-release-qualification-audit
+on:
+  pull_request:
+    paths:
+      - "scripts/verify_release_publication_gate.py"
+      - "scripts/verify_release_governance.py"
+      - "tests/test_release_publication_gate.py"
+      - "tests/test_release_hardening.py"
+      - "RELEASE_READINESS.json"
+      - ".github/workflows/release.yml"
+      - ".github/workflows/one-dot-two-release-qualification-audit.yml"
+      - "docs/development/one-dot-two-release-qualification-audit-20261023.md"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  installed-distribution-matrix:
+    name: installed-wheel-sdist-and-stable-root (Python ${{ matrix.python }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    env:
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install audit/test/build tooling
+        run: |
+          python -m pip install -U pip build twine
+          python -m pip install -e ".[dev]"
+      - name: Test disarmed publication and compatibility
+        run: |
+          python -m pytest -q tests/test_release_publication_gate.py tests/test_release_hardening.py tests/test_one_dot_zero_api_stability.py tests/test_workflow_product_w4.py
+          python scripts/verify_release_publication_gate.py --target build-only
+          python scripts/verify_release_version.py
+      - name: Build and validate wheel and sdist without publication
+        run: |
+          python -m build
+          python -m twine check dist/*
+      - name: Install stable 1.1.0 root-API reference
+        shell: bash
+        run: |
+          python -m venv "$RUNNER_TEMP/qualification-stable"
+          "$RUNNER_TEMP/qualification-stable/bin/python" -m pip install -U pip
+          "$RUNNER_TEMP/qualification-stable/bin/python" -m pip install --no-cache-dir "eyetrajectoriespy==1.1.0"
+          "$RUNNER_TEMP/qualification-stable/bin/python" -m pip check
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/qualification-stable/bin/python" - <<'PY'
+          import json
+          from pathlib import Path
+          import eyetrajectoriespy as p
+          assert p.__version__=="1.1.0"
+          Path("stable-root-exports.json").write_text(json.dumps(sorted(p.__all__)))
+          PY
+      - name: Install fresh 1.2 wheel outside source checkout and compare API
+        shell: bash
+        run: |
+          python -m venv "$RUNNER_TEMP/qualification-wheel"
+          "$RUNNER_TEMP/qualification-wheel/bin/python" -m pip install -U pip
+          "$RUNNER_TEMP/qualification-wheel/bin/python" -m pip install dist/*.whl
+          "$RUNNER_TEMP/qualification-wheel/bin/python" -m pip check
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/qualification-wheel/bin/python" - <<'PY'
+          import importlib.metadata,json,os
+          from pathlib import Path
+          import eyetrajectoriespy as p
+          import eyetrajectoriespy.workflows as w
+          workspace=Path(os.environ["GITHUB_WORKSPACE"]).resolve()
+          assert not Path(p.__file__).resolve().is_relative_to(workspace)
+          assert p.__version__=="1.2.0rc2.dev0"
+          assert importlib.metadata.version("eyetrajectoriespy")==p.__version__
+          stable=set(json.loads(Path("stable-root-exports.json").read_text()))
+          assert stable<=set(p.__all__), f"1.1 root API missing: {sorted(stable-set(p.__all__))}"
+          audit=json.loads((workspace/"WORKFLOW_API_AUDIT.json").read_text())
+          for name in audit["workflow_entry_points"]:
+              assert callable(getattr(w,name))
+              assert not hasattr(p,name), f"experimental entry point leaked into root: {name}"
+          Path("candidate-wheel-observation.json").write_text(json.dumps({
+            "source_candidate":"1.2.0rc2.dev0",
+            "published_stable_baseline":"1.1.0",
+            "installed_outside_source":True,
+            "stable_root_names_preserved":len(stable),
+            "candidate_workflow_entries":len(audit["workflow_entry_points"]),
+            "release_authorized":False,
+          },sort_keys=True,indent=2)+"\n")
+          PY
+          "$RUNNER_TEMP/qualification-wheel/bin/python" "$GITHUB_WORKSPACE/scripts/release_smoke_test.py" --expected-version 1.2.0rc2.dev0
+      - name: Verify all ten workflows from installed candidate wheel
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/qualification-wheel/bin/python" "$GITHUB_WORKSPACE/scripts/run_one_dot_two_workflow_product_qualification.py" --output-dir "$RUNNER_TEMP/qualification-workflows" --expected-version 1.2.0rc2.dev0
+          "$RUNNER_TEMP/qualification-wheel/bin/python" - <<'PY'
+          import json,os
+          from pathlib import Path
+          d=json.loads((Path(os.environ["RUNNER_TEMP"])/"qualification-workflows"/"summary.json").read_text())
+          assert d["workflow_count"]==10
+          assert d["installed_package_execution"] is True
+          assert d["repository_private_helpers_used"] is False
+          assert d["release_blocking_friction_count"]==0
+          assert d["package_version"]=="1.2.0rc2.dev0"
+          PY
+      - name: Install and smoke test fresh sdist in another environment
+        shell: bash
+        run: |
+          python -m venv "$RUNNER_TEMP/qualification-sdist"
+          "$RUNNER_TEMP/qualification-sdist/bin/python" -m pip install -U pip
+          "$RUNNER_TEMP/qualification-sdist/bin/python" -m pip install dist/*.tar.gz
+          "$RUNNER_TEMP/qualification-sdist/bin/python" -m pip check
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/qualification-sdist/bin/python" "$GITHUB_WORKSPACE/scripts/release_smoke_test.py" --expected-version 1.2.0rc2.dev0
+      - name: Preserve audit evidence only; no distribution upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: draft-qualification-python-${{ matrix.python }}
+          path: |
+            ${{ runner.temp }}/candidate-wheel-observation.json
+            ${{ runner.temp }}/qualification-workflows/summary.json
+          retention-days: 30
+          if-no-files-found: error
