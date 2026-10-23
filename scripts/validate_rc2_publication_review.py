@@ -36,10 +36,13 @@ def audit_pending_authorization(review: dict, readiness: dict, scope: dict) -> d
         or review.get("source_pr_exact_head_qualified") is not True
         or review.get("source_pr_successful_workflows") != 33):
         raise RuntimeError("RC2 candidate PR/merge/provenance identity drifted")
-    if (review.get("protected_main_qualification_complete") is not False
-        or review.get("protected_main_workflows_all_successful") is not False
-        or review.get("protected_main_expected_workflow_runs") != 30):
-        raise RuntimeError("Unverified exact-main qualification reported as complete")
+    if (review.get("protected_main_qualification_complete") is not True
+        or review.get("protected_main_workflows_all_successful") is not True
+        or review.get("protected_main_expected_workflow_runs") != 30
+        or review.get("protected_main_successful_workflow_runs") != 30
+        or review.get("protected_main_failed_workflow_runs") != 0
+        or review.get("protected_main_evidence_url") != "https://github.com/stefanosbalaskas/eyetrajectoriespy/actions"):
+        raise RuntimeError("Verified exact-main qualification evidence missing or drifted")
     for field in (
         "independent_human_release_review_recorded",
         "narrow_scope_approved_for_release",
@@ -82,7 +85,7 @@ def audit_pending_authorization(review: dict, readiness: dict, scope: dict) -> d
         raise RuntimeError("Original measured RC2 performance artifact provenance changed")
     return {"version":"1.2.0rc2","status":"review_pending",
             "source_qualified":True,"production_authorized":False,
-            "exact_main_qualified":False,"scope_approved":False}
+            "exact_main_qualified":True,"scope_approved":False}
 
 
 def main() -> None:
