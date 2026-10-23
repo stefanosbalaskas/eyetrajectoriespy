@@ -78,6 +78,10 @@ def _release_readiness() -> dict[str, object]:
 
 def _verify_declared_github_release_readiness() -> None:
     readiness = _release_readiness()
+    if readiness.get("production_release_ready") is not True:
+        raise RuntimeError(
+            "Production release blocked: production_release_ready is not armed"
+        )
     if readiness.get("github_release_ready") is not True:
         raise RuntimeError(
             "GitHub release blocked: RELEASE_READINESS.json is not armed "
@@ -128,7 +132,7 @@ def _passed_checks(repository: str, commit: str, token: str) -> set[str]:
         run["name"]
         for run in check_runs.get("check_runs", [])
         if run.get("status") == "completed"
-        and run.get("conclusion") in {"success", "neutral", "skipped"}
+        and run.get("conclusion") == "success"
     }
 
 
