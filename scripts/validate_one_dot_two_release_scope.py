@@ -71,6 +71,31 @@ def validate_scope(*, scope: dict, readiness: dict, audit: dict, frozen: dict) -
         raise RuntimeError("scientific blockers #289/#296 must remain visible and open")
     if not REQUIRED_CLAIM_HOLDS<=set(scope.get("disallowed_new_claims",())):
         raise RuntimeError("scientific inferential/MNAR claim holds missing")
+    experimental=scope.get("bundled_unqualified_experimental_module")
+    if not isinstance(experimental,dict):
+        raise RuntimeError("1.2 release scope ignores bundled experimental E1-E4 module")
+    if (experimental.get("module")!="eyetrajectoriespy.workflows.experimental"
+        or experimental.get("source_file")!="src/eyetrajectoriespy/workflows/experimental.py"
+        or experimental.get("published_in_current_stable_1_1") is not False
+        or experimental.get("bundled_in_dev_wheel") is not True
+        or experimental.get("supported_in_proposed_ten_workflow_api") is not False
+        or experimental.get("public_contract_frozen") is not False
+        or experimental.get("eligible_for_literal_1_2_release_without_separate_e5_review") is not False):
+        raise RuntimeError("bundled experimental E1-E4 release-content boundary was promoted")
+    import ast
+    source_path=ROOT/experimental["source_file"]
+    tree=ast.parse(source_path.read_text(encoding="utf-8"))
+    module_exports=None
+    for node in tree.body:
+        if isinstance(node,ast.Assign) and any(
+            isinstance(t,ast.Name) and t.id=="__all__" for t in node.targets
+        ):
+            module_exports=ast.literal_eval(node.value)
+            break
+    if module_exports is None or list(module_exports)!=experimental.get("named_experimental_helpers"):
+        raise RuntimeError("importable experimental helper surface differs from frozen draft manifest")
+    if not isinstance(experimental.get("required_decision"),str) or len(experimental["required_decision"])<35:
+        raise RuntimeError("bundled experimental module requires an explicit release-content decision")
     if scope.get("scope_decision")!="engineering_candidate_only_not_release_authorization":
         raise RuntimeError("candidate scope claimed release authorization")
     evidence=scope.get("last_completed_evidence",{})
