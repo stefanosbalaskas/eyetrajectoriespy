@@ -1,203 +1,71 @@
 # eyetrajectoriespy
 
-[![PyPI version](https://img.shields.io/pypi/v/eyetrajectoriespy.svg)](https://pypi.org/project/eyetrajectoriespy/)
-[![GitHub Release](https://img.shields.io/github/v/release/stefanosbalaskas/eyetrajectoriespy)](https://github.com/stefanosbalaskas/eyetrajectoriespy/releases)
+[![PyPI](https://img.shields.io/pypi/v/eyetrajectoriespy.svg)](https://pypi.org/project/eyetrajectoriespy/)
 [![Python](https://img.shields.io/pypi/pyversions/eyetrajectoriespy.svg)](https://pypi.org/project/eyetrajectoriespy/)
-[![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://stefanosbalaskas.github.io/eyetrajectoriespy/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Documentation](https://img.shields.io/badge/docs-scientific%20site-4f46e5.svg)](https://stefanosbalaskas.github.io/eyetrajectoriespy/)
 
-**Functional analysis of continuous and sparse eye-tracking trajectories in Python.**
+**Functional analysis of continuous, sparse and irregular eye-tracking trajectories in Python.**
 
-Instead of immediately reducing gaze to fixation counts, dwell summaries, or symbolic scanpaths, `eyetrajectoriespy` treats gaze as a time-indexed functional process
+Instead of reducing every trial immediately to fixation counts, dwell times or a symbolic scanpath, `eyetrajectoriespy` models gaze as a time-indexed planar process `G(t) = [x(t), y(t)]`, with explicit observation and scientific-inference contracts.
 
-$$
-\mathbf G_i(t)=
-\begin{bmatrix}
-x_i(t)\\
-y_i(t)
-\end{bmatrix}.
-$$
+![Illustrative gaze trajectory, time representation and scientific analysis](docs/assets/site/hero-trajectories.svg)
 
-**Published stable:** `1.1.0` · **Unpublished development source:** `1.2.0rc2.dev0` (experimental, not literal RC2 qualified) · **Frozen RC1 source:** `1.2.0rc1` · **Python:** 3.11–3.13
+> **Published stable:** `1.1.0` · Python 3.11–3.13.  
+> **Unpublished development:** `1.2.0rc2.dev0` source—not a separately qualified and published literal RC2. Frozen `1.2.0rc1` was qualified but remains unpublished. The ten `run_*_workflow()` orchestration routes are **not present in stable 1.1.0**. **1.2 GitHub Release/PyPI remains on HOLD.**
+
+[**Documentation**](https://stefanosbalaskas.github.io/eyetrajectoriespy/) · [Start here](https://stefanosbalaskas.github.io/eyetrajectoriespy/start/) · [Choose a workflow](https://stefanosbalaskas.github.io/eyetrajectoriespy/workflows/) · [Figure atlas](https://stefanosbalaskas.github.io/eyetrajectoriespy/figures/) · [Research evidence](https://stefanosbalaskas.github.io/eyetrajectoriespy/research/) · [News](https://stefanosbalaskas.github.io/eyetrajectoriespy/news/) · [Release status](https://stefanosbalaskas.github.io/eyetrajectoriespy/news/release-status/)
+
+## Install stable 1.1.0
 
 ```bash
-pip install eyetrajectoriespy
-# exact reproducible stable release
 pip install eyetrajectoriespy==1.1.0
 ```
-
-[Documentation](https://stefanosbalaskas.github.io/eyetrajectoriespy/) ·
-[Quick start](https://stefanosbalaskas.github.io/eyetrajectoriespy/quickstart/) ·
-[Choose a workflow](https://stefanosbalaskas.github.io/eyetrajectoriespy/workflows/) ·
-[Mathematics](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/) ·
-[Visual gallery](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/visual-gallery/) ·
-[Validation](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/)
-
-> **Current stable release: `1.1.0`**  
-> `1.1.0` is the exact-version-qualified final promotion of the production-observed `1.1.0rc1` surface. It preserves the frozen 1.0 root compatibility boundary while making the qualified 1.1 sparse/irregular additions stable module-scoped APIs. Final publication completed from exact protected-main arming commit `66cfb66798a90950e28401e45ee47e98543ff5c6`; immutable qualification, checksums, attestations, and publication provenance are retained in the [1.1.0 release notes](https://stefanosbalaskas.github.io/eyetrajectoriespy/releases/1.1.0/) and validation records.
->
-> **Frozen source baseline: `1.2.0rc1` was qualified but not published.**  
-> W1–W4 are complete and exact protected-main workflow/product qualification has passed. The complete RC1 qualification [PR #220](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/220) merged at `67c5947` after 29/29 PR-head checks. Its exact protected-main checks are separately required before any publication-arming decision. Its separate publication interlocks remain disarmed. The ten orchestration APIs are **module-scoped candidate APIs**, not 1.1 production features or new scientific estimators. The [Bayesian B4 feasibility decision](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/205) authorizes a separate research/design programme only; no architecture winner or Bayesian product API was selected.
-
-![Time-indexed planar gaze illustration (tracked repository asset)](docs/assets/trajectory-field.svg)
-
-## Explore the analysis visually
-
-| Scientific visualization | Deterministic 1.2 example |
-| --- | --- |
-| Common-grid FPCA component | [FPCA figure](https://stefanosbalaskas.github.io/eyetrajectoriespy/assets/gallery/workflow-fpca-component.svg) |
-| Function-on-scalar predictor coefficient | [Regression figure](https://stefanosbalaskas.github.io/eyetrajectoriespy/assets/gallery/workflow-function-on-scalar.svg) |
-| Fixed-threshold state-space recurrence | [Recurrence figure](https://stefanosbalaskas.github.io/eyetrajectoriespy/assets/gallery/workflow-recurrence.svg) |
-
-The README illustration is **repository-relative** and renders on GitHub without a Pages deployment. The linked workflow SVGs are generated from **deterministic synthetic fixtures** by the MkDocs documentation workflow, not from human-subject observations; their destinations require a successful Pages deployment. See the [visual gallery](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/visual-gallery/) and [figure-interpretation guide](https://stefanosbalaskas.github.io/eyetrajectoriespy/articles/interpreting-workflow-figures/).
-
-## What is new in the 1.2 release candidate?
-
-The completed **transparent workflow orchestration** layer composes existing validated estimators into ten audit-ready routes: sparse FPCA, paired/asynchronous sparse planar MFPCA, sparse multilevel FPCA, sparse partial prediction, dense FPCA, function-on-scalar regression, functional mixed effects, generalized functional regression and recurrence/RQA. Each route keeps its scientific configuration, step history, decision sources, reporting tables and reproducibility bundle. **No automatic preprocessing, model selection or estimator replacement is implied.**
-
-[Ten workflow routes](https://stefanosbalaskas.github.io/eyetrajectoriespy/articles/choosing-the-ten-workflows/) · [Auditable bundles](https://stefanosbalaskas.github.io/eyetrajectoriespy/articles/reproducible-workflow-bundles/) · [Bayesian evidence boundary](https://stefanosbalaskas.github.io/eyetrajectoriespy/articles/bayesian-feasibility-boundary/) · [1.2 API and validation](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/one-dot-two-workflow-product-qualification/)
-
-## What can it model?
-
-| Scientific object | Main route | Status |
-|---|---|---|
-| Dense/common-grid continuous x/y gaze | `fit_mfpca()` | stable 1.0 |
-| Sparse/irregular single-coordinate gaze | `fit_sparse_fpca()` + PACE | stable 1.0 |
-| Sparse/irregular paired planar x/y gaze | `fit_sparse_mfpca()` + joint PACE | stable 1.0 |
-| Repeated participant/trial functions | functional mixed effects / multilevel FPCA | stable 1.0 |
-| Conditional uncertainty for sparse PACE and joint PACE scores | `sparse_score_uncertainty` / `sparse_multivariate_score_uncertainty` | stable 1.1 module API |
-| Audited sparse smoothing-bandwidth selection | `sparse_bandwidth_selection` / `sparse_multivariate_bandwidth_selection` | stable 1.1 module API |
-| Candidate-sample observation-process diagnostics | `observation_process` | stable 1.1 module API |
-| Sparse participant/trial hierarchical decomposition | `sparse_multilevel` | stable 1.1 module API |
-| Coordinate-specific asynchronous sparse planar gaze | `sparse_multivariate_async` | stable 1.1 module API |
-| Future/partially observed sparse trajectory prediction and participant-aware conformal bands | `sparse_partial_prediction` / `sparse_partial_conformal` | stable 1.1 module API |
-
-The post-1.0 module-scoped APIs are documented in the [1.1 module API](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-module-api/) and [integration audit](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-integration-audit/). They remain intentionally module-scoped rather than root re-exports and are stable `1.1.0` functionality under the published final release.
-
-## Which workflow do I need?
-
-| Scientific question | Start here |
-|---|---|
-| What are the dominant modes of continuous gaze variation? | [Continuous gaze exploration + FPCA](https://stefanosbalaskas.github.io/eyetrajectoriespy/workflows/fpca-exploration/) |
-| How does an experimental predictor change a continuous functional response? | [Experimental functional regression](https://stefanosbalaskas.github.io/eyetrajectoriespy/workflows/experimental-functional-regression/) |
-| How do repeated participant trials affect functional inference? | [Repeated-trial functional mixed effects](https://stefanosbalaskas.github.io/eyetrajectoriespy/workflows/repeated-trial-mixed-effects/) |
-| How do predictors change repeated binary or count functional responses? | [Generalized binary/count responses](https://stefanosbalaskas.github.io/eyetrajectoriespy/workflows/generalized-responses/) |
-| Is recurrence or nonlinear temporal organization the scientific target? | [Nonlinear/recurrence analysis](https://stefanosbalaskas.github.io/eyetrajectoriespy/workflows/nonlinear-recurrence/) |
-
-## Minimal dense/common-grid example
 
 ```python
 from eyetrajectoriespy import fit_mfpca, simulate_planar_trajectories
 
 gaze = simulate_planar_trajectories(
-    n_participants=20,
-    trials_per_participant=6,
-    random_state=7,
+    n_participants=20, trials_per_participant=6, random_state=7,
 )
 fit = fit_mfpca(gaze, n_components=0.95, scaling="dimension_sd")
 print(fit.explained_variance_ratio)
 ```
 
-## Minimal sparse paired-planar example
+This illustration uses **deterministic synthetic data**, not human-subject observations. For complete sparse examples, use the [paired planar sparse guide](https://stefanosbalaskas.github.io/eyetrajectoriespy/guides/sparse-multivariate-fpca/).
 
-```python
-import numpy as np
-from eyetrajectoriespy import fit_sparse_mfpca
+## What do you want to analyze?
 
-fit = fit_sparse_mfpca(
-    irregular,
-    dimensions=("x", "y"),
-    n_components=2,
-    evaluation_grid=np.linspace(0.0, 1.0, 41),
-    mean_bandwidth=0.20,
-    covariance_bandwidth=0.30,
-    measurement_error="diagonal",
-    measurement_error_variance=(0.0025, 0.0025),
-    psd_action="project",
-    score_failure_action="retain_nan",
-)
-```
+| Question | Method family | Guide |
+| --- | --- | --- |
+| Dominant variation across x/y paths | FPCA / planar MFPCA | [Continuous FPCA](https://stefanosbalaskas.github.io/eyetrajectoriespy/workflows/fpca-exploration/) |
+| Irregular and sparsely observed gaze | Sparse FPCA/PACE, joint PACE | [Sparse planar gaze](https://stefanosbalaskas.github.io/eyetrajectoriespy/guides/sparse-multivariate-fpca/) |
+| Coordinate-asynchronous x/y samples | Sparse asynchronous multivariate | [Qualified 1.1 module APIs](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-module-api/) |
+| Time-varying condition effects | Function-on-scalar regression | [Functional regression](https://stefanosbalaskas.github.io/eyetrajectoriespy/workflows/experimental-functional-regression/) |
+| Repeated participant/trial outcomes | Functional mixed effects / multilevel | [Repeated-trial models](https://stefanosbalaskas.github.io/eyetrajectoriespy/workflows/repeated-trial-mixed-effects/) |
+| Temporal recurrence and dynamics | Recurrence / RQA | [Nonlinear analysis](https://stefanosbalaskas.github.io/eyetrajectoriespy/workflows/nonlinear-recurrence/) |
 
-The sparse estimator uses native paired observations to estimate a joint population mean/covariance model. Evaluating fitted population functions at native times for PACE is **not** raw-trajectory interpolation.
+## Product and research qualification
 
-## What eyetrajectoriespy refuses to hide
+| Surface | State |
+| --- | --- |
+| Frozen 1.0 root API compatibility boundary | **Stable** |
+| Qualified 1.1 sparse/irregular module-scoped additions | **Stable 1.1.0** |
+| Ten transparent `eyetrajectoriespy.workflows` orchestration routes | **Unpublished 1.2 candidate** |
+| W3 nominal-90% whole-function inference | **Not generally calibrated** — [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) |
+| Outcome-dependent missing gaze and selective validation | **Not field-identified** — [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) |
+| 1.2 GitHub Release / PyPI promotion | **Disarmed / HOLD** |
 
-Consequential choices stay explicit: missingness, interpolation, smoothing, registration, time/coordinate normalization, analysis support, measurement-error assumptions, PSD policy, family/model selection, resampling unit, denominator/exposure semantics, and failure/status codes.
+A successful synthetic benchmark or independent artifact replay is **not the same** as calibrated statistical inference or production release qualification. [Read the scientific evidence guide](https://stefanosbalaskas.github.io/eyetrajectoriespy/articles/evidence-vs-qualification/).
 
-## Scope
+## Research news, figures and reproducibility
 
-`eyetrajectoriespy` starts once gaze has a scientifically interpretable time and coordinate representation. Event detection, general gaze QC, survival analysis, AOI perturbation robustness, and symbolic sequence models belong upstream or in specialist packages.
+The W3 R76–R95 programme has published documentation of influential-unit, covariance, missingness, external-validation and identifiability experiments, including negative results. The [scientific study map](https://stefanosbalaskas.github.io/eyetrajectoriespy/research/studies/) links original papers; the [figure atlas](https://stefanosbalaskas.github.io/eyetrajectoriespy/figures/) includes source-derived synthetic plots. The [R93](https://stefanosbalaskas.github.io/eyetrajectoriespy/articles/w3-r93-exact-observed-law-nonidentification/), [R94](https://stefanosbalaskas.github.io/eyetrajectoriespy/articles/w3-r94-external-audit-completion-bounds/) and [R95](https://stefanosbalaskas.github.io/eyetrajectoriespy/articles/w3-r95-monotone-audit-return-identification/) sharp-set proofs are conditional population mathematics—not confidence intervals or real-gaze MNAR corrections.
 
-The package deliberately separates stable public methods, advanced diagnostics, external-backend interoperability, and experimental methods. Scientific product qualification matters more than estimator count.
+[October 2026 news](https://stefanosbalaskas.github.io/eyetrajectoriespy/news/2026-10-23/) · [Original and independent evidence](https://stefanosbalaskas.github.io/eyetrajectoriespy/development/research-development-hub/) · [Validation ledger](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/)
 
-## Workflow API (source/release-candidate only)
+## Documentation and contribution
 
-> **Experimental E1–E4:** The development identifier `1.2.0rc2.dev0` is **not** a qualified release candidate or published PyPI artifact. The experimental module is merged into protected `main` via [PR #223](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/223); it requires fresh literal RC2 qualification under E5. Frozen RC1 evidence must not be relabelled.
->
-> **Installation prerequisite:** A plain `pip install eyetrajectoriespy` currently installs stable **1.1.0** and **does not provide** `run_*_workflow()` APIs. The following code requires a qualified **1.2 candidate source checkout**; `1.2.0rc1` has not yet been published.
+[Quick start](https://stefanosbalaskas.github.io/eyetrajectoriespy/quickstart/) · [Input schemas](https://stefanosbalaskas.github.io/eyetrajectoriespy/guides/input-schemas/) · [Mathematics](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/) · [Visual gallery](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/visual-gallery/) · [Reproducibility guide](https://stefanosbalaskas.github.io/eyetrajectoriespy/development/research-reproducibility/) · [Contributing](CONTRIBUTING.md) · [Cite](CITATION.cff)
 
-```python
-from eyetrajectoriespy import simulate_planar_trajectories
-from eyetrajectoriespy.workflows import FPCAWorkflowConfig, run_fpca_workflow, workflow_reporting_text
-
-gaze = simulate_planar_trajectories(n_participants=18, trials_per_participant=1, random_state=2201)
-result = run_fpca_workflow(gaze, config=FPCAWorkflowConfig(n_components=2, scaling="dimension_sd"))
-print(workflow_reporting_text(result))
-```
-
-This example targets the **1.2 candidate source**, not the published 1.1 distribution. To reproduce it, use a qualified 1.2 source checkout/RC when it becomes available. The `eyetrajectoriespy.workflows` namespace is intentionally not re-exported from `eyetrajectoriespy`.
-
-## Where is the full advanced API?
-
-The README is intentionally a compact entry point rather than the exhaustive function catalogue.
-
-- [Capability inventory](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/capability-inventory/)
-- [Public API](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/api/)
-- [1.1 module-scoped API](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-module-api/)
-- [1.1 integration audit](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-integration-audit/)
-- [API stability and hierarchy](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/api-stability/)
-- [Mathematical reference](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/)
-- [Capability status and roadmap](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/status-roadmap/)
-- [Reference validation & performance envelope](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/)
-
-## Release lineage and reproducibility
-
-The stable pre-1.0 sequence remains explicit: `0.10.0` introduced the native sparse univariate FPCA/PACE line, the immutable `0.11.0rc1` prerelease preceded final 0.11 known-truth recovery infrastructure, and `0.12.0` added the native sparse planar MFPCA/joint-PACE line. `1.0.0` froze the stable 1.x compatibility baseline. Published tags and distributions remain immutable historical records. The completed A1–C1 and R1–R5 programme progressed through immutable prerelease `1.1.0rc1`, production-installed observation, fresh final-version qualification, governance-only arming, and final `1.1.0` production publication.
-
-- [Portable scientific results](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/portable-results/)
-- [Reproducibility bundle checklist](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/checklist/)
-- [Release process](https://stefanosbalaskas.github.io/eyetrajectoriespy/release-process/)
-
-## Documentation and reproducibility
-
-- [Sparse planar MFPCA / joint PACE guide](https://stefanosbalaskas.github.io/eyetrajectoriespy/guides/sparse-multivariate-fpca/)
-- [Implementation-matched mathematical reference](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/)
-- [Function → equation index](FUNCTION_EQUATION_INDEX.md)
-- [Mathematical contracts](MATHEMATICAL_CONTRACTS.md)
-- [Workflow atlas](WORKFLOW_ATLAS.md)
-- [Current validation ledger](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/)
-- [1.2.0rc1 release notes](docs/releases/1.2.0rc1.md)
-- [1.1.0 release notes](docs/releases/1.1.0.md)
-- [1.1.0rc1 release notes](docs/releases/1.1.0rc1.md)
-- [1.0.0 release notes](docs/releases/1.0.0.md)
-
-Development checks:
-
-```bash
-python -m pytest --cov=eyetrajectoriespy
-python -m compileall -q src
-python scripts/generate_function_equation_index.py --check
-python scripts/generate_docs_gallery.py
-python scripts/generate_sparse_mfpca_docs_figure.py
-python scripts/validate_docs_contracts.py
-mkdocs build --strict
-```
-
-## Citation and license
-
-See [`CITATION.cff`](CITATION.cff) for citation metadata. MIT © 2026 Stefanos Balaskas.
-
-## October 2026: retrospective versus prospective normalization
-
-The [illustrated normalization-leakage methods article](docs/research/october-2026-normalization-leakage.md) explains research-only source-observation availability certificates and includes a **synthetic** preprocessing timeline. These diagnostics are not a released 1.2 API and do not establish empirical or W3 Bayesian calibration; see [qualification issue #433](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/433).
-
-![Illustrative normalization provenance timeline](docs/assets/october-2026-time-leakage.svg)
+The package complements, rather than replaces, upstream fixation/saccade detection, instrument quality control, AOI event analysis and symbolic scanpath pipelines. MIT © 2026 Stefanos Balaskas.
