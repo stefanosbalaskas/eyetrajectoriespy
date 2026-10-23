@@ -21,7 +21,7 @@ def test_draft_scope_matches_previous_audited_stable_and_candidate_boundaries():
     result=policy.validate_scope(**_inputs())
     assert result=={
         "proposal_status":"unapproved",
-        "source_version":"1.2.0rc2.dev0",
+        "source_version":"1.2.0rc2",
         "published_stable_baseline":"1.1.0",
         "candidate_workflow_count":10,
         "frozen_root_exports":458,
