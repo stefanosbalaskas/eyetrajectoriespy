@@ -154,3 +154,18 @@ def test_literal_candidate_needs_new_exact_version_evidence_but_no_publication()
     assert version.verify_version_contract(production=True)=="1.2.0rc2"
     assert current()["production_release_ready"] is False
     assert current()["github_release_ready"] is False
+
+
+def test_future_arming_documentation_rejects_stale_1_1_main_provenance():
+    """The next release gate must not accept 1.1's exact-main evidence as RC2."""
+    from scripts import validate_docs_contracts as contracts
+
+    assert contracts.QUALIFIED_RELEASE_MAIN == (
+        "9891feee6e5daa638a9de5cada295482a5fa4884"
+    )
+    notes = "\n".join(current()["notes"])
+    assert contracts.QUALIFIED_RELEASE_MAIN in notes
+    assert "30/30 workflow groups successfully" in notes
+    assert current()["current_development_version"] == "1.2.0rc2"
+    assert current()["production_release_ready"] is False
+    assert current()["github_release_ready"] is False
