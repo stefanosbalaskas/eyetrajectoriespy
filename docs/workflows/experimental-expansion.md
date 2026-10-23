@@ -1,7 +1,7 @@
-# Experimental E1–E4 workflow expansion (not an RC1 public API)
+# Experimental E1–E4 workflow expansion (unpublished RC2 candidate)
 
 !!! warning "Research development; do not treat as a published feature"
-    These APIs have been integrated into protected `main` as **unpublished experimental development source `1.2.0rc2.dev0`** under [PR #223](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/223). Stable **1.1.0** and frozen qualified source **1.2.0rc1** do **not** promise these interfaces. Fresh literal RC2 qualification and separate publication governance are required.
+    These APIs originated in development [PR #223](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/223) and are present in the **unpublished literal `1.2.0rc2` source** on protected `main` following [PR #471](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/471). Published stable **1.1.0** and historical qualified RC1 do **not** promise them. Literal RC2 engineering qualification has passed; independent E5 package-content approval and separate publication governance are still outstanding.
 
 ## E1 — Executable preprocessing and retained phase information
 
@@ -25,4 +25,4 @@ Run `python examples/experimental_workflow_e1_e4.py` after installing **the exac
 
 ## Qualification boundary
 
-The stable and RC1 frozen estimator layers are unchanged. The experimental namespace remains outside `WORKFLOW_API_AUDIT.json`; E5 will require a new release identity, an independently reviewed public API freeze, full regression checks and installed-package evidence. Native Bayesian FPCA and effect-region localization remain out of scope.
+The stable and RC1 frozen estimator layers are unchanged. The experimental namespace remains outside the ten supported contracts in `WORKFLOW_API_AUDIT.json`. The exact-RC2 [E5 experimental workflow](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/40002802440) passed all three Python 3.11–3.13 source/wheel and synthetic tests on commit `9891feee`. This is an **engineering qualification only**: the twelve importable helpers remain explicitly experimental and must receive independent release-content approval (see [PR #473](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/473)) before RC2 can be published. Native Bayesian FPCA and effect-region localization remain out of scope.
