@@ -324,8 +324,8 @@ nav:
               - B6 SBC same-dataset full-budget refit (R2): development/b6-rank1-sbc-r2-same-dataset-evidence.md
               - Rank-two paired versus asynchronous NUTS pilot (R3): development/b6-b7-rank2-four-chain-nuts-r3-evidence.md
   - Figures:
+      - Scientific figure atlas: figures/index.md
       - Experimental E1-E4 result figures: methods/experimental-e1-e4-gallery.md
-      - Figure atlas: figures/index.md
   - News and updates:
       - Latest: news/index.md
       - 23 October 2026 research update: news/2026-10-23.md
