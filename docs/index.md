@@ -34,37 +34,37 @@ hide:
 
 <div class="grid cards" markdown>
 
-- :material-waveform: **Explore variation in continuous gaze paths**
+- **Explore variation in continuous gaze paths**
 
   Use FPCA and planar MFPCA to inspect structured temporal variation.
 
   [FPCA workflow](workflows/fpca-exploration.md)
 
-- :material-dots-hexagon: **Analyze sparse or asynchronous recordings**
+- **Analyze sparse or asynchronous recordings**
 
   Respect irregular sampling and coordinate-specific recorded times.
 
   [Sparse planar methods](guides/sparse-multivariate-fpca.md) · [Irregular data](guides/irregular-trajectories.md)
 
-- :material-chart-line: **Examine changing experimental effects**
+- **Examine changing experimental effects**
 
   Fit interpretable functional regression with explicitly declared support and units.
 
   [Regression guide](workflows/experimental-functional-regression.md)
 
-- :material-repeat: **Model participants and repeated trials**
+- **Model participants and repeated trials**
 
   Keep cluster structure and repeated observations visible.
 
   [Mixed-effects workflow](workflows/repeated-trial-mixed-effects.md)
 
-- :material-shape-outline: **Study recurrence and temporal dynamics**
+- **Study recurrence and temporal dynamics**
 
   Report embedding, threshold and time-delay decisions.
 
   [Recurrence workflow](workflows/nonlinear-recurrence.md)
 
-- :material-file-document-check: **Report auditable decisions**
+- **Report auditable decisions**
 
   Surface preprocessing, model assumptions, scientific contracts and failures.
 
