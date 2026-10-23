@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased experimental development — 1.2.0rc2.dev0 (not a release)
+## Unpublished candidate — 1.2.0rc2 (fresh exact-version qualification pending)
 
 - Add isolated E1–E4 experimental workflow utilities for opt-in preprocessing, preflight, declared sensitivity and provenance-linked reports; these are not RC1 qualified APIs.
 - Preserve all frozen RC1 numerical/performance records and publication interlocks. A new E5 qualification and version-authority decision are mandatory before merge or publishing.
