@@ -1,8 +1,19 @@
 """E5 RC2 release-content review: negative gates; this PR does not publish."""
 from __future__ import annotations
 
+import importlib.util
+from pathlib import Path
+
 import pytest
-from scripts import validate_e5_rc2_content_review as e5
+
+_ROOT = Path(__file__).resolve().parents[1]
+_SPEC = importlib.util.spec_from_file_location(
+    "validate_e5_rc2_content_review",
+    _ROOT / "scripts" / "validate_e5_rc2_content_review.py",
+)
+assert _SPEC is not None and _SPEC.loader is not None
+e5 = importlib.util.module_from_spec(_SPEC)
+_SPEC.loader.exec_module(e5)
 
 
 def inputs():
