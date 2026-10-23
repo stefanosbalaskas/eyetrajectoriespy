@@ -125,10 +125,35 @@
     "root_exports_checked_against_published_1_1": true
   },
   "future_required_gates": [
+    "Resolve bundled E1–E4 experimental module scope: validate an explicit experimental prerelease interface or exclude it from the release distribution.",
     "human review and explicit approval of a narrower release surface and claims",
     "new literal release-candidate version declarations and matching exact-version scientific/performance evidence",
     "complete cross-platform exact-candidate qualification and reproducible install from wheel and sdist",
     "protected main exact-head complete positive CI and release governance",
     "separately requested governance-only publication approval"
-  ]
+  ],
+  "bundled_unqualified_experimental_module": {
+    "module": "eyetrajectoriespy.workflows.experimental",
+    "source_file": "src/eyetrajectoriespy/workflows/experimental.py",
+    "published_in_current_stable_1_1": false,
+    "bundled_in_dev_wheel": true,
+    "supported_in_proposed_ten_workflow_api": false,
+    "public_contract_frozen": false,
+    "eligible_for_literal_1_2_release_without_separate_e5_review": false,
+    "named_experimental_helpers": [
+      "PreprocessingExecutionResult",
+      "WorkflowPreflightResult",
+      "WorkflowReportArtifact",
+      "render_workflow_report",
+      "WorkflowSensitivityResult",
+      "WorkflowSpecification",
+      "run_preprocessing_plan",
+      "run_workflow_preprocessed",
+      "workflow_preflight",
+      "plot_workflow_preflight",
+      "run_workflow_sensitivity",
+      "plot_workflow_sensitivity"
+    ],
+    "required_decision": "Explicitly qualify and document the experimental module as part of RC2 or explicitly exclude its code from the distribution; module-scoped claims-only exclusion does not remove importable code."
+  }
 }
