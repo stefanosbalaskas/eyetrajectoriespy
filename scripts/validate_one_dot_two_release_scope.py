@@ -18,7 +18,7 @@ REQUIRED_CLAIM_HOLDS = {
     "algorithmic_recovery_of_missing_outcomes_by_random_audit_assignment_alone",
 }
 REQUIRED_OPEN_BLOCKERS = {289,296}
-EXPECTED_SOURCE_VERSION = "1.2.0rc2.dev0"
+EXPECTED_SOURCE_VERSION = "1.2.0rc2"
 
 
 def load_json(name: str) -> dict:
