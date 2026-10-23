@@ -35,7 +35,7 @@ jobs:
         run: python -m pip install pytest
       - name: Verify technical evidence and rejection of premature publication
         run: |
-          python -m pytest -q tests/test_e5_rc2_content_review.py
+          python -m pytest --noconftest -q tests/test_e5_rc2_content_review.py
           python scripts/validate_e5_rc2_content_review.py
       - name: Verify release flags remain disarmed
         run: |
