@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "document_type": "rc2_experimental_distribution_content_review",
+  "version": "1.2.0rc2",
+  "exact_rc2_candidate_commit": "9891feee6e5daa638a9de5cada295482a5fa4884",
+  "source_qualification_pr": 471,
+  "protected_main_ci_successful": 30,
+  "protected_main_ci_failed": 0,
+  "e5_evidence": {
+    "workflow": "experimental-workflow-expansion",
+    "run_id": 40002802440,
+    "source_commit": "9891feee6e5daa638a9de5cada295482a5fa4884",
+    "python_versions": [
+      "3.11",
+      "3.12",
+      "3.13"
+    ],
+    "qualified_jobs": 3,
+    "checks": [
+      "E5 development and frozen RC1 boundaries",
+      "E1–E4 boundary and robustness tests",
+      "realistic end-to-end synthetic case",
+      "out-of-checkout candidate wheel"
+    ]
+  },
+  "proposed_decision": "include_twelve_importable_E1_E4_helpers_as_explicitly_experimental_prerelease_only",
+  "package_module": "eyetrajectoriespy.workflows.experimental",
+  "imported_helper_names": [
+    "PreprocessingExecutionResult",
+    "WorkflowPreflightResult",
+    "WorkflowReportArtifact",
+    "render_workflow_report",
+    "WorkflowSensitivityResult",
+    "WorkflowSpecification",
+    "run_preprocessing_plan",
+    "run_workflow_preprocessed",
+    "workflow_preflight",
+    "plot_workflow_preflight",
+    "run_workflow_sensitivity",
+    "plot_workflow_sensitivity"
+  ],
+  "primary_workflow_routes_supported": 10,
+  "stable_root_exports": 455,
+  "frozen_experimental_root_exports": 3,
+  "stable_root_promotions": 0,
+  "unresolved_inference_claims": [
+    "nominal_90_percent_simultaneous_functional_band_coverage",
+    "validated_CR2_fitted_covariance_random_slope_inference",
+    "MNAR_gaze_loss_identification_from_observed_data"
+  ],
+  "open_scientific_issues": [
+    289,
+    296
+  ],
+  "independent_human_package_content_approval": false,
+  "separate_publication_authorization_review_completed": false,
+  "production_release_authorized": false,
+  "github_release_authorized": false,
+  "tag_authorized": false,
+  "testpypi_authorized": false,
+  "release_workflow_dispatched": false,
+  "implementation_change_in_this_pr": false,
+  "reviewer_decision_required": "Accept experimental importability without stability or inferential guarantees, or request excluding the module and requalifying a rebuilt distribution.",
+  "reviewer_guidance": "The three Python E5 jobs verify the included source/wheel and contracts; they do not prove stability of E1-E4 or calibrated statistical inference. An independent reviewer must explicitly approve release content, followed by a separate governance-only arming PR and exact-main checks before manual publication."
+}
