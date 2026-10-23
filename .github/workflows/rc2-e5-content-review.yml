@@ -1,0 +1,39 @@
+name: rc2-e5-content-review-only
+
+on:
+  pull_request:
+    paths:
+      - "E5_RC2_CONTENT_REVIEW.json"
+      - "scripts/validate_e5_rc2_content_review.py"
+      - "tests/test_e5_rc2_content_review.py"
+      - "docs/development/rc2-e5-content-decision-request-20261023.md"
+      - ".github/workflows/rc2-e5-content-review.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  e5-content-review-policy:
+    name: E5 review-only contract (Python ${{ matrix.python }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install review-only test runner
+        run: python -m pip install pytest
+      - name: Verify technical evidence and rejection of premature publication
+        run: |
+          python -m pytest -q tests/test_e5_rc2_content_review.py
+          python scripts/validate_e5_rc2_content_review.py
+      - name: Verify release flags remain disarmed
+        run: |
+          python scripts/verify_release_publication_gate.py --target build-only
+          python -c "import json; r=json.load(open('RELEASE_READINESS.json')); assert all(r[k] is False for k in ('production_release_ready','github_release_ready','testpypi_publication_ready'))"
