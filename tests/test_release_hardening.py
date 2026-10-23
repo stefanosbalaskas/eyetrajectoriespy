@@ -176,6 +176,7 @@ def test_release_governance_happy_path_requires_all_quality_gates(monkeypatch):
         "_release_readiness",
         lambda: {
             "github_release_ready": True,
+            "production_release_ready": True,
             "gates": {
                 name: True
                 for name in module._GITHUB_RELEASE_DECLARATIONS
@@ -197,6 +198,7 @@ def test_release_governance_blocks_unprotected_main(monkeypatch):
         "_release_readiness",
         lambda: {
             "github_release_ready": True,
+            "production_release_ready": True,
             "gates": {
                 name: True
                 for name in module._GITHUB_RELEASE_DECLARATIONS
