@@ -53,6 +53,12 @@ Figures are grouped by **the question they answer**, rather than by the order in
 
 [Missing gaze study](../articles/w3-response-dependent-gaze-loss-r82.md) · [Identification methods](../articles/how-to-read-identification-bounds.md) · [All W3 studies](../research/studies.md)
 
+## D. Compare conditional missing-outcome assumptions
+
+![R93–R95 exact normalized sharp-set widths across conditional return assumptions](../assets/site/r93-r95-assumption-widths.svg)
+
+[Why different assumptions change the sharp set](../articles/what-sharpens-missing-gaze-bounds.md). These ratios are analytical population identities, not fitted uncertainty or measured gains.
+
 ## Reproducibility
 
 Read the source-specific evidence ledgers before quoting numeric proportions: [R93](../development/w3-r93-original-independent-equivalence-ledger.md), [R94](../development/w3-r94-original-independent-evidence-ledger.md), [R95](../development/w3-r95-original-independent-evidence-ledger.md). See also the [full synthetic workflow visual gallery](../methods/visual-gallery.md).
