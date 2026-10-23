@@ -1,18 +1,22 @@
 site_name: eyetrajectoriespy
-site_description: Functional and continuous trajectory analysis for eye-tracking data in Python
+site_description: Functional and sparse eye-tracking trajectories in Python — stable scientific methods, examples, audited research and transparent qualification
 site_url: https://stefanosbalaskas.github.io/eyetrajectoriespy/
 repo_url: https://github.com/stefanosbalaskas/eyetrajectoriespy
 repo_name: stefanosbalaskas/eyetrajectoriespy
 edit_uri: edit/main/docs/
 
 nav:
-  - October 2026 research validation: research/october-2026-normalization-leakage.md
   - Home: index.md
   - Start here:
-      - Quick start: quickstart.md
+      - Overview: start/index.md
+      - Installation and quick start: quickstart.md
       - Input schemas: guides/input-schemas.md
       - Advanced recipes: tutorials/advanced-recipes.md
-      - Canonical workflows:
+      - Gaze representations: concepts/representations.md
+      - Scientific contracts: concepts/contracts.md
+      - Analysis decision map: concepts/decision-map.md
+  - Workflows:
+      - Analysis routes:
           - Overview: workflows/index.md
           - Continuous gaze + FPCA: workflows/fpca-exploration.md
           - Experimental functional regression: workflows/experimental-functional-regression.md
@@ -21,7 +25,198 @@ nav:
           - Nonlinear/recurrence analysis: workflows/nonlinear-recurrence.md
           - Transparent orchestration (1.2): workflows/workflow-orchestration.md
           - Experimental E1-E4 expansion (unqualified): workflows/experimental-expansion.md
-      - Research articles:
+  - Learn and practice:
+      - Tutorial gallery: tutorials/index.md
+      - Guides:
+          - Overview: guides/index.md
+          - Data & representation:
+              - Preparing trajectories: guides/preprocessing.md
+              - Native irregular trajectories: guides/irregular-trajectories.md
+              - Sparse univariate FPCA / PACE: guides/sparse-irregular-fpca.md
+              - Sparse planar MFPCA / joint PACE: guides/sparse-multivariate-fpca.md
+              - Native functional simulation: guides/functional-simulation.md
+              - Basis representations: guides/basis-representations.md
+              - Derived continuous functions: guides/derived-functions.md
+          - FPCA, uncertainty & review:
+              - FPCA & MFPCA: guides/fpca.md
+              - FPCA stability & validation: guides/stability-validation.md
+              - Selecting FPC count: guides/component-selection.md
+              - Predictive FPC selection: guides/predictive-component-selection.md
+              - FPC shape uncertainty: guides/component-uncertainty.md
+              - Simultaneous FPC bands: guides/simultaneous-fpc-bands.md
+              - FPCA spectrum uncertainty: guides/spectrum-uncertainty.md
+              - FPC score basis uncertainty: guides/score-uncertainty.md
+              - Sparse partial-trajectory prediction: guides/sparse-partial-trajectory-prediction.md
+              - Simultaneous functional mean bands: guides/simultaneous-mean-bands.md
+              - Near-tied FPC subspaces: guides/subspace-stability.md
+              - Outliers & influence: guides/outliers-influence.md
+              - Conformal anomaly review: guides/conformal-fpca-anomaly.md
+          - Registration, multilevel & composition:
+              - Registration & phase: guides/registration.md
+              - Phase FPCA & registration sensitivity: guides/phase-fpca.md
+              - Multilevel FPCA: guides/multilevel.md
+              - AOI probability functions: guides/compositional.md
+              - Elastic trajectory analysis: guides/elastic.md
+          - Functional regression & repeated measures:
+              - Functional regression & clustering: guides/downstream.md
+              - Function-on-scalar regression: guides/function-on-scalar.md
+              - Generalized function-on-scalar: methods/generalized-function-on-scalar.md
+              - Generalized marginal prediction: methods/generalized-function-on-scalar-prediction.md
+              - Functional mixed-effects regression: guides/functional-mixed-effects.md
+              - Mixed-effects simultaneous bands: methods/functional-mixed-effects-simultaneous-bands.md
+              - Random functional slope: methods/functional-mixed-effects-random-slope.md
+              - Trial functional random effect: methods/functional-mixed-effects-trial-random-effect.md
+              - Residual covariance & whitening: methods/functional-mixed-effects-residual-correlation.md
+              - Covariance-structure sensitivity: methods/functional-mixed-effects-covariance-sensitivity.md
+              - Full-refit bootstrap: methods/functional-mixed-effects-full-refit-bootstrap.md
+              - Residual diagnostics: methods/functional-mixed-effects-residual-diagnostics.md
+              - Gaussian FPCR bootstrap uncertainty: guides/fpcr-bootstrap-inference.md
+              - Gaussian FPCR simultaneous slope bands: guides/fpcr-simultaneous-slope-band.md
+              - Gaussian FPCR future prediction: guides/fpcr-future-prediction.md
+              - Heteroscedastic FPCR wild bootstrap: guides/fpcr-wild-bootstrap.md
+              - Simultaneous fixed-target bootstrap: guides/fpcr-wild-bootstrap-simultaneous.md
+              - Fixed-family bootstrap tests: guides/fpcr-wild-bootstrap-family-tests.md
+              - Wild-bootstrap Monte Carlo precision: guides/fpcr-wild-bootstrap-monte-carlo.md
+              - Stabilized-volatility selection: guides/fpcr-wild-bootstrap-selection.md
+          - Geometry & nonlinear dynamics:
+              - Continuous trajectory geometry: methods/trajectory-geometry.md
+              - Discrete Fréchet distance: methods/discrete-frechet.md
+              - Dynamic time warping: methods/dynamic-time-warping.md
+              - Distance sensitivity: methods/trajectory-distance-sensitivity.md
+              - Nonlinear trajectory dynamics: guides/nonlinear-dynamics.md
+              - Joint recurrence analysis: methods/joint-recurrence.md
+              - Recurrence networks: methods/recurrence-networks.md
+              - Recurrence-threshold diagnostics: methods/recurrence-threshold-diagnostics.md
+              - RQA population bootstrap: methods/rqa-population-bootstrap.md
+              - Functional RQA sensitivity: methods/rqa-functional-dependence.md
+              - Kantz largest-Lyapunov estimation: methods/kantz-lle.md
+              - Nonlinear parameter sensitivity: methods/nonlinear-parameter-sensitivity.md
+              - Discrete transfer entropy: methods/transfer-entropy.md
+              - Transfer-entropy sensitivity: methods/transfer-entropy-sensitivity.md
+              - Conditional transfer entropy: methods/conditional-transfer-entropy.md
+              - Multivariate surrogate testing: methods/multivariate-surrogates.md
+              - Interpretation: guides/interpretation.md
+      - Worked examples:
+          - Overview: examples/index.md
+          - Foundations & representation:
+              - 2-D evidence inspection: examples/evidence-inspection.md
+              - Native irregular sampling: examples/native-irregular.md
+              - Irregular sampling & gaps: examples/irregular-data.md
+              - Sparse PACE FPCA: examples/sparse-pace-fpca.md
+              - Sparse planar MFPCA / joint PACE: examples/sparse-mfpca.md
+              - Native functional simulation: examples/functional-simulation.md
+              - Compositional AOI trajectories: examples/compositional.md
+              - Repeated-trial multilevel FPCA: examples/multilevel.md
+              - Phase FPCA: examples/phase-fpca.md
+          - FPCA & uncertainty:
+              - FPCA stability: examples/fpca-stability.md
+              - Selection & FPC uncertainty: examples/fpca-selection-uncertainty.md
+              - Simultaneous FPC bands: examples/simultaneous-fpc-bands.md
+              - FPCA spectrum uncertainty: examples/fpca-spectrum-uncertainty.md
+              - FPC score basis uncertainty: examples/fpca-score-uncertainty.md
+              - Predictive FPCA regression: examples/predictive-fpca-regression.md
+              - Near-tied FPC subspaces: examples/near-tied-subspace.md
+              - Functional mean bands: examples/functional-mean-bands.md
+              - Outlier & influence diagnostics: examples/outlier-influence.md
+              - Conformal anomaly review: examples/conformal-fpca-anomaly.md
+          - Functional regression & prediction:
+              - Functional regression: examples/regression.md
+              - Function-on-scalar regression: examples/function-on-scalar.md
+              - Generalized function-on-scalar: examples/generalized-function-on-scalar.md
+              - Generalized marginal prediction: examples/generalized-function-on-scalar-prediction.md
+              - Gaussian FPCR bootstrap uncertainty: examples/fpcr-bootstrap-inference.md
+              - Gaussian FPCR simultaneous slope bands: examples/fpcr-simultaneous-slope-band.md
+              - Gaussian FPCR future prediction: examples/fpcr-future-prediction.md
+              - Heteroscedastic FPCR wild bootstrap: examples/fpcr-wild-bootstrap.md
+              - Simultaneous fixed-target bootstrap: examples/fpcr-wild-bootstrap-simultaneous.md
+              - Fixed-family bootstrap tests: examples/fpcr-wild-bootstrap-family-tests.md
+              - Wild-bootstrap Monte Carlo precision: examples/fpcr-wild-bootstrap-monte-carlo.md
+              - Stabilized-volatility selection: examples/fpcr-wild-bootstrap-selection.md
+          - Repeated-trial mixed effects:
+              - Functional mixed-effects regression: examples/functional-mixed-effects.md
+              - Simultaneous coefficient bands: examples/functional-mixed-effects-simultaneous-bands.md
+              - Random functional slope: examples/functional-mixed-effects-random-slope.md
+              - Trial functional random effect: examples/functional-mixed-effects-trial-random-effect.md
+              - Residual covariance & whitening: examples/functional-mixed-effects-residual-correlation.md
+              - Covariance-structure sensitivity: examples/functional-mixed-effects-covariance-sensitivity.md
+              - Full-refit bootstrap: examples/functional-mixed-effects-full-refit-bootstrap.md
+              - Residual diagnostics: examples/functional-mixed-effects-residual-diagnostics.md
+          - Geometry & trajectory comparison:
+              - Continuous trajectory geometry: examples/trajectory-geometry.md
+              - Discrete Fréchet comparison: examples/discrete-frechet.md
+              - Dynamic time warping: examples/dynamic-time-warping.md
+              - Distance sensitivity: examples/trajectory-distance-sensitivity.md
+          - Nonlinear, recurrence & information flow:
+              - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
+              - Joint recurrence analysis: examples/joint-recurrence.md
+              - Recurrence networks: examples/recurrence-networks.md
+              - Recurrence-threshold diagnostics: examples/recurrence-threshold-diagnostics.md
+              - RQA population bootstrap: examples/rqa-population-bootstrap.md
+              - RQA-derived functional trajectories: examples/rqa-functional-trajectories.md
+              - Functional RQA sensitivity: examples/rqa-functional-sensitivity.md
+              - Rosenstein vs Kantz LLE: examples/kantz-lle.md
+              - Nonlinear parameter sensitivity: examples/nonlinear-parameter-sensitivity.md
+              - Discrete transfer entropy: examples/transfer-entropy.md
+              - Transfer-entropy sensitivity: examples/transfer-entropy-sensitivity.md
+              - Conditional transfer entropy: examples/conditional-transfer-entropy.md
+              - Multivariate surrogate testing: examples/multivariate-surrogates.md
+              - Empirical return-map stability: examples/return-map-stability.md
+          - Audit utilities:
+              - Function → equation registry: examples/function-equation-registry.md
+              - Failure cases: examples/failure-cases.md
+      - Methods:
+          - Overview: methods/index.md
+          - Scientific practice:
+              - Reporting checklist: methods/reporting.md
+              - Pre-registration checklist: methods/preregistration.md
+              - Assumptions & diagnostics: methods/assumptions.md
+              - Limitations & failure modes: methods/limitations.md
+              - Method comparison: methods/method-comparison.md
+              - Research FAQ: methods/faq.md
+          - Mathematical & visual reference:
+              - Mathematical reference: methods/mathematical-reference.md
+              - Visual gallery: methods/visual-gallery.md
+              - Workflow atlas: methods/workflow-atlas.md
+              - RQA software conventions: methods/rqa-software-conventions.md
+              - References: methods/references.md
+          - Validation & qualification:
+              - Capability status & roadmap: methods/status-roadmap.md
+              - External reference policy: validation/external-reference-policy.md
+              - Release readiness: release-readiness.md
+              - Independent-reference validation ledger: validation/reference-validation-ledger.md
+              - Native sparse FPCA validation: validation/sparse-fpca-validation.md
+              - Functional simulation validation: validation/functional-simulation-validation.md
+              - Targeted pre-0.12 recovery audit: validation/pre-0.12-recovery-audit.md
+              - Native sparse MFPCA recovery: validation/sparse-mfpca-recovery.md
+              - Sparse MFPCA bandwidth selection: validation/sparse-mfpca-bandwidth-selection.md
+              - Sparse joint-PACE score uncertainty: validation/sparse-mfpca-score-uncertainty.md
+              - Sparse MFPCA comparator sensitivity: validation/sparse-mfpca-comparator-sensitivity.md
+              - Bayesian sparse FPCA/MFPCA comparator: validation/bayesian-fpca-comparator.md
+              - Bayesian FPCA B2/B3 definitive replication + uncertainty: validation/bayesian-fpca-b2-b3.md
+              - Sparse MFPCA stress and performance: validation/sparse-mfpca-observation-performance.md
+              - Sparse partial-trajectory prediction: validation/sparse-partial-prediction.md
+              - 1.1 end-to-end product analyses: validation/one-dot-one-product-analyses.md
+              - 1.1 development readiness: validation/one-dot-one-development-readiness.md
+              - 1.2 workflow product qualification: validation/one-dot-two-workflow-product-qualification.md
+              - Numerical tolerance policy: validation/numerical-tolerance-policy.md
+              - Performance envelope: validation/performance-envelope.md
+          - Development roadmap:
+              - Native sparse FPCA + PACE (0.10): development/native-sparse-fpca.md
+              - Native functional simulation (0.11): development/simulation-framework.md
+              - Native sparse multivariate FPCA (0.12): development/sparse-multivariate-fpca.md
+          - Reproducibility & release:
+              - Portable scientific results: reproducibility/portable-results.md
+              - Reproducibility bundle checklist: reproducibility/checklist.md
+              - Release process: release-process.md
+
+  - Research and evidence:
+      - Overview: research/index.md
+      - W3 studies R76–R95: research/studies.md
+      - Interpreting identification bounds: articles/how-to-read-identification-bounds.md
+      - Which external assumptions sharpen bounds?: articles/what-sharpens-missing-gaze-bounds.md
+      - Evidence versus qualification: articles/evidence-vs-qualification.md
+      - October research notice: research/october-2026-normalization-leakage.md
+      - Scientific article archive:
           - Overview: articles/index.md
           - Choose among ten workflows: articles/choosing-the-ten-workflows.md
           - Interpret workflow figures: articles/interpreting-workflow-figures.md
@@ -66,254 +261,76 @@ nav:
           - Why independent-unit Student-t tails change functional uncertainty: articles/independent-unit-student-t-functional-uncertainty.md
           - Understanding nonseparable two-dimensional gaze covariance: articles/understanding-nonseparable-gaze-covariance.md
           - How to interpret functional confidence-band source audits: articles/interpreting-w3-coverage-and-source-audits.md
+      - Original research and provenance:
+          - Overview and qualification: development/research-development-hub.md
+          - Evidence dashboard: development/research-scientific-dashboard.md
+          - W3 R70–R76 articles and figures: development/w3-r70-r76-evidence-plot-gallery.md
+          - W3 R77–R78 covariance figure and evidence ledger: development/w3-r77-r78-temporal-covariance-figure-ledger.md
+          - W3 R79 nonseparable covariance source and figure ledger: development/w3-r79-nonseparable-covariance-evidence-ledger.md
+          - W3 R80 Student-t5 original source and figure evidence ledger: development/w3-r80-student-t5-evidence-ledger.md
+          - W3 R81 skewed unit-contamination original evidence and plot ledger: development/w3-r81-skewed-unit-evidence-ledger.md
+          - W3 R82 MCAR/MAR/MNAR observation-process source and figure ledger: development/w3-r82-observation-process-evidence-ledger.md
+          - W3 R83 MNAR five-delta source and independent figure evidence ledger: development/w3-r83-mnar-sensitivity-evidence-ledger.md
+          - W3 R84 independent random recovery source and identification evidence: development/w3-r84-validation-identification-evidence-ledger.md
+          - W3 R85 selective secondary validation and source evidence: development/w3-r85-selection-validation-evidence-ledger.md
+          - W3 R86 randomized third-stage audit of secondary failures source and figures: development/w3-r86-third-stage-audit-evidence-ledger.md
+          - W3 R88 independently audited return-sensitivity evidence and figures: development/w3-r88-original-independent-evidence-ledger.md
+          - W3 R89 independently audited original sharp-bound evidence: development/w3-r89-original-independent-evidence-ledger.md
+          - W3 R90 original and independent audit saturation evidence: development/w3-r90-original-independent-evidence-ledger.md
+          - W3 R91 original and independent completed-recovery evidence: development/w3-r91-independent-recovery-evidence-ledger.md
+          - W3 R92 original and independent selective-return evidence: development/w3-r92-original-independent-evidence-ledger.md
+          - W3 R93 exact original and independent likelihood evidence: development/w3-r93-original-independent-equivalence-ledger.md
+          - W3 R94 original and independent external completion-floor evidence: development/w3-r94-original-independent-evidence-ledger.md
+          - W3 R95 exact monotonicity original and independent evidence: development/w3-r95-original-independent-evidence-ledger.md
+          - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
+          - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
+          - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
+          - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
+          - Original source figures: development/research-original-figures.md
+          - Reproduce from draft source: development/research-reproducibility.md
+          - Methods and contracts:
+              - F1–F6 overview: development/f1-f6-scientific-expansion.md
+              - Experimental API contracts: development/research-method-api.md
+              - Scientific evidence matrix: development/research-evidence-matrix.md
+              - Study design and calibration: development/b6-f1-f5-calibration-protocol.md
+              - Independent calibration shards: development/scientific-calibration-shards.md
+              - First empirical findings: development/first-empirical-calibration-findings.md
+              - Calibration wave 1: development/empirical-calibration-wave1.md
+              - Reproducible source case studies: development/research-case-studies.md
+              - Method finder: development/method-finder.md
+              - Candidate history: development/unpublished-candidate-history.md
+          - F1 sparse group inference:
+              - 6,000-fit null and power: development/f1-high-precision-native-null-power.md
+          - F5 dependence-aware changes:
+              - Independent computation and AR1: development/independent-core-computation-and-f5-ar1-reference.md
+              - Unknown AR1 baseline: development/f5-independent-baseline-unknown-phi.md
+              - Baseline-size sensitivity: development/f5-baseline-size-nuisance-sensitivity.md
+              - AR2, MA1 and nonstationarity: development/f5-independent-baseline-ar2-model-falsification.md
+          - Bayesian B5–B10 experiments:
+              - Bayesian research programme: development/bayesian-research-programme.md
+              - B7 learned planar population: development/b7-learned-planar-model.md
+              - B7 predictive calibration: development/b7-prediction-calibration.md
+              - Convergence after undercoverage: development/b6-b7-convergence-after-undercoverage.md
+              - Reversible scale interweaving: development/b6-b7-reversible-scale-interweaving.md
+              - Exact collapsed-mean Gibbs: development/b6-b7-exact-collapsed-mean-gibbs.md
+              - Independent PyMC NUTS: development/b6-b7-independent-pymc-nuts-reference.md
+              - Identifiable posterior diagnostics: development/b6-b7-identifiable-reference-diagnostics.md
+              - Score-marginal ESS negative result: development/b6-b7-joint-score-marginal-loading-ess.md
+              - Long-chain Gibbs versus independent NUTS: development/b6-b7-longchain-identified-covariance-geometry.md
+              - Four-chain independent NUTS replication (R1): development/b6-b7-four-chain-nuts-r1-reference.md
+              - Rank-two dense versus Woodbury mathematics (R2): development/b6-b7-rank2-marginal-mathematics.md
+              - Actual rank-two PyMC graph and gradient reference (R2): development/b6-b7-rank2-pymc-r2-research-protocol.md
+              - B6 rank-one SBC pilot (stage 0): development/b6-rank1-prior-sbc-stage0.md
+              - B6 SBC same-dataset full-budget refit (R2): development/b6-rank1-sbc-r2-same-dataset-evidence.md
+              - Rank-two paired versus asynchronous NUTS pilot (R3): development/b6-b7-rank2-four-chain-nuts-r3-evidence.md
+  - Figures:
       - Experimental E1-E4 result figures: methods/experimental-e1-e4-gallery.md
-      - Tutorial gallery: tutorials/index.md
-      - Choose a representation: concepts/representations.md
-      - Scientific contracts: concepts/contracts.md
-      - Analysis decision map: concepts/decision-map.md
-  - Research development (unreleased):
-      - Overview and qualification: development/research-development-hub.md
-      - Evidence dashboard: development/research-scientific-dashboard.md
-      - W3 R70–R76 articles and figures: development/w3-r70-r76-evidence-plot-gallery.md
-      - W3 R77–R78 covariance figure and evidence ledger: development/w3-r77-r78-temporal-covariance-figure-ledger.md
-      - W3 R79 nonseparable covariance source and figure ledger: development/w3-r79-nonseparable-covariance-evidence-ledger.md
-      - W3 R80 Student-t5 original source and figure evidence ledger: development/w3-r80-student-t5-evidence-ledger.md
-      - W3 R81 skewed unit-contamination original evidence and plot ledger: development/w3-r81-skewed-unit-evidence-ledger.md
-      - W3 R82 MCAR/MAR/MNAR observation-process source and figure ledger: development/w3-r82-observation-process-evidence-ledger.md
-      - W3 R83 MNAR five-delta source and independent figure evidence ledger: development/w3-r83-mnar-sensitivity-evidence-ledger.md
-      - W3 R84 independent random recovery source and identification evidence: development/w3-r84-validation-identification-evidence-ledger.md
-      - W3 R85 selective secondary validation and source evidence: development/w3-r85-selection-validation-evidence-ledger.md
-      - W3 R86 randomized third-stage audit of secondary failures source and figures: development/w3-r86-third-stage-audit-evidence-ledger.md
-      - W3 R88 independently audited return-sensitivity evidence and figures: development/w3-r88-original-independent-evidence-ledger.md
-      - W3 R89 independently audited original sharp-bound evidence: development/w3-r89-original-independent-evidence-ledger.md
-      - W3 R90 original and independent audit saturation evidence: development/w3-r90-original-independent-evidence-ledger.md
-      - W3 R91 original and independent completed-recovery evidence: development/w3-r91-independent-recovery-evidence-ledger.md
-      - W3 R92 original and independent selective-return evidence: development/w3-r92-original-independent-evidence-ledger.md
-      - W3 R93 exact original and independent likelihood evidence: development/w3-r93-original-independent-equivalence-ledger.md
-      - W3 R94 original and independent external completion-floor evidence: development/w3-r94-original-independent-evidence-ledger.md
-      - W3 R95 exact monotonicity original and independent evidence: development/w3-r95-original-independent-evidence-ledger.md
-      - Workflow integer-parameter integrity: development/workflow-parameter-integrity.md
-      - W3 missing and irregular gaze fail-closed contract: development/w3-missing-gaze-irregular-contract.md
-      - W3 known-truth regression validation protocol: development/w3-functional-regression-known-truth-protocol.md
-      - W3 original simulation findings and figure: development/w3-functional-regression-known-truth-results.md
-      - Original source figures: development/research-original-figures.md
-      - Reproduce from draft source: development/research-reproducibility.md
-      - Methods and contracts:
-          - F1–F6 overview: development/f1-f6-scientific-expansion.md
-          - Experimental API contracts: development/research-method-api.md
-          - Scientific evidence matrix: development/research-evidence-matrix.md
-          - Study design and calibration: development/b6-f1-f5-calibration-protocol.md
-          - Independent calibration shards: development/scientific-calibration-shards.md
-          - First empirical findings: development/first-empirical-calibration-findings.md
-          - Calibration wave 1: development/empirical-calibration-wave1.md
-          - Reproducible source case studies: development/research-case-studies.md
-          - Method finder: development/method-finder.md
-          - Candidate history: development/unpublished-candidate-history.md
-      - F1 sparse group inference:
-          - 6,000-fit null and power: development/f1-high-precision-native-null-power.md
-      - F5 dependence-aware changes:
-          - Independent computation and AR1: development/independent-core-computation-and-f5-ar1-reference.md
-          - Unknown AR1 baseline: development/f5-independent-baseline-unknown-phi.md
-          - Baseline-size sensitivity: development/f5-baseline-size-nuisance-sensitivity.md
-          - AR2, MA1 and nonstationarity: development/f5-independent-baseline-ar2-model-falsification.md
-      - Bayesian B5–B10 experiments:
-          - Bayesian research programme: development/bayesian-research-programme.md
-          - B7 learned planar population: development/b7-learned-planar-model.md
-          - B7 predictive calibration: development/b7-prediction-calibration.md
-          - Convergence after undercoverage: development/b6-b7-convergence-after-undercoverage.md
-          - Reversible scale interweaving: development/b6-b7-reversible-scale-interweaving.md
-          - Exact collapsed-mean Gibbs: development/b6-b7-exact-collapsed-mean-gibbs.md
-          - Independent PyMC NUTS: development/b6-b7-independent-pymc-nuts-reference.md
-          - Identifiable posterior diagnostics: development/b6-b7-identifiable-reference-diagnostics.md
-          - Score-marginal ESS negative result: development/b6-b7-joint-score-marginal-loading-ess.md
-          - Long-chain Gibbs versus independent NUTS: development/b6-b7-longchain-identified-covariance-geometry.md
-          - Four-chain independent NUTS replication (R1): development/b6-b7-four-chain-nuts-r1-reference.md
-          - Rank-two dense versus Woodbury mathematics (R2): development/b6-b7-rank2-marginal-mathematics.md
-          - Actual rank-two PyMC graph and gradient reference (R2): development/b6-b7-rank2-pymc-r2-research-protocol.md
-          - B6 rank-one SBC pilot (stage 0): development/b6-rank1-prior-sbc-stage0.md
-          - B6 SBC same-dataset full-budget refit (R2): development/b6-rank1-sbc-r2-same-dataset-evidence.md
-          - Rank-two paired versus asynchronous NUTS pilot (R3): development/b6-b7-rank2-four-chain-nuts-r3-evidence.md
-  - Guides:
-      - Overview: guides/index.md
-      - Data & representation:
-          - Preparing trajectories: guides/preprocessing.md
-          - Native irregular trajectories: guides/irregular-trajectories.md
-          - Sparse univariate FPCA / PACE: guides/sparse-irregular-fpca.md
-          - Sparse planar MFPCA / joint PACE: guides/sparse-multivariate-fpca.md
-          - Native functional simulation: guides/functional-simulation.md
-          - Basis representations: guides/basis-representations.md
-          - Derived continuous functions: guides/derived-functions.md
-      - FPCA, uncertainty & review:
-          - FPCA & MFPCA: guides/fpca.md
-          - FPCA stability & validation: guides/stability-validation.md
-          - Selecting FPC count: guides/component-selection.md
-          - Predictive FPC selection: guides/predictive-component-selection.md
-          - FPC shape uncertainty: guides/component-uncertainty.md
-          - Simultaneous FPC bands: guides/simultaneous-fpc-bands.md
-          - FPCA spectrum uncertainty: guides/spectrum-uncertainty.md
-          - FPC score basis uncertainty: guides/score-uncertainty.md
-          - Sparse partial-trajectory prediction: guides/sparse-partial-trajectory-prediction.md
-          - Simultaneous functional mean bands: guides/simultaneous-mean-bands.md
-          - Near-tied FPC subspaces: guides/subspace-stability.md
-          - Outliers & influence: guides/outliers-influence.md
-          - Conformal anomaly review: guides/conformal-fpca-anomaly.md
-      - Registration, multilevel & composition:
-          - Registration & phase: guides/registration.md
-          - Phase FPCA & registration sensitivity: guides/phase-fpca.md
-          - Multilevel FPCA: guides/multilevel.md
-          - AOI probability functions: guides/compositional.md
-          - Elastic trajectory analysis: guides/elastic.md
-      - Functional regression & repeated measures:
-          - Functional regression & clustering: guides/downstream.md
-          - Function-on-scalar regression: guides/function-on-scalar.md
-          - Generalized function-on-scalar: methods/generalized-function-on-scalar.md
-          - Generalized marginal prediction: methods/generalized-function-on-scalar-prediction.md
-          - Functional mixed-effects regression: guides/functional-mixed-effects.md
-          - Mixed-effects simultaneous bands: methods/functional-mixed-effects-simultaneous-bands.md
-          - Random functional slope: methods/functional-mixed-effects-random-slope.md
-          - Trial functional random effect: methods/functional-mixed-effects-trial-random-effect.md
-          - Residual covariance & whitening: methods/functional-mixed-effects-residual-correlation.md
-          - Covariance-structure sensitivity: methods/functional-mixed-effects-covariance-sensitivity.md
-          - Full-refit bootstrap: methods/functional-mixed-effects-full-refit-bootstrap.md
-          - Residual diagnostics: methods/functional-mixed-effects-residual-diagnostics.md
-          - Gaussian FPCR bootstrap uncertainty: guides/fpcr-bootstrap-inference.md
-          - Gaussian FPCR simultaneous slope bands: guides/fpcr-simultaneous-slope-band.md
-          - Gaussian FPCR future prediction: guides/fpcr-future-prediction.md
-          - Heteroscedastic FPCR wild bootstrap: guides/fpcr-wild-bootstrap.md
-          - Simultaneous fixed-target bootstrap: guides/fpcr-wild-bootstrap-simultaneous.md
-          - Fixed-family bootstrap tests: guides/fpcr-wild-bootstrap-family-tests.md
-          - Wild-bootstrap Monte Carlo precision: guides/fpcr-wild-bootstrap-monte-carlo.md
-          - Stabilized-volatility selection: guides/fpcr-wild-bootstrap-selection.md
-      - Geometry & nonlinear dynamics:
-          - Continuous trajectory geometry: methods/trajectory-geometry.md
-          - Discrete Fréchet distance: methods/discrete-frechet.md
-          - Dynamic time warping: methods/dynamic-time-warping.md
-          - Distance sensitivity: methods/trajectory-distance-sensitivity.md
-          - Nonlinear trajectory dynamics: guides/nonlinear-dynamics.md
-          - Joint recurrence analysis: methods/joint-recurrence.md
-          - Recurrence networks: methods/recurrence-networks.md
-          - Recurrence-threshold diagnostics: methods/recurrence-threshold-diagnostics.md
-          - RQA population bootstrap: methods/rqa-population-bootstrap.md
-          - Functional RQA sensitivity: methods/rqa-functional-dependence.md
-          - Kantz largest-Lyapunov estimation: methods/kantz-lle.md
-          - Nonlinear parameter sensitivity: methods/nonlinear-parameter-sensitivity.md
-          - Discrete transfer entropy: methods/transfer-entropy.md
-          - Transfer-entropy sensitivity: methods/transfer-entropy-sensitivity.md
-          - Conditional transfer entropy: methods/conditional-transfer-entropy.md
-          - Multivariate surrogate testing: methods/multivariate-surrogates.md
-          - Interpretation: guides/interpretation.md
-  - Worked examples:
-      - Overview: examples/index.md
-      - Foundations & representation:
-          - 2-D evidence inspection: examples/evidence-inspection.md
-          - Native irregular sampling: examples/native-irregular.md
-          - Irregular sampling & gaps: examples/irregular-data.md
-          - Sparse PACE FPCA: examples/sparse-pace-fpca.md
-          - Sparse planar MFPCA / joint PACE: examples/sparse-mfpca.md
-          - Native functional simulation: examples/functional-simulation.md
-          - Compositional AOI trajectories: examples/compositional.md
-          - Repeated-trial multilevel FPCA: examples/multilevel.md
-          - Phase FPCA: examples/phase-fpca.md
-      - FPCA & uncertainty:
-          - FPCA stability: examples/fpca-stability.md
-          - Selection & FPC uncertainty: examples/fpca-selection-uncertainty.md
-          - Simultaneous FPC bands: examples/simultaneous-fpc-bands.md
-          - FPCA spectrum uncertainty: examples/fpca-spectrum-uncertainty.md
-          - FPC score basis uncertainty: examples/fpca-score-uncertainty.md
-          - Predictive FPCA regression: examples/predictive-fpca-regression.md
-          - Near-tied FPC subspaces: examples/near-tied-subspace.md
-          - Functional mean bands: examples/functional-mean-bands.md
-          - Outlier & influence diagnostics: examples/outlier-influence.md
-          - Conformal anomaly review: examples/conformal-fpca-anomaly.md
-      - Functional regression & prediction:
-          - Functional regression: examples/regression.md
-          - Function-on-scalar regression: examples/function-on-scalar.md
-          - Generalized function-on-scalar: examples/generalized-function-on-scalar.md
-          - Generalized marginal prediction: examples/generalized-function-on-scalar-prediction.md
-          - Gaussian FPCR bootstrap uncertainty: examples/fpcr-bootstrap-inference.md
-          - Gaussian FPCR simultaneous slope bands: examples/fpcr-simultaneous-slope-band.md
-          - Gaussian FPCR future prediction: examples/fpcr-future-prediction.md
-          - Heteroscedastic FPCR wild bootstrap: examples/fpcr-wild-bootstrap.md
-          - Simultaneous fixed-target bootstrap: examples/fpcr-wild-bootstrap-simultaneous.md
-          - Fixed-family bootstrap tests: examples/fpcr-wild-bootstrap-family-tests.md
-          - Wild-bootstrap Monte Carlo precision: examples/fpcr-wild-bootstrap-monte-carlo.md
-          - Stabilized-volatility selection: examples/fpcr-wild-bootstrap-selection.md
-      - Repeated-trial mixed effects:
-          - Functional mixed-effects regression: examples/functional-mixed-effects.md
-          - Simultaneous coefficient bands: examples/functional-mixed-effects-simultaneous-bands.md
-          - Random functional slope: examples/functional-mixed-effects-random-slope.md
-          - Trial functional random effect: examples/functional-mixed-effects-trial-random-effect.md
-          - Residual covariance & whitening: examples/functional-mixed-effects-residual-correlation.md
-          - Covariance-structure sensitivity: examples/functional-mixed-effects-covariance-sensitivity.md
-          - Full-refit bootstrap: examples/functional-mixed-effects-full-refit-bootstrap.md
-          - Residual diagnostics: examples/functional-mixed-effects-residual-diagnostics.md
-      - Geometry & trajectory comparison:
-          - Continuous trajectory geometry: examples/trajectory-geometry.md
-          - Discrete Fréchet comparison: examples/discrete-frechet.md
-          - Dynamic time warping: examples/dynamic-time-warping.md
-          - Distance sensitivity: examples/trajectory-distance-sensitivity.md
-      - Nonlinear, recurrence & information flow:
-          - Nonlinear trajectory dynamics: examples/nonlinear-dynamics.md
-          - Joint recurrence analysis: examples/joint-recurrence.md
-          - Recurrence networks: examples/recurrence-networks.md
-          - Recurrence-threshold diagnostics: examples/recurrence-threshold-diagnostics.md
-          - RQA population bootstrap: examples/rqa-population-bootstrap.md
-          - RQA-derived functional trajectories: examples/rqa-functional-trajectories.md
-          - Functional RQA sensitivity: examples/rqa-functional-sensitivity.md
-          - Rosenstein vs Kantz LLE: examples/kantz-lle.md
-          - Nonlinear parameter sensitivity: examples/nonlinear-parameter-sensitivity.md
-          - Discrete transfer entropy: examples/transfer-entropy.md
-          - Transfer-entropy sensitivity: examples/transfer-entropy-sensitivity.md
-          - Conditional transfer entropy: examples/conditional-transfer-entropy.md
-          - Multivariate surrogate testing: examples/multivariate-surrogates.md
-          - Empirical return-map stability: examples/return-map-stability.md
-      - Audit utilities:
-          - Function → equation registry: examples/function-equation-registry.md
-          - Failure cases: examples/failure-cases.md
-  - Methods:
-      - Overview: methods/index.md
-      - Scientific practice:
-          - Reporting checklist: methods/reporting.md
-          - Pre-registration checklist: methods/preregistration.md
-          - Assumptions & diagnostics: methods/assumptions.md
-          - Limitations & failure modes: methods/limitations.md
-          - Method comparison: methods/method-comparison.md
-          - Research FAQ: methods/faq.md
-      - Mathematical & visual reference:
-          - Mathematical reference: methods/mathematical-reference.md
-          - Visual gallery: methods/visual-gallery.md
-          - Workflow atlas: methods/workflow-atlas.md
-          - RQA software conventions: methods/rqa-software-conventions.md
-          - References: methods/references.md
-      - Validation & qualification:
-          - Capability status & roadmap: methods/status-roadmap.md
-          - External reference policy: validation/external-reference-policy.md
-          - Release readiness: release-readiness.md
-          - Independent-reference validation ledger: validation/reference-validation-ledger.md
-          - Native sparse FPCA validation: validation/sparse-fpca-validation.md
-          - Functional simulation validation: validation/functional-simulation-validation.md
-          - Targeted pre-0.12 recovery audit: validation/pre-0.12-recovery-audit.md
-          - Native sparse MFPCA recovery: validation/sparse-mfpca-recovery.md
-          - Sparse MFPCA bandwidth selection: validation/sparse-mfpca-bandwidth-selection.md
-          - Sparse joint-PACE score uncertainty: validation/sparse-mfpca-score-uncertainty.md
-          - Sparse MFPCA comparator sensitivity: validation/sparse-mfpca-comparator-sensitivity.md
-          - Bayesian sparse FPCA/MFPCA comparator: validation/bayesian-fpca-comparator.md
-          - Bayesian FPCA B2/B3 definitive replication + uncertainty: validation/bayesian-fpca-b2-b3.md
-          - Sparse MFPCA stress and performance: validation/sparse-mfpca-observation-performance.md
-          - Sparse partial-trajectory prediction: validation/sparse-partial-prediction.md
-          - 1.1 end-to-end product analyses: validation/one-dot-one-product-analyses.md
-          - 1.1 development readiness: validation/one-dot-one-development-readiness.md
-          - 1.2 workflow product qualification: validation/one-dot-two-workflow-product-qualification.md
-          - Numerical tolerance policy: validation/numerical-tolerance-policy.md
-          - Performance envelope: validation/performance-envelope.md
-      - Development roadmap:
-          - Native sparse FPCA + PACE (0.10): development/native-sparse-fpca.md
-          - Native functional simulation (0.11): development/simulation-framework.md
-          - Native sparse multivariate FPCA (0.12): development/sparse-multivariate-fpca.md
-      - Reproducibility & release:
-          - Portable scientific results: reproducibility/portable-results.md
-          - Reproducibility bundle checklist: reproducibility/checklist.md
-          - Release process: release-process.md
+      - Figure atlas: figures/index.md
+  - News and updates:
+      - Latest: news/index.md
+      - 23 October 2026 research update: news/2026-10-23.md
+      - Release status: news/release-status.md
+      - Roadmap and limitations: roadmap.md
   - API:
       - API stability & hierarchy: reference/api-stability.md
       - Workflow infrastructure (1.2 W1): reference/workflow-infrastructure.md
