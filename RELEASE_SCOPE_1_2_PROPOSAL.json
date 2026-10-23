@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "document_type": "unapproved_release_scope_proposal",
-  "source_version": "1.2.0rc2.dev0",
+  "source_version": "1.2.0rc2",
   "published_stable_baseline": "1.1.0",
   "frozen_root_compatibility": {
     "original_public_exports": 458,
@@ -127,7 +127,7 @@
   "future_required_gates": [
     "Resolve bundled E1–E4 experimental module scope: validate an explicit experimental prerelease interface or exclude it from the release distribution.",
     "human review and explicit approval of a narrower release surface and claims",
-    "new literal release-candidate version declarations and matching exact-version scientific/performance evidence",
+    "fresh literal 1.2.0rc2 qualification evidence on the precise RC2 source and matched performance/CI artifacts",
     "complete cross-platform exact-candidate qualification and reproducible install from wheel and sdist",
     "protected main exact-head complete positive CI and release governance",
     "separately requested governance-only publication approval"

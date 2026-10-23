@@ -241,3 +241,13 @@ def test_e4_html_escapes_analyst_text(gaze, tmp_path):
     assert "<script>" not in source
     assert "&lt;script&gt;" in source
     assert "&lt;Untrusted user title&gt;" in source
+
+
+def test_e2_preflight_refuses_invalid_objects_and_nonsensical_support_threshold(gaze):
+    """Real input validation, not merely a numerical smoke-test."""
+    with pytest.raises(TypeError, match="data must be TrajectorySet"):
+        workflow_preflight(object())
+    with pytest.raises(ValueError, match="minimum_observed_per_dimension must be positive"):
+        workflow_preflight(gaze, minimum_observed_per_dimension=0)
+    with pytest.raises(ValueError, match="minimum_observed_per_dimension must be positive"):
+        workflow_preflight(gaze, minimum_observed_per_dimension=-3)

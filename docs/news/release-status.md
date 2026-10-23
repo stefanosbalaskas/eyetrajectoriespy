@@ -9,7 +9,7 @@ description: Published eyetrajectoriespy 1.1.0 versus unreleased 1.2 development
     Install with `pip install eyetrajectoriespy==1.1.0`. Supported Python range: 3.11–3.13. [Release notes](../releases/1.1.0.md) · [PyPI](https://pypi.org/project/eyetrajectoriespy/) · [Stable API](../reference/api.md).
 
 !!! warning "1.2 is not released"
-    The 1.2 research and workflow source does **not** represent a published GitHub Release or PyPI version. A frozen 1.2.0rc1 baseline and protected-main 1.2.0rc2.dev0 experimental source are distinct. A literal qualified RC2 has not been published.
+    The 1.2 research and workflow source does **not** represent a published GitHub Release or PyPI version. The previous 1.2.0rc1 qualification record and the new literal 1.2.0rc2 candidate are separate. RC2 exact-version qualification is in progress, and neither candidate has been published.
 
 | Area | Status | Source |
 | --- | --- | --- |

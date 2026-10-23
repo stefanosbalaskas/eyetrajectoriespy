@@ -1,6 +1,6 @@
 # Unpublished research candidate history
 
-The **stable published release is 1.1.0**. Source 1.2.0rc2.dev0 remains **unpublished**, with both publication controls disabled.
+The **stable published release is 1.1.0**. The prior development source 1.2.0rc2.dev0 remains **unpublished**, and literal 1.2.0rc2 is a separate prerelease-qualification proposal with all publication controls disabled.
 
 Historical **1.2.0rc1** workflow qualification is preserved under the [archived RC1 page](../releases/1.2.0rc1.md). Its qualification records are immutable; F1–F6 experimental science cannot be retroactively attributed to that candidate.
 

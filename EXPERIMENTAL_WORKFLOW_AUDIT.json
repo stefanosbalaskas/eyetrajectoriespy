@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "programme": "e1-e5-workflow-extension",
-  "source_version": "1.2.0rc2.dev0",
+  "source_version": "1.2.0rc2",
   "previous_qualified_candidate": "1.2.0rc1",
   "experimental_module": "eyetrajectoriespy.workflows.experimental",
   "deliverables": [

@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "programme": "1.2.0rc2-literal-source-and-evidence-qualification",
+  "package_version": "1.2.0rc2",
+  "published_stable_version": "1.1.0",
+  "previous_immutable_candidate_version": "1.2.0rc1",
+  "scope_proposal": "RELEASE_SCOPE_1_2_PROPOSAL.json",
+  "new_scientific_default_authorized": false,
+  "new_estimator_authorized": false,
+  "root_export_promotion_authorized": false,
+  "research_inference_claims_qualified": false,
+  "open_scientific_issues": [
+    289,
+    296
+  ],
+  "new_literal_source_performance": {
+    "source_commit": "46d2dd74c5ab71d0bb5bd24c356d221f4915b903",
+    "github_workflow_run_id": 39945467014,
+    "original_artifact_id": 12497727453,
+    "original_artifact_name": "performance-envelope",
+    "original_artifact_member": "performance-envelope.json",
+    "original_artifact_member_sha256": "8da44ff291614aac2b9e01ae8819bcda67f98e0c33cb7b43dfdfb3b9adbcd3d5",
+    "python": "3.12.15",
+    "independent_workload_count": 6,
+    "repeats_each": 3,
+    "original_file_was_rc2_not_rc1": true,
+    "previous_rc1_archival_evidence_preserved": true
+  },
+  "required_next_gates": [
+    "Complete exact-head RC2 scientific/installed product/package/docs cross-OS Python 3.11-3.13 matrix without threshold changes",
+    "Verify new performance envelope and RC2 tests and retain original artifact checksums",
+    "Resolve E1-E4 experimental importable-module content qualification separately",
+    "Merge only after full source and policy review and pass fresh exact protected-main checks",
+    "Obtain separate release authorization and required publishing environment review",
+    "Dispatch manual release workflow on exactly protected main and verify GitHub Release plus production PyPI installation"
+  ],
+  "source_release_qualified": false,
+  "protected_main_rc2_exact_head_qualified": false,
+  "production_release_ready": false,
+  "github_release_ready": false,
+  "testpypi_publication_ready": false,
+  "publication_authorized": false,
+  "status": "literal_rc2_evidence_committed_source_ci_pending"
+}

@@ -1,4 +1,4 @@
-"""E5 development boundary guard; does not authorize RC2 promotion."""
+"""E5 development boundary guard; does not authorize RC2 publication."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from eyetrajectoriespy import workflows
 from eyetrajectoriespy.workflows import experimental
 
 ROOT = Path(__file__).resolve().parents[1]
-DEV = "1.2.0rc2.dev0"
+DEV = "1.2.0rc2"
 RC1 = "1.2.0rc1"
 EXPECTED_EXPERIMENTAL = {
     "PreprocessingExecutionResult", "WorkflowPreflightResult",
@@ -61,7 +61,7 @@ def main() -> None:
         cls = getattr(experimental, name)
         assert is_dataclass(cls)
         assert [field.name for field in fields(cls)] == names, name
-    print("PASS E5 development boundaries: RC1 immutable, 12 experimental exports, RC2 not qualified")
+    print("PASS E5 RC2 candidate boundary: RC1 immutable, 12 experimental exports, publication disarmed")
 
 
 if __name__ == "__main__":

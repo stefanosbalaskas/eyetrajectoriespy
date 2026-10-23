@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 with (ROOT / "pyproject.toml").open("rb") as _source_stream:
     CURRENT_SOURCE_VERSION = tomllib.load(_source_stream)["project"]["version"]
 CURRENT_STABLE_VERSION = "1.1.0"
-LATEST_QUALIFIED_EVIDENCE_VERSION = "1.2.0rc1"
+LATEST_QUALIFIED_EVIDENCE_VERSION = "1.2.0rc2"
 
 
 def _load_script(name):
