@@ -20,7 +20,7 @@ def test_review_is_exact_candidate_based_but_explicitly_unapproved():
     assert result=={
         "version":"1.2.0rc2","status":"review_pending",
         "source_qualified":True,"production_authorized":False,
-        "exact_main_qualified":False,"scope_approved":False,
+        "exact_main_qualified":True,"scope_approved":False,
     }
 
 
@@ -63,10 +63,18 @@ def test_open_scientific_blockers_and_claim_exclusions_are_immutable():
             contract.audit_pending_authorization(review,readiness,scope)
 
 
-def test_main_ci_cannot_be_invented_before_completion():
+@pytest.mark.parametrize("field,value",[
+    ("protected_main_qualification_complete",False),
+    ("protected_main_workflows_all_successful",False),
+    ("protected_main_expected_workflow_runs",29),
+    ("protected_main_successful_workflow_runs",29),
+    ("protected_main_failed_workflow_runs",1),
+    ("protected_main_evidence_url","https://example.invalid"),
+])
+def test_main_ci_verified_record_cannot_drift(field,value):
     review,readiness,scope=inputs()
-    review["protected_main_workflows_all_successful"]=True
-    with pytest.raises(RuntimeError,match="Unverified"):
+    review[field]=value
+    with pytest.raises(RuntimeError,match="Verified exact-main"):
         contract.audit_pending_authorization(review,readiness,scope)
 
 
