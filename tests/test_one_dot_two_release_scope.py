@@ -84,7 +84,7 @@ def test_scientific_blocker_cannot_be_omitted(issue):
 
 def test_literal_rc_evidence_must_not_be_credited_to_dev_source():
     data=_inputs()
-    data["scope"]["source_version"]="1.2.0rc2"
+    data["scope"]["source_version"]="1.2.0rc2.dev0"
     with pytest.raises(RuntimeError,match="identity"):
         policy.validate_scope(**data)
     data=_inputs()
