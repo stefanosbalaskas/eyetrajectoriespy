@@ -38,6 +38,8 @@ description: Independently audited functional gaze simulation, missing-data iden
 
 </div>
 
+[**New synthesis: which external information actually sharpens a missing-gaze identified set?**](../articles/what-sharpens-missing-gaze-bounds.md) compares R93, R94 and R95 on the same observed return law without treating assumptions as observed facts.
+
 ## Interpretation rules
 
 A successfully executed experiment proves **that its algorithm ran under its specified data-generating law**. An independently reproduced source archive provides reproducibility evidence; it does **not** convert a failed or underpowered inference procedure into a valid one. The [qualification boundaries](../articles/evidence-vs-qualification.md) distinguish numerical reproducibility, statistical calibration, identifiability and software-release readiness.
