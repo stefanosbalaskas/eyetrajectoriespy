@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "document_type": "unapproved_release_scope_proposal",
+  "source_version": "1.2.0rc2.dev0",
+  "published_stable_baseline": "1.1.0",
+  "frozen_root_compatibility": {
+    "original_public_exports": 458,
+    "stable_exports": 455,
+    "experimental_exports": 3,
+    "root_promotion_authorized": false,
+    "removals_authorized": false
+  },
+  "governance": {
+    "proposal_approved": false,
+    "production_release_ready": false,
+    "github_release_ready": false,
+    "testpypi_publication_ready": false,
+    "literal_rc2_exact_version_qualified": false,
+    "merge_authorized": false,
+    "tag_authorized": false,
+    "pypi_publication_authorized": false
+  },
+  "scope_decision": "engineering_candidate_only_not_release_authorization",
+  "workflow_namespace": "eyetrajectoriespy.workflows",
+  "workflow_status": "module_scoped_stable_candidate_unpublished",
+  "candidate_workflows": [
+    {
+      "entry_point": "run_sparse_fpca_workflow",
+      "contract": "sparse_fpca:v1",
+      "engineering_status": "installed_candidate_passed",
+      "description": "native sparse PACE workflow",
+      "interpretation_limit": "Fitted-model and sparse-observation assumptions remain explicit; no generic MNAR recovery or 90% functional-band guarantee."
+    },
+    {
+      "entry_point": "run_sparse_mfpca_workflow",
+      "contract": "sparse_mfpca:v1",
+      "engineering_status": "installed_candidate_passed",
+      "description": "paired sparse planar joint PACE workflow",
+      "interpretation_limit": "Conditional fitted joint-covariance interpretation only; does not validate source-agnostic confidence coverage."
+    },
+    {
+      "entry_point": "run_sparse_mfpca_async_workflow",
+      "contract": "sparse_mfpca_async:v1",
+      "engineering_status": "installed_candidate_passed",
+      "description": "native asynchronously sampled planar workflow",
+      "interpretation_limit": "Preserves distinct x/y observation grids; no silent synchronization, extrapolation or recovered unmeasured gaze."
+    },
+    {
+      "entry_point": "run_sparse_multilevel_workflow",
+      "contract": "sparse_multilevel:v1",
+      "engineering_status": "installed_candidate_passed",
+      "description": "sparse participant/trial decomposition",
+      "interpretation_limit": "Explicit nested design and numerical identifiability diagnostics; no untested small-cluster interval coverage."
+    },
+    {
+      "entry_point": "run_sparse_prediction_workflow",
+      "contract": "sparse_prediction:v1",
+      "engineering_status": "installed_candidate_passed",
+      "description": "partial-trajectory conditional prediction",
+      "interpretation_limit": "Requires declared training/calibration/target roles and fitted Gaussian/exchangeability conditions; not MNAR correction."
+    },
+    {
+      "entry_point": "run_fpca_workflow",
+      "contract": "fpca:v1",
+      "engineering_status": "installed_candidate_passed",
+      "description": "common-grid FPCA composition",
+      "interpretation_limit": "Produces declared-component descriptive/reconstructive outputs; no inferential confidence guarantees."
+    },
+    {
+      "entry_point": "run_function_on_scalar_workflow",
+      "contract": "function_on_scalar:v1",
+      "engineering_status": "installed_candidate_passed",
+      "description": "observed-grid function-on-scalar estimation",
+      "interpretation_limit": "Estimated functional coefficients may be used descriptively; wild-HC1 nominal-90% simultaneous inference remains scientifically unqualified (#289)."
+    },
+    {
+      "entry_point": "run_functional_mixed_effects_workflow",
+      "contract": "functional_mixed_effects:v1",
+      "engineering_status": "installed_candidate_passed",
+      "description": "Gaussian repeated-trial functional mixed-effects composition",
+      "interpretation_limit": "REM(L) model estimates are conditional on declared design and covariance family; CR2 or random-slope inferential calibration remains unresolved."
+    },
+    {
+      "entry_point": "run_generalized_functional_workflow",
+      "contract": "generalized_functional:v1",
+      "engineering_status": "installed_candidate_passed",
+      "description": "declared-family generalized functional regression",
+      "interpretation_limit": "Requires explicit outcome family, offsets and exposure units; inference is restricted to documented model assumptions."
+    },
+    {
+      "entry_point": "run_recurrence_workflow",
+      "contract": "recurrence:v1",
+      "engineering_status": "installed_candidate_passed",
+      "description": "explicit-parameter recurrence and RQA workflow",
+      "interpretation_limit": "Descriptive recurrence construction from observed trajectories; does not select analysis settings or infer missing gaze."
+    }
+  ],
+  "disallowed_new_claims": [
+    "nominal_90_percent_simultaneous_functional_band_coverage",
+    "validated_CR2_fitted_covariance_random_slope_inference",
+    "MNAR_gaze_loss_identification_from_observed_data",
+    "automatic_reconstruction_of_unreturned_gaze",
+    "algorithmic_recovery_of_missing_outcomes_by_random_audit_assignment_alone"
+  ],
+  "scientific_blockers_open": [
+    289,
+    296
+  ],
+  "release_scope_exclusions": [
+    "research-only W3 R1-R95 experiments as new supported product APIs",
+    "all new global confidence calibration guarantees",
+    "any claim of field-validated MNAR correction",
+    "automatic root API promotion",
+    "any dependency or estimator change without fresh qualification"
+  ],
+  "last_completed_evidence": {
+    "qualification_pr": 467,
+    "exact_head_workflows_successful": 27,
+    "installed_python_versions": [
+      "3.11",
+      "3.12",
+      "3.13"
+    ],
+    "candidate_installed_routes": 10,
+    "root_exports_checked_against_published_1_1": true
+  },
+  "future_required_gates": [
+    "human review and explicit approval of a narrower release surface and claims",
+    "new literal release-candidate version declarations and matching exact-version scientific/performance evidence",
+    "complete cross-platform exact-candidate qualification and reproducible install from wheel and sdist",
+    "protected main exact-head complete positive CI and release governance",
+    "separately requested governance-only publication approval"
+  ]
+}
