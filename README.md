@@ -12,7 +12,7 @@ Instead of reducing every trial immediately to fixation counts, dwell times or a
 ![Illustrative gaze trajectory, time representation and scientific analysis](docs/assets/site/hero-trajectories.svg)
 
 > **Published stable:** `1.1.0` · Python 3.11–3.13.  
-> **Unpublished development:** `1.2.0rc2.dev0` source—not a separately qualified and published literal RC2. Frozen `1.2.0rc1` was qualified but remains unpublished. The ten `run_*_workflow()` orchestration routes are **not present in stable 1.1.0**. **1.2 GitHub Release/PyPI remains on HOLD.**
+> **Published stable:** `1.1.0`. **Literal prerelease candidate `1.2.0rc2`: under new exact-version qualification; NOT published.** Previous `1.2.0rc1` evidence remains independently archived, not reused as RC2 performance data. Ten `run_*_workflow()` routes are candidate-only; bundled E1–E4 helpers remain explicitly experimental and require separate review. **GitHub/PyPI publication is still DISARMED.**
 
 [**Documentation**](https://stefanosbalaskas.github.io/eyetrajectoriespy/) · [Start here](https://stefanosbalaskas.github.io/eyetrajectoriespy/start/) · [Choose a workflow](https://stefanosbalaskas.github.io/eyetrajectoriespy/workflows/) · [Figure atlas](https://stefanosbalaskas.github.io/eyetrajectoriespy/figures/) · [Research evidence](https://stefanosbalaskas.github.io/eyetrajectoriespy/research/) · [News](https://stefanosbalaskas.github.io/eyetrajectoriespy/news/) · [Release status](https://stefanosbalaskas.github.io/eyetrajectoriespy/news/release-status/)
 
