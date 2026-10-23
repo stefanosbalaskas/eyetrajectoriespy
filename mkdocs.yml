@@ -264,7 +264,8 @@ nav:
       - Tutorial gallery: tutorials/index.md
       - Choose a representation: concepts/representations.md
       - Scientific contracts: concepts/contracts.md
-      - Analysis decision map: concepts/decision-map.md      - Original research and provenance:
+      - Analysis decision map: concepts/decision-map.md
+      - Original research and provenance:
           - Overview and qualification: development/research-development-hub.md
           - Evidence dashboard: development/research-scientific-dashboard.md
           - W3 R70–R76 articles and figures: development/w3-r70-r76-evidence-plot-gallery.md
