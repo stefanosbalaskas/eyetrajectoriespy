@@ -9,25 +9,25 @@ description: Choose a stable eyetrajectoriespy analysis route and find installat
 
 <div class="grid cards" markdown>
 
-- :material-download: **Install stable 1.1.0**
+- **Install stable 1.1.0**
 
   `pip install eyetrajectoriespy==1.1.0`
 
   [Quick start](../quickstart.md) · [Stable API](../reference/api.md)
 
-- :material-file-table-box-multiple: **Understand your data**
+- **Understand your data**
 
   Choose common-grid, paired sparse, asynchronous coordinate-specific or repeated-trial representation **before** model fitting.
 
   [Input schemas](../guides/input-schemas.md) · [Representation guide](../concepts/representations.md)
 
-- :material-chart-bell-curve-cumulative: **Choose a scientific method**
+- **Choose a scientific method**
 
   FPCA/MFPCA, functional regression, repeated effects, generalized responses or recurrence.
 
   [Decision map](../concepts/decision-map.md) · [Methods](../methods/index.md)
 
-- :material-image-multiple: **Learn through examples**
+- **Learn through examples**
 
   Inspect deterministic synthetic illustrations and the assumptions behind every plot.
 
