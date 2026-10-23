@@ -25,6 +25,12 @@ The machine-readable [RELEASE_SCOPE_1_2_PROPOSAL.json](https://github.com/stefan
 
 The proposal is **about packaging and product scope**, not declaring these ten statistical methods individually validated for every design. The surrounding previously supported stable 1.1 functionality remains installed. We must not silently remove or rewrite any stable 1.1 functionality just because a research example found inferential limitations. Instead document exactly which newer guarantees are **not** offered.
 
+## Bundled experimental E1–E4 module: explicit release-content decision still required
+
+**Important packaging correction:** The development wheel also contains the separate, importable `eyetrajectoriespy.workflows.experimental` module. This module declares twelve E1–E4 classes/functions, including `run_preprocessing_plan`, `workflow_preflight`, `run_workflow_sensitivity`, and `render_workflow_report`. Those names are **not** among the ten frozen primary workflow entry points and were explicitly described as *unpublished, experimental development helpers* rather than RC1-qualified stable surfaces. Merely excluding them from the ten-workflow scope **does not remove their Python files from a new wheel**.
+
+A narrower literal 1.2 release must therefore either (a) receive explicit E5 review/qualification and separate experimental-module documentation before packaging these APIs as an importable prerelease component, or (b) verifiably exclude the experimental module from the distribution, while preserving the historical published 1.1 API. This scope proposal has not selected either solution. The machine-readable scope tracks all twelve named experimental exports and fails closed if this unresolved package-content decision is silently treated as approved.
+
 ## Stability and scientific interpretation barriers
 
 - The historical 1.0 package-root compatibility freeze is **458 names**, consisting of **455 stable and three explicitly experimental** exports. Preserving all 458 names does not make the three experimental names stable. Maintain original signatures/result schemas and 1.1 module-scoped additions.
