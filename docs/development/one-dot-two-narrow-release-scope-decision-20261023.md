@@ -8,7 +8,7 @@ This is the next step after the complete source/build/installed-product release 
 
 ## Narrow scope: include only the existing audited orchestration contracts
 
-The machine-readable [RELEASE_SCOPE_1_2_PROPOSAL.json](../../RELEASE_SCOPE_1_2_PROPOSAL.json) lists the exact candidate module and ten names frozen in `WORKFLOW_API_AUDIT.json`: `eyetrajectoriespy.workflows`, with **no package-root promotion**.
+The machine-readable [RELEASE_SCOPE_1_2_PROPOSAL.json](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/audit/one-dot-two-narrow-release-scope-proposal-20261023/RELEASE_SCOPE_1_2_PROPOSAL.json) lists the exact candidate module and ten names frozen in `WORKFLOW_API_AUDIT.json`: `eyetrajectoriespy.workflows`, with **no package-root promotion**.
 
 | Proposed workflow entry point | Release-scope interpretation |
 | --- | --- |
