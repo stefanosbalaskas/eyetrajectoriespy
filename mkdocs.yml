@@ -26,6 +26,7 @@ nav:
           - Transparent orchestration (1.2): workflows/workflow-orchestration.md
           - Experimental E1-E4 expansion (unqualified): workflows/experimental-expansion.md
   - Learn and practice:
+      - Tutorial gallery: tutorials/index.md
       - Guides:
           - Overview: guides/index.md
           - Data & representation:
@@ -260,11 +261,6 @@ nav:
           - Why independent-unit Student-t tails change functional uncertainty: articles/independent-unit-student-t-functional-uncertainty.md
           - Understanding nonseparable two-dimensional gaze covariance: articles/understanding-nonseparable-gaze-covariance.md
           - How to interpret functional confidence-band source audits: articles/interpreting-w3-coverage-and-source-audits.md
-      - Experimental E1-E4 result figures: methods/experimental-e1-e4-gallery.md
-      - Tutorial gallery: tutorials/index.md
-      - Choose a representation: concepts/representations.md
-      - Scientific contracts: concepts/contracts.md
-      - Analysis decision map: concepts/decision-map.md
       - Original research and provenance:
           - Overview and qualification: development/research-development-hub.md
           - Evidence dashboard: development/research-scientific-dashboard.md
@@ -328,6 +324,7 @@ nav:
               - B6 SBC same-dataset full-budget refit (R2): development/b6-rank1-sbc-r2-same-dataset-evidence.md
               - Rank-two paired versus asynchronous NUTS pilot (R3): development/b6-b7-rank2-four-chain-nuts-r3-evidence.md
   - Figures:
+      - Experimental E1-E4 result figures: methods/experimental-e1-e4-gallery.md
       - Figure atlas: figures/index.md
   - News and updates:
       - Latest: news/index.md
