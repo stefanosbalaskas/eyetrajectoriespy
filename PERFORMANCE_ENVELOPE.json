@@ -1,24 +1,24 @@
 {
   "schema_version": 1,
-  "package_version": "1.2.0rc1",
+  "package_version": "1.2.0rc2",
   "benchmark_kind": "single-package performance envelope",
   "comparative_benchmark": false,
   "profile": "ci-qualification",
   "status": "qualified",
-  "qualification_commit": "765f7b5e9277315f8b0d0ddbcbcfe285aca66da1",
-  "qualification_run_id": "37771315492",
+  "qualification_commit": "46d2dd74c5ab71d0bb5bd24c356d221f4915b903",
+  "qualification_run_id": 39945467014,
   "environment": {
     "cpu_model": "AMD EPYC 7763 64-Core Processor",
-    "github_run_id": "37771315492",
+    "github_run_id": "39945467014",
     "github_runner_environment": "github-hosted",
-    "github_runner_name": "GitHub Actions 1000089142",
+    "github_runner_name": "GitHub Actions 1000130506",
     "implementation": "CPython",
     "logical_cpu_count": 4,
     "machine": "x86_64",
     "packages": {
-      "eyetrajectoriespy": "1.2.0rc1",
-      "numpy": "2.5.3",
-      "pandas": "3.0.6",
+      "eyetrajectoriespy": "1.2.0rc2",
+      "numpy": "2.5.4",
+      "pandas": "3.1.0",
       "scikit-learn": "1.9.1",
       "scipy": "1.18.1",
       "statsmodels": "0.15.0"
@@ -26,7 +26,7 @@
     "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
     "python": "3.12.15",
     "release": "6.17.0-1022-azure",
-    "source_commit": "765f7b5e9277315f8b0d0ddbcbcfe285aca66da1",
+    "source_commit": "46d2dd74c5ab71d0bb5bd24c356d221f4915b903",
     "system": "Linux",
     "thread_limits": {
       "MKL_NUM_THREADS": "1",
@@ -34,61 +34,197 @@
       "OMP_NUM_THREADS": "1",
       "OPENBLAS_NUM_THREADS": "1"
     },
-    "workflow_commit": "fe482100298e892fc0a74a0aef4866efbba134dc"
+    "workflow_commit": "58eca223f865fbf6a287c4877afa18402bc92a2a"
   },
   "results": [
     {
       "case": "fpca_bootstrap",
-      "scale": {"n_bootstrap": 20, "n_participants": 10, "n_time": 41, "n_trials": 3, "q": 3},
+      "peak_memory_mib": {
+        "all": [
+          230.73828125,
+          226.078125,
+          225.84375
+        ],
+        "maximum": 230.73828125,
+        "median": 226.078125
+      },
       "repeats": 3,
-      "observed": {
-        "runtime_seconds": {"all": [3.061873521999999, 1.941100843000001, 1.955197971000004], "maximum": 3.061873521999999, "median": 1.955197971000004, "minimum": 1.941100843000001, "q1": 1.9481494070000025, "q3": 2.5085357465000016},
-        "peak_memory_mib": {"all": [229.7734375, 224.51953125, 223.95703125], "maximum": 229.7734375, "median": 224.51953125}
+      "runtime_seconds": {
+        "all": [
+          3.084360064000009,
+          2.108358482,
+          2.033981281999999
+        ],
+        "maximum": 3.084360064000009,
+        "median": 2.108358482,
+        "minimum": 2.033981281999999,
+        "q1": 2.0711698819999995,
+        "q3": 2.5963592730000045
+      },
+      "scale": {
+        "n_bootstrap": 20,
+        "n_participants": 10,
+        "n_time": 41,
+        "n_trials": 3,
+        "q": 3
       }
     },
     {
       "case": "mixed_full_refit_bootstrap",
-      "scale": {"n_bootstrap": 20, "n_participants": 12, "n_time": 6, "n_trials": 3, "q": 2},
+      "peak_memory_mib": {
+        "all": [
+          229.875,
+          229.67578125,
+          229.69140625
+        ],
+        "maximum": 229.875,
+        "median": 229.69140625
+      },
       "repeats": 3,
-      "observed": {
-        "runtime_seconds": {"all": [2.992339647999998, 2.9626527789999955, 2.9747778450000055], "maximum": 2.992339647999998, "median": 2.9747778450000055, "minimum": 2.9626527789999955, "q1": 2.9687153120000005, "q3": 2.9835587465000017},
-        "peak_memory_mib": {"all": [228.1796875, 227.75, 228.06640625], "maximum": 228.1796875, "median": 228.06640625}
+      "runtime_seconds": {
+        "all": [
+          3.0475676650000025,
+          2.985360424999996,
+          2.9975467649999956
+        ],
+        "maximum": 3.0475676650000025,
+        "median": 2.9975467649999956,
+        "minimum": 2.985360424999996,
+        "q1": 2.991453594999996,
+        "q3": 3.022557214999999
+      },
+      "scale": {
+        "n_bootstrap": 20,
+        "n_participants": 12,
+        "n_time": 6,
+        "n_trials": 3,
+        "q": 2
       }
     },
     {
       "case": "nested_mixed_fit",
-      "scale": {"n_participants": 8, "n_time": 5, "n_trials": 3, "q": 2},
+      "peak_memory_mib": {
+        "all": [
+          229.5703125,
+          229.62890625,
+          229.5546875
+        ],
+        "maximum": 229.62890625,
+        "median": 229.5703125
+      },
       "repeats": 3,
-      "observed": {
-        "runtime_seconds": {"all": [2.651812288000002, 2.6852140390000017, 2.629992182999999], "maximum": 2.6852140390000017, "median": 2.651812288000002, "minimum": 2.629992182999999, "q1": 2.6409022355000005, "q3": 2.668513163500002},
-        "peak_memory_mib": {"all": [227.859375, 227.625, 227.6328125], "maximum": 227.859375, "median": 227.6328125}
+      "runtime_seconds": {
+        "all": [
+          2.694709144000001,
+          2.6880001150000083,
+          2.718292047999995
+        ],
+        "maximum": 2.718292047999995,
+        "median": 2.694709144000001,
+        "minimum": 2.6880001150000083,
+        "q1": 2.6913546295000046,
+        "q3": 2.706500595999998
+      },
+      "scale": {
+        "n_participants": 8,
+        "n_time": 5,
+        "n_trials": 3,
+        "q": 2
       }
     },
     {
       "case": "generalized_gee_bootstrap",
-      "scale": {"n_bootstrap": 100, "n_participants": 8, "n_time": 5, "n_trials": 2, "q": 2},
+      "peak_memory_mib": {
+        "all": [
+          228.25,
+          228.3359375,
+          228.31640625
+        ],
+        "maximum": 228.3359375,
+        "median": 228.31640625
+      },
       "repeats": 3,
-      "observed": {
-        "runtime_seconds": {"all": [2.2454342279999935, 2.247697860999992, 2.2425986490000014], "maximum": 2.247697860999992, "median": 2.2454342279999935, "minimum": 2.2425986490000014, "q1": 2.2440164384999974, "q3": 2.2465660444999926},
-        "peak_memory_mib": {"all": [226.6640625, 226.55078125, 226.89453125], "maximum": 226.89453125, "median": 226.6640625}
+      "runtime_seconds": {
+        "all": [
+          2.2997640810000064,
+          2.319911371999993,
+          2.335078218999996
+        ],
+        "maximum": 2.335078218999996,
+        "median": 2.319911371999993,
+        "minimum": 2.2997640810000064,
+        "q1": 2.3098377264999996,
+        "q3": 2.3274947954999945
+      },
+      "scale": {
+        "n_bootstrap": 100,
+        "n_participants": 8,
+        "n_time": 5,
+        "n_trials": 2,
+        "q": 2
       }
     },
     {
       "case": "recurrence_rqa",
-      "scale": {"n_participants": 1, "n_time": 800, "n_trials": 1, "q": null},
+      "peak_memory_mib": {
+        "all": [
+          230.8203125,
+          230.7890625,
+          230.67578125
+        ],
+        "maximum": 230.8203125,
+        "median": 230.7890625
+      },
       "repeats": 3,
-      "observed": {
-        "runtime_seconds": {"all": [2.086915093999991, 2.1054811669999935, 2.0990727909999976], "maximum": 2.1054811669999935, "median": 2.0990727909999976, "minimum": 2.086915093999991, "q1": 2.0929939424999944, "q3": 2.1022769789999955},
-        "peak_memory_mib": {"all": [228.671875, 228.8046875, 228.90625], "maximum": 228.90625, "median": 228.8046875}
+      "runtime_seconds": {
+        "all": [
+          2.190632592,
+          2.193184039000002,
+          2.1885835830000104
+        ],
+        "maximum": 2.193184039000002,
+        "median": 2.190632592,
+        "minimum": 2.1885835830000104,
+        "q1": 2.1896080875000052,
+        "q3": 2.191908315500001
+      },
+      "scale": {
+        "n_participants": 1,
+        "n_time": 800,
+        "n_trials": 1,
+        "q": null
       }
     },
     {
       "case": "nonlinear_sensitivity",
-      "scale": {"n_participants": 1, "n_specifications": 16, "n_time": 300, "n_trials": 1, "q": null},
+      "peak_memory_mib": {
+        "all": [
+          225.59375,
+          225.88671875,
+          225.9375
+        ],
+        "maximum": 225.9375,
+        "median": 225.88671875
+      },
       "repeats": 3,
-      "observed": {
-        "runtime_seconds": {"all": [2.251467353999999, 2.264570902999992, 2.2597772439999915], "maximum": 2.264570902999992, "median": 2.2597772439999915, "minimum": 2.251467353999999, "q1": 2.2556222989999952, "q3": 2.2621740734999918},
-        "peak_memory_mib": {"all": [223.73046875, 223.2109375, 223.984375], "maximum": 223.984375, "median": 223.73046875}
+      "runtime_seconds": {
+        "all": [
+          2.3419188579999997,
+          2.242575345000006,
+          2.2562874540000024
+        ],
+        "maximum": 2.3419188579999997,
+        "median": 2.2562874540000024,
+        "minimum": 2.242575345000006,
+        "q1": 2.249431399500004,
+        "q3": 2.299103156000001
+      },
+      "scale": {
+        "n_participants": 1,
+        "n_specifications": 16,
+        "n_time": 300,
+        "n_trials": 1,
+        "q": null
       }
     }
   ],
