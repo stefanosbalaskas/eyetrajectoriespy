@@ -212,6 +212,7 @@ nav:
       - Overview: research/index.md
       - W3 studies R76–R95: research/studies.md
       - Interpreting identification bounds: articles/how-to-read-identification-bounds.md
+      - Which external assumptions sharpen bounds?: articles/what-sharpens-missing-gaze-bounds.md
       - Evidence versus qualification: articles/evidence-vs-qualification.md
       - October research notice: research/october-2026-normalization-leakage.md
       - Scientific article archive:
