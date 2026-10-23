@@ -2,7 +2,7 @@
 
 ## Experimental source line (draft PR #223)
 
-Development source `1.2.0rc2.dev0` contains experimental E1–E4 utilities. It is not release-qualified and not published. Exact `1.2.0rc1` evidence is unchanged and must not be attributed to this source. A distinct RC2 gate requires its own scientific API audit, numerical/product evidence, release-version synchronization, protected-main CI and separate publication governance.
+The previously named development source `1.2.0rc2.dev0` contained experimental E1–E4 utilities. The new literal `1.2.0rc2` source is now under separate qualification and has not been published. It is not release-qualified and not published. Exact `1.2.0rc1` evidence is unchanged and must not be attributed to this source. A distinct RC2 gate requires its own scientific API audit, numerical/product evidence, release-version synchronization, protected-main CI and separate publication governance.
 
 ## Completed 1.2rc1 release-candidate qualification
 
