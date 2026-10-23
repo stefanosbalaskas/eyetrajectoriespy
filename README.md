@@ -64,6 +64,23 @@ The W3 R76–R95 programme has published documentation of influential-unit, cova
 
 [October 2026 news](https://stefanosbalaskas.github.io/eyetrajectoriespy/news/2026-10-23/) · [Original and independent evidence](https://stefanosbalaskas.github.io/eyetrajectoriespy/development/research-development-hub/) · [Validation ledger](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/)
 
+## Which workflow do I need?
+
+Choose by the **gaze observation grid, the participant/trial hierarchy, and the uncertainty claim**, not by the number of available estimators. The [analysis decision map](https://stefanosbalaskas.github.io/eyetrajectoriespy/concepts/decision-map/) and [workflow comparisons](https://stefanosbalaskas.github.io/eyetrajectoriespy/articles/choosing-the-ten-workflows/) explain those choices.
+
+## Where is the full advanced API?
+
+The compact README is an orientation page, not an exhaustive function catalogue. Use the [stable public API](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/api/), [module-scoped 1.1 additions](https://stefanosbalaskas.github.io/eyetrajectoriespy/reference/one-dot-one-module-api/) and the exact scientific references:
+
+- [Mathematical contracts](MATHEMATICAL_CONTRACTS.md) — what the numerical and method contracts guarantee.
+- [Function → equation index](FUNCTION_EQUATION_INDEX.md) — documented functions mapped to their equations.
+- [Workflow atlas](WORKFLOW_ATLAS.md) — scope and dependency map.
+- [Reference validation & performance envelope](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/reference-validation-ledger/) — qualification evidence and [performance envelope](https://stefanosbalaskas.github.io/eyetrajectoriespy/validation/performance-envelope/).
+- [Portable scientific results](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/portable-results/) — retained results and scientific provenance.
+- [Release process](https://stefanosbalaskas.github.io/eyetrajectoriespy/release-process/) — immutable tags, candidate checks and publication interlocks.
+
+**Historical release lineage:** `0.10.0` introduced native sparse univariate FPCA/PACE, and the immutable `0.11.0rc1` pre-release preceded the 0.11 validation expansion. Published 1.1.0 remains the stable installation target.
+
 ## Documentation and contribution
 
 [Quick start](https://stefanosbalaskas.github.io/eyetrajectoriespy/quickstart/) · [Input schemas](https://stefanosbalaskas.github.io/eyetrajectoriespy/guides/input-schemas/) · [Mathematics](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/mathematical-reference/) · [Visual gallery](https://stefanosbalaskas.github.io/eyetrajectoriespy/methods/visual-gallery/) · [Reproducibility guide](https://stefanosbalaskas.github.io/eyetrajectoriespy/development/research-reproducibility/) · [Contributing](CONTRIBUTING.md) · [Cite](CITATION.cff)
