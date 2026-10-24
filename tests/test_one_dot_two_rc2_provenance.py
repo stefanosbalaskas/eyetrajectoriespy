@@ -44,7 +44,7 @@ def test_previously_frozen_rc1_performance_is_not_relabelled_or_deleted():
     assert rc1["historical_one_dot_one_performance_relabelled"] is False
 
 
-def test_release_readiness_and_scientific_disclaimers_remain_disarmed():
+def test_historical_provenance_disarmed_while_owner_publication_request_is_separate():
     m=read("ONE_DOT_TWO_RC2_QUALIFICATION.json")
     r=read("RELEASE_READINESS.json")
     assert m["package_version"]==r["current_development_version"]=="1.2.0rc2"
@@ -56,6 +56,6 @@ def test_release_readiness_and_scientific_disclaimers_remain_disarmed():
     assert m["root_export_promotion_authorized"] is False
     assert m["research_inference_claims_qualified"] is False
     assert sorted(m["open_scientific_issues"])==[289,296]
-    assert r["production_release_ready"] is False
-    assert r["github_release_ready"] is False
+    assert r["production_release_ready"] is True
+    assert r["github_release_ready"] is True
     assert r["testpypi_publication_ready"] is False
