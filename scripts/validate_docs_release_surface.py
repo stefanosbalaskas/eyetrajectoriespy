@@ -39,8 +39,12 @@ def main() -> None:
         assert f"eyetrajectoriespy=={stable}" in content, f"{name} stable install mismatch"
         assert "candidate" in content.lower(), f"{name} missing candidate status"
 
-    expected_status = ("development" if Version(source_version).is_devrelease else "release-candidate")
+    expected_status = ("development" if Version(source_version).is_devrelease else "stable qualification" if not Version(source_version).is_prerelease else "release-candidate")
     assert f"The current {expected_status} line is **{source_version}**." in roadmap
+    # A final source may be staged before release; do not silently promote the published stable version.
+    if not Version(source_version).is_prerelease and not Version(source_version).is_devrelease:
+        assert stable != source_version
+        assert "unpublished" in roadmap.lower()
     assert stable in roadmap
     assert "pip install eyetrajectoriespy" in guide
     assert "not" in guide.lower() and "candidate" in guide.lower()

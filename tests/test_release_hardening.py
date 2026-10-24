@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 with (ROOT / "pyproject.toml").open("rb") as _source_stream:
     CURRENT_SOURCE_VERSION = tomllib.load(_source_stream)["project"]["version"]
 CURRENT_STABLE_VERSION = "1.1.0"
-LATEST_QUALIFIED_EVIDENCE_VERSION = "1.2.0rc2"
+LATEST_QUALIFIED_EVIDENCE_VERSION = "1.2.0"
 
 
 def _load_script(name):
@@ -53,7 +53,7 @@ def test_release_version_validator_declares_exact_active_source_line():
         )
     else:
         assert (
-            f"The current release-candidate line is **{CURRENT_SOURCE_VERSION}**."
+            f"The current stable qualification line is **{CURRENT_SOURCE_VERSION}**."
             in roadmap
         )
     assert module.verify_version_contract() == CURRENT_SOURCE_VERSION

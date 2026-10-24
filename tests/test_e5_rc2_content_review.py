@@ -21,7 +21,7 @@ def inputs():
         e5.read("E5_RC2_CONTENT_REVIEW.json"),
         e5.read("RELEASE_SCOPE_1_2_PROPOSAL.json"),
         e5.read("RC2_PUBLICATION_REVIEW.json"),
-        e5.read("RELEASE_READINESS.json"),
+        e5.read("validation/RELEASE_READINESS-1.2.0rc2.json"),
         e5.read("EXPERIMENTAL_WORKFLOW_AUDIT.json"),
     ]
 

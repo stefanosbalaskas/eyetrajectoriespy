@@ -7,7 +7,7 @@ from scripts import validate_one_dot_two_release_scope as policy
 def inputs():
     return {
         "scope": policy.load_json("RELEASE_SCOPE_1_2_PROPOSAL.json"),
-        "readiness": policy.load_json("RELEASE_READINESS.json"),
+        "readiness": policy.load_json("validation/RELEASE_READINESS-1.2.0rc2.json"),
         "audit": policy.load_json("WORKFLOW_API_AUDIT.json"),
         "frozen": policy.load_json("ONE_DOT_ZERO_API_STABILITY.json"),
     }

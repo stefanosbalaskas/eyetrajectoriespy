@@ -7,7 +7,7 @@ from scripts import validate_rc2_publication_review as policy
 def inputs():
     return [
         policy._load("RC2_PUBLICATION_REVIEW.json"),
-        policy._load("RELEASE_READINESS.json"),
+        policy._load("validation/RELEASE_READINESS-1.2.0rc2.json"),
         policy._load("RELEASE_SCOPE_1_2_PROPOSAL.json"),
     ]
 

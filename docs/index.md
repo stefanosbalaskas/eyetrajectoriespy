@@ -18,7 +18,7 @@ hide:
 [Explore methods](methods/index.md){ .md-button }
 [Research evidence](research/index.md){ .md-button }
 
-<div class="et-micro-status">**Published:** 1.1.0 · **Literal RC2 candidate:** 1.2.0rc2 (unpublished; qualification in progress) · **Open scientific blockers:** #289 / #296</div>
+<div class="et-micro-status">**Stable:** 1.1.0 · **Published prerelease:** 1.2.0rc2 · **Next stable qualification source:** 1.2.0 (unpublished) · **Scientific exclusions:** #289 / #296</div>
 
 </div>
 
