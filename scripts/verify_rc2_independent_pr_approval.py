@@ -1,17 +1,20 @@
-"""Require a real independent approval of the exact RC2 arming pull request.
+"""Validate RC2 independent approval, or the explicit owner-directed recovery policy.
 
-GitHub API evidence, not an assistant-authored JSON flag, is the source of truth.
-Runs only for manual production/resume dispatch; never publishes itself.
+The original PR #475 was merged with no reviews. This later policy amendment
+allows only the real owner to dispatch manually, with existing protected-main CI
+and PyPI environment approval unchanged. No independent review is fabricated.
 """
 from __future__ import annotations
 
 import json
 import os
 from urllib.request import Request, urlopen
+from pathlib import Path
 
 OWNER = "stefanosbalaskas"
 REPO = "stefanosbalaskas/eyetrajectoriespy"
 AUTHORIZATION_PR = 475
+EXPECTED_AUTHORIZATION_HEAD = "b21e16afc3b3c2e01c6b77c2182429189ece21e9"
 
 
 def validate_external_review(pr: dict, reviews: list[dict]) -> str:
@@ -46,6 +49,33 @@ def validate_external_review(pr: dict, reviews: list[dict]) -> str:
     )
 
 
+def validate_owner_manual_dispatch(
+    pr: dict, ledger: dict, *, actor: str, event_name: str,
+    repository: str, git_ref: str, target: str,
+) -> str:
+    """Owner-only alternative, explicitly documented after unreviewed PR #475 merge."""
+    if (pr.get("number") != AUTHORIZATION_PR
+        or pr.get("base", {}).get("ref") != "main"
+        or not pr.get("merged") or not pr.get("merged_at")
+        or pr.get("head", {}).get("sha") != EXPECTED_AUTHORIZATION_HEAD
+        or (pr.get("user") or {}).get("login", "").lower() != OWNER):
+        raise RuntimeError("Owner release blocked: immutable RC2 authorization PR mismatch")
+    if (ledger.get("candidate_version") != "1.2.0rc2"
+        or ledger.get("authorization_pr_number") != AUTHORIZATION_PR
+        or ledger.get("owner_manual_dispatch_fallback_authorized") is not True
+        or ledger.get("independent_human_release_review_recorded") is not False
+        or ledger.get("narrow_scope_approved_for_release") is not True
+        or ledger.get("pypi_environment_review_required") is not True):
+        raise RuntimeError("Owner release blocked: explicit recorded recovery policy missing")
+    if (actor.lower() != OWNER
+        or event_name != "workflow_dispatch"
+        or repository != REPO
+        or git_ref != "refs/heads/main"
+        or target not in {"production", "resume-production"}):
+        raise RuntimeError("Owner release blocked: authenticated manual main dispatch required")
+    return OWNER
+
+
 def _github_get(api_path: str, token: str):
     request = Request(
         "https://api.github.com" + api_path,
@@ -64,9 +94,21 @@ def main() -> None:
         raise RuntimeError("RC2 release requires exact main of canonical repository")
     token = os.getenv("GITHUB_TOKEN")
     if not token:
-        raise RuntimeError("GitHub token required for verified external review")
+        raise RuntimeError("GitHub token required for verified RC2 authorization")
     prefix = f"/repos/{REPO}/pulls/{AUTHORIZATION_PR}"
     pr = _github_get(prefix, token)
+    actor = os.getenv("GITHUB_ACTOR", "")
+    if actor.lower() == OWNER:
+        ledger_path = Path(__file__).resolve().parents[1] / "RC2_PUBLICATION_REVIEW.json"
+        ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+        validate_owner_manual_dispatch(
+            pr, ledger, actor=actor, event_name=os.getenv("GITHUB_EVENT_NAME", ""),
+            repository=os.getenv("GITHUB_REPOSITORY", ""),
+            git_ref=os.getenv("GITHUB_REF", ""),
+            target=os.getenv("RELEASE_TARGET", ""),
+        )
+        print("RC2 explicit OWNER manual dispatch verified; no independent review claimed")
+        return
     reviews = []
     for page in range(1, 11):
         batch = _github_get(f"{prefix}/reviews?per_page=100&page={page}", token)
