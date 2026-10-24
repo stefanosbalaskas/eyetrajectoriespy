@@ -148,7 +148,7 @@ def validate_scope(*, scope: dict, readiness: dict, audit: dict, frozen: dict) -
 def main():
     result=validate_scope(
         scope=load_json("RELEASE_SCOPE_1_2_PROPOSAL.json"),
-        readiness=load_json("RELEASE_READINESS.json"),
+        readiness=load_json("validation/RELEASE_READINESS-1.2.0rc2.json"),
         audit=load_json("WORKFLOW_API_AUDIT.json"),
         frozen=load_json("ONE_DOT_ZERO_API_STABILITY.json"),
     )
