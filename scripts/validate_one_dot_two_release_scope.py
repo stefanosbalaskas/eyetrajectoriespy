@@ -29,8 +29,11 @@ def load_json(name: str) -> dict:
 
 
 def validate_scope(*, scope: dict, readiness: dict, audit: dict, frozen: dict) -> dict:
-    if scope.get("schema_version") != 1 or scope.get("document_type") != "unapproved_release_scope_proposal":
-        raise RuntimeError("release scope must remain an unapproved draft proposal")
+    armed = readiness.get("production_release_ready") is True and readiness.get("github_release_ready") is True
+    allowed_doc = ("owner_approved_release_scope_pending_independent_review" if armed
+                   else "unapproved_release_scope_proposal")
+    if scope.get("schema_version") != 1 or scope.get("document_type") != allowed_doc:
+        raise RuntimeError("release scope approval/document type does not match publication state")
     if (scope.get("source_version") != EXPECTED_SOURCE_VERSION
         or readiness.get("current_development_version") != EXPECTED_SOURCE_VERSION):
         raise RuntimeError("release scope/source identity differs from frozen development source")
@@ -96,31 +99,49 @@ def validate_scope(*, scope: dict, readiness: dict, audit: dict, frozen: dict) -
         raise RuntimeError("importable experimental helper surface differs from frozen draft manifest")
     if not isinstance(experimental.get("required_decision"),str) or len(experimental["required_decision"])<35:
         raise RuntimeError("bundled experimental module requires an explicit release-content decision")
-    if scope.get("scope_decision")!="engineering_candidate_only_not_release_authorization":
-        raise RuntimeError("candidate scope claimed release authorization")
+    decision = ("owner_authorized_narrow_prerelease_pending_independent_git_review"
+                if armed else "engineering_candidate_only_not_release_authorization")
+    if scope.get("scope_decision") != decision:
+        raise RuntimeError("candidate scope authorization state inconsistent with owner decision")
     evidence=scope.get("last_completed_evidence",{})
     if (evidence.get("qualification_pr")!=467
         or evidence.get("exact_head_workflows_successful")!=27
         or evidence.get("installed_python_versions")!=["3.11","3.12","3.13"]
         or evidence.get("candidate_installed_routes")!=10):
         raise RuntimeError("verified engineering qualification evidence changed")
-    if readiness.get("production_release_ready") is not False or readiness.get("github_release_ready") is not False:
-        raise RuntimeError("source readiness is unexpectedly armed")
     if readiness.get("testpypi_publication_ready") is not False:
         raise RuntimeError("TestPyPI readiness is unexpectedly armed")
     governance=scope.get("governance")
-    if not isinstance(governance,dict) or any(flag is not False for flag in governance.values()):
-        raise RuntimeError("draft release scope must have every governance flag set false")
+    if not isinstance(governance,dict):
+        raise RuntimeError("Scope governance must be a mapping")
+    if armed:
+        expected = {
+            "proposal_approved": True,
+            "production_release_ready": True,
+            "github_release_ready": True,
+            "testpypi_publication_ready": False,
+            "literal_rc2_exact_version_qualified": True,
+            "merge_authorized": False,
+            "tag_authorized": True,
+            "pypi_publication_authorized": True,
+        }
+        if governance != expected:
+            raise RuntimeError("owner authorization governance inconsistent with review pending")
+    else:
+        if readiness.get("production_release_ready") is not False or readiness.get("github_release_ready") is not False:
+            raise RuntimeError("source readiness is unexpectedly armed")
+        if any(flag is not False for flag in governance.values()):
+            raise RuntimeError("draft release scope must have every governance flag set false")
     if len(scope.get("future_required_gates",()))<4:
         raise RuntimeError("literal candidate/governance qualification gates omitted")
     return {
-        "proposal_status":"unapproved",
+        "proposal_status":"owner_authorized_pending_independent_review" if armed else "unapproved",
         "source_version":EXPECTED_SOURCE_VERSION,
         "published_stable_baseline":"1.1.0",
         "candidate_workflow_count":len(routes),
         "frozen_root_exports":frozen_counts.get("public_exports"),
         "scientific_blockers_open":sorted(REQUIRED_OPEN_BLOCKERS),
-        "release_authorized":False,
+        "release_authorized":armed,
     }
 
 
