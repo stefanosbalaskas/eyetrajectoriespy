@@ -2,7 +2,7 @@
 
 ## Current stable scientific surface — 1.2.0
 
-The current stable production release is **1.2.0**, published on GitHub and PyPI on **24 October 2026** by successful production run #40128358042 from protected main. It preserves the frozen 1.0 root compatibility boundary, includes the stable 1.1 sparse/irregular module additions, and delivers ten supported module-scoped W1–W4 orchestration routes.
+The current stable production release is **1.2.0**. It was published on GitHub and PyPI on **24 October 2026** by successful production run #40128358042 from protected main. It preserves the frozen 1.0 root compatibility boundary, includes the stable 1.1 sparse/irregular module additions, and delivers ten supported module-scoped W1–W4 orchestration routes.
 
 Stable 1.1.0 and published prerelease 1.2.0rc2 remain available as historical distributions. E1–E4 helpers remain experimental; issues #289 and #296 remain open and outside release guarantees. The subsequent detailed qualification chronology is historical, not a current publication status.
 
