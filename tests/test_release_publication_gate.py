@@ -37,21 +37,21 @@ def fully_armed():
             }}
 
 
-def test_current_1_2_release_owner_arm_requires_live_approval_or_authenticated_owner_dispatch():
+def test_final_1_2_release_is_disarmed_and_uses_distinct_approval():
     policy=load("verify_release_publication_gate")
     readiness=current()
-    assert readiness["current_development_version"]=="1.2.0rc2"
-    assert readiness["production_release_ready"] is True
-    assert readiness["github_release_ready"] is True
+    assert readiness["current_development_version"]=="1.2.0"
+    assert readiness["production_release_ready"] is False
+    assert readiness["github_release_ready"] is False
     assert readiness["testpypi_publication_ready"] is False
     assert policy.verify_publication_policy(readiness,"build-only")=="build-only"
-    assert policy.verify_publication_policy(readiness,"production")=="production"
-    assert policy.verify_publication_policy(readiness,"resume-production")=="resume-production"
-    with pytest.raises(RuntimeError,match="blocked"):
-        policy.verify_publication_policy(readiness,"testpypi")
+    for target in ("production","resume-production","testpypi"):
+        with pytest.raises(RuntimeError,match="blocked"):
+            policy.verify_publication_policy(readiness,target)
     workflow=(ROOT/".github/workflows/release.yml").read_text()
+    assert "verify_final_one_dot_two_release_policy.py" in workflow
+    assert workflow.index("verify_final_one_dot_two_release_policy.py") < workflow.index("python -m build")
     assert "verify_rc2_independent_pr_approval.py" in workflow
-    assert workflow.index("verify_rc2_independent_pr_approval.py") < workflow.index("python -m build")
     assert "RELEASE_TARGET: ${{ inputs.target }}" in workflow
 
 
@@ -118,7 +118,8 @@ def test_release_workflow_always_checks_publication_policy_before_build():
 
 def test_production_governance_requires_both_approval_flags():
     governance=load("verify_release_governance")
-    governance._verify_declared_github_release_readiness()
+    with pytest.raises(RuntimeError,match="production_release_ready"):
+        governance._verify_declared_github_release_readiness()
     # A hypothetically arming GitHub release alone is insufficient.
     original=governance._release_readiness
     try:
@@ -151,13 +152,14 @@ def test_required_checks_reject_skipped_neutral_and_incomplete(monkeypatch):
     assert governance._passed_checks(repo,commit,"fake")=={good}
 
 
-def test_literal_candidate_needs_new_exact_version_evidence_but_no_publication():
+def test_final_literal_version_rejects_stale_rc2_evidence():
     version=load("verify_release_version")
-    assert version.verify_version_contract()=="1.2.0rc2"
+    assert version.version_contract()["pyproject.toml"]=="1.2.0"
     assert set(version.qualified_evidence_contract().values())=={"1.2.0rc2"}
-    assert version.verify_version_contract(production=True)=="1.2.0rc2"
-    assert current()["production_release_ready"] is True
-    assert current()["github_release_ready"] is True
+    with pytest.raises(RuntimeError,match="exact-version qualification evidence"):
+        version.verify_version_contract(production=True)
+    assert current()["production_release_ready"] is False
+    assert current()["github_release_ready"] is False
 
 
 def test_future_arming_documentation_rejects_stale_1_1_main_provenance():
@@ -183,9 +185,9 @@ def test_future_arming_documentation_rejects_stale_1_1_main_provenance():
     notes = "\n".join(current()["notes"])
     assert assignments[0] in notes
     assert "30/30 workflow groups successfully" in notes
-    assert current()["current_development_version"] == "1.2.0rc2"
-    assert current()["production_release_ready"] is True
-    assert current()["github_release_ready"] is True
+    assert current()["current_development_version"] == "1.2.0"
+    assert current()["production_release_ready"] is False
+    assert current()["github_release_ready"] is False
     assert current()["testpypi_publication_ready"] is False
     release_yaml = (ROOT / ".github" / "workflows" / "release.yml").read_text(
         encoding="utf-8"
