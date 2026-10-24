@@ -183,5 +183,10 @@ def test_future_arming_documentation_rejects_stale_1_1_main_provenance():
     assert assignments[0] in notes
     assert "30/30 workflow groups successfully" in notes
     assert current()["current_development_version"] == "1.2.0rc2"
-    assert current()["production_release_ready"] is False
-    assert current()["github_release_ready"] is False
+    assert current()["production_release_ready"] is True
+    assert current()["github_release_ready"] is True
+    assert current()["testpypi_publication_ready"] is False
+    release_yaml = (ROOT / ".github" / "workflows" / "release.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "verify_rc2_independent_pr_approval.py" in release_yaml
