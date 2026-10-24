@@ -60,7 +60,9 @@ def audit_pending_authorization(review: dict, readiness: dict, scope: dict) -> d
         if (scope.get("document_type") != "owner_approved_release_scope_pending_independent_review"
             or scope.get("governance", {}).get("proposal_approved") is not True
             or review.get("authorization_pr_number") != 475
-            or review.get("independent_exact_head_github_review_enforced_in_workflow") is not True):
+            or review.get("independent_exact_head_github_review_enforced_in_workflow") is not True
+            or review.get("owner_manual_dispatch_fallback_authorized") is not True
+            or "Authenticated stefanosbalaskas manual workflow_dispatch" not in review.get("owner_manual_dispatch_policy", "")):
             raise RuntimeError("Independent review enforcement or owner scope approval missing")
     else:
         if (readiness.get("github_release_ready") is not False
