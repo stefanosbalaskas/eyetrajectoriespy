@@ -50,7 +50,9 @@ def test_no_benchmark_measurements_are_fabricated():
 
 def test_archived_original_final_benchmark_matches_sha_and_recorded_measurements():
     raw_path = ROOT / "validation/performance/raw/PERFORMANCE_ENVELOPE-1.2.0-40121535785.json"
-    data = raw_path.read_bytes()
+    # Git's text checkout can convert LF to CRLF on Windows. Restore the
+    # original artifact's LF byte convention before checking its true hash.
+    data = raw_path.read_bytes().replace(b"\r\n", b"\n")
     ledger = json.loads((ROOT / "PERFORMANCE_ENVELOPE.json").read_text())
     assert hashlib.sha256(data).hexdigest() == ledger["raw_artifact_member_sha256"]
     assert ledger["package_version"] == "1.2.0"

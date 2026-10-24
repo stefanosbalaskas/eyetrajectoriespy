@@ -74,7 +74,7 @@ jobs:
           import eyetrajectoriespy.workflows as w
           workspace=Path(os.environ["GITHUB_WORKSPACE"]).resolve()
           assert not Path(p.__file__).resolve().is_relative_to(workspace)
-          assert p.__version__=="1.2.0rc2"
+          assert p.__version__=="1.2.0"
           assert importlib.metadata.version("eyetrajectoriespy")==p.__version__
           stable=set(json.loads(Path("stable-root-exports.json").read_text()))
           assert stable<=set(p.__all__), f"1.1 root API missing: {sorted(stable-set(p.__all__))}"
@@ -83,7 +83,7 @@ jobs:
               assert callable(getattr(w,name))
               assert not hasattr(p,name), f"experimental entry point leaked into root: {name}"
           Path("candidate-wheel-observation.json").write_text(json.dumps({
-            "source_candidate":"1.2.0rc2",
+            "source_candidate":"1.2.0",
             "published_stable_baseline":"1.1.0",
             "installed_outside_source":True,
             "stable_root_names_preserved":len(stable),
@@ -91,12 +91,12 @@ jobs:
             "release_authorized":False,
           },sort_keys=True,indent=2)+"\n")
           PY
-          "$RUNNER_TEMP/qualification-wheel/bin/python" "$GITHUB_WORKSPACE/scripts/release_smoke_test.py" --expected-version 1.2.0rc2
+          "$RUNNER_TEMP/qualification-wheel/bin/python" "$GITHUB_WORKSPACE/scripts/release_smoke_test.py" --expected-version 1.2.0
       - name: Verify all ten workflows from installed candidate wheel
         shell: bash
         run: |
           cd "$RUNNER_TEMP"
-          "$RUNNER_TEMP/qualification-wheel/bin/python" "$GITHUB_WORKSPACE/scripts/run_one_dot_two_workflow_product_qualification.py" --output-dir "$RUNNER_TEMP/qualification-workflows" --expected-version 1.2.0rc2
+          "$RUNNER_TEMP/qualification-wheel/bin/python" "$GITHUB_WORKSPACE/scripts/run_one_dot_two_workflow_product_qualification.py" --output-dir "$RUNNER_TEMP/qualification-workflows" --expected-version 1.2.0
           "$RUNNER_TEMP/qualification-wheel/bin/python" - <<'PY'
           import json,os
           from pathlib import Path
@@ -105,7 +105,7 @@ jobs:
           assert d["installed_package_execution"] is True
           assert d["repository_private_helpers_used"] is False
           assert d["release_blocking_friction_count"]==0
-          assert d["package_version"]=="1.2.0rc2"
+          assert d["package_version"]=="1.2.0"
           PY
       - name: Install and smoke test fresh sdist in another environment
         shell: bash
@@ -115,7 +115,7 @@ jobs:
           "$RUNNER_TEMP/qualification-sdist/bin/python" -m pip install dist/*.tar.gz
           "$RUNNER_TEMP/qualification-sdist/bin/python" -m pip check
           cd "$RUNNER_TEMP"
-          "$RUNNER_TEMP/qualification-sdist/bin/python" "$GITHUB_WORKSPACE/scripts/release_smoke_test.py" --expected-version 1.2.0rc2
+          "$RUNNER_TEMP/qualification-sdist/bin/python" "$GITHUB_WORKSPACE/scripts/release_smoke_test.py" --expected-version 1.2.0
       - name: Preserve audit evidence only; no distribution upload
         uses: actions/upload-artifact@v4
         with:
