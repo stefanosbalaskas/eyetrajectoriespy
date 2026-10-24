@@ -74,12 +74,26 @@ def validate_content_review(
         or set(proposal.get("open_scientific_issues", [])) != {289, 296}
         or set(scope.get("scientific_blockers_open", [])) != {289, 296}):
         raise RuntimeError("Scientific inference hold or blocker missing")
-    if (any(proposal.get(flag) is not False for flag in PENDING)
-        or any(readiness.get(flag) is not False for flag in
-               ("production_release_ready", "github_release_ready",
-                "testpypi_publication_ready"))
-        or scope.get("governance", {}).get("proposal_approved") is not False
+    armed = readiness.get("production_release_ready") is True and readiness.get("github_release_ready") is True
+    if (proposal.get("independent_human_package_content_approval") is not False
+        or proposal.get("separate_publication_authorization_review_completed") is not False
+        or proposal.get("testpypi_authorized") is not False
+        or proposal.get("release_workflow_dispatched") is not False
+        or proposal.get("implementation_change_in_this_pr") is not False
+        or readiness.get("testpypi_publication_ready") is not False
         or release.get("independent_human_release_review_recorded") is not False):
+        raise RuntimeError("Human approval/publication cannot be asserted by this review")
+    for flag in ("production_release_authorized", "github_release_authorized", "tag_authorized"):
+        if proposal.get(flag) is not armed:
+            raise RuntimeError("Owner authorization/E5 review state inconsistent")
+    if armed:
+        if (proposal.get("authorization_pr_number") != 475
+            or release.get("authorization_pr_number") != 475
+            or scope.get("governance", {}).get("proposal_approved") is not True):
+            raise RuntimeError("Independent review enforcement/E5 owner authorization missing")
+    elif (scope.get("governance", {}).get("proposal_approved") is not False
+          or readiness.get("production_release_ready") is not False
+          or readiness.get("github_release_ready") is not False):
         raise RuntimeError("Human approval/publication cannot be asserted by this review")
     if (not isinstance(proposal.get("reviewer_decision_required"), str)
         or len(proposal["reviewer_decision_required"]) < 60
@@ -87,9 +101,9 @@ def validate_content_review(
         or len(proposal["reviewer_guidance"]) < 100):
         raise RuntimeError("Required E5 content decision or reviewer instructions missing")
     return {"version": "1.2.0rc2", "E5_source_technical_jobs": 3,
-            "status": "independent_review_pending",
+            "status": "owner_authorized_independent_review_pending" if armed else "independent_review_pending",
             "experimental_helpers": 12, "stable_root_promotions": 0,
-            "publication_authorized": False}
+            "publication_authorized": armed}
 
 
 def main() -> None:
