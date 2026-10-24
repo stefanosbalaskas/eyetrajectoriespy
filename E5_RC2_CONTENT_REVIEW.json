@@ -54,12 +54,13 @@
   ],
   "independent_human_package_content_approval": false,
   "separate_publication_authorization_review_completed": false,
-  "production_release_authorized": false,
-  "github_release_authorized": false,
-  "tag_authorized": false,
+  "production_release_authorized": true,
+  "github_release_authorized": true,
+  "tag_authorized": true,
   "testpypi_authorized": false,
   "release_workflow_dispatched": false,
   "implementation_change_in_this_pr": false,
   "reviewer_decision_required": "Accept experimental importability without stability or inferential guarantees, or request excluding the module and requalifying a rebuilt distribution.",
-  "reviewer_guidance": "The three Python E5 jobs verify the included source/wheel and contracts; they do not prove stability of E1-E4 or calibrated statistical inference. An independent reviewer must explicitly approve release content, followed by a separate governance-only arming PR and exact-main checks before manual publication."
+  "reviewer_guidance": "The three Python E5 jobs verify the included source/wheel and contracts; they do not prove stability of E1-E4 or calibrated statistical inference. An independent reviewer must explicitly approve release content, followed by a separate governance-only arming PR and exact-main checks before manual publication.",
+  "authorization_pr_number": 475
 }
