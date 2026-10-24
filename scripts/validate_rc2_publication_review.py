@@ -98,7 +98,7 @@ def audit_pending_authorization(review: dict, readiness: dict, scope: dict) -> d
 def main() -> None:
     report=audit_pending_authorization(
         _load("RC2_PUBLICATION_REVIEW.json"),
-        _load("RELEASE_READINESS.json"),
+        _load("validation/RELEASE_READINESS-1.2.0rc2.json"),
         _load("RELEASE_SCOPE_1_2_PROPOSAL.json"),
     )
     print(json.dumps(report,sort_keys=True))
