@@ -19,7 +19,7 @@ description: Choose a stable eyetrajectoriespy analysis route and find installat
 
   Choose common-grid, paired sparse, asynchronous coordinate-specific or repeated-trial representation **before** model fitting.
 
-  [Input schemas](../guides/input-schemas.md) · [Representation guide](../concepts/representations.md)
+  [Data-to-method guide](data-to-method.md) · [Input schemas](../guides/input-schemas.md) · [Representation guide](../concepts/representations.md)
 
 - **Choose a scientific method**
 

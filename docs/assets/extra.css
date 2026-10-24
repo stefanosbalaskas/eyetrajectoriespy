@@ -30,3 +30,11 @@
 @media(max-width:820px){.et-release-grid,.et-news-strip,.et-figure-pair{grid-template-columns:1fr}.et-home-intro{padding:1.35rem}.et-home-intro h1{font-size:2.3rem}}
 @media(max-width:600px){.md-content__inner{padding-top:.85rem}.et-home-intro h1{font-size:1.95rem}}
 @media(prefers-reduced-motion:reduce){.md-typeset .grid.cards>ul>li,.md-typeset .grid.cards>ol>li{transition:none!important;transform:none!important}}
+
+/* Accessible post-release onboarding and release-status presentation */
+.et-micro-status{padding:.75rem 1rem;border:1px solid var(--et-border);border-radius:.7rem;background:var(--et-panel);line-height:1.7}
+.et-micro-status p{margin:0}
+.et-home-intro .et-micro-status a{font-weight:650;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:.14em}
+.md-typeset .et-news-strip a:focus-visible,.md-typeset .et-micro-status a:focus-visible{outline:3px solid var(--md-accent-fg-color);outline-offset:3px}
+.md-typeset img{height:auto}
+@media(max-width:820px){.et-news-strip>div{padding:1rem}.et-micro-status{padding:.7rem .8rem}}

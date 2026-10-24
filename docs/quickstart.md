@@ -33,17 +33,17 @@ ax = plot_workflow_result(result, plot="fpca_component", component=0, dimension=
 ax.figure.savefig("fpca-component-x.svg")
 ```
 
-**Interpretation:** the component is a mode of observed variability, not a validated psychological construct. Report coordinate units, time support, number of curves and clustering when real samples are used. The [complete runnable script](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/feature/1-2-real-data-usability-onboarding/examples/quickstart_dense_fpca.py) includes CSV/report exports.
+**Interpretation:** the component is a mode of observed variability, not a validated psychological construct. Report coordinate units, time support, number of curves and clustering when real samples are used. The [complete runnable script](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/main/examples/quickstart_dense_fpca.py) includes CSV/report exports.
 
 ## 2. Paired sparse planar FPCA
 
-Keep genuinely irregular x/y observation times native. The [executable sparse example](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/feature/1-2-real-data-usability-onboarding/examples/quickstart_sparse_planar.py) builds a typed `IrregularTrajectorySet` and calls `run_sparse_mfpca_workflow()` with declared evaluation grid, mean/covariance bandwidths and measurement-error model. Its support figure plots the **actual recorded sample positions of the teaching fixture**, without manufacturing a dense raw trajectory.
+Keep genuinely irregular x/y observation times native. The [executable sparse example](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/main/examples/quickstart_sparse_planar.py) builds a typed `IrregularTrajectorySet` and calls `run_sparse_mfpca_workflow()` with declared evaluation grid, mean/covariance bandwidths and measurement-error model. Its support figure plots the **actual recorded sample positions of the teaching fixture**, without manufacturing a dense raw trajectory.
 
 **Interpretation:** a sparse joint covariance model estimates modes of x/y variation; it is not the same as two independently fitted univariate models. Different timestamps per channel need the separate asynchronous workflow.
 
 ## 3. Functional regression
 
-The [executable regression example](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/feature/1-2-real-data-usability-onboarding/examples/quickstart_functional_regression.py) constructs one independent functional response per participant, explicitly aligns `curve_id` with a scalar condition table and fits `run_function_on_scalar_workflow()`. It saves a condition coefficient curve, the reporting text and a summary CSV.
+The [executable regression example](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/main/examples/quickstart_functional_regression.py) constructs one independent functional response per participant, explicitly aligns `curve_id` with a scalar condition table and fits `run_function_on_scalar_workflow()`. It saves a condition coefficient curve, the reporting text and a summary CSV.
 
 **Interpretation:** a coefficient function describes a declared design association; a picture alone is not an inferential test. If the same participant contributes repeated trials with a trial-varying predictor, use [functional mixed effects](workflows/repeated-trial-mixed-effects.md) rather than silently treating curves as independent.
 

@@ -1,6 +1,11 @@
 # Coordinated GitHub Release and PyPI publication
 
-## 1.2.0rc1 exact-version qualification
+!!! success "Current publication: stable 1.2.0"
+    [Stable 1.2.0](https://github.com/stefanosbalaskas/eyetrajectoriespy/releases/tag/v1.2.0) was published to GitHub and [PyPI](https://pypi.org/project/eyetrajectoriespy/1.2.0/) on 24 October 2026 following owner-authorized protected-main qualification and installed-distribution checks. Production release flags were disarmed after publication. Read the current [release status](news/release-status.md) and [stable release notes](releases/1.2.0.md).
+
+The following RC1 and 1.1 paragraphs are preserved as **historical release-engineering snapshots**. Their statements about pending qualification must not be mistaken for today's published version.
+
+## Historical 1.2.0rc1 exact-version qualification
 
 The 1.2 workflow/orchestration surface is feature-frozen. `1.2.0rc1` is a version/evidence/release-engineering tranche only: no estimator, numerical method, dependency, scientific default, workflow contract or package-root API may change during qualification.
 
