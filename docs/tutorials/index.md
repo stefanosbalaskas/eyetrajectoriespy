@@ -1,8 +1,8 @@
 # Tutorial gallery
 
-## New: scientific workflow articles (1.2 candidate)
+## Scientific workflow articles (stable 1.2.0)
 
-The ten module-scoped workflow entry points combine existing qualified methods with explicit scientific decisions, ordered records, reporting and reproducibility bundles. **These are 1.2 candidate source examples, not 1.1 stable APIs.**
+The ten module-scoped workflow entry points combine existing qualified methods with explicit scientific decisions, ordered records, reporting and reproducibility bundles. **The ten W1–W4 orchestration routes are available in stable `eyetrajectoriespy==1.2.0` as module-scoped APIs; E1–E4 research helpers remain experimental.**
 
 - [Choose among the ten workflows](../articles/choosing-the-ten-workflows.md) to match representation, estimand and hierarchy.
 - [Interpret the new figures](../articles/interpreting-workflow-figures.md) without equating a plot with validation.

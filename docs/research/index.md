@@ -5,10 +5,10 @@ description: Independently audited functional gaze simulation, missing-data iden
 
 # Research & evidence
 
-**Open science with its failure cases intact.** This area explains what the development programme *tested*, what original archives and independent auditors reproduced, and which conclusions remain unsupported. It is separate from the [stable 1.1.0 product](../releases/1.1.0.md).
+**Open science with its failure cases intact.** This area explains what the development programme *tested*, what original archives and independent auditors reproduced, and which conclusions remain unsupported. It is separate from the [stable 1.2.0 product](../releases/1.2.0.md).
 
 !!! warning "Research ≠ a release qualification"
-    **1.2 is unpublished.** Source-level research experiments do not establish frequentist nominal-90% simultaneous functional-band calibration, identify a real-world outcome-dependent missing-gaze process or add a stable public API. [Blocker #289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) and [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) remain open.
+    **1.2.0 is published, but these research claims remain unqualified.** Simulation and source audits do not establish general nominal-90% simultaneous functional-band calibration or identify outcome-dependent gaze loss. Ten W1–W4 module-scoped workflows are stable engineering APIs; E1–E4 helpers remain experimental. [Blocker #289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) and [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) remain open.
 
 <div class="grid cards" markdown>
 
