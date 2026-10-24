@@ -4,7 +4,7 @@ title: Workflow infrastructure
 
 # Workflow infrastructure
 
-`eyetrajectoriespy.workflows` provides the completed candidate 1.2 orchestration foundation. The initial **W1 infrastructure tranche** introduced typed contracts without scientific estimators; W2–W4 subsequently added ten module-scoped composed workflows, canonical plot dispatch and installed-wheel product qualification. The published stable release remains 1.1.0 while the literal 1.2.0rc1 undergoes qualification.
+`eyetrajectoriespy.workflows` provides the completed candidate 1.2 orchestration foundation. The initial **W1 infrastructure tranche** introduced typed contracts without scientific estimators; W2–W4 subsequently added ten module-scoped composed workflows, canonical plot dispatch and installed-wheel product qualification. The ten W1–W4 workflows were published as stable 1.2.0 module-scoped APIs following exact-version qualification. The RC1/RC2 qualification ledgers remain historical.
 
 ## Design rule
 
@@ -93,4 +93,4 @@ from eyetrajectoriespy.workflows import (
 )
 ```
 
-These names are not mechanically added to the frozen 1.0 package-root export boundary. The completed 1.2 candidate retains all ten scientific workflows **module-scoped**, as machine-checked in `WORKFLOW_API_AUDIT.json`; no root export promotion was authorized.
+These names are not mechanically added to the frozen 1.0 package-root export boundary. Published stable 1.2.0 retains all ten scientific workflows **module-scoped**, as machine-checked in `WORKFLOW_API_AUDIT.json`; no root export promotion was authorized.

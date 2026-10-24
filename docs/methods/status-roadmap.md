@@ -1,10 +1,10 @@
 # Capability status and roadmap
 
-## Current stable scientific surface — 1.1.0
+## Current stable scientific surface — 1.2.0
 
-The current stable production release is **1.1.0**. It is the stable/default production release and preserves the frozen 1.0 package-root compatibility boundary while promoting the qualified post-1.0 sparse/irregular capabilities as stable **module-scoped 1.1 APIs**.
+The current stable production release is **1.2.0**, published on GitHub and PyPI on **24 October 2026** by successful production run #40128358042 from protected main. It preserves the frozen 1.0 root compatibility boundary, includes the stable 1.1 sparse/irregular module additions, and delivers ten supported module-scoped W1–W4 orchestration routes.
 
-The current stable qualification line is **1.2.0**. This is the **unpublished final-version qualification source**, not a release candidate or an already published stable version. Published prerelease **1.2.0rc2** passed GitHub/PyPI publication and production installation on 24 October 2026. Exact-final-version performance and installed-product qualification have not yet completed. The RC1/RC2 source evidence is archived unchanged; production publication remains disarmed pending fresh final-specific CI and a separate authorization. Stable 1.1.0 remains the default until that process is complete.
+Stable 1.1.0 and published prerelease 1.2.0rc2 remain available as historical distributions. E1–E4 helpers remain experimental; issues #289 and #296 remain open and outside release guarantees. The subsequent detailed qualification chronology is historical, not a current publication status.
 
 The protected main source at the start of literal-RC qualification is **1.2.0.dev0**, with W1–W4 completed. [PR #220](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/220) has merged the exact candidate identity **1.2.0rc1** onto protected main at `67c5947`; it is not yet a published production version, and release readiness remains disarmed. Immutable 1.1.0 qualification evidence stays attributed to 1.1.0.
 
@@ -151,9 +151,13 @@ Published 4 October 2026 after literal final-version qualification and a separat
 
 Published 6 October 2026 after exact-version qualification. It retained the frozen 1.0 root compatibility boundary while exposing the completed A1–C1 additions as supported module-scoped APIs. Production-installed observation on Python 3.11–3.13 completed before final promotion.
 
-### 1.1.0 — current stable/default release
+### 1.1.0 — previous stable/default release
 
 Published 7 October 2026 after fresh literal-final qualification, a separate governance-only publication-arming step, exact protected-main verification, production GitHub/PyPI publication with attestations, fresh exact-version installation smoke, and a post-publication disarming/closeout cycle. The scientific/API surface is the frozen, production-observed RC surface rather than a feature expansion during promotion.
+
+### 1.2.0 — current stable/default release
+
+Published 24 October 2026 after exact final-version evidence, 33/33 source PR workflows, owner-authorized production workflow, protected-main governance and fresh PyPI-installed smoke. The ten typed W1–W4 routes are stable module APIs; E1–E4 helpers remain experimental. No new simultaneous-band or MNAR identification guarantee was promoted.
 
 Published tags and release artifacts remain immutable historical records. New documentation or later APIs do not retroactively alter the scientific identity of earlier releases.
 
