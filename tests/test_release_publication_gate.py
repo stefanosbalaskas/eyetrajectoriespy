@@ -152,12 +152,11 @@ def test_required_checks_reject_skipped_neutral_and_incomplete(monkeypatch):
     assert governance._passed_checks(repo,commit,"fake")=={good}
 
 
-def test_final_literal_version_rejects_stale_rc2_evidence():
+def test_final_literal_version_has_real_exact_evidence_but_no_publication_approval():
     version=load("verify_release_version")
     assert version.version_contract()["pyproject.toml"]=="1.2.0"
-    assert set(version.qualified_evidence_contract().values())=={"1.2.0", "1.2.0rc2"}
-    with pytest.raises(RuntimeError,match="exact-version qualification evidence"):
-        version.verify_version_contract(production=True)
+    assert set(version.qualified_evidence_contract().values())=={"1.2.0"}
+    assert version.verify_version_contract(production=True)=="1.2.0"
     assert current()["production_release_ready"] is False
     assert current()["github_release_ready"] is False
 

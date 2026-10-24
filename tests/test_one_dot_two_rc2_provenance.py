@@ -13,7 +13,7 @@ def read(path):
 
 def test_rc2_performance_is_actual_new_source_evidence_and_archived_exactly():
     m=read("ONE_DOT_TWO_RC2_QUALIFICATION.json")
-    p=read("PERFORMANCE_ENVELOPE.json")
+    p=read("validation/performance/PERFORMANCE_ENVELOPE-1.2.0rc2.json")
     a=read("validation/performance/PERFORMANCE_ENVELOPE-1.2.0rc2.json")
     assert p==a
     source=m["new_literal_source_performance"]

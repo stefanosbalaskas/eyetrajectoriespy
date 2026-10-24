@@ -23,10 +23,16 @@ def test_rc2_recorded_performance_is_immutable_historical_evidence():
     assert history["package_version"] == "1.2.0rc2"
     assert history["environment"]["packages"]["eyetrajectoriespy"] == "1.2.0rc2"
     assert history["qualification_run_id"] == 39945467014
-    # Until fresh final-version measurements are recorded, RC2 is not final evidence.
+    # The final benchmark is a distinct, real GitHub Actions 1.2.0 measurement.
     current = read_json("PERFORMANCE_ENVELOPE.json")
-    assert current["package_version"] == "1.2.0rc2"
-    assert current["environment"]["packages"]["eyetrajectoriespy"] == "1.2.0rc2"
+    final_archive = read_json("validation/performance/PERFORMANCE_ENVELOPE-1.2.0.json")
+    assert current == final_archive
+    assert current["package_version"] == "1.2.0"
+    assert current["environment"]["packages"]["eyetrajectoriespy"] == "1.2.0"
+    assert current["qualification_run_id"] == 40121535785
+    assert current["qualification_commit"] == "54cfd4207d0c4463601ca7fc5ab5113e2738457d"
+    assert current["artifact_id"] == 12572080532
+    assert current["raw_artifact_member_sha256"] == "022c5f3d30b336d9769c1afcbb5dc902a61ecfbf36011e7c7fca4fd70c894872"
     assert read_json("REFERENCE_VALIDATION.json")["package_version"] == "1.2.0"
     assert read_json("VALIDATION_TOLERANCES.json")["package_version"] == "1.2.0"
     original = read_json("validation/reference/REFERENCE_VALIDATION-1.2.0rc2.json")

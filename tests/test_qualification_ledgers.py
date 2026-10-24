@@ -4,7 +4,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_REFERENCE_VERSION = "1.2.0"
-HISTORICAL_PERFORMANCE_VERSION = "1.2.0rc2"
+CURRENT_PERFORMANCE_VERSION = "1.2.0"
 
 
 def _all_test_source():
@@ -83,8 +83,8 @@ def test_performance_envelope_declares_noncomparative_repeated_workloads():
     ledger = json.loads(
         (ROOT / "PERFORMANCE_ENVELOPE.json").read_text(encoding="utf-8")
     )
-    assert ledger["package_version"] == HISTORICAL_PERFORMANCE_VERSION
-    assert ledger == json.loads((ROOT / "validation/performance/PERFORMANCE_ENVELOPE-1.2.0rc2.json").read_text())
+    assert ledger["package_version"] == CURRENT_PERFORMANCE_VERSION
+    assert ledger == json.loads((ROOT / "validation/performance/PERFORMANCE_ENVELOPE-1.2.0.json").read_text())
     assert ledger["comparative_benchmark"] is False
     assert ledger["profile"] == "ci-qualification"
 
