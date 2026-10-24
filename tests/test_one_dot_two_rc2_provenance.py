@@ -46,7 +46,7 @@ def test_previously_frozen_rc1_performance_is_not_relabelled_or_deleted():
 
 def test_historical_provenance_disarmed_while_owner_publication_request_is_separate():
     m=read("ONE_DOT_TWO_RC2_QUALIFICATION.json")
-    r=read("RELEASE_READINESS.json")
+    r=read("validation/RELEASE_READINESS-1.2.0rc2.json")
     assert m["package_version"]==r["current_development_version"]=="1.2.0rc2"
     assert m["source_release_qualified"] is False
     assert m["production_release_ready"] is False
@@ -59,3 +59,8 @@ def test_historical_provenance_disarmed_while_owner_publication_request_is_separ
     assert r["production_release_ready"] is True
     assert r["github_release_ready"] is True
     assert r["testpypi_publication_ready"] is False
+    # Historical RC2 authorization is not the active unqualified 1.2.0 source.
+    current=read("RELEASE_READINESS.json")
+    assert current["current_development_version"] == "1.2.0"
+    assert current["production_release_ready"] is False
+    assert current["github_release_ready"] is False
