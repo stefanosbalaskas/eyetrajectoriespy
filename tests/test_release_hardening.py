@@ -11,7 +11,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 with (ROOT / "pyproject.toml").open("rb") as _source_stream:
     CURRENT_SOURCE_VERSION = tomllib.load(_source_stream)["project"]["version"]
-CURRENT_STABLE_VERSION = "1.1.0"
+CURRENT_STABLE_VERSION = "1.2.0"
+PREVIOUS_STABLE_VERSION = "1.1.0"
 LATEST_QUALIFIED_EVIDENCE_VERSION = "1.2.0"
 
 
@@ -53,7 +54,7 @@ def test_release_version_validator_declares_exact_active_source_line():
         )
     else:
         assert (
-            f"The current stable qualification line is **{CURRENT_SOURCE_VERSION}**."
+            f"The current stable production release is **{CURRENT_SOURCE_VERSION}**."
             in roadmap
         )
     assert module.verify_version_contract() == CURRENT_SOURCE_VERSION
@@ -78,7 +79,7 @@ def test_source_version_publication_gate_respects_dev_vs_rc():
 def test_release_candidate_rejects_stale_stable_tag():
     module = _load_script("verify_release_version.py")
     with pytest.raises(RuntimeError, match="release tag/version mismatch"):
-        module.verify_version_contract(tag=f"v{CURRENT_STABLE_VERSION}")
+        module.verify_version_contract(tag=f"v{PREVIOUS_STABLE_VERSION}")
 
 
 def test_frozen_qualified_evidence_never_relabelled_to_new_development_source():
