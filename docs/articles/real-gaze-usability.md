@@ -1,6 +1,6 @@
 # Authentic gaze E1–E4: research usability qualification
 
-This reproduces a **real published eye-tracking observation** workflow, not a known-truth accuracy benchmark. The runnable source is [real_gaze_e1_e4_usability.py](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/feature/1-2-real-data-usability-onboarding/examples/real_gaze_e1_e4_usability.py). Its [GitHub Actions qualification](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/workflows/real-gaze-usability.yml) retains audit CSVs, the figures and the generated reporting manifest.
+This reproduces a **real published eye-tracking observation** workflow, not a known-truth accuracy benchmark. The runnable source is [real_gaze_e1_e4_usability.py](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/main/examples/real_gaze_e1_e4_usability.py). Its [GitHub Actions qualification](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/workflows/real-gaze-usability.yml) retains audit CSVs, the figures and the generated reporting manifest.
 
 ## Source and permissions
 
@@ -35,4 +35,4 @@ The report includes `scientific-report/report.md`, `scientific-report/manifest.j
 
 The successful CI run on the first 16 trial files fitted 15 complete-case windows and retained one excluded window in the audit. This is an **end-to-end research usability demonstration** of authentic eye-tracking complications, not a representative population analysis, a hypothesis test, or a known-truth validation of FPCA components. No claim about the source paper's behavioral findings follows from this software case. The complete-case rule may bias the represented trials; the chosen early window and smoothing choices are methodological decisions, not universally recommended defaults.
 
-The stable release remains **1.1.0**. Experimental E1–E4 interfaces and this case remain **unpublished 1.2 development surfaces** until separate candidate qualification, exact-main checks and release governance succeed.
+Stable **1.2.0** includes the E1–E4 helper namespace, but it is **experimental and not a supported stable workflow API**. This real-gaze case documents usability under its prespecified data and preprocessing conditions; it does not establish population-level scientific validity or known-truth calibration.

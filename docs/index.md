@@ -15,10 +15,12 @@ hide:
 **eyetrajectoriespy** models gaze as a time-indexed two-coordinate functional process. Work with dense, sparse, irregular and repeated-trial trajectories while keeping the assumptions behind analysis and uncertainty visible.
 
 [Install stable 1.2.0](start/index.md){ .md-button .md-button--primary }
-[Explore methods](methods/index.md){ .md-button }
+[Find your analysis route](start/data-to-method.md){ .md-button }
 [Research evidence](research/index.md){ .md-button }
 
-<div class="et-micro-status">**Published stable:** 1.2.0 · **Previous stable:** 1.1.0 · **Ten module-scoped workflows:** available · **Experimental E1–E4:** unstable · **Research exclusions:** #289 / #296</div>
+<div class="et-micro-status" markdown>
+**Published stable:** [1.2.0](releases/1.2.0.md) · **Supported workflows:** ten module-scoped W1–W4 routes · **Research helpers:** E1–E4 remain experimental · **Scientific exclusions:** [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) / [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296)
+</div>
 
 </div>
 
@@ -29,6 +31,10 @@ hide:
 <small>Conceptual synthetic schematic, not measured human gaze or a performance claim.</small>
 
 </div>
+
+## Start with your data and research question
+
+New to functional gaze analysis? Use the [data-to-method guide](start/data-to-method.md) to identify the independent sampling unit, time grid, estimand and uncertainty scope **before** choosing an estimator. The [quick start](quickstart.md) provides seeded executable examples.
 
 ## Begin with your scientific question
 
@@ -116,8 +122,9 @@ Ten W1–W4 workflow routes are **published stable APIs**. Twelve E1–E4 helper
 
 **Read each figure in the context of its source.** R82 shows that apparently high gaze retention can coexist with inadequate independent-unit support. R95 proves conditional sharp *population* bounds given externally justified return assumptions; it does **not** establish the true missing-gaze mechanism or calibrate nominal-90% confidence bands.
 
+[Scientific figure atlas](figures/index.md){ .md-button .md-button--primary }
+[Interpret workflow figures](articles/interpreting-workflow-figures.md){ .md-button }
 [Study map R76–R95](research/studies.md){ .md-button }
-[Scientific figure atlas](figures/index.md){ .md-button }
 
 ## Latest news
 
@@ -125,20 +132,20 @@ Ten W1–W4 workflow routes are **published stable APIs**. Twelve E1–E4 helper
 
 <div markdown>
 
-**23 October 2026 · R93–R95 original and independent evidence**
+**24 October 2026 · Stable 1.2.0 released**
 
-Exact observational equivalence, completion-floor assumptions, and monotone-return sensitivity—with sources and scientific limits.
+The [GitHub release](https://github.com/stefanosbalaskas/eyetrajectoriespy/releases/tag/v1.2.0) and [PyPI distribution](https://pypi.org/project/eyetrajectoriespy/1.2.0/) passed production publication and exact-version installation checks. Statistical limitations remain explicit.
 
-[Research update](news/2026-10-23.md) · [News archive](news/index.md)
+[Release announcement](news/2026-10-24-release.md) · [Release status](news/release-status.md)
 </div>
 
 <div markdown>
 
-**24 October 2026 · Version 1.2.0 published**
+**23 October 2026 · R93–R95 research evidence**
 
-The stable [GitHub release](https://github.com/stefanosbalaskas/eyetrajectoriespy/releases/tag/v1.2.0) and [PyPI distribution](https://pypi.org/project/eyetrajectoriespy/1.2.0/) are verified. Separate W3 inference and missing-gaze research remain open.
+Exact observational equivalence, externally assumed completion floors and monotone-return sensitivity, with independently audited records.
 
-[Release status](news/release-status.md) · [Roadmap](roadmap.md)
+[Research update](news/2026-10-23.md) · [Study map](research/studies.md)
 </div>
 
 </div>

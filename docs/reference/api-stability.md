@@ -2,7 +2,7 @@
 
 ## 1.0 compatibility baseline
 
-**1.1.0** is the current published stable production release. **1.0.0** established the immutable root-API compatibility baseline for the 1.x line; later module-scoped scientific additions do not rewrite that historical freeze. The 1.2 typed workflow surface is under separate release-candidate qualification, not part of the published 1.1.0 installation.
+**1.2.0** is the current published stable production release. **1.0.0** established the immutable root-API compatibility baseline for the 1.x line, and qualified 1.1 additions remain module-scoped. Ten W1–W4 typed workflow routes are supported in `eyetrajectoriespy.workflows`; the separate E1–E4 helpers remain experimental.
 
 `ONE_DOT_ZERO_API_STABILITY.json` is the immutable machine-readable contract generated from the qualified 1.0 stabilization programme. On the 1.x line it is checked as a **frozen compatibility subset** of the live package surface rather than being regenerated whenever an additive API is introduced.
 
@@ -38,7 +38,7 @@ The observational predecessor is `PUBLIC_API_1_0_AUDIT.json`; the exhaustive ins
 
 ## 1.1 and 1.2 module-scoped additions
 
-The stable 1.1 sparse/irregular additions are documented in the [1.1 module API](one-dot-one-module-api.md). The candidate 1.2 workflow contracts remain under `eyetrajectoriespy.workflows`, with no root-namespace promotion; see [transparent orchestration](../workflows/workflow-orchestration.md) and the machine-checked `WORKFLOW_API_AUDIT.json` in the repository. The candidate source does not imply publication.
+The stable 1.1 sparse/irregular additions are documented in the [1.1 module API](one-dot-one-module-api.md). The published 1.2 workflow contracts remain under `eyetrajectoriespy.workflows`, with no root-namespace promotion; see [transparent orchestration](../workflows/workflow-orchestration.md) and the machine-checked `WORKFLOW_API_AUDIT.json` in the repository. The candidate source does not imply publication.
 
 ## Public API levels
 
