@@ -2,7 +2,7 @@
   "schema_version": 1,
   "current_development_version": "1.2.0",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": true,
+  "production_release_ready": false,
   "testpypi_publication_ready": false,
   "gates": {
     "portable_result_schema_qualified": true,
@@ -131,7 +131,8 @@
     "This release cycle is still held pending separately recorded independent E5/scope review and a distinct governance-only approval. PR #473 passed 25/25 PR checks for E1-E4 experimental helpers; its review-only merge does not arm GitHub/PyPI publication. Publication requires a manual release.yml dispatch with target=production on protected main after the exact arming-main checks pass.",
     "On 24 October 2026 the owner explicitly requested publication of 1.2.0rc2. Arming PR #475 is owner-authorized but production build is blocked by the live independent exact-head GitHub review verifier until a nonauthor human APPROVED review is recorded, followed by protected-main exact-commit qualification and a manual release.yml dispatch with target=production. No independent approval is preasserted.",
     "24 October 2026: published prerelease 1.2.0rc2 passed production release run #25 (40118974945) on exact protected main a45d159f0ba6246736752575b9ede1520140016e. Final 1.2.0 preparation is version-only; RC2 scientific estimator source and unsupported inference claims are unchanged. Final exact-version numerical/performance evidence is NOT yet qualified, and production/GitHub publication are deliberately disarmed pending full exact-final-version CI and separate arming PR. The original RC2 benchmark remains immutable.",
-    "24 October 2026: owner explicitly approved publication of stable eyetrajectoriespy 1.2.0. Original source PR #478 passed 33/33 exact-head CI; protected-main source 2d9fe5886ea0c36e619a302d6a6237ce446a18e2 passed 33/33 required exact-main checks successfully, verified through exact-commit GitHub check-runs. Separate governance PR #479 holds this authorization; manual release.yml dispatch with target=production is required after separate PR exact-head + new arming-main qualification and protected PyPI environment approval. Experimental E1-E4 helpers remain unstable; issues #289/#296 excluded. No stable 1.2.0 publication is yet claimed."
+    "24 October 2026: owner explicitly approved publication of stable eyetrajectoriespy 1.2.0. Original source PR #478 passed 33/33 exact-head CI; protected-main source 2d9fe5886ea0c36e619a302d6a6237ce446a18e2 passed 33/33 required exact-main checks successfully, verified through exact-commit GitHub check-runs. Separate governance PR #479 holds this authorization; manual release.yml dispatch with target=production is required after separate PR exact-head + new arming-main qualification and protected PyPI environment approval. Experimental E1-E4 helpers remain unstable; issues #289/#296 excluded. No stable 1.2.0 publication is yet claimed.",
+    "24 October 2026 POST-PUBLICATION CLOSEOUT: stable eyetrajectoriespy 1.2.0 published from protected-main SHA c1cd95ad718327550f7e55393ff38582872f7a94 by manual production workflow 40128358042. GitHub v1.2.0 release and PyPI 1.2.0 both published; wheel/sdist SHA256 verified, PyPI digital attestations generated, and exact-version installed production smoke passed. Both active production_release_ready and github_release_ready are now disarmed, without deleting distinct historical authorization. Published distributions are immutable; initial bundled README wrongly described 1.2.0 as unpublished. The live GitHub README and website now state the correct stable release. Any correction of the frozen PyPI 1.2.0 description requires a separately qualified new package version, not a reupload."
   ],
-  "github_release_ready": true
+  "github_release_ready": false
 }

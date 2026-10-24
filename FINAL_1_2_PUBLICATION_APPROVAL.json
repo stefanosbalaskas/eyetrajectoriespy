@@ -8,7 +8,7 @@
   "protected_main_exact_ci_qualified": true,
   "experimental_helpers_stable_promotion": false,
   "root_api_promotion": false,
-  "published_final_version": false,
+  "published_final_version": true,
   "scientific_issues_open": [
     289,
     296
@@ -16,5 +16,13 @@
   "owner_production_publication_approved": true,
   "pypi_environment_review_required": true,
   "qualification_main_commit": "2d9fe5886ea0c36e619a302d6a6237ce446a18e2",
-  "notes": "Owner explicitly requests stable 1.2.0 production publication on 24 October 2026. PR #478 completed 33/33 exact-head workflows; qualified protected-main source SHA 2d9fe5886ea0c36e619a302d6a6237ce446a18e2 passed all 33 required exact-main release-governance check runs. The additional replicated-bayesian-sensitivity check may still run but is not a REQUIRED_CHECKS publication gate. Owner approval is explicit, not represented as independent human peer review. Separate governance PR #479, protected new-main checks, manual workflow_dispatch and protected PyPI environment reviewer remain required. No tag or public release is asserted."
+  "notes": "Owner explicitly requests stable 1.2.0 production publication on 24 October 2026. PR #478 completed 33/33 exact-head workflows; qualified protected-main source SHA 2d9fe5886ea0c36e619a302d6a6237ce446a18e2 passed all 33 required exact-main release-governance check runs. The additional replicated-bayesian-sensitivity check may still run but is not a REQUIRED_CHECKS publication gate. Owner approval is explicit, not represented as independent human peer review. Separate governance PR #479, protected new-main checks, manual workflow_dispatch and protected PyPI environment reviewer remain required. No tag or public release is asserted. POST-RELEASE CLOSEOUT: v1.2.0 GitHub release and PyPI 1.2.0 published 24 October 2026 from protected-main c1cd95ad718327550f7e55393ff38582872f7a94, workflow 40128358042 passed end-to-end; publication readiness flags now disabled. Original RC2 and final 1.2.0 distribution artifacts remain immutable.",
+  "published_github_release": "https://github.com/stefanosbalaskas/eyetrajectoriespy/releases/tag/v1.2.0",
+  "published_pypi_version": "https://pypi.org/project/eyetrajectoriespy/1.2.0/",
+  "production_workflow_run_id": 40128358042,
+  "publication_commit": "c1cd95ad718327550f7e55393ff38582872f7a94",
+  "distribution_sha256": {
+    "wheel": "bfc52f511404fab82a8fdc037503f7b3054658aaca9ae4e0639793bcf4076501",
+    "sdist": "cba3c53cecac3e99cfd5161baa042f70c9911ca43565243e5a426f889a4bbe93"
+  }
 }

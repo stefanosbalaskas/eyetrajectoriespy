@@ -1,14 +1,14 @@
 # Changelog
 
-## 1.2.0 — stable promotion in qualification (NOT PUBLISHED)
+## 1.2.0 — published stable (2026-10-24)
 
 - Promote the published, production-installed `1.2.0rc2` engineering scope to final `1.2.0` **without changes to scientific estimators, default behavior or frozen root API**.
 - Preserve ten explicitly configured W1–W4 orchestration routes; retain twelve E1–E4 helpers strictly experimental and unstable, not supported stable entry points.
 - Preserve negative/held inferential evidence for issues #289 (simultaneous confidence bands) and #296 (MNAR gaze loss); no newly advertised coverage/identification guarantees.
-- **Publication remains disarmed.** Final-source exact-version reference/tolerance/performance qualification, full package/installed-artifact CI, and a separate post-qualification governance authorization remain required.
+- **Published:** source PR #478 passed 33/33 exact-head checks; separate owner authorization PR #479 enabled manual [production release workflow #40128358042](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/40128358042). GitHub v1.2.0 and PyPI 1.2.0 were published, digital attestations generated, and a fresh PyPI-installed smoke test passed. Publication flags are disarmed after release. Original PyPI 1.2.0 README has stale qualification copy; current GitHub/website documentation corrects it while immutable PyPI assets are preserved.
 - Preserve immutable RC2 release artifacts, hashes, scientific evidence and performance provenance under their true `1.2.0rc2` identity. Do not attribute those measurements to final `1.2.0`.
 
-## Unpublished candidate — 1.2.0rc2 (fresh exact-version qualification pending)
+## 1.2.0rc2 — published historical prerelease (2026-10-24)
 
 - Add isolated E1–E4 experimental workflow utilities for opt-in preprocessing, preflight, declared sensitivity and provenance-linked reports; these are not RC1 qualified APIs.
 - Preserve all frozen RC1 numerical/performance records and publication interlocks. A new E5 qualification and version-authority decision are mandatory before merge or publishing.
