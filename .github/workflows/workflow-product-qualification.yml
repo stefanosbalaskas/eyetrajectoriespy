@@ -5,6 +5,10 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/workflow-product-qualification.yml"
+      - ".github/workflows/release.yml"
+      - "RC2_PUBLICATION_REVIEW.json"
+      - "scripts/verify_rc2_independent_pr_approval.py"
+      - "scripts/validate_rc2_publication_review.py"
       - "src/eyetrajectoriespy/workflows/**"
       - "tests/test_workflow_*.py"
       - "tests/test_sparse_workflows.py"
@@ -15,6 +19,10 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/workflow-product-qualification.yml"
+      - ".github/workflows/release.yml"
+      - "RC2_PUBLICATION_REVIEW.json"
+      - "scripts/verify_rc2_independent_pr_approval.py"
+      - "scripts/validate_rc2_publication_review.py"
       - "src/eyetrajectoriespy/workflows/**"
       - "tests/test_workflow_*.py"
       - "tests/test_sparse_workflows.py"
