@@ -59,8 +59,15 @@ def test_historical_provenance_disarmed_while_owner_publication_request_is_separ
     assert r["production_release_ready"] is True
     assert r["github_release_ready"] is True
     assert r["testpypi_publication_ready"] is False
-    # Historical RC2 authorization is not the active unqualified 1.2.0 source.
+    # The historic RC2 approval is immutable; final 1.2.0 has separate
+    # explicit owner approval, and never inherits RC2 publication flags.
     current=read("RELEASE_READINESS.json")
+    final=read("FINAL_1_2_PUBLICATION_APPROVAL.json")
     assert current["current_development_version"] == "1.2.0"
-    assert current["production_release_ready"] is False
-    assert current["github_release_ready"] is False
+    assert current["production_release_ready"] is True
+    assert current["github_release_ready"] is True
+    assert final["release_version"] == "1.2.0"
+    assert final["predecessor_tag"] == "v1.2.0rc2"
+    assert final["approval_state"] == "separately_authorized_stable_publication"
+    assert final["owner_production_publication_approved"] is True
+    assert final["experimental_helpers_stable_promotion"] is False
