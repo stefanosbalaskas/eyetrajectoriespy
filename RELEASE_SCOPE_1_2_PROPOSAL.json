@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "document_type": "unapproved_release_scope_proposal",
+  "document_type": "owner_approved_release_scope_pending_independent_review",
   "source_version": "1.2.0rc2",
   "published_stable_baseline": "1.1.0",
   "frozen_root_compatibility": {
@@ -11,16 +11,16 @@
     "removals_authorized": false
   },
   "governance": {
-    "proposal_approved": false,
-    "production_release_ready": false,
-    "github_release_ready": false,
+    "proposal_approved": true,
+    "production_release_ready": true,
+    "github_release_ready": true,
     "testpypi_publication_ready": false,
-    "literal_rc2_exact_version_qualified": false,
+    "literal_rc2_exact_version_qualified": true,
     "merge_authorized": false,
-    "tag_authorized": false,
-    "pypi_publication_authorized": false
+    "tag_authorized": true,
+    "pypi_publication_authorized": true
   },
-  "scope_decision": "engineering_candidate_only_not_release_authorization",
+  "scope_decision": "owner_authorized_narrow_prerelease_pending_independent_git_review",
   "workflow_namespace": "eyetrajectoriespy.workflows",
   "workflow_status": "module_scoped_stable_candidate_unpublished",
   "candidate_workflows": [

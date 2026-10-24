@@ -33,7 +33,13 @@ def main() -> None:
     rc1 = json.loads((ROOT / "ONE_DOT_TWO_RC_QUALIFICATION.json").read_text())
     development = json.loads((ROOT / "EXPERIMENTAL_WORKFLOW_AUDIT.json").read_text())
     assert readiness["current_development_version"] == DEV
-    assert not readiness["production_release_ready"] and not readiness["github_release_ready"]
+    # Arming is a separate owner governance transition; E5 methods remain experimental.
+    assert readiness["production_release_ready"] is readiness["github_release_ready"]
+    if readiness["production_release_ready"]:
+        review = json.loads((ROOT / "RC2_PUBLICATION_REVIEW.json").read_text())
+        assert review["record_kind"] == "owner_authorized_pending_independent_review"
+        assert review["independent_human_release_review_recorded"] is False
+        assert review["independent_exact_head_github_review_enforced_in_workflow"] is True
     assert rc1["package_version"] == RC1
     assert rc1["scientific_behavior_changed"] is False
     assert rc1["publication_interlock"]["publication_arming_performed"] is False
@@ -61,7 +67,7 @@ def main() -> None:
         cls = getattr(experimental, name)
         assert is_dataclass(cls)
         assert [field.name for field in fields(cls)] == names, name
-    print("PASS E5 RC2 candidate boundary: RC1 immutable, 12 experimental exports, publication disarmed")
+    print("PASS E5 RC2 candidate boundary: RC1 immutable, 12 experimental exports, independent GitHub publication review required")
 
 
 if __name__ == "__main__":

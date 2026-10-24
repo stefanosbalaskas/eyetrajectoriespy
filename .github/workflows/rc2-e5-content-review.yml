@@ -37,7 +37,8 @@ jobs:
         run: |
           python -m pytest --noconftest -q tests/test_e5_rc2_content_review.py
           python scripts/validate_e5_rc2_content_review.py
-      - name: Verify release flags remain disarmed
+      - name: Verify owner prerelease intent and independent-review interlock
         run: |
           python scripts/verify_release_publication_gate.py --target build-only
-          python -c "import json; r=json.load(open('RELEASE_READINESS.json')); assert all(r[k] is False for k in ('production_release_ready','github_release_ready','testpypi_publication_ready'))"
+          python -c "import json; r=json.load(open('RELEASE_READINESS.json')); assert r['production_release_ready'] is r['github_release_ready'] is True and r['testpypi_publication_ready'] is False"
+          python -c "from pathlib import Path; x=Path('.github/workflows/release.yml').read_text(); assert 'verify_rc2_independent_pr_approval.py' in x and x.index('verify_rc2_independent_pr_approval.py') < x.index('python -m build')"

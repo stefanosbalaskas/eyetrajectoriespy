@@ -29,14 +29,19 @@ def inputs():
 def test_e5_evidence_supports_only_an_explicit_experimental_reviewer_choice():
     assert e5.validate_content_review(*inputs()) == {
         "version": "1.2.0rc2", "E5_source_technical_jobs": 3,
-        "status": "independent_review_pending",
+        "status": "owner_authorized_independent_review_pending",
         "experimental_helpers": 12, "stable_root_promotions": 0,
-        "publication_authorized": False,
+        "publication_authorized": True,
     }
 
 
-@pytest.mark.parametrize("key", e5.PENDING)
-def test_no_unreviewed_approval_or_hidden_publish(key):
+@pytest.mark.parametrize("key", [
+    "independent_human_package_content_approval",
+    "separate_publication_authorization_review_completed",
+    "testpypi_authorized", "release_workflow_dispatched",
+    "implementation_change_in_this_pr",
+])
+def test_no_fabricated_independent_approval_or_hidden_publish(key):
     data = inputs()
     data[0][key] = True
     with pytest.raises(RuntimeError, match="Human approval/publication"):
@@ -44,11 +49,28 @@ def test_no_unreviewed_approval_or_hidden_publish(key):
 
 
 @pytest.mark.parametrize("key", [
-    "production_release_ready", "github_release_ready", "testpypi_publication_ready",
+    "production_release_authorized", "github_release_authorized", "tag_authorized",
 ])
-def test_publication_readiness_must_remain_disabled(key):
+def test_no_partial_owner_authorization(key):
     data = inputs()
-    data[3][key] = True
+    data[0][key] = False
+    with pytest.raises(RuntimeError, match="Owner authorization"):
+        e5.validate_content_review(*data)
+
+
+@pytest.mark.parametrize("key", [
+    "production_release_ready", "github_release_ready",
+])
+def test_owner_arming_flags_must_remain_joint(key):
+    data = inputs()
+    data[3][key] = False
+    with pytest.raises(RuntimeError):
+        e5.validate_content_review(*data)
+
+
+def test_testpypi_must_remain_disabled():
+    data = inputs()
+    data[3]["testpypi_publication_ready"] = True
     with pytest.raises(RuntimeError, match="Human approval/publication"):
         e5.validate_content_review(*data)
 

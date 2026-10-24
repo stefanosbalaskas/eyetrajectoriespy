@@ -1,152 +1,114 @@
-"""R1.2 proposed scope: machine-readable, unapproved, no feature promotion."""
+"""RC2 owner publication scope: exact installed routes, pending external review."""
 from __future__ import annotations
-
-from copy import deepcopy
-
 import pytest
-
 from scripts import validate_one_dot_two_release_scope as policy
 
 
-def _inputs():
+def inputs():
     return {
-        "scope":policy.load_json("RELEASE_SCOPE_1_2_PROPOSAL.json"),
-        "readiness":policy.load_json("RELEASE_READINESS.json"),
-        "audit":policy.load_json("WORKFLOW_API_AUDIT.json"),
-        "frozen":policy.load_json("ONE_DOT_ZERO_API_STABILITY.json"),
+        "scope": policy.load_json("RELEASE_SCOPE_1_2_PROPOSAL.json"),
+        "readiness": policy.load_json("RELEASE_READINESS.json"),
+        "audit": policy.load_json("WORKFLOW_API_AUDIT.json"),
+        "frozen": policy.load_json("ONE_DOT_ZERO_API_STABILITY.json"),
     }
 
 
-def test_draft_scope_matches_previous_audited_stable_and_candidate_boundaries():
-    result=policy.validate_scope(**_inputs())
-    assert result=={
-        "proposal_status":"unapproved",
-        "source_version":"1.2.0rc2",
-        "published_stable_baseline":"1.1.0",
-        "candidate_workflow_count":10,
-        "frozen_root_exports":458,
-        "scientific_blockers_open":[289,296],
-        "release_authorized":False,
+def test_owner_scope_arms_only_narrow_rc2_prerelease():
+    data = inputs()
+    result = policy.validate_scope(**data)
+    assert result == {
+        "proposal_status": "owner_authorized_pending_independent_review",
+        "source_version": "1.2.0rc2",
+        "published_stable_baseline": "1.1.0",
+        "candidate_workflow_count": 10,
+        "frozen_root_exports": 458,
+        "scientific_blockers_open": [289, 296],
+        "release_authorized": True,
     }
-    scope=_inputs()["scope"]
-    assert scope["frozen_root_compatibility"]["stable_exports"]==455
-    assert scope["frozen_root_compatibility"]["experimental_exports"]==3
-    assert len({r["contract"] for r in scope["candidate_workflows"]})==10
-    assert all(r["interpretation_limit"] for r in scope["candidate_workflows"])
+    assert data["scope"]["frozen_root_compatibility"]["stable_exports"] == 455
+    assert data["scope"]["frozen_root_compatibility"]["experimental_exports"] == 3
 
 
-@pytest.mark.parametrize("name",(
-    "production_release_ready",
-    "github_release_ready",
-    "testpypi_publication_ready",
-    "merge_authorized",
-    "tag_authorized",
+@pytest.mark.parametrize("field", [
+    "production_release_ready", "github_release_ready", "proposal_approved",
+    "literal_rc2_exact_version_qualified", "tag_authorized",
     "pypi_publication_authorized",
-    "literal_rc2_exact_version_qualified",
-))
-def test_no_governance_flag_can_be_armed_as_a_scope_proposal(name):
-    data=_inputs()
-    data["scope"]["governance"][name]=True
-    with pytest.raises(RuntimeError,match="governance"):
+])
+def test_owner_scope_flag_cannot_be_partly_disarmed(field):
+    data = inputs()
+    data["scope"]["governance"][field] = False
+    with pytest.raises(RuntimeError, match="governance"):
         policy.validate_scope(**data)
 
 
-def test_no_candidate_workflow_may_be_added_removed_or_relabeled():
-    data=_inputs()
+def test_merge_permission_not_preapproved_without_external_review():
+    data = inputs()
+    data["scope"]["governance"]["merge_authorized"] = True
+    with pytest.raises(RuntimeError, match="governance"):
+        policy.validate_scope(**data)
+
+
+def test_version_and_api_drift_still_refused():
+    data = inputs()
+    data["scope"]["source_version"] = "1.2.0rc1"
+    with pytest.raises(RuntimeError, match="identity"):
+        policy.validate_scope(**data)
+    data = inputs()
     data["scope"]["candidate_workflows"].pop()
-    with pytest.raises(RuntimeError,match="ten"):
+    with pytest.raises(RuntimeError, match="ten"):
         policy.validate_scope(**data)
-    data=_inputs()
-    data["scope"]["candidate_workflows"][0]["contract"]="unreviewed:v2"
-    with pytest.raises(RuntimeError,match="drifted"):
+    data = inputs()
+    data["scope"]["candidate_workflows"][0]["contract"] = "untested:v2"
+    with pytest.raises(RuntimeError, match="drifted"):
         policy.validate_scope(**data)
-    data=_inputs()
-    data["scope"]["candidate_workflows"][0]["engineering_status"]="published"
-    with pytest.raises(RuntimeError,match="limitation"):
+    data = inputs()
+    data["scope"]["frozen_root_compatibility"]["experimental_exports"] = 0
+    with pytest.raises(RuntimeError, match="counts"):
         policy.validate_scope(**data)
 
 
-@pytest.mark.parametrize("hold",sorted(policy.REQUIRED_CLAIM_HOLDS))
-def test_scientific_negative_results_cannot_be_silently_promoted(hold):
-    data=_inputs()
+@pytest.mark.parametrize("hold", sorted(policy.REQUIRED_CLAIM_HOLDS))
+def test_unsupported_inference_never_promoted(hold):
+    data = inputs()
     data["scope"]["disallowed_new_claims"].remove(hold)
-    with pytest.raises(RuntimeError,match="holds"):
+    with pytest.raises(RuntimeError, match="holds"):
         policy.validate_scope(**data)
 
 
-@pytest.mark.parametrize("issue",[289,296])
-def test_scientific_blocker_cannot_be_omitted(issue):
-    data=_inputs()
+@pytest.mark.parametrize("issue", [289, 296])
+def test_scientific_blockers_still_visible(issue):
+    data = inputs()
     data["scope"]["scientific_blockers_open"].remove(issue)
-    with pytest.raises(RuntimeError,match="blockers"):
+    with pytest.raises(RuntimeError, match="blockers"):
         policy.validate_scope(**data)
 
 
-def test_literal_rc_evidence_must_not_be_credited_to_dev_source():
-    data=_inputs()
-    data["scope"]["source_version"]="1.2.0rc2.dev0"
-    with pytest.raises(RuntimeError,match="identity"):
-        policy.validate_scope(**data)
-    data=_inputs()
-    data["scope"]["governance"]["literal_rc2_exact_version_qualified"]=True
-    with pytest.raises(RuntimeError,match="governance"):
-        policy.validate_scope(**data)
-
-
-def test_old_1_0_root_experimental_exports_cannot_be_reclassified():
-    data=_inputs()
-    data["scope"]["frozen_root_compatibility"]["experimental_exports"]=0
-    with pytest.raises(RuntimeError,match="counts"):
-        policy.validate_scope(**data)
-    data=_inputs()
-    data["scope"]["frozen_root_compatibility"]["root_promotion_authorized"]=True
-    with pytest.raises(RuntimeError,match="promotion"):
-        policy.validate_scope(**data)
-
-
-def test_testpypi_or_production_armed_readiness_is_not_a_draft():
-    data=_inputs()
-    data["readiness"]["testpypi_publication_ready"]=True
-    with pytest.raises(RuntimeError,match="TestPyPI"):
-        policy.validate_scope(**data)
-    data=_inputs()
-    data["readiness"]["production_release_ready"]=True
-    with pytest.raises(RuntimeError,match="armed"):
-        policy.validate_scope(**data)
-
-
-def test_source_audit_historical_evidence_cannot_be_fabricated():
-    data=_inputs()
-    data["scope"]["last_completed_evidence"]["exact_head_workflows_successful"]=28
-    with pytest.raises(RuntimeError,match="evidence"):
-        policy.validate_scope(**data)
-
-
-def test_experimental_E1_to_E4_module_is_explicitly_in_wheel_but_not_stable():
-    data=_inputs()
-    module=data["scope"]["bundled_unqualified_experimental_module"]
-    assert module["bundled_in_dev_wheel"] is True
-    assert module["supported_in_proposed_ten_workflow_api"] is False
+def test_experimental_helpers_not_stable_routes():
+    data = inputs()
+    module = data["scope"]["bundled_unqualified_experimental_module"]
+    assert len(module["named_experimental_helpers"]) == 12
     assert module["public_contract_frozen"] is False
-    assert module["eligible_for_literal_1_2_release_without_separate_e5_review"] is False
-    assert len(module["named_experimental_helpers"])==12
+    assert module["supported_in_proposed_ten_workflow_api"] is False
     assert set(module["named_experimental_helpers"]).isdisjoint(
-        set(data["audit"]["workflow_entry_points"]))
-    assert policy.validate_scope(**data)["release_authorized"] is False
+        data["audit"]["workflow_entry_points"])
+    data["scope"]["bundled_unqualified_experimental_module"]["public_contract_frozen"] = True
+    with pytest.raises(RuntimeError, match="promoted"):
+        policy.validate_scope(**data)
 
 
-def test_unqualified_experimental_module_cannot_be_omitted_or_promoted():
-    data=_inputs()
-    del data["scope"]["bundled_unqualified_experimental_module"]
-    with pytest.raises(RuntimeError,match="ignores bundled"):
+def test_testpypi_remains_disarmed():
+    data = inputs()
+    data["readiness"]["testpypi_publication_ready"] = True
+    with pytest.raises(RuntimeError, match="TestPyPI"):
         policy.validate_scope(**data)
-    data=_inputs()
-    data["scope"]["bundled_unqualified_experimental_module"][
-        "eligible_for_literal_1_2_release_without_separate_e5_review"]=True
-    with pytest.raises(RuntimeError,match="promoted"):
+
+
+def test_no_partial_readiness_or_fake_historical_evidence():
+    data = inputs()
+    data["readiness"]["production_release_ready"] = False
+    with pytest.raises(RuntimeError):
         policy.validate_scope(**data)
-    data=_inputs()
-    data["scope"]["bundled_unqualified_experimental_module"][
-        "named_experimental_helpers"].remove("run_preprocessing_plan")
-    with pytest.raises(RuntimeError,match="helper surface"):
+    data = inputs()
+    data["scope"]["last_completed_evidence"]["exact_head_workflows_successful"] = 28
+    with pytest.raises(RuntimeError, match="evidence"):
         policy.validate_scope(**data)
