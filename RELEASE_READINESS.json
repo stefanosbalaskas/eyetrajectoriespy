@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "current_development_version": "1.2.0rc2",
+  "current_development_version": "1.2.0",
   "first_public_release_target": "0.9.0",
-  "production_release_ready": true,
+  "production_release_ready": false,
   "testpypi_publication_ready": false,
   "gates": {
     "portable_result_schema_qualified": true,
@@ -129,7 +129,8 @@
     "E1-E4 experimental workflow expansion is isolated on a non-publishing 1.2.0rc2.dev0 development source: no new RC2 qualification, public export freeze or publication authorization is inherited from immutable 1.2.0rc1 evidence.",
     "Literal 1.2.0rc2 candidate PR #471 qualified 33/33 exact-head workflows; exact protected-main candidate commit 9891feee6e5daa638a9de5cada295482a5fa4884 completed 30/30 workflow groups successfully with zero failures, including matched RC2 performance provenance and wheel/sdist installation evidence.",
     "This release cycle is still held pending separately recorded independent E5/scope review and a distinct governance-only approval. PR #473 passed 25/25 PR checks for E1-E4 experimental helpers; its review-only merge does not arm GitHub/PyPI publication. Publication requires a manual release.yml dispatch with target=production on protected main after the exact arming-main checks pass.",
-    "On 24 October 2026 the owner explicitly requested publication of 1.2.0rc2. Arming PR #475 is owner-authorized but production build is blocked by the live independent exact-head GitHub review verifier until a nonauthor human APPROVED review is recorded, followed by protected-main exact-commit qualification and a manual release.yml dispatch with target=production. No independent approval is preasserted."
+    "On 24 October 2026 the owner explicitly requested publication of 1.2.0rc2. Arming PR #475 is owner-authorized but production build is blocked by the live independent exact-head GitHub review verifier until a nonauthor human APPROVED review is recorded, followed by protected-main exact-commit qualification and a manual release.yml dispatch with target=production. No independent approval is preasserted.",
+    "24 October 2026: published prerelease 1.2.0rc2 passed production release run #25 (40118974945) on exact protected main a45d159f0ba6246736752575b9ede1520140016e. Final 1.2.0 preparation is version-only; RC2 scientific estimator source and unsupported inference claims are unchanged. Final exact-version numerical/performance evidence is NOT yet qualified, and production/GitHub publication are deliberately disarmed pending full exact-final-version CI and separate arming PR. The original RC2 benchmark remains immutable."
   ],
-  "github_release_ready": true
+  "github_release_ready": false
 }
