@@ -13,7 +13,8 @@ from eyetrajectoriespy import workflows
 from eyetrajectoriespy.workflows import experimental
 
 ROOT = Path(__file__).resolve().parents[1]
-DEV = "1.2.0rc2"
+DEV = "1.2.0"
+HISTORICAL_RC2 = "1.2.0rc2"
 RC1 = "1.2.0rc1"
 EXPECTED_EXPERIMENTAL = {
     "PreprocessingExecutionResult", "WorkflowPreflightResult",
@@ -33,9 +34,11 @@ def main() -> None:
     rc1 = json.loads((ROOT / "ONE_DOT_TWO_RC_QUALIFICATION.json").read_text())
     development = json.loads((ROOT / "EXPERIMENTAL_WORKFLOW_AUDIT.json").read_text())
     assert readiness["current_development_version"] == DEV
-    # Arming is a separate owner governance transition; E5 methods remain experimental.
-    assert readiness["production_release_ready"] is readiness["github_release_ready"]
-    if readiness["production_release_ready"]:
+    # The RC2 authorization is archived; it must not arm a distinct final release.
+    assert readiness["production_release_ready"] is readiness["github_release_ready"] is False
+    historic_readiness = json.loads((ROOT / "validation/RELEASE_READINESS-1.2.0rc2.json").read_text())
+    assert historic_readiness["production_release_ready"] is historic_readiness["github_release_ready"] is True
+    if historic_readiness["production_release_ready"]:
         review = json.loads((ROOT / "RC2_PUBLICATION_REVIEW.json").read_text())
         assert review["record_kind"] == "owner_authorized_pending_independent_review"
         assert review["independent_human_release_review_recorded"] is False
@@ -47,7 +50,7 @@ def main() -> None:
     assert set(workflows.__all__) == set(frozen["exported_symbols"])
     assert set(experimental.__all__) == EXPECTED_EXPERIMENTAL
     assert set(experimental.__all__).isdisjoint(set(workflows.__all__))
-    assert development["source_version"] == DEV
+    assert development["source_version"] == HISTORICAL_RC2
     assert development["previous_qualified_candidate"] == RC1
     assert development["candidate_publication_authorized"] is False
     assert development["candidate_scientifically_qualified"] is False
@@ -55,7 +58,7 @@ def main() -> None:
     assert development["native_bayesian_estimator_added"] is False
     assert development["new_effect_region_inference_added"] is False
     proposed = json.loads((ROOT / "EXPERIMENTAL_WORKFLOW_API_AUDIT.json").read_text())
-    assert proposed["branch_version"] == DEV
+    assert proposed["branch_version"] == HISTORICAL_RC2
     assert proposed["publication_authorized"] is False
     assert proposed["root_namespace_promoted"] is False
     assert proposed["status"] == "frozen_proposed_api_for_scientific_review"
@@ -67,7 +70,7 @@ def main() -> None:
         cls = getattr(experimental, name)
         assert is_dataclass(cls)
         assert [field.name for field in fields(cls)] == names, name
-    print("PASS E5 RC2 candidate boundary: RC1 immutable, 12 experimental exports, independent GitHub publication review required")
+    print("PASS preserved published RC2 E5 boundary and unqualified final 1.2.0 source: 12 experimental exports, no final publication")
 
 
 if __name__ == "__main__":
