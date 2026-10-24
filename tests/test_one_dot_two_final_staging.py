@@ -27,6 +27,13 @@ def test_rc2_recorded_performance_is_immutable_historical_evidence():
     current = read_json("PERFORMANCE_ENVELOPE.json")
     assert current["package_version"] == "1.2.0rc2"
     assert current["environment"]["packages"]["eyetrajectoriespy"] == "1.2.0rc2"
+    assert read_json("REFERENCE_VALIDATION.json")["package_version"] == "1.2.0"
+    assert read_json("VALIDATION_TOLERANCES.json")["package_version"] == "1.2.0"
+    original = read_json("validation/reference/REFERENCE_VALIDATION-1.2.0rc2.json")
+    active = read_json("REFERENCE_VALIDATION.json")
+    assert original["package_version"] == "1.2.0rc2"
+    active["package_version"] = "1.2.0rc2"
+    assert active == original
 
 def test_scientific_exclusions_survive_stable_candidate():
     scope = read_json("RELEASE_SCOPE_1_2_PROPOSAL.json")
