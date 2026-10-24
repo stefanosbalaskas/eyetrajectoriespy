@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "package_version": "1.2.0rc2",
+  "package_version": "1.2.0",
   "classes": [
     {
       "id": "exact_combinatorial",
@@ -46,8 +46,8 @@
         "other converged numerical optimizers"
       ],
       "policy": "Require the same likelihood/estimand/specification and successful convergence. Compare fixed parameters, covariance/scale and objective or fitted means with explicit per-test tolerances. Do not use a loose universal tolerance.",
-      "default_rtol": 1e-07,
-      "default_atol": 1e-09
+      "default_rtol": 1e-7,
+      "default_atol": 1e-9
     },
     {
       "id": "external_backend_equivalence",
