@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "record_kind": "release_authorization_review_pending",
+  "record_kind": "owner_authorized_pending_independent_review",
   "candidate_version": "1.2.0rc2",
   "published_stable_version": "1.1.0",
   "exact_candidate_merge_commit": "9891feee6e5daa638a9de5cada295482a5fa4884",
@@ -14,11 +14,11 @@
   "protected_main_evidence_url": "https://github.com/stefanosbalaskas/eyetrajectoriespy/actions",
   "protected_main_workflows_all_successful": true,
   "independent_human_release_review_recorded": false,
-  "narrow_scope_approved_for_release": false,
-  "github_release_authorized": false,
-  "production_pypi_authorized": false,
+  "narrow_scope_approved_for_release": true,
+  "github_release_authorized": true,
+  "production_pypi_authorized": true,
   "testpypi_authorized": false,
-  "tag_creation_authorized": false,
+  "tag_creation_authorized": true,
   "manual_workflow_dispatch_performed": false,
   "release_workflow": ".github/workflows/release.yml",
   "release_target": "production",
@@ -48,5 +48,7 @@
     "Requalify the authorization commit on protected main and verify all required exact-main check runs",
     "Run release.yml workflow_dispatch target=production on exact protected main through GitHub UI with required pypi environment reviewer",
     "Verify new prerelease tag and GitHub Release, PyPI 1.2.0rc2 artifacts, SHA256 and clean installed smoke"
-  ]
+  ],
+  "authorization_pr_number": 475,
+  "independent_exact_head_github_review_enforced_in_workflow": true
 }
