@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "release_version": "1.2.0",
+  "predecessor_tag": "v1.2.0rc2",
+  "approval_state": "not_qualified_not_approved",
+  "owner": "stefanosbalaskas",
+  "final_version_evidence_complete": false,
+  "protected_main_exact_ci_qualified": false,
+  "experimental_helpers_stable_promotion": false,
+  "root_api_promotion": false,
+  "published_final_version": false,
+  "scientific_issues_open": [
+    289,
+    296
+  ],
+  "owner_production_publication_approved": false,
+  "pypi_environment_review_required": true,
+  "qualification_main_commit": null,
+  "notes": "NONPUBLISHING PLACEHOLDER: after exact final-version scientific reference/tolerance/performance evidence and full final protected-main CI, authorize by distinct documented governance-only PR. This is not the historical RC2 authorization."
+}
