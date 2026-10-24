@@ -2,10 +2,10 @@
   "schema_version": 1,
   "release_version": "1.2.0",
   "predecessor_tag": "v1.2.0rc2",
-  "approval_state": "not_qualified_not_approved",
+  "approval_state": "separately_authorized_stable_publication",
   "owner": "stefanosbalaskas",
-  "final_version_evidence_complete": false,
-  "protected_main_exact_ci_qualified": false,
+  "final_version_evidence_complete": true,
+  "protected_main_exact_ci_qualified": true,
   "experimental_helpers_stable_promotion": false,
   "root_api_promotion": false,
   "published_final_version": false,
@@ -13,8 +13,8 @@
     289,
     296
   ],
-  "owner_production_publication_approved": false,
+  "owner_production_publication_approved": true,
   "pypi_environment_review_required": true,
-  "qualification_main_commit": null,
-  "notes": "NONPUBLISHING PLACEHOLDER: after exact final-version scientific reference/tolerance/performance evidence and full final protected-main CI, authorize by distinct documented governance-only PR. This is not the historical RC2 authorization."
+  "qualification_main_commit": "2d9fe5886ea0c36e619a302d6a6237ce446a18e2",
+  "notes": "Owner explicitly requests stable 1.2.0 production publication on 24 October 2026. PR #478 completed 33/33 exact-head workflows; qualified protected-main source SHA 2d9fe5886ea0c36e619a302d6a6237ce446a18e2 passed all 33 required exact-main release-governance check runs. The additional replicated-bayesian-sensitivity check may still run but is not a REQUIRED_CHECKS publication gate. Owner approval is explicit, not represented as independent human peer review. Separate governance PR #479, protected new-main checks, manual workflow_dispatch and protected PyPI environment reviewer remain required. No tag or public release is asserted."
 }

@@ -26,7 +26,7 @@ EVIDENCE_FILES = (
 )
 BASE_VALIDATOR_VERSION = "0.12.0"
 LATEST_QUALIFIED_EVIDENCE_VERSION = "1.2.0"
-QUALIFIED_RELEASE_MAIN = "9891feee6e5daa638a9de5cada295482a5fa4884"
+QUALIFIED_RELEASE_MAIN = "2d9fe5886ea0c36e619a302d6a6237ce446a18e2"
 _ORIGINAL_READ_TEXT = Path.read_text
 
 
@@ -92,7 +92,7 @@ def _validate_source_and_evidence_versions() -> None:
         notes = "\n".join(str(note) for note in readiness.get("notes", ()))
         required_arming_evidence = (
             QUALIFIED_RELEASE_MAIN,
-            "30/30 workflow groups successfully",
+            "33/33 required exact-main checks successfully",
             "manual release.yml dispatch with target=production",
         )
         missing = [token for token in required_arming_evidence if token not in notes]

@@ -1,3 +1,5 @@
+# Stable 1.2.0 publication governance: re-run the complete exact-main CI matrix.
+# Comment-only metadata change; package identity, dependencies and code are unchanged.
 [build-system]
 requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"

@@ -9,13 +9,13 @@ ROOT = Path(__file__).resolve().parents[1]
 def read_json(path: str):
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
-def test_final_is_staged_but_not_publishable():
+def test_final_source_is_exact_and_production_requires_separate_manual_publishing():
     with (ROOT / "pyproject.toml").open("rb") as f:
         assert tomllib.load(f)["project"]["version"] == "1.2.0"
     readiness = read_json("RELEASE_READINESS.json")
     assert readiness["current_development_version"] == "1.2.0"
-    assert readiness["production_release_ready"] is False
-    assert readiness["github_release_ready"] is False
+    assert readiness["production_release_ready"] is True
+    assert readiness["github_release_ready"] is True
     assert readiness["testpypi_publication_ready"] is False
 
 def test_rc2_recorded_performance_is_immutable_historical_evidence():
