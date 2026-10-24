@@ -26,11 +26,14 @@ def inputs():
     }
     return p,r,opts
 
-def test_final_remains_blocked_after_rc2_success():
+def test_final_requires_distinct_authorization_not_rc2_success():
     p,r,opts=inputs()
     assert p["release_version"] == "1.2.0"
-    assert p["owner_production_publication_approved"] is False
-    assert r["production_release_ready"] is False
+    assert p["owner_production_publication_approved"] is True
+    assert p["qualification_main_commit"] == "2d9fe5886ea0c36e619a302d6a6237ce446a18e2"
+    assert r["production_release_ready"] is True
+    assert policy.verify_final_release_authorization(p,r,**opts) == p["qualification_main_commit"]
+    p["owner_production_publication_approved"] = False
     with pytest.raises(RuntimeError, match="FINAL approval"):
         policy.verify_final_release_authorization(p,r,**opts)
 

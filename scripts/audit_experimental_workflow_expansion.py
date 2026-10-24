@@ -35,7 +35,12 @@ def main() -> None:
     development = json.loads((ROOT / "EXPERIMENTAL_WORKFLOW_AUDIT.json").read_text())
     assert readiness["current_development_version"] == DEV
     # The RC2 authorization is archived; it must not arm a distinct final release.
-    assert readiness["production_release_ready"] is readiness["github_release_ready"] is False
+    assert readiness["production_release_ready"] is readiness["github_release_ready"] is True
+    approval = json.loads((ROOT / "FINAL_1_2_PUBLICATION_APPROVAL.json").read_text())
+    assert approval["approval_state"] == "separately_authorized_stable_publication"
+    assert approval["owner_production_publication_approved"] is True
+    assert approval["root_api_promotion"] is False
+    assert approval["experimental_helpers_stable_promotion"] is False
     historic_readiness = json.loads((ROOT / "validation/RELEASE_READINESS-1.2.0rc2.json").read_text())
     assert historic_readiness["production_release_ready"] is historic_readiness["github_release_ready"] is True
     if historic_readiness["production_release_ready"]:
@@ -70,7 +75,7 @@ def main() -> None:
         cls = getattr(experimental, name)
         assert is_dataclass(cls)
         assert [field.name for field in fields(cls)] == names, name
-    print("PASS preserved published RC2 E5 boundary and unqualified final 1.2.0 source: 12 experimental exports, no final publication")
+    print("PASS preserved historical RC2 E5 boundary; separately authorized 1.2.0 production while experimental exports remain unqualified")
 
 
 if __name__ == "__main__":
