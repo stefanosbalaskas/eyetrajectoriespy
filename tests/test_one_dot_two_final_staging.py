@@ -1,4 +1,4 @@
-"""Safety tests for the unqualified, nonpublishing literal 1.2.0 transition."""
+"""Safety tests for published stable 1.2.0 and postpublication interlocks."""
 from __future__ import annotations
 import json
 from pathlib import Path
@@ -9,13 +9,17 @@ ROOT = Path(__file__).resolve().parents[1]
 def read_json(path: str):
     return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
-def test_final_source_is_exact_and_production_requires_separate_manual_publishing():
+def test_final_source_published_and_production_readiness_disarmed_after_release():
     with (ROOT / "pyproject.toml").open("rb") as f:
         assert tomllib.load(f)["project"]["version"] == "1.2.0"
     readiness = read_json("RELEASE_READINESS.json")
     assert readiness["current_development_version"] == "1.2.0"
-    assert readiness["production_release_ready"] is True
-    assert readiness["github_release_ready"] is True
+    assert readiness["production_release_ready"] is False
+    assert readiness["github_release_ready"] is False
+    approval = read_json("FINAL_1_2_PUBLICATION_APPROVAL.json")
+    assert approval["published_final_version"] is True
+    assert approval["production_workflow_run_id"] == 40128358042
+    assert approval["publication_commit"] == "c1cd95ad718327550f7e55393ff38582872f7a94"
     assert readiness["testpypi_publication_ready"] is False
 
 def test_rc2_recorded_performance_is_immutable_historical_evidence():

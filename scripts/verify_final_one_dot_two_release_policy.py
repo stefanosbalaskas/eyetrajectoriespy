@@ -23,6 +23,8 @@ def verify_final_release_authorization(
 ) -> str:
     if not isinstance(policy, dict) or not isinstance(readiness, dict):
         raise RuntimeError("Final publication requires real approval and readiness JSON")
+    if policy.get("published_final_version") is True:
+        raise RuntimeError("Stable 1.2.0 already published; a new release needs a new version")
     if (repository != REPO or git_ref != "refs/heads/main"
         or event_name != "workflow_dispatch"
         or actor.lower() != OWNER
