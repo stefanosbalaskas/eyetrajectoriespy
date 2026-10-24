@@ -154,3 +154,31 @@ def test_literal_candidate_needs_new_exact_version_evidence_but_no_publication()
     assert version.verify_version_contract(production=True)=="1.2.0rc2"
     assert current()["production_release_ready"] is False
     assert current()["github_release_ready"] is False
+
+
+def test_future_arming_documentation_rejects_stale_1_1_main_provenance():
+    """Do not import a heavy docs validator in the installed-wheel smoke tests."""
+    import ast
+
+    source = ast.parse(
+        (ROOT / "scripts" / "validate_docs_contracts.py").read_text(
+            encoding="utf-8"
+        )
+    )
+    assignments = [
+        node.value.value
+        for node in source.body
+        if isinstance(node, ast.Assign)
+        and any(
+            isinstance(target, ast.Name) and target.id == "QUALIFIED_RELEASE_MAIN"
+            for target in node.targets
+        )
+        and isinstance(node.value, ast.Constant)
+    ]
+    assert assignments == ["9891feee6e5daa638a9de5cada295482a5fa4884"]
+    notes = "\n".join(current()["notes"])
+    assert assignments[0] in notes
+    assert "30/30 workflow groups successfully" in notes
+    assert current()["current_development_version"] == "1.2.0rc2"
+    assert current()["production_release_ready"] is False
+    assert current()["github_release_ready"] is False
