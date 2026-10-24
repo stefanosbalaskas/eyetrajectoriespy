@@ -5,6 +5,7 @@ on:
     paths:
       - "RELEASE_READINESS.json"
       - "scripts/verify_rc2_independent_pr_approval.py"
+      - ".github/workflows/workflow-product-qualification.yml"
       - "ONE_DOT_ZERO_API_STABILITY.json"
       - "PUBLIC_API_1_0_AUDIT.json"
       - "CANONICAL_WORKFLOWS.json"
@@ -18,6 +19,7 @@ on:
     paths:
       - "RELEASE_READINESS.json"
       - "scripts/verify_rc2_independent_pr_approval.py"
+      - ".github/workflows/workflow-product-qualification.yml"
       - "ONE_DOT_ZERO_API_STABILITY.json"
       - "PUBLIC_API_1_0_AUDIT.json"
       - "CANONICAL_WORKFLOWS.json"
