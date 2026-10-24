@@ -37,17 +37,21 @@ def fully_armed():
             }}
 
 
-def test_current_1_2_release_stays_completely_disarmed():
+def test_current_1_2_release_owner_arm_requires_separate_live_review():
     policy=load("verify_release_publication_gate")
     readiness=current()
     assert readiness["current_development_version"]=="1.2.0rc2"
-    assert readiness["production_release_ready"] is False
-    assert readiness["github_release_ready"] is False
+    assert readiness["production_release_ready"] is True
+    assert readiness["github_release_ready"] is True
     assert readiness["testpypi_publication_ready"] is False
     assert policy.verify_publication_policy(readiness,"build-only")=="build-only"
-    for target in ("testpypi","production","resume-production"):
-        with pytest.raises(RuntimeError,match="blocked"):
-            policy.verify_publication_policy(readiness,target)
+    assert policy.verify_publication_policy(readiness,"production")=="production"
+    assert policy.verify_publication_policy(readiness,"resume-production")=="resume-production"
+    with pytest.raises(RuntimeError,match="blocked"):
+        policy.verify_publication_policy(readiness,"testpypi")
+    workflow=(ROOT/".github/workflows/release.yml").read_text()
+    assert "verify_rc2_independent_pr_approval.py" in workflow
+    assert workflow.index("verify_rc2_independent_pr_approval.py") < workflow.index("python -m build")
 
 
 @pytest.mark.parametrize("target",("testpypi","production","resume-production"))
@@ -113,8 +117,7 @@ def test_release_workflow_always_checks_publication_policy_before_build():
 
 def test_production_governance_requires_both_approval_flags():
     governance=load("verify_release_governance")
-    with pytest.raises(RuntimeError,match="production_release_ready"):
-        governance._verify_declared_github_release_readiness()
+    governance._verify_declared_github_release_readiness()
     # A hypothetically arming GitHub release alone is insufficient.
     original=governance._release_readiness
     try:
@@ -152,8 +155,8 @@ def test_literal_candidate_needs_new_exact_version_evidence_but_no_publication()
     assert version.verify_version_contract()=="1.2.0rc2"
     assert set(version.qualified_evidence_contract().values())=={"1.2.0rc2"}
     assert version.verify_version_contract(production=True)=="1.2.0rc2"
-    assert current()["production_release_ready"] is False
-    assert current()["github_release_ready"] is False
+    assert current()["production_release_ready"] is True
+    assert current()["github_release_ready"] is True
 
 
 def test_future_arming_documentation_rejects_stale_1_1_main_provenance():
