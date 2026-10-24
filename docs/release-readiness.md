@@ -1,5 +1,18 @@
 # Release readiness and publication state
 
+## Current stable 1.2.0 — published and closed out (24 October 2026)
+
+[GitHub v1.2.0](https://github.com/stefanosbalaskas/eyetrajectoriespy/releases/tag/v1.2.0) and [PyPI 1.2.0](https://pypi.org/project/eyetrajectoriespy/1.2.0/) were published from protected-main SHA `c1cd95ad718327550f7e55393ff38582872f7a94` in successful [production workflow #40128358042](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/40128358042). GitHub tag/assets, wheel/sdist checksums, trusted PyPI upload with attestations and a clean installation smoke all passed.
+
+- Final `1.2.0` wheel SHA256: `bfc52f511404fab82a8fdc037503f7b3054658aaca9ae4e0639793bcf4076501`
+- Final `1.2.0` source archive SHA256: `cba3c53cecac3e99cfd5161baa042f70c9911ca43565243e5a426f889a4bbe93`
+- `RELEASE_READINESS.json` production/GitHub flags are now jointly **false after release**, preventing accidental repeated publication.
+- The separately authorized final release decision is preserved with `published_final_version=true`, but is not an active permission to publish again.
+- Ten W1–W4 workflow routes are stable module-scoped APIs; twelve E1–E4 helpers remain experimental. Unresolved inference/missingness issues [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) and [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) remain excluded.
+- The original 1.2.0 README bundled into PyPI contains stale release status. A corrected live GitHub README/website does **not** mutate the immutable published distribution description; a later patch version is necessary to update it on PyPI.
+
+The material below retains **historical prepublication snapshots**. Those candidate-stage assertions are not the current release status.
+
 ## Experimental source line (draft PR #223)
 
 The previously named development source `1.2.0rc2.dev0` contained experimental E1–E4 utilities. The new literal `1.2.0rc2` source is now under separate qualification and has not been published. It is not release-qualified and not published. Exact `1.2.0rc1` evidence is unchanged and must not be attributed to this source. A distinct RC2 gate requires its own scientific API audit, numerical/product evidence, release-version synchronization, protected-main CI and separate publication governance.

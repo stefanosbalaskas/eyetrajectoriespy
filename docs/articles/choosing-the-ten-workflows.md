@@ -7,7 +7,7 @@ title: Choosing among ten functional gaze workflows
 The **observation design and scientific estimand come first**. A workflow is an audited composition of already-qualified methods; it does not decide on preprocessing, smoothing, family, conditional variance, response denominator, fixed effects, random effects or recurrence parameters without the analyst.
 
 !!! info "Availability"
-    These ten APIs are **1.2 release-candidate, module-scoped source functionality**. The current published stable distribution is **1.1.0**. The literal `1.2.0rc1` release candidate is not yet published.
+    These ten APIs are stable **1.2.0 module-scoped** routes. Install with `pip install eyetrajectoriespy==1.2.0`. E1–E4 helpers remain experimental and are not part of the stable workflow API.
 
 ## A ten-route comparison
 
@@ -68,9 +68,9 @@ All routes are imported from `eyetrajectoriespy.workflows`, not the root package
 - A workflow result is not an automatically validated causal or predictive claim.
 
 !!! warning "Installation prerequisite"
-    `pip install eyetrajectoriespy` installs the published stable **1.1.0** package; it **does not** expose `run_*_workflow()`. The runnable example below requires the **1.2 candidate source checkout**, which is not published on production PyPI.
+    `pip install eyetrajectoriespy==1.2.0` installs these routes. Import `run_*_workflow()` from `eyetrajectoriespy.workflows`, not the frozen package root.
 
-## Minimal candidate-source illustration
+## Minimal stable 1.2.0 illustration
 
 ```python
 from eyetrajectoriespy import simulate_planar_trajectories

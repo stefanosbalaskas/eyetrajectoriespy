@@ -5,18 +5,18 @@ description: Dated release, research and website updates for eyetrajectoriespy, 
 
 # News & updates
 
-A dated editorial overview of important project changes. **Publication dates describe source/documentation events; they are not release dates unless specifically marked as a published stable release.** The stable package remains **1.1.0**.
+A dated editorial overview of important project changes. **Publication dates describe source/documentation events; they are not release dates unless specifically marked as a published stable release.** The current stable package is **1.2.0**, published 24 October 2026. Experimental E1–E4 and W3 research limitations remain separate.
 
 <div class="et-news-feature" markdown>
 
-<small>23 October 2026 · Research & documentation</small>
+<small>24 October 2026 · Stable software release</small>
 
-## R93–R95: what selective audit return cannot prove
+## Stable 1.2.0 is published
 
-Three independently audited exact-rational studies explain the limits of high audit return, the force of externally guaranteed completion floors, and the difference between a *known* response direction and an *unknown* one.
+Ten module-scoped W1–W4 workflow routes are available in the production PyPI distribution. E1–E4 and the W3 inferential research exclusions remain separate.
 
-[Read the October update](2026-10-23.md){ .md-button .md-button--primary }
-[Study map](../research/studies.md){ .md-button }
+[Release announcement](2026-10-24-release.md){ .md-button .md-button--primary }
+[Workflow guide](../workflows/workflow-orchestration.md){ .md-button }
 
 </div>
 
@@ -24,11 +24,12 @@ Three independently audited exact-rational studies explain the limits of high au
 
 | Date / area | Update | Evidence |
 | --- | --- | --- |
+| **24 Oct 2026 — Stable release** | Version 1.2.0 published to GitHub/PyPI with recorded distribution hashes and fresh installed smoke | [Announcement](2026-10-24-release.md) · [Release notes](../releases/1.2.0.md) |
 | **23 Oct 2026 — Research** | R95 external monotone return direction: 54 exact mathematical cases and separate original-artifact replay | [Study](../articles/w3-r95-monotone-audit-return-identification.md) · [Audit](../development/w3-r95-original-independent-evidence-ledger.md) |
 | **23 Oct 2026 — Research** | R94 exact completion-floor assumptions and sharp latent sets | [Study](../articles/w3-r94-external-audit-completion-bounds.md) |
 | **October 2026 — Research** | R76–R93 independent numerical audits and failures | [Research archive](../research/studies.md) |
-| **Current stable** | 1.1.0 released; 1.2 candidate remains unpublished | [Release-status page](release-status.md) |
+| **Current stable** | 1.2.0 published; E1–E4 remain experimental | [Release-status page](release-status.md) |
 
 ## Follow development
 
-The [GitHub repository](https://github.com/stefanosbalaskas/eyetrajectoriespy) has commit/PR-level history and [release notes](../releases/1.1.0.md). This editorial page is curated manually to avoid presenting a CI run or draft PR as a product announcement.
+The [GitHub repository](https://github.com/stefanosbalaskas/eyetrajectoriespy) has commit/PR-level history and [1.2.0 release notes](../releases/1.2.0.md). This editorial page is curated manually to avoid presenting a CI run or draft PR as a product announcement.

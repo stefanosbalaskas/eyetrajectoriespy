@@ -1,24 +1,29 @@
 ---
 title: Roadmap and open scientific qualifications
-description: Development priorities, protected stable API, W3 simultaneous inference and missing-gaze qualification for eyetrajectoriespy.
+description: Stable 1.2.0 release, protected compatibility, W3 inference and missing-gaze research priorities.
 ---
 
 # Roadmap
 
-The priority is **reliable scientific interpretation**, not maximizing the number of experimental APIs or research stages.
+The priority remains **reliable scientific interpretation**, not the number of experimental APIs.
 
 ## Delivered to users
 
-**Published stable 1.1.0:** native continuous/sparse methods, module-scoped 1.1 additions, input validation and documentation. [Installation](start/index.md) · [Stable release](releases/1.1.0.md).
+**Published stable 1.2.0 (24 October 2026):** native continuous/sparse methods, qualified 1.1 module additions, ten explicit W1–W4 orchestration routes, data validation and documentation for Python 3.11–3.13.
 
-## Research and documentation completed
+[Install 1.2.0](start/index.md) · [Release notes](releases/1.2.0.md) · [Choose a workflow](articles/choosing-the-ten-workflows.md)
 
-**W3 R76–R95:** a series of synthetic validation, falsification, missingness and identifiability investigations with original/independent evidence. These records are discoverable in the [study map](research/studies.md), [figure atlas](figures/index.md) and [news archive](news/index.md).
+The frozen package-root boundary is unchanged, and the separate E1–E4 helpers remain experimental.
 
-## Still required before any 1.2 promotion
+## Research and documentation delivered
 
-- Credible simultaneously valid functional inference under the registered W3 designs, with appropriately powered *new independent source* evaluation; see [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289).
-- Explicit, externally supported observation/validation mechanics for outcome-dependent missing gaze; R93–R95 mathematical counterexamples are **not** an MNAR solution; see [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296).
-- Fresh literal release-candidate source qualification and public package tests, distinct from successful documentation deployment.
+W3 R76–R95 synthetic simulation, falsification, missingness and identifiability records remain in the [study map](research/studies.md) and [figure atlas](figures/index.md). Publication does not convert exploratory scientific evidence into validated coverage claims.
 
-The 1.2 GitHub Release / PyPI promotion remains disarmed. This roadmap does **not** set a release date.
+## Open research priorities — not blockers to stable 1.2.0
+
+- Establish reliable simultaneous functional confidence bands under extreme leverage, with independent-source evaluation: [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289).
+- Clarify externally defensible audit/missingness mechanisms before proposing outcome-dependent gaze corrections: [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296).
+- Qualify any future E1–E4 promotion separately.
+- Require a fresh exact-version release process for any future Python distribution.
+
+Stable 1.2.0 publication is complete. This post-publication closeout changes no scientific estimators.

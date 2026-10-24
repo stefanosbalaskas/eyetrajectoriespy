@@ -28,6 +28,8 @@ def verify_final_release_authorization(
         or actor.lower() != OWNER
         or target not in {"production", "resume-production"}):
         raise RuntimeError("Final 1.2.0 requires a manual release on main by the authenticated repository owner")
+    if policy.get("published_final_version") is True:
+        raise RuntimeError("Stable 1.2.0 already published; a new release needs a new version")
     if (policy.get("schema_version") != 1
         or policy.get("release_version") != VERSION
         or policy.get("predecessor_tag") != "v1.2.0rc2"

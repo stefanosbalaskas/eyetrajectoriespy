@@ -37,18 +37,17 @@ def fully_armed():
             }}
 
 
-def test_final_1_2_release_is_separately_armed_for_owner_production_only():
+def test_final_1_2_publication_is_closed_and_rearm_requires_new_governance():
     policy=load("verify_release_publication_gate")
     readiness=current()
     assert readiness["current_development_version"]=="1.2.0"
-    assert readiness["production_release_ready"] is True
-    assert readiness["github_release_ready"] is True
+    assert readiness["production_release_ready"] is False
+    assert readiness["github_release_ready"] is False
     assert readiness["testpypi_publication_ready"] is False
     assert policy.verify_publication_policy(readiness,"build-only")=="build-only"
-    assert policy.verify_publication_policy(readiness,"production")=="production"
-    assert policy.verify_publication_policy(readiness,"resume-production")=="resume-production"
-    with pytest.raises(RuntimeError,match="blocked"):
-        policy.verify_publication_policy(readiness,"testpypi")
+    for target in ("production","resume-production","testpypi"):
+        with pytest.raises(RuntimeError,match="blocked"):
+            policy.verify_publication_policy(readiness,target)
     workflow=(ROOT/".github/workflows/release.yml").read_text()
     assert "verify_final_one_dot_two_release_policy.py" in workflow
     assert workflow.index("verify_final_one_dot_two_release_policy.py") < workflow.index("python -m build")
@@ -119,7 +118,8 @@ def test_release_workflow_always_checks_publication_policy_before_build():
 
 def test_production_governance_requires_both_approval_flags():
     governance=load("verify_release_governance")
-    governance._verify_declared_github_release_readiness()
+    with pytest.raises(RuntimeError,match="production_release_ready"):
+        governance._verify_declared_github_release_readiness()
     # A hypothetically arming GitHub release alone is insufficient.
     original=governance._release_readiness
     try:
@@ -157,8 +157,8 @@ def test_final_literal_version_has_real_exact_evidence_and_separate_owner_approv
     assert version.version_contract()["pyproject.toml"]=="1.2.0"
     assert set(version.qualified_evidence_contract().values())=={"1.2.0"}
     assert version.verify_version_contract(production=True)=="1.2.0"
-    assert current()["production_release_ready"] is True
-    assert current()["github_release_ready"] is True
+    assert current()["production_release_ready"] is False
+    assert current()["github_release_ready"] is False
 
 
 def test_future_arming_documentation_rejects_stale_1_1_main_provenance():
@@ -185,8 +185,8 @@ def test_future_arming_documentation_rejects_stale_1_1_main_provenance():
     assert assignments[0] in notes
     assert "33/33 required exact-main checks successfully" in notes
     assert current()["current_development_version"] == "1.2.0"
-    assert current()["production_release_ready"] is True
-    assert current()["github_release_ready"] is True
+    assert current()["production_release_ready"] is False
+    assert current()["github_release_ready"] is False
     assert current()["testpypi_publication_ready"] is False
     release_yaml = (ROOT / ".github" / "workflows" / "release.yml").read_text(
         encoding="utf-8"

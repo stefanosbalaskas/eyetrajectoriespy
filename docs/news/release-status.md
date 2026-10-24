@@ -1,23 +1,24 @@
 ---
 title: Release status
-description: Published eyetrajectoriespy 1.1.0 versus unreleased 1.2 development source and research qualification blockers.
+description: Verified published stable eyetrajectoriespy 1.2.0 and explicit research limitations.
 ---
 
 # Release status
 
-!!! success "Current published version: 1.1.0"
-    Install with `pip install eyetrajectoriespy==1.1.0`. Supported Python range: 3.11–3.13. [Release notes](../releases/1.1.0.md) · [PyPI](https://pypi.org/project/eyetrajectoriespy/) · [Stable API](../reference/api.md).
+!!! success "Current stable version: 1.2.0"
+    Install with `pip install eyetrajectoriespy==1.2.0` (Python 3.11–3.13). [GitHub release](https://github.com/stefanosbalaskas/eyetrajectoriespy/releases/tag/v1.2.0) · [PyPI](https://pypi.org/project/eyetrajectoriespy/1.2.0/) · [Release notes](../releases/1.2.0.md).
 
-!!! warning "1.2 is not released"
-    The 1.2 research and workflow source does **not** represent a published GitHub Release or PyPI version. The previous 1.2.0rc1 qualification record and the new literal 1.2.0rc2 candidate are separate. RC2 exact-version qualification is in progress, and neither candidate has been published.
+Published on **24 October 2026** from protected main `c1cd95ad718327550f7e55393ff38582872f7a94` by successful manually dispatched [production release run #40128358042](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/40128358042). The job completed GitHub release creation, trusted PyPI upload, attestations and exact-version clean-install smoke.
 
-| Area | Status | Source |
+| Area | State | Source |
 | --- | --- | --- |
-| Public stable installation | **1.1.0** | [Stable release notes](../releases/1.1.0.md) |
-| 1.1 sparse/irregular additions | Qualified stable module-scoped APIs | [Module API](../reference/one-dot-one-module-api.md) |
-| Ten orchestrated `run_*_workflow()` routes | Unpublished candidate | [Workflow boundary](../workflows/workflow-orchestration.md) |
-| W3 nominal-90% whole-functional inference | **Not generally calibrated** | [Interpretation](../articles/interpreting-w3-coverage-and-source-audits.md) · [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) |
-| Response-dependent missing gaze | **Not field-identified** | [R93](../articles/w3-r93-exact-observed-law-nonidentification.md) · [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) |
-| Experimental GitHub Release / PyPI promotion | **Disarmed / HOLD** | [Development evidence](../development/research-development-hub.md) |
+| Stable installation | **1.2.0** | [PyPI 1.2.0](https://pypi.org/project/eyetrajectoriespy/1.2.0/) |
+| Previous stable | 1.1.0 remains available | [1.1 release](../releases/1.1.0.md) |
+| Ten W1–W4 typed workflow routes | **Stable module-scoped APIs** | [Workflow guide](../workflows/workflow-orchestration.md) |
+| Twelve E1–E4 helpers | **Experimental / unstable** | [Experimental helpers](../workflows/experimental-expansion.md) |
+| W3 nominal-90% whole-function inference | **Not generally calibrated** | [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) |
+| Outcome-dependent missing gaze | **Not field-identified** | [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) |
+| GitHub / PyPI stable promotion | **Completed** | [Production record](2026-10-24-release.md) |
 
-A passing documentation deployment checks that the *website builds and publishes*, not that inference claims have gained scientific qualification. Review [evidence versus release qualification](../articles/evidence-vs-qualification.md) before citing research stages.
+!!! note "Immutable original PyPI description"
+    PyPI 1.2.0 displays the README captured when the version was built, which incorrectly described 1.2.0 as unpublished. The release is valid; GitHub and website copy are being corrected after publication. PyPI distribution metadata is immutable and requires a later new-version release to change.

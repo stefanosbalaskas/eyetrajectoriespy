@@ -64,8 +64,9 @@ def test_historical_provenance_disarmed_while_owner_publication_request_is_separ
     current=read("RELEASE_READINESS.json")
     final=read("FINAL_1_2_PUBLICATION_APPROVAL.json")
     assert current["current_development_version"] == "1.2.0"
-    assert current["production_release_ready"] is True
-    assert current["github_release_ready"] is True
+    assert current["production_release_ready"] is False
+    assert current["github_release_ready"] is False
+    assert final["published_final_version"] is True
     assert final["release_version"] == "1.2.0"
     assert final["predecessor_tag"] == "v1.2.0rc2"
     assert final["approval_state"] == "separately_authorized_stable_publication"

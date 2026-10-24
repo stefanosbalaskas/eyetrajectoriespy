@@ -328,6 +328,7 @@ nav:
       - Figure atlas: figures/index.md
   - News and updates:
       - Latest: news/index.md
+      - 24 October 2026 stable release: news/2026-10-24-release.md
       - 23 October 2026 research update: news/2026-10-23.md
       - Release status: news/release-status.md
       - Roadmap and limitations: roadmap.md
@@ -340,7 +341,8 @@ nav:
       - Function → equation index: reference/function-equation-index.md
       - Object contracts: reference/objects.md
   - Releases:
-      - 1.2.0rc2 (qualification draft, not published): releases/1.2.0rc2.md
+      - 1.2.0 stable: releases/1.2.0.md
+      - 1.2.0rc2 (historical prerelease): releases/1.2.0rc2.md
       - 1.2.0rc1: releases/1.2.0rc1.md
       - 1.1.0: releases/1.1.0.md
       - 1.1.0rc1: releases/1.1.0rc1.md

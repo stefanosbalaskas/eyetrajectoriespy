@@ -31,10 +31,15 @@ def test_final_requires_distinct_authorization_not_rc2_success():
     assert p["release_version"] == "1.2.0"
     assert p["owner_production_publication_approved"] is True
     assert p["qualification_main_commit"] == "2d9fe5886ea0c36e619a302d6a6237ce446a18e2"
-    assert r["production_release_ready"] is True
-    assert policy.verify_final_release_authorization(p,r,**opts) == p["qualification_main_commit"]
-    p["owner_production_publication_approved"] = False
-    with pytest.raises(RuntimeError, match="FINAL approval"):
+    assert p["published_final_version"] is True
+    assert r["production_release_ready"] is False
+    assert r["github_release_ready"] is False
+    with pytest.raises(RuntimeError, match="already published"):
+        policy.verify_final_release_authorization(p,r,**opts)
+    # A previously published final cannot be reopened by toggling flags.
+    r["production_release_ready"] = True
+    r["github_release_ready"] = True
+    with pytest.raises(RuntimeError, match="already published"):
         policy.verify_final_release_authorization(p,r,**opts)
 
 @pytest.mark.parametrize("override",[
@@ -54,7 +59,8 @@ def test_only_separate_final_approval_and_armed_gate_can_pass():
     p,r,opts=inputs()
     p.update(approval_state="separately_authorized_stable_publication",
       final_version_evidence_complete=True, protected_main_exact_ci_qualified=True,
-      owner_production_publication_approved=True, qualification_main_commit="a"*40)
+      owner_production_publication_approved=True, published_final_version=False,
+      qualification_main_commit="a"*40)
     r.update(production_release_ready=True,github_release_ready=True)
     assert policy.verify_final_release_authorization(p,r,**opts)=="a"*40
     p["scientific_issues_open"]=[]
