@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 — stable promotion in qualification (NOT PUBLISHED)
+
+- Promote the published, production-installed `1.2.0rc2` engineering scope to final `1.2.0` **without changes to scientific estimators, default behavior or frozen root API**.
+- Preserve ten explicitly configured W1–W4 orchestration routes; retain twelve E1–E4 helpers strictly experimental and unstable, not supported stable entry points.
+- Preserve negative/held inferential evidence for issues #289 (simultaneous confidence bands) and #296 (MNAR gaze loss); no newly advertised coverage/identification guarantees.
+- **Publication remains disarmed.** Final-source exact-version reference/tolerance/performance qualification, full package/installed-artifact CI, and a separate post-qualification governance authorization remain required.
+- Preserve immutable RC2 release artifacts, hashes, scientific evidence and performance provenance under their true `1.2.0rc2` identity. Do not attribute those measurements to final `1.2.0`.
+
 ## Unpublished candidate — 1.2.0rc2 (fresh exact-version qualification pending)
 
 - Add isolated E1–E4 experimental workflow utilities for opt-in preprocessing, preflight, declared sensitivity and provenance-linked reports; these are not RC1 qualified APIs.
