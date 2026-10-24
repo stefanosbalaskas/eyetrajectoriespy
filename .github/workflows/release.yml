@@ -24,6 +24,7 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
+      pull-requests: read
     outputs:
       version: ${{ steps.version.outputs.version }}
     steps:
@@ -40,6 +41,11 @@ jobs:
         env:
           RELEASE_TARGET: ${{ inputs.target }}
         run: python scripts/verify_release_publication_gate.py --target "$RELEASE_TARGET"
+      - name: Verify independent exact-head RC2 authorization PR approval
+        if: inputs.target == 'production' || inputs.target == 'resume-production'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/verify_rc2_independent_pr_approval.py
       - name: Verify version contract
         id: version
         shell: bash
