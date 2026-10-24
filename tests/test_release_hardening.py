@@ -53,7 +53,7 @@ def test_release_version_validator_declares_exact_active_source_line():
         )
     else:
         assert (
-            f"The current release-candidate line is **{CURRENT_SOURCE_VERSION}**."
+            f"The current stable qualification line is **{CURRENT_SOURCE_VERSION}**."
             in roadmap
         )
     assert module.verify_version_contract() == CURRENT_SOURCE_VERSION
