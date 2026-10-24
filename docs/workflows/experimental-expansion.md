@@ -1,7 +1,7 @@
-# Experimental E1–E4 workflow expansion (unpublished RC2 candidate)
+# Experimental E1–E4 workflow expansion (bundled, not stable)
 
-!!! warning "Research development; do not treat as a published feature"
-    These APIs originated in development [PR #223](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/223) and are present in the **unpublished literal `1.2.0rc2` source** on protected `main` following [PR #471](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/471). Published stable **1.1.0** and historical qualified RC1 do **not** promise them. Literal RC2 engineering qualification has passed; independent E5 package-content approval and separate publication governance are still outstanding.
+!!! warning "Bundled with stable 1.2.0, but not stable APIs"
+    Twelve E1–E4 helpers can be imported from `eyetrajectoriespy.workflows.experimental` in published `1.2.0`. Their interfaces and scientific interpretation remain **experimental and unstable**, separate from the ten supported W1–W4 module-scoped workflow routes. Development [PR #223](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/223) and the historical RC2 [PR #471](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/471) document qualification provenance, not stable helper promotion.
 
 ## E1 — Executable preprocessing and retained phase information
 
@@ -21,8 +21,8 @@ The analyst explicitly specifies an ordered `PreprocessingPlan`. The experimenta
 
 ## Worked local demonstration
 
-Run `python examples/experimental_workflow_e1_e4.py` after installing **the exact unpublished 1.2 development source** in a disposable research environment. The example uses a synthetic, explicitly seeded trajectory dataset; it saves a preflight CSV, preprocessing audit, descriptive sensitivity CSV and a checksummed Markdown scientific report. It does not publish, promote or select a model.
+Run `python examples/experimental_workflow_e1_e4.py` after installing **`eyetrajectoriespy==1.2.0`** in a disposable research environment. The experimental helper interface can change in future releases. The example uses a synthetic, explicitly seeded trajectory dataset; it saves a preflight CSV, preprocessing audit, descriptive sensitivity CSV and a checksummed Markdown scientific report. It does not publish, promote or select a model.
 
 ## Qualification boundary
 
-The stable and RC1 frozen estimator layers are unchanged. The experimental namespace remains outside the ten supported contracts in `WORKFLOW_API_AUDIT.json`. The exact-RC2 [E5 experimental workflow](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/40002802440) passed all three Python 3.11–3.13 source/wheel and synthetic tests on commit `9891feee`. This is an **engineering qualification only**: the twelve importable helpers remain explicitly experimental and must receive independent release-content approval (see [PR #473](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/473)) before RC2 can be published. Native Bayesian FPCA and effect-region localization remain out of scope.
+The stable and RC1 frozen estimator layers are unchanged. The experimental namespace remains outside the ten supported contracts in `WORKFLOW_API_AUDIT.json`. The exact-RC2 [E5 experimental workflow](https://github.com/stefanosbalaskas/eyetrajectoriespy/actions/runs/40002802440) passed all three Python 3.11–3.13 source/wheel and synthetic tests on commit `9891feee`. This is **historical engineering qualification only**; it is not statistical inferential calibration or a stable E1–E4 helper contract. The twelve importable helpers remain experimental in 1.2.0. Native Bayesian FPCA and effect-region localization remain out of scope.
