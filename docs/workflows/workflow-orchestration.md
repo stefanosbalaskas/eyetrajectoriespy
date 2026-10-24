@@ -11,10 +11,10 @@ The governing rule is:
 
 ## Import surface
 
-!!! warning "Candidate-only API"
-    The published `pip install eyetrajectoriespy` installs stable **1.1.0** and does **not** provide the ten `run_*_workflow()` entry points. All code examples on this page require the qualified **1.2 candidate source checkout** until a separately governed prerelease publication succeeds.
+!!! info "Stable 1.2.0 module-scoped API"
+    Install with `pip install eyetrajectoriespy==1.2.0`. The ten `run_*_workflow()` routes are stable module-scoped APIs under `eyetrajectoriespy.workflows`, not root exports. Twelve E1–E4 helpers under `workflows.experimental` remain unstable.
 
-Workflow APIs remain module-scoped in the 1.2 release candidate:
+Published 1.2.0 workflow APIs remain module-scoped:
 
 ~~~python
 from eyetrajectoriespy.workflows import (
@@ -29,7 +29,7 @@ auditable versioned contract.
 
 ## Available workflows
 
-The 1.2 candidate surface contains ten orchestration entry points:
+The published stable 1.2.0 surface contains ten orchestration entry points:
 
 | Route | Workflow |
 |---|---|

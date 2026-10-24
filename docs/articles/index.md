@@ -8,7 +8,7 @@ description: Thematic scientific library for functional gaze analysis, W3 simula
 An organized route through **method tutorials, interpretation guidance, independently auditable research and negative results**. Articles explain a specific question, the assumptions behind it and its evidence boundary; they do not turn experimental methods into stable product APIs.
 
 !!! info "Published software versus research"
-    **Stable 1.1.0** is the current PyPI release. The ten transparent 1.2 orchestration routes are an **unpublished candidate**. W3 studies and their original/independent archives **do not** establish general 90% simultaneous confidence-band calibration or field identification of observation-dependent missing gaze.
+    **Stable 1.2.0** is now the current PyPI release, including ten transparent module-scoped workflows. E1–E4 helpers remain experimental. W3 studies and their original/independent archives **do not** establish general 90% simultaneous confidence-band calibration or field identification of observation-dependent missing gaze.
 
 ## Start with the scientific method
 

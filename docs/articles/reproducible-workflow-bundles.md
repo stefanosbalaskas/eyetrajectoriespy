@@ -6,11 +6,10 @@ title: Reproducible workflow bundles
 
 A 1.2 workflow result is a typed research object: it contains a primitive scientific fit, an explicit configuration, provenance for meaningful decisions, ordered execution steps, reports, tables and portable state. The workflow layer **does not** choose preprocessing or a scientific model on the analyst's behalf.
 
-!!! info "Release boundary"
-    The following `eyetrajectoriespy.workflows` API belongs to the **1.2 candidate source**. It is not available in the published 1.1.0 installation.
+!!! info "Stable 1.2.0 module workflows"
+    The ten `eyetrajectoriespy.workflows` routes are supported in published 1.2.0. E1–E4 experimental helpers remain unstable, and workflow results do not imply broader statistical guarantees.
 
-!!! warning "Installation prerequisite"
-    The published `pip install eyetrajectoriespy` installs stable **1.1.0**, which does **not** include `run_*_workflow()`. All Python examples below require a **1.2 candidate source checkout**, not the published stable package.
+Install with `pip install eyetrajectoriespy==1.2.0` before running these examples.
 
 ## 1. Fit an explicitly configured example
 
