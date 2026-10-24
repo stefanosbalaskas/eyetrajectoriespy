@@ -1,9 +1,9 @@
 # Quick start — three complete 1.2 workflows
 
-!!! warning "Unpublished development API"
-    **1.1.0** remains the published stable PyPI release. The `eyetrajectoriespy.workflows` orchestrators shown here require the reviewed **1.2 development source** until a separately qualified RC is published. They are not available in the stable 1.1 wheel. The extensive original Quick start remains preserved in [advanced recipes](tutorials/advanced-recipes.md).
+!!! info "Available in stable 1.2.0"
+    The ten `eyetrajectoriespy.workflows` orchestration routes are available in published `1.2.0`. They remain module-scoped; the E1–E4 helpers under `workflows.experimental` remain unstable. The original Quick start is preserved in [advanced recipes](tutorials/advanced-recipes.md).
 
-Install the 1.2 development checkout with `python -m pip install -e ".[dev]"`. Then run one of the three **complete, independently executable Python files**, each using seeded *synthetic teaching data*, not empirical observations:
+Install with `python -m pip install eyetrajectoriespy==1.2.0`. Then run one of the three **complete, independently executable Python files**, each using seeded *synthetic teaching data*, not empirical observations:
 
 | Start with | Run | Output |
 |---|---|---|

@@ -1,6 +1,6 @@
 ---
 title: eyetrajectoriespy — Functional gaze analysis
-description: Stable Python 1.1.0 functional gaze trajectory methods, reproducible guides and independently audited research evidence.
+description: Stable Python 1.2.0 functional gaze trajectory methods, ten module-scoped workflows and independently audited research evidence.
 hide:
   - navigation
   - toc
@@ -14,11 +14,11 @@ hide:
 
 **eyetrajectoriespy** models gaze as a time-indexed two-coordinate functional process. Work with dense, sparse, irregular and repeated-trial trajectories while keeping the assumptions behind analysis and uncertainty visible.
 
-[Install stable 1.1.0](start/index.md){ .md-button .md-button--primary }
+[Install stable 1.2.0](start/index.md){ .md-button .md-button--primary }
 [Explore methods](methods/index.md){ .md-button }
 [Research evidence](research/index.md){ .md-button }
 
-<div class="et-micro-status">**Stable:** 1.1.0 · **Published prerelease:** 1.2.0rc2 · **Next stable qualification source:** 1.2.0 (unpublished) · **Scientific exclusions:** #289 / #296</div>
+<div class="et-micro-status">**Published stable:** 1.2.0 · **Previous stable:** 1.1.0 · **Ten module-scoped workflows:** available · **Experimental E1–E4:** unstable · **Research exclusions:** #289 / #296</div>
 
 </div>
 
@@ -79,23 +79,25 @@ hide:
 <div class="et-release-panel" markdown>
 <span class="et-eyebrow">Available via pip</span>
 
-### Stable version 1.1.0
+### Stable version 1.2.0
 
-The published package contains qualified stable methods, including documented module-scoped sparse/irregular 1.1 additions.
+The published package includes qualified 1.1 sparse/irregular methods and ten supported W1–W4 workflow routes under `eyetrajectoriespy.workflows`.
 
 ```bash
-pip install eyetrajectoriespy==1.1.0
+pip install eyetrajectoriespy==1.2.0
 ```
+
+[PyPI 1.2.0](https://pypi.org/project/eyetrajectoriespy/1.2.0/) · [GitHub v1.2.0](https://github.com/stefanosbalaskas/eyetrajectoriespy/releases/tag/v1.2.0)
 
 [Quick start](quickstart.md) · [Stable API](reference/api.md)
 </div>
 
 <div class="et-release-panel et-release-panel--research" markdown>
-<span class="et-eyebrow">Unpublished development</span>
+<span class="et-eyebrow">Scientific limitations</span>
 
-### 1.2 experimental source
+### Released workflows and experimental research
 
-The ten orchestrated workflow routes and W3 inference investigations are research/candidate material. A new literal RC2 has **not** been qualified or published. GitHub Release/PyPI promotion of 1.2 remains **on hold**.
+Ten W1–W4 workflow routes are **published stable APIs**. Twelve E1–E4 helpers remain **experimental**, and the W3 whole-function confidence-band and field-MNAR claims are not qualified (issues #289 / #296).
 
 [Research library](research/index.md) · [Release status](news/release-status.md)
 </div>
@@ -132,9 +134,9 @@ Exact observational equivalence, completion-floor assumptions, and monotone-retu
 
 <div markdown>
 
-**Product status remains unchanged**
+**24 October 2026 · Version 1.2.0 published**
 
-Published 1.1.0. Experimental 1.2 and whole-function inference / field-MNAR qualification remain on hold.
+The stable [GitHub release](https://github.com/stefanosbalaskas/eyetrajectoriespy/releases/tag/v1.2.0) and [PyPI distribution](https://pypi.org/project/eyetrajectoriespy/1.2.0/) are verified. Separate W3 inference and missing-gaze research remain open.
 
 [Release status](news/release-status.md) · [Roadmap](roadmap.md)
 </div>

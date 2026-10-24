@@ -11,15 +11,15 @@ Instead of reducing every trial immediately to fixation counts, dwell times or a
 
 ![Illustrative gaze trajectory, time representation and scientific analysis](docs/assets/site/hero-trajectories.svg)
 
-> **Published stable:** `1.1.0` · Python 3.11–3.13.  
-> **Published prerelease:** [`1.2.0rc2`](https://github.com/stefanosbalaskas/eyetrajectoriespy/releases/tag/v1.2.0rc2), qualified and published to GitHub/PyPI on 24 October 2026. **Next stable version under final qualification:** `1.2.0` (**not published**). This branch stages the exact final package identity and keeps production publication DISARMED until fresh final-version scientific/performance CI, scope checks, and separate release authorization. Ten workflow routes retain their qualified engineering boundaries; E1–E4 helpers remain explicitly experimental. The original prerelease evidence remains immutable.
+> **Published stable:** [`1.2.0`](https://github.com/stefanosbalaskas/eyetrajectoriespy/releases/tag/v1.2.0) · Python 3.11–3.13 · [PyPI](https://pypi.org/project/eyetrajectoriespy/1.2.0/) · 24 October 2026.  
+> **Previous stable:** `1.1.0` · **Published historical prerelease:** `1.2.0rc2`. Ten W1–W4 module-scoped workflow routes are supported; the separate E1–E4 helpers remain **experimental and unstable**, and research issues [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) and [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) remain open.
 
 [**Documentation**](https://stefanosbalaskas.github.io/eyetrajectoriespy/) · [Start here](https://stefanosbalaskas.github.io/eyetrajectoriespy/start/) · [Choose a workflow](https://stefanosbalaskas.github.io/eyetrajectoriespy/workflows/) · [Figure atlas](https://stefanosbalaskas.github.io/eyetrajectoriespy/figures/) · [Research evidence](https://stefanosbalaskas.github.io/eyetrajectoriespy/research/) · [News](https://stefanosbalaskas.github.io/eyetrajectoriespy/news/) · [Release status](https://stefanosbalaskas.github.io/eyetrajectoriespy/news/release-status/)
 
-## Install stable 1.1.0
+## Install stable 1.2.0
 
 ```bash
-pip install eyetrajectoriespy==1.1.0
+pip install eyetrajectoriespy==1.2.0
 ```
 
 ```python
@@ -51,10 +51,10 @@ This illustration uses **deterministic synthetic data**, not human-subject obser
 | --- | --- |
 | Frozen 1.0 root API compatibility boundary | **Stable** |
 | Qualified 1.1 sparse/irregular module-scoped additions | **Stable 1.1.0** |
-| Ten transparent `eyetrajectoriespy.workflows` orchestration routes | **Unpublished 1.2 candidate** |
+| Ten typed `eyetrajectoriespy.workflows` orchestration routes | **Published stable 1.2.0 modules** |
 | W3 nominal-90% whole-function inference | **Not generally calibrated** — [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) |
 | Outcome-dependent missing gaze and selective validation | **Not field-identified** — [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) |
-| 1.2 GitHub Release / PyPI promotion | **Disarmed / HOLD** |
+| 1.2 GitHub Release / PyPI promotion | **Published and verified** — [Release](https://github.com/stefanosbalaskas/eyetrajectoriespy/releases/tag/v1.2.0) |
 
 A successful synthetic benchmark or independent artifact replay is **not the same** as calibrated statistical inference or production release qualification. [Read the scientific evidence guide](https://stefanosbalaskas.github.io/eyetrajectoriespy/articles/evidence-vs-qualification/).
 
@@ -79,7 +79,7 @@ The compact README is an orientation page, not an exhaustive function catalogue.
 - [Portable scientific results](https://stefanosbalaskas.github.io/eyetrajectoriespy/reproducibility/portable-results/) — retained results and scientific provenance.
 - [Release process](https://stefanosbalaskas.github.io/eyetrajectoriespy/release-process/) — immutable tags, candidate checks and publication interlocks.
 
-**Historical release lineage:** `0.10.0` introduced native sparse univariate FPCA/PACE, and the immutable `0.11.0rc1` pre-release preceded the 0.11 validation expansion. Published 1.1.0 remains the stable installation target.
+**Historical release lineage:** `0.10.0` introduced native sparse univariate FPCA/PACE, and the immutable `0.11.0rc1` pre-release preceded the 0.11 validation expansion. Published 1.2.0 is now the stable installation target; 1.1.0 remains installable.
 
 ## Documentation and contribution
 

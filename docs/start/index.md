@@ -5,13 +5,13 @@ description: Choose a stable eyetrajectoriespy analysis route and find installat
 
 # Start here
 
-**From continuous gaze data to a defensible functional analysis.** The published `eyetrajectoriespy==1.1.0` package supports continuous and sparse functional analysis; the ten-workflow orchestration discussed in the research pages is a **1.2 development-source candidate**, not a feature of stable 1.1.0.
+**From continuous gaze data to a defensible functional analysis.** Published `eyetrajectoriespy==1.2.0` supports continuous, sparse and irregular methods, plus ten stable module-scoped W1–W4 orchestration routes. Separate E1–E4 helpers remain experimental.
 
 <div class="grid cards" markdown>
 
-- **Install stable 1.1.0**
+- **Install stable 1.2.0**
 
-  `pip install eyetrajectoriespy==1.1.0`
+  `pip install eyetrajectoriespy==1.2.0`
 
   [Quick start](../quickstart.md) · [Stable API](../reference/api.md)
 
@@ -47,9 +47,9 @@ The [scientific contracts](../concepts/contracts.md) document when an analysis r
 
 | Surface | Today | Where to read |
 | --- | --- | --- |
-| Stable package | Published **1.1.0**, Python 3.11–3.13 | [Stable release](../releases/1.1.0.md) |
+| Stable package | Published **1.2.0**, Python 3.11–3.13 | [Stable release](../releases/1.2.0.md) |
 | Sparse/irregular 1.1 methods | Stable qualified module-scoped methods | [1.1 API](../reference/one-dot-one-module-api.md) |
-| Ten transparent `run_*_workflow()` routes | **Unpublished 1.2 candidate source** | [Workflow guide](../workflows/workflow-orchestration.md) |
+| Ten transparent `run_*_workflow()` routes | **Published stable 1.2.0 module API** | [Workflow guide](../workflows/workflow-orchestration.md) |
 | R76–R95 W3 inference studies | Separate research and evidence, not production estimators | [Research studies](../research/studies.md) |
 
 **Do not infer that a research figure corresponds to a released estimator or calibrated confidence interval.**
