@@ -24,8 +24,10 @@ def _load(path: str) -> dict:
 
 
 def audit_pending_authorization(review: dict, readiness: dict, scope: dict) -> dict:
+    armed = readiness.get("production_release_ready") is True and readiness.get("github_release_ready") is True
+    kind = "owner_authorized_pending_independent_review" if armed else "release_authorization_review_pending"
     if (review.get("schema_version") != 1
-        or review.get("record_kind") != "release_authorization_review_pending"
+        or review.get("record_kind") != kind
         or review.get("candidate_version") != readiness.get("current_development_version")
         or review.get("candidate_version") != scope.get("source_version")
         or review.get("candidate_version") != "1.2.0rc2"):
@@ -43,27 +45,29 @@ def audit_pending_authorization(review: dict, readiness: dict, scope: dict) -> d
         or review.get("protected_main_failed_workflow_runs") != 0
         or review.get("protected_main_evidence_url") != "https://github.com/stefanosbalaskas/eyetrajectoriespy/actions"):
         raise RuntimeError("Verified exact-main qualification evidence missing or drifted")
-    for field in (
-        "independent_human_release_review_recorded",
-        "narrow_scope_approved_for_release",
-        "github_release_authorized",
-        "production_pypi_authorized",
-        "testpypi_authorized",
-        "tag_creation_authorized",
-        "manual_workflow_dispatch_performed",
-    ):
+    for field in ("independent_human_release_review_recorded",
+                  "testpypi_authorized", "manual_workflow_dispatch_performed"):
         if review.get(field) is not False:
             raise RuntimeError(f"Premature production publication approval: {field}")
-    for field in (
-        "github_release_ready",
-        "production_release_ready",
-        "testpypi_publication_ready",
-    ):
-        if readiness.get(field) is not False:
-            raise RuntimeError(f"Unreviewed publication gate armed: {field}")
-    if (scope.get("document_type")!="unapproved_release_scope_proposal"
-        or scope.get("governance",{}).get("proposal_approved") is not False):
-        raise RuntimeError("Narrow release scope approval differs from reviewed proposal")
+    owner_fields = ("narrow_scope_approved_for_release", "github_release_authorized",
+                    "production_pypi_authorized", "tag_creation_authorized")
+    for field in owner_fields:
+        if review.get(field) is not armed:
+            raise RuntimeError(f"Owner publication approval state inconsistent: {field}")
+    if readiness.get("testpypi_publication_ready") is not False:
+        raise RuntimeError("Unreviewed publication gate armed: testpypi_publication_ready")
+    if armed:
+        if (scope.get("document_type") != "owner_approved_release_scope_pending_independent_review"
+            or scope.get("governance", {}).get("proposal_approved") is not True
+            or review.get("authorization_pr_number") != 475
+            or review.get("independent_exact_head_github_review_enforced_in_workflow") is not True):
+            raise RuntimeError("Independent review enforcement or owner scope approval missing")
+    else:
+        if (readiness.get("github_release_ready") is not False
+            or readiness.get("production_release_ready") is not False
+            or scope.get("document_type") != "unapproved_release_scope_proposal"
+            or scope.get("governance",{}).get("proposal_approved") is not False):
+            raise RuntimeError("Narrow release scope approval differs from reviewed proposal")
     if (review.get("release_workflow")!=".github/workflows/release.yml"
         or review.get("release_target")!="production"
         or review.get("pypi_environment_review_required") is not True
@@ -83,9 +87,10 @@ def audit_pending_authorization(review: dict, readiness: dict, scope: dict) -> d
         or prov.get("original_source_commit")!="46d2dd74c5ab71d0bb5bd24c356d221f4915b903"
         or prov.get("artifact_member_sha256")!="8da44ff291614aac2b9e01ae8819bcda67f98e0c33cb7b43dfdfb3b9adbcd3d5"):
         raise RuntimeError("Original measured RC2 performance artifact provenance changed")
-    return {"version":"1.2.0rc2","status":"review_pending",
-            "source_qualified":True,"production_authorized":False,
-            "exact_main_qualified":True,"scope_approved":False}
+    return {"version":"1.2.0rc2",
+            "status":"owner_authorized_independent_review_pending" if armed else "review_pending",
+            "source_qualified":True,"production_authorized":armed,
+            "exact_main_qualified":True,"scope_approved":armed}
 
 
 def main() -> None:
