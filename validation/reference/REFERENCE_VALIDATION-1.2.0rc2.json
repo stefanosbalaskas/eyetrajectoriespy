@@ -1,0 +1,375 @@
+{
+  "schema_version": 1,
+  "package_version": "1.2.0rc2",
+  "evidence_types": {
+    "analytical_truth": "Exact or hand-computable scientific quantity from a small declared problem.",
+    "independent_implementation_equivalence": "Same estimand/specification represented or fitted independently from the package code path.",
+    "simulation_recovery": "Known data-generating parameters assessed for recovery under finite stochastic sampling.",
+    "cross_implementation_sensitivity": "Related external implementation used to assess sensitivity when smoothing, discretization, covariance, scoring, or other contracts cannot be made exactly equivalent."
+  },
+  "entries": [
+    {
+      "id": "fpca-rank-one-analytical",
+      "method": "FPCA",
+      "scientific_quantity": [
+        "leading eigenvalue",
+        "leading functional subspace",
+        "exact rank-one reconstruction"
+      ],
+      "reference_source": "hand-derived rank-one weighted functional process",
+      "reference_type": "analytical_truth",
+      "dataset_problem": "Four mean-zero curves X_i(t)=a_i phi(t) on an irregular three-point grid with unit functional norm for phi.",
+      "expected_result": "lambda_1 equals sample variance of a_i; absolute weighted inner product with phi equals 1; one-component reconstruction is exact.",
+      "comparison_metric": "eigenvalue, sign-invariant weighted inner product, reconstruction",
+      "tolerance_class": "linear_algebra_invariant",
+      "tolerance": "eigenvalue/sign-invariant similarity/reconstruction use 1e-12-scale tolerances",
+      "platforms": "core CI matrix",
+      "ci_test": "test_reference_fpca_rank_one_analytical_truth",
+      "status": "qualified",
+      "limitations": "Rank-one analytical case; it does not by itself validate sparse/PACE or near-tied eigenspaces."
+    },
+    {
+      "id": "mixedlm-independent-stacked",
+      "method": "Gaussian functional mixed effects",
+      "scientific_quantity": [
+        "fixed B-spline coefficients",
+        "participant random-effect covariance",
+        "residual variance",
+        "log likelihood"
+      ],
+      "reference_source": "independently assembled statsmodels.MixedLM stacked design",
+      "reference_type": "independent_implementation_equivalence",
+      "dataset_problem": "Repeated synthetic participant/trial functions with the same explicitly declared degree-1 fixed/random bases and REML specification.",
+      "expected_result": "Package fit and separately assembled stacked MixedLM agree for the same likelihood and covariance parameterization.",
+      "comparison_metric": "parameter/covariance/scale/log-likelihood allclose",
+      "tolerance_class": "optimizer_equivalence",
+      "tolerance": "fixed parameters rtol=1e-8; random covariance rtol=1e-7; scale/log-likelihood 1e-8 to 1e-9",
+      "platforms": "core CI matrix",
+      "ci_test": "test_reference_mixed_effects_matches_independent_stacked_mixedlm",
+      "status": "qualified",
+      "limitations": "Independent design assembly but the same established statsmodels optimizer/backend; nested trial covariance is not covered by this row."
+    },
+    {
+      "id": "poisson-exposure-direct-gee",
+      "method": "Poisson exposure generalized FoSR",
+      "scientific_quantity": [
+        "basis coefficients",
+        "robust sandwich covariance",
+        "fitted rates",
+        "expected counts"
+      ],
+      "reference_source": "independently assembled direct statsmodels.GEE exposure fit",
+      "reference_type": "independent_implementation_equivalence",
+      "dataset_problem": "Repeated Poisson counts with explicit time-varying exposure and degree-1 coefficient basis.",
+      "expected_result": "Direct stacked GEE and package fit agree; rate is exp(eta_rate), expected count is exposure*rate.",
+      "comparison_metric": "coefficient/covariance/rate/count allclose",
+      "tolerance_class": "optimizer_equivalence",
+      "tolerance": "coefficients rtol=1e-9; covariance rtol=1e-8; fitted functions rtol=1e-10",
+      "platforms": "core CI matrix",
+      "ci_test": "test_reference_poisson_exposure_matches_direct_stacked_gee",
+      "status": "qualified",
+      "limitations": "Validates the working-independence marginal exposure contract, not alternative GEE correlation structures."
+    },
+    {
+      "id": "grouped-binomial-row-expanded",
+      "method": "Grouped-binomial generalized FoSR",
+      "scientific_quantity": [
+        "basis coefficients",
+        "robust sandwich covariance"
+      ],
+      "reference_source": "row-expanded Bernoulli observations fitted directly with statsmodels.GEE",
+      "reference_type": "independent_implementation_equivalence",
+      "dataset_problem": "Grouped success counts plus explicit denominators expanded into individual Bernoulli rows under the same participant clustering.",
+      "expected_result": "Weighted grouped representation and row-expanded Bernoulli representation agree.",
+      "comparison_metric": "coefficient and robust covariance allclose",
+      "tolerance_class": "optimizer_equivalence",
+      "tolerance": "coefficients rtol=1e-9, covariance rtol=1e-8",
+      "platforms": "core CI matrix",
+      "ci_test": "test_grouped_binomial_matches_row_expanded_bernoulli_reference",
+      "status": "qualified",
+      "limitations": "Working-independence marginal GEE only."
+    },
+    {
+      "id": "frechet-hand-optimum",
+      "method": "Discrete Frechet distance",
+      "scientific_quantity": [
+        "distance",
+        "optimal coupling bottleneck"
+      ],
+      "reference_source": "hand-computable three-point versus two-point path",
+      "reference_type": "analytical_truth",
+      "dataset_problem": "a=[0,1,2], b=[0,2] in one dimension.",
+      "expected_result": "Discrete Frechet distance = 1.",
+      "comparison_metric": "exact scalar/coupled local maximum",
+      "tolerance_class": "deterministic_geometry",
+      "tolerance": "exact representable value",
+      "platforms": "core CI matrix",
+      "ci_test": "test_reference_frechet_and_dtw_have_hand_computable_optima",
+      "status": "qualified",
+      "limitations": "Small path; validates recurrence semantics/tie-independent optimum rather than large-scale performance."
+    },
+    {
+      "id": "dtw-hand-optimum",
+      "method": "Dynamic time warping",
+      "scientific_quantity": [
+        "symmetric1 raw cost",
+        "symmetric2 raw cost",
+        "symmetric2 normalized cost"
+      ],
+      "reference_source": "hand-computable three-point versus two-point path",
+      "reference_type": "analytical_truth",
+      "dataset_problem": "a=[0,1,2], b=[0,2] in one dimension.",
+      "expected_result": "symmetric1 raw=1; symmetric2 raw=1; normalization denominator=5; normalized=0.2.",
+      "comparison_metric": "scalar cost plus path-cost audit",
+      "tolerance_class": "deterministic_geometry",
+      "tolerance": "exact or <=1e-15 for 0.2 representation",
+      "platforms": "core CI matrix",
+      "ci_test": "test_reference_frechet_and_dtw_have_hand_computable_optima",
+      "status": "qualified",
+      "limitations": "Does not validate every Sakoe-Chiba window configuration."
+    },
+    {
+      "id": "rqa-hand-counted-cross",
+      "method": "RQA",
+      "scientific_quantity": [
+        "RR",
+        "DET",
+        "mean/max diagonal length",
+        "entropy",
+        "LAM",
+        "line counts"
+      ],
+      "reference_source": "hand-constructed 4x4 cross-recurrence matrix",
+      "reference_type": "analytical_truth",
+      "dataset_problem": "Three recurrence points forming one diagonal line of length 3 and no qualifying vertical line.",
+      "expected_result": "RR=3/16, DET=1, Lmean=Lmax=3, diagonal entropy=0, LAM=0.",
+      "comparison_metric": "exact counts and derived ratios",
+      "tolerance_class": "exact_combinatorial",
+      "tolerance": "exact counts; zero relative tolerance for derived ratios",
+      "platforms": "core CI matrix",
+      "ci_test": "test_reference_rqa_matches_hand_counted_cross_recurrence",
+      "status": "qualified",
+      "limitations": "Uses the package's explicitly documented finite-border convention; other software may use different RQA conventions."
+    },
+    {
+      "id": "te-exact-contingency",
+      "method": "Discrete transfer entropy",
+      "scientific_quantity": [
+        "plug-in conditional mutual information",
+        "local TE contributions"
+      ],
+      "reference_source": "independently enumerated contingency counts",
+      "reference_type": "analytical_truth",
+      "dataset_problem": "Five-sample binary source/target construction with four effective transitions, each local contribution equal to 1 bit.",
+      "expected_result": "TE=1 bit and every local contribution=1 bit.",
+      "comparison_metric": "direct count-formula result versus package TE",
+      "tolerance_class": "exact_combinatorial",
+      "tolerance": "absolute tolerance 1e-15 for base-2 logarithm arithmetic",
+      "platforms": "core CI matrix",
+      "ci_test": "test_reference_transfer_entropy_matches_exact_contingency_calculation",
+      "status": "qualified",
+      "limitations": "Empirical plug-in discrete TE only; does not validate causal interpretation or continuous-state estimators."
+    },
+    {
+      "id": "mixed-effects-simulation-recovery",
+      "method": "Gaussian functional mixed effects",
+      "scientific_quantity": [
+        "intercept coefficient function",
+        "trial-varying condition coefficient function"
+      ],
+      "reference_source": "known-parameter synthetic generator",
+      "reference_type": "simulation_recovery",
+      "dataset_problem": "Repeated participant trial functions generated in the fitted degree-1 basis.",
+      "expected_result": "Recovered functions remain within predeclared finite-sample absolute recovery bands.",
+      "comparison_metric": "pointwise absolute error bounds",
+      "tolerance_class": "simulation_recovery",
+      "tolerance": "atol=0.12 intercept; atol=0.08 condition in existing truth test",
+      "platforms": "core CI matrix",
+      "ci_test": "test_joint_functional_mixed_effects_recovers_trial_varying_condition",
+      "status": "qualified",
+      "limitations": "Finite seeded simulation evidence; weaker than analytical truth or independent implementation equivalence."
+    },
+    {
+      "id": "poisson-simulation-recovery",
+      "method": "Poisson generalized FoSR",
+      "scientific_quantity": [
+        "log-count coefficient functions"
+      ],
+      "reference_source": "known-parameter Poisson simulation",
+      "reference_type": "simulation_recovery",
+      "dataset_problem": "Repeated Poisson functional counts generated from declared log-link coefficient functions.",
+      "expected_result": "Estimated coefficient functions recover generating functions within predeclared stochastic bounds.",
+      "comparison_metric": "pointwise absolute recovery bounds",
+      "tolerance_class": "simulation_recovery",
+      "tolerance": "as encoded in test_poisson_generalized_fosr_recovers_log_scale_coefficients",
+      "platforms": "core CI matrix",
+      "ci_test": "test_poisson_generalized_fosr_recovers_log_scale_coefficients",
+      "status": "qualified",
+      "limitations": "Seeded finite-sample recovery, not an external implementation comparison."
+    },
+    {
+      "id": "sparse-native-weighted-eigensystem-analytical",
+      "method": "Native sparse FPCA numerical core",
+      "scientific_quantity": [
+        "quadrature-weighted covariance eigenvalues",
+        "weighted eigenfunction subspace",
+        "weighted orthonormality"
+      ],
+      "reference_source": "analytically constructed rank-two quadrature-weighted covariance operator",
+      "reference_type": "analytical_truth",
+      "dataset_problem": "Known rank-two covariance assembled from weighted-orthonormal functions on a finite quadrature grid.",
+      "expected_result": "Recovered eigenvalues equal the generating values and absolute weighted component similarity/orthonormality equal one up to numerical precision.",
+      "comparison_metric": "eigenvalue allclose, sign-invariant weighted similarity, weighted Gram matrix",
+      "tolerance_class": "linear_algebra_invariant",
+      "tolerance": "rtol=1e-10 and atol between 1e-10 and 1e-12 as encoded in test",
+      "platforms": "core CI matrix",
+      "ci_test": "test_weighted_eigensolver_recovers_known_operator",
+      "status": "qualified",
+      "limitations": "Validates weighted eigendecomposition independently of mean/covariance smoothing and PACE score recovery."
+    },
+    {
+      "id": "sparse-native-full-estimator-simulation",
+      "method": "Native sparse FPCA + PACE",
+      "scientific_quantity": [
+        "leading sparse functional subspace",
+        "PACE score correlation",
+        "measurement-noise contract",
+        "native-time score evaluation"
+      ],
+      "reference_source": "private known-truth two-component sparse functional generator",
+      "reference_type": "simulation_recovery",
+      "dataset_problem": "Irregularly sampled curves generated from known mean, two eigenfunctions/eigenvalues, latent scores, and Gaussian measurement noise.",
+      "expected_result": "Recovered functional subspace and latent scores meet predeclared finite-sample recovery thresholds while raw sparse trajectories remain uninterpolated.",
+      "comparison_metric": "weighted component/subspace similarity, score correlation, finite score diagnostics",
+      "tolerance_class": "simulation_recovery",
+      "tolerance": "weighted similarities >0.80; score correlations >0.75 and >0.55 in the seeded baseline test",
+      "platforms": "core CI matrix",
+      "ci_test": "test_native_sparse_fit_recovers_components_and_pace_scores",
+      "status": "qualified",
+      "limitations": "Favorable seeded recovery case; broader stress/failure evidence is generated separately by the sparse-native-validation workflow."
+    },
+    {
+      "id": "sparse-mean-fdapy-local-linear-equivalence",
+      "method": "Native pooled sparse mean smoother",
+      "scientific_quantity": [
+        "local-linear Epanechnikov fitted mean values"
+      ],
+      "reference_source": "FDApy 1.0.x LocalPolynomial degree-1 Epanechnikov implementation",
+      "reference_type": "independent_implementation_equivalence",
+      "dataset_problem": "Same finite pooled x/y observations, evaluation points, degree, kernel, and numerical bandwidth supplied to both local-linear smoothers.",
+      "expected_result": "Matched one-dimensional local-linear fitted values agree to tight floating-point tolerance.",
+      "comparison_metric": "pointwise allclose",
+      "tolerance_class": "external_backend_equivalence",
+      "tolerance": "rtol=1e-9, atol=1e-10",
+      "platforms": "optional FDApy sparse CI on Python 3.11-3.12",
+      "ci_test": "test_native_local_linear_mean_matches_fdapy_local_polynomial",
+      "status": "qualified",
+      "limitations": "Primitive smoother equivalence only; it does not imply equivalence of the full covariance or PACE estimator."
+    },
+    {
+      "id": "sparse-fdapy-whole-estimator-sensitivity",
+      "method": "Native sparse FPCA + PACE",
+      "scientific_quantity": [
+        "leading sparse functional subspace",
+        "retained eigenvalues",
+        "PACE score association"
+      ],
+      "reference_source": "FDApy 1.0.x UFPCA covariance + PACE implementation",
+      "reference_type": "cross_implementation_sensitivity",
+      "dataset_problem": "Same sparse observations and shared evaluation grid with aligned local-polynomial bandwidth/kernel/degree where possible.",
+      "expected_result": "No exact equality claim; broad invariant guards should exclude catastrophic cross-implementation disagreement.",
+      "comparison_metric": "principal cosines, absolute weighted component similarity, finite relative eigenvalue differences, sign-aligned score correlation/RMSE",
+      "tolerance_class": "cross_implementation_sensitivity",
+      "tolerance": "minimum principal cosine >0.60, component similarity >0.45, score correlation >0.35; eigenvalue differences/RMSE must be finite",
+      "platforms": "optional FDApy sparse CI on Python 3.11-3.12",
+      "ci_test": "test_fdapy_is_cross_implementation_sensitivity_not_exact_equivalence",
+      "status": "qualified",
+      "limitations": "Not equivalence. FDApy uses radial 2-D LP covariance smoothing, its own noise rule, interpolation before irregular PACE, and a covariance reconstructed from retained eigencomponents; native eyetrajectoriespy uses a product kernel, explicit noise contract, native observation times, and the full fitted covariance surface."
+    },
+    {
+      "id": "sparse-noise-rotated-diagonal-analytical",
+      "method": "Native sparse FPCA/PACE measurement-noise diagonal",
+      "scientific_quantity": [
+        "latent covariance diagonal used for diagonal-difference measurement-noise estimation",
+        "45-degree rotated local polynomial intercept on the covariance diagonal"
+      ],
+      "reference_source": "Yao, Müller & Wang (2005) PACE diagonal construction plus an exactly representable rotated local-polynomial test surface",
+      "reference_type": "analytical_truth",
+      "dataset_problem": "Off-diagonal covariance products generated exactly from a function linear along the rotated diagonal coordinate and quadratic perpendicular to it.",
+      "expected_result": "The rotated covariance-diagonal smoother recovers the exact diagonal intercept function to numerical precision.",
+      "comparison_metric": "pointwise fitted diagonal versus exact analytical diagonal",
+      "tolerance_class": "linear_algebra_invariant",
+      "tolerance": "rtol=1e-11; atol=1e-11 in the exact local-polynomial test",
+      "platforms": "core CI matrix",
+      "ci_test": "test_rotated_covariance_diagonal_recovers_exact_local_model",
+      "status": "qualified",
+      "limitations": "Validates the source-faithful diagonal smoother algebra; it does not imply universal finite-sample accuracy of the difference-based measurement-noise variance estimator."
+    },
+    {
+      "id": "sparse-mfpca-native-known-truth-recovery",
+      "method": "Native sparse multivariate FPCA + joint PACE",
+      "scientific_quantity": [
+        "vector mean",
+        "named Cxx/Cxy/Cyx/Cyy covariance blocks",
+        "joint functional subspace",
+        "separated-component PACE scores",
+        "tied-eigenspace score subspace",
+        "latent planar reconstruction",
+        "correlated measurement-error input contract"
+      ],
+      "reference_source": "deterministic 0.12 FunctionalSimulationTruth planar qualification matrix",
+      "reference_type": "simulation_recovery",
+      "dataset_problem": "Irregular paired x/y trajectories from known vector means and vector-valued eigenfunctions over rho_xy=-0.6,0,0.3,0.6,0.9, plus one directional asymmetric-Cxy design and one correlated measurement-error design.",
+      "expected_result": "All seven native qualification cases satisfy the predeclared finite-sample guards; covariance is assessed by named blocks, rho_xy=0 is assessed with tied-eigenspace geometry and Procrustes-aligned scores, and supplied measurement error is not misreported as estimated recovery.",
+      "comparison_metric": "mean ISE relative to analytic finite-sample sampling reference; named covariance-block ISE; joint principal cosines/angles; separated score correlation/RMSE; tied-eigenspace Procrustes score RMSE; reconstruction ISE; score failure/conditioning; PSD correction",
+      "tolerance_class": "simulation_recovery",
+      "tolerance": "guards encoded in scripts/run_sparse_mfpca_recovery_validation.py; mean ISE scaled to sum(lambda)/n; sensitivity grids/ridges are descriptive and do not select tuning parameters",
+      "platforms": "dedicated Ubuntu Python 3.12 sparse-mfpca-recovery workflow plus core cross-platform unit tests",
+      "ci_test": "test_sparse_mfpca_recovery_is_block_aware_for_asymmetric_cross_covariance",
+      "status": "qualified",
+      "limitations": "Seeded finite-sample native recovery. The true measurement-error covariance is supplied to the estimator rather than estimated. Two-stage and mGSFPCA cross-implementation sensitivity, observation-loss stress, and 0.12 performance qualification are separate later evidence."
+    },
+    {
+      "id": "sparse-mfpca-two-stage-sensitivity",
+      "method": "Native direct sparse MFPCA versus internal two-stage marginal sparse-basis benchmark",
+      "scientific_quantity": [
+        "named planar covariance-block recovery",
+        "joint functional subspace",
+        "joint score subspace",
+        "latent planar reconstruction",
+        "marginal-basis truncation sensitivity"
+      ],
+      "reference_source": "validation-only two-stage construction from separate native x/y sparse FPCA/PACE bases and empirical covariance of concatenated marginal scores",
+      "reference_type": "cross_implementation_sensitivity",
+      "dataset_problem": "Same deterministic irregular rho_xy=0.6 planar fixture, declared marginal ranks 1 and 2, true diagonal measurement-error variances supplied to both marginal fits and the canonical direct fit.",
+      "expected_result": "No architecture winner or automatic rank selection claim; invariant subspace/score agreement should remain finite while covariance and reconstruction evidence characterize the information lost under marginal truncation.",
+      "comparison_metric": "named covariance-block ISE; truth/direct functional-subspace principal cosines; truth/direct score-subspace principal cosines; latent reconstruction ISE; finite-score fraction",
+      "tolerance_class": "cross_implementation_sensitivity",
+      "tolerance": "descriptive sensitivity only; outputs must be finite where defined, declared ranks must be exactly 1 and 2, automatic_rank_selection=false, architecture_winner_selected=false",
+      "platforms": "dedicated Ubuntu Python 3.12 sparse-mfpca-comparator-sensitivity workflow plus core unit tests",
+      "ci_test": "test_two_stage_benchmark_uses_declared_marginal_ranks_without_selection",
+      "status": "qualified",
+      "limitations": "Internal benchmark, not a second public estimator. Empirical joint score covariance depends on finite-sample marginal PACE scores. Rank-1 truncation deliberately cannot represent the complete truth; no winner is selected from this fixture."
+    },
+    {
+      "id": "sparse-mfpca-mgsfpca-sensitivity",
+      "method": "Native direct sparse MFPCA versus mGSFPCA 0.2.2",
+      "scientific_quantity": [
+        "joint vector-valued functional subspace",
+        "joint score subspace",
+        "retained eigenvalue spectrum"
+      ],
+      "reference_source": "CRAN mGSFPCA 0.2.2 spMultFPCA on the same frozen irregular rho_xy=0.6 native/truth fixture",
+      "reference_type": "cross_implementation_sensitivity",
+      "dataset_problem": "Thirty irregular paired x/y curves on a shared truth grid with explicit four-component target and persisted original-ID to integer-ID comparator adapter.",
+      "expected_result": "No exact equivalence claim; native/truth, mGSFPCA/truth, and mGSFPCA/native invariant subspace relationships are all retained and finite without automatic architecture selection.",
+      "comparison_metric": "functional-subspace principal cosines; score-subspace principal cosines; descriptive retained eigenvalues",
+      "tolerance_class": "cross_implementation_sensitivity",
+      "tolerance": "descriptive invariant sensitivity; exact equivalence is explicitly false and no architecture winner is selected",
+      "platforms": "Ubuntu 24.04, Python 3.12, R release, exact mGSFPCA 0.2.2",
+      "ci_test": "test_external_evaluator_uses_invariant_subspaces_and_never_claims_equivalence",
+      "status": "qualified",
+      "limitations": "Not equivalence. Sparse smoothing, likelihood, marginal truncation, basis construction, normalization, and score contracts differ. mGSFPCA is validation-only and not a runtime dependency."
+    }
+  ]
+}
