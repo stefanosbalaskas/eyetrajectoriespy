@@ -37,7 +37,7 @@ def fully_armed():
             }}
 
 
-def test_current_1_2_release_owner_arm_requires_separate_live_review():
+def test_current_1_2_release_owner_arm_requires_live_approval_or_authenticated_owner_dispatch():
     policy=load("verify_release_publication_gate")
     readiness=current()
     assert readiness["current_development_version"]=="1.2.0rc2"
@@ -52,6 +52,7 @@ def test_current_1_2_release_owner_arm_requires_separate_live_review():
     workflow=(ROOT/".github/workflows/release.yml").read_text()
     assert "verify_rc2_independent_pr_approval.py" in workflow
     assert workflow.index("verify_rc2_independent_pr_approval.py") < workflow.index("python -m build")
+    assert "RELEASE_TARGET: ${{ inputs.target }}" in workflow
 
 
 @pytest.mark.parametrize("target",("testpypi","production","resume-production"))

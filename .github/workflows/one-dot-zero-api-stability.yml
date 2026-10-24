@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "RELEASE_READINESS.json"
+      - "scripts/verify_rc2_independent_pr_approval.py"
       - "ONE_DOT_ZERO_API_STABILITY.json"
       - "PUBLIC_API_1_0_AUDIT.json"
       - "CANONICAL_WORKFLOWS.json"
@@ -16,6 +17,7 @@ on:
     branches: [main]
     paths:
       - "RELEASE_READINESS.json"
+      - "scripts/verify_rc2_independent_pr_approval.py"
       - "ONE_DOT_ZERO_API_STABILITY.json"
       - "PUBLIC_API_1_0_AUDIT.json"
       - "CANONICAL_WORKFLOWS.json"

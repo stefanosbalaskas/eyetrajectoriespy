@@ -85,3 +85,10 @@ def test_provenance_and_exclusions_cannot_be_erased():
     review["excluded_claims"] = []
     with pytest.raises(RuntimeError, match="Unsupported"):
         policy.audit_pending_authorization(review, readiness, scope)
+
+
+def test_explicit_owner_dispatch_policy_cannot_be_silently_removed():
+    review, readiness, scope = inputs()
+    review["owner_manual_dispatch_fallback_authorized"] = False
+    with pytest.raises(RuntimeError, match="Independent review enforcement"):
+        policy.audit_pending_authorization(review, readiness, scope)
