@@ -111,7 +111,7 @@ def main() -> None:
         read("E5_RC2_CONTENT_REVIEW.json"),
         read("RELEASE_SCOPE_1_2_PROPOSAL.json"),
         read("RC2_PUBLICATION_REVIEW.json"),
-        read("RELEASE_READINESS.json"),
+        read("validation/RELEASE_READINESS-1.2.0rc2.json"),
         read("EXPERIMENTAL_WORKFLOW_AUDIT.json"),
     ), sort_keys=True))
 
