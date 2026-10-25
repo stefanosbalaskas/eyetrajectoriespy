@@ -55,6 +55,14 @@ jobs:
             --baseline site \
             --candidate build/zensical-preview-site \
             --output build/zensical-preview-report.json
+      - name: Inventory full MkDocs and Zensical link integrity (diagnostic)
+        if: always()
+        shell: bash
+        run: |
+          python scripts/audit_sitewide_links.py --site site --output build/mkdocs-sitewide-links.json
+          if [ -d build/zensical-preview-site ]; then
+            python scripts/audit_sitewide_links.py --site build/zensical-preview-site --output build/zensical-sitewide-links.json
+          fi
       - name: Upload isolated compatibility audit (never deploy)
         if: always()
         uses: actions/upload-artifact@v4
@@ -64,4 +72,6 @@ jobs:
             build/zensical-preview-build.log
             build/zensical-preview-exit.txt
             build/zensical-preview-report.json
+            build/mkdocs-sitewide-links.json
+            build/zensical-sitewide-links.json
           if-no-files-found: warn

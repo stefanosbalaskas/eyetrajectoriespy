@@ -53,6 +53,10 @@ hide:
 
 </div>
 
+## Full-site usability and migration status
+
+The [site-wide quality programme](development/sitewide-experience-audit.md) now evaluates rendered internal links and deep anchors, topic search discoverability, simulated mobile Lighthouse performance, browser accessibility and complete Zensical route inventory. **MkDocs remains the production builder.**
+
 ## Site transparency and accessibility
 
 The [website quality and discoverability guide](development/website-quality.md) explains how documentation pages, canonical URLs, visual assets and browser accessibility are tested. The checks are reproducible but do not certify WCAG compliance or guarantee search visibility.

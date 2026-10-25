@@ -20,6 +20,10 @@ Zensical's [MkDocs migration guide](https://zensical.org/docs/compatibility/mkdo
 
 The experimental workflow is explicitly non-blocking for the production deployment. An unsuccessful preview is a **real compatibility finding**, not evidence that MkDocs production is broken.
 
+## Extended full-site acceptance checks
+
+The separate CI report now counts **all rendered HTML routes** in each generator, flags missing historical URLs and core copied assets, and inventories the search-related files. It still keeps the production decision on **HOLD** until live-browser search, mobile/desktop accessibility and API fidelity are demonstrated. See the [site-wide quality programme](sitewide-experience-audit.md).
+
 ## Required future acceptance criteria
 
 | Area | Acceptance threshold before any migration |

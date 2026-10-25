@@ -44,6 +44,8 @@ jobs:
         run: node scripts/test_gaze_data_readiness.cjs
       - name: Test bookmarkable method-selector URLs
         run: node scripts/test_method_sharing.cjs
+      - name: Compile built-site integrity and search audit scripts
+        run: python -m py_compile scripts/audit_sitewide_links.py scripts/audit_search_corpus.py scripts/compare_docs_builds.py
       - name: Compile site SEO, browser and accessibility inspection code
         run: python -m py_compile scripts/audit_site_discoverability.py scripts/site_browser_smoke.py scripts/site_accessibility.py
       - name: Verify controls, link targets, labels, image alternatives and teaching fixture

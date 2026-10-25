@@ -27,6 +27,7 @@ PAGES = (
     "tools/figure-explorer.md",
     "tools/figure-storyboard.md",
     "development/zensical-preview.md",
+    "development/sitewide-experience-audit.md",
     "start/first-analysis.md",
     "start/cite-and-reproduce.md",
     "tools/evidence-explorer.md",
