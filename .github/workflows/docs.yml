@@ -56,6 +56,10 @@ jobs:
         run: python scripts/audit_search_corpus.py --strict --output build/site-search-corpus.json
       - name: Audit site discovery and citation metadata
         run: python scripts/audit_site_discoverability.py
+      - name: Strict all-page local links and named fragments
+        run: python scripts/audit_sitewide_links.py --strict
+      - name: Strict research-intent search corpus
+        run: python scripts/audit_search_corpus.py --strict
       - name: Configure Pages
         if: github.event_name != 'pull_request'
         uses: actions/configure-pages@v5

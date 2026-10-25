@@ -40,6 +40,14 @@ The baseline checks discoverability of first analysis, pymovements, SyeLink, spa
 
 ## Mobile performance and browser outcomes
 
+The first simulated-mobile Lighthouse run (one run per URL) scored **40/100 homepage**, **82/100 first analysis**, **71/100 visual storyboard**, and **64/100 integration navigator**. Homepage LCP was approximately **10.0 seconds** with **1.5 seconds total blocking time** in that CI simulation. These are diagnostic *lab values*, not real-user Core Web Vitals or a release target.
+
+The website previously loaded MathJax 3 on every page, regardless of whether the page contained mathematics. A conditional loader now requests the existing MathJax source **only on pages with mathematical expressions**, and rerenders equations after MkDocs instant navigation. A browser smoke test checks that the homepage makes no MathJax injection and that the mathematical-reference page requests the engine on demand. This performance intervention is to be evaluated through repeated Lighthouse baselines rather than treated as an automatically proven speedup.
+
+With the successful full-site audit (368 pages, zero local broken files/fragment references), the production docs workflow now enforces **strict link and search-corpus gates**. These checks exclude unknown external URL health and do not prove browser search ranking.
+
+
+
 A separate non-deploying CI job runs the pinned [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) tool on the generated site under its true repository subpath. Raw results and a four-route machine-readable category/metric summary are retained as GitHub Actions artifacts only: no third-party Lighthouse upload occurs. The first actual CI baseline gave simulated mobile performance scores of **59** (homepage), **83** (first analysis), **75** (visual gallery), and **74** (integration navigator). Their accessibility scores were 95–97; best-practices and SEO scores were 100. The homepage had a roughly **9.99-second simulated LCP** dominated by text render delay (not a large image download); font and global script/style scheduling are investigation targets. Meaningful performance thresholds require repeated comparable runs and reviewed variance.
 
 The existing Chromium/axe browser check remains separate. A passing automated audit does not certify full WCAG compliance or user experience across all devices.

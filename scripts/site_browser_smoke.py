@@ -105,6 +105,21 @@ def run(site: Path) -> dict:
                 assert page.locator("h1").count() >= 1
                 report["accessibility"].append(audit_accessibility(page, route="home", viewport="desktop"))
                 page.close()
+                # Explicit contract: informational pages do not download heavy
+                # MathJax; mathematical references do request it on demand.
+                math_page = browser.new_page(viewport={"width": 390, "height": 844})
+                math_page.goto(origin, wait_until="domcontentloaded")
+                assert math_page.locator(".md-content .arithmatex").count() == 0, (
+                    "Landing page unexpectedly contains math, re-evaluate lazy-load test."
+                )
+                assert math_page.locator("script[data-et-mathjax]").count() == 0, (
+                    "MathJax should not load on pages without equations."
+                )
+                math_page.goto(origin + "methods/mathematical-reference/", wait_until="domcontentloaded")
+                math_page.locator(".md-content .arithmatex").first.wait_for(timeout=15000)
+                math_page.locator("script[data-et-mathjax]").first.wait_for(timeout=15000)
+                report["mathjax_conditionally_loaded"] = True
+                math_page.close()
             finally:
                 browser.close()
     except Exception as exc:
