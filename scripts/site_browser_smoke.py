@@ -117,8 +117,14 @@ def run(site: Path) -> dict:
                 )
                 math_page.goto(origin + "methods/mathematical-reference/", wait_until="domcontentloaded")
                 math_page.locator(".md-content .arithmatex").first.wait_for(timeout=15000)
-                math_page.locator("script[data-et-mathjax]").first.wait_for(timeout=15000)
+                math_page.locator("script[data-et-mathjax]").first.wait_for(
+                    state="attached", timeout=15000
+                )
+                math_page.locator("mjx-container").first.wait_for(
+                    state="attached", timeout=30000
+                )
                 report["mathjax_conditionally_loaded"] = True
+                report["mathjax_rendered_equations"] = math_page.locator("mjx-container").count()
                 math_page.close()
             finally:
                 browser.close()
