@@ -1,6 +1,8 @@
 ---
 title: Cite eyetrajectoriespy and reproduce an analysis
 description: Cite the published 1.2.0 Python software accurately, distinguish method citations, and record a reproducible eye-tracking analysis.
+search:
+  boost: 1.25
 ---
 
 # Cite the software, preserve the analysis
