@@ -4,6 +4,14 @@ title: Mathematical reference
 
 --8<-- "docs/methods/mathematical-reference-base.md:5:179"
 
+## Integrated functional L² distance { #functional-l2 }
+
+For complete aligned functions over the declared observation domain, the implemented functional L² metric integrates squared coordinate differences with the declared quadrature rule, and takes the square root. Its numerical value depends on the functional domain, coordinate units, grid treatment, and any explicitly applied normalization. It is not interchangeable with discrete Fréchet or dynamic-time-warping distance.
+
+**Public functions:** `functional_l2_distance()` and `pairwise_functional_distances()`. The [function-to-equation index](../reference/function-equation-index.md#integrated-functional-l2-distance) gives the implementation-specific formula and reporting requirements.
+
+
+
 **Scope:** univariate sparse/irregular FPCA with explicit numeric bandwidths,
 support/noise contracts, PSD policy, retained component count, score ridge,
 and fail-closed score diagnostics. Separate x/y fits do not model
