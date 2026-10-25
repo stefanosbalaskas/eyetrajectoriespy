@@ -22,7 +22,7 @@ The isolated accessibility runner installs [axe-core](https://github.com/dequela
 
 ## Citation and discovery information
 
-[Software citation](../start/cite-and-reproduce.md) is based on the repository's [CITATION.cff](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/main/CITATION.cff). The homepage exposes a static \`SoftwareSourceCode\` JSON-LD description aligned with version **1.2.0**, the MIT license and the official GitHub repository. A \`robots.txt\` file points to the MkDocs-generated sitemap.
+[Software citation](../start/cite-and-reproduce.md) is based on the repository's [CITATION.cff](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/main/CITATION.cff). The homepage exposes a static `SoftwareSourceCode` JSON-LD description aligned with version **1.2.0**, the MIT license and the official GitHub repository. A `robots.txt` file points to the MkDocs-generated sitemap.
 
 These additions make source identification and crawling clearer. They **do not guarantee ranking or enhanced search results**. No DOI is present in the current CFF, and the page does not assert one.
 

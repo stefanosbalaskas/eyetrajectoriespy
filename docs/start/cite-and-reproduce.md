@@ -47,7 +47,7 @@ The release's CFF metadata currently **does not declare a DOI**. Do not manufact
 Keep the following together with any figure or research table:
 
 1. **Source and consent:** acquisition system, original-export provenance, eligibility, and whether the files are recorded or simulated.
-2. **Software provenance:** Python version, exact \`eyetrajectoriespy\` distribution version or commit, optional libraries and acquisition parser versions.
+2. **Software provenance:** Python version, exact `eyetrajectoriespy` distribution version or commit, optional libraries and acquisition parser versions.
 3. **Measurement contract:** gaze eye, timestamp origin and unit, x/y coordinate system and screen geometry, sample masks, transformations and any gap handling.
 4. **Independent units:** participants, nested trials, experiment conditions, exclusion counts and the unit used for validation or resampling.
 5. **Scientific analysis:** predeclared question, estimand, method, hyperparameters, diagnostics, sensitivity checks, and inferential scope.
