@@ -14,6 +14,10 @@ These packages can prepare or annotate eye-tracking data **before** eyetrajector
 | [eyekit](https://pypi.org/project/eyekit/) | Reading text blocks, interest areas and fixation sequences | Keep text/fixation objects distinct from raw whole-path gaze |
 | [PupEyes](https://pupeyes.readthedocs.io/en/latest/) | Pupil processing, blink handling and interactive review | Preserve masks, pupil units and trial alignment |
 
+## EyeLink acquisition and parsing
+
+The [pinned SyeLink 2.0 EyeLink ASC handoff](syelink-handoff.md) demonstrates how to retain raw acquisition timestamp support while reporting calibration/validation provenance separately. The [EyeLink ecosystem comparison](eyelink-ecosystem.md) also covers PyeLink, EyeLinkIO and other ASC parsers without claiming hardware or EDF interoperability.
+
 ## Integration previews available in the repository
 
 - [Pinned pymovements 0.28.0 Gaze handoff](pymovements-handoff.md): tested native Gaze-object samples with explicit units and retained events.

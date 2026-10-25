@@ -9,6 +9,8 @@ This roadmap is not a commitment to new dependencies or a claim of stable compat
 
 | Priority | Integration | Qualification before adding a supported API |
 | --- | --- | --- |
+| EyeLink | SyeLink 2.0 SessionData handoff | **Synthetic genuine-dataclass preview implemented**; requires cross-parser real-device ASC validation, display/segment/clock audits, and lossless event/mask provenance |
+| EyeLink | EDF vs ASC independent sources | Compare EyeLinkIO binary EDF with vendor edf2asc and SyeLink results on consent-safe real recordings before a stable importer |
 | 1 | pandas / Polars / PyArrow | **Example exists**; qualify null/dtype parity, large-file behavior and version/platform matrix |
 | 2 | pymovements sample and event handoff | **Pinned 0.28.0 synthetic-object preview implemented**; still requires real-device fixtures, upstream version compatibility, trial/time mapping and detector provenance to qualify a stable API |
 | 3 | Pandera optional schema checks | Explicit nullable rules, strict failure contracts and no silent coercion or missing-row filtering |

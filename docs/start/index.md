@@ -52,6 +52,8 @@ The [integration hub](../integrations/index.md) compares pymovements, PyNeon, Po
 
 **New preview examples:** [pymovements 0.28.0 Gaze-object handoff](../integrations/pymovements-handoff.md) and [read-only Eye-Tracking-BIDS sidecar inspection](../integrations/bids-metadata-inspector.md). These do not install as stable package importers.
 
+**EyeLink path:** [SyeLink 2.0 handoff](../integrations/syelink-handoff.md) · [EyeLink ingestion options](../integrations/eyelink-ecosystem.md). Source parser compatibility is separate from qualified inference.
+
 ## Three questions before any fit
 
 1. **Observation unit** — independent curve, participant, trial or repeated participant cluster?
