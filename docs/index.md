@@ -53,6 +53,10 @@ hide:
 
 </div>
 
+## Site transparency and accessibility
+
+The [website quality and discoverability guide](development/website-quality.md) explains how documentation pages, canonical URLs, visual assets and browser accessibility are tested. The checks are reproducible but do not certify WCAG compliance or guarantee search visibility.
+
 ## Cite and reproduce research
 
 Using the software in a paper? [Get the exact 1.2.0 citation and research provenance checklist](start/cite-and-reproduce.md). The website citation reflects `CITATION.cff`, distinguishes released APIs from repository previews, and does not invent a DOI.

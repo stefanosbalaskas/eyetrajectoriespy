@@ -29,6 +29,9 @@ jobs:
           python -m pip install -e ".[docs,dev]"
           python -m pip install "playwright==1.56.0"
           python -m playwright install --with-deps chromium
+      - name: Install isolated axe-core accessibility scanner
+        run: |
+          npm --prefix build/site-accessibility install --no-save --no-package-lock axe-core@4.13.0
       - name: Regenerate existing deterministic gallery assets
         run: python scripts/generate_docs_gallery.py
       - name: Build current production MkDocs output
@@ -44,4 +47,5 @@ jobs:
             build/site-browser-audit/*-figure-storyboard.png
             build/site-browser-audit/desktop-first-analysis.png
             build/site-browser-audit/browser-report.json
+            build/site-accessibility/README.txt
           if-no-files-found: warn
