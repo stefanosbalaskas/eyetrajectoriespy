@@ -1,6 +1,8 @@
 ---
 title: First analysis — choose the right path in five minutes
 description: New-user orientation to real observational support, reproducible synthetic examples, stable workflows and scientific limitations.
+search:
+  boost: 1.3
 ---
 
 # Your first eyetrajectoriespy analysis

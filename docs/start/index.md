@@ -5,6 +5,8 @@ description: Choose a stable eyetrajectoriespy analysis route and find installat
 
 # Start here
 
+[Find a scientific topic or research question](find-a-topic.md){ .md-button .md-button--primary }
+
 **From continuous gaze data to a defensible functional analysis.** Published `eyetrajectoriespy==1.2.0` supports continuous, sparse and irregular methods, plus ten stable module-scoped W1–W4 orchestration routes. Separate E1–E4 helpers remain experimental.
 
 <div class="grid cards" markdown>

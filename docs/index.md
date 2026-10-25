@@ -34,6 +34,7 @@ hide:
 **eyetrajectoriespy** models gaze as a time-indexed two-coordinate functional process. Work with dense, sparse, irregular and repeated-trial trajectories while keeping the assumptions behind analysis and uncertainty visible.
 
 [Begin your first analysis](start/first-analysis.md){ .md-button .md-button--primary }
+[Find a topic](start/find-a-topic.md){ .md-button }
 [Install stable 1.2.0](start/index.md){ .md-button }
 [Find a Python integration](integrations/navigator.md){ .md-button }
 [Try method selector](tools/method-selector.md){ .md-button }

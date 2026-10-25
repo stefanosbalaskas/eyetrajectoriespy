@@ -117,6 +117,35 @@ and post-merge Pages deployment before describing the candidate as live.
 The published `eyetrajectoriespy==1.2.0` API, scientific estimators and
 unqualified inference claims are untouched.
 
+## Search relevance and keyboard-discovery qualification (26 October 2026)
+
+The site's built-in search is provided by Material for MkDocs/Lunr; it is not
+an externally hosted search service. Material documents gentle
+[per-page `search.boost` metadata](https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-search/#search-boosting).
+A new [reader-intent topic directory](../start/find-a-topic.md) provides a
+shorter path from common scientific questions to stable methods, visualization,
+integration and research evidence. Four existing canonical entry pages receive
+**limited** weighting (1.15–1.80), with the sparse-FPCA guide tuned separately rather than blanket preference for lengthy
+API indexes or obsolete prerelease records.
+
+The **`site-search-keyboard (non-deploying)`** workflow now builds the
+real production site locally under the `/eyetrajectoriespy/` Pages prefix,
+enters five representative queries into Material's real Chromium search
+overlay, records the target page's **visible search-result rank**, and
+refuses ranks beyond declared bounds. It also exercises keyboard shortcut,
+focus and arrow/Enter navigation paths, a mobile drawer and sampled locally
+installed axe-core checks. Run records and screenshots are uploaded as
+private CI artifacts; no personal research data are transmitted.
+
+These tests are useful smoke checks, **not proof of broad search relevance,
+a randomized user-experience improvement, full keyboard operability or WCAG/
+screen-reader conformance**. Ranking can change with corpus updates, and
+false positives can arise from a matching document without task success.
+A human-assisted screen-reader review remains a separate requirement before
+making a general accessibility claim. Search-performance improvement over
+the earlier site should be claimed only after comparable baseline runs, not
+inferred from added boosts or a green build.
+
 ## Zensical production decision: HOLD
 
 The earlier 11-page Zensical static comparison passed, but eleven pages cannot establish equivalence for this large documentation archive. The expanded report now compares **every generated HTML route**, selected custom JS/CSS assets and available search artifacts.

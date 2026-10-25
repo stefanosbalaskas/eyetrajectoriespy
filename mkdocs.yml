@@ -13,6 +13,7 @@ nav:
   - Home: index.md
   - Start here:
       - Overview: start/index.md
+      - Find by research question: start/find-a-topic.md
       - First analysis walkthrough: start/first-analysis.md
       - Cite and reproduce: start/cite-and-reproduce.md
       - From data to method: start/data-to-method.md
