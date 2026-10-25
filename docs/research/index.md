@@ -1,6 +1,8 @@
 ---
 title: Research & evidence
 description: Independently audited functional gaze simulation, missing-data identification and Bayesian feasibility evidence, separated from released package features.
+search:
+  boost: 1.15
 ---
 
 # Research & evidence
