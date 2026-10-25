@@ -175,7 +175,9 @@
   function init() { initMethod(); initTrajectory(); initFilters(); }
   if (typeof document$ !== "undefined" && document$ && typeof document$.subscribe === "function") {
     document$.subscribe(init);
-  } else if (document.readyState === "loading") {
+  }
+  // Mount immediately when this bundle is injected after a page transition.
+  if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
   } else { init(); }
 })();
