@@ -125,7 +125,7 @@ an externally hosted search service. Material documents gentle
 A new [reader-intent topic directory](../start/find-a-topic.md) provides a
 shorter path from common scientific questions to stable methods, visualization,
 integration and research evidence. Four existing canonical entry pages receive
-**modest** weighting (1.15–1.30) rather than blanket preference for lengthy
+**limited** weighting (1.15–1.80), with the sparse-FPCA guide tuned separately rather than blanket preference for lengthy
 API indexes or obsolete prerelease records.
 
 The **`site-search-keyboard (non-deploying)`** workflow now builds the
