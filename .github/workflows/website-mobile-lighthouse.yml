@@ -42,11 +42,15 @@ jobs:
         run: npm install --no-save --no-package-lock @lhci/cli@0.15.1
       - name: Collect mobile performance, accessibility and SEO report
         run: npx lhci collect --config=.lighthouserc.cjs
+      - name: Summarize audited mobile categories and Core Web Vitals proxies
+        run: python scripts/summarize_lighthouse.py
       - name: Persist raw Lighthouse audit privately as CI artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: website-mobile-lighthouse-evidence
-          path: .lighthouseci/**
+          path: |
+            .lighthouseci/**
+            build/lighthouse-mobile-summary.json
           include-hidden-files: true
           if-no-files-found: warn

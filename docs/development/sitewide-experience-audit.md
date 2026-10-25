@@ -40,7 +40,7 @@ The baseline checks discoverability of first analysis, pymovements, SyeLink, spa
 
 ## Mobile performance and browser outcomes
 
-A separate non-deploying CI job runs the pinned [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) tool on the generated site under its true repository subpath. Results are retained as GitHub Actions artifacts only: no third-party Lighthouse upload occurs. The first measurements are exploratory; meaningful performance thresholds require comparable repeated baselines and reviewed variance.
+A separate non-deploying CI job runs the pinned [Lighthouse CI](https://github.com/GoogleChrome/lighthouse-ci) tool on the generated site under its true repository subpath. Raw results and a four-route machine-readable category/metric summary are retained as GitHub Actions artifacts only: no third-party Lighthouse upload occurs. The first measurements are exploratory; meaningful performance thresholds require comparable repeated baselines and reviewed variance.
 
 The existing Chromium/axe browser check remains separate. A passing automated audit does not certify full WCAG compliance or user experience across all devices.
 
