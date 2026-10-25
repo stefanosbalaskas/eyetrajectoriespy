@@ -1,0 +1,48 @@
+name: optional-ecosystem-interop
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "examples/interop_tabular_handoff.py"
+      - "scripts/validate_ecosystem_interop.py"
+      - "docs/integrations/**"
+      - ".github/workflows/optional-ecosystem-interop.yml"
+  pull_request:
+    paths:
+      - "examples/interop_tabular_handoff.py"
+      - "scripts/validate_ecosystem_interop.py"
+      - "docs/integrations/**"
+      - ".github/workflows/optional-ecosystem-interop.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  table-boundary:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python-version: "3.11"
+          - os: ubuntu-latest
+            python-version: "3.13"
+          - os: windows-latest
+            python-version: "3.12"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install package and optional interoperability tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          python -m pip install polars pyarrow
+      - name: Verify explicit mapping, scientific refusals and Polars parity
+        run: python scripts/validate_ecosystem_interop.py
+      - name: Import declared common-grid fixture through stable 1.2 API
+        run: python examples/interop_tabular_handoff.py
