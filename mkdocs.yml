@@ -416,6 +416,8 @@ theme:
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.indexes
+    # Reduce repeated sidebar DOM; full route/search/navigation parity is CI-guarded.
+    - navigation.prune
     - navigation.tracking
     - navigation.top
     - content.code.copy
