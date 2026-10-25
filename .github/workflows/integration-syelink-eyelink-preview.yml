@@ -1,0 +1,50 @@
+name: integration-syelink-eyelink-preview
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "examples/interop_syelink.py"
+      - "scripts/validate_syelink_interop.py"
+      - "docs/integrations/**"
+      - ".github/workflows/integration-syelink-eyelink-preview.yml"
+  pull_request:
+    paths:
+      - "examples/interop_syelink.py"
+      - "scripts/validate_syelink_interop.py"
+      - "docs/integrations/**"
+      - ".github/workflows/integration-syelink-eyelink-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pinned-session-contracts:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python-version: "3.11"
+          - os: ubuntu-latest
+            python-version: "3.13"
+          - os: windows-latest
+            python-version: "3.12"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install published stable package and upstream SyeLink 2.0.0
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          python -m pip install syelink==2.0.0
+      - name: Check source and test compile
+        run: python -m compileall -q examples/interop_syelink.py scripts/validate_syelink_interop.py
+      - name: Run source-preserving adapter negative and provenance tests
+        run: python scripts/validate_syelink_interop.py
+      - name: Execute actual SyeLink dataclass teaching example
+        run: python examples/interop_syelink.py
