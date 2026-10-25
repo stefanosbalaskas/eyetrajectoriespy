@@ -1,0 +1,51 @@
+name: site-search-keyboard (non-deploying)
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "scripts/site_search_keyboard_audit.py"
+      - ".github/workflows/site-search-keyboard.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  search-and-keyboard:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install docs and local-only browser tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[docs,dev]"
+          python -m pip install "playwright==1.56.0"
+          python -m playwright install --with-deps chromium
+      - name: Install pinned axe-core
+        run: npm --prefix build/site-accessibility install --no-save --no-package-lock axe-core@4.13.0
+      - name: Generate deterministic docs scientific illustrations
+        run: python scripts/generate_docs_gallery.py
+      - name: Strict production-Material build and search corpus gate
+        run: |
+          mkdocs build --strict
+          python scripts/audit_search_corpus.py --strict --output build/site-search-corpus.json
+          python scripts/audit_sitewide_links.py --strict --output build/sitewide-links.json
+      - name: Real browser relevance, keyboard and accessibility audit
+        run: python scripts/site_search_keyboard_audit.py
+      - name: Retain real result ranks and search screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-search-keyboard-evidence
+          path: |
+            build/site-search-keyboard/
+            build/site-search-corpus.json
+            build/sitewide-links.json
+          if-no-files-found: warn
