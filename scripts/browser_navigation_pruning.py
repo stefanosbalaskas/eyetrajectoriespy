@@ -87,7 +87,7 @@ def inspect_browser(browser, site: Path, label: str, output: Path) -> dict:
                 ).first
                 result.wait_for(timeout=30000)
                 result.click()
-                page.wait_for_url("**/integrations/syelink-handoff/", timeout=15000)
+                page.wait_for_url("**/integrations/syelink-handoff/*", timeout=15000)
                 checks["search"] = True
 
                 # Accessibility audit is local and does not assert WCAG conformance.
