@@ -83,6 +83,7 @@ def run(site: Path) -> dict:
                     "href:document.activeElement?.getAttribute('href')})"
                 )
                 report["keyboard"]["first_tab_focus"] = first_focus
+                assert first_focus["tag"] == "A", "Tab did not reach an actual link"
                 desktop.keyboard.press("Escape")
                 desktop.keyboard.press("/")
                 desktop.wait_for_function(
@@ -106,7 +107,16 @@ def run(site: Path) -> dict:
                     audit_accessibility(desktop, route="search-overlay", viewport="desktop")
                 )
                 desktop.keyboard.press("Escape")
-                report["keyboard"]["escape_handled"] = True
+                close_state = desktop.evaluate(
+                    "() => ({focused: document.activeElement?.classList.contains('md-search__input'), "
+                    "value: document.querySelector('input.md-search__input')?.value, "
+                    "visibleResults: [...document.querySelectorAll('.md-search-result__link')].filter("
+                    "node => node.getClientRects().length).length})"
+                )
+                report["keyboard"]["escape_state"] = close_state
+                assert not close_state["focused"] or not close_state["value"], (
+                    "Escape did not close or clear the search control"
+                )
                 desktop.screenshot(path=str(OUT / "search-keyboard-desktop.png"),
                                    animations="disabled")
                 desktop.close()
