@@ -15,6 +15,7 @@ hide:
 **eyetrajectoriespy** models gaze as a time-indexed two-coordinate functional process. Work with dense, sparse, irregular and repeated-trial trajectories while keeping the assumptions behind analysis and uncertainty visible.
 
 [Install stable 1.2.0](start/index.md){ .md-button .md-button--primary }
+[Find a Python integration](integrations/navigator.md){ .md-button }
 [Try method selector](tools/method-selector.md){ .md-button }
 [Research evidence](research/index.md){ .md-button }
 
@@ -66,6 +67,17 @@ New to functional gaze analysis? Use the [data-to-method guide](start/data-to-me
   Use stable 1.2.0 online docs with release-indexed notes and immutable tagged source references.
 
   [Documentation versions](versions/index.md)
+
+</div>
+
+## Connect your gaze data to the right analysis
+
+<div class="et-home-journey" markdown>
+
+- **1. Identify the source.** [Browse 14 Python integrations](integrations/navigator.md) by parser, data standard, device or functional-library role.
+- **2. Verify observed support.** [Inspect a CSV locally](tools/data-readiness.md) or follow [source metadata guidance](integrations/bids-metadata-inspector.md) without automatically filling missing samples.
+- **3. Choose the estimand.** Use the [method selector](tools/method-selector.md) or [scientific data-to-method guide](start/data-to-method.md).
+- **4. Audit the research claim.** Check the [qualification evidence](research/index.md) before treating plots or fitted uncertainty as validated.
 
 </div>
 

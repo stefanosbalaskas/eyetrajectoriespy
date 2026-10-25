@@ -85,7 +85,7 @@
       boundary:"Existing optional extra with Python-version constraints; not a new integration."},
     {id:"fdasrsf", name:"fdasrsf", group:"functional", phase:"optional", device:"general",
       summary:"Existing opt-in elastic-function analysis dependency.",
-      guide:"../../guides/elastic-trajectories/", upstream:"https://pypi.org/project/fdasrsf/",
+      guide:"../../guides/elastic/", upstream:"https://pypi.org/project/fdasrsf/",
       route:"Functional curves → elastic comparison only under declared registration assumptions.",
       boundary:"Existing optional extra; phase alignment decisions must be reported."}
   ]);

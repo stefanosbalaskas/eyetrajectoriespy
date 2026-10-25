@@ -14,6 +14,7 @@ DOCS = ROOT / "docs"
 PAGES = (
     "tools/method-selector.md",
     "integrations/index.md",
+    "integrations/navigator.md",
     "integrations/tabular-handoff.md",
     "integrations/pymovements-handoff.md",
     "integrations/syelink-handoff.md",
@@ -31,6 +32,8 @@ PAGES = (
 )
 ASSETS = (
     "javascripts/interactive-explorers.js",
+    "javascripts/integration-navigator.js",
+    "assets/integration-navigator.css",
     "javascripts/gaze-data-readiness.js",
     "javascripts/method-sharing.js",
     "assets/gaze-data-readiness.css",

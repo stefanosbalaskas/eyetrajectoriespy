@@ -56,20 +56,20 @@ The same links remain usable with JavaScript disabled.
 
 | Ecosystem | Role and integration status | Start here |
 | --- | --- | --- |
-| pandas / Polars / PyArrow | Tables · Runnable repository example | [Tabular handoff](../tabular-handoff.md) |
-| pymovements | Gaze preprocessing · Pinned 0.28.0 example | [Gaze handoff](../pymovements-handoff.md) |
-| SyeLink | EyeLink ASC parsing · Pinned 2.0.0 example | [EyeLink handoff](../syelink-handoff.md) |
-| Eye-Tracking-BIDS | Metadata standard · Narrow read-only preview | [BIDS inspection](../bids-metadata-inspector.md) |
-| PyNeon | Neon acquisition · Research candidate | [Acquisition guides](../acquisition-and-bids.md) |
-| eye2bids | Device export · Research candidate | [Acquisition guides](../acquisition-and-bids.md) |
-| EyeLinkIO | EDF parsing · External comparison | [EyeLink tools](../eyelink-ecosystem.md) |
-| PyeLink | EyeLink hardware control · External comparison | [EyeLink tools](../eyelink-ecosystem.md) |
-| Pandera | Schema validation · Research candidate | [Qualification roadmap](../roadmap.md) |
-| eyekit | Reading/fixation · Companion | [Acquisition guides](../acquisition-and-bids.md) |
-| PupEyes | Pupillometry · Companion | [Acquisition guides](../acquisition-and-bids.md) |
-| scikit-fda | Functional FDA · Existing optional extra | [Basis guide](../../guides/basis-representations.md) |
-| FDApy | Sparse functional FDA · Existing optional extra | [Sparse FPCA guide](../../guides/sparse-irregular-fpca.md) |
-| fdasrsf | Elastic registration · Existing optional extra | [Elastic guide](../../guides/elastic-trajectories.md) |
+| pandas / Polars / PyArrow | Tables · Runnable repository example | [Tabular handoff](tabular-handoff.md) |
+| pymovements | Gaze preprocessing · Pinned 0.28.0 example | [Gaze handoff](pymovements-handoff.md) |
+| SyeLink | EyeLink ASC parsing · Pinned 2.0.0 example | [EyeLink handoff](syelink-handoff.md) |
+| Eye-Tracking-BIDS | Metadata standard · Narrow read-only preview | [BIDS inspection](bids-metadata-inspector.md) |
+| PyNeon | Neon acquisition · Research candidate | [Acquisition guides](acquisition-and-bids.md) |
+| eye2bids | Device export · Research candidate | [Acquisition guides](acquisition-and-bids.md) |
+| EyeLinkIO | EDF parsing · External comparison | [EyeLink tools](eyelink-ecosystem.md) |
+| PyeLink | EyeLink hardware control · External comparison | [EyeLink tools](eyelink-ecosystem.md) |
+| Pandera | Schema validation · Research candidate | [Qualification roadmap](roadmap.md) |
+| eyekit | Reading/fixation · Companion | [Acquisition guides](acquisition-and-bids.md) |
+| PupEyes | Pupillometry · Companion | [Acquisition guides](acquisition-and-bids.md) |
+| scikit-fda | Functional FDA · Existing optional extra | [Basis guide](../guides/basis-representations.md) |
+| FDApy | Sparse functional FDA · Existing optional extra | [Sparse FPCA guide](../guides/sparse-irregular-fpca.md) |
+| fdasrsf | Elastic registration · Existing optional extra | [Elastic guide](../guides/elastic.md) |
     </div>
   </section>
   <section class="et-connect-panel" aria-labelledby="et-connect-plan">
@@ -111,7 +111,7 @@ The same links remain usable with JavaScript disabled.
       <ol id="et-path-steps">
         <li>Preserve original device/export files and upstream parser version.</li>
         <li>Declare participant, trial, clock and coordinate semantics.</li>
-        <li>Check the relevant [data-to-method guide](../../start/data-to-method.md).</li>
+        <li>Check the relevant <a href="../../start/data-to-method/">data-to-method guide</a>.</li>
       </ol>
       <p id="et-path-limitation">This planner does not read, upload, convert or validate participant recordings.</p>
       <div class="et-connect-links">
@@ -128,7 +128,7 @@ The same links remain usable with JavaScript disabled.
   </section>
 </div>
 
-<noscript>Interactive filtering and the checklist need JavaScript. The complete plain-text integration index above remains available, as do the [integration status details](../index.md) and [data-to-method guide](../../start/data-to-method.md).</noscript>
+<noscript>Interactive filtering and the checklist need JavaScript. The complete plain-text integration index above remains available, as do the [integration status details](index.md) and [data-to-method guide](../start/data-to-method.md).</noscript>
 
 ## What to do after choosing
 
@@ -146,4 +146,4 @@ This navigator adopts **task-first guides and public-dataset discovery** from [p
 !!! warning "Stable functionality is not established by an external package appearing here"
     The published **eyetrajectoriespy 1.2.0** optional extras and stable workflows are unchanged. The pinned pymovements and SyeLink interfaces, tabular conversion and narrow BIDS inspector are repository-level **examples**, not full real-device validation. The open [simultaneous inference issue #289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) and [missing-gaze issue #296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) remain unresolved. No data leave this documentation interface.
 
-[All integration details](../index.md) · [Qualification roadmap](../roadmap.md) · [Reproducibility checklist](../../reproducibility/checklist.md)
+[All integration details](index.md) · [Qualification roadmap](roadmap.md) · [Reproducibility checklist](../reproducibility/checklist.md)

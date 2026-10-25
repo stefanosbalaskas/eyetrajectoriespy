@@ -5,6 +5,9 @@ description: Prioritized optional Python package interoperability candidates and
 
 # Qualifying future integrations
 
+**Website discovery improvement (October 2026):** [search 14 ecosystem entries](navigator.md) by research role and repository integration status, and create a locally generated provenance checklist. This improves findability without claiming new adapters or changing the published 1.2.0 API.
+
+
 This roadmap is not a commitment to new dependencies or a claim of stable compatibility.
 
 | Priority | Integration | Qualification before adding a supported API |
