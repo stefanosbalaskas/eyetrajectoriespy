@@ -98,11 +98,28 @@ def run(site: Path) -> dict:
                 page.select_option("#et-package-phase", "preview")
                 assert 1 < page.locator("#et-package-grid article").count() < 14
                 report["accessibility"].append(audit_accessibility(page, route="integrations/navigator/", viewport="desktop"))
+                page.goto(origin + "tools/data-readiness/", wait_until="domcontentloaded")
+                page.locator("#et-data-audit[data-ready='1']").wait_for(timeout=20000)
+                page.goto(origin + "tools/method-selector/", wait_until="domcontentloaded")
+                page.locator("#et-method[data-ready='1'][data-share-ready='1']").wait_for(timeout=20000)
+                report["lazy_tool_browser_routes"] = ["integration", "data-readiness", "method-selector"]
                 page.goto(origin + "start/cite-and-reproduce/", wait_until="domcontentloaded")
                 assert page.locator("h1").count() >= 1
                 report["accessibility"].append(audit_accessibility(page, route="start/cite-and-reproduce/", viewport="desktop"))
                 page.goto(origin, wait_until="domcontentloaded")
                 assert page.locator("h1").count() >= 1
+                assert page.locator("script[data-et-tool]").count() == 0, (
+                    "Homepage must not download unused interactive tool bundles"
+                )
+                assert page.locator('link[href*="fonts.googleapis.com"]').count() == 0, (
+                    "System-font mode must not link to third-party Google Fonts"
+                )
+                # Test real browser-side Material search, not merely keyword
+                # presence in the built search corpus.
+                search = page.locator("input.md-search__input")
+                search.fill("SyeLink")
+                page.locator('.md-search-result__link[href*="syelink-handoff"]').first.wait_for(timeout=30000)
+                report["browser_search_syelink"] = True
                 report["accessibility"].append(audit_accessibility(page, route="home", viewport="desktop"))
                 page.close()
                 # Explicit contract: informational pages do not download heavy

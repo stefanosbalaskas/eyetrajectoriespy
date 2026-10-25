@@ -1,6 +1,6 @@
-// Independent, non-deploying Lighthouse baseline, not a release criterion.
+// Independent, non-deploying repeated Lighthouse evidence, not a release criterion.
 // CI uses only local static build files; no Lighthouse report is uploaded to a
-// remote service. Review variation across more than one run before budgets.
+// remote service. Three runs per route show simulated run-to-run variation.
 module.exports = {
   ci: {
     collect: {
@@ -11,7 +11,7 @@ module.exports = {
         "http://localhost/eyetrajectoriespy/tools/figure-storyboard/",
         "http://localhost/eyetrajectoriespy/integrations/navigator/",
       ],
-      numberOfRuns: 1,
+      numberOfRuns: 3,
       settings: {
         onlyCategories: ["performance", "accessibility", "best-practices", "seo"],
         formFactor: "mobile",

@@ -6,7 +6,8 @@
   if(typeof document!=="undefined"){
     const init=()=>api.init(document,window);
     if(typeof document$!=="undefined"&&document$&&typeof document$.subscribe==="function")document$.subscribe(init);
-    else if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
+    // Also mount on initial dynamic injection after document$ has emitted.
+    if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
     else init();
   }
 })(function(){

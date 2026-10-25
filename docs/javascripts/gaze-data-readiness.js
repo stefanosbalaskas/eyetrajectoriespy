@@ -6,7 +6,8 @@
   if(typeof document!=="undefined"){
     const init=()=>api.init(document);
     if(typeof document$!=="undefined"&&document$&&typeof document$.subscribe==="function")document$.subscribe(init);
-    else if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
+    // Dynamic tool injection may happen after the document$ emission.
+    if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);
     else init();
   }
 })(function(){

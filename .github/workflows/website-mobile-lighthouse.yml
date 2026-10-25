@@ -15,7 +15,7 @@ permissions:
 jobs:
   mobile-baseline:
     runs-on: ubuntu-24.04
-    # Baseline first: results are retained before setting any performance gate.
+    # Three-run simulated mobile evidence; no hard budget before stable variation review.
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
@@ -40,7 +40,7 @@ jobs:
           cp -a site/. build/lighthouse-webroot/eyetrajectoriespy/
       - name: Install pinned Lighthouse CI
         run: npm install --no-save --no-package-lock @lhci/cli@0.15.1
-      - name: Collect mobile performance, accessibility and SEO report
+      - name: Collect three simulated-mobile runs for every audited route
         run: npx lhci collect --config=.lighthouserc.cjs
       - name: Summarize audited mobile categories and Core Web Vitals proxies
         run: python scripts/summarize_lighthouse.py

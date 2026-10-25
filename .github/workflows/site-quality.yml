@@ -33,6 +33,7 @@ jobs:
           python-version: "3.12"
       - name: Validate JavaScript syntax
         run: |
+          node --check docs/javascripts/site-tools-loader.js
           node --check docs/javascripts/interactive-explorers.js
           node --check docs/javascripts/integration-navigator.js
           node --check docs/javascripts/accessibility-refinements.js
@@ -41,10 +42,14 @@ jobs:
           node --check docs/javascripts/method-sharing.js
       - name: Test integration discovery, link paths and scientific boundaries
         run: node scripts/test_integration_navigator.cjs
+      - name: Test demand-loaded website tool routing
+        run: node scripts/test_lazy_site_tools.cjs
       - name: Test local-only gaze CSV structural auditor
         run: node scripts/test_gaze_data_readiness.cjs
       - name: Test bookmarkable method-selector URLs
         run: node scripts/test_method_sharing.cjs
+      - name: Validate Lighthouse median and spread summaries without Chrome
+        run: python scripts/test_summarize_lighthouse.py
       - name: Compile built-site integrity and search audit scripts
         run: python -m py_compile scripts/audit_sitewide_links.py scripts/audit_search_corpus.py scripts/compare_docs_builds.py
       - name: Compile site SEO, browser and accessibility inspection code

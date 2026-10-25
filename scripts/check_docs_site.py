@@ -38,6 +38,7 @@ PAGES = (
 ASSETS = (
     "javascripts/interactive-explorers.js",
     "javascripts/integration-navigator.js",
+    "javascripts/site-tools-loader.js",
     "assets/integration-navigator.css",
     "assets/accessibility-refinements.css",
     "javascripts/accessibility-refinements.js",

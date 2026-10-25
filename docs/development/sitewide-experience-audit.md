@@ -52,6 +52,29 @@ A separate non-deploying CI job runs the pinned [Lighthouse CI](https://github.c
 
 The existing Chromium/axe browser check remains separate. A passing automated audit does not certify full WCAG compliance or user experience across all devices.
 
+## Reversible homepage performance experiment (25 October 2026)
+
+A website-only change removes Google Fonts autoloading via Material's
+documented system-font setting (`theme.font: false`). System fallback removes
+a third-party render dependency and browser request, though font metrics and
+line breaks may vary by device. This targets the observed text-render component
+of homepage LCP; it is **not** itself a measured speedup.
+
+The formerly global integration navigator, local CSV inspector, method sharing
+and synthetic exploration scripts are now downloaded **only when their page
+controls exist**. A small shared loader supports MkDocs instant navigation,
+and explicit browser regression checks cover the method selector, integration
+navigator and CSV readiness interface. The existing MathJax on-demand behavior
+and reproducibility links remain. Site-wide links and search-corpus checks
+remain strict.
+
+The independent Lighthouse job now collects **three simulated mobile runs
+per route** across the same four routes and retains individual results alongside
+min/median/max summaries. CI evidence must be reviewed before claiming a
+speedup: this document contains no new post-change scores or field Core Web
+Vitals measurements. The browser preview also tests a real interactive search
+for the SyeLink documentation, beyond static index keyword presence.
+
 ## Zensical production decision: HOLD
 
 The earlier 11-page Zensical static comparison passed, but eleven pages cannot establish equivalence for this large documentation archive. The expanded report now compares **every generated HTML route**, selected custom JS/CSS assets and available search artifacts.
