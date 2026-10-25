@@ -9,6 +9,9 @@ description: Research-first guide to matching time support, coordinate sampling,
 
 ## 1. What did the recorder actually observe?
 
+For a long-format CSV, begin with the [local structural readiness inspector](../tools/data-readiness.md). It reports possible grid and sampling problems before the statistical decisions below; its automated output does not establish that any method's assumptions hold.
+
+
 | Data structure | Preserve | Recommended starting point |
 | --- | --- | --- |
 | Common aligned x/y time grid | Coordinate and time units, observed gaps, participant and trial IDs | [Continuous FPCA](../workflows/fpca-exploration.md) |

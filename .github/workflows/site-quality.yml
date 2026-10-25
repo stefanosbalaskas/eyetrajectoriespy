@@ -31,6 +31,10 @@ jobs:
         with:
           python-version: "3.12"
       - name: Validate JavaScript syntax
-        run: node --check docs/javascripts/interactive-explorers.js
+        run: |
+          node --check docs/javascripts/interactive-explorers.js
+          node --check docs/javascripts/gaze-data-readiness.js
+      - name: Test local-only gaze CSV structural auditor
+        run: node scripts/test_gaze_data_readiness.cjs
       - name: Verify controls, link targets, labels, image alternatives and teaching fixture
         run: python scripts/check_docs_site.py
