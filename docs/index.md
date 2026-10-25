@@ -73,7 +73,9 @@ New to functional gaze analysis? Use the [data-to-method guide](start/data-to-me
 
 Bring **preprocessed sample tables** from upstream acquisition packages into the existing functional-data contracts without pretending that event detection validates functional inference. A new optional pandas/Polars/Parquet example shows strict source mapping and refuses missing or unequal dense grids.
 
-[Python integrations](integrations/index.md){ .md-button } [Runnable table handoff](integrations/tabular-handoff.md){ .md-button }
+[Python integrations](integrations/index.md){ .md-button }
+[pymovements example](integrations/pymovements-handoff.md){ .md-button }
+[BIDS metadata inspector](integrations/bids-metadata-inspector.md){ .md-button } [Runnable table handoff](integrations/tabular-handoff.md){ .md-button }
 
 ## Begin with your scientific question
 

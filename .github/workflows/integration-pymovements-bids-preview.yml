@@ -1,0 +1,54 @@
+name: integration-pymovements-bids-preview
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "examples/interop_pymovements.py"
+      - "examples/inspect_eye_tracking_bids.py"
+      - "scripts/validate_pymovements_interop.py"
+      - "scripts/validate_eye_tracking_bids.py"
+      - "docs/integrations/**"
+      - ".github/workflows/integration-pymovements-bids-preview.yml"
+  pull_request:
+    paths:
+      - "examples/interop_pymovements.py"
+      - "examples/inspect_eye_tracking_bids.py"
+      - "scripts/validate_pymovements_interop.py"
+      - "scripts/validate_eye_tracking_bids.py"
+      - "docs/integrations/**"
+      - ".github/workflows/integration-pymovements-bids-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  upstream-pinned-samples:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python-version: "3.11"
+          - os: ubuntu-latest
+            python-version: "3.13"
+          - os: windows-latest
+            python-version: "3.12"
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install stable package and pinned upstream integration
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          python -m pip install pymovements==0.28.0 pyarrow
+      - name: Validate genuine pymovements Gaze-object handoff
+        run: python scripts/validate_pymovements_interop.py
+      - name: Run pinned pymovements example
+        run: python examples/interop_pymovements.py
+      - name: Verify read-only Eye-Tracking-BIDS sidecar handling
+        run: python scripts/validate_eye_tracking_bids.py

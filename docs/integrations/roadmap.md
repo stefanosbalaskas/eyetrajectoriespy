@@ -10,9 +10,9 @@ This roadmap is not a commitment to new dependencies or a claim of stable compat
 | Priority | Integration | Qualification before adding a supported API |
 | --- | --- | --- |
 | 1 | pandas / Polars / PyArrow | **Example exists**; qualify null/dtype parity, large-file behavior and version/platform matrix |
-| 2 | pymovements sample and event handoff | Real Gaze fixtures, upstream version compatibility, time units, repeated trials and detector provenance |
+| 2 | pymovements sample and event handoff | **Pinned 0.28.0 synthetic-object preview implemented**; still requires real-device fixtures, upstream version compatibility, trial/time mapping and detector provenance to qualify a stable API |
 | 3 | Pandera optional schema checks | Explicit nullable rules, strict failure contracts and no silent coercion or missing-row filtering |
-| 4 | Eye-Tracking-BIDS reading | Version-pinned conformance, JSON sidecars, recorded eye and event metadata, source-preserving tests |
+| 4 | Eye-Tracking-BIDS reading | **Read-only JSON/TSV.GZ shape preview implemented**; still requires full version-pinned BIDS conformance, sidecar inheritance, recorded-eye and event validations |
 | 5 | PyNeon mobile recordings | Native/cloud format fixtures, synchronization and coordinate provenance |
 | 6 | eyekit/PupEyes | Real reading/pupil fixtures, separate raw/derived modalities and clock contracts |
 | 7 | scikit-fda/FDApy independent references | Matched estimands, support, simulation-law and numerical tolerance audits |

@@ -46,6 +46,8 @@ jobs:
         run: python scripts/validate_ecosystem_interop.py
       - name: Run complete-grid handoff example
         run: python examples/interop_tabular_handoff.py
+      - name: Validate Eye-Tracking-BIDS read-only metadata profile
+        run: python scripts/validate_eye_tracking_bids.py
       - name: Build documentation strictly
         run: mkdocs build --strict
       - name: Configure Pages

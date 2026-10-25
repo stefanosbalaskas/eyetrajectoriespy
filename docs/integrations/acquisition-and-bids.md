@@ -14,6 +14,11 @@ These packages can prepare or annotate eye-tracking data **before** eyetrajector
 | [eyekit](https://pypi.org/project/eyekit/) | Reading text blocks, interest areas and fixation sequences | Keep text/fixation objects distinct from raw whole-path gaze |
 | [PupEyes](https://pupeyes.readthedocs.io/en/latest/) | Pupil processing, blink handling and interactive review | Preserve masks, pupil units and trial alignment |
 
+## Integration previews available in the repository
+
+- [Pinned pymovements 0.28.0 Gaze handoff](pymovements-handoff.md): tested native Gaze-object samples with explicit units and retained events.
+- [Read-only Eye-Tracking-BIDS metadata inspector](bids-metadata-inspector.md): headerless TSV.GZ structure and sidecar fields without modifying original recordings.
+
 ## Eye-Tracking-BIDS and metadata provenance
 
 The [BIDS eye-tracking extension directory](https://bids.neuroimaging.io/extensions/beps.html) and [2026 Eye-Tracking-BIDS paper](https://pmc.ncbi.nlm.nih.gov/articles/PMC12889726/) describe how eye-position/pupil data and sidecar metadata can be organized. The publication discusses recorded-eye identity, coordinate-system metadata, acquisition sampling/timing, and auxiliary event streams.
