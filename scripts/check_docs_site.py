@@ -13,6 +13,10 @@ ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 PAGES = (
     "tools/method-selector.md",
+    "integrations/index.md",
+    "integrations/tabular-handoff.md",
+    "integrations/acquisition-and-bids.md",
+    "integrations/roadmap.md",
     "tools/data-readiness.md",
     "tools/trajectory-explorer.md",
     "tools/figure-explorer.md",

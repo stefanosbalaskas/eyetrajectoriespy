@@ -8,6 +8,10 @@ The methods section contains the package's scientific contracts, validation
 evidence, reporting rules, mathematical reference, and reproducibility
 infrastructure.
 
+## External methods and data ecosystems
+
+[Python integrations and qualification roadmap](../integrations/index.md) · [Acquisition and Eye-Tracking-BIDS](../integrations/acquisition-and-bids.md). These pages distinguish existing optional reference libraries from proposed future adapters.
+
 ## Scientific practice
 
 - [Reporting checklist](reporting.md)

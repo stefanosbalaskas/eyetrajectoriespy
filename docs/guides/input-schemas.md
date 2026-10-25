@@ -14,6 +14,10 @@ These CSVs are **minimal invented structural examples**, *not actual observation
 
 **Mandatory decisions:** coordinate system (pixels, normalized screen fraction, degrees); time unit (seconds, milliseconds, normalized 0–1); source time origin; blink/invalid flags; whether device software already smoothed or interpolated; whether rows represent raw points or fixations; and whether repeated trials share participants. A missing coordinate is *not* gaze coordinate zero. The supplied rows are tiny schema illustrations, **not full valid statistical datasets**.
 
+## Optional pandas / Polars input boundary
+
+See the [versioned repository-level handoff example](../integrations/tabular-handoff.md) for explicit column mapping and fail-closed validation. It is **not** a newly released stable adapter, and it refuses to call the dense importer when observed support is incomplete or irregular.
+
 ## Dense tabular input
 
 ```python

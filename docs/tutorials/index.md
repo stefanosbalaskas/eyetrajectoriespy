@@ -1,5 +1,8 @@
 # Tutorial gallery
 
+**Python ecosystem integration:** [optional pandas / Polars / Parquet handoff with independent rejection tests](../integrations/tabular-handoff.md) and [research-safe package comparison](../integrations/index.md).
+
+
 **New:** [Download a runnable 1.2.0 synthetic dataset and Python starter](reproducible-starter.md). Explore the data with the [interactive trajectory viewer](../tools/trajectory-explorer.md), then continue to the published workflow examples below.
 
 ## Scientific workflow articles (stable 1.2.0)
