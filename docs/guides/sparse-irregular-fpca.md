@@ -1,6 +1,6 @@
 ---
 search:
-  boost: 1.2
+  boost: 1.8
 ---
 
 # Sparse univariate FPCA / PACE
