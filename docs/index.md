@@ -38,6 +38,9 @@ New to functional gaze analysis? Use the [data-to-method guide](start/data-to-me
 
 ## Interactive research tools
 
+**New:** [Inspect the structure of a gaze CSV in your browser](tools/data-readiness.md){ .md-button .md-button--primary } — read participant/trial support, missing coordinates and timestamps locally without sending data to a server. This is a structural preflight, not an instrument or inference validation.
+
+
 <div class="grid cards" markdown>
 
 - **Find a suitable analysis route**

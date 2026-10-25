@@ -1,0 +1,12 @@
+
+/* Local structural audit: user-readable controls with keyboard focus. */
+.et-tool input[type="file"],.et-tool textarea{display:block;width:100%;max-width:100%;padding:.6rem;border:1px solid var(--md-default-fg-color--lighter);border-radius:.5rem;background:var(--md-default-bg-color);color:var(--md-default-fg-color);font:inherit}
+.et-tool textarea{margin:.5rem 0 1rem;min-height:7rem;resize:vertical}
+.et-tool input[type="file"]:focus-visible,.et-tool textarea:focus-visible,.et-tool button:focus-visible{outline:3px solid var(--md-accent-fg-color);outline-offset:3px}
+.et-tool-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin:1rem 0}
+.et-tool-actions button{cursor:pointer;background:var(--md-default-bg-color);color:var(--md-default-fg-color);border:1px solid var(--md-default-fg-color--lighter);padding:.55rem .85rem;border-radius:.48rem;font:inherit}
+.et-tool-actions button.et-primary-action{background:var(--md-primary-fg-color);color:white;border-color:var(--md-primary-fg-color)}
+.et-tool-actions button:disabled{opacity:.5;cursor:not-allowed}
+.et-tool-actions button:not(:disabled):hover{border-color:var(--md-accent-fg-color)}
+#et-audit-report:empty{display:none}
+#et-audit-report ul{padding-left:1.2rem}

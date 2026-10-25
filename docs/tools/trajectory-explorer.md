@@ -17,12 +17,25 @@ Explore how *one deterministic teaching simulation* looks as a spatial path and 
     <div class="et-chart-box"><strong>Planar gaze (x,y)</strong><svg id="et-planar" viewBox="0 0 580 330" role="img" aria-label="Synthetic planar gaze"></svg></div>
     <div class="et-chart-box"><strong>Time-indexed x(t)</strong><svg id="et-timeseries" viewBox="0 0 580 330" role="img" aria-label="Synthetic horizontal gaze over time"></svg></div>
   </div>
+  <div class="et-tool-actions"><button type="button" id="et-save-observed">Export visible synthetic samples as CSV</button></div>
+  <details class="et-data-details">
+    <summary>Inspect the 61 synthetic sample positions in a table</summary>
+    <div class="et-table-wrap">
+      <table><caption>Deterministic teaching trajectory; unobserved x/y cells are intentionally blank</caption>
+        <thead><tr><th scope="col">Time (0–1)</th><th scope="col">x</th><th scope="col">y</th><th scope="col">Observation</th></tr></thead>
+        <tbody id="et-sample-table"></tbody>
+      </table>
+    </div>
+  </details>
   <p class="et-tool-legend">Blue dots = retained synthetic observations; dashed teal = fully known synthetic generating path, displayed only because this is a simulation. Shading = ±1 descriptive SD of six synthetic curves at each time, **not** a confidence or prediction interval. The known synthetic path is not an imputation algorithm.</p>
 </div>
 
 <noscript>Live plots require JavaScript. See the static [planar figure](../assets/trajectory-field.svg) and [worked 2-D example](../examples/evidence-inspection.md).</noscript>
 
 ## Scientific interpretation
+
+The optional table and downloadable CSV reflect **only the retained synthetic samples** after applying the missing-sample slider. An unobserved sample has no exported coordinate; the full dashed synthetic generating curve is displayed solely because its generating law is known in this teaching example.
+
 
 - The same points have different geometric meaning in x/y space and in x(t) time space.
 - With missing samples, observed support shrinks. A plotted full generating curve is *unobservable in real datasets* unless separately established.

@@ -1,5 +1,8 @@
 # Input schemas and preparation
 
+[**New: inspect the structure of a local CSV before import**](../tools/data-readiness.md). The browser inspector checks explicit time and coordinate columns, repeated participants, malformed timestamps and missing coordinates without uploading gaze observations. It is not a device-specific importer or calibrated statistical quality test.
+
+
 These CSVs are **minimal invented structural examples**, *not actual observations*. They are designed to make participant/trial identity, timestamp units, coordinate semantics and missingness visible before any model is fitted.
 
 | Observation contract | Downloadable small example | Important distinction |

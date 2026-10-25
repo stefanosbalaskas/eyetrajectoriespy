@@ -1,0 +1,13 @@
+"use strict";
+const assert=require("node:assert/strict");
+const app=require("../docs/javascripts/method-sharing.js");
+const allowed={"et-data":["dense","paired","async"],"et-goal":["variation","effects","recurrence"],"et-hierarchy":["independent","repeated"],"et-uncertainty":["descriptive","simultaneous"]};
+const state={"et-data":"async","et-goal":"effects","et-hierarchy":"repeated","et-uncertainty":"simultaneous"};
+const url=app.build("https://example.org/eyetrajectoriespy/tools/method-selector/?existing=yes#details",state);
+assert.equal(url.searchParams.get("existing"),"yes");
+assert.equal(url.searchParams.get("et_grid"),"async");
+assert.equal(url.hash,"#details");
+assert.deepEqual(app.hydrate(url.searchParams,allowed),state);
+url.searchParams.set("et_grid","../malicious");
+assert.equal(app.hydrate(url.searchParams,allowed)["et-data"],undefined);
+console.log("PASS method selector bookmark state and invalid-query refusal");

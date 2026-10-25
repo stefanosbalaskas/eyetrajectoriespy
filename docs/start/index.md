@@ -37,6 +37,9 @@ description: Choose a stable eyetrajectoriespy analysis route and find installat
 
 ## Practical interactive tools
 
+[Local CSV structure inspector](../tools/data-readiness.md){ .md-button .md-button--primary } — check long-format columns, time support and repeated-trial structure before import. It does not impute gaze or diagnose a missingness mechanism.
+
+
 [Choose a starting method](../tools/method-selector.md){ .md-button .md-button--primary }
 [Compare ten workflows](../tools/workflow-comparison.md){ .md-button }
 [Run a small synthetic CSV](../tutorials/reproducible-starter.md){ .md-button }
