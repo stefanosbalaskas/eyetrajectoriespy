@@ -1,0 +1,68 @@
+name: navigation-pruning-parity (non-deploying)
+
+on:
+  pull_request:
+    paths:
+      - "scripts/prepare_navigation_prune_preview.py"
+      - "scripts/compare_navigation_pruning.py"
+      - "scripts/browser_navigation_pruning.py"
+      - "docs/development/sitewide-experience-audit.md"
+      - ".github/workflows/navigation-pruning-parity.yml"
+      - "mkdocs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  paired-navigation-audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install production MkDocs and browser audit dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[docs,dev]"
+          python -m pip install "playwright==1.56.0"
+          python -m playwright install --with-deps chromium
+      - name: Install isolated automated accessibility scanner
+        run: npm --prefix build/site-accessibility install --no-save --no-package-lock axe-core@4.13.0
+      - name: Recreate deterministic source-linked scientific figures
+        run: python scripts/generate_docs_gallery.py
+      - name: Build unchanged MkDocs Material baseline
+        run: mkdocs build --strict --site-dir build/navigation-baseline-site
+      - name: Generate isolated navigation.prune configuration
+        run: python scripts/prepare_navigation_prune_preview.py
+      - name: Build navigation-pruned preview without deploying
+        run: mkdocs build --strict --config-file .navigation-prune-preview.mkdocs.yml
+      - name: Compare all HTML routes, main content, search and compressed navigation payload
+        run: python scripts/compare_navigation_pruning.py
+      - name: Strict full-site local link and fragment parity
+        run: |
+          python scripts/audit_sitewide_links.py --site build/navigation-baseline-site --strict --output build/navigation-baseline-links.json
+          python scripts/audit_sitewide_links.py --site build/navigation-prune-site --strict --output build/navigation-pruned-links.json
+      - name: Strict search-corpus parity for ten research-intent queries
+        run: |
+          python scripts/audit_search_corpus.py --site build/navigation-baseline-site --strict --output build/navigation-baseline-search.json
+          python scripts/audit_search_corpus.py --site build/navigation-prune-site --strict --output build/navigation-pruned-search.json
+      - name: Test live search, mobile drawer, accessibility and deep links in both builds
+        run: python scripts/browser_navigation_pruning.py
+      - name: Upload comparison, browser screenshots and audit records
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: material-navigation-pruning-experiment
+          path: |
+            build/navigation-prune-comparison.json
+            build/navigation-prune-browser.json
+            build/navigation-baseline-links.json
+            build/navigation-pruned-links.json
+            build/navigation-baseline-search.json
+            build/navigation-pruned-search.json
+            build/*-guides.png
+          if-no-files-found: warn
