@@ -112,7 +112,7 @@ A researcher should be able to **recognize what a method shows before copying co
         <p class="et-story-eyebrow">Signed local geometry · Synthetic teaching</p>
         <h3>Continuous planar curvature</h3>
         <p>Curvature is derived geometry and is sensitive to acquisition noise and smoothing choices.</p>
-        <p class="et-story-actions"><a href="../../examples/trajectory-geometry/">Guide</a> · <a href="../../guides/trajectory-geometry/">Method or evidence</a></p>
+        <p class="et-story-actions"><a href="../../examples/trajectory-geometry/">Guide</a> · <a href="../../methods/trajectory-geometry/">Method or evidence</a></p>
       </div>
     </article>
     <article class="et-story-card et-entry" data-et-entry data-topic="inference" data-status="teaching">
