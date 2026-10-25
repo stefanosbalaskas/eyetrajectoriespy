@@ -56,7 +56,7 @@ The same links remain usable with JavaScript disabled.
 
 | Ecosystem | Role and integration status | Start here |
 | --- | --- | --- |
-| pandas / Polars / PyArrow | Tables · Runnable repository example | [Tabular handoff](tabular-handoff.md) |
+| pandas / Polars / PyArrow | Tables · Runnable repository example | <a href="/eyetrajectoriespy/integrations/tabular-handoff/">Tabular handoff</a> |
 | pymovements | Gaze preprocessing · Pinned 0.28.0 example | [Gaze handoff](pymovements-handoff.md) |
 | SyeLink | EyeLink ASC parsing · Pinned 2.0.0 example | [EyeLink handoff](syelink-handoff.md) |
 | Eye-Tracking-BIDS | Metadata standard · Narrow read-only preview | [BIDS inspection](bids-metadata-inspector.md) |
@@ -115,7 +115,7 @@ The same links remain usable with JavaScript disabled.
       </ol>
       <p id="et-path-limitation">This planner does not read, upload, convert or validate participant recordings.</p>
       <div class="et-connect-links">
-        <a id="et-path-guide" href="../tabular-handoff/">Open source guide</a>
+        <a id="et-path-guide" href="/eyetrajectoriespy/integrations/tabular-handoff/">Open source guide</a>
         <a id="et-path-method" href="../../start/data-to-method/">Open method guidance</a>
       </div>
       <div class="et-connect-actions">

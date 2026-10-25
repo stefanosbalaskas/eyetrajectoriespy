@@ -8,7 +8,7 @@ description: Optional pandas and Polars interoperability examples, and evidence-
 **Interoperate instead of duplicating upstream data processing.** eyetrajectoriespy 1.2.0 already has optional scikit-fda, FDApy and elastic-function integrations. This section adds an **example-level** pandas/Polars table bridge and documents research-safe handoffs from acquisition and data-quality ecosystems.
 
 [Find the right Python integration](navigator.md){ .md-button .md-button--primary }
-[Choose an acquisition or functional route](navigator.md#build-a-reproducible-handoff-checklist){ .md-button }
+[Choose an acquisition or functional route](navigator.md#et-connect-plan){ .md-button }
 
 [EyeLink SyeLink integration](syelink-handoff.md){ .md-button }
 [EyeLink Python parser comparison](eyelink-ecosystem.md){ .md-button }
@@ -20,7 +20,7 @@ description: Optional pandas and Polars interoperability examples, and evidence-
 
 ## Choose a source before choosing an estimator
 
-The [interactive integration navigator](navigator.md) now lists 14 external and optional ecosystems in one place, with explicit statuses, device/source focus and documentation links. Its companion [source-to-method checklist](navigator.md#build-a-reproducible-handoff-checklist) records provenance, actual observation support and research boundaries. It is a browser-based documentation aid; **no files are processed or uploaded**.
+The [interactive integration navigator](navigator.md) now lists 14 external and optional ecosystems in one place, with explicit statuses, device/source focus and documentation links. Its companion [source-to-method checklist](navigator.md#et-connect-plan) records provenance, actual observation support and research boundaries. It is a browser-based documentation aid; **no files are processed or uploaded**.
 
 ## New EyeLink source-level interoperability
 

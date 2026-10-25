@@ -1,0 +1,56 @@
+name: website-mobile-lighthouse (non-deploying)
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - ".lighthouserc.cjs"
+      - ".github/workflows/website-mobile-lighthouse.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobile-baseline:
+    runs-on: ubuntu-24.04
+    # Baseline first: results are retained before setting any performance gate.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install production documentation dependencies
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[docs,dev]"
+      - name: Build unchanged MkDocs website with source-derived gallery
+        run: |
+          python scripts/generate_docs_gallery.py
+          mkdocs build --strict
+      - name: Mirror real GitHub Pages subpath in local static server
+        run: |
+          mkdir -p build/lighthouse-webroot/eyetrajectoriespy
+          cp -a site/. build/lighthouse-webroot/eyetrajectoriespy/
+      - name: Install pinned Lighthouse CI
+        run: npm install --no-save --no-package-lock @lhci/cli@0.15.1
+      - name: Collect mobile performance, accessibility and SEO report
+        run: npx lhci collect --config=.lighthouserc.cjs
+      - name: Summarize audited mobile categories and Core Web Vitals proxies
+        run: python scripts/summarize_lighthouse.py
+      - name: Persist raw Lighthouse audit privately as CI artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-mobile-lighthouse-evidence
+          path: |
+            .lighthouseci/**
+            build/lighthouse-mobile-summary.json
+          include-hidden-files: true
+          if-no-files-found: warn

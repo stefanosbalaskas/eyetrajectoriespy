@@ -39,7 +39,7 @@ def _card(name: str, entry: dict[str, str]) -> str:
     quantity = entry["quantity"]
     equation = entry["equation"]
     example = entry["example"]
-    return f"""## `{name}`\n\n![{quantity}](../../assets/gallery/{asset})\n\n**API:** [`{name}()`](../../reference/api.md#{name})  \n**Scientific quantity:** {quantity}  \n**Equation:** [mathematical contract](../mathematical-reference.md#{equation})  \n**Worked example:** [example](../../examples/{example}.md)\n"""
+    return f"""## `{name}`\n\n![{quantity}](../../assets/gallery/{asset})\n\n**API:** [`{name}()`](../../reference/api.md#eyetrajectoriespy.{name})  \n**Scientific quantity:** {quantity}  \n**Equation:** [mathematical contract](../mathematical-reference.md#{equation})  \n**Worked example:** [example](../../examples/{example}.md)\n"""
 
 
 def _write_index(grouped: dict[str, list[tuple[str, dict[str, str]]]]) -> None:

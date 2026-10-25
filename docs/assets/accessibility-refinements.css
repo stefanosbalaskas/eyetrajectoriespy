@@ -48,3 +48,17 @@
 [data-md-color-scheme="default"] .md-typeset .highlight :is(.na, .nv) {
   color: #595959;
 }
+
+/* Reproducible Chromium regression: Material can animate the repository
+   version fact to a translucent #8792d0/#afb6e0/#9ba4d8 state on an indigo
+   header. Keep both label and its parent fully opaque through navigation. */
+.md-header .md-header__source .md-source__repository,
+.md-header .md-header__source .md-source__facts,
+.md-header .md-header__source .md-source__fact,
+.md-header .md-header__source .md-source__fact--version {
+  opacity: 1 !important;
+  color: #ffffff !important;
+}
+.md-header .md-header__source .md-source__fact--version {
+  transition: none !important;
+}

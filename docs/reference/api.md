@@ -548,3 +548,16 @@ For mathematical definitions of the main estimands, transformations, studentizat
 ::: eyetrajectoriespy.functional_mixed_effects_variance_bootstrap_frame
 ::: eyetrajectoriespy.compare_functional_mixed_effects_bootstraps
 ::: eyetrajectoriespy.plot_functional_mixed_effects_bootstrap_comparison
+
+
+## Additional published plotting functions (1.2.0)
+
+These callables are exported from the stable root module and appear in the generated plotted-example gallery. Their anchors are provided here so figures link to concrete public API signatures.
+
+::: eyetrajectoriespy.plot_fpca_variance
+::: eyetrajectoriespy.plot_registration
+::: eyetrajectoriespy.plot_trajectory_overlay
+::: eyetrajectoriespy.plot_sparse_mfpca_component
+::: eyetrajectoriespy.plot_sparse_mfpca_covariance_blocks
+::: eyetrajectoriespy.plot_sparse_mfpca_cross_covariance
+::: eyetrajectoriespy.plot_sparse_mfpca_score_diagnostics

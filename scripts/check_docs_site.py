@@ -27,6 +27,7 @@ PAGES = (
     "tools/figure-explorer.md",
     "tools/figure-storyboard.md",
     "development/zensical-preview.md",
+    "development/sitewide-experience-audit.md",
     "start/first-analysis.md",
     "start/cite-and-reproduce.md",
     "tools/evidence-explorer.md",
@@ -58,7 +59,13 @@ def target_exists(page: Path, dest: str) -> bool:
     path = urlsplit(dest).path
     if not path or dest.startswith(("#", "mailto:")) or urlsplit(dest).scheme:
         return True
-    file = (page.parent / unquote(path)).resolve()
+    # A site-root-absolute link must resolve from the repo's published
+    # GitHub Pages subpath, not from the .md source directory.
+    prefix = "/eyetrajectoriespy/"
+    if path.startswith(prefix):
+        file = (DOCS / unquote(path[len(prefix):])).resolve()
+    else:
+        file = (page.parent / unquote(path)).resolve()
     if not file.is_relative_to(DOCS.resolve()):
         return False
     if file.is_file():

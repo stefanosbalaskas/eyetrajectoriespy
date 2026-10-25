@@ -50,6 +50,10 @@ jobs:
         run: python scripts/validate_eye_tracking_bids.py
       - name: Build documentation strictly
         run: mkdocs build --strict
+      - name: Audit rendered links and fragments on all public documentation pages
+        run: python scripts/audit_sitewide_links.py --strict --output build/sitewide-links.json
+      - name: Audit the full-search index's critical pages
+        run: python scripts/audit_search_corpus.py --strict --output build/site-search-corpus.json
       - name: Audit site discovery and citation metadata
         run: python scripts/audit_site_discoverability.py
       - name: Configure Pages
