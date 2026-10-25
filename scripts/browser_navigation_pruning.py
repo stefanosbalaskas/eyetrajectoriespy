@@ -99,7 +99,7 @@ def inspect_browser(browser, site: Path, label: str, output: Path) -> dict:
                     )
                 else:
                     # The mobile navigation drawer must remain keyboard operable.
-                    page.locator('label[for="__drawer"]').first.click()
+                    page.locator('.md-header__button[for="__drawer"]').click()
                     drawer = page.locator("input#__drawer")
                     assert drawer.is_checked(), (label, "mobile navigation drawer did not open")
                     assert page.locator(".md-sidebar--primary a[href]").count() > 0, (
