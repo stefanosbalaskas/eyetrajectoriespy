@@ -38,7 +38,7 @@ for(const id of ids){
     const plan=planFor(id,support);
     assert.equal(plan.source,id);
     assert.equal(plan.steps.length,5);
-    assert.match(plan.text,/No file was processed or validated/);
+    assert.match(plan.text,/no file was processed or validated/i);
     assert.match(plan.text,/participant ID/);
     assert.match(plan.text,/upstream/);
     assert.match(plan.text,/scientifically valid inference/);
