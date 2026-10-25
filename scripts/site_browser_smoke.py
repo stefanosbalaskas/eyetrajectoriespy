@@ -114,10 +114,15 @@ def run(site: Path) -> dict:
         server.shutdown()
         server.server_close()
         OUT.mkdir(parents=True, exist_ok=True)
+        report["high_impact_total"] = sum(item["highImpact"] for item in report["accessibility"])
         (OUT / "browser-report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
-    # The preview workflow is non-deploying. Surface high-severity findings in
-    # the report rather than falsely certifying accessibility.
-    report["high_impact_total"] = sum(item["highImpact"] for item in report["accessibility"])
+    # A regression in tagged serious/critical accessibility findings should
+    # fail the optional visual QA job. This is NOT a WCAG conformance claim.
+    if report["high_impact_total"]:
+        raise AssertionError(
+            f"Automated accessibility audit found {report['high_impact_total']} "
+            "serious/critical rule violations; inspect browser-report.json."
+        )
     return report
 
 

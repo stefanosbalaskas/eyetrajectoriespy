@@ -30,7 +30,7 @@ These additions make source identification and crawling clearer. They **do not g
 
 The first optional axe-core run flagged an unnamed Material loading progressbar, top-tab text just below the 4.5:1 contrast threshold in the light indigo theme, and documentation links distinguishable only by color. A shared minimal CSS/JS refinement now adds a progressbar accessible name, more legible navigation/footer text and underlined inline documentation links. These are **specific remediations**, not a declaration of complete accessibility.
 
-The browser report retains all automated findings with their node selectors and severity; zero findings on a small representative set would still require human testing with assistive technology.
+The browser report retains all automated findings with their node selectors and severity. The optional Chromium workflow now **fails its accessibility step for any serious or critical WCAG-tagged findings** in the sampled routes. It is non-deploying and remains separate from the strict MkDocs release gate. Zero findings on these routes still requires human keyboard and screen-reader testing.
 
 ## Regression governance
 
