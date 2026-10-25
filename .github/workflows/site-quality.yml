@@ -6,6 +6,7 @@ on:
     paths:
       - "docs/**"
       - "scripts/check_docs_site.py"
+      - "scripts/audit_site_discoverability.py"
       - "mkdocs.yml"
       - ".github/workflows/site-quality.yml"
   pull_request:
@@ -34,6 +35,7 @@ jobs:
         run: |
           node --check docs/javascripts/interactive-explorers.js
           node --check docs/javascripts/integration-navigator.js
+          node --check docs/javascripts/accessibility-refinements.js
           node --check docs/javascripts/gaze-data-readiness.js
           node --check docs/javascripts/method-sharing.js
       - name: Test integration discovery, link paths and scientific boundaries
@@ -42,5 +44,7 @@ jobs:
         run: node scripts/test_gaze_data_readiness.cjs
       - name: Test bookmarkable method-selector URLs
         run: node scripts/test_method_sharing.cjs
+      - name: Compile site SEO, browser and accessibility inspection code
+        run: python -m py_compile scripts/audit_site_discoverability.py scripts/site_browser_smoke.py scripts/site_accessibility.py
       - name: Verify controls, link targets, labels, image alternatives and teaching fixture
         run: python scripts/check_docs_site.py

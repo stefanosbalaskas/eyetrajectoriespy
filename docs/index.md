@@ -6,6 +6,25 @@ hide:
   - toc
 ---
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  "name": "eyetrajectoriespy",
+  "description": "Functional and continuous eye-tracking trajectory analysis in Python",
+  "softwareVersion": "1.2.0",
+  "programmingLanguage": "Python",
+  "runtimePlatform": ["Python 3.11", "Python 3.12", "Python 3.13"],
+  "codeRepository": "https://github.com/stefanosbalaskas/eyetrajectoriespy",
+  "url": "https://stefanosbalaskas.github.io/eyetrajectoriespy/",
+  "license": "https://opensource.org/licenses/MIT",
+  "author": {
+    "@type": "Person",
+    "name": "Stefanos Balaskas"
+  }
+}
+</script>
+
 <div class="et-home-intro" markdown>
 
 <div class="et-home-label">Functional eye-tracking analysis · Python 3.11–3.13</div>
@@ -33,6 +52,14 @@ hide:
 <small>Conceptual synthetic schematic, not measured human gaze or a performance claim.</small>
 
 </div>
+
+## Site transparency and accessibility
+
+The [website quality and discoverability guide](development/website-quality.md) explains how documentation pages, canonical URLs, visual assets and browser accessibility are tested. The checks are reproducible but do not certify WCAG compliance or guarantee search visibility.
+
+## Cite and reproduce research
+
+Using the software in a paper? [Get the exact 1.2.0 citation and research provenance checklist](start/cite-and-reproduce.md). The website citation reflects `CITATION.cff`, distinguishes released APIs from repository previews, and does not invent a DOI.
 
 ## Start with your data and research question
 

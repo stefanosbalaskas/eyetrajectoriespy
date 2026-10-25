@@ -1,0 +1,50 @@
+/* Evidence-guided accessibility improvements from optional local axe-core checks.
+   Shared shell styling only; do not alter scientific figures or their visual encodings. */
+
+/* The indigo header previously rendered several navigation labels just below
+   4.5:1; fully opaque near-white text restores legibility on the same theme. */
+.md-tabs__link,
+.md-tabs__item .md-tabs__link:not(.md-tabs__link--active) {
+  color: rgba(255, 255, 255, .96);
+  opacity: 1;
+}
+.md-header__source .md-source {
+  color: #fff;
+  opacity: 1;
+}
+.md-copyright,
+.md-footer-meta .md-copyright {
+  color: rgba(255, 255, 255, .9);
+  opacity: 1;
+}
+/* Always distinguish inline scientific/documentation links without relying
+   exclusively on a subtle indigo text-versus-body contrast. */
+.md-typeset :is(p, li, td, dd, blockquote) a:not(.md-button):not(.headerlink) {
+  text-decoration: underline;
+  text-decoration-thickness: .075em;
+  text-underline-offset: .14em;
+}
+.md-typeset a:focus-visible,
+.md-tabs__link:focus-visible,
+.md-source:focus-visible {
+  outline: 3px solid var(--md-accent-fg-color);
+  outline-offset: 3px;
+}
+/* Keep floating navigator and progress appearance unchanged: ARIA handled
+   in a tiny progressive-enhancement script included below. */
+
+/* Round-two contrast fixes grounded in Chromium axe findings. */
+.md-header__source .md-source__fact,
+.md-header__source .md-source__facts {
+  color: rgba(255,255,255,.98);
+  opacity: 1;
+}
+.md-typeset .et-connect-card .et-connect-boundary {
+  color: var(--md-default-fg-color);
+}
+.md-typeset .et-landing-visual small {
+  color: var(--md-default-fg-color);
+}
+[data-md-color-scheme="default"] .md-typeset .highlight :is(.na, .nv) {
+  color: #595959;
+}

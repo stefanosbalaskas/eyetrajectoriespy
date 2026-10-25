@@ -1,5 +1,7 @@
 # Tutorial gallery
 
+[How to cite and reproduce a research analysis](../start/cite-and-reproduce.md) complements the runnable examples and describes the software version, provenance and scientific reporting obligations.
+
 **New visual path:** [illustrated method explorer](../tools/figure-storyboard.md) and [first-analysis walkthrough](../start/first-analysis.md). Both use existing deterministic figures and specify the boundaries of their interpretation.
 
 

@@ -35,6 +35,10 @@ description: Choose a stable eyetrajectoriespy analysis route and find installat
 
 </div>
 
+## Citing the software
+
+[Copy the software citation and follow the reporting checklist](cite-and-reproduce.md). This is the documented MIT 1.2.0 software record, not a claim of calibrated W3 confidence bands or qualified vendor adapters.
+
 ## Begin with a complete first analysis
 
 [Follow the first-analysis walkthrough](first-analysis.md){ .md-button .md-button--primary } · [Browse the visual methods explorer](../tools/figure-storyboard.md)

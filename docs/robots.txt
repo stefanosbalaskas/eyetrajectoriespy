@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://stefanosbalaskas.github.io/eyetrajectoriespy/sitemap.xml

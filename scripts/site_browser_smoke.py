@@ -13,6 +13,8 @@ import json
 from pathlib import Path
 import threading
 
+from site_accessibility import inspect as audit_accessibility
+
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "build/site-browser-audit"
 BASE = "/eyetrajectoriespy/"
@@ -39,7 +41,7 @@ def run(site: Path) -> dict:
     thread.start()
     origin = f"http://127.0.0.1:{server.server_port}{BASE}"
     report = {"url_prefix": BASE, "desktop_gallery_count": 0, "filtered_count": None,
-              "mobile_gallery_count": 0, "images_loaded": 0, "screenshots": [], "failures": []}
+              "mobile_gallery_count": 0, "images_loaded": 0, "screenshots": [], "failures": [], "accessibility": []}
     try:
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=True, args=["--disable-dev-shm-usage"])
@@ -79,6 +81,7 @@ def run(site: Path) -> dict:
                     shot = OUT / f"{kind}-figure-storyboard.png"
                     page.screenshot(path=str(shot), full_page=True, animations="disabled")
                     report["screenshots"].append(shot.name)
+                    report["accessibility"].append(audit_accessibility(page, route="tools/figure-storyboard/", viewport=kind))
                     assert not errors, f"{kind} gallery page JS errors: {errors}"
                     page.close()
                 page = browser.new_page(viewport={"width": 1440, "height": 900})
@@ -88,11 +91,19 @@ def run(site: Path) -> dict:
                 shot = OUT / "desktop-first-analysis.png"
                 page.screenshot(path=str(shot), full_page=True, animations="disabled")
                 report["screenshots"].append(shot.name)
+                report["accessibility"].append(audit_accessibility(page, route="start/first-analysis/", viewport="desktop"))
                 page.goto(origin + "integrations/navigator/", wait_until="domcontentloaded")
                 page.locator("#et-package-grid article").first.wait_for(timeout=20000)
                 assert page.locator("#et-package-grid article").count() == 14
                 page.select_option("#et-package-phase", "preview")
                 assert 1 < page.locator("#et-package-grid article").count() < 14
+                report["accessibility"].append(audit_accessibility(page, route="integrations/navigator/", viewport="desktop"))
+                page.goto(origin + "start/cite-and-reproduce/", wait_until="domcontentloaded")
+                assert page.locator("h1").count() >= 1
+                report["accessibility"].append(audit_accessibility(page, route="start/cite-and-reproduce/", viewport="desktop"))
+                page.goto(origin, wait_until="domcontentloaded")
+                assert page.locator("h1").count() >= 1
+                report["accessibility"].append(audit_accessibility(page, route="home", viewport="desktop"))
                 page.close()
             finally:
                 browser.close()
@@ -103,7 +114,15 @@ def run(site: Path) -> dict:
         server.shutdown()
         server.server_close()
         OUT.mkdir(parents=True, exist_ok=True)
+        report["high_impact_total"] = sum(item["highImpact"] for item in report["accessibility"])
         (OUT / "browser-report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    # A regression in tagged serious/critical accessibility findings should
+    # fail the optional visual QA job. This is NOT a WCAG conformance claim.
+    if report["high_impact_total"]:
+        raise AssertionError(
+            f"Automated accessibility audit found {report['high_impact_total']} "
+            "serious/critical rule violations; inspect browser-report.json."
+        )
     return report
 
 
