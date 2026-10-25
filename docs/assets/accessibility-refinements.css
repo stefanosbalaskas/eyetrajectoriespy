@@ -62,3 +62,14 @@
 .md-header .md-header__source .md-source__fact--version {
   transition: none !important;
 }
+
+/* The live Material search overlay is part of the tested browser journey.
+   Axe-core observed a teal #00bda4 match on white at 2.38:1 and result
+   metadata #6d6d6d on #ededed at 4.41:1 (both below 4.5:1 for body text).
+   Target LIGHT-scheme search results only; preserve the dark palette. */
+[data-md-color-scheme="default"] .md-search-result mark {
+  color: #00695c !important;
+}
+[data-md-color-scheme="default"] .md-search-result__meta {
+  color: #555555 !important;
+}
