@@ -4,6 +4,8 @@ title: Methods
 
 # Methods
 
+[Find a topic or research question](../start/find-a-topic.md) · [First-analysis walkthrough](../start/first-analysis.md)
+
 The methods section contains the package's scientific contracts, validation
 evidence, reporting rules, mathematical reference, and reproducibility
 infrastructure.
