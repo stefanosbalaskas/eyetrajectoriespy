@@ -103,10 +103,14 @@ better search ranking, faster real-user loads or a field Core Web Vitals gain.**
 
 The paired non-deploying workflow keeps generating **both builds** even after
 the production default changes. The production `mkdocs.yml` flag can be
-reverted in one line and all historical deep links are retained. The thirteen
-pre-existing pages not reachable by static links are now enumerated by the
-reachability audit for a separate editorial fix; they were **not caused by
-pruning**.
+reverted in one line and all historical deep links are retained. A separate content-discovery audit enumerated **13 pre-existing, statically
+unreachable routes**; this follow-up links ten legitimate documentation and
+historic decision pages from relevant indexes. Three intentionally do not
+appear in the public navigation: `404.html`, the included mathematical
+source fragment `methods/mathematical-reference-base/`, and an obsolete
+`tools/workflows/nonlinear-recurrence/` redirect. The reachability script
+now fails if an unapproved static-link orphan is introduced. These were
+**not caused by pruning**.
 
 Review repeated [simulated mobile Lighthouse audits](website-quality.md)
 and post-merge Pages deployment before describing the candidate as live.
