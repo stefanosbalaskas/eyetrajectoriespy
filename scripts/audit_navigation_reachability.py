@@ -17,6 +17,16 @@ from urllib.parse import unquote, urljoin, urlsplit
 BASE = "https://stefanosbalaskas.github.io/eyetrajectoriespy/"
 PREFIX = "/eyetrajectoriespy/"
 
+# These are intentionally not advertised in the content navigation:
+# - 404 is a fallback, never a discovery destination;
+# - mathematical-reference-base is embedded by the canonical math page;
+# - nonlinear-recurrence is a preserved old-URL redirect, not a new entry point.
+INTENTIONALLY_UNLINKED = {
+    "404.html",
+    "methods/mathematical-reference-base/index.html",
+    "tools/workflows/nonlinear-recurrence/index.html",
+}
+
 
 class Anchors(HTMLParser):
     def __init__(self) -> None:
@@ -80,8 +90,10 @@ def compare(baseline: Path, candidate: Path) -> dict:
     b = graph(candidate)
     before, after = reachable(a), reachable(b)
     newly_orphaned = sorted(before - after)
+    unresolved = sorted((set(b) - after) - INTENTIONALLY_UNLINKED)
+    intentional = sorted((set(b) - after) & INTENTIONALLY_UNLINKED)
     return {
-        "status": "pass" if not newly_orphaned and set(a) == set(b) else "review",
+        "status": "pass" if not newly_orphaned and not unresolved and set(a) == set(b) else "review",
         "baseline_pages": len(a),
         "candidate_pages": len(b),
         "baseline_reachable": len(before),
@@ -89,6 +101,9 @@ def compare(baseline: Path, candidate: Path) -> dict:
         "baseline_already_unreachable": len(set(a) - before),
         "baseline_unreachable_routes": sorted(set(a) - before),
         "candidate_unreachable_routes": sorted(set(b) - after),
+        "intentional_non_discovery_routes": intentional,
+        "unexpected_unreachable_routes": unresolved,
+        "unexpected_unreachable_count": len(unresolved),
         "newly_unreachable_after_pruning": len(newly_orphaned),
         "example_newly_unreachable": newly_orphaned[:80],
         "limitations": (
