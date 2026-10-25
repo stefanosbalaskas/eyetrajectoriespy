@@ -75,38 +75,43 @@ speedup: this document contains no new post-change scores or field Core Web
 Vitals measurements. The browser preview also tests a real interactive search
 for the SyeLink documentation, beyond static index keyword presence.
 
-## Experimental Material navigation pruning (25 October 2026)
+## Navigation pruning: qualified experiment and production candidate (25 October 2026)
 
-The production Material site has approximately 368 generated pages. Material's
-[`navigation.prune` option](https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-pruning)
-renders only the currently visible navigation branch and turns collapsed
-sections into links to their landing or first page. It is incompatible with
-`navigation.expand` (which is not enabled here). This behavior can save HTML
-but also changes the way readers discover individual topics.
+Production activation is proposed in a **separate, reversible PR** after the
+successfully merged [non-deploying comparison #494](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/494).
+Material's [`navigation.prune`](https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-pruning)
+shrinks the large, repeated sidebar tree while retaining section-index
+navigation. The same option cannot be used with `navigation.expand`.
 
-**Decision: controlled comparison only, no production pruning flag yet.**
-The separate `navigation-pruning-parity (non-deploying)` workflow generates
-`.navigation-prune-preview.mkdocs.yml` automatically; it does not edit
-`mkdocs.yml`. Both builds use the same strict source, scientific gallery,
-API reference and installed MkDocs theme. An additional all-page static-link
-reachability graph checks for **newly orphaned routes** that a broken-link
-scanner alone would miss.
+### Paired full-archive evidence from #494
 
-The comparison checks all HTML routes, compressed and raw HTML size, stable
-main content, identical search-index entries, site-wide links and fragments,
-and the previously defined ten scientific search intentions. Two independent
-browser sessions test deep direct links, section-index navigation, real Material
-search, instant navigation, mobile navigation drawer and sampled axe-core
-accessibility. Browse the CI artifact for actual numerical findings; **no
-percentage saving, search equivalence, Lighthouse gain or WCAG conformance
-is claimed merely by adding an experiment**.
+| Qualification measure | Unpruned | Pruned |
+|---|---:|---:|
+| Generated routes | 368 | 368 |
+| Main-content text hashes matching | 368 | 368 |
+| Search-index entries | 4,069 | 4,069, identical |
+| Generated HTML (sum of pages) | 75.25 MB | 26.62 MB |
+| Gzip-compressed HTML (sum of pages) | 7.26 MB | 4.14 MB |
+| Statically reachable pages from homepage | 355 | 355 |
+| Newly statically unreachable pages | — | 0 |
 
-Promote this option to a separate production PR **only if** measurable size
-reduction accompanies green parity checks and the resulting section-index
-route is sufficiently discoverable to replace collapsed sidebar lists.
-Keep the unpruned baseline available as an immediate rollback path. Experimental
-checks do not change published eyetrajectoriespy 1.2.0 or qualify open
-scientific blockers.
+All baseline/candidate built links and fragments passed; representative
+desktop/mobile Chromium checks for deep routes, section gateways, actual
+Material search and drawer navigation passed. Sampled axe-core checks reported
+no serious or critical findings. **This is not proof of manual WCAG conformance,
+better search ranking, faster real-user loads or a field Core Web Vitals gain.**
+
+The paired non-deploying workflow keeps generating **both builds** even after
+the production default changes. The production `mkdocs.yml` flag can be
+reverted in one line and all historical deep links are retained. The thirteen
+pre-existing pages not reachable by static links are now enumerated by the
+reachability audit for a separate editorial fix; they were **not caused by
+pruning**.
+
+Review repeated [simulated mobile Lighthouse audits](website-quality.md)
+and post-merge Pages deployment before describing the candidate as live.
+The published `eyetrajectoriespy==1.2.0` API, scientific estimators and
+unqualified inference claims are untouched.
 
 ## Zensical production decision: HOLD
 
