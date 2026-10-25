@@ -34,9 +34,9 @@ jobs:
       - name: Strict production MkDocs build
         run: mkdocs build --strict
       - name: Audit all generated local links and named fragments
-        run: python scripts/audit_sitewide_links.py --strict
+        run: python scripts/audit_sitewide_links.py --strict --strict
       - name: Audit research-search index coverage
-        run: python scripts/audit_search_corpus.py
+        run: python scripts/audit_search_corpus.py --strict
       - name: Save findings without deploying
         if: always()
         uses: actions/upload-artifact@v4
