@@ -1,5 +1,7 @@
 # Tutorial gallery
 
+**New:** [Download a runnable 1.2.0 synthetic dataset and Python starter](reproducible-starter.md). Explore the data with the [interactive trajectory viewer](../tools/trajectory-explorer.md), then continue to the published workflow examples below.
+
 ## Scientific workflow articles (stable 1.2.0)
 
 The ten module-scoped workflow entry points combine existing qualified methods with explicit scientific decisions, ordered records, reporting and reproducibility bundles. **The ten W1–W4 orchestration routes are available in stable `eyetrajectoriespy==1.2.0` as module-scoped APIs; E1–E4 research helpers remain experimental.**

@@ -35,6 +35,14 @@ description: Choose a stable eyetrajectoriespy analysis route and find installat
 
 </div>
 
+## Practical interactive tools
+
+[Choose a starting method](../tools/method-selector.md){ .md-button .md-button--primary }
+[Compare ten workflows](../tools/workflow-comparison.md){ .md-button }
+[Run a small synthetic CSV](../tutorials/reproducible-starter.md){ .md-button }
+
+The selector is guidance, not automated model validation. The downloadable teaching fixture is not empirical gaze or calibrated uncertainty.
+
 ## Three questions before any fit
 
 1. **Observation unit** — independent curve, participant, trial or repeated participant cluster?

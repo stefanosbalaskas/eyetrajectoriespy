@@ -5,6 +5,8 @@ description: Synthetic functional eye-tracking visualization gallery and indepen
 
 # Scientific figure atlas
 
+[Filter and search selected figures](../tools/figure-explorer.md){ .md-button .md-button--primary } — a source-linked curated view with representation, inference and missingness filters. The full atlas remains below.
+
 Figures are grouped by **the question they answer**, rather than by the order in which they were created. Example plots are deterministic synthetic illustrations. Research plots document specifically frozen experiments and should **not** be generalized beyond their archived assumptions.
 
 ## A. Understand the functional gaze representation
