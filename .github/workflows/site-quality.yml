@@ -48,6 +48,8 @@ jobs:
         run: node scripts/test_gaze_data_readiness.cjs
       - name: Test bookmarkable method-selector URLs
         run: node scripts/test_method_sharing.cjs
+      - name: Validate Lighthouse median and spread summaries without Chrome
+        run: python scripts/test_summarize_lighthouse.py
       - name: Compile built-site integrity and search audit scripts
         run: python -m py_compile scripts/audit_sitewide_links.py scripts/audit_search_corpus.py scripts/compare_docs_builds.py
       - name: Compile site SEO, browser and accessibility inspection code
