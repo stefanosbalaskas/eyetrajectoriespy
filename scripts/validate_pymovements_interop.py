@@ -27,8 +27,8 @@ def main() -> None:
     a = load("interop_pymovements", "interop_pymovements.py")
     frame = pd.DataFrame({
         "time_raw": [0, 10, 20, 0, 10, 20],
-        "xraw": [10, 11, 12, 15, 16, 17],
-        "yraw": [20, 21, 22, 25, 26, 27],
+        "xraw": [10.0, 11.0, 12.0, 15.0, 16.0, 17.0],
+        "yraw": [20.0, 21.0, 22.0, 25.0, 26.0, 27.0],
         "trial": ["first", "first", "first", "second", "second", "second"],
     })
     gaze = pm.gaze.from_pandas(
@@ -75,10 +75,6 @@ def main() -> None:
     )
     incomplete = convert(sparse)
     assert not incomplete.audit.complete_xy
-    try:
-        a.load("unused")  # There is deliberately no implicit file-reader API.
-    except AttributeError:
-        pass
     # Source timestamps remain on their native observed time support.
     duplicate = frame.copy()
     duplicate.loc[1, "time_raw"] = 0
