@@ -11,6 +11,8 @@
 - Ten W1–W4 workflow routes are stable module-scoped APIs; twelve E1–E4 helpers remain experimental. Unresolved inference/missingness issues [#289](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/289) and [#296](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/296) remain excluded.
 - The original 1.2.0 README bundled into PyPI contains stale release status. A corrected live GitHub README/website does **not** mutate the immutable published distribution description; a later patch version is necessary to update it on PyPI.
 
+Historical release decisions and draft RC2 publication authorization are indexed in the [research-candidate and release-decision archive](development/unpublished-candidate-history.md).
+
 The material below retains **historical prepublication snapshots**. Those candidate-stage assertions are not the current release status.
 
 ## Experimental source line (draft PR #223)
