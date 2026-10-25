@@ -18,7 +18,7 @@ Select the **observed data support**, scientific target, clustering and uncertai
     <strong data-et-method-name>Common-grid functional PCA</strong>
     <p data-et-method-input>Default: aligned common grid, gaze variation.</p>
     <p data-et-method-note>Interpret the fitted components against the recorded units and design.</p>
-    <a data-et-method-link href="../workflows/fpca-exploration/">Read the method and example</a>
+    <a data-et-method-link href="../../workflows/fpca-exploration/">Read the method and example</a>
   </div>
 </div>
 

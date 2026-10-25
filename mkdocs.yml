@@ -5,6 +5,10 @@ repo_url: https://github.com/stefanosbalaskas/eyetrajectoriespy
 repo_name: stefanosbalaskas/eyetrajectoriespy
 edit_uri: edit/main/docs/
 
+# Preserve only the specifically shared historical broken URL without adding it to navigation.
+not_in_nav: |
+  /tools/workflows/nonlinear-recurrence.md
+
 nav:
   - Home: index.md
   - Start here:

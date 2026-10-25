@@ -14,15 +14,15 @@
     return points.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(2) + " " + p[1].toFixed(2); }).join(" ");
   }
   const routes = {
-    fpca: ["Common-grid functional PCA", "../workflows/fpca-exploration/", "Declare scaling, time grid and independence; component patterns are not psychological constructs."],
-    sparse: ["Paired sparse planar MFPCA", "../guides/sparse-multivariate-fpca/", "Keep both coordinates on their actual shared observation times; smoothing choices and score uncertainty must be reported."],
-    async: ["Asynchronous sparse MFPCA", "../guides/irregular-trajectories/", "Preserve channel-specific timestamps. Do not invent synchronized observations."],
-    multilevel: ["Sparse multilevel workflow", "../articles/choosing-the-ten-workflows/", "Participant/trial nesting changes the independent unit; verify support and model assumptions."],
-    prediction: ["Sparse partial-trajectory prediction", "../articles/choosing-the-ten-workflows/", "Separate training and prediction support; do not present illustrative prediction as guaranteed coverage."],
-    regression: ["Function-on-scalar regression", "../workflows/experimental-functional-regression/", "Declare design and independent unit; fitted coefficients alone do not justify simultaneous inferential claims."],
-    mixed: ["Functional mixed-effects regression", "../workflows/repeated-trial-mixed-effects/", "Declare random effects, dependence and cluster-level resampling; W3 general whole-function calibration remains open."],
-    generalized: ["Generalized functional response", "../workflows/generalized-responses/", "Specify the response family, denominator/exposure and participant dependence."],
-    recurrence: ["Recurrence / nonlinear workflow", "../workflows/nonlinear-recurrence/", "Declare embedding, time delay, radius and Theiler window before inspecting the result."]
+    fpca: ["Common-grid functional PCA", "../../workflows/fpca-exploration/", "Declare scaling, time grid and independence; component patterns are not psychological constructs."],
+    sparse: ["Paired sparse planar MFPCA", "../../guides/sparse-multivariate-fpca/", "Keep both coordinates on their actual shared observation times; smoothing choices and score uncertainty must be reported."],
+    async: ["Asynchronous sparse MFPCA", "../../guides/irregular-trajectories/", "Preserve channel-specific timestamps. Do not invent synchronized observations."],
+    multilevel: ["Sparse multilevel workflow", "../../articles/choosing-the-ten-workflows/", "Participant/trial nesting changes the independent unit; verify support and model assumptions."],
+    prediction: ["Sparse partial-trajectory prediction", "../../articles/choosing-the-ten-workflows/", "Separate training and prediction support; do not present illustrative prediction as guaranteed coverage."],
+    regression: ["Function-on-scalar regression", "../../workflows/experimental-functional-regression/", "Declare design and independent unit; fitted coefficients alone do not justify simultaneous inferential claims."],
+    mixed: ["Functional mixed-effects regression", "../../workflows/repeated-trial-mixed-effects/", "Declare random effects, dependence and cluster-level resampling; W3 general whole-function calibration remains open."],
+    generalized: ["Generalized functional response", "../../workflows/generalized-responses/", "Specify the response family, denominator/exposure and participant dependence."],
+    recurrence: ["Recurrence / nonlinear workflow", "../../workflows/nonlinear-recurrence/", "Declare embedding, time delay, radius and Theiler window before inspecting the result."]
   };
   function initMethod() {
     const root = document.getElementById("et-method");
