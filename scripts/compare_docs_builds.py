@@ -96,6 +96,47 @@ def compare(primary: Path, candidate: Path) -> dict:
                                   "zensical_html_bytes": len(b),
                                   "mkdocs_images": len(aa.images),
                                   "zensical_images": len(bb.images)})
+    # The earlier 11-page sample was a useful smoke test, but not evidence
+    # that every legacy deep link can migrate unchanged. Compare full route
+    # inventory, and count missing search/asset artifacts before approval.
+    baseline_routes = {
+        f.relative_to(primary).as_posix() for f in primary.rglob("*.html")
+    }
+    candidate_routes = {
+        f.relative_to(candidate).as_posix() for f in candidate.rglob("*.html")
+    }
+    missing_routes = sorted(baseline_routes - candidate_routes)
+    report["sitewide_route_coverage"] = {
+        "mkdocs_html_pages": len(baseline_routes),
+        "zensical_html_pages": len(candidate_routes),
+        "missing_candidate_routes": len(missing_routes),
+        "sample_missing": missing_routes[:50],
+    }
+    if missing_routes:
+        report["errors"].append(
+            f"Zensical omits {len(missing_routes)} MkDocs HTML routes."
+        )
+    if len(candidate_routes) < len(baseline_routes):
+        report["warnings"].append("Zensical rendered fewer pages than MkDocs.")
+    for asset in ("robots.txt", "sitemap.xml",
+                  "javascripts/integration-navigator.js",
+                  "javascripts/interactive-explorers.js",
+                  "javascripts/gaze-data-readiness.js",
+                  "assets/figure-storyboard.css"):
+        if (primary / asset).is_file() and not (candidate / asset).is_file():
+            report["errors"].append("Zensical missing copied site asset: " + asset)
+    # Compare search corpus presence, never equate different search engines'
+    # index JSON formats with equivalent user-facing ranking.
+    for role, root in (("mkdocs", primary), ("zensical", candidate)):
+        search_assets = sorted(f.relative_to(root).as_posix()
+            for f in root.rglob("*") if f.is_file()
+            and ("search" in f.parts or f.name.startswith("search_index")))
+        report.setdefault("search_assets", {})[role] = search_assets[:25]
+    report["migration_decision"] = (
+        "HOLD: 11-route/static equivalence is not a production migration approval; "
+        "browser search, accessibility, performance and instant-navigation "
+        "must pass a candidate-specific audit."
+    )
     report["status"] = "candidate-pass" if not report["errors"] else "candidate-fail"
     return report
 
