@@ -14,6 +14,8 @@ infrastructure.
 
 ## Scientific practice
 
+- [Cite software and preserve a reproducible analysis](../start/cite-and-reproduce.md)
+
 - [Reporting checklist](reporting.md)
 - [Pre-registration checklist](preregistration.md)
 - [Assumptions & diagnostics](assumptions.md)

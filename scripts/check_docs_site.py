@@ -28,6 +28,7 @@ PAGES = (
     "tools/figure-storyboard.md",
     "development/zensical-preview.md",
     "start/first-analysis.md",
+    "start/cite-and-reproduce.md",
     "tools/evidence-explorer.md",
     "tools/workflow-comparison.md",
     "tutorials/reproducible-starter.md",
