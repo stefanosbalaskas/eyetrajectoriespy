@@ -26,6 +26,7 @@ infrastructure.
 ## Mathematical & visual reference
 
 - [Mathematical reference](mathematical-reference.md)
+- [Sparse-FPCA bandwidth-selection equations](sparse-bandwidth-selection-mathematical-reference.md)
 - [Visual gallery](visual-gallery.md)
 - [Illustrated methods explorer](../tools/figure-storyboard.md)
 - [Workflow atlas](workflow-atlas.md)
