@@ -407,6 +407,8 @@ plugins:
 
 theme:
   name: material
+  # Avoid render-blocking third-party font requests; use Material's system fallback.
+  font: false
   features:
     - navigation.instant
     - navigation.instant.prefetch
@@ -464,10 +466,8 @@ markdown_extensions:
 
 extra_javascript:
   - javascripts/accessibility-refinements.js
-  - javascripts/integration-navigator.js
-  - javascripts/gaze-data-readiness.js
-  - javascripts/method-sharing.js
-  - javascripts/interactive-explorers.js
+  # Page-specific tools are injected only on routes containing their controls.
+  - javascripts/site-tools-loader.js
   - javascripts/mathjax.js
 extra_css:
   - assets/integration-navigator.css
