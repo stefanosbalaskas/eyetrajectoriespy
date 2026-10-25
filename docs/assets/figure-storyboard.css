@@ -1,0 +1,14 @@
+/* Source-first scientific figure storyboard — keeps source SVGs, no invented graphics. */
+.et-story-intro{padding:.8rem 1rem;border-left:.2rem solid var(--md-primary-fg-color);background:var(--md-code-bg-color);border-radius:.3rem;margin:1rem 0}
+.et-story-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.85rem}
+.et-story-card{display:flex;flex-direction:column;min-width:0;gap:.6rem;padding:.7rem!important;border-radius:.65rem}
+.et-story-image{display:block;border-radius:.45rem;background:#fff;overflow:hidden;border:1px solid var(--md-default-fg-color--lightest)}
+.et-story-image img{display:block;width:100%;height:175px;object-fit:contain;padding:.25rem}
+.et-story-copy{flex:1;display:flex;flex-direction:column;gap:.25rem}
+.et-story-copy h3{font-size:.96rem;margin:0}
+.et-story-copy p{font-size:.81rem;margin:0}
+.et-story-copy .et-story-eyebrow{font-size:.7rem;font-weight:600;color:var(--md-default-fg-color--light)}
+.et-story-copy .et-story-actions{margin-top:auto;padding-top:.5rem}
+.et-story-image:focus-visible,.et-story-actions a:focus-visible{outline:3px solid var(--md-accent-fg-color);outline-offset:3px}
+@media(max-width:1000px){.et-story-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.et-story-grid{grid-template-columns:1fr}.et-story-image img{height:185px}}
