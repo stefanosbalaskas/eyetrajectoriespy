@@ -24,6 +24,7 @@ PAGES = (
 ASSETS = (
     "javascripts/interactive-explorers.js",
     "javascripts/gaze-data-readiness.js",
+    "javascripts/method-sharing.js",
     "assets/gaze-data-readiness.css",
     "assets/interactive-explorers.css",
     "downloads/synthetic-gaze-common-grid.csv",

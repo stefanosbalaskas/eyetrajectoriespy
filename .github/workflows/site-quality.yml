@@ -34,7 +34,10 @@ jobs:
         run: |
           node --check docs/javascripts/interactive-explorers.js
           node --check docs/javascripts/gaze-data-readiness.js
+          node --check docs/javascripts/method-sharing.js
       - name: Test local-only gaze CSV structural auditor
         run: node scripts/test_gaze_data_readiness.cjs
+      - name: Test bookmarkable method-selector URLs
+        run: node scripts/test_method_sharing.cjs
       - name: Verify controls, link targets, labels, image alternatives and teaching fixture
         run: python scripts/check_docs_site.py

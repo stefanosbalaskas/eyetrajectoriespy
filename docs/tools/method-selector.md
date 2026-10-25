@@ -20,6 +20,12 @@ Select the **observed data support**, scientific target, clustering and uncertai
     <p data-et-method-note>Interpret the fitted components against the recorded units and design.</p>
     <a data-et-method-link href="../../workflows/fpca-exploration/">Read the method and example</a>
   </div>
+  <div class="et-share-control">
+    <label for="et-share-link">Bookmarkable method selection</label>
+    <input id="et-share-link" type="text" readonly aria-describedby="et-share-status" value="">
+    <div class="et-tool-actions"><button type="button" id="et-copy-link">Copy selection URL</button></div>
+    <p id="et-share-status" role="status" aria-live="polite">Selections are encoded in the browser URL; no settings are uploaded.</p>
+  </div>
 </div>
 
 <noscript>Interactive guidance requires JavaScript. Use the [fully readable ten-route comparison](../articles/choosing-the-ten-workflows.md) instead.</noscript>

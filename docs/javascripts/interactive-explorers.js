@@ -113,7 +113,35 @@
       one(root, "#et-observed-count").textContent = String(observed.length) + " of 61 synthetic samples displayed. Unobserved samples are not imputed.";
       drawTrajectory(one(root, "#et-planar"), pts, observed, spread, "space");
       drawTrajectory(one(root, "#et-timeseries"), pts, observed, spread, "time");
+      const body = one(root, "#et-sample-table");
+      if (body) {
+        const retained = new Set(observed.map(function (p) { return p.t; }));
+        const rows = document.createDocumentFragment();
+        pts.forEach(function (p) {
+          const tr = document.createElement("tr");
+          const yes = retained.has(p.t);
+          [p.t.toFixed(3), yes ? p.x.toFixed(4) : "", yes ? p.y.toFixed(4) : "", yes ? "Observed" : "Not observed"].forEach(function (value) {
+            const td = document.createElement("td");
+            td.textContent = value;
+            tr.appendChild(td);
+          });
+          rows.appendChild(tr);
+        });
+        body.replaceChildren(rows);
+      }
     }
+    const save = one(root, "#et-save-observed");
+    if (save) save.addEventListener("click", function () {
+      const k = Number(trial.value), missing = Number(loss.value);
+      const observed = syntheticCurve(k).filter(function (_, i) { return ((i * 37 + k * 19) % 100) >= missing; });
+      const csv = ["trial,time_normalized,x_normalized,y_normalized"]
+        .concat(observed.map(function (p) { return [k + 1, p.t.toFixed(6), p.x.toFixed(6), p.y.toFixed(6)].join(","); })).join("\n") + "\n";
+      const url = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+      const a = document.createElement("a");
+      a.href = url; a.download = "synthetic-visible-gaze.csv";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    });
     trial.addEventListener("input", update);
     loss.addEventListener("input", update);
     update();
