@@ -30,6 +30,11 @@ nav:
       - Search research evidence: tools/evidence-explorer.md
       - Download runnable starter: tutorials/reproducible-starter.md
       - Documentation versions: versions/index.md
+  - Python integrations:
+      - Overview: integrations/index.md
+      - pandas / Polars / Parquet: integrations/tabular-handoff.md
+      - Acquisition and Eye-Tracking-BIDS: integrations/acquisition-and-bids.md
+      - Qualification roadmap: integrations/roadmap.md
   - Workflows:
       - Analysis routes:
           - Overview: workflows/index.md
