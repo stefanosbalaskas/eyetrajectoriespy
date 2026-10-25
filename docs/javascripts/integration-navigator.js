@@ -10,7 +10,10 @@
     const mount = function () { api.init(document, window); };
     if (typeof document$ !== "undefined" && document$ && typeof document$.subscribe === "function") {
       document$.subscribe(mount);
-    } else if (document.readyState === "loading") {
+    }
+    // Also mount immediately after a route-aware dynamic load, which can
+    // happen after Material has emitted its current document$ event.
+    if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", mount);
     } else {
       mount();
