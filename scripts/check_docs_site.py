@@ -25,6 +25,8 @@ PAGES = (
     "tools/data-readiness.md",
     "tools/trajectory-explorer.md",
     "tools/figure-explorer.md",
+    "tools/figure-storyboard.md",
+    "start/first-analysis.md",
     "tools/evidence-explorer.md",
     "tools/workflow-comparison.md",
     "tutorials/reproducible-starter.md",
@@ -38,6 +40,7 @@ ASSETS = (
     "javascripts/method-sharing.js",
     "assets/gaze-data-readiness.css",
     "assets/interactive-explorers.css",
+    "assets/figure-storyboard.css",
     "downloads/synthetic-gaze-common-grid.csv",
     "downloads/run_synthetic_gaze.py",
 )

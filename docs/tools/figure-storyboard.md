@@ -41,7 +41,7 @@ A researcher should be able to **recognize what a method shows before copying co
       <input id="et-story-search" type="search" data-et-search placeholder="FPCA, residual, surrogate, band">
     </div>
   </div>
-  <p data-et-count role="status" aria-live="polite">12 of 12 figures shown</p>
+  <p data-et-count aria-live="polite">12 of 12 figures shown</p>
   <div class="et-story-grid">
     <article class="et-story-card et-entry" data-et-entry data-topic="representation" data-status="teaching">
       <a class="et-story-image" href="../../assets/gallery/planar-trajectories.svg" aria-label="View Planar gaze trajectories SVG"><img loading="lazy" decoding="async" src="../../assets/gallery/planar-trajectories.svg" alt="Planar gaze trajectories — deterministic synthetic documentation figure"></a>

@@ -25,6 +25,7 @@ infrastructure.
 
 - [Mathematical reference](mathematical-reference.md)
 - [Visual gallery](visual-gallery.md)
+- [Illustrated methods explorer](../tools/figure-storyboard.md)
 - [Workflow atlas](workflow-atlas.md)
 - [RQA software conventions](rqa-software-conventions.md)
 - [References](references.md)

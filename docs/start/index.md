@@ -35,6 +35,12 @@ description: Choose a stable eyetrajectoriespy analysis route and find installat
 
 </div>
 
+## Begin with a complete first analysis
+
+[Follow the first-analysis walkthrough](first-analysis.md){ .md-button .md-button--primary } · [Browse the visual methods explorer](../tools/figure-storyboard.md)
+
+The walkthrough distinguishes recorded-data readiness from synthetic method illustrations, scientific uncertainty and publication claims.
+
 ## Practical interactive tools
 
 [Local CSV structure inspector](../tools/data-readiness.md){ .md-button .md-button--primary } — check long-format columns, time support and repeated-trial structure before import. It does not impute gaze or diagnose a missingness mechanism.

@@ -1,5 +1,8 @@
 # Tutorial gallery
 
+**New visual path:** [illustrated method explorer](../tools/figure-storyboard.md) and [first-analysis walkthrough](../start/first-analysis.md). Both use existing deterministic figures and specify the boundaries of their interpretation.
+
+
 **Optional ecosystem previews:** [pymovements 0.28.0 sample handoff](../integrations/pymovements-handoff.md) · [read-only BIDS metadata inspection](../integrations/bids-metadata-inspector.md). Both examples are run against invented fixtures and keep estimator qualification separate from data compatibility.
 
 **Python ecosystem integration:** [optional pandas / Polars / Parquet handoff with independent rejection tests](../integrations/tabular-handoff.md) and [research-safe package comparison](../integrations/index.md).

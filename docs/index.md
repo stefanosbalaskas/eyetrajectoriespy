@@ -14,7 +14,8 @@ hide:
 
 **eyetrajectoriespy** models gaze as a time-indexed two-coordinate functional process. Work with dense, sparse, irregular and repeated-trial trajectories while keeping the assumptions behind analysis and uncertainty visible.
 
-[Install stable 1.2.0](start/index.md){ .md-button .md-button--primary }
+[Begin your first analysis](start/first-analysis.md){ .md-button .md-button--primary }
+[Install stable 1.2.0](start/index.md){ .md-button }
 [Find a Python integration](integrations/navigator.md){ .md-button }
 [Try method selector](tools/method-selector.md){ .md-button }
 [Research evidence](research/index.md){ .md-button }
@@ -36,6 +37,10 @@ hide:
 ## Start with your data and research question
 
 New to functional gaze analysis? Use the [data-to-method guide](start/data-to-method.md) to identify the independent sampling unit, time grid, estimand and uncertainty scope **before** choosing an estimator. The [quick start](quickstart.md) provides seeded executable examples.
+
+## Illustrated methods — see the analysis before the API
+
+Browse a [12-figure scientific storyboard](tools/figure-storyboard.md){ .md-button } linking deterministic FPCA, sparse, regression and nonlinear plots to reproducible methods and their explicit interpretation limits. Each figure comes from the existing documentation build; no new results are claimed.
 
 ## Interactive research tools
 
