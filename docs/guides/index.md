@@ -16,6 +16,7 @@ modeling.
 - [Preparing trajectories](preprocessing.md)
 - [Native irregular trajectories](irregular-trajectories.md)
 - [Sparse irregular / PACE FPCA](sparse-irregular-fpca.md)
+- [Audited native sparse-FPCA bandwidth selection](sparse-bandwidth-selection.md) — opt-in tuning with explicit measurement-noise limits
 - [Sparse planar MFPCA / joint PACE](sparse-multivariate-fpca.md)
 - [Asynchronous sparse planar MFPCA / joint PACE](sparse-multivariate-async.md)
 - [Observation-process diagnostics](observation-process-diagnostics.md)
