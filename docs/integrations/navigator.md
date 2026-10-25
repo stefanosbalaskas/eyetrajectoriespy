@@ -115,7 +115,7 @@ The same links remain usable with JavaScript disabled.
       </ol>
       <p id="et-path-limitation">This planner does not read, upload, convert or validate participant recordings.</p>
       <div class="et-connect-links">
-        <a id="et-path-guide" href="../tabular-handoff/">Open source guide</a>
+        <a id="et-path-guide" href="/eyetrajectoriespy/integrations/tabular-handoff/">Open source guide</a>
         <a id="et-path-method" href="../../start/data-to-method/">Open method guidance</a>
       </div>
       <div class="et-connect-actions">
