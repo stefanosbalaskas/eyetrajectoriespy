@@ -88,7 +88,9 @@ but also changes the way readers discover individual topics.
 The separate `navigation-pruning-parity (non-deploying)` workflow generates
 `.navigation-prune-preview.mkdocs.yml` automatically; it does not edit
 `mkdocs.yml`. Both builds use the same strict source, scientific gallery,
-API reference and installed MkDocs theme.
+API reference and installed MkDocs theme. An additional all-page static-link
+reachability graph checks for **newly orphaned routes** that a broken-link
+scanner alone would miss.
 
 The comparison checks all HTML routes, compressed and raw HTML size, stable
 main content, identical search-index entries, site-wide links and fragments,
