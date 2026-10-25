@@ -55,7 +55,8 @@ def main():
     result=run()
     assert result.source_version=="2.0.0" and result.selected_eye=="left"
     assert result.audit.curves==2 and result.audit.participants==1 and result.audit.repeated_participants
-    assert result.audit.common_grid and result.audit.complete_xy
+    # Absolute acquisition clocks differ across segments: do not silently shift to trial-relative time.
+    assert result.audit.common_grid is False and result.audit.complete_xy
     assert result.selected_record_samples==4 and result.all_source_samples==5
     assert result.excluded_nonrecord_samples==1
     assert result.sample_rates_hz==(500.0,)
