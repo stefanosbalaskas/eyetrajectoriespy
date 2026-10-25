@@ -1,3 +1,8 @@
+---
+search:
+  boost: 1.2
+---
+
 # Sparse univariate FPCA / PACE
 
 !!! success "Stable native univariate sparse workflow"
