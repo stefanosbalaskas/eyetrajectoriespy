@@ -33,8 +33,11 @@ jobs:
       - name: Validate JavaScript syntax
         run: |
           node --check docs/javascripts/interactive-explorers.js
+          node --check docs/javascripts/integration-navigator.js
           node --check docs/javascripts/gaze-data-readiness.js
           node --check docs/javascripts/method-sharing.js
+      - name: Test integration discovery, link paths and scientific boundaries
+        run: node scripts/test_integration_navigator.cjs
       - name: Test local-only gaze CSV structural auditor
         run: node scripts/test_gaze_data_readiness.cjs
       - name: Test bookmarkable method-selector URLs

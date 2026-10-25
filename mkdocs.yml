@@ -22,6 +22,7 @@ nav:
       - Scientific contracts: concepts/contracts.md
       - Analysis decision map: concepts/decision-map.md
   - Explore interactively:
+      - Find a Python integration: integrations/navigator.md
       - CSV data readiness check: tools/data-readiness.md
       - Choose a method: tools/method-selector.md
       - Synthetic trajectory explorer: tools/trajectory-explorer.md
@@ -31,6 +32,7 @@ nav:
       - Download runnable starter: tutorials/reproducible-starter.md
       - Documentation versions: versions/index.md
   - Python integrations:
+      - Choose an integration: integrations/navigator.md
       - Overview: integrations/index.md
       - pandas / Polars / Parquet: integrations/tabular-handoff.md
       - pymovements 0.28 handoff (preview): integrations/pymovements-handoff.md
@@ -455,12 +457,14 @@ markdown_extensions:
       alternate_style: true
 
 extra_javascript:
+  - javascripts/integration-navigator.js
   - javascripts/gaze-data-readiness.js
   - javascripts/method-sharing.js
   - javascripts/interactive-explorers.js
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 extra_css:
+  - assets/integration-navigator.css
   - assets/extra.css
   - assets/gaze-data-readiness.css
   - assets/interactive-explorers.css

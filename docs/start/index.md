@@ -48,6 +48,10 @@ The selector is guidance, not automated model validation. The downloadable teach
 
 ## Connect other Python eye-tracking packages
 
+[Choose a source and build a research checklist](../integrations/navigator.md){ .md-button .md-button--primary }
+
+
+
 The [integration hub](../integrations/index.md) compares pymovements, PyNeon, Polars, Pandera, eyekit, PupEyes, Eye-Tracking-BIDS and existing functional-data extras. Start with the [optional, fail-closed table example](../integrations/tabular-handoff.md) only after recording true column mapping, time and coordinate units.
 
 **New preview examples:** [pymovements 0.28.0 Gaze-object handoff](../integrations/pymovements-handoff.md) and [read-only Eye-Tracking-BIDS sidecar inspection](../integrations/bids-metadata-inspector.md). These do not install as stable package importers.
