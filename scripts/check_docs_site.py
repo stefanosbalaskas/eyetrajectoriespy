@@ -25,6 +25,9 @@ PAGES = (
     "tools/data-readiness.md",
     "tools/trajectory-explorer.md",
     "tools/figure-explorer.md",
+    "tools/figure-storyboard.md",
+    "development/zensical-preview.md",
+    "start/first-analysis.md",
     "tools/evidence-explorer.md",
     "tools/workflow-comparison.md",
     "tutorials/reproducible-starter.md",
@@ -38,6 +41,7 @@ ASSETS = (
     "javascripts/method-sharing.js",
     "assets/gaze-data-readiness.css",
     "assets/interactive-explorers.css",
+    "assets/figure-storyboard.css",
     "downloads/synthetic-gaze-common-grid.csv",
     "downloads/run_synthetic_gaze.py",
 )
@@ -161,6 +165,15 @@ def main() -> None:
         if "data-et-collection" in content:
             assert 'data-et-count aria-live="polite"' in content
             assert "data-et-entry" in content
+        if rel == "tools/figure-storyboard.md":
+            gallery = (DOCS / "methods/visual-gallery.md").read_text(encoding="utf-8")
+            gallery_images = re.findall(r'src="\.\./\.\./assets/gallery/([^"]+\.svg)"', content)
+            assert len(gallery_images) == 12 and len(set(gallery_images)) == 12, (
+                "Storyboard must expose exactly 12 distinct pre-existing scientific figures"
+            )
+            assert all("assets/gallery/" + name in gallery for name in gallery_images), (
+                "Storyboard must reuse existing documented generator images, not unverified visual assets"
+            )
         if rel == "tools/workflow-comparison.md":
             assert content.count("<tr data-et-entry ") == 10
     script = (DOCS / "javascripts/interactive-explorers.js").read_text(encoding="utf-8")

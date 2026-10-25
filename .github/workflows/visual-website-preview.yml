@@ -1,0 +1,47 @@
+name: visual-website-preview
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "scripts/site_browser_smoke.py"
+      - ".github/workflows/visual-website-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  visual-review:
+    runs-on: ubuntu-24.04
+    # Screenshots are an additional review tool, not a production builder.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install docs dependencies and browser harness
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[docs,dev]"
+          python -m pip install "playwright==1.56.0"
+          python -m playwright install --with-deps chromium
+      - name: Regenerate existing deterministic gallery assets
+        run: python scripts/generate_docs_gallery.py
+      - name: Build current production MkDocs output
+        run: mkdocs build --strict
+      - name: Run desktop and mobile scientific gallery checks
+        run: python scripts/site_browser_smoke.py
+      - name: Upload screenshots and report for visual review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-website-screenshots
+          path: |
+            build/site-browser-audit/*-figure-storyboard.png
+            build/site-browser-audit/desktop-first-analysis.png
+            build/site-browser-audit/browser-report.json
+          if-no-files-found: warn

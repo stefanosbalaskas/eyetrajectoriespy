@@ -1,0 +1,67 @@
+name: zensical-preview (non-deploying)
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "scripts/prepare_zensical_preview.py"
+      - "scripts/compare_docs_builds.py"
+      - ".github/workflows/zensical-preview.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  optional-compatibility-prototype:
+    runs-on: ubuntu-latest
+    # Experimental preview cannot block production MkDocs deployment.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install current production docs and fixed candidate generator
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[docs,dev]"
+          python -m pip install "zensical==0.0.72"
+          python -m pip show zensical
+      - name: Produce deterministic figures and composed references
+        run: |
+          python scripts/generate_docs_gallery.py
+          python scripts/generate_function_equation_index.py --check
+      - name: Build baseline strictly using the unchanged production config
+        run: mkdocs build --strict
+      - name: Generate an isolated classic-theme Zensical config
+        run: python scripts/prepare_zensical_preview.py
+      - name: Build Zensical preview (capture experimental compatibility)
+        shell: bash
+        run: |
+          mkdir -p build
+          set +e
+          zensical build --strict --config-file .zensical-preview.mkdocs.yml > build/zensical-preview-build.log 2>&1
+          result=$?
+          cat build/zensical-preview-build.log
+          echo "$result" > build/zensical-preview-exit.txt
+          exit 0
+      - name: Compare representative routes, visuals, docs API, and assets
+        shell: bash
+        run: |
+          python scripts/compare_docs_builds.py \
+            --baseline site \
+            --candidate build/zensical-preview-site \
+            --output build/zensical-preview-report.json
+      - name: Upload isolated compatibility audit (never deploy)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zensical-preview-diagnostics
+          path: |
+            build/zensical-preview-build.log
+            build/zensical-preview-exit.txt
+            build/zensical-preview-report.json
+          if-no-files-found: warn
