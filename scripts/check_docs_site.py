@@ -15,6 +15,8 @@ PAGES = (
     "tools/method-selector.md",
     "integrations/index.md",
     "integrations/tabular-handoff.md",
+    "integrations/pymovements-handoff.md",
+    "integrations/bids-metadata-inspector.md",
     "integrations/acquisition-and-bids.md",
     "integrations/roadmap.md",
     "tools/data-readiness.md",

@@ -33,6 +33,8 @@ nav:
   - Python integrations:
       - Overview: integrations/index.md
       - pandas / Polars / Parquet: integrations/tabular-handoff.md
+      - pymovements 0.28 handoff (preview): integrations/pymovements-handoff.md
+      - Eye-Tracking-BIDS inspection (preview): integrations/bids-metadata-inspector.md
       - Acquisition and Eye-Tracking-BIDS: integrations/acquisition-and-bids.md
       - Qualification roadmap: integrations/roadmap.md
   - Workflows:
