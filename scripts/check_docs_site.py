@@ -56,6 +56,71 @@ def target_exists(page: Path, dest: str) -> bool:
     return False
 
 
+
+# Browser resolution differs from source Markdown resolution:
+# raw HTML attributes and JavaScript-generated links are NOT rewritten by MkDocs.
+# Simulate the deployed /eyetrajectoriespy/ subpath to prevent regressions.
+SITE_BASE = "https://example.invalid/eyetrajectoriespy/"
+
+
+def rendered_source_path(page: Path, dest: str) -> Path | None:
+    from urllib.parse import urljoin
+
+    target = urlsplit(dest)
+    if dest.startswith("#") or target.scheme or target.netloc:
+        return None
+    slug = page.relative_to(DOCS).with_suffix("").as_posix()
+    if slug.endswith("/index"):
+        slug = slug[:-len("/index")]
+    suffix = slug.strip("/") + "/" if slug and slug != "index" else ""
+    resolved = urlsplit(urljoin(SITE_BASE + suffix, dest)).path
+    prefix = "/eyetrajectoriespy/"
+    if not resolved.startswith(prefix):
+        raise AssertionError("Browser URL escaped documentation base: " + resolved)
+    rel = unquote(resolved[len(prefix):])
+    path = (DOCS / rel).resolve()
+    if not path.is_relative_to(DOCS.resolve()):
+        raise AssertionError("Browser URL escaped documentation root: " + resolved)
+    if resolved.endswith("/"):
+        if (path / "index.md").is_file():
+            return path / "index.md"
+        return path.with_suffix(".md")
+    return path
+
+
+def rendered_target_exists(page: Path, dest: str) -> bool:
+    path = rendered_source_path(page, dest)
+    if path is None:
+        return True
+    if path.is_file():
+        return True
+    # Some built documentation figures are generated during the docs job.
+    return (
+        "/assets/gallery/" in path.as_posix()
+        and path.suffix == ".svg"
+    )
+
+
+def validate_dynamic_route_links(script: str) -> None:
+    route_re = re.compile(
+        r'^\s*(fpca|sparse|async|multilevel|prediction|regression|mixed|'
+        r'generalized|recurrence):\s*\[\s*"[^"]+",\s*"([^"]+)"',
+        flags=re.M,
+    )
+    links = route_re.findall(script)
+    assert len(links) == 9, "Expected nine explicit method-picker destinations"
+    origin = DOCS / "tools/method-selector.md"
+    for key, dest in links:
+        assert rendered_target_exists(origin, dest), (
+            f"Method selector browser link is broken: {key}={dest}"
+        )
+        resolved = rendered_source_path(origin, dest)
+        assert resolved is not None and "tools" not in resolved.relative_to(DOCS).parts[:1], (
+            f"Method selector routed via tools rather than canonical docs: {key}={dest}"
+        )
+    recurrence = dict(links)["recurrence"]
+    assert rendered_source_path(origin, recurrence) == DOCS / "workflows/nonlinear-recurrence.md"
+
 def main() -> None:
     for rel in (*PAGES, *ASSETS):
         assert (DOCS / rel).is_file(), "Missing documentation file: " + rel
@@ -63,12 +128,16 @@ def main() -> None:
         page = DOCS / rel
         content = page.read_text(encoding="utf-8")
         assert content.startswith("---\n"), "Missing MkDocs metadata: " + rel
-        missing = [
-            dest for m in HREF.finditer(content)
-            if not target_exists(page, m.group(1) or m.group(2))
-            for dest in [m.group(1) or m.group(2)]
-        ]
-        assert not missing, "Invalid internal links: " + rel + ": " + str(missing)
+        # MkDocs resolves Markdown links against their *source* .md files,
+        # but raw HTML href/src are emitted unchanged into nested HTML pages.
+        missing = []
+        for m in HREF.finditer(content):
+            raw_html, markdown = m.groups()
+            if raw_html and not rendered_target_exists(page, raw_html):
+                missing.append(raw_html)
+            if markdown and not target_exists(page, markdown):
+                missing.append(markdown)
+        assert not missing, "Invalid browser-resolved or Markdown links: " + rel + ": " + str(missing)
         ids = set(ID.findall(content))
         for id_ in LABEL.findall(content):
             assert id_ in ids, "Label without control: " + rel + ": " + id_
@@ -82,6 +151,7 @@ def main() -> None:
     script = (DOCS / "javascripts/interactive-explorers.js").read_text(encoding="utf-8")
     for required in ("document$.subscribe(init)", "initMethod()", "initTrajectory()", "initFilters()", "aria-label"):
         assert required in script, "Missing interaction contract: " + required
+    validate_dynamic_route_links(script)
     import csv
     with (DOCS / "downloads/synthetic-gaze-common-grid.csv").open(newline="", encoding="utf-8") as file:
         rows = list(csv.DictReader(file))
