@@ -7,16 +7,25 @@ description: Optional pandas and Polars interoperability examples, and evidence-
 
 **Interoperate instead of duplicating upstream data processing.** eyetrajectoriespy 1.2.0 already has optional scikit-fda, FDApy and elastic-function integrations. This section adds an **example-level** pandas/Polars table bridge and documents research-safe handoffs from acquisition and data-quality ecosystems.
 
-[Pinned pymovements preview](pymovements-handoff.md){ .md-button .md-button--primary }
+[EyeLink SyeLink integration](syelink-handoff.md){ .md-button .md-button--primary }
+[EyeLink Python parser comparison](eyelink-ecosystem.md){ .md-button }
+[Pinned pymovements preview](pymovements-handoff.md){ .md-button }
 [Read-only BIDS inspector](bids-metadata-inspector.md){ .md-button }
 [Runnable table bridge](tabular-handoff.md){ .md-button }
 [External packages and BIDS](acquisition-and-bids.md){ .md-button }
 [Qualification roadmap](roadmap.md){ .md-button }
 
+## New EyeLink source-level interoperability
+
+The [SyeLink 2.0 session-object handoff](syelink-handoff.md) now demonstrates explicit eye choice, recording-segment/trial mapping, retention of millisecond acquisition timestamps and separate calibration/validation provenance. Its [Python EyeLink ecosystem comparison](eyelink-ecosystem.md) explains where PyeLink hardware control, EyeLinkIO EDF reading and alternative ASC parsers fit. These are **example-level** additions, not supported package importers.
+
 ## Verified roles and present integration status
 
 | External ecosystem | Verified capability | Status in this repository |
 | --- | --- | --- |
+| [SyeLink](https://syelink.readthedocs.io/en/latest/) | EyeLink ASC parsing and calibration / validation session records | **Version-pinned 2.0.0 synthetic-object integration preview**; real ASC recordings unqualified |
+| [PyeLink](https://pyelink.readthedocs.io/en/latest/) | EyeLink hardware control | Documentation only; requires tracker SDK, no analysis dependency |
+| [EyeLinkIO](https://pypi.org/project/eyelinkio/) | Binary EyeLink EDF reading | Proposed alternative source adapter, not tested here |
 | [pymovements](https://pymovements.readthedocs.io/en/latest/) | Public datasets, sample processing, event detection; its Gaze.samples is a Polars DataFrame | **Version-pinned repository preview with genuine Gaze-object tests**, not a released device adapter |
 | [Polars](https://docs.pola.rs/api/python/stable/reference/dataframe/api/polars.DataFrame.to_pandas.html) + PyArrow | Parquet I/O and dataframe conversion | **Repository example implemented**, optional, outside stable API |
 | [Pandera](https://pandera.readthedocs.io/en/latest/dataframe_schemas.html) | Dataframe schema validation and explicit nullable columns | Proposed opt-in validation layer |

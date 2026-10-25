@@ -77,6 +77,10 @@ Bring **preprocessed sample tables** from upstream acquisition packages into the
 [pymovements example](integrations/pymovements-handoff.md){ .md-button }
 [BIDS metadata inspector](integrations/bids-metadata-inspector.md){ .md-button } [Runnable table handoff](integrations/tabular-handoff.md){ .md-button }
 
+## EyeLink acquisition interoperability
+
+A new [SyeLink 2.0.0 EyeLink ASC integration example](integrations/syelink-handoff.md) maps explicitly selected-eye screen gaze samples without losing recording-segment boundaries. Explore the [Python EyeLink parser comparison](integrations/eyelink-ecosystem.md) before choosing a source reader. Both are research previews rather than stable vendor-reader APIs.
+
 ## Begin with your scientific question
 
 <div class="grid cards" markdown>

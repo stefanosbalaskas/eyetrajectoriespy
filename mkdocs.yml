@@ -34,6 +34,8 @@ nav:
       - Overview: integrations/index.md
       - pandas / Polars / Parquet: integrations/tabular-handoff.md
       - pymovements 0.28 handoff (preview): integrations/pymovements-handoff.md
+      - SyeLink 2.0 EyeLink ASC handoff (preview): integrations/syelink-handoff.md
+      - Compare EyeLink parsers: integrations/eyelink-ecosystem.md
       - Eye-Tracking-BIDS inspection (preview): integrations/bids-metadata-inspector.md
       - Acquisition and Eye-Tracking-BIDS: integrations/acquisition-and-bids.md
       - Qualification roadmap: integrations/roadmap.md

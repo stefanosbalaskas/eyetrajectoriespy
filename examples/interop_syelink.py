@@ -18,7 +18,10 @@ import math
 
 import pandas as pd
 
-from interop_tabular_handoff import TableAudit, canonicalize_gaze_table
+if __package__:
+    from .interop_tabular_handoff import TableAudit, canonicalize_gaze_table
+else:
+    from interop_tabular_handoff import TableAudit, canonicalize_gaze_table
 
 TESTED_SYELINK = "2.0.0"
 

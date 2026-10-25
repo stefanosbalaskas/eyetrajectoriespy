@@ -16,6 +16,8 @@ PAGES = (
     "integrations/index.md",
     "integrations/tabular-handoff.md",
     "integrations/pymovements-handoff.md",
+    "integrations/syelink-handoff.md",
+    "integrations/eyelink-ecosystem.md",
     "integrations/bids-metadata-inspector.md",
     "integrations/acquisition-and-bids.md",
     "integrations/roadmap.md",
