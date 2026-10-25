@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   visual-review:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # Screenshots are an additional review tool, not a production builder.
     continue-on-error: true
     steps:
