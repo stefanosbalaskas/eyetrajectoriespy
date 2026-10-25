@@ -15,7 +15,7 @@ hide:
 **eyetrajectoriespy** models gaze as a time-indexed two-coordinate functional process. Work with dense, sparse, irregular and repeated-trial trajectories while keeping the assumptions behind analysis and uncertainty visible.
 
 [Install stable 1.2.0](start/index.md){ .md-button .md-button--primary }
-[Find your analysis route](start/data-to-method.md){ .md-button }
+[Try method selector](tools/method-selector.md){ .md-button }
 [Research evidence](research/index.md){ .md-button }
 
 <div class="et-micro-status" markdown>
@@ -35,6 +35,36 @@ hide:
 ## Start with your data and research question
 
 New to functional gaze analysis? Use the [data-to-method guide](start/data-to-method.md) to identify the independent sampling unit, time grid, estimand and uncertainty scope **before** choosing an estimator. The [quick start](quickstart.md) provides seeded executable examples.
+
+## Interactive research tools
+
+<div class="grid cards" markdown>
+
+- **Find a suitable analysis route**
+
+  Answer four questions about your time grid, estimand, sampling hierarchy and uncertainty. Receive an interpretable, **non-prescriptive** method starting point.
+
+  [Interactive selector](tools/method-selector.md) · [Ten-route comparison](tools/workflow-comparison.md)
+
+- **Explore a synthetic gaze trajectory**
+
+  Change retained sample support and switch between the spatial path and time-indexed coordinate. Descriptive spread is explicitly **not** a confidence interval.
+
+  [Trajectory explorer](tools/trajectory-explorer.md) · [Runnable synthetic dataset](tutorials/reproducible-starter.md)
+
+- **Search figures and research evidence**
+
+  Filter existing W3 figures and R76–R95 research records without promoting experimental findings to stable package claims.
+
+  [Filter figures](tools/figure-explorer.md) · [Search evidence](tools/evidence-explorer.md)
+
+- **Check documentation provenance**
+
+  Use stable 1.2.0 online docs with release-indexed notes and immutable tagged source references.
+
+  [Documentation versions](versions/index.md)
+
+</div>
 
 ## Begin with your scientific question
 

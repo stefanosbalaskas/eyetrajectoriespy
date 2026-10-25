@@ -5,6 +5,8 @@ description: Independently audited functional gaze simulation, missing-data iden
 
 # Research & evidence
 
+[Search and filter the W3 evidence map](../tools/evidence-explorer.md){ .md-button .md-button--primary } · [Full R76–R95 study chronology](studies.md)
+
 **Open science with its failure cases intact.** This area explains what the development programme *tested*, what original archives and independent auditors reproduced, and which conclusions remain unsupported. It is separate from the [stable 1.2.0 product](../releases/1.2.0.md).
 
 !!! warning "Research ≠ a release qualification"

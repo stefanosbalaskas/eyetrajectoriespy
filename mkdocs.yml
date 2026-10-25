@@ -16,6 +16,14 @@ nav:
       - Gaze representations: concepts/representations.md
       - Scientific contracts: concepts/contracts.md
       - Analysis decision map: concepts/decision-map.md
+  - Explore interactively:
+      - Choose a method: tools/method-selector.md
+      - Synthetic trajectory explorer: tools/trajectory-explorer.md
+      - Compare ten workflows: tools/workflow-comparison.md
+      - Filter scientific figures: tools/figure-explorer.md
+      - Search research evidence: tools/evidence-explorer.md
+      - Download runnable starter: tutorials/reproducible-starter.md
+      - Documentation versions: versions/index.md
   - Workflows:
       - Analysis routes:
           - Overview: workflows/index.md
@@ -432,9 +440,11 @@ markdown_extensions:
       alternate_style: true
 
 extra_javascript:
+  - javascripts/interactive-explorers.js
   - javascripts/mathjax.js
   - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 extra_css:
   - assets/extra.css
+  - assets/interactive-explorers.css
 
 copyright: "MIT © 2026 Stefanos Balaskas"
