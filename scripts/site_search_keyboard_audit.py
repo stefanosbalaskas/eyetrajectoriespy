@@ -25,13 +25,18 @@ INTENTS = (
 )
 
 
-def target_rank(page, origin: str, target: str) -> tuple[int | None, list[str]]:
+def target_rank(page, origin: str, target: str) -> tuple[int | None, int | None, list[str]]:
     links = page.locator(".md-search-result__link[href]")
     urls = links.evaluate_all("(nodes) => nodes.map(n => n.href)")
     paths = [urlsplit(urljoin(origin, url)).path for url in urls]
     suffix = "/eyetrajectoriespy" + target
     ranks = [i + 1 for i, path in enumerate(paths) if path == suffix]
-    return (min(ranks) if ranks else None), paths[:25]
+    # Material may emit multiple heading snippets from the same URL. Report
+    # both the raw result rank and the unique-page rank, not just a number
+    # inflated by identical destination URLs.
+    distinct = list(dict.fromkeys(paths))
+    page_ranks = [i + 1 for i, path in enumerate(distinct) if path == suffix]
+    return (min(ranks) if ranks else None), (min(page_ranks) if page_ranks else None), paths[:25]
 
 
 def run(site: Path) -> dict:
@@ -60,8 +65,8 @@ def run(site: Path) -> dict:
                     field = desktop.locator("input.md-search__input")
                     field.fill(intent["query"])
                     desktop.locator(".md-search-result__link[href]").first.wait_for(timeout=30000)
-                    rank, sample = target_rank(desktop, origin, intent["target"])
-                    record = {**intent, "rank": rank, "visible_result_count": len(sample),
+                    rank, page_rank, sample = target_rank(desktop, origin, intent["target"])
+                    record = {**intent, "rank": rank, "distinct_page_rank": page_rank, "visible_result_count": len(sample),
                               "top_five_paths": sample[:5]}
                     report["intents"].append(record)
                     assert rank is not None and rank <= intent["max_rank"], (
