@@ -28,6 +28,8 @@ python scripts/audit_sitewide_links.py --output build/sitewide-links.json
 python scripts/audit_search_corpus.py --output build/site-search-corpus.json
 ~~~
 
+The first CI baseline covered **368 generated pages and 152,683 local targets** with zero missing local files, but identified **80 broken named-fragment references** (mostly public plotting gallery → Python API and two links to the integration checklist). These are being corrected at their generators and source page rather than suppressed. Zensical rendered the same 368 page routes but additionally produced one wrong relative tabular handoff link, so the migration decision remains HOLD.
+
 The first site-wide pass is **diagnostic**, with detailed machine-readable evidence. Add `--strict` to the commands only after reviewing legacy broken-link findings and intended exclusions. It does not contact third-party URLs.
 
 The link audit resolves the real public `/eyetrajectoriespy/` subpath, including named fragment anchors, instead of assuming source Markdown paths are published URLs. [OpenTelemetry's link-checking workflow](https://opentelemetry.io/site/build/link-checking/) provides a useful precedent for distinguishing production-local link checks from remote network validation.

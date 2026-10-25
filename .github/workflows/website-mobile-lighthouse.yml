@@ -48,4 +48,5 @@ jobs:
         with:
           name: website-mobile-lighthouse-evidence
           path: .lighthouseci/**
+          include-hidden-files: true
           if-no-files-found: warn
