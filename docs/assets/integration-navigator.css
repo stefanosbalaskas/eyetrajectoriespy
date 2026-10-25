@@ -34,3 +34,10 @@
 .et-connect-journey li {border:1px solid var(--md-default-fg-color--lightest);border-radius:.6rem;padding:.8rem;background:var(--md-code-bg-color)}
 @media(max-width:820px){.et-connect-grid,.et-connect-form,.et-connect-plan-form,.et-connect-journey{grid-template-columns:1fr}.et-connect-panel{padding:.8rem}}
 @media(prefers-reduced-motion:reduce){.et-connect *{scroll-behavior:auto!important}}
+
+/* Four-step landing journey: scannable on desktop and readable without JS. */
+.et-home-journey{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin:.7rem 0 1.2rem}
+.et-home-journey ul{display:contents;padding:0;margin:0}
+.et-home-journey li{list-style:none;border:1px solid var(--md-default-fg-color--lightest);border-radius:.65rem;padding:.8rem .95rem;margin:0;background:var(--md-code-bg-color);font-size:.87rem;line-height:1.55}
+.et-home-journey li a{text-decoration:underline}
+@media(max-width:820px){.et-home-journey{grid-template-columns:1fr}}

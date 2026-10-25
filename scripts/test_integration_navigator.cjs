@@ -1,6 +1,16 @@
 "use strict";
 const assert=require("node:assert/strict");
 const {catalog,filterCatalog,planFor,validState,shareUrl,PHASES,SUPPORT}=require("../docs/javascripts/integration-navigator.js");
+const fs=require("node:fs");
+const path=require("node:path");
+const SITE="https://stefanosbalaskas.github.io/eyetrajectoriespy/integrations/navigator/";
+function assertDocumentTarget(href,label){
+  const target=new URL(href,SITE);
+  assert.equal(target.origin,"https://stefanosbalaskas.github.io",label);
+  const route=target.pathname.replace(/^\/eyetrajectoriespy\//,"").replace(/\/$/,"");
+  const file=path.join(__dirname,"..","docs",route+".md");
+  assert.ok(fs.existsSync(file),label+" points to missing documentation "+route);
+}
 const rows=catalog();
 assert.equal(rows.length,14);
 assert.equal(new Set(rows.map(x=>x.id)).size,rows.length);
@@ -17,6 +27,7 @@ for(const row of rows){
   assert.equal(target.origin,"https://stefanosbalaskas.github.io");
   assert.ok(target.pathname.startsWith("/eyetrajectoriespy/"));
   assert.match(row.upstream,/^https:\/\//);
+  assertDocumentTarget(row.guide, row.name);
   assert.ok(row.boundary.length>15);
 }
 const ids=["table","pymovements","syelink","bids","pyneon","eye2bids","eyelinkio","pyelink","pandera","eyekit","pupeyes","scikit-fda","fdapy","fdasrsf"];
@@ -31,6 +42,7 @@ for(const id of ids){
     assert.match(plan.text,/upstream/);
     assert.match(plan.text,/scientifically valid inference/);
     assert.ok(plan.supportGuide.startsWith("../"));
+    assertDocumentTarget(plan.supportGuide,id+"/"+support);
   }
 }
 assert.match(planFor("syelink","aligned").boundary,/real EyeLink ASC accuracy not qualified/);
