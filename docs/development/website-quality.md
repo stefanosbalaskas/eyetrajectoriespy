@@ -26,6 +26,12 @@ The isolated accessibility runner installs [axe-core](https://github.com/dequela
 
 These additions make source identification and crawling clearer. They **do not guarantee ranking or enhanced search results**. No DOI is present in the current CFF, and the page does not assert one.
 
+## Accessibility issues discovered and addressed
+
+The first optional axe-core run flagged an unnamed Material loading progressbar, top-tab text just below the 4.5:1 contrast threshold in the light indigo theme, and documentation links distinguishable only by color. A shared minimal CSS/JS refinement now adds a progressbar accessible name, more legible navigation/footer text and underlined inline documentation links. These are **specific remediations**, not a declaration of complete accessibility.
+
+The browser report retains all automated findings with their node selectors and severity; zero findings on a small representative set would still require human testing with assistive technology.
+
 ## Regression governance
 
 The site-quality and strict documentation gates must succeed before merging a website PR. Browser and alternate-generator previews provide independent audit artifacts. A future Zensical switch needs explicit human review of API references, site-wide navigation, search, keyboard behavior, mathematical typesetting, assets and historical links.

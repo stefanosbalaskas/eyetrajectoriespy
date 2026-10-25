@@ -462,6 +462,7 @@ markdown_extensions:
       alternate_style: true
 
 extra_javascript:
+  - javascripts/accessibility-refinements.js
   - javascripts/integration-navigator.js
   - javascripts/gaze-data-readiness.js
   - javascripts/method-sharing.js
@@ -474,5 +475,6 @@ extra_css:
   - assets/gaze-data-readiness.css
   - assets/interactive-explorers.css
   - assets/figure-storyboard.css
+  - assets/accessibility-refinements.css
 
 copyright: "MIT © 2026 Stefanos Balaskas"

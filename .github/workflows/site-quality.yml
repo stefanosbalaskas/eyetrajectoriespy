@@ -35,6 +35,7 @@ jobs:
         run: |
           node --check docs/javascripts/interactive-explorers.js
           node --check docs/javascripts/integration-navigator.js
+          node --check docs/javascripts/accessibility-refinements.js
           node --check docs/javascripts/gaze-data-readiness.js
           node --check docs/javascripts/method-sharing.js
       - name: Test integration discovery, link paths and scientific boundaries

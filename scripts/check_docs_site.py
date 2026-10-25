@@ -38,6 +38,8 @@ ASSETS = (
     "javascripts/interactive-explorers.js",
     "javascripts/integration-navigator.js",
     "assets/integration-navigator.css",
+    "assets/accessibility-refinements.css",
+    "javascripts/accessibility-refinements.js",
     "javascripts/gaze-data-readiness.js",
     "javascripts/method-sharing.js",
     "assets/gaze-data-readiness.css",
