@@ -75,6 +75,37 @@ speedup: this document contains no new post-change scores or field Core Web
 Vitals measurements. The browser preview also tests a real interactive search
 for the SyeLink documentation, beyond static index keyword presence.
 
+## Experimental Material navigation pruning (25 October 2026)
+
+The production Material site has approximately 368 generated pages. Material's
+[`navigation.prune` option](https://squidfunk.github.io/mkdocs-material/setup/setting-up-navigation/#navigation-pruning)
+renders only the currently visible navigation branch and turns collapsed
+sections into links to their landing or first page. It is incompatible with
+`navigation.expand` (which is not enabled here). This behavior can save HTML
+but also changes the way readers discover individual topics.
+
+**Decision: controlled comparison only, no production pruning flag yet.**
+The separate `navigation-pruning-parity (non-deploying)` workflow generates
+`.navigation-prune-preview.mkdocs.yml` automatically; it does not edit
+`mkdocs.yml`. Both builds use the same strict source, scientific gallery,
+API reference and installed MkDocs theme.
+
+The comparison checks all HTML routes, compressed and raw HTML size, stable
+main content, identical search-index entries, site-wide links and fragments,
+and the previously defined ten scientific search intentions. Two independent
+browser sessions test deep direct links, section-index navigation, real Material
+search, instant navigation, mobile navigation drawer and sampled axe-core
+accessibility. Browse the CI artifact for actual numerical findings; **no
+percentage saving, search equivalence, Lighthouse gain or WCAG conformance
+is claimed merely by adding an experiment**.
+
+Promote this option to a separate production PR **only if** measurable size
+reduction accompanies green parity checks and the resulting section-index
+route is sufficiently discoverable to replace collapsed sidebar lists.
+Keep the unpruned baseline available as an immediate rollback path. Experimental
+checks do not change published eyetrajectoriespy 1.2.0 or qualify open
+scientific blockers.
+
 ## Zensical production decision: HOLD
 
 The earlier 11-page Zensical static comparison passed, but eleven pages cannot establish equivalence for this large documentation archive. The expanded report now compares **every generated HTML route**, selected custom JS/CSS assets and available search artifacts.
