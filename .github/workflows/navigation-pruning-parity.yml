@@ -35,11 +35,13 @@ jobs:
         run: npm --prefix build/site-accessibility install --no-save --no-package-lock axe-core@4.13.0
       - name: Recreate deterministic source-linked scientific figures
         run: python scripts/generate_docs_gallery.py
-      - name: Build unchanged MkDocs Material baseline
-        run: mkdocs build --strict --site-dir build/navigation-baseline-site
-      - name: Generate isolated navigation.prune configuration
-        run: python scripts/prepare_navigation_prune_preview.py
-      - name: Build navigation-pruned preview without deploying
+      - name: Generate explicit pruned and unpruned comparison configs
+        run: |
+          python scripts/test_prepare_navigation_prune_preview.py
+          python scripts/prepare_navigation_prune_preview.py
+      - name: Build isolated unpruned Material baseline
+        run: mkdocs build --strict --config-file .navigation-unpruned-preview.mkdocs.yml
+      - name: Build isolated navigation-pruned candidate without deploying
         run: mkdocs build --strict --config-file .navigation-prune-preview.mkdocs.yml
       - name: Compare all HTML routes, main content, search and compressed navigation payload
         run: python scripts/compare_navigation_pruning.py
