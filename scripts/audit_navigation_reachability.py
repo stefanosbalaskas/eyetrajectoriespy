@@ -87,6 +87,8 @@ def compare(baseline: Path, candidate: Path) -> dict:
         "baseline_reachable": len(before),
         "candidate_reachable": len(after),
         "baseline_already_unreachable": len(set(a) - before),
+        "baseline_unreachable_routes": sorted(set(a) - before),
+        "candidate_unreachable_routes": sorted(set(b) - after),
         "newly_unreachable_after_pruning": len(newly_orphaned),
         "example_newly_unreachable": newly_orphaned[:80],
         "limitations": (

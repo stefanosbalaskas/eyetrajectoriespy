@@ -1,7 +1,8 @@
-"""Prepare an isolated Material navigation.prune experiment.
+"""Generate two independent, nondeploying MkDocs navigation builds.
 
-This file deliberately does not change mkdocs.yml or any production builder.
-Fail closed if the source structure is different from the audited configuration.
+Always build both the unpruned baseline and the navigation.prune candidate from
+the SAME production configuration, regardless of which mode is deployed.
+This makes the experiment a permanent rollback regression after promotion.
 """
 from __future__ import annotations
 
@@ -9,33 +10,38 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "mkdocs.yml"
-DEST = ROOT / ".navigation-prune-preview.mkdocs.yml"
-TARGET = "build/navigation-prune-site"
+UNPRUNED = ROOT / ".navigation-unpruned-preview.mkdocs.yml"
+PRUNED = ROOT / ".navigation-prune-preview.mkdocs.yml"
+ANCHOR = "    - navigation.indexes\n"
+FEATURE = "    - navigation.prune\n"
 
 
-def prepare(source: str) -> str:
-    feature_anchor = "    - navigation.indexes\n"
-    if source.count(feature_anchor) != 1:
+def prepare(source: str, *, pruned: bool) -> str:
+    if source.count(ANCHOR) != 1:
         raise ValueError("Expected exactly one Material navigation.indexes feature")
-    if "    - navigation.prune" in source:
-        raise ValueError("Production already includes navigation.prune")
+    if source.count(FEATURE) > 1:
+        raise ValueError("Duplicate navigation.prune flags")
     if "    - navigation.expand" in source:
         raise ValueError("Pruning incompatible with navigation.expand")
     if "\nsite_dir:" in source or source.startswith("site_dir:"):
-        raise ValueError("Unexpected production site_dir; avoid ambiguous output")
-    # Insert a single experimental feature, preserving all other production settings.
-    preview = source.replace(
-        feature_anchor, feature_anchor + "    - navigation.prune\n", 1
-    )
-    return preview.rstrip() + f"\nsite_dir: {TARGET}\n"
+        raise ValueError("Unexpected production site_dir; cannot isolate builds")
+    # Retain one and only one feature when pruned; omit it otherwise. A comment
+    # immediately above the feature may remain as a harmless YAML comment.
+    stripped = source.replace(FEATURE, "")
+    if pruned:
+        stripped = stripped.replace(ANCHOR, ANCHOR + FEATURE, 1)
+    target = "build/navigation-prune-site" if pruned else "build/navigation-baseline-site"
+    return stripped.rstrip() + f"\nsite_dir: {target}\n"
 
 
 def main() -> None:
     original = SOURCE.read_text(encoding="utf-8")
-    generated = prepare(original)
-    DEST.write_text(generated, encoding="utf-8")
-    assert SOURCE.read_text(encoding="utf-8") == original
-    print(f"Prepared non-deploying navigation-prune preview: {DEST.name}")
+    UNPRUNED.write_text(prepare(original, pruned=False), encoding="utf-8")
+    PRUNED.write_text(prepare(original, pruned=True), encoding="utf-8")
+    if SOURCE.read_text(encoding="utf-8") != original:
+        raise AssertionError("Generator cannot modify the production MkDocs config")
+    print(f"Paired isolated builds ready: {UNPRUNED.name}; {PRUNED.name}")
+    print(f"Production flag enabled: {FEATURE in original}")
 
 
 if __name__ == "__main__":
