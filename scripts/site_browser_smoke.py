@@ -56,9 +56,14 @@ def run(site: Path) -> dict:
                     page.locator(".et-story-card").first.wait_for(timeout=20000)
                     count = page.locator(".et-story-card").count()
                     assert count == 12, f"Expected 12 scientific figure cards, got {count}"
+                    # Offscreen images are lazy by design. Trigger their fetches
+                    # for this audit rather than treating unopened cards as broken.
+                    page.locator(".et-story-card img").evaluate_all(
+                        "(nodes) => nodes.forEach(img => { img.loading = 'eager'; })"
+                    )
                     page.wait_for_function(
                         "() => [...document.querySelectorAll('.et-story-card img')].every(i => i.complete && i.naturalWidth > 0)",
-                        timeout=15000,
+                        timeout=20000,
                     )
                     report["images_loaded"] = 12
                     if kind == "desktop":
