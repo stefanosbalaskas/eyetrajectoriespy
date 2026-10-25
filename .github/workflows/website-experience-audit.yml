@@ -1,0 +1,48 @@
+name: website-experience-audit (non-deploying)
+
+on:
+  pull_request:
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "scripts/audit_sitewide_links.py"
+      - "scripts/audit_search_corpus.py"
+      - ".github/workflows/website-experience-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rendered-site-discovery:
+    runs-on: ubuntu-24.04
+    # First site-wide baseline is diagnostic: report findings rather than
+    # pretend all thousands of historic fragments are already qualified.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install existing production documentation dependencies
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[docs,dev]"
+      - name: Build original deterministic scientific figure gallery
+        run: python scripts/generate_docs_gallery.py
+      - name: Strict production MkDocs build
+        run: mkdocs build --strict
+      - name: Audit all generated local links and named fragments
+        run: python scripts/audit_sitewide_links.py
+      - name: Audit research-search index coverage
+        run: python scripts/audit_search_corpus.py
+      - name: Save findings without deploying
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sitewide-links-search-evidence
+          path: |
+            build/sitewide-links.json
+            build/site-search-corpus.json
+          if-no-files-found: warn
