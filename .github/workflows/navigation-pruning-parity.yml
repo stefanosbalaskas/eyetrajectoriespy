@@ -5,6 +5,7 @@ on:
     paths:
       - "scripts/prepare_navigation_prune_preview.py"
       - "scripts/compare_navigation_pruning.py"
+      - "scripts/audit_navigation_reachability.py"
       - "scripts/browser_navigation_pruning.py"
       - "docs/development/sitewide-experience-audit.md"
       - ".github/workflows/navigation-pruning-parity.yml"
@@ -50,6 +51,8 @@ jobs:
         run: |
           python scripts/audit_search_corpus.py --site build/navigation-baseline-site --strict --output build/navigation-baseline-search.json
           python scripts/audit_search_corpus.py --site build/navigation-prune-site --strict --output build/navigation-pruned-search.json
+      - name: Check no newly orphaned pages in the static page-link graph
+        run: python scripts/audit_navigation_reachability.py --strict
       - name: Test live search, mobile drawer, accessibility and deep links in both builds
         run: python scripts/browser_navigation_pruning.py
       - name: Upload comparison, browser screenshots and audit records
@@ -60,6 +63,7 @@ jobs:
           path: |
             build/navigation-prune-comparison.json
             build/navigation-prune-browser.json
+            build/navigation-link-reachability.json
             build/navigation-baseline-links.json
             build/navigation-pruned-links.json
             build/navigation-baseline-search.json
