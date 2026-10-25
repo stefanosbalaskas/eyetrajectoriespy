@@ -4,9 +4,12 @@
 module.exports = {
   ci: {
     collect: {
-      staticDistDir: "./site",
+      staticDistDir: "./build/lighthouse-webroot",
       url: [
-        "http://localhost:0/",
+        "http://localhost/eyetrajectoriespy/",
+        "http://localhost/eyetrajectoriespy/start/first-analysis/",
+        "http://localhost/eyetrajectoriespy/tools/figure-storyboard/",
+        "http://localhost/eyetrajectoriespy/integrations/navigator/",
       ],
       numberOfRuns: 1,
       settings: {
