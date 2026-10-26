@@ -27,3 +27,16 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; }
 }
+
+/* The light-mode indigo accent (#4051b5) fails against dark homepage
+   research panels. Set explicit high-contrast ink on the selected Zensical
+   palette in both dark desktop and dark mobile views. */
+[data-md-color-scheme="slate"] .md-typeset .et-release-panel .et-eyebrow {
+  color: #b3dbff !important;
+}
+
+/* Expose keyboard focus on wide, scrollable generated API reference regions. */
+.md-typeset__scrollwrap[tabindex="0"]:focus-visible {
+  outline: 3px solid #68b8ed;
+  outline-offset: 3px;
+}
