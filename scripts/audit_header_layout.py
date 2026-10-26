@@ -52,6 +52,10 @@ def audit(site: Path, output: Path) -> dict:
                       const inner = document.querySelector(".md-tabs > .md-grid");
                       const entries = [...document.querySelectorAll(".md-tabs__link")];
                       const repo = document.querySelector(".md-source__repository");
+                      // Material may asynchronously append release/issue facts inside
+                      // this node. Compare the label, not the combined live facts.
+                      const repoLabel = repo?.cloneNode(true);
+                      repoLabel?.querySelectorAll(".md-source__facts").forEach(el => el.remove());
                       if (!tabs || !inner) throw new Error("Desktop tab controls missing");
                       const box = inner.getBoundingClientRect();
                       const rects = entries.map(el => el.getBoundingClientRect());
@@ -64,7 +68,8 @@ def audit(site: Path, output: Path) -> dict:
                         last_right: rects[rects.length - 1]?.right,
                         container_left: box.left,
                         container_right: box.right,
-                        repo_text: repo?.textContent?.trim() || null,
+                        repo_text: repoLabel?.textContent?.trim().replace(/\\s+/g, " ") || null,
+                        repo_full_text: repo?.textContent?.trim() || null,
                         repo_overflow: repo ? repo.scrollWidth > repo.clientWidth + 2 : null,
                         body_scroll_width: document.documentElement.scrollWidth,
                         window_width: innerWidth

@@ -481,5 +481,6 @@ extra_css:
   - assets/interactive-explorers.css
   - assets/figure-storyboard.css
   - assets/accessibility-refinements.css
+  - assets/site-design-scientific-portal.css
 
 copyright: "MIT © 2026 Stefanos Balaskas"
