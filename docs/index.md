@@ -56,7 +56,7 @@ hide:
 
 ## Full-site usability and migration status
 
-The [site-wide quality programme](development/sitewide-experience-audit.md) now evaluates rendered internal links and deep anchors, topic search discoverability, simulated mobile Lighthouse performance, browser accessibility and complete Zensical route inventory. **MkDocs remains the production builder.**
+The [site-wide quality programme](development/sitewide-experience-audit.md) now evaluates rendered internal links and deep anchors, topic search discoverability, simulated mobile Lighthouse performance, browser accessibility and complete Zensical route inventory. **The selected Zensical Modern design is evaluated through a strict publication gate, with MkDocs Material retained as an independent compatibility and rollback baseline.** Automated checks do not replace the [open manual screen-reader and keyboard review](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/499).
 
 ## Site transparency and accessibility
 

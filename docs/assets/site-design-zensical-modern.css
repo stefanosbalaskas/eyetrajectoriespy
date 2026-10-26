@@ -1,0 +1,42 @@
+/* User-selected design C: actual Zensical Modern, not a Material imitation.
+   Keep its default clean white compact-header styling. Only measured
+   accessibility defects are corrected; scientific content is unchanged. */
+[data-md-color-scheme="default"] .md-copyright {
+  color: #334454 !important;
+}
+[data-md-color-scheme="default"] .md-nav__link--active .md-ellipsis {
+  color: #00685d !important;
+}
+/* Preview axe found code API labels 4.04:1 (#787f89 on white) owing to
+   label-group opacity. Do not dim the already legible foreground. */
+.md-typeset .doc-labels.doc,
+.md-typeset .doc-labels.doc > .doc-label,
+.md-typeset .doc-labels.doc > .doc-label-dataclass,
+.md-typeset .doc-labels.doc > .doc-label-property {
+  opacity: 1 !important;
+}
+.md-typeset .doc-labels.doc code,
+.md-typeset .doc-labels.doc > span > code {
+  color: #34435a !important;
+  opacity: 1 !important;
+}
+[data-md-color-scheme="slate"] .md-typeset .doc-labels.doc code,
+[data-md-color-scheme="slate"] .md-typeset .doc-labels.doc > span > code {
+  color: #eaf2fa !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; }
+}
+
+/* The light-mode indigo accent (#4051b5) fails against dark homepage
+   research panels. Set explicit high-contrast ink on the selected Zensical
+   palette in both dark desktop and dark mobile views. */
+[data-md-color-scheme="slate"] .md-typeset .et-release-panel .et-eyebrow {
+  color: #b3dbff !important;
+}
+
+/* Expose keyboard focus on wide, scrollable generated API reference regions. */
+.md-typeset__scrollwrap[tabindex="0"]:focus-visible {
+  outline: 3px solid #68b8ed;
+  outline-offset: 3px;
+}
