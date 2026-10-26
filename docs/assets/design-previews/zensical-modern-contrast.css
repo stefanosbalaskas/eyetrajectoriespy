@@ -9,3 +9,11 @@
 [data-md-color-scheme="default"] .md-typeset .doc-labels.doc code {
   color: #4b5462 !important;
 }
+
+
+/* Zensical Modern does not necessarily set the Material palette data
+   attribute; use its inherited foreground to avoid light-text labels. */
+.doc-labels.doc code,
+.doc-labels.doc > span > code {
+  color: CanvasText !important;
+}
