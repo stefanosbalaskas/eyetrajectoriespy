@@ -96,3 +96,14 @@
 [data-md-color-scheme="slate"] .doc-labels.doc > span > code {
   color: #eaf3f5 !important;
 }
+
+
+/* Calculated contrast was 3.79:1 despite compliant computed ink because the
+   mkdocstrings label layer applies ~75% opacity. Remove that composite
+   attenuation on API labels, preserving their explicit theme-aware colors. */
+.doc-labels.doc,
+.doc-labels.doc > .doc-label,
+.doc-labels.doc > .doc-label-dataclass,
+.doc-labels.doc > .doc-label-property {
+  opacity: 1 !important;
+}
