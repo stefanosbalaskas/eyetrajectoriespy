@@ -29,10 +29,10 @@ def prepare(original: str, variant: str) -> str:
     if variant == "zensical-modern":
         if "\nhooks:" in original:
             raise ValueError("Zensical does not support MkDocs hooks")
-        candidate = original.replace(THEME, THEME + "  variant: modern\\n", 1)
+        candidate = original.replace(THEME, THEME + "  variant: modern\n", 1)
         candidate = candidate.replace(
             CSS_ANCHOR,
-            CSS_ANCHOR + "  - assets/design-previews/zensical-modern-contrast.css\\n",
+            CSS_ANCHOR + "  - assets/design-previews/zensical-modern-contrast.css\n",
             1,
         )
     else:
