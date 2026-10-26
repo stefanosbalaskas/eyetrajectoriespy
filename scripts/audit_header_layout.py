@@ -49,7 +49,7 @@ def audit(site: Path, output: Path) -> dict:
                     assert response and response.status == 200, f"{width}: homepage failed"
                     result = page.evaluate("""() => {
                       const tabs = document.querySelector(".md-tabs");
-                      const inner = document.querySelector(".md-tabs__inner");
+                      const inner = document.querySelector(".md-tabs > .md-grid");
                       const entries = [...document.querySelectorAll(".md-tabs__link")];
                       const repo = document.querySelector(".md-source__repository");
                       if (!tabs || !inner) throw new Error("Desktop tab controls missing");
