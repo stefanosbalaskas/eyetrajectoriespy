@@ -83,3 +83,16 @@
 .md-typeset .doc-labels.doc > span > code {
   color: var(--md-default-fg-color, CanvasText) !important;
 }
+
+
+/* Explicit readable API label ink: inherited Material fg proved too pale
+   (measured #738087/#f7f7f6, 3.79:1). This overrides prior palette rules. */
+.doc-labels.doc code,
+.doc-labels.doc > span > code,
+.md-typeset .doc-labels.doc code {
+  color: #273f4b !important;
+}
+[data-md-color-scheme="slate"] .doc-labels.doc code,
+[data-md-color-scheme="slate"] .doc-labels.doc > span > code {
+  color: #eaf3f5 !important;
+}
