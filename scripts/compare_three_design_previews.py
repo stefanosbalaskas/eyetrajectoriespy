@@ -104,7 +104,46 @@ def design_browser(browser, site: Path, name: str, evidence: Path) -> dict:
                         except Exception as exc:
                             record["search"] = {"input_present": True, "error": str(exc)[:220]}
                     else:
-                        record["search"] = {"input_present": False}
+                        # Zensical's modern search intentionally replaces
+                        # Material/Lunr's markup. Test its documented Ctrl+K
+                        # entry path; do not treat an absent Material input
+                        # as proof that Zensical search is broken.
+                        try:
+                            page.keyboard.press("Control+k")
+                            field = page.locator(
+                                '[role="dialog"] input:visible, input[type="search"]:visible, '
+                                '[role="combobox"]:visible'
+                            ).first
+                            try:
+                                field.wait_for(state="visible", timeout=5000)
+                            except Exception:
+                                trigger = page.get_by_role("button", name="Search").first
+                                trigger.click(timeout=3000)
+                                field.wait_for(state="visible", timeout=5000)
+                            field.fill("sparse fpca")
+                            page.wait_for_timeout(1300)
+                            urls = page.locator(
+                                '[role="dialog"] a[href]:visible, '
+                                '[data-md-component="search-result"] a[href]:visible'
+                            ).evaluate_all(
+                                "(nodes) => nodes.map(n => new URL(n.href).pathname)"
+                            )
+                            target = BASE_PATH + "guides/sparse-irregular-fpca/"
+                            record["search"] = {
+                                "input_present": True,
+                                "search_engine": "modern-dialog",
+                                "visible_results": len(urls),
+                                "canonical_guide_rank": next(
+                                    (i + 1 for i, x in enumerate(urls) if x == target), None
+                                ),
+                                "top_three": urls[:3],
+                            }
+                        except Exception as exc:
+                            record["search"] = {
+                                "input_present": False, "search_engine": "modern-dialog",
+                                "status": "unverified",
+                                "error": str(exc)[:280],
+                            }
             except Exception as exc:
                 record["failure"] = str(exc)[:650]
             finally:
