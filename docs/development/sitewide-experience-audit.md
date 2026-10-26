@@ -146,6 +146,31 @@ making a general accessibility claim. Search-performance improvement over
 the earlier site should be claimed only after comparable baseline runs, not
 inferred from added boosts or a green build.
 
+## Expanded researcher task search benchmark and manual AT gate (26 October 2026)
+
+[Research task specification](https://github.com/stefanosbalaskas/eyetrajectoriespy/blob/main/scripts/site_search_tasks.json)
+contains **23 canonical research-intent searches** across onboarding,
+device/BIDS handoffs, sparse methods, scientific modelling, negative research
+evidence and reproducibility. Five originally qualified queries remain
+**strict regression checks**; eighteen new cases are **exploratory** until
+the observed rank distribution has been reviewed. The new
+`audit_research_search_tasks.py` records raw result-entry and
+distinct-destination-page rank plus overall/by-topic Hit@1, Hit@3, Hit@5,
+Hit@10 and observed reciprocal rank (missing destinations contribute zero).
+Reports are uploaded as CI artifacts, not instrumented on the public site.
+
+The first baseline found **21/23 primary pages among observed results** (Hit@5 21/23). The specific identification-bounds explainer and R95 readable article did not appear within the initial displayed result entries, even after exploratory modest boosts. Those ineffective boosts were removed. A richer benchmark now reports **primary article rank separately from scientifically relevant gateway rank** (e.g., the article library or R95 evidence ledger); approved gateways are editorially checked to link directly to the primary explanation. Counting a gateway as reachable must not be represented as making the original deep article rank higher. This also does not prove that a researcher completed the intended task.
+
+The keyboard audit also records a twelve-step Tab focus sequence with actual
+bounding-rectangle and computed outline details. This is a browser
+diagnostic—not proof that the complete focus sequence is meaningful or that
+the outline meets W3C contrast requirements. The
+[manual accessibility review protocol](accessibility-manual-review.md)
+contains a separate **unperformed** screen-reader test matrix covering NVDA,
+VoiceOver, mobile AT, focus restoration, equation reading, visual figure
+alternatives and interactive controls. No manual tests are fabricated or
+marked complete by automated CI.
+
 ## Zensical production decision: HOLD
 
 The earlier 11-page Zensical static comparison passed, but eleven pages cannot establish equivalence for this large documentation archive. The expanded report now compares **every generated HTML route**, selected custom JS/CSS assets and available search artifacts.

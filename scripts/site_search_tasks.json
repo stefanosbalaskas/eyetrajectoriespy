@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "description": "Curated reader-task queries with separately recorded primary article and acceptable research gateway results. Alternative targets must contain grounded links to the intended primary study; rankings are not human task-success evidence.",
+  "cases": [
+    {
+      "id": "syelink",
+      "category": "device",
+      "query": "SyeLink",
+      "target": "/integrations/syelink-handoff/",
+      "tier": "regression",
+      "max_rank": 12
+    },
+    {
+      "id": "first-analysis",
+      "category": "onboarding",
+      "query": "first analysis",
+      "target": "/start/first-analysis/",
+      "tier": "regression",
+      "max_rank": 12
+    },
+    {
+      "id": "cite",
+      "category": "reproducibility",
+      "query": "cite software",
+      "target": "/start/cite-and-reproduce/",
+      "tier": "regression",
+      "max_rank": 20
+    },
+    {
+      "id": "sparse-fpca",
+      "category": "sparse",
+      "query": "sparse fpca",
+      "target": "/guides/sparse-irregular-fpca/",
+      "tier": "regression",
+      "max_rank": 20
+    },
+    {
+      "id": "research",
+      "category": "research",
+      "query": "research evidence",
+      "target": "/research/",
+      "tier": "regression",
+      "max_rank": 20
+    },
+    {
+      "id": "async-sampling",
+      "category": "sparse",
+      "query": "asynchronous gaze",
+      "target": "/guides/sparse-multivariate-async/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "joint-pace",
+      "category": "sparse",
+      "query": "joint sparse mfpca",
+      "target": "/guides/sparse-multivariate-fpca/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "bandwidth",
+      "category": "sparse",
+      "query": "sparse fpca bandwidth",
+      "target": "/guides/sparse-bandwidth-selection/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "mixed-effects",
+      "category": "methods",
+      "query": "repeated trial mixed effects",
+      "target": "/workflows/repeated-trial-mixed-effects/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "generalized",
+      "category": "methods",
+      "query": "binary count responses",
+      "target": "/workflows/generalized-responses/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "nonlinear",
+      "category": "methods",
+      "query": "nonlinear recurrence",
+      "target": "/workflows/nonlinear-recurrence/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "pymovements",
+      "category": "device",
+      "query": "pymovements",
+      "target": "/integrations/pymovements-handoff/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "bids",
+      "category": "device",
+      "query": "Eye Tracking BIDS",
+      "target": "/integrations/acquisition-and-bids/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "observation-process",
+      "category": "research",
+      "query": "observation process diagnostics",
+      "target": "/guides/observation-process-diagnostics/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "identification",
+      "category": "research",
+      "query": "identification bounds",
+      "target": "/articles/how-to-read-identification-bounds/",
+      "tier": "exploratory",
+      "max_rank": 25,
+      "alternative_targets": [
+        "/articles/",
+        "/articles/what-sharpens-missing-gaze-bounds/"
+      ]
+    },
+    {
+      "id": "simultaneous",
+      "category": "methods",
+      "query": "simultaneous FPC bands",
+      "target": "/guides/simultaneous-fpc-bands/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "equations",
+      "category": "reproducibility",
+      "query": "function equation index",
+      "target": "/reference/function-equation-index/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "csv-audit",
+      "category": "onboarding",
+      "query": "data readiness",
+      "target": "/tools/data-readiness/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "figures",
+      "category": "onboarding",
+      "query": "visual methods",
+      "target": "/tools/figure-storyboard/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "recurrence",
+      "category": "methods",
+      "query": "recurrence threshold",
+      "target": "/methods/recurrence-threshold-diagnostics/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "audit-r95",
+      "category": "research",
+      "query": "R95 missing gaze",
+      "target": "/articles/w3-r95-monotone-audit-return-identification/",
+      "tier": "exploratory",
+      "max_rank": 25,
+      "alternative_targets": [
+        "/development/w3-r95-original-independent-evidence-ledger/",
+        "/articles/what-sharpens-missing-gaze-bounds/"
+      ]
+    },
+    {
+      "id": "reproduce",
+      "category": "reproducibility",
+      "query": "reproducibility checklist",
+      "target": "/reproducibility/checklist/",
+      "tier": "exploratory",
+      "max_rank": 25
+    },
+    {
+      "id": "api",
+      "category": "reproducibility",
+      "query": "API stability",
+      "target": "/reference/api-stability/",
+      "tier": "exploratory",
+      "max_rank": 25
+    }
+  ]
+}

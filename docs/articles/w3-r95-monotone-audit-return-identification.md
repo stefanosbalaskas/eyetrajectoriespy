@@ -1,3 +1,8 @@
+---
+title: R95 missing gaze — conditional identification under selective audit return
+description: R95 identifies assumption-conditional sharp sets when externally justified outcome-specific audit return direction is known; not a general MNAR correction.
+---
+
 # Can the direction of selective audit return identify missing outcomes?
 
 *W3 R95 · Exact binary population sensitivity analysis · 23 October 2026*

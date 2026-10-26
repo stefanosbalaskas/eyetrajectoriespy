@@ -389,6 +389,7 @@ nav:
       - 0.9.0rc1: releases/0.9.0rc1.md
   - Website quality and discovery: development/website-quality.md
   - Site-wide quality and migration decision: development/sitewide-experience-audit.md
+  - Manual screen-reader review (pending): development/accessibility-manual-review.md
   - Documentation generator preview: development/zensical-preview.md
   - Contributing: contributing.md
 
