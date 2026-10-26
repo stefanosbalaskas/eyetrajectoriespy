@@ -1,0 +1,51 @@
+name: scientific-portal-qualification (non-deploying)
+
+on:
+  pull_request:
+    paths:
+      - "mkdocs.yml"
+      - "docs/**"
+      - "scripts/audit_scientific_portal_design.py"
+      - ".github/workflows/scientific-portal-qualification.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  theme-layout-search-a11y:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install production documentation dependencies and browser
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[docs,dev]"
+          python -m pip install "playwright==1.56.0"
+          python -m playwright install --with-deps chromium
+          npm --prefix build/site-accessibility install --no-save --no-package-lock axe-core@4.13.0
+      - name: Generate checked scientific figures
+        run: python scripts/generate_docs_gallery.py
+      - name: Strict current MkDocs Material build and route audit
+        run: |
+          mkdocs build --strict
+          python scripts/audit_search_corpus.py --strict --output build/scientific-portal-search-corpus.json
+          python scripts/audit_sitewide_links.py --strict --output build/scientific-portal-links.json
+      - name: Check four shared pages desktop/mobile light/dark, axe, navigation, search
+        run: python scripts/audit_scientific_portal_design.py
+      - name: Upload qualification evidence (no publication)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scientific-portal-production-candidate-evidence
+          path: |
+            build/scientific-portal-qualification/
+            build/scientific-portal-search-corpus.json
+            build/scientific-portal-links.json
+          if-no-files-found: warn
+          retention-days: 30
