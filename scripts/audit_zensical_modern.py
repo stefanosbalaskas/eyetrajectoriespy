@@ -74,9 +74,6 @@ def check_search(page, origin: str, report: dict) -> None:
                 # Follow a real result link when the result exposes one.
                 matching_links = [c for c in links if TARGET in (c.get("href") or "")]
                 if matching_links:
-                    locator = page.locator('a[href*="sparse-irregular-fpca"]').filter(
-                        visible=True
-                    )
                     # Use a search-root scoping selector, not a sidebar link.
                     in_search = page.locator(
                       'dialog a[href*="sparse-irregular-fpca"], '
@@ -118,7 +115,7 @@ def qualify(baseline: Path, candidate: Path, out: Path) -> dict:
                     for device, width, height in (("desktop", 1440, 900),
                                                   ("mobile", 390, 844)):
                         ctx = browser.new_context(viewport={"width": width, "height": height},
-                                                  reduced_motion="reduce")
+                                                  color_scheme=scheme, reduced_motion="reduce")
                         page = ctx.new_page()
                         errors = []
                         page.on("pageerror", lambda error: errors.append(str(error)))
@@ -128,17 +125,23 @@ def qualify(baseline: Path, candidate: Path, out: Path) -> dict:
                                                      wait_until="domcontentloaded",
                                                      timeout=60000)
                                 assert response and response.status == 200, (name, device, scheme)
-                                if scheme == "dark":
-                                    # The template exposes a palette switch; test
-                                    # dark variant only when it can truly activate.
-                                    toggle = page.locator('label[for="__palette_1"], '
-                                           'label[for="__palette_2"], '
-                                           '.md-header__button[for^="__palette"]')
+                                palette = page.locator("body").get_attribute(
+                                    "data-md-color-scheme"
+                                )
+                                if scheme == "dark" and palette != "slate":
+                                    toggle = page.locator(
+                                        'label[for^="__palette"], '
+                                        '.md-header__button[for^="__palette"]'
+                                    )
                                     if toggle.count() and toggle.first.is_visible():
                                         toggle.first.click(timeout=2500)
-                                    else:
-                                        # Do not mark untested dark mode as verified.
-                                        raise AssertionError("Dark palette toggle not available")
+                                    palette = page.locator("body").get_attribute(
+                                        "data-md-color-scheme"
+                                    )
+                                if scheme == "dark":
+                                    assert palette == "slate", (
+                                        "Dark palette did not activate", palette
+                                    )
                                 title = page.locator("h1").first.inner_text()
                                 assert title.strip(), (scheme, device, name, "heading missing")
                                 overflow = page.evaluate(
