@@ -171,6 +171,34 @@ VoiceOver, mobile AT, focus restoration, equation reading, visual figure
 alternatives and interactive controls. No manual tests are fabricated or
 marked complete by automated CI.
 
+## Compact desktop header — responsive information architecture
+
+A 1545 × 112 desktop screenshot (26 October 2026) showed the Material tab
+bar ending at a clipped **“Webs…”** entry. The root cause was **16
+top-level tabs**, four of which were standalone site-quality and accessibility
+maintenance pages, plus a separate Contributing link. The repository label
+was also truncated. Material's built-in horizontal tab row has a hidden
+overflow scrollbar and cannot reliably advertise content outside the
+viewport.
+
+The source configuration now groups those **five maintenance resources**
+under **About**, with short, still-meaningful section labels (Explore,
+Integrations, Guides, Research and News) and a **Source on GitHub** repository
+label. All original Markdown pages retain their URLs, search-index entries
+and provenance; no pages are removed and navigation pruning remains enabled.
+The desktop top-level tab list is reduced **16 → 12**.
+
+The automated `audit_header_layout.py` tests the **actual rendered**
+site at 1250, 1280, 1366, 1440, 1545 and 1920 px, checking the full
+12-tab row, visual bounding boxes, no horizontal tab overflow, visible
+repository label and no horizontal viewport scrollbar. At 390, 820 and
+1150 px it verifies that Material switches to the native mobile drawer.
+Five reorganized resource URLs are checked for HTTP 200. Screenshots and
+JSON evidence are retained in the non-deploying site-search/keyboard CI
+artifact. This is **browser layout QA, not full manual accessibility
+verification**; [actual assistive-technology review](accessibility-manual-review.md)
+remains outstanding.
+
 ## Zensical production decision: HOLD
 
 The earlier 11-page Zensical static comparison passed, but eleven pages cannot establish equivalence for this large documentation archive. The expanded report now compares **every generated HTML route**, selected custom JS/CSS assets and available search artifacts.
