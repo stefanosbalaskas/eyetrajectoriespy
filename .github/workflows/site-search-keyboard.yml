@@ -6,6 +6,7 @@ on:
       - "docs/**"
       - "mkdocs.yml"
       - "scripts/site_search_keyboard_audit.py"
+      - "scripts/audit_header_layout.py"
       - "scripts/audit_research_search_tasks.py"
       - "scripts/site_search_tasks.json"
       - ".github/workflows/site-search-keyboard.yml"
@@ -43,6 +44,8 @@ jobs:
         run: python scripts/site_search_keyboard_audit.py
       - name: Run expanded 23-intent research-task relevance benchmark
         run: python scripts/audit_research_search_tasks.py
+      - name: Validate responsive header tabs, source label and mobile drawer
+        run: python scripts/audit_header_layout.py
       - name: Retain real result ranks and search screenshots
         if: always()
         uses: actions/upload-artifact@v4
@@ -50,6 +53,7 @@ jobs:
           name: site-search-keyboard-evidence
           path: |
             build/site-search-keyboard/
+            build/header-layout/
             build/site-search-task-benchmark.json
             build/site-search-corpus.json
             build/sitewide-links.json

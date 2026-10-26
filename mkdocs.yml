@@ -2,7 +2,7 @@ site_name: eyetrajectoriespy
 site_description: Functional and sparse eye-tracking trajectories in Python — stable scientific methods, examples, audited research and transparent qualification
 site_url: https://stefanosbalaskas.github.io/eyetrajectoriespy/
 repo_url: https://github.com/stefanosbalaskas/eyetrajectoriespy
-repo_name: stefanosbalaskas/eyetrajectoriespy
+repo_name: Source on GitHub
 edit_uri: edit/main/docs/
 
 # Preserve only the specifically shared historical broken URL without adding it to navigation.
@@ -24,7 +24,7 @@ nav:
       - Gaze representations: concepts/representations.md
       - Scientific contracts: concepts/contracts.md
       - Analysis decision map: concepts/decision-map.md
-  - Explore interactively:
+  - Explore:
       - Find a Python integration: integrations/navigator.md
       - CSV data readiness check: tools/data-readiness.md
       - Choose a method: tools/method-selector.md
@@ -35,7 +35,7 @@ nav:
       - Search research evidence: tools/evidence-explorer.md
       - Download runnable starter: tutorials/reproducible-starter.md
       - Documentation versions: versions/index.md
-  - Python integrations:
+  - Integrations:
       - Choose an integration: integrations/navigator.md
       - Overview: integrations/index.md
       - pandas / Polars / Parquet: integrations/tabular-handoff.md
@@ -55,7 +55,7 @@ nav:
           - Nonlinear/recurrence analysis: workflows/nonlinear-recurrence.md
           - Transparent orchestration (1.2): workflows/workflow-orchestration.md
           - Experimental E1-E4 expansion (unqualified): workflows/experimental-expansion.md
-  - Learn and practice:
+  - Guides:
       - Tutorial gallery: tutorials/index.md
       - Guides:
           - Overview: guides/index.md
@@ -239,7 +239,7 @@ nav:
               - Reproducibility bundle checklist: reproducibility/checklist.md
               - Release process: release-process.md
 
-  - Research and evidence:
+  - Research:
       - Overview: research/index.md
       - W3 studies R76–R95: research/studies.md
       - Interpreting identification bounds: articles/how-to-read-identification-bounds.md
@@ -356,7 +356,7 @@ nav:
   - Figures:
       - Scientific figure atlas: figures/index.md
       - Experimental E1-E4 result figures: methods/experimental-e1-e4-gallery.md
-  - News and updates:
+  - News:
       - Latest: news/index.md
       - 24 October 2026 stable release: news/2026-10-24-release.md
       - 23 October 2026 research update: news/2026-10-23.md
@@ -387,11 +387,12 @@ nav:
       - 0.10.0rc1: releases/0.10.0rc1.md
       - 0.9.0: releases/0.9.0.md
       - 0.9.0rc1: releases/0.9.0rc1.md
-  - Website quality and discovery: development/website-quality.md
-  - Site-wide quality and migration decision: development/sitewide-experience-audit.md
-  - Manual screen-reader review (pending): development/accessibility-manual-review.md
-  - Documentation generator preview: development/zensical-preview.md
-  - Contributing: contributing.md
+  - About:
+      - Website quality: development/website-quality.md
+      - Site-wide quality and migration decision: development/sitewide-experience-audit.md
+      - Manual accessibility review (pending): development/accessibility-manual-review.md
+      - Documentation generator preview: development/zensical-preview.md
+      - Contributing: contributing.md
 
 plugins:
   - search
