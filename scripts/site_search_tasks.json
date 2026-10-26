@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "description": "Curated reader-task queries, canonical target pages and independent regression/exploratory tiers. Observed browser result rank is not a task-success or WCAG assessment.",
+  "description": "Curated reader-task queries with separately recorded primary article and acceptable research gateway results. Alternative targets must contain grounded links to the intended primary study; rankings are not human task-success evidence.",
   "cases": [
     {
       "id": "syelink",
@@ -120,7 +120,11 @@
       "query": "identification bounds",
       "target": "/articles/how-to-read-identification-bounds/",
       "tier": "exploratory",
-      "max_rank": 25
+      "max_rank": 25,
+      "alternative_targets": [
+        "/articles/",
+        "/articles/what-sharpens-missing-gaze-bounds/"
+      ]
     },
     {
       "id": "simultaneous",
@@ -168,7 +172,11 @@
       "query": "R95 missing gaze",
       "target": "/articles/w3-r95-monotone-audit-return-identification/",
       "tier": "exploratory",
-      "max_rank": 25
+      "max_rank": 25,
+      "alternative_targets": [
+        "/development/w3-r95-original-independent-evidence-ledger/",
+        "/articles/what-sharpens-missing-gaze-bounds/"
+      ]
     },
     {
       "id": "reproduce",
