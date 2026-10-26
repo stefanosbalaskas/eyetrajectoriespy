@@ -43,11 +43,20 @@ def check_search(page, origin: str, report: dict) -> None:
         for _ in range(12):
             page.wait_for_timeout(900)
             state = page.evaluate("""() => {
-                const roots = [
-                  ...document.querySelectorAll('dialog, [role="dialog"], '
+                // Zensical's Disco search dialog lives inside an open
+                // shadow root. document.querySelectorAll alone cannot see it.
+                const allRoots = [document];
+                for (let i = 0; i < allRoots.length; i++) {
+                  for (const el of allRoots[i].querySelectorAll('*')) {
+                    if (el.shadowRoot) allRoots.push(el.shadowRoot);
+                  }
+                }
+                const roots = allRoots.flatMap(root => Array.from(
+                  root.querySelectorAll('dialog, [role="dialog"], '
                     + '[data-md-component="search"], .md-search, [role="listbox"]')
-                ].filter(e => e.getBoundingClientRect().width > 0);
-                const field = document.activeElement;
+                )).filter(e => e.getBoundingClientRect().width > 0);
+                const focusedHost = document.activeElement;
+                const field = focusedHost?.shadowRoot?.activeElement || focusedHost;
                 const matches = roots.flatMap(root => Array.from(
                   root.querySelectorAll('a[href], [role="option"], button')
                 )).filter(e => e.getBoundingClientRect().width > 0).map(e => ({
@@ -73,18 +82,20 @@ def check_search(page, origin: str, report: dict) -> None:
                                     "tries": len(outcomes)}
                 # Follow a real result link when the result exposes one.
                 matching_links = [c for c in links if TARGET in (c.get("href") or "")]
-                if matching_links:
-                    # Use a search-root scoping selector, not a sidebar link.
-                    in_search = page.locator(
-                      'dialog a[href*="sparse-irregular-fpca"], '
-                      '[role="dialog"] a[href*="sparse-irregular-fpca"], '
-                      '.md-search a[href*="sparse-irregular-fpca"]'
-                    ).first
-                    if in_search.count() and in_search.is_visible():
-                        in_search.click(timeout=5000)
-                        page.wait_for_url("**/guides/sparse-irregular-fpca/*",
-                                          timeout=10000)
-                        report["search"]["navigation"] = "pass"
+                assert matching_links, "Search result must expose a real page link"
+                # Playwright locators pierce open Shadow DOM by default.
+                in_search = page.locator(
+                    'dialog a[href*="sparse-irregular-fpca"], '
+                    '[role="dialog"] a[href*="sparse-irregular-fpca"], '
+                    '.md-search a[href*="sparse-irregular-fpca"]'
+                ).first
+                assert in_search.count() and in_search.is_visible(), (
+                    "A real clickable result is not exposed", links
+                )
+                in_search.click(timeout=5000)
+                page.wait_for_url("**/guides/sparse-irregular-fpca/*",
+                                  timeout=10000)
+                report["search"]["navigation"] = "pass"
                 return
         report["search"] = {"status": "unverified",
                             "query": "sparse fpca",
