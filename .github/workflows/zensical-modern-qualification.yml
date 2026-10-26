@@ -29,7 +29,7 @@ jobs:
           python -m pip install -U pip
           python -m pip install -e ".[docs,dev]"
           python -m pip install "zensical==0.0.72" "playwright==1.56.0"
-          python -m playwright install --with-deps chromium
+          google-chrome --version
           npm --prefix build/site-accessibility install --no-save --no-package-lock axe-core@4.13.0
       - name: Generate identical scientific figures
         run: python scripts/generate_docs_gallery.py
