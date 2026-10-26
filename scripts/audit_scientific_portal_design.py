@@ -64,6 +64,23 @@ def audit(site: Path, output: Path) -> dict:
                               hasStyle: [...document.styleSheets].some(s => (s.href || '').includes('site-design-scientific-portal')),
                             })""")
                             assert bounds["hasStyle"], (scheme, name, "stylesheet not loaded")
+                            if bounds["scroll"] > width + 3:
+                                offending = page.evaluate("""() => [...document.querySelectorAll('body *')]
+                                  .map(el => ({el, r: el.getBoundingClientRect()}))
+                                  .filter(o => o.r.width && o.r.right > innerWidth + 3 &&
+                                    getComputedStyle(o.el).position !== 'fixed')
+                                  .slice(0, 24)
+                                  .map(o => ({
+                                    selector: o.el.tagName.toLowerCase() +
+                                      (o.el.className && typeof o.el.className === 'string'
+                                        ? '.' + o.el.className.trim().split(/\\s+/).slice(0,3).join('.')
+                                        : ''),
+                                    right: Math.round(o.r.right),
+                                    width: Math.round(o.r.width),
+                                    scrollWidth: o.el.scrollWidth
+                                  }))""")
+                                bounds["offending_elements"] = offending
+                                print("MOBILE_OVERFLOW_DIAGNOSTIC=" + json.dumps(bounds), flush=True)
                             assert bounds["scroll"] <= width + 3, (scheme,device,name,"horizontal overflow", bounds)
                             result = {"scheme":scheme,"device":device,"page":name,"theme":bounds["theme"],
                                       "response":resp.status, "horizontal_overflow":False}
