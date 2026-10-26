@@ -107,3 +107,24 @@
 .doc-labels.doc > .doc-label-property {
   opacity: 1 !important;
 }
+
+
+/* Real 390px browser audit found a 406px document width. Prevent grid
+   items and long scientific content from imposing implicit min-content width,
+   without globally suppressing horizontal overflow or focus indicators. */
+@media (max-width: 600px) {
+  .et-release-grid, .et-news-strip, .et-figure-pair {
+    grid-template-columns: minmax(0, 1fr) !important;
+    min-width: 0;
+  }
+  .et-release-grid > *, .et-news-strip > *, .et-figure-pair > *,
+  .et-home-intro, .et-release-panel, .et-news-feature, .et-micro-status {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  .md-typeset pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
