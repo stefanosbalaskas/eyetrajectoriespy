@@ -53,3 +53,10 @@
   .md-typeset .et-home-intro h1 { font-size: 2.35rem; }
 }
 @media(prefers-reduced-motion:reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+
+
+/* Axe regression: Mkdocstrings API label #687479 on #f7f7f6 was 4.49:1.
+   Only the light scientific preview's inline API label is affected. */
+[data-md-color-scheme="default"] .md-typeset .doc-labels.doc code {
+  color: #455761 !important;
+}
