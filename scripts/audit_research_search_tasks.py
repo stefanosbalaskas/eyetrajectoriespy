@@ -39,9 +39,15 @@ def load_cases(spec: Path, site: Path) -> list[dict]:
             raise ValueError(f"Duplicate benchmark identity or query: {case}")
         if not case["target"].startswith("/") or not case["target"].endswith("/") or ".." in case["target"]:
             raise ValueError(f"Unsafe/canonical destination: {case}")
-        target = site / case["target"].strip("/") / "index.html"
-        if not target.is_file():
-            raise ValueError(f"Expected research topic route missing from build: {target}")
+        alternatives = case.get("alternative_targets", [])
+        if not isinstance(alternatives, list):
+            raise ValueError(f"Invalid acceptable task gateways: {case}")
+        for dest in [case["target"], *alternatives]:
+            if not isinstance(dest, str) or not dest.startswith("/") or not dest.endswith("/") or ".." in dest:
+                raise ValueError(f"Unsafe research task destination: {dest}")
+            target = site / dest.strip("/") / "index.html"
+            if not target.is_file():
+                raise ValueError(f"Expected research topic route missing from build: {target}")
         if not isinstance(case.get("max_rank"), int) or case["max_rank"] < 1:
             raise ValueError(f"Invalid regression rank threshold: {case}")
         seen_ids.add(case["id"])
@@ -65,14 +71,14 @@ def target_rank(page, target: str) -> tuple[int | None, int | None, list[str]]:
     return raw, unique, unique_routes[:10]
 
 
-def summary(rows: list[dict]) -> dict:
+def summary(rows: list[dict], *, rank_key: str = "distinct_page_rank") -> dict:
     counts: dict[str, list[dict]] = defaultdict(list)
     for row in rows:
         counts[row["category"]].append(row)
 
     def aggregate(items: list[dict]) -> dict:
         total = len(items)
-        ranks = [row["distinct_page_rank"] for row in items]
+        ranks = [row[rank_key] for row in items]
         return {
             "tasks": total,
             "found_in_observed_results": sum(rank is not None for rank in ranks),
@@ -101,6 +107,7 @@ def run(site: Path, spec: Path, output: Path) -> dict:
             "Observed browser results only. No real-user task completion or source relevance judgments.",
             "Distinct URL rank groups many heading snippets from one page; raw rank is separately recorded.",
             "Exploratory tasks are diagnostic, not yet an enforced quality threshold.",
+            "Task-relevant gateways are accepted only when editorially verified to link to the primary explanation; primary article rank is always reported separately.",
             "No collected user queries, telemetry, external search service or search request logs.",
         ],
     }
@@ -119,7 +126,16 @@ def run(site: Path, spec: Path, output: Path) -> dict:
                     # is present; inspect browser-rendered search results directly.
                     page.locator(".md-search-result__link[href]").first.wait_for(timeout=30000)
                     raw, unique, top = target_rank(page, case["target"])
+                    candidates = [(case["target"], unique)]
+                    for alt in case.get("alternative_targets", []):
+                        _, other_rank, _ = target_rank(page, alt)
+                        candidates.append((alt, other_rank))
+                    eligible = [(dest, rank) for dest, rank in candidates if rank is not None]
+                    resolved_target, task_rank = min(eligible, key=lambda item: item[1]) if eligible else (None, None)
                     row = {**case, "result_rank": raw, "distinct_page_rank": unique,
+                           "task_relevant_distinct_page_rank": task_rank,
+                           "task_relevant_resolved_target": resolved_target,
+                           "used_alternative_gateway": resolved_target is not None and resolved_target != case["target"],
                            "top_ten_distinct_destinations": top}
                     report["records"].append(row)
                     if case["tier"] == "regression" and (
@@ -132,7 +148,12 @@ def run(site: Path, spec: Path, output: Path) -> dict:
                 page.close()
             finally:
                 browser.close()
-        report["metrics"] = summary(report["records"])
+        report["metrics"] = {
+            "primary_canonical_page": summary(report["records"]),
+            "task_relevant_page_or_gateway": summary(
+                report["records"], rank_key="task_relevant_distinct_page_rank"
+            ),
+        }
         report["status"] = "pass" if not report["regression_failures"] else "review"
     finally:
         output.parent.mkdir(parents=True, exist_ok=True)
