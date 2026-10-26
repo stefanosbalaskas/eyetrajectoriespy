@@ -162,3 +162,14 @@
 [data-md-color-scheme="slate"] .md-typeset .grid.cards > ol > li {
   background: #202b38;
 }
+
+
+/* Chromium/axe dark-mode regression: Material's default link blue is 4.12:1
+   on journey cards and the default outlined button blue is 2.34:1. */
+[data-md-color-scheme="slate"] .md-typeset a:not(.md-button) {
+  color: #a6d8fb;
+}
+[data-md-color-scheme="slate"] .md-typeset .md-button:not(.md-button--primary) {
+  color: #d6f1ef;
+  border-color: #9bd9d2;
+}
