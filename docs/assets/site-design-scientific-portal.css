@@ -128,3 +128,37 @@
     overflow-x: auto;
   }
 }
+
+
+/* Dark palette for existing homepage and news panels.  The light --et-panel
+   background previously persisted under slate, leaving pale text at 1.08:1. */
+[data-md-color-scheme="slate"] {
+  --et-panel: #243844;
+  --et-border: rgba(182, 225, 222, .27);
+}
+[data-md-color-scheme="slate"] .md-typeset .et-release-panel,
+[data-md-color-scheme="slate"] .md-typeset .et-release-panel--research,
+[data-md-color-scheme="slate"] .et-micro-status,
+[data-md-color-scheme="slate"] .et-news-strip > div,
+[data-md-color-scheme="slate"] .et-news-feature {
+  background: #243844;
+  color: #e8f2f3;
+  border-color: rgba(182, 225, 222, .27);
+}
+[data-md-color-scheme="slate"] .md-typeset .et-home-label,
+[data-md-color-scheme="slate"] .md-typeset .et-eyebrow {
+  color: #a9e4dd;
+}
+[data-md-color-scheme="slate"] .md-typeset .et-micro-status a,
+[data-md-color-scheme="slate"] .md-typeset .et-release-panel a,
+[data-md-color-scheme="slate"] .md-typeset .et-news-strip a,
+[data-md-color-scheme="slate"] .md-typeset .et-news-feature a {
+  color: #b9e9e5;
+}
+[data-md-color-scheme="slate"] .md-typeset .et-home-intro .md-button:not(.md-button--primary) {
+  color: #d6f1ef;
+  border-color: #9bd9d2;
+}
+[data-md-color-scheme="slate"] .md-typeset .grid.cards > ol > li {
+  background: #202b38;
+}
