@@ -1,0 +1,68 @@
+name: three-design-preview (non-deploying)
+
+on:
+  pull_request:
+    paths:
+      - "docs/assets/design-previews/**"
+      - "scripts/prepare_three_design_previews.py"
+      - "scripts/compare_three_design_previews.py"
+      - ".github/workflows/three-design-preview.yml"
+      - "docs/development/three-design-comparison.md"
+      - "mkdocs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  same-source-design-comparison:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install current docs generator and isolated design tools
+        run: |
+          python -m pip install -U pip
+          python -m pip install -e ".[docs,dev]"
+          python -m pip install "zensical==0.0.72" "playwright==1.56.0" "Pillow>=11,<13"
+          python -m playwright install --with-deps chromium
+          npm --prefix build/site-accessibility install --no-save --no-package-lock axe-core@4.13.0
+      - name: Generate source-derived scientific figures (same in every design)
+        run: python scripts/generate_docs_gallery.py
+      - name: Strictly build unchanged MkDocs baseline
+        run: mkdocs build --strict
+      - name: Validate and generate isolated design variants
+        run: python scripts/prepare_three_design_previews.py
+      - name: Build scientific research portal with Material
+        run: mkdocs build --strict --config-file .design-scientific.mkdocs.yml
+      - name: Build Python developer docs design with Material
+        run: mkdocs build --strict --config-file .design-developer.mkdocs.yml
+      - name: Attempt genuine Zensical modern build without affecting release
+        shell: bash
+        run: |
+          mkdir -p build/design-previews
+          set +e
+          zensical build --strict --config-file .design-zensical-modern.mkdocs.yml > build/design-previews/zensical-build.log 2>&1
+          exit_code=$?
+          cat build/design-previews/zensical-build.log
+          echo "$exit_code" > build/design-previews/zensical-build-exit.txt
+          echo "Nondeploying Zensical Modern exit status: $exit_code"
+          exit 0
+      - name: Compare identical homepage article guide and API browser renderings
+        run: python scripts/compare_three_design_previews.py
+      - name: Retain preview site designs and evidence (not GitHub Pages)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eyetrajectoriespy-three-design-previews
+          path: |
+            build/design-previews/evidence/
+            build/design-previews/design-comparison.json
+            build/design-previews/zensical-build.log
+            build/design-previews/zensical-build-exit.txt
+          if-no-files-found: warn
+          retention-days: 30
