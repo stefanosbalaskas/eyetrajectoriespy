@@ -188,3 +188,11 @@
 [data-md-color-scheme="slate"] .md-typeset pre code .mf {
   color: #ffb3a7 !important;
 }
+
+
+/* Full 16-view audit: Pygments built-in names .nb were 4.48:1 on dark
+   guide/API code surfaces. Use an intentionally higher-contrast violet. */
+[data-md-color-scheme="slate"] .md-typeset .highlight .nb,
+[data-md-color-scheme="slate"] .md-typeset pre code .nb {
+  color: #c5b9ff !important;
+}
