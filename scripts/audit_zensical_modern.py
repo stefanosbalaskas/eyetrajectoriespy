@@ -129,7 +129,7 @@ def qualify(baseline: Path, candidate: Path, out: Path) -> dict:
     try:
         assert len(old) >= 370 and old == new, result["route_parity"]
         with serve_site(candidate) as origin, sync_playwright() as p:
-            browser = p.chromium.launch(headless=True,
+            browser = p.chromium.launch(channel="chrome", headless=True,
                                         args=["--disable-dev-shm-usage"])
             try:
                 for scheme in ("light", "dark"):
