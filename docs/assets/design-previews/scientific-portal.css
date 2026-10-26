@@ -73,3 +73,13 @@
   }
   .md-typeset .et-home-label { font-size: .70rem; letter-spacing: .085em; }
 }
+
+
+/* Align API labels to the document foreground rather than a faint theme
+   code-label gray. Applies across Material light/slate themes and to all
+   mkdocstrings label rows; verified with the API page axe gate. */
+.doc-labels.doc code,
+.md-typeset .doc-labels.doc code,
+.md-typeset .doc-labels.doc > span > code {
+  color: var(--md-default-fg-color, CanvasText) !important;
+}
