@@ -159,6 +159,8 @@ distinct-destination-page rank plus overall/by-topic Hit@1, Hit@3, Hit@5,
 Hit@10 and observed reciprocal rank (missing destinations contribute zero).
 Reports are uploaded as CI artifacts, not instrumented on the public site.
 
+The first baseline found **21/23 primary pages among observed results** (Hit@5 21/23). The specific identification-bounds explainer and R95 readable article did not appear within the initial displayed result entries, even after exploratory modest boosts. Those ineffective boosts were removed. A richer benchmark now reports **primary article rank separately from scientifically relevant gateway rank** (e.g., the article library or R95 evidence ledger); approved gateways are editorially checked to link directly to the primary explanation. Counting a gateway as reachable must not be represented as making the original deep article rank higher. This also does not prove that a researcher completed the intended task.
+
 The keyboard audit also records a twelve-step Tab focus sequence with actual
 bounding-rectangle and computed outline details. This is a browser
 diagnostic—not proof that the complete focus sequence is meaningful or that
