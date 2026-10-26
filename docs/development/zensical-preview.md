@@ -1,11 +1,11 @@
 ---
 title: Parallel documentation-generator evaluation
-description: Reversible research preview of Zensical 0.0.72 against production MkDocs Material, without deploying or changing the package.
+description: Historical non-deploying Zensical Classic compatibility evaluation preceding the selected Modern migration.
 ---
 
-# Assessing Zensical without changing the website
+# Historical Zensical Classic compatibility experiment
 
-**Production remains MkDocs Material.** This experiment runs an isolated, non-deploying compatibility job. It is not a recommendation to migrate until functional and visual equivalence have been independently demonstrated.
+This page preserves the earlier **non-deploying Classic-theme evaluation** from when MkDocs Material was the publication builder. It does **not** describe the selected Modern design or the current deployment state. The subsequent [Zensical Modern release-gated PR #503](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/503) adds native-search and full route/browser qualification while retaining a MkDocs rollback build. Manual assistive-technology review remains [open](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/499).
 
 Zensical's [MkDocs migration guide](https://zensical.org/docs/compatibility/mkdocs/migration/) permits using the same `mkdocs.yml` with a reversible build command. Its [current plugin compatibility](https://zensical.org/docs/compatibility/mkdocs/plugins/) explicitly includes `search` and `mkdocstrings`. We use its **classic theme variant**, which is intended for existing Material-style sites with custom JavaScript and CSS.
 
@@ -22,7 +22,7 @@ The experimental workflow is explicitly non-blocking for the production deployme
 
 ## Extended full-site acceptance checks
 
-The separate CI report now counts **all rendered HTML routes** in each generator, flags missing historical URLs and core copied assets, and inventories the search-related files. It still keeps the production decision on **HOLD** until live-browser search, mobile/desktop accessibility and API fidelity are demonstrated. See the [site-wide quality programme](sitewide-experience-audit.md).
+The separate CI report now counts **all rendered HTML routes** in each generator, flags missing historical URLs and core copied assets, and inventories the search-related files. At this historical stage, the production decision was on **HOLD** pending live-browser search, mobile/desktop accessibility and API fidelity. See the [site-wide quality programme](sitewide-experience-audit.md).
 
 ## Required future acceptance criteria
 
@@ -34,7 +34,7 @@ The separate CI report now counts **all rendered HTML routes** in each generator
 | JavaScript | Interactive navigator, CSV inspector, filters and selectors survive instant navigation |
 | User experience | Desktop/mobile theme, contrast, keyboard focus, and no-JS fallbacks pass visual browser checks |
 | URLs | Published root and deep links remain compatible with existing `/eyetrajectoriespy/` routes |
-| Governance | Primary GitHub Pages remains MkDocs until explicitly qualified in another PR |
+| Governance | This experiment could not switch GitHub Pages; a separately qualified PR was required |
 
 The [MNE documentation organization](https://mne.tools/stable/documentation/index.html) informed the distinction between first-analysis tutorials and example galleries. The [MNE examples gallery](https://mne.tools/stable/auto_examples/) explicitly warns that synthetic and shortcut demonstrations must be interpreted cautiously; the same boundary is retained in our new [visual methods explorer](../tools/figure-storyboard.md).
 

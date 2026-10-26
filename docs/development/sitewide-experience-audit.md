@@ -5,7 +5,7 @@ description: Rendered links and fragments, search coverage, Lighthouse mobile ba
 
 # Site-wide quality audit and migration decision
 
-The next stage addresses the existing documentation archive rather than adding another package-integration catalog. Production remains **MkDocs Material** and the published Python package remains **1.2.0**.
+The next stage addresses the existing documentation archive rather than adding another package-integration catalog. The selected **Zensical Modern** publication candidate passes through separate strict route, browser, native-search and accessibility gates, while **MkDocs Material** remains a built compatibility and rollback baseline. The published Python package remains **1.2.0**. See [migration PR #503](https://github.com/stefanosbalaskas/eyetrajectoriespy/pull/503) and the [open human assistive-technology review](https://github.com/stefanosbalaskas/eyetrajectoriespy/issues/499).
 
 ## Five independent reviews
 
@@ -15,7 +15,8 @@ The next stage addresses the existing documentation archive rather than adding a
 | Search discovery | MkDocs `search/search_index.json` | Ten reader-intent topics and corresponding indexed pages, not live Lunr ranking |
 | Mobile Lighthouse | Four representative routes, simulated mobile | Reproducible initial performance, accessibility, best-practices and SEO evidence, not a stable speed guarantee |
 | Browser accessibility | Playwright and locally installed axe-core | Desktop/mobile interactive checks and automatically detectable serious issues; manual review still needed |
-| Zensical comparison | MkDocs and Zensical 0.0.72 classic outputs | All built routes and core assets plus earlier eleven representative checks; no automatic production switch |
+| Historical Zensical Classic comparison | MkDocs and Zensical 0.0.72 classic outputs | All built routes and core assets plus earlier eleven representative checks; this experiment did not authorize deployment |
+| Selected Zensical Modern gate | MkDocs baseline and true Zensical Modern build | 370-route parity, all local fragments, 16 browser views, native search and automated accessibility; not manual WCAG qualification |
 
 ## Run the production site audits locally
 
@@ -28,7 +29,7 @@ python scripts/audit_sitewide_links.py --output build/sitewide-links.json
 python scripts/audit_search_corpus.py --output build/site-search-corpus.json
 ~~~
 
-The first CI baseline covered **368 generated pages and 152,683 local targets** with zero missing local files, but identified **80 broken named-fragment references** (mostly public plotting gallery → Python API and two links to the integration checklist). Those were corrected at the gallery generator and the navigator's declared section ID. A second audit reduced missing fragments from 80 to 8, pinpointing seven exported plotting functions without API documentation anchors and one omitted mathematical-reference section. These final eight targets now have explicit published entries. The strict link-audit gate must pass before declaring the site clean. Zensical rendered the same 368 page routes but initially produced one wrong relative tabular handoff link; this fallback is now explicitly rooted at the published Pages subpath and must be verified again. Zensical also uses a different search asset layout, so index existence alone is not evidence of equivalent search functionality. The migration decision remains HOLD.
+The first CI baseline covered **368 generated pages and 152,683 local targets** with zero missing local files, but identified **80 broken named-fragment references** (mostly public plotting gallery → Python API and two links to the integration checklist). Those were corrected at the gallery generator and the navigator's declared section ID. A second audit reduced missing fragments from 80 to 8, pinpointing seven exported plotting functions without API documentation anchors and one omitted mathematical-reference section. These final eight targets now have explicit published entries. The strict link-audit gate must pass before declaring the site clean. Zensical rendered the same 368 page routes but initially produced one wrong relative tabular handoff link; this fallback is now explicitly rooted at the published Pages subpath and must be verified again. Zensical also uses a different search asset layout, so index existence alone is not evidence of equivalent search functionality. The migration decision at that **initial Classic-stage audit** remained HOLD; the later Modern candidate has a separate stricter release gate.
 
 The first site-wide pass is **diagnostic**, with detailed machine-readable evidence. Add `--strict` to the commands only after reviewing legacy broken-link findings and intended exclusions. It does not contact third-party URLs.
 
@@ -119,8 +120,9 @@ unqualified inference claims are untouched.
 
 ## Search relevance and keyboard-discovery qualification (26 October 2026)
 
-The site's built-in search is provided by Material for MkDocs/Lunr; it is not
-an externally hosted search service. Material documents gentle
+The MkDocs Material rollback baseline uses its built-in Lunr search; the
+selected Zensical Modern candidate uses separately tested native search.
+Neither requires an externally hosted search service. Material documents gentle
 [per-page `search.boost` metadata](https://squidfunk.github.io/mkdocs-material/setup/setting-up-site-search/#search-boosting).
 A new [reader-intent topic directory](../start/find-a-topic.md) provides a
 shorter path from common scientific questions to stable methods, visualization,
