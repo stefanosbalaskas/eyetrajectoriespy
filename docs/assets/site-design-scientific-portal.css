@@ -173,3 +173,18 @@
   color: #d6f1ef;
   border-color: #9bd9d2;
 }
+
+
+/* Chromium dark sparse-FPCA guide: linked inline code and highlighted numeric
+   tokens previously measured 4.12:1 and 4.44:1 against #272a35. Keep code
+   semantics and copy behavior intact while giving both ample contrast. */
+[data-md-color-scheme="slate"] .md-typeset a > code,
+[data-md-color-scheme="slate"] .md-typeset a code {
+  color: #b4e5ff !important;
+}
+[data-md-color-scheme="slate"] .md-typeset .highlight .mi,
+[data-md-color-scheme="slate"] .md-typeset .highlight .mf,
+[data-md-color-scheme="slate"] .md-typeset pre code .mi,
+[data-md-color-scheme="slate"] .md-typeset pre code .mf {
+  color: #ffb3a7 !important;
+}
