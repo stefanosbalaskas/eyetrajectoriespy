@@ -84,6 +84,33 @@ def run(site: Path) -> dict:
                 )
                 report["keyboard"]["first_tab_focus"] = first_focus
                 assert first_focus["tag"] == "A", "Tab did not reach an actual link"
+                # Collect browser-observed focus geometry on a real Tab sequence.
+                # This is a diagnostic sample, not a human focus-order or
+                # visible-indicator conformance judgment.
+                tab_trace = []
+                for tab_number in range(12):
+                    observation = desktop.evaluate("""() => {
+                      const node = document.activeElement;
+                      const rect = node?.getBoundingClientRect();
+                      const style = node ? getComputedStyle(node) : null;
+                      const area = rect ? Math.max(0, Math.min(rect.right, innerWidth) -
+                        Math.max(rect.left, 0)) * Math.max(0, Math.min(rect.bottom, innerHeight) -
+                        Math.max(rect.top, 0)) : 0;
+                      return {
+                        tag: node?.tagName || null,
+                        accessible_label: node?.getAttribute('aria-label') || null,
+                        href: node?.getAttribute('href') || null,
+                        in_viewport: area > 0,
+                        outline_style: style?.outlineStyle || null,
+                        outline_width: style?.outlineWidth || null
+                      };
+                    }""")
+                    tab_trace.append({"tab": tab_number + 1, **observation})
+                    desktop.keyboard.press("Tab")
+                report["keyboard"]["sampled_tab_trace"] = tab_trace
+                assert any(sample["in_viewport"] for sample in tab_trace), (
+                    "No visible focus target in keyboard sample"
+                )
                 desktop.keyboard.press("Escape")
                 desktop.keyboard.press("/")
                 desktop.wait_for_function(
