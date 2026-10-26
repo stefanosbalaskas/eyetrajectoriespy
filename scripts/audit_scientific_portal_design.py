@@ -124,9 +124,11 @@ def audit(site: Path, output: Path) -> dict:
                                 result["axe"] = axe_inspect(
                                     page, route=route or "home", viewport=f"{device}-{scheme}"
                                 )
-                                assert result["axe"]["highImpact"] == 0, (
-                                    scheme, device, name, result["axe"].get("issues")
-                                )
+                                if result["axe"]["highImpact"]:
+                                    finding = {"scheme": scheme, "device": device,
+                                               "page": name, "issues": result["axe"].get("issues")}
+                                    report["issues"].append(finding)
+                                    print("PORTAL_AXE_FINDING=" + json.dumps(finding), flush=True)
                             if name == "api" and device == "desktop":
                                 code = page.locator(".doc-labels.doc code").first
                                 assert code.count(), "Mkdocstrings API labels missing"
@@ -159,6 +161,10 @@ def audit(site: Path, output: Path) -> dict:
                         context.close()
             finally:
                 browser.close()
+        assert not report["issues"], (
+            "High-impact accessibility findings across sampled pages",
+            report["issues"],
+        )
         report["status"] = "pass"
     except Exception as exc:
         report["issues"].append(str(exc))
