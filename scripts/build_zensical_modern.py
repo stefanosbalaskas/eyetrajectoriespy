@@ -24,10 +24,16 @@ def generate(destination: str = "build/zensical-modern") -> Path:
     assert "\nhooks:" not in original, "Zensical does not support MkDocs hooks"
     assert not original.startswith("site_dir:") and "\nsite_dir:" not in original
     assert (ROOT / "docs/assets/site-design-zensical-modern.css").is_file()
+    assert (ROOT / "docs/javascripts/zensical-modern-accessibility.js").is_file()
+    js_anchor = "  - javascripts/mathjax.js\n"
+    assert original.count(js_anchor) == 1, "Javascript registration has changed"
     candidate = original.replace(theme, theme + "  variant: modern\n", 1)
     candidate = candidate.replace(old_css, "", 1)
     candidate = candidate.replace(
         anchor, anchor + "  - assets/site-design-zensical-modern.css\n", 1
+    )
+    candidate = candidate.replace(
+        js_anchor, js_anchor + "  - javascripts/zensical-modern-accessibility.js\n", 1
     )
     GENERATED.write_text("site_dir: " + destination + "\n" + candidate, encoding="utf-8")
     assert SOURCE.read_text(encoding="utf-8") == original
