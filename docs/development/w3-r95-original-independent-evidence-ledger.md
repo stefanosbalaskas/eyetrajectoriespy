@@ -1,5 +1,7 @@
 # W3 R95 and R95-A — original/independent exact observed-law ledger
 
+For a plain-language account of **R95 missing gaze and selective audit return**, start with the [R95 conditional identification article](../articles/w3-r95-monotone-audit-return-identification.md) or the [assumption-dependent missing-gaze bounds comparison](../articles/what-sharpens-missing-gaze-bounds.md). This ledger documents independent algebra and replay evidence; neither a returned-record audit nor this software identifies unreturned outcomes without external assumptions.
+
 **Scope:** exact rational binary originally missing outcome identification, conditional on **hypothetically externally known** monotone direction/ratio of actual audit completion. There are no Monte Carlo replicates, participant observations, empirical validation, confidence intervals, or calibrated W3 simultaneous bands.
 
 ## Original frozen exact design
