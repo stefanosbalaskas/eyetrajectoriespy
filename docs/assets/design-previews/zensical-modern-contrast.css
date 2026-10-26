@@ -1,0 +1,11 @@
+/* Zensical Modern research preview accessibility adjustments.
+   Correct issues observed by local axe 4.13; no production stylesheet change. */
+[data-md-color-scheme="default"] .md-copyright {
+  color: #334454 !important;
+}
+[data-md-color-scheme="default"] .md-nav__link--active .md-ellipsis {
+  color: #00685d !important;
+}
+[data-md-color-scheme="default"] .md-typeset .doc-labels.doc code {
+  color: #4b5462 !important;
+}
