@@ -71,6 +71,36 @@ def audit(site: Path, output: Path) -> dict:
                             shot = output / f"{name}-{device}-{scheme}.png"
                             page.screenshot(path=str(shot), animations="disabled")
                             report["screenshots"].append(shot.name)
+                            # Capture API contrast diagnostic BEFORE axe can raise.
+                            # This identifies specificity, palette scope or CSS-asset
+                            # problems instead of blindly changing color declarations.
+                            if name == "api" and device == "desktop":
+                                diagnostic = page.evaluate("""() => {
+                                  const node = document.querySelector('.doc-labels.doc code');
+                                  if (!node) return {error: 'mkdocstrings code node missing'};
+                                  const styles = [...document.styleSheets];
+                                  const own = styles.filter(s => (s.href || '').includes('site-design-scientific-portal'));
+                                  const rules = own.flatMap(s => {
+                                    try { return [...s.cssRules].filter(r =>
+                                      (r.cssText || '').includes('doc-labels')).map(r => r.cssText.slice(0, 360)); }
+                                    catch { return []; }
+                                  });
+                                  return {
+                                    color: getComputedStyle(node).color,
+                                    element: node.outerHTML.slice(0, 300),
+                                    parent: node.parentElement?.outerHTML.slice(0, 400),
+                                    match_plain: node.matches('.doc-labels.doc code'),
+                                    match_typeset: node.matches('.md-typeset .doc-labels.doc code'),
+                                    schemes: {body: document.body?.getAttribute('data-md-color-scheme'),
+                                              html: document.documentElement.getAttribute('data-md-color-scheme')},
+                                    ownStylesheets: own.length, rules,
+                                    variable: getComputedStyle(node).getPropertyValue('--md-default-fg-color').trim(),
+                                  };
+                                }""")
+                                report["scheme_checks"].append({
+                                  "scheme": scheme, "api_preaxe_diagnostic": diagnostic
+                                })
+                                print("API_CSS_DIAGNOSTIC=" + json.dumps(diagnostic), flush=True)
                             # Sampled axe with actual palette and target scientific route.
                             if (device, name) in (("desktop","home"), ("desktop","guide"),
                                                   ("desktop","api"), ("mobile","article")):
