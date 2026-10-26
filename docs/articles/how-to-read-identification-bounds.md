@@ -1,8 +1,6 @@
 ---
 title: How to interpret selective-return identification bounds
 description: A readable guide to observed audit return, conditional sharp population sets and the assumptions required for R93–R95 gaze research.
-search:
-  boost: 1.7
 ---
 
 # Reading sharp identified sets for missing outcomes
