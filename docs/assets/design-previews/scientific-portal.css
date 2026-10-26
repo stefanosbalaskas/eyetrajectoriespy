@@ -60,3 +60,16 @@
 [data-md-color-scheme="default"] .md-typeset .doc-labels.doc code {
   color: #455761 !important;
 }
+
+
+/* Keep the first action in view on 390px devices; the original 2.35rem
+   journal headline occupied most of the initial mobile viewport. */
+@media (max-width: 600px) {
+  .md-content__inner { padding-top: .7rem; }
+  .md-typeset .et-home-intro { padding: 1.3rem 1.05rem; }
+  .md-typeset .et-home-intro h1 {
+    font-size: clamp(1.75rem, 7.3vw, 1.95rem);
+    line-height: 1.18;
+  }
+  .md-typeset .et-home-label { font-size: .70rem; letter-spacing: .085em; }
+}
