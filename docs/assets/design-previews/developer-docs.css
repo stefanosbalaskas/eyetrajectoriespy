@@ -52,3 +52,14 @@
 [data-md-color-scheme="default"] .md-typeset .et-micro-status :is(p, strong) {
   color: #354360 !important;
 }
+
+
+/* Prior preview used an oversized hero on narrow devices. */
+@media (max-width: 600px) {
+  .md-content__inner { padding-top: .7rem; }
+  .md-typeset .et-home-intro { padding: 1.3rem 1.05rem; }
+  .md-typeset .et-home-intro h1 {
+    font-size: clamp(1.75rem, 7.3vw, 1.95rem);
+    line-height: 1.18;
+  }
+}
