@@ -23,6 +23,36 @@ TARGET = "/eyetrajectoriespy/guides/sparse-irregular-fpca/"
 def inventory(site: Path) -> set[str]:
     return {p.relative_to(site).as_posix() for p in site.rglob("*.html")}
 
+def check_visible_top_tabs(page) -> dict:
+    """Block white-on-white Zensical desktop menus even when axe misses them."""
+    data = page.evaluate("""() => {
+      const tabs = [...document.querySelectorAll('.md-tabs__link')].filter(e =>
+        e.getClientRects().length &&
+        getComputedStyle(e).display !== 'none' &&
+        getComputedStyle(e).visibility !== 'hidden' &&
+        (e.textContent || '').trim()
+      );
+      const lightContrast = css => {
+        const m = (css || '').match(/rgba?\\(([^)]+)\\)/);
+        if (!m) return 0;
+        const rgb = m[1].split(',').slice(0, 3).map(Number);
+        const values = rgb.map(x => {
+          const s = x / 255;
+          return s <= .04045 ? s / 12.92 : ((s + .055) / 1.055) ** 2.4;
+        });
+        const lum = .2126*values[0] + .7152*values[1] + .0722*values[2];
+        return Number((1.05 / (lum + .05)).toFixed(2));
+      };
+      return tabs.map(e => ({
+        label: (e.textContent || '').trim().slice(0, 50),
+        color: getComputedStyle(e).color,
+        contrast_on_white: lightContrast(getComputedStyle(e).color)
+      }));
+    }""")
+    return {"count": len(data), "labels": data[:12],
+            "min_contrast_on_white": min(
+                (x["contrast_on_white"] for x in data), default=0)}
+
 def check_search(page, origin: str, report: dict) -> None:
     page.goto(origin, wait_until="domcontentloaded")
     page.wait_for_timeout(500)
@@ -170,6 +200,16 @@ def qualify(baseline: Path, candidate: Path, out: Path) -> dict:
                                 assert not overflow, (scheme,device,name,"horizontal overflow")
                                 row = {"scheme":scheme,"device":device,"page":name,
                                        "title":title[:95],"status":response.status}
+                                if device == "desktop" and name == "home":
+                                    tabs = check_visible_top_tabs(page)
+                                    row["top_navigation"] = tabs
+                                    assert tabs["count"] >= 3, (
+                                        "Missing desktop top navigation", tabs
+                                    )
+                                    if scheme == "light":
+                                        assert tabs["min_contrast_on_white"] >= 4.5, (
+                                            "Invisible light-mode Zensical top tabs", tabs
+                                        )
                                 a11y = axe_inspect(page, route=route or "home",
                                                      viewport=device+"-"+scheme)
                                 row["axe_high_impact"] = a11y["highImpact"]
