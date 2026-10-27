@@ -40,3 +40,28 @@
   outline: 3px solid #68b8ed;
   outline-offset: 3px;
 }
+
+
+/* The legacy Material accessibility stylesheet colors top tabs near-white for
+   its indigo banner. Zensical Modern uses a *white* tab surface in light mode.
+   Restore legible labels without changing Material's fallback theme. */
+[data-md-color-scheme="default"] .md-tabs__link,
+[data-md-color-scheme="default"] .md-tabs__item .md-tabs__link:not(.md-tabs__link--active) {
+  color: #22384e !important;
+  opacity: 1 !important;
+}
+/* The same former-indigo assumption can hide repository information in the
+   light header. Keep those source labels readable when present. */
+[data-md-color-scheme="default"] .md-header .md-header__source .md-source,
+[data-md-color-scheme="default"] .md-header .md-header__source .md-source__repository,
+[data-md-color-scheme="default"] .md-header .md-header__source .md-source__fact,
+[data-md-color-scheme="default"] .md-header .md-header__source .md-source__facts {
+  color: #22384e !important;
+  opacity: 1 !important;
+}
+
+/* Remove unnecessary top padding on the landing page only; preserve other
+   pages' heading and table-of-contents placement. */
+.md-content__inner:has(.et-home-intro) {
+  padding-top: .75rem;
+}
